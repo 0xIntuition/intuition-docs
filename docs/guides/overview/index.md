@@ -8,5 +8,5 @@ Welcome to Intuition's mission statement. Here you'll learn about our core purpo
 
 Our mission pages will guide you through:
 
-- [The Problem](./vision) - Understanding the challenges in current blockchain development
-- [Why Intuition?](./why-intuition) - How Intuition addresses these challenges and our unique approach 
+- [Vision](/guides/overview/vision) - Understanding the challenges in current blockchain development
+- [Why Intuition](/guides/overview/why-intuition) - How Intuition addresses these challenges and our unique approach 

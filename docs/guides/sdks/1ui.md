@@ -56,4 +56,4 @@ function UserProfile({ userId }) {
 - `usePublish`: Publish new attestations
 - `useVerify`: Verify claims and proofs
 
-For more examples and component documentation, see our [UI Components guide](/guides/templates/index). 
+For more examples and component documentation, see our [UI Components guide](/guides/template-apps). 

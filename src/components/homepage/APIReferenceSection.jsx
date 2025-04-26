@@ -31,7 +31,7 @@ export default function APIReferenceSection() {
             Easily read data from the Intuition knowledge graph using our GraphQL API. We've created a GraphQL playground and example queries to help you get started.
           </p>
           <Link
-            href="/api"
+            href="/guides/graphql/quickstart"
             className="font-medium text-primary-100 dark:text-primary"
           >
             Get started with Intuition GraphQL &rarr;
@@ -39,7 +39,7 @@ export default function APIReferenceSection() {
           <ul className="mt-10 flex list-none flex-col gap-4 text-left lg:pl-0">
             <li className="flex flex-col gap-1">
               <Link
-                href="/api/#/operations/createMeeting"
+                href="/guides/graphql/quickstart"
                 className="group font-jakarta font-semibold text-current"
               >
                 Get all of the information about a given subject.
@@ -53,7 +53,7 @@ export default function APIReferenceSection() {
             </li>
             <li className="flex flex-col gap-1">
               <Link
-                href="/api/#/operations/addPreset"
+                href="/guides/graphql/quickstart"
                 className="group font-jakarta font-semibold text-current"
               >
                  Filter results by a user's connections.
@@ -67,7 +67,7 @@ export default function APIReferenceSection() {
             </li>
             <li className="flex flex-col gap-1">
               <Link
-                href="/api/#/operations/deleteParticipant"
+                href="/guides/graphql/quickstart"
                 className="group font-jakarta font-semibold text-current"
               >
                 Find collaborative 'lists of things'.

@@ -1,0 +1,178 @@
+---
+title: GraphQL SDK
+sidebar_position: 3
+---
+
+# GraphQL SDK
+
+The GraphQL SDK provides a type-safe way to interact with Intuition's GraphQL API. It includes:
+
+- Auto-generated TypeScript types
+- Query builders
+- Caching and state management
+- Real-time subscriptions
+
+## Installation
+
+```bash
+npm install @intuition/graphql
+```
+
+## Quick Start
+
+```typescript
+import { createClient } from '@intuition/graphql';
+
+const client = createClient({
+  url: 'https://api.intuition.systems/graphql',
+  headers: {
+    'Authorization': 'Bearer your-api-key'
+  }
+});
+
+// Query attestations
+const { data } = await client.query({
+  attestations: {
+    where: {
+      subject: '0x123...'
+    },
+    select: {
+      id: true,
+      claim: true,
+      confidence: true,
+      issuer: true
+    }
+  }
+});
+```
+
+## Features
+
+### Type Safety
+The SDK provides full TypeScript support with auto-generated types for all queries and mutations. This ensures compile-time type checking and excellent IDE support.
+
+```typescript
+// Types are automatically inferred
+const { data } = await client.query({
+  attestations: {
+    where: {
+      subject: '0x123...', // TypeScript will ensure this is a valid address
+      confidence: { gt: 0.8 } // TypeScript will ensure this is a valid confidence value
+    }
+  }
+});
+```
+
+### Real-time Updates
+Subscribe to changes in real-time using WebSocket connections:
+
+```typescript
+const subscription = client.subscribe({
+  attestations: {
+    where: {
+      subject: '0x123...'
+    },
+    select: {
+      id: true,
+      claim: true
+    }
+  }
+}, (data) => {
+  console.log('New attestation:', data);
+});
+
+// Clean up subscription
+subscription.unsubscribe();
+```
+
+### Caching
+The SDK includes smart caching with automatic invalidation:
+
+```typescript
+const client = createClient({
+  url: 'https://api.intuition.systems/graphql',
+  cache: {
+    ttl: 5 * 60 * 1000, // Cache for 5 minutes
+    maxSize: 1000 // Maximum number of cached items
+  }
+});
+```
+
+### Batching
+Queries are automatically batched for better performance:
+
+```typescript
+// These queries will be automatically batched
+const [attestations, signals] = await Promise.all([
+  client.query({ attestations: { /* ... */ } }),
+  client.query({ signals: { /* ... */ } })
+]);
+```
+
+## Advanced Usage
+
+### Custom Types
+You can extend the default types with your own:
+
+```typescript
+import { createClient, Attestation } from '@intuition/graphql';
+
+interface CustomAttestation extends Attestation {
+  customField: string;
+}
+
+const client = createClient<{ Attestation: CustomAttestation }>({
+  // ... config
+});
+```
+
+### Error Handling
+
+```typescript
+try {
+  const { data } = await client.query({
+    attestations: { /* ... */ }
+  });
+} catch (error) {
+  if (error instanceof GraphQLError) {
+    console.error('GraphQL Error:', error.message);
+  } else {
+    console.error('Network Error:', error);
+  }
+}
+```
+
+### Authentication
+
+```typescript
+const client = createClient({
+  url: 'https://api.intuition.systems/graphql',
+  headers: {
+    'Authorization': 'Bearer your-api-key'
+  },
+  // Optional: Refresh token handling
+  onAuthError: async () => {
+    const newToken = await refreshToken();
+    return { 'Authorization': `Bearer ${newToken}` };
+  }
+});
+```
+
+## Best Practices
+
+1. **Error Handling**: Implement proper error handling for failed queries
+2. **Type Safety**: Use TypeScript for better type inference
+3. **Caching**: Configure appropriate cache settings for your use case
+4. **Subscriptions**: Clean up subscriptions when components unmount
+5. **Batching**: Use `Promise.all` for multiple queries to enable automatic batching
+
+## API Reference
+
+For the complete API reference, see our [GraphQL API documentation](/graphql).
+
+## Support
+
+If you encounter any issues or have questions, please:
+1. Check our [GitHub repository](https://github.com/intuition-systems/intuition)
+2. Join our [Discord community](https://discord.gg/intuition)
+3. Open an issue on GitHub

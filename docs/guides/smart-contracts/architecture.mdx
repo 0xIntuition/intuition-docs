@@ -1,0 +1,61 @@
+---
+title: Smart Contract Architecture
+sidebar_label: Architecture
+---
+
+# Smart Contract Architecture
+
+This document provides an overview of the Intuition smart contract architecture, explaining the core components and their interactions.
+
+## Overview
+
+The Intuition protocol is built on a modular architecture of smart contracts that work together to provide a comprehensive decentralized system. Each contract has a specific responsibility and interacts with others through well-defined interfaces.
+
+## Core Components
+
+### Atom Warden
+
+The Atom Warden contract manages the creation, validation, and storage of atomic data units (atoms) in the system. It ensures data integrity and provides a foundation for the protocol's data model.
+
+### Attestor
+
+The Attestor contract handles the verification and attestation of data, allowing trusted entities to validate information and provide cryptographic proof of its authenticity.
+
+### Bonding Curve Registry
+
+This contract manages the various bonding curves used for token pricing and market dynamics, enabling flexible economic models for different use cases.
+
+### Trust Bonding
+
+The Trust Bonding contract implements reputation and trust mechanisms, allowing users to build and maintain their standing within the system.
+
+### Multi-Vault Contracts
+
+Both the ETH Multi-Vault and Trust Multi-Vault contracts provide secure storage and management of assets, with different security and access models for different types of assets.
+
+## Contract Interactions
+
+The contracts in the Intuition protocol interact through a series of well-defined interfaces:
+
+1. **Data Flow**: Atoms are created and validated by the Atom Warden, then attested by the Attestor.
+2. **Economic Models**: The Bonding Curve Registry defines pricing models that interact with the Multi-Vault contracts for asset management.
+3. **Trust Mechanisms**: The Trust Bonding contract provides reputation data that influences permissions and capabilities across the system.
+
+## Security Considerations
+
+The architecture is designed with security as a primary concern:
+
+- **Modularity**: Each contract has a single responsibility, reducing attack surface
+- **Upgradability**: Contracts can be upgraded independently while maintaining compatibility
+- **Access Control**: Granular permissions system for different operations
+- **Auditability**: All operations are transparent and verifiable on-chain
+
+## Future Developments
+
+The architecture is designed to be extensible, allowing for:
+
+- New contract types to be added as needed
+- Enhanced functionality through contract upgrades
+- Integration with other blockchain protocols and systems
+
+For more detailed information about specific contracts, please refer to their individual documentation pages. 

@@ -39,6 +39,7 @@
     "@headlessui/react": "^1.7.14",
     "@radix-ui/react-select": "^2.1.5",
     "@stoplight/elements": "^8.0.2",
+    "bufferutil": "^4.0.9",
     "clsx": "^2.1.1",
     "fuse.js": "^7.1.0",
     "nanoid": "^5.0.6",
@@ -51,6 +52,7 @@
     "react-feather": "^2.0.10",
     "reactflow": "^11.10.4",
     "use-deep-compare-effect": "^1.8.1",
+    "utf-8-validate": "^5.0.10",
     "zustand": "^4.5.2"
   },
   "devDependencies": {

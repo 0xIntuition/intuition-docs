@@ -48,4 +48,4 @@ await protocol.publish({
 - **State Channels**: Efficient off-chain communication
 - **Proofs**: Cryptographic verification of claims
 
-For more details on these concepts, see our [Primitives guide](/guides/primitives/index). 
+For more details on these concepts, see our [Primitives guide](/guides/primitives/atoms). 

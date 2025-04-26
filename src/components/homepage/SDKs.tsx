@@ -44,7 +44,7 @@ export default function SDKs() {
           />
           <SDK
             name="1UI"
-            to="/1ui"
+            to="/sdks/1ui"
             icon="/static/landing-page/sdk-icons/react.png"
           />
         </div>
