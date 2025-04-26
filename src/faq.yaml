@@ -1,0 +1,42 @@
+- question: What is Intuition?
+  answer: |
+    Intuition is a decentralized knowledge protocol that enables the creation and discovery of verifiable claims. 
+    It allows users to contribute data, stake tokens, and earn rewards while helping build a trusted web of information.
+  tags: [General, Protocol]
+
+- question: How do I get started with Intuition?
+  answer: |
+    1. Install the Protocol Package using npm:
+       ```bash
+       npm install @intuition/protocol
+       ```
+    2. Create an account and get your API keys
+    3. Start building with our guides and documentation
+  tags: [Getting Started, Development]
+
+- question: What can I build with Intuition?
+  answer: |
+    You can build various applications including:
+    - Personalized user experiences
+    - Knowledge discovery tools
+    - Data verification systems
+    - AI-powered applications
+    - Trust and reputation systems
+  tags: [Development, Use Cases]
+
+- question: How does staking work?
+  answer: |
+    Staking in Intuition involves depositing $TRUST tokens to back your claims. 
+    The more tokens you stake, the higher the potential rewards when your data is used. 
+    Staking also helps ensure data quality as stakes can be slashed for incorrect information.
+  tags: [Protocol, Tokenomics]
+
+- question: How do I contribute to the protocol?
+  answer: |
+    There are several ways to contribute:
+    1. Submit verifiable claims
+    2. Develop community packages
+    3. Participate in governance
+    4. Help improve documentation
+    5. Join the developer community
+  tags: [Community, Development]

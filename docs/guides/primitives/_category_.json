@@ -1,0 +1,9 @@
+{
+  "label": "Using the Primitives",
+  "position": 8,
+  "className": "sectionSidebarHeading",
+  "link": {
+    "type": "generated-index",
+    "description": "Learn how to use Intuition's core primitives to build robust blockchain applications."
+  }
+} 

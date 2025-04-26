@@ -1,0 +1,176 @@
+---
+title: TrustBonding.sol
+sidebar_position: 4
+description: A bonding contract for trust-based staking and reward distribution
+---
+
+# TrustBonding
+
+`TrustBonding.sol` implements a sophisticated bonding mechanism that enables trust-based staking and reward distribution with customizable bonding curves.
+
+## Features
+
+- Customizable bonding curves
+- Trust-weighted staking
+- Dynamic reward distribution
+- Automated vesting schedules
+- Anti-manipulation safeguards
+- Emergency withdrawal system
+- Reward multipliers
+
+## Contract Interface
+
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.19;
+
+interface ITrustBonding {
+    function bond(uint256 amount) external;
+    function unbond(uint256 amount) external;
+    function claim() external;
+    function getRewardMultiplier(address account) external view returns (uint256);
+    function getTrustScore(address account) external view returns (uint256);
+    function updateBondingCurve(
+        address token,
+        uint256[] calldata prices,
+        uint256[] calldata supplies
+    ) external;
+}
+```
+
+## Bonding Mechanism
+
+### Bonding Curve
+```solidity
+struct BondingCurve {
+    uint256[] prices;
+    uint256[] supplies;
+    uint256 totalBonded;
+    uint256 lastUpdateTime;
+}
+
+function calculatePrice(uint256 supply) public view returns (uint256) {
+    BondingCurve storage curve = bondingCurves[msg.sender];
+    
+    for (uint256 i = 0; i < curve.supplies.length - 1; i++) {
+        if (supply >= curve.supplies[i] && supply < curve.supplies[i + 1]) {
+            return _interpolatePrice(
+                supply,
+                curve.supplies[i],
+                curve.supplies[i + 1],
+                curve.prices[i],
+                curve.prices[i + 1]
+            );
+        }
+    }
+    
+    revert("Supply out of bounds");
+}
+```
+
+### Trust-Weighted Staking
+```solidity
+function bond(uint256 amount) external {
+    require(amount > 0, "Amount must be greater than 0");
+    
+    uint256 trustScore = getTrustScore(msg.sender);
+    uint256 effectiveAmount = amount * trustScore / BASE_SCORE;
+    
+    _transferTokens(msg.sender, address(this), amount);
+    
+    bonds[msg.sender] = Bond({
+        amount: amount,
+        effectiveAmount: effectiveAmount,
+        timestamp: block.timestamp
+    });
+    
+    emit Bonded(msg.sender, amount, effectiveAmount);
+}
+```
+
+## Reward Distribution
+
+### Reward Calculation
+```solidity
+function calculateRewards(address account) public view returns (uint256) {
+    Bond storage bond = bonds[account];
+    if (bond.amount == 0) return 0;
+    
+    uint256 timeElapsed = block.timestamp - bond.timestamp;
+    uint256 multiplier = getRewardMultiplier(account);
+    
+    return (bond.effectiveAmount * timeElapsed * multiplier) / REWARD_DENOMINATOR;
+}
+```
+
+### Claiming Rewards
+```solidity
+function claim() external {
+    uint256 rewards = calculateRewards(msg.sender);
+    require(rewards > 0, "No rewards to claim");
+    
+    bonds[msg.sender].timestamp = block.timestamp;
+    _transferRewards(msg.sender, rewards);
+    
+    emit RewardsClaimed(msg.sender, rewards);
+}
+```
+
+## Events
+
+```solidity
+event Bonded(address indexed account, uint256 amount, uint256 effectiveAmount);
+event Unbonded(address indexed account, uint256 amount);
+event RewardsClaimed(address indexed account, uint256 amount);
+event BondingCurveUpdated(address indexed token);
+event TrustScoreUpdated(address indexed account, uint256 newScore);
+event RewardMultiplierUpdated(address indexed account, uint256 multiplier);
+```
+
+## Security Considerations
+
+- Bonding curve manipulation protection
+- Minimum bond duration
+- Maximum bond amount
+- Trust score validation
+- Reward caps
+- Emergency withdrawal mechanism
+
+## Testing
+
+```typescript
+describe("TrustBonding", () => {
+  it("should calculate rewards correctly", async () => {
+    const amount = ethers.utils.parseEther("100");
+    await token.approve(bonding.address, amount);
+    await bonding.bond(amount);
+    
+    await time.increase(time.duration.days(30));
+    
+    const rewards = await bonding.calculateRewards(signer.address);
+    expect(rewards).to.be.gt(0);
+  });
+});
+```
+
+## Deployment
+
+### Hardhat
+```typescript
+const TrustBonding = await ethers.getContractFactory("TrustBonding");
+const bonding = await TrustBonding.deploy(
+  token.address,
+  trustOracle.address,
+  rewardToken.address
+);
+await bonding.deployed();
+```
+
+### Foundry
+```bash
+forge create TrustBonding \
+  --constructor-args \
+  $TOKEN_ADDRESS $TRUST_ORACLE $REWARD_TOKEN \
+  --rpc-url $RPC_URL \
+  --private-key $PRIVATE_KEY
+``` 

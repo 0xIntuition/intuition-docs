@@ -1,0 +1,204 @@
+---
+title: AtomWarden.sol
+sidebar_position: 5
+description: A guardian contract for atomic operations and transaction batching
+---
+
+# AtomWarden
+
+`AtomWarden.sol` is a guardian contract that ensures atomic execution of complex transaction sequences with rollback capabilities.
+
+## Features
+
+- Atomic transaction execution
+- Transaction batching
+- Automatic rollback on failure
+- Gas optimization
+- Cross-contract call validation
+- State verification
+- Custom execution conditions
+
+## Contract Interface
+
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.19;
+
+interface IAtomWarden {
+    function executeAtomically(
+        address[] calldata targets,
+        bytes[] calldata data,
+        uint256[] calldata values
+    ) external payable returns (bool);
+    
+    function batchExecute(
+        address[] calldata targets,
+        bytes[] calldata data,
+        uint256[] calldata values,
+        bool atomic
+    ) external payable returns (bool[] memory);
+    
+    function validateExecution(
+        address target,
+        bytes calldata data
+    ) external view returns (bool);
+    
+    function addValidator(address validator) external;
+    function removeValidator(address validator) external;
+}
+```
+
+## Atomic Execution
+
+### Transaction Sequence
+```solidity
+function executeAtomically(
+    address[] calldata targets,
+    bytes[] calldata data,
+    uint256[] calldata values
+) external payable returns (bool) {
+    require(targets.length == data.length);
+    require(targets.length == values.length);
+    
+    uint256 snapshot = _createSnapshot();
+    
+    for (uint256 i = 0; i < targets.length; i++) {
+        bool success = _executeTransaction(
+            targets[i],
+            data[i],
+            values[i]
+        );
+        
+        if (!success) {
+            _revertToSnapshot(snapshot);
+            emit AtomicExecutionFailed(i);
+            return false;
+        }
+    }
+    
+    emit AtomicExecutionSucceeded(targets.length);
+    return true;
+}
+```
+
+### Validation System
+```solidity
+function validateExecution(
+    address target,
+    bytes calldata data
+) external view returns (bool) {
+    if (!validators[msg.sender]) {
+        return false;
+    }
+    
+    try IValidator(msg.sender).validate(target, data) returns (bool result) {
+        return result;
+    } catch {
+        return false;
+    }
+}
+```
+
+## Transaction Batching
+
+### Batch Processing
+```solidity
+function batchExecute(
+    address[] calldata targets,
+    bytes[] calldata data,
+    uint256[] calldata values,
+    bool atomic
+) external payable returns (bool[] memory) {
+    require(targets.length == data.length);
+    require(targets.length == values.length);
+    
+    bool[] memory results = new bool[](targets.length);
+    uint256 snapshot = atomic ? _createSnapshot() : 0;
+    
+    for (uint256 i = 0; i < targets.length; i++) {
+        results[i] = _executeTransaction(
+            targets[i],
+            data[i],
+            values[i]
+        );
+        
+        if (atomic && !results[i]) {
+            _revertToSnapshot(snapshot);
+            emit BatchExecutionFailed(i);
+            return results;
+        }
+    }
+    
+    if (atomic) {
+        emit BatchExecutionSucceeded(targets.length);
+    }
+    
+    return results;
+}
+```
+
+## Events
+
+```solidity
+event AtomicExecutionSucceeded(uint256 numTransactions);
+event AtomicExecutionFailed(uint256 failedIndex);
+event BatchExecutionSucceeded(uint256 numTransactions);
+event BatchExecutionFailed(uint256 failedIndex);
+event ValidatorAdded(address indexed validator);
+event ValidatorRemoved(address indexed validator);
+event SnapshotCreated(uint256 indexed id);
+event SnapshotRestored(uint256 indexed id);
+```
+
+## Security Considerations
+
+- Reentrancy protection
+- Gas limits for loops
+- Validator access control
+- State consistency checks
+- ETH handling safety
+- Call result validation
+
+## Testing
+
+```typescript
+describe("AtomWarden", () => {
+  it("should execute atomic transactions", async () => {
+    const targets = [contract1.address, contract2.address];
+    const data = [
+      contract1.interface.encodeFunctionData("method1"),
+      contract2.interface.encodeFunctionData("method2")
+    ];
+    const values = [0, 0];
+    
+    const success = await warden.executeAtomically(
+      targets,
+      data,
+      values
+    );
+    
+    expect(success).to.be.true;
+  });
+});
+```
+
+## Deployment
+
+### Hardhat
+```typescript
+const AtomWarden = await ethers.getContractFactory("AtomWarden");
+const warden = await AtomWarden.deploy(
+  validatorRegistry.address,
+  emergencyAdmin.address
+);
+await warden.deployed();
+```
+
+### Foundry
+```bash
+forge create AtomWarden \
+  --constructor-args \
+  $VALIDATOR_REGISTRY $EMERGENCY_ADMIN \
+  --rpc-url $RPC_URL \
+  --private-key $PRIVATE_KEY
+``` 

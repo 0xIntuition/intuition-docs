@@ -1,0 +1,9 @@
+{
+  "label": "Use Cases",
+  "position": 9,
+  "className": "smart_contracts_sidebar_header",
+  "link": {
+    "type": "generated-index",
+    "description": "Explore real-world examples of how to build decentralized applications using Intuition's primitives."
+  }
+} 

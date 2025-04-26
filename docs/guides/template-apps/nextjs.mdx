@@ -1,0 +1,89 @@
+---
+title: Next.js
+sidebar_position: 2
+description: Create a modern web application using Next.js and Intuition
+---
+
+# Next.js App Template
+
+This guide will help you get started with building a modern web application using Next.js and Intuition. The template provides a production-ready foundation with best practices and essential features pre-configured.
+
+## Features
+
+- Next.js 14 with App Router
+- Intuition SDK integration
+- Server and Client Components
+- Authentication with NextAuth.js
+- Database with Prisma
+- UI with Tailwind CSS and shadcn/ui
+- TypeScript support
+- Testing with Jest and React Testing Library
+- API route handlers
+- Docker support
+
+## Prerequisites
+
+Before you begin, ensure you have:
+- Node.js 18 or later installed
+- npm or yarn package manager
+- Basic knowledge of Next.js and React
+- An Intuition account and API key
+
+## Getting Started
+
+1. Create a new project using the template:
+
+```bash
+npx create-intuition-app my-nextjs-app --template nextjs
+cd my-nextjs-app
+```
+
+2. Install dependencies:
+
+```bash
+npm install
+```
+
+3. Set up your environment variables:
+
+```bash
+cp .env.example .env.local
+```
+
+Edit the `.env.local` file with your Intuition API key and other configuration values.
+
+4. Start the development server:
+
+```bash
+npm run dev
+```
+
+Your app will be running at `http://localhost:3000`.
+
+## Project Structure
+
+```
+my-nextjs-app/
+├── app/
+│   ├── api/
+│   ├── components/
+│   ├── lib/
+│   └── (routes)/
+├── public/
+├── styles/
+├── tests/
+├── package.json
+└── README.md
+```
+
+## Next Steps
+
+- Customize the authentication configuration
+- Add your own pages and API routes
+- Integrate additional Intuition features
+- Deploy your application
+
+## Learn More
+
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Intuition Documentation](/) 

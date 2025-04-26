@@ -1,0 +1,115 @@
+---
+title: Farcaster Frame
+sidebar_position: 5
+description: Create interactive Farcaster frames with Intuition
+---
+
+# Farcaster Frame Template
+
+This guide will help you get started with building interactive Farcaster frames using Intuition. The template provides everything you need to create engaging, interactive frames for the Farcaster protocol.
+
+## Features
+
+- Frame-compliant metadata generation
+- Intuition SDK integration
+- Next.js Edge Runtime support
+- Frame action handling
+- Message signing and verification
+- TypeScript support
+- Testing setup
+- Analytics integration
+- Development tools
+- Deployment configuration
+
+## Prerequisites
+
+Before you begin, ensure you have:
+- Node.js 18 or later installed
+- npm or yarn package manager
+- Basic knowledge of Farcaster frames
+- An Intuition account and API key
+- A Farcaster developer account
+
+## Getting Started
+
+1. Create a new project using the template:
+
+```bash
+npx create-intuition-app my-frame --template farcaster-frame
+cd my-frame
+```
+
+2. Install dependencies:
+
+```bash
+npm install
+```
+
+3. Set up your environment variables:
+
+```bash
+cp .env.example .env.local
+```
+
+Edit the `.env.local` file with your Intuition API key and other configuration values.
+
+4. Start the development server:
+
+```bash
+npm run dev
+```
+
+Your frame will be running at `http://localhost:3000`.
+
+## Project Structure
+
+```
+my-frame/
+├── app/
+│   ├── api/
+│   ├── components/
+│   ├── frames/
+│   └── utils/
+├── public/
+├── tests/
+├── frame.config.ts
+├── package.json
+└── README.md
+```
+
+## Frame Development
+
+1. Create a new frame:
+```typescript
+// app/frames/example.tsx
+export default function ExampleFrame() {
+  return {
+    image: () => <FrameImage>Hello Farcaster!</FrameImage>,
+    buttons: [
+      { label: "Click me!", action: "post" }
+    ]
+  }
+}
+```
+
+2. Handle frame actions:
+```typescript
+// app/api/frame/route.ts
+export async function POST(req: Request) {
+  const { buttonIndex, status } = await validateFrameRequest(req)
+  // Handle the action
+}
+```
+
+## Next Steps
+
+- Create your frame UI
+- Add interactive elements
+- Integrate with Intuition features
+- Deploy your frame
+- Monitor frame analytics
+
+## Learn More
+
+- [Farcaster Frame Documentation](https://docs.farcaster.xyz/reference/frames/spec)
+- [Intuition Documentation](/) 

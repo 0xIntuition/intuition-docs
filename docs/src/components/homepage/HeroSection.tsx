@@ -1,0 +1,1 @@
+link: '/guides/quickstart/create-intuition-app', 

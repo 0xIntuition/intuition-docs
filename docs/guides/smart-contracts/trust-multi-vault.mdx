@@ -1,0 +1,175 @@
+---
+title: TrustMultiVault.sol
+sidebar_position: 3
+description: An advanced multi-signature vault with trust-based delegation
+---
+
+# TrustMultiVault
+
+`TrustMultiVault.sol` extends the functionality of EthMultiVault with trust-based delegation and advanced recovery mechanisms.
+
+## Features
+
+- Trust-based delegation system
+- Social recovery mechanisms
+- Configurable trust scores
+- Delegation expiry
+- Threshold adjustment based on trust scores
+- Inherited multi-signature functionality
+- Advanced access control
+
+## Contract Interface
+
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.19;
+
+interface ITrustMultiVault {
+    function delegateTrust(
+        address delegate,
+        uint256 trustScore,
+        uint256 expiryTime
+    ) external;
+    
+    function revokeDelegation(address delegate) external;
+    
+    function initiateRecovery(address newOwner) external;
+    
+    function supportRecovery(address newOwner) external;
+    
+    function executeRecovery(address newOwner) external;
+    
+    function adjustTrustScore(address delegate, uint256 newScore) external;
+}
+```
+
+## Trust System
+
+### Trust Delegation
+```solidity
+function delegateTrust(
+    address delegate,
+    uint256 trustScore,
+    uint256 expiryTime
+) external {
+    require(trustScore <= MAX_TRUST_SCORE);
+    require(expiryTime > block.timestamp);
+    
+    delegations[delegate] = Delegation({
+        score: trustScore,
+        expiry: expiryTime,
+        active: true
+    });
+    
+    emit TrustDelegated(msg.sender, delegate, trustScore, expiryTime);
+}
+```
+
+### Trust Score Calculation
+```solidity
+function calculateEffectiveScore(address delegate) public view returns (uint256) {
+    Delegation memory delegation = delegations[delegate];
+    if (!delegation.active || delegation.expiry <= block.timestamp) {
+        return 0;
+    }
+    return delegation.score;
+}
+```
+
+## Recovery System
+
+The recovery system allows trusted delegates to help recover access to the vault in case of key loss:
+
+1. **Initiate Recovery**
+```solidity
+function initiateRecovery(address newOwner) external {
+    require(calculateEffectiveScore(msg.sender) >= RECOVERY_THRESHOLD);
+    recoveryProposals[newOwner].initiator = msg.sender;
+    recoveryProposals[newOwner].timestamp = block.timestamp;
+    emit RecoveryInitiated(msg.sender, newOwner);
+}
+```
+
+2. **Support Recovery**
+```solidity
+function supportRecovery(address newOwner) external {
+    require(calculateEffectiveScore(msg.sender) >= SUPPORT_THRESHOLD);
+    recoveryProposals[newOwner].supporters.push(msg.sender);
+    emit RecoverySupported(msg.sender, newOwner);
+}
+```
+
+3. **Execute Recovery**
+```solidity
+function executeRecovery(address newOwner) external {
+    RecoveryProposal storage proposal = recoveryProposals[newOwner];
+    require(block.timestamp >= proposal.timestamp + RECOVERY_DELAY);
+    require(calculateTotalSupportScore(newOwner) >= EXECUTION_THRESHOLD);
+    
+    _transferOwnership(newOwner);
+    emit RecoveryExecuted(newOwner);
+}
+```
+
+## Events
+
+```solidity
+event TrustDelegated(address indexed owner, address indexed delegate, uint256 score, uint256 expiry);
+event DelegationRevoked(address indexed owner, address indexed delegate);
+event RecoveryInitiated(address indexed initiator, address indexed newOwner);
+event RecoverySupported(address indexed supporter, address indexed newOwner);
+event RecoveryExecuted(address indexed newOwner);
+event TrustScoreAdjusted(address indexed delegate, uint256 newScore);
+```
+
+## Security Considerations
+
+- Trust scores are capped at MAX_TRUST_SCORE
+- Delegations have mandatory expiry times
+- Recovery requires multiple trusted delegates
+- Time-locked recovery process
+- Trust score adjustments are restricted
+- Inherited security features from EthMultiVault
+
+## Testing
+
+```typescript
+describe("TrustMultiVault", () => {
+  it("should delegate trust correctly", async () => {
+    const delegate = addr1;
+    const trustScore = 50;
+    const expiryTime = (await time.latest()) + time.duration.days(30);
+    
+    await vault.delegateTrust(delegate, trustScore, expiryTime);
+    
+    const delegation = await vault.delegations(delegate);
+    expect(delegation.score).to.equal(trustScore);
+    expect(delegation.expiry).to.equal(expiryTime);
+    expect(delegation.active).to.be.true;
+  });
+});
+```
+
+## Deployment
+
+### Hardhat
+```typescript
+const TrustMultiVault = await ethers.getContractFactory("TrustMultiVault");
+const vault = await TrustMultiVault.deploy(
+  [signer1, signer2, signer3],
+  2,
+  RECOVERY_THRESHOLD,
+  SUPPORT_THRESHOLD,
+  EXECUTION_THRESHOLD
+);
+await vault.deployed();
+```
+
+### Foundry
+```bash
+forge create TrustMultiVault \
+  --constructor-args \
+  "[0x123..., 0x456..., 0x789...]" 2 70 30 80 \
+  --rpc-url $RPC_URL \
+  --private-key $PRIVATE_KEY
+``` 

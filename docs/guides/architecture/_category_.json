@@ -1,0 +1,10 @@
+{
+  "position": 999,
+  "label": "Architecture",
+  "collapsible": true,
+  "className": "sectionSidebarHeading",
+  "customProps": {
+    "separatorBefore": false,
+    "separatorAfter": true
+  }
+} 
