@@ -86,7 +86,20 @@ module.exports = {
     {
       type: 'category',
       label: 'Architecture',
-      items: ['guides/architecture/index'],
+      items: [
+        'guides/architecture/index',
+        'guides/architecture/frontend',
+        {
+          type: 'link',
+          label: 'Back-End',
+          href: 'https://deepwiki.com/0xIntuition/intuition-rs',
+          customProps: {
+            target: '_blank',
+            rel: 'noopener noreferrer',
+          },
+        },
+        'guides/architecture/smart-contracts',
+      ],
       sidebar_position: 999,
     },
   ],

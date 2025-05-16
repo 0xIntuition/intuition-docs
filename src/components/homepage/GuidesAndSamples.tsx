@@ -128,46 +128,51 @@ function Sample({ title, platform, blog, source, demo }: Sample) {
 
 export default function GuidesAndSamples() {
   return (
-    <section className="no-underline-links my-40 mx-auto flex w-full max-w-5xl flex-col gap-10 p-4 py-0 md:flex-row md:gap-0">
-      <div className="flex-1">
-        <div className="mb-8 flex items-center justify-between">
-          <h3 className="m-0">Popular how to guides</h3>
-
-          <Link to="/guides" className="font-jakarta text-sm font-semibold">
-            View more guides <ArrowRightFilled className="ml-1" />
-          </Link>
-        </div>
-
-        <div className="flex flex-col gap-4">
-          {guides.map((guide) => (
-            <Guide {...guide} key={guide.title} />
-          ))}
-        </div>
+    <section className="no-underline-links my-40 mx-auto w-full max-w-5xl p-4 py-0">
+      <div className="w-full mb-12">
+        <h1 className="text-3xl font-bold text-center">Get Started</h1>
       </div>
+      <div className="flex flex-col gap-10 md:flex-row md:gap-0">
+        <div className="flex-1">
+          <div className="mb-8 flex items-center justify-between">
+            <h3 className="m-0">Popular how to guides</h3>
 
-      <div
-        className={clsx(
-          'mx-8 block flex-shrink-0 bg-gradient-to-b from-transparent via-secondary-700 to-transparent',
-          'hidden w-px md:block',
-        )}
-      />
+            <Link to="/guides" className="font-jakarta text-sm font-semibold">
+              View more guides <ArrowRightFilled className="ml-1" />
+            </Link>
+          </div>
 
-      <div className="w-full md:max-w-sm">
-        <div className="mb-8 flex items-center justify-between">
-          <h3 className="m-0">Popular sample apps</h3>
-
-          <Link
-            to="https://github.com/0xIntuition"
-            className="font-jakarta text-sm font-semibold"
-          >
-            All apps <ArrowRightFilled className="ml-1" />
-          </Link>
+          <div className="flex flex-col gap-4">
+            {guides.map((guide) => (
+              <Guide {...guide} key={guide.title} />
+            ))}
+          </div>
         </div>
 
-        <div className="flex flex-col gap-4">
-          {samples.map((sample) => (
-            <Sample {...sample} key={sample.title} />
-          ))}
+        <div
+          className={clsx(
+            'mx-8 block flex-shrink-0 bg-gradient-to-b from-transparent via-secondary-700 to-transparent',
+            'hidden w-px md:block',
+          )}
+        />
+
+        <div className="w-full md:max-w-sm">
+          <div className="mb-8 flex items-center justify-between">
+            <h3 className="m-0">Popular sample apps</h3>
+
+            <Link
+              to="https://github.com/0xIntuition"
+              className="font-jakarta text-sm font-semibold"
+            >
+              All apps <ArrowRightFilled className="ml-1" />
+            </Link>
+          </div>
+
+          <div className="flex flex-col gap-4">
+            {samples.map((sample) => (
+              <Sample {...sample} key={sample.title} />
+            ))}
+          </div>
         </div>
       </div>
     </section>

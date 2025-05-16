@@ -4,34 +4,12 @@ sidebar_position: 1
 
 # The Vision
 
-Blockchain development today faces several critical challenges that hinder widespread adoption and efficient development:
+Intuition is an ambitious project to build a programmable knowledge infrastructure that makes truth-seeking and coordination easier for both humans and machines. At its core, Intuition is creating the world’s first open, semantic token-curated knowledge graph – a universal data layer where identities, information, and algorithms are decoupled from any single application.
 
-## Complexity of Smart Contract Development
+This “trustful interaction layer” is designed to handle everything from objective facts to subjective opinions in a verifiable way, so people and AI can get the information they need, when they need it, from sources they trust. 
 
-Smart contract development requires deep expertise in specialized languages, complex security considerations, and intricate blockchain-specific patterns. This high barrier to entry prevents many talented developers from building on blockchain technology.
+In essence, Intuition’s long-term goal is to enhance our collective intuition by making knowledge transparent and machine-verifiable – what the team calls epistemic legibility, where the status of claims and evidence is plainly accessible and auditable by anyone. 
 
-## Limited Scalability
+How will this change the game? Intuition aspires to transform how we coordinate, compute, and verify knowledge at scale. By building a programmable platform for truth, it enables new forms of coordination: communities can align on shared facts and make decisions with confidence in the data. Information becomes computationally accessible – structured in a way that algorithms and AI agents can reason over it, perform analyses, or filter content based on provable criteria. 
 
-Traditional blockchain architectures often struggle with:
-- Transaction throughput limitations
-- High gas costs
-- Network congestion
-- Complex cross-chain operations
-
-## Developer Experience
-
-Current blockchain development tools often:
-- Lack modern development workflows
-- Have limited debugging capabilities
-- Provide insufficient testing frameworks
-- Require managing multiple tools and environments
-
-## Security Risks
-
-The immutable nature of blockchain makes security critical, yet:
-- Smart contract vulnerabilities are common
-- Auditing is expensive and time-consuming
-- Recovery from bugs is difficult or impossible
-- Security best practices are still evolving
-
-These challenges create significant barriers for both individual developers and organizations looking to leverage blockchain technology. 
+Crucially, knowledge verification is baked into the infrastructure: every claim comes with provenance and incentive alignment, so trust becomes a first-class property of the web rather than an afterthought. The vision is a future where technologically-mediated intuition augments human decision-making – where misinformation has nowhere to hide, and genuine insight can flourish. As the Intuition team puts it, their mission is to empower people to build, explore, and curate a peer-to-peer knowledge ecosystem that “enhances our collective intuition.

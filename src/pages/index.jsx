@@ -27,9 +27,9 @@ export default function Homepage() {
 
       <HeroSection />
 
-      <FeaturedApps />
+      {/* <FeaturedApps /> */}
 
-      <Whitepapers />
+      {/* <Whitepapers /> */}
 
       <GuidesAndSamples />
 
