@@ -2,7 +2,7 @@
 
 This repository contains the documentation for Intuition Systems, built using [Docusaurus](https://docusaurus.io/). The documentation site provides comprehensive guides, API references, and best practices for using Intuition's products and services.
 
-## 🚀 Getting Started
+##  Getting Started
 
 ### Prerequisites
 
