@@ -1689,3 +1689,8 @@ h3.anchor > code {
 .explore-ecosystem-btn:hover::after {
   transform: translate(-50%, -50%) scale(1);
 }
+
+
+.hidden-category {
+  display: none !important;
+}

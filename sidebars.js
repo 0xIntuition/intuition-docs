@@ -3,75 +3,24 @@ module.exports = {
     'intro',
     {
       type: 'category',
-      label: 'Quickstart',
-      items: ['guides/quickstart/index'],
-    },
-    {
-      type: 'category',
       label: 'Overview',
       items: [
         'guides/overview/index',
-        'guides/overview/the-problem',
+        'guides/overview/vision',
         'guides/overview/why-intuition',
+        'guides/overview/the-primitives',
+        'guides/overview/the-economics',
+        'guides/overview/key-terms',
       ],
     },
     {
       type: 'category',
-      label: 'SDKs',
+      label: 'Quick Start',
       items: [
-        'guides/sdks/index',
-        'guides/sdks/protocol',
-        'guides/sdks/graphql',
-        'guides/sdks/1ui',
-      ],
-    },
-    {
-      type: 'category',
-      label: 'GraphQL API',
-      items: ['graphql/index'],
-    },
-    {
-      type: 'category',
-      label: 'Templates',
-      items: ['guides/templates/index'],
-    },
-    {
-      type: 'category',
-      label: 'Run an Intuition Node',
-      items: [
-        'guides/run-node/index',
-        'guides/run-node/intuition-rs'
-      ],
-    },
-    {
-      type: 'category',
-      label: 'Intuition AI',
-      items: ['guides/intuition-ai/index'],
-    },
-    {
-      type: 'category',
-      label: 'Smart Contracts',
-      items: [
-        'guides/smart-contracts/index',
-        'guides/smart-contracts/attestor',
-        'guides/smart-contracts/atom-warden',
-        'guides/smart-contracts/trust-bonding',
-        'guides/smart-contracts/trust-multi-vault',
-        'guides/smart-contracts/bonding-curve-registry',
-        'guides/smart-contracts/eth-multi-vault'
-      ],
-    },
-    {
-      type: 'separator',
-    },
-    {
-      type: 'category',
-      label: 'Using the Primitives',
-      items: [
-        'guides/primitives/atoms',
-        'guides/primitives/triples',
-        'guides/primitives/signals',
-        'guides/primitives/bonding-curves'
+        'guides/quickstart/index',
+        'guides/quickstart/speed-run-intuition',
+        'guides/quickstart/official-intuition-kits',
+        'guides/quickstart/community-built-kits',
       ],
     },
     {
@@ -85,39 +34,63 @@ module.exports = {
     },
     {
       type: 'category',
-      label: 'Architecture',
-      items: ['guides/architecture/index'],
-      sidebar_position: 999,
+      label: 'Developer Tools',
+      items: [
+        'guides/developer-tools/deep-dive',
+        'guides/developer-tools/graphql-api',
+        'guides/developer-tools/sdks',
+        'guides/developer-tools/contracts',
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Intuition Hub',
+      items: [
+        'guides/hub/index',
+        'guides/hub/explorer',
+        'guides/hub/bridge',
+        'guides/hub/rpc',
+        'guides/hub/network-health',
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Intuition Node',
+      items: [
+        'guides/run-node/index',
+        'guides/run-node/run-an-intuition-node',
+        'guides/run-node/intuition-rs'
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Intuition AI',
+      items: ['guides/intuition-ai/index'],
+    },
+    {
+      type: 'category',
+      label: 'Contribute',
+      items: [
+        'guides/contribute/contribution-guidelines',
+        'guides/contribute/intuition-call-for-action',
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Partners',
+      items: [
+        'guides/partners/index',
+      ],
     },
     {
       type: 'category',
       label: 'Resources',
       items: [
-        {
-          type: 'link',
-          label: 'FAQ',
-          href: '/faq',
-        },
-        {
-          type: 'link',
-          label: 'Applications',
-          href: '/apps',
-        },
-        {
-          type: 'link',
-          label: 'Release Notes',
-          href: '/release-notes',
-        },
-        {
-          type: 'link',
-          label: 'Community Packages',
-          href: '/community-packages',
-        },
-        {
-          type: 'link',
-          label: 'Whitepapers',
-          href: '/whitepapers',
-        },
+        'guides/resources/index',
+        'guides/resources/faq',
+        'guides/resources/community-and-support',
+        'guides/resources/utilities',
+        'guides/resources/audits',
       ],
     },
   ],
