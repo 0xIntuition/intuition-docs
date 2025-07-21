@@ -178,6 +178,10 @@ code {
   --docs-color-background-300: #2e2e2e;
 
   --docs-color-code-background: #1e1e1e;
+  
+  --docs-color-primary: rgba(255, 255, 255, 0.7);
+  --docs-color-primary-tint: rgba(255, 255, 255, 0.1);
+  --docs-color-primary-tint-light: rgba(255, 255, 255, 0.15);
 }
 
 /* Docusaurus Theming */
@@ -220,11 +224,11 @@ code {
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
 html[data-theme='dark'] {
-  --ifm-link-color: #04b533;
-  --ifm-tabs-color-active-border: #04b533;
-  --ifm-tabs-color-active: #04b533;
+  --ifm-link-color: rgba(255, 255, 255, 0.7);
+  --ifm-tabs-color-active-border: rgba(255, 255, 255, 0.7);
+  --ifm-tabs-color-active: rgba(255, 255, 255, 0.7);
 
-  --ifm-color-primary: #04b533;
+  --ifm-color-primary: rgba(255, 255, 255, 0.7);
 
   --ifm-footer-background-color: #1c1c1c;
   --ifm-background-surface-color: #161616;

@@ -156,34 +156,6 @@ const config = {
             className: 'guides-top-header',
           },
           {
-            label: 'SDKs',
-            type: 'dropdown',
-            className: 'intuition-dropdown',
-            items: [
-              {
-                type: 'html',
-                value: sdksHTML,
-                className: 'intuition-dropdown',
-              },
-            ],
-          },
-          {
-            label: 'GraphQL API',
-            to: '/graphql',
-          },
-          {
-            label: 'Resources',
-            type: 'dropdown',
-            className: 'intuition-dropdown resources-dropdown',
-            items: [
-              {
-                type: 'html',
-                value: resourcesHTML,
-                className: 'intuition-dropdown',
-              }
-            ],
-          },
-          {
             type: 'search',
             position: 'right',
           },

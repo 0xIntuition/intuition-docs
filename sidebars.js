@@ -89,5 +89,36 @@ module.exports = {
       items: ['guides/architecture/index'],
       sidebar_position: 999,
     },
+    {
+      type: 'category',
+      label: 'Resources',
+      items: [
+        {
+          type: 'link',
+          label: 'FAQ',
+          href: '/faq',
+        },
+        {
+          type: 'link',
+          label: 'Applications',
+          href: '/apps',
+        },
+        {
+          type: 'link',
+          label: 'Release Notes',
+          href: '/release-notes',
+        },
+        {
+          type: 'link',
+          label: 'Community Packages',
+          href: '/community-packages',
+        },
+        {
+          type: 'link',
+          label: 'Whitepapers',
+          href: '/whitepapers',
+        },
+      ],
+    },
   ],
 }; 
