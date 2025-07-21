@@ -5,33 +5,58 @@ import {
   ServerRegular,
 } from '@fluentui/react-icons';
 
-<CardSection
-  id="quickstart"
-  title="Quickstart"
-  description="Learn how to integrate Intuition into your products, or build a brand new Intuition-powered application from the ground-up."
->
-  <Card
-    title="Create Intuition App"
-    icon={<BrainCircuitRegular />}
-    to="/guides/quickstart/create-intuition-app"
-    description="Create a new Intuition application from scratch using our templates."
-  />
-  <Card
-    title="Quick Integration with GraphQL"
-    icon={<PlugConnectedRegular />}
-    to="/guides/quickstart/graphql-integration"
-    description="Integrate your application with Intuition to tap into the Intuition knowledge graph."
-  />
-  <Card
-    title="Intuition MCP Server Integration"
-    icon={<ServerRegular />}
-    to="/guides/quickstart/mcp-integration"
-    description="Learn how to integrate and deploy the Intuition MCP Server for enhanced functionality."
-  />
-  <Card
-    title="Direct Contract Interactions"
-    icon={<PanelTopContractRegular />}
-    to="/guides/quickstart/contract-interactions"
-    description="Read from and write to the Intuition suite of smart contracts."
-  />
-</CardSection>
+<div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', marginBottom: '2rem' }}>
+  <CardSection
+    id="vision"
+    title="The Vision"
+    description="Understand the core vision and principles behind Intuition."
+  >
+    <Card
+      title="The Vision"
+      icon={<BrainCircuitRegular />}
+      to="/guides/overview/vision"
+      description="Learn about the vision and principles that drive Intuition's development."
+    />
+  </CardSection>
+
+  <CardSection
+    id="speed-run"
+    title="Speed Run Intuition"
+    description="Get up and running with Intuition quickly."
+  >
+    <Card
+      title="Speed Run Intuition"
+      icon={<PlugConnectedRegular />}
+      to="/guides/quickstart/speed-run-intuition"
+      description="A fast-paced guide to get you building with Intuition in minutes."
+    />
+  </CardSection>
+</div>
+
+<div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
+  <CardSection
+    id="intuition-hub"
+    title="Intuition Hub"
+    description="Access Intuition's network tools and services."
+  >
+    <Card
+      title="Intuition Hub"
+      icon={<ServerRegular />}
+      to="/guides/hub"
+      description="Explore the Intuition network with our comprehensive hub of tools and services."
+    />
+  </CardSection>
+
+  <CardSection
+    id="developer-tools"
+    title="Developer Tools"
+    description="Essential tools and resources for Intuition developers."
+  >
+    <Card
+      title="Developer Tools"
+      icon={<PanelTopContractRegular />}
+      to="/guides/developer-tools"
+      description="Access SDKs, APIs, and development tools to build on Intuition."
+    />
+  </CardSection>
+</div>
