@@ -184,6 +184,11 @@ const config = {
           'objectivec',
           'json',
           'bash',
+          'solidity',
+          'typescript',
+          'javascript',
+          'math',
+          'cpp',
         ],
         magicComments: [
           {

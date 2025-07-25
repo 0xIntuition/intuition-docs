@@ -1,0 +1,315 @@
+---
+id: contract-list
+title: Contract List
+sidebar_label: Contract List
+sidebar_position: 2
+description: Comprehensive list of all Intuition smart contracts with addresses and interfaces
+---
+
+# Contract List
+
+This section provides a comprehensive list of all Intuition smart contracts, including their addresses, interfaces, and deployment information.
+
+## Mainnet Contracts
+
+### Core Contracts
+
+#### Trust Bonding Contract
+**Address**: `0x...`  
+**Network**: Base Mainnet  
+**Description**: Handles trust bond creation and management
+
+**Key Functions:**
+```solidity
+function createBond(address beneficiary, uint256 amount, uint256 duration) external returns (uint256)
+function activateBond(uint256 bondId) external
+function claimBond(uint256 bondId) external
+function cancelBond(uint256 bondId) external
+```
+
+#### Bonding Curve Contract
+**Address**: `0x...`  
+**Network**: Base Mainnet  
+**Description**: Implements bonding curve pricing mechanisms
+
+**Key Functions:**
+```solidity
+function calculatePrice(uint256 supply) external view returns (uint256)
+function buy(uint256 amount) external payable
+function sell(uint256 amount) external
+function getCurrentPrice() external view returns (uint256)
+```
+
+#### Multi-Vault Contract
+**Address**: `0x...`  
+**Network**: Base Mainnet  
+**Description**: Manages asset storage across multiple vaults
+
+**Key Functions:**
+```solidity
+function createVault() external returns (uint256)
+function deposit(uint256 vaultId) external payable
+function withdraw(uint256 vaultId, uint256 amount) external
+function getVaultBalance(uint256 vaultId) external view returns (uint256)
+```
+
+### Registry Contracts
+
+#### Contract Registry
+**Address**: `0x...`  
+**Network**: Base Mainnet  
+**Description**: Maintains registry of all deployed contracts
+
+**Key Functions:**
+```solidity
+function registerContract(string memory name, address contractAddress) external
+function getContract(string memory name) external view returns (address)
+function updateContract(string memory name, address newAddress) external
+```
+
+#### Token Registry
+**Address**: `0x...`  
+**Network**: Base Mainnet  
+**Description**: Manages token registrations and metadata
+
+**Key Functions:**
+```solidity
+function registerToken(address tokenAddress, string memory metadata) external
+function getTokenMetadata(address tokenAddress) external view returns (string memory)
+function updateTokenMetadata(address tokenAddress, string memory newMetadata) external
+```
+
+### Governance Contracts
+
+#### Governance Token
+**Address**: `0x...`  
+**Network**: Base Mainnet  
+**Description**: Governance token for protocol decisions
+
+**Key Functions:**
+```solidity
+function delegate(address delegatee) external
+function delegateBySig(address delegatee, uint256 nonce, uint256 expiry, uint8 v, bytes32 r, bytes32 s) external
+function getCurrentVotes(address account) external view returns (uint96)
+function getPriorVotes(address account, uint256 blockNumber) external view returns (uint96)
+```
+
+#### Timelock Controller
+**Address**: `0x...`  
+**Network**: Base Mainnet  
+**Description**: Controls execution of governance proposals
+
+**Key Functions:**
+```solidity
+function schedule(address target, uint256 value, bytes calldata data, bytes32 predecessor, bytes32 salt, uint256 delay) external
+function execute(address target, uint256 value, bytes calldata data, bytes32 predecessor, bytes32 salt) external payable
+function cancel(bytes32 id) external
+```
+
+## Testnet Contracts
+
+### Base Sepolia Testnet
+
+#### Trust Bonding Contract (Testnet)
+**Address**: `0x...`  
+**Network**: Base Sepolia  
+**Description**: Testnet version of trust bonding contract
+
+#### Bonding Curve Contract (Testnet)
+**Address**: `0x...`  
+**Network**: Base Sepolia  
+**Description**: Testnet version of bonding curve contract
+
+#### Multi-Vault Contract (Testnet)
+**Address**: `0x...`  
+**Network**: Base Sepolia  
+**Description**: Testnet version of multi-vault contract
+
+## Contract Interfaces
+
+### ITrustBonding Interface
+
+```solidity
+interface ITrustBonding {
+    struct Bond {
+        address creator;
+        address beneficiary;
+        uint256 amount;
+        uint256 duration;
+        bool active;
+        uint256 createdAt;
+    }
+    
+    event BondCreated(uint256 indexed bondId, address indexed creator, address indexed beneficiary, uint256 amount);
+    event BondActivated(uint256 indexed bondId);
+    event BondClaimed(uint256 indexed bondId, address indexed beneficiary);
+    event BondCancelled(uint256 indexed bondId);
+    
+    function createBond(address beneficiary, uint256 amount, uint256 duration) external returns (uint256);
+    function activateBond(uint256 bondId) external;
+    function claimBond(uint256 bondId) external;
+    function cancelBond(uint256 bondId) external;
+    function getBond(uint256 bondId) external view returns (Bond memory);
+    function getBondsByCreator(address creator) external view returns (uint256[] memory);
+    function getBondsByBeneficiary(address beneficiary) external view returns (uint256[] memory);
+}
+```
+
+### IBondingCurve Interface
+
+```solidity
+interface IBondingCurve {
+    event TokensPurchased(address indexed buyer, uint256 amount, uint256 cost);
+    event TokensSold(address indexed seller, uint256 amount, uint256 received);
+    
+    function calculatePrice(uint256 supply) external view returns (uint256);
+    function buy(uint256 amount) external payable;
+    function sell(uint256 amount) external;
+    function getCurrentPrice() external view returns (uint256);
+    function getCurrentSupply() external view returns (uint256);
+    function getReserveBalance() external view returns (uint256);
+}
+```
+
+### IMultiVault Interface
+
+```solidity
+interface IMultiVault {
+    struct Vault {
+        address owner;
+        uint256 balance;
+        bool active;
+        uint256 createdAt;
+    }
+    
+    event VaultCreated(uint256 indexed vaultId, address indexed owner);
+    event Deposit(uint256 indexed vaultId, address indexed depositor, uint256 amount);
+    event Withdrawal(uint256 indexed vaultId, address indexed withdrawer, uint256 amount);
+    
+    function createVault() external returns (uint256);
+    function deposit(uint256 vaultId) external payable;
+    function withdraw(uint256 vaultId, uint256 amount) external;
+    function getVault(uint256 vaultId) external view returns (Vault memory);
+    function getVaultBalance(uint256 vaultId) external view returns (uint256);
+    function getVaultsByOwner(address owner) external view returns (uint256[] memory);
+}
+```
+
+## Contract Verification
+
+### Verified Contracts
+
+All mainnet contracts are verified on BaseScan:
+
+- **Trust Bonding Contract**: [View on BaseScan](https://basescan.org/address/0x...)
+- **Bonding Curve Contract**: [View on BaseScan](https://basescan.org/address/0x...)
+- **Multi-Vault Contract**: [View on BaseScan](https://basescan.org/address/0x...)
+
+### Verification Process
+
+1. **Source Code**: All contracts are open source
+2. **Compiler Version**: Solidity 0.8.19+
+3. **Optimization**: Enabled with 200 runs
+4. **License**: MIT License
+
+## Contract Deployment
+
+### Deployment Scripts
+
+```javascript
+// Example deployment script
+const { ethers } = require("hardhat");
+
+async function main() {
+  const [deployer] = await ethers.getSigners();
+  console.log("Deploying contracts with account:", deployer.address);
+
+  // Deploy Trust Bonding Contract
+  const TrustBonding = await ethers.getContractFactory("TrustBonding");
+  const trustBonding = await TrustBonding.deploy();
+  await trustBonding.deployed();
+  console.log("TrustBonding deployed to:", trustBonding.address);
+
+  // Deploy Bonding Curve Contract
+  const BondingCurve = await ethers.getContractFactory("BondingCurve");
+  const bondingCurve = await BondingCurve.deploy();
+  await bondingCurve.deployed();
+  console.log("BondingCurve deployed to:", bondingCurve.address);
+
+  // Deploy Multi-Vault Contract
+  const MultiVault = await ethers.getContractFactory("MultiVault");
+  const multiVault = await MultiVault.deploy();
+  await multiVault.deployed();
+  console.log("MultiVault deployed to:", multiVault.address);
+}
+
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
+```
+
+### Environment Configuration
+
+```bash
+# .env file
+PRIVATE_KEY=your_private_key_here
+RPC_URL=https://mainnet.base.org
+ETHERSCAN_API_KEY=your_etherscan_api_key
+```
+
+## Contract Monitoring
+
+### Event Monitoring
+
+Monitor contract events for important activities:
+
+```javascript
+// Monitor bond creation events
+trustBonding.on("BondCreated", (bondId, creator, beneficiary, amount) => {
+  console.log(`New bond created: ${bondId} by ${creator} for ${beneficiary}`);
+});
+
+// Monitor bonding curve purchases
+bondingCurve.on("TokensPurchased", (buyer, amount, cost) => {
+  console.log(`Tokens purchased: ${amount} by ${buyer} for ${cost} ETH`);
+});
+```
+
+### Health Checks
+
+Regular health checks for contract functionality:
+
+```javascript
+async function performHealthCheck() {
+  // Check contract balances
+  const trustBondingBalance = await ethers.provider.getBalance(trustBonding.address);
+  const bondingCurveBalance = await ethers.provider.getBalance(bondingCurve.address);
+  
+  console.log("Contract Balances:");
+  console.log(`Trust Bonding: ${ethers.utils.formatEther(trustBondingBalance)} ETH`);
+  console.log(`Bonding Curve: ${ethers.utils.formatEther(bondingCurveBalance)} ETH`);
+}
+```
+
+## Security Considerations
+
+### Contract Audits
+
+- **Third-party Audits**: All contracts undergo third-party security audits
+- **Bug Bounty**: Active bug bounty program for security issues
+- **Formal Verification**: Critical functions are formally verified
+- **Continuous Monitoring**: 24/7 monitoring of contract activities
+
+### Emergency Procedures
+
+- **Pause Mechanism**: Contracts can be paused in emergencies
+- **Upgrade Mechanism**: Contracts can be upgraded if issues are found
+- **Emergency Contacts**: Dedicated emergency response team
+- **Incident Response**: Documented incident response procedures
+
+---
+
+*This page will be expanded with more contract details, deployment guides, and monitoring tools.* 

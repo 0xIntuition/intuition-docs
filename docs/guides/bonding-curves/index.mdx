@@ -1,0 +1,152 @@
+---
+id: bonding-curves
+title: Bonding Curves
+sidebar_label: Introduction
+sidebar_position: 1
+description: Introduction to bonding curves and their role in the Intuition ecosystem
+---
+
+# Bonding Curves
+
+Bonding curves define how the price of an asset changes based on supply and demand. In the Intuition Protocol, they allow vaults to dynamically price semantic assets like atoms and triples.
+
+##  What is a Bonding Curve?
+
+A bonding curve is a pricing mechanism — it determines how much ETH a user pays (or gets back) when depositing to or redeeming from a vault. This lets projects:
+
+- **Incentivize early participation** with cheaper entry prices.
+- **Control supply** with rising costs as more tokens are minted.
+- **Align economics** with data value or staking behavior.
+
+Intuition uses bonding curves in the EthMultiVault system to handle deposits and redemptions for both atoms (individual semantic claims) and triples (subject–predicate–object sets).
+
+## How Bonding Curves Fit into the Protocol
+
+Here's the basic architecture:
+
+```
+User / dApp
+   │
+   ▼
+EthMultiVault
+   ├─ Standard paths (Linear math inline)
+   └─ Curve-specific paths
+        │
+        ▼
+BondingCurveRegistry ──→ BaseCurve (Linear, OffsetProgressive, custom...)
+```
+
+- **EthMultiVault** handles deposits/redemptions.
+- If a non-linear curve is specified, it routes to the **BondingCurveRegistry**.
+- The registry proxies math to the appropriate curve contract using a `curveId`.
+
+##  Curve Types
+
+### 1. Linear Curve (curveId = 1)
+
+A simple, pro-rata pricing model where every deposit gets the same rate:
+
+```solidity
+price = totalAssets / totalShares;
+```
+
+This is the default math embedded directly into EthMultiVault, but we include a separate LinearCurve contract for compatibility and future flexibility.
+
+💡 **Great for simple, predictable token issuance.**
+
+### 2. Offset Progressive Curve (curveId = 4)
+
+A more dynamic curve where price increases linearly based on total supply:
+
+```math
+P(s) = m ∗ (s + offset)
+```
+
+Mint cost is the area under the curve, meaning early deposits are cheaper:
+
+```math
+Cost = (m/2) ∗ [(s₂ + offset)² − (s₁ + offset)²]
+```
+
+Redemption returns are also curve-aware:
+
+```math
+Return = (m/2) ∗ [2 ∗ (s + offset) ∗ r − r²]
+```
+
+Where:
+- **s** = current shares
+- **r** = shares being redeemed
+
+💡 **Ideal for data markets and staking derivatives** — you can reward early supporters and make each additional share more expensive.
+
+## 🔍 Real-World Use Cases
+
+| Use Case | How Bonding Curves Help |
+|----------|-------------------------|
+| **Data Markets** | Pay to mint assertions on-chain; rising cost controls spam. |
+| **Staking Derivatives** | Price increases with TVL, modeling yield or scarcity. |
+| **Protocol Governance** | Curves can align incentives for governance participation. |
+| **Custom Economies** | Plug in your own math logic via custom curves. |
+
+##  Code Examples
+
+###  Deposit Using a Curve
+
+Deposit ETH into a vault with the Offset Progressive curve:
+
+```cpp
+EthMultiVault.depositAtomCurve{value: amountETH}(
+    msg.sender,   // receiver of shares
+    atomId,       // which atom to deposit into
+    4             // curveId for OffsetProgressive
+);
+```
+
+###  Preview Deposit in Frontend
+
+Estimate how many shares a user would get before committing ETH:
+
+```cpp
+uint256 shares = vault.previewDepositCurve(amountETH, atomId, 4);
+```
+
+You can also check the current price:
+
+```cpp
+uint256 price = registry.currentPrice(totalShares, 4);
+```
+
+###  Register a New Curve (Admin Only)
+
+If you've written your own curve, you can add it like this:
+
+```cpp
+uint256 curveId = registry.addBondingCurve(address(myCustomCurve));
+vault.setBondingCurveConfig(address(registry), curveId); // optional
+```
+
+You only need to implement the BaseCurve interface to plug in.
+
+##  Design Philosophy
+
+Bonding curves in Intuition Protocol are modular by design:
+
+- **Registry-based routing**: Vaults remain clean and upgrade-safe.
+- **Symmetrical math API**: All curves implement the same interface.
+- **Upgradeable curves**: Developers can ship custom curves anytime — no need to upgrade the vault.
+
+In upcoming versions (V2), we'll simplify things even further by removing suffixes like `depositAtomCurve`, replacing them with a unified API keyed by `curveId`.
+
+##  Summary
+
+- Bonding curves are a flexible pricing tool for atoms and triples.
+- Intuition supports multiple curve types, each with their own pricing logic.
+- You can preview, extend, or customize bonding behavior with minimal friction.
+- The system is secure, upgrade-safe, and open to new economic designs.
+
+If you're integrating with the protocol and want help designing your own curve — or understanding which one fits your use case — reach out in our developer Discord or open an issue in the repo.
+
+---
+
+*This section will be expanded with detailed mathematical formulas, implementation guides, and real-world examples.*
