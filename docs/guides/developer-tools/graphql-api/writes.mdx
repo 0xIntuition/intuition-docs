@@ -1,0 +1,216 @@
+---
+id: writes
+title: Writes
+sidebar_label: Writes
+description: Guide to writing data using GraphQL mutations in the Intuition API
+---
+
+# Writes
+
+This section covers how to write data to the Intuition system using GraphQL mutations.
+
+## Basic Mutations
+
+### Creating Atoms
+
+```graphql
+mutation CreateAtom($input: CreateAtomInput!) {
+  createAtom(input: $input) {
+    id
+    content
+    metadata {
+      title
+      author
+      createdAt
+    }
+  }
+}
+```
+
+### Creating Triples
+
+```graphql
+mutation CreateTriple($input: CreateTripleInput!) {
+  createTriple(input: $input) {
+    id
+    subject {
+      id
+      content
+    }
+    predicate
+    object {
+      id
+      content
+    }
+    metadata {
+      createdAt
+      confidence
+    }
+  }
+}
+```
+
+### Creating Signals
+
+```graphql
+mutation CreateSignal($input: CreateSignalInput!) {
+  createSignal(input: $input) {
+    id
+    type
+    data
+    timestamp
+    source
+  }
+}
+```
+
+## Advanced Mutations
+
+### Batch Operations
+
+```graphql
+mutation CreateMultipleAtoms($inputs: [CreateAtomInput!]!) {
+  createMultipleAtoms(inputs: $inputs) {
+    atoms {
+      id
+      content
+      metadata {
+        title
+        createdAt
+      }
+    }
+    errors {
+      index
+      message
+    }
+  }
+}
+```
+
+### Conditional Mutations
+
+```graphql
+mutation UpdateAtomIfExists($id: ID!, $input: UpdateAtomInput!) {
+  updateAtomIfExists(id: $id, input: $input) {
+    id
+    content
+    metadata {
+      title
+      updatedAt
+    }
+  }
+}
+```
+
+## React Query Mutations
+
+### Using Generated Mutation Hooks
+
+```tsx
+import { useCreateAtomMutation } from '@0xintuition/graphql'
+
+function CreateAtomForm() {
+  const [createAtom, { loading, error }] = useCreateAtomMutation()
+
+  const handleSubmit = async (formData: FormData) => {
+    try {
+      const result = await createAtom({
+        variables: {
+          input: {
+            content: formData.get('content') as string,
+            metadata: {
+              title: formData.get('title') as string,
+              author: formData.get('author') as string
+            }
+          }
+        }
+      })
+      
+      console.log('Atom created:', result.data?.createAtom)
+    } catch (err) {
+      console.error('Error creating atom:', err)
+    }
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      {/* form fields */}
+      <button type="submit" disabled={loading}>
+        {loading ? 'Creating...' : 'Create Atom'}
+      </button>
+      {error && <div>Error: {error.message}</div>}
+    </form>
+  )
+}
+```
+
+### Optimistic Updates
+
+```tsx
+import { useCreateAtomMutation, useGetAtomsQuery } from '@0xintuition/graphql'
+
+function AtomList() {
+  const { data, refetch } = useGetAtomsQuery()
+  const [createAtom] = useCreateAtomMutation()
+
+  const handleCreateAtom = async (input: CreateAtomInput) => {
+    await createAtom({
+      variables: { input },
+      onSuccess: () => {
+        // Refetch the list to show the new atom
+        refetch()
+      },
+      onError: (error) => {
+        console.error('Failed to create atom:', error)
+      }
+    })
+  }
+
+  return (
+    <div>
+      {/* atom list */}
+      <CreateAtomForm onSubmit={handleCreateAtom} />
+    </div>
+  )
+}
+```
+
+## Error Handling
+
+### Validation Errors
+
+```tsx
+function handleMutationError(error: any) {
+  if (error.graphQLErrors) {
+    error.graphQLErrors.forEach((err: any) => {
+      if (err.extensions?.code === 'VALIDATION_ERROR') {
+        // Handle validation errors
+        console.error('Validation error:', err.message)
+      }
+    })
+  }
+}
+```
+
+### Network Errors
+
+```tsx
+function handleNetworkError(error: any) {
+  if (error.networkError) {
+    console.error('Network error:', error.networkError.message)
+    // Implement retry logic or show user-friendly message
+  }
+}
+```
+
+## Best Practices
+
+1. **Validate Input**: Always validate input data before sending mutations
+2. **Handle Errors**: Implement comprehensive error handling
+3. **Optimistic Updates**: Use optimistic updates for better UX
+4. **Batch Operations**: Use batch mutations when possible
+5. **Type Safety**: Leverage generated types for mutation inputs
+
+---
+
+*This page will be expanded with more mutation examples, advanced patterns, and error handling strategies.* 

@@ -1,0 +1,267 @@
+---
+id: migration-guide
+title: Migration Guide
+sidebar_label: Migration Guide
+description: Guide to migrating from older versions of the Intuition GraphQL API
+---
+
+# Migration Guide
+
+This guide helps you migrate from older versions of the Intuition GraphQL API to the latest version.
+
+## Version Compatibility
+
+### Breaking Changes
+
+The following changes may require updates to your existing code:
+
+#### Schema Changes
+
+- **Field Renames**: Some field names have been updated for clarity
+- **Type Changes**: Some types have been modified for better type safety
+- **Deprecated Fields**: Some fields have been deprecated in favor of new ones
+
+#### Client Configuration
+
+- **Authentication**: Updated authentication mechanisms
+- **Error Handling**: New error response format
+- **Caching**: Updated caching strategies
+
+## Migration Steps
+
+### Step 1: Update Dependencies
+
+Update your GraphQL package to the latest version:
+
+```bash
+npm install @0xintuition/graphql@latest
+# or
+yarn add @0xintuition/graphql@latest
+# or
+pnpm add @0xintuition/graphql@latest
+```
+
+### Step 2: Update Client Configuration
+
+If you're using a custom client configuration, update it to use the new format:
+
+```tsx
+// Old configuration
+import { configureClient } from '@0xintuition/graphql'
+
+configureClient({
+  endpoint: 'https://api.intuition.systems/graphql',
+  headers: {
+    'Authorization': `Bearer ${token}`
+  }
+})
+
+// New configuration
+import { configureClient, API_URL_PROD } from '@0xintuition/graphql'
+
+configureClient({
+  apiUrl: API_URL_PROD,
+  headers: {
+    'Authorization': `Bearer ${token}`
+  }
+})
+```
+
+### Step 3: Update Query Hooks
+
+Update your React Query hooks to use the new generated hooks:
+
+```tsx
+// Old approach
+import { useQuery } from '@tanstack/react-query'
+import { gql } from '@apollo/client'
+
+const GET_ATOM = gql`
+  query GetAtom($id: ID!) {
+    atom(id: $id) {
+      id
+      content
+      metadata {
+        title
+        author
+      }
+    }
+  }
+`
+
+function AtomViewer({ atomId }: { atomId: string }) {
+  const { data, loading, error } = useQuery({
+    queryKey: ['atom', atomId],
+    queryFn: () => client.request(GET_ATOM, { id: atomId })
+  })
+  
+  // ... rest of component
+}
+
+// New approach
+import { useGetAtomQuery } from '@0xintuition/graphql'
+
+function AtomViewer({ atomId }: { atomId: string }) {
+  const { data, loading, error } = useGetAtomQuery({
+    variables: { id: atomId }
+  })
+  
+  // ... rest of component
+}
+```
+
+### Step 4: Update Mutation Hooks
+
+Update your mutation hooks to use the new generated hooks:
+
+```tsx
+// Old approach
+import { useMutation } from '@tanstack/react-query'
+
+const CREATE_ATOM = gql`
+  mutation CreateAtom($input: CreateAtomInput!) {
+    createAtom(input: $input) {
+      id
+      content
+      metadata {
+        title
+        author
+      }
+    }
+  }
+`
+
+function CreateAtomForm() {
+  const [createAtom, { loading, error }] = useMutation({
+    mutationFn: (input: CreateAtomInput) => 
+      client.request(CREATE_ATOM, { input })
+  })
+  
+  // ... rest of component
+}
+
+// New approach
+import { useCreateAtomMutation } from '@0xintuition/graphql'
+
+function CreateAtomForm() {
+  const [createAtom, { loading, error }] = useCreateAtomMutation()
+  
+  // ... rest of component
+}
+```
+
+### Step 5: Update Error Handling
+
+Update your error handling to use the new error format:
+
+```tsx
+// Old error handling
+function handleError(error: any) {
+  if (error.graphQLErrors) {
+    error.graphQLErrors.forEach((err: any) => {
+      console.error('GraphQL Error:', err.message)
+    })
+  }
+}
+
+// New error handling
+function handleError(error: any) {
+  if (error.graphQLErrors) {
+    error.graphQLErrors.forEach((err: any) => {
+      const errorCode = err.extensions?.code
+      switch (errorCode) {
+        case 'VALIDATION_ERROR':
+          console.error('Validation error:', err.message)
+          break
+        case 'UNAUTHORIZED':
+          console.error('Unauthorized:', err.message)
+          break
+        case 'NOT_FOUND':
+          console.error('Not found:', err.message)
+          break
+        default:
+          console.error('GraphQL error:', err.message)
+      }
+    })
+  }
+}
+```
+
+## Common Migration Issues
+
+### TypeScript Errors
+
+If you encounter TypeScript errors after migration:
+
+1. **Clear TypeScript Cache**: Delete `node_modules/.cache` and restart your TypeScript server
+2. **Regenerate Types**: Run `pnpm codegen:build` to regenerate types
+3. **Update Type Imports**: Update any manual type imports to use the new generated types
+
+### Runtime Errors
+
+If you encounter runtime errors:
+
+1. **Check API Version**: Ensure you're using the correct API version
+2. **Update Queries**: Make sure all queries use the latest schema
+3. **Test Incrementally**: Test each component individually to isolate issues
+
+### Performance Issues
+
+If you experience performance issues:
+
+1. **Optimize Queries**: Use fragments and only request needed fields
+2. **Update Caching**: Use the new caching strategies
+3. **Monitor Network**: Check for unnecessary network requests
+
+## Testing Your Migration
+
+### Automated Tests
+
+Run your existing tests to ensure everything works:
+
+```bash
+npm test
+# or
+yarn test
+# or
+pnpm test
+```
+
+### Manual Testing
+
+Test key functionality manually:
+
+1. **Basic Queries**: Test fetching atoms, triples, and signals
+2. **Mutations**: Test creating and updating data
+3. **Error Handling**: Test error scenarios
+4. **Performance**: Monitor loading times and network requests
+
+### Integration Testing
+
+Test your application end-to-end:
+
+1. **User Flows**: Test complete user journeys
+2. **Edge Cases**: Test error conditions and edge cases
+3. **Performance**: Monitor application performance
+
+## Rollback Plan
+
+If you encounter issues during migration:
+
+1. **Keep Old Version**: Don't delete the old version immediately
+2. **Feature Flags**: Use feature flags to gradually roll out changes
+3. **Monitoring**: Monitor error rates and performance metrics
+4. **Quick Rollback**: Have a plan to quickly rollback if needed
+
+## Support
+
+If you encounter issues during migration:
+
+1. **Check Documentation**: Review the latest documentation
+2. **Community Support**: Ask questions in the community forums
+3. **Issue Reporting**: Report bugs through the official channels
+4. **Professional Support**: Contact support for enterprise customers
+
+---
+
+*This page will be expanded with more specific migration examples, troubleshooting guides, and best practices.* 

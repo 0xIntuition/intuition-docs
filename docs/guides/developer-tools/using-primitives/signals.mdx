@@ -1,0 +1,117 @@
+---
+id: signals
+title: Signals
+sidebar_label: Signals
+description: Understanding and using Signals in Intuition
+---
+
+# Signals
+
+Signals are dynamic, time-based data streams that represent real-time information, events, and state changes within the Intuition system. They enable reactive applications and real-time collaboration.
+
+## What are Signals?
+
+Signals are continuous data streams that:
+
+- **Update in Real-Time**: Reflect current state and changes as they happen
+- **Carry Metadata**: Include timing, source, and context information
+- **Support Subscriptions**: Allow applications to subscribe to specific signal types
+- **Enable Reactivity**: Trigger automatic updates in connected systems
+
+## Signal Types
+
+### Event Signals
+Signals that represent discrete events or actions:
+- User interactions
+- System events
+- External API calls
+- Smart contract events
+
+### State Signals
+Signals that represent continuous state information:
+- Current prices
+- Network status
+- User presence
+- System metrics
+
+### Aggregate Signals
+Signals that combine multiple data sources:
+- Trending topics
+- Popular content
+- Network activity
+- Economic indicators
+
+## Creating Signals
+
+### Signal Definition
+Define the structure and behavior of your signal:
+
+```javascript
+const signalDefinition = {
+  type: "price-update",
+  schema: {
+    price: "number",
+    timestamp: "string",
+    source: "string"
+  },
+  updateFrequency: "realtime"
+}
+```
+
+### Signal Sources
+Signals can originate from:
+- Smart contract events
+- User interactions
+- External APIs
+- System monitoring
+- Other signals (signal composition)
+
+## Using Signals
+
+### Subscribing to Signals
+Applications can subscribe to specific signals to receive real-time updates.
+
+### Signal Processing
+Process and transform signals to extract meaningful information.
+
+### Signal Composition
+Combine multiple signals to create more complex data streams.
+
+## Signal Patterns
+
+### Filtering
+Filter signals based on specific criteria or conditions.
+
+### Aggregation
+Combine multiple signals to create summary information.
+
+### Transformation
+Transform signal data into different formats or structures.
+
+### Routing
+Route signals to different destinations based on content or rules.
+
+## Best Practices
+
+1. **Efficient Updates**: Minimize unnecessary signal updates
+2. **Clear Schema**: Define clear schemas for signal data
+3. **Error Handling**: Implement robust error handling for signal processing
+4. **Performance**: Consider performance implications of signal subscriptions
+5. **Security**: Validate signal sources and content
+
+## Examples
+
+```javascript
+// Subscribing to a price signal
+const priceSubscription = subscribeToSignal("price-update", {
+  filter: (signal) => signal.price > 100,
+  onUpdate: (signal) => {
+    console.log(`Price updated: ${signal.price}`);
+    updateUI(signal);
+  }
+});
+```
+
+---
+
+*This page will be expanded with detailed examples, signal processing patterns, and advanced signal manipulation techniques.* 

@@ -1,0 +1,93 @@
+---
+id: overview
+title: Overview
+sidebar_label: Overview
+description: Introduction to the Intuition GraphQL API and its key features
+---
+
+# GraphQL API Overview
+
+The Intuition GraphQL package provides a type-safe interface for interacting with the Intuition API. It serves as the core data fetching layer, offering generated types and React Query hooks for seamless integration with the semantic knowledge graph.
+
+## Key Features
+
+- Type-safe GraphQL operations leveraging code gen
+- React Query hooks for data fetching
+- Reusable GraphQL fragments
+- Local-first schema with remote fallback
+- Portable package design
+
+## Quick Start
+
+1. Install the package:
+`pnpm add @0xintuition/graphql` 
+
+2. (Optional) Configure the client in your app's root (`root.tsx` or Next.js `layout.tsx`)
+
+```tsx
+import { configureClient, API_URL_DEV } from '@0xintuition/graphql`
+
+// Configure GraphQL client at module initialization using the URLs from the package. For now, we should use the local URL for development
+// This can be updated to use the same environment approach that we use in Portal in the future, or leave up to the template user to configure however makes sense for their use case
+configureClient({
+  apiUrl: API_URL_DEV,
+})
+```
+
+- This step is entirely optional. If you omit it the GraphQL package queries and hooks will use the default API URL from the package, which is currently `API_URL_PROD` .
+- `API_URL_DEV` and `API_URL_LOCAL` are both exported from the GraphQL package. You can import these for use with `configureClient` as shown in the above example.
+
+## Schema Management
+
+The package uses a local-first approach for schema management:
+
+- Local `schema.graphql` as source of truth
+- Remote schema fallback for resilience
+- Automatic schema generation during builds
+- Version controlled schema for team consistency
+
+## Development Workflow
+
+1. **Code Generation**
+    - `pnpm codegen:build # Generate types`
+    - `pnpm codegen:watch # Watch mode for development`
+2. **Building**
+    - `pnpm build # Full build with codegen`
+    - `pnpm dev # Development mode with watch`
+3. **Testing**
+    - ****`pnpm test`
+
+## Package Structure
+
+```bash
+graphql/
+├── src/
+│ ├── client.ts # Client configuration
+│ ├── fragments/ # Reusable fragments
+│ ├── queries/ # GraphQL queries
+│ ├── mutations/ # GraphQL mutations
+│ └── generated/ # Generated types
+├── schema.graphql # Schema definition
+└── codegen.ts # Codegen config
+```
+
+## Package Approach
+
+1. **Schema Updates**
+    - Uses the local schema committed in the repository as the priority for the codegen and uses the remote URL as the fallback
+2. **Query Organization**
+    - Uses fragments for reusable fields
+    - Includes use-case specific queries as well as general purpose queries
+3. **Type Safety**
+    - Leverages generated types from our schema
+    - Generates React Query hooks as well as document queries that can be used in a server context (or used with another client such as Apollo)
+4. **Client Configuration**
+    - Default client configuration can be overridden in each consumer app
+    - Supports environment-specific API URLs
+
+## Related Resources
+
+- [GraphQL Code Generator](https://the-guild.dev/graphql/codegen)
+- [React Query Documentation](https://tanstack.com/query)
+
+The GraphQL API provides the foundation for building powerful applications on Intuition. 

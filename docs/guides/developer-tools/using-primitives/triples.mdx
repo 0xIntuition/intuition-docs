@@ -1,0 +1,88 @@
+---
+id: triples
+title: Triples
+sidebar_label: Triples
+description: Understanding and using Triples in Intuition
+---
+
+# Triples
+
+Triples are structured data units that connect three atoms together in a subject-predicate-object relationship. They form the foundation for creating semantic networks and knowledge graphs within the Intuition system.
+
+## What are Triples?
+
+A triple consists of three atoms connected in a specific relationship:
+
+- **Subject**: The entity being described
+- **Predicate**: The relationship or property
+- **Object**: The value or target of the relationship
+
+## Triple Structure
+
+```
+Subject → Predicate → Object
+```
+
+For example:
+- `User123` → `likes` → `Post456`
+- `Article789` → `hasTag` → `Technology`
+- `CompanyABC` → `locatedIn` → `San Francisco`
+
+## Creating Triples
+
+### Basic Triple Creation
+Triples are created by connecting three existing atoms with a specific relationship.
+
+### Validating Triples
+Each triple must be validated to ensure:
+- All three atoms exist
+- The relationship is meaningful
+- The triple follows system constraints
+
+## Using Triples
+
+### Building Knowledge Graphs
+Triples can be connected to form complex knowledge graphs that represent relationships between entities.
+
+### Querying Relationships
+Triples enable powerful queries to find connections and patterns in the data.
+
+### Semantic Search
+Triples provide the foundation for semantic search capabilities across the network.
+
+## Triple Types
+
+### Standard Triples
+Basic subject-predicate-object relationships.
+
+### Qualified Triples
+Triples with additional metadata or qualifications.
+
+### Temporal Triples
+Triples that include time-based information.
+
+## Best Practices
+
+1. **Meaningful Relationships**: Ensure predicates represent meaningful connections
+2. **Consistent Naming**: Use consistent naming conventions for predicates
+3. **Validation**: Always validate triples before publishing
+4. **Reusability**: Design triples to be reusable across different contexts
+
+## Examples
+
+```javascript
+// Creating a triple
+const triple = {
+  subject: "user-123",
+  predicate: "likes",
+  object: "post-456",
+  metadata: {
+    createdAt: "2024-01-01T00:00:00Z",
+    confidence: 0.95
+  }
+}
+```
+
+---
+
+*This page will be expanded with detailed examples, query patterns, and advanced triple manipulation techniques.* 

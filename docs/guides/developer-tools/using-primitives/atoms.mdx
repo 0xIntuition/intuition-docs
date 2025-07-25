@@ -1,0 +1,66 @@
+---
+id: atoms
+title: Atoms
+sidebar_label: Atoms
+description: Understanding and using Atoms in Intuition
+---
+
+# Atoms
+
+Atoms are the fundamental building blocks of the Intuition system. They represent unique, verifiable pieces of information that can be referenced, traded, and used to build more complex structures.
+
+## What are Atoms?
+
+Atoms are cryptographically unique identifiers that represent specific pieces of information or data. Each atom has:
+
+- **Unique ID**: A cryptographic hash that ensures uniqueness
+- **Content**: The actual data or information being represented
+- **Metadata**: Additional information about the atom's creation, ownership, and usage
+- **Verification**: Cryptographic proofs that ensure the atom's authenticity
+
+## Creating Atoms
+
+Atoms can be created for various types of content:
+
+- **Text Content**: Articles, posts, comments
+- **Media**: Images, videos, audio files
+- **Data**: Structured data, API responses
+- **References**: Links to external resources
+
+## Using Atoms
+
+### Referencing Atoms
+Atoms can be referenced in other parts of the system, creating a network of interconnected information.
+
+### Trading Atoms
+Atoms can be traded using bonding curves, allowing for dynamic pricing based on demand.
+
+### Composing with Atoms
+Atoms can be combined to create more complex structures like triples and signals.
+
+## Best Practices
+
+1. **Unique Content**: Ensure each atom represents truly unique information
+2. **Clear Metadata**: Provide comprehensive metadata for better discoverability
+3. **Verification**: Always verify atom authenticity before use
+4. **Composability**: Design atoms to work well with other primitives
+
+## Examples
+
+```javascript
+// Creating an atom for a blog post
+const blogPostAtom = {
+  id: "hash-of-content",
+  content: "This is my blog post content...",
+  metadata: {
+    title: "My Blog Post",
+    author: "user-id",
+    createdAt: "2024-01-01T00:00:00Z",
+    tags: ["blog", "intuition"]
+  }
+}
+```
+
+---
+
+*This page will be expanded with detailed examples, code snippets, and advanced usage patterns.* 

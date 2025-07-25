@@ -1,0 +1,311 @@
+---
+id: reads
+title: Reads
+sidebar_label: Reads
+description: Guide to reading data using GraphQL queries in the Intuition API
+---
+
+# Reads
+
+This section covers how to read data from the Intuition system using GraphQL queries.
+
+## Basic Queries
+
+### Fetching Single Atoms
+
+```graphql
+query GetAtom($id: ID!) {
+  atom(id: $id) {
+    id
+    content
+    metadata {
+      title
+      author
+      createdAt
+      tags
+    }
+  }
+}
+```
+
+### Fetching Multiple Atoms
+
+```graphql
+query GetAtoms($limit: Int, $offset: Int) {
+  atoms(limit: $limit, offset: $offset) {
+    id
+    content
+    metadata {
+      title
+      createdAt
+    }
+  }
+}
+```
+
+### Fetching Triples
+
+```graphql
+query GetTriples($subject: ID, $predicate: String, $object: ID) {
+  triples(subject: $subject, predicate: $predicate, object: $object) {
+    id
+    subject {
+      id
+      content
+    }
+    predicate
+    object {
+      id
+      content
+    }
+    metadata {
+      createdAt
+      confidence
+    }
+  }
+}
+```
+
+## Advanced Queries
+
+### Search and Filtering
+
+```graphql
+query SearchAtoms($query: String!, $filters: AtomFilters) {
+  searchAtoms(query: $query, filters: $filters) {
+    id
+    content
+    metadata {
+      title
+      tags
+      createdAt
+    }
+    relevance
+    highlights {
+      field
+      snippet
+    }
+  }
+}
+```
+
+### Pagination
+
+```graphql
+query GetAtomsPaginated($first: Int, $after: String) {
+  atoms(first: $first, after: $after) {
+    edges {
+      node {
+        id
+        content
+        metadata {
+          title
+          createdAt
+        }
+      }
+      cursor
+    }
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      startCursor
+      endCursor
+    }
+  }
+}
+```
+
+### Aggregations
+
+```graphql
+query GetAtomStats($filters: AtomFilters) {
+  atomStats(filters: $filters) {
+    totalCount
+    averageContentLength
+    topTags {
+      tag
+      count
+    }
+    createdAtDistribution {
+      date
+      count
+    }
+  }
+}
+```
+
+## React Query Integration
+
+### Basic Query Hook
+
+```tsx
+import { useGetAtomQuery } from '@0xintuition/graphql'
+
+function AtomViewer({ atomId }: { atomId: string }) {
+  const { data, loading, error } = useGetAtomQuery({
+    variables: { id: atomId }
+  })
+
+  if (loading) return <div>Loading...</div>
+  if (error) return <div>Error: {error.message}</div>
+
+  const atom = data?.atom
+  if (!atom) return <div>Atom not found</div>
+
+  return (
+    <div>
+      <h1>{atom.metadata?.title}</h1>
+      <p>{atom.content}</p>
+      <div>Created: {atom.metadata?.createdAt}</div>
+    </div>
+  )
+}
+```
+
+### Infinite Queries
+
+```tsx
+import { useGetAtomsInfiniteQuery } from '@0xintuition/graphql'
+
+function AtomList() {
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    loading,
+    error
+  } = useGetAtomsInfiniteQuery({
+    variables: { first: 10 },
+    getNextPageParam: (lastPage) => lastPage.atoms.pageInfo.endCursor
+  })
+
+  if (loading) return <div>Loading...</div>
+  if (error) return <div>Error: {error.message}</div>
+
+  return (
+    <div>
+      {data?.pages.map((page, i) => (
+        <div key={i}>
+          {page.atoms.edges.map(({ node }) => (
+            <div key={node.id}>
+              <h3>{node.metadata?.title}</h3>
+              <p>{node.content}</p>
+            </div>
+          ))}
+        </div>
+      ))}
+      
+      {hasNextPage && (
+        <button 
+          onClick={() => fetchNextPage()}
+          disabled={isFetchingNextPage}
+        >
+          {isFetchingNextPage ? 'Loading more...' : 'Load more'}
+        </button>
+      )}
+    </div>
+  )
+}
+```
+
+### Optimistic Queries
+
+```tsx
+import { useGetAtomQuery } from '@0xintuition/graphql'
+
+function OptimisticAtomViewer({ atomId }: { atomId: string }) {
+  const { data, loading, error } = useGetAtomQuery({
+    variables: { id: atomId },
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    cacheTime: 10 * 60 * 1000, // 10 minutes
+  })
+
+  return (
+    <div>
+      {loading && <div>Loading...</div>}
+      {error && <div>Error: {error.message}</div>}
+      {data?.atom && (
+        <div>
+          <h1>{data.atom.metadata?.title}</h1>
+          <p>{data.atom.content}</p>
+        </div>
+      )}
+    </div>
+  )
+}
+```
+
+## Error Handling
+
+### Query Error Types
+
+```tsx
+function handleQueryError(error: any) {
+  if (error.graphQLErrors) {
+    error.graphQLErrors.forEach((err: any) => {
+      switch (err.extensions?.code) {
+        case 'NOT_FOUND':
+          console.error('Resource not found:', err.message)
+          break
+        case 'UNAUTHORIZED':
+          console.error('Unauthorized access:', err.message)
+          break
+        case 'VALIDATION_ERROR':
+          console.error('Validation error:', err.message)
+          break
+        default:
+          console.error('GraphQL error:', err.message)
+      }
+    })
+  }
+}
+```
+
+### Retry Logic
+
+```tsx
+import { useGetAtomQuery } from '@0xintuition/graphql'
+
+function ResilientAtomViewer({ atomId }: { atomId: string }) {
+  const { data, loading, error, refetch } = useGetAtomQuery({
+    variables: { id: atomId },
+    retry: 3,
+    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
+  })
+
+  const handleRetry = () => {
+    refetch()
+  }
+
+  if (loading) return <div>Loading...</div>
+  if (error) {
+    return (
+      <div>
+        <div>Error: {error.message}</div>
+        <button onClick={handleRetry}>Retry</button>
+      </div>
+    )
+  }
+
+  return (
+    <div>
+      <h1>{data?.atom?.metadata?.title}</h1>
+      <p>{data?.atom?.content}</p>
+    </div>
+  )
+}
+```
+
+## Best Practices
+
+1. **Use Fragments**: Create reusable fragments for common fields
+2. **Optimize Queries**: Only request the fields you need
+3. **Handle Loading States**: Always show loading indicators
+4. **Implement Error Boundaries**: Catch and handle errors gracefully
+5. **Cache Strategically**: Use React Query's caching capabilities
+6. **Pagination**: Implement proper pagination for large datasets
+
+---
+
+*This page will be expanded with more query patterns, performance optimization techniques, and advanced caching strategies.* 

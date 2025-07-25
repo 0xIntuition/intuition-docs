@@ -1,0 +1,116 @@
+---
+id: bonding-curves
+title: Bonding Curves
+sidebar_label: Bonding Curves
+description: Understanding and using Bonding Curves in Intuition
+---
+
+# Bonding Curves
+
+Bonding curves are mathematical functions that determine the price of tokens or assets based on their current supply. They are a core economic mechanism in the Intuition system, enabling dynamic pricing and automated market making.
+
+## What are Bonding Curves?
+
+Bonding curves are price functions that:
+
+- **Automatically Price Assets**: Price is determined by the current supply
+- **Enable Continuous Trading**: Allow for continuous buying and selling
+- **Provide Liquidity**: Create automatic market making capabilities
+- **Align Incentives**: Create economic incentives for early adopters
+
+## Bonding Curve Types
+
+### Linear Curves
+Simple linear relationships between price and supply:
+```
+Price = Base Price + (Supply × Slope)
+```
+
+### Exponential Curves
+Curves that grow exponentially with supply:
+```
+Price = Base Price × (1 + Growth Rate)^Supply
+```
+
+### Polynomial Curves
+More complex curves with multiple terms:
+```
+Price = a + b×Supply + c×Supply² + d×Supply³
+```
+
+## Creating Bonding Curves
+
+### Curve Parameters
+Define the key parameters for your bonding curve:
+
+```javascript
+const curveParams = {
+  basePrice: 0.01,
+  slope: 0.001,
+  maxSupply: 1000000,
+  curveType: "linear"
+}
+```
+
+### Curve Validation
+Ensure your curve parameters are valid:
+- Positive base price
+- Appropriate slope for your use case
+- Reasonable maximum supply
+- Sustainable economic model
+
+## Using Bonding Curves
+
+### Buying Tokens
+When someone buys tokens, the price increases according to the curve.
+
+### Selling Tokens
+When someone sells tokens, the price decreases according to the curve.
+
+### Price Discovery
+The curve automatically discovers the fair market price based on supply and demand.
+
+### Liquidity Provision
+Bonding curves provide automatic liquidity for trading.
+
+## Economic Implications
+
+### Early Adopter Benefits
+Early buyers benefit from lower prices as supply increases.
+
+### Sunk Cost Effect
+The curve creates incentives to hold rather than sell immediately.
+
+### Market Efficiency
+Automated pricing reduces manipulation and improves market efficiency.
+
+### Revenue Distribution
+Curve parameters determine how revenue is distributed among stakeholders.
+
+## Best Practices
+
+1. **Careful Parameter Selection**: Choose parameters that align with your economic goals
+2. **Testing**: Test curves with various scenarios before deployment
+3. **Transparency**: Make curve parameters and formulas publicly available
+4. **Monitoring**: Continuously monitor curve performance and adjust if needed
+5. **Education**: Help users understand how the curve affects pricing
+
+## Examples
+
+```javascript
+// Linear bonding curve implementation
+function calculatePrice(supply, basePrice, slope) {
+  return basePrice + (supply * slope);
+}
+
+function calculateBuyPrice(currentSupply, amount, basePrice, slope) {
+  const currentPrice = calculatePrice(currentSupply, basePrice, slope);
+  const newSupply = currentSupply + amount;
+  const newPrice = calculatePrice(newSupply, basePrice, slope);
+  return (currentPrice + newPrice) / 2 * amount;
+}
+```
+
+---
+
+*This page will be expanded with detailed mathematical formulas, implementation examples, and advanced bonding curve strategies.* 
