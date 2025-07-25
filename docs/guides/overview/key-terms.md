@@ -1,69 +1,267 @@
 ---
+id: key-terms
+title: Key Terms
+sidebar_label: Key Terms
 sidebar_position: 6
+description: Essential terminology and concepts for understanding the Intuition protocol
 ---
 
 # Key Terms
 
-This page defines the essential terminology used throughout the Intuition ecosystem. Understanding these terms will help you navigate the documentation and build effectively with Intuition.
+This page defines the essential terminology and concepts you need to understand the Intuition protocol.
 
-## Core Concepts
+## Core Primitives
 
-### Atoms
-Atoms are the fundamental units of data in the Intuition ecosystem. They represent individual pieces of information that can be referenced, traded, and combined to create more complex data structures.
+### **Atoms**
 
-### Triples
-Triples are structured data units that connect atoms through relationships. Each triple consists of a subject, predicate, and object, forming the building blocks for semantic data representation.
+**Atoms** are the fundamental building blocks of the Intuition knowledge graph. Each atom represents a unique entity or concept and points to arbitrary data via a URI.
 
-### Signals
-Signals are dynamic data streams that represent real-time information or events. They can be subscribed to and processed to create responsive applications.
+**Key Characteristics:**
+- **Universal Identifiers**: Each atom has a unique identifier across the entire system
+- **URI References**: Atoms point to any arbitrary URI (web pages, IPFS hashes, etc.)
+- **Economic Units**: Atoms can have economic value through bonding curves
+- **Composable**: Atoms can be combined to create more complex structures
 
-### Bonding Curves
-Bonding curves are mathematical functions that determine the price of atoms based on their supply. They enable automated market making and price discovery for data assets.
+**Examples:**
+- A person's profile (points to their social media or personal website)
+- A smart contract address (points to the contract's metadata)
+- A piece of content (points to the actual content file)
+- An organization (points to their official website)
+
+### **Triples**
+
+**Triples** represent relationships between atoms, forming the edges of the knowledge graph. Each triple consists of three atoms: a subject, predicate, and object.
+
+**Structure:**
+```
+Subject → Predicate → Object
+```
+
+**Key Characteristics:**
+- **Semantic Relationships**: Express meaningful connections between entities
+- **Economic Value**: Triples can have economic value through bonding curves
+- **Verifiable**: All relationships are cryptographically verifiable
+- **Composable**: Triples can be combined to create complex knowledge structures
+
+**Examples:**
+- **Subject**: Alice (atom)
+- **Predicate**: "works for" (atom)
+- **Object**: Intuition Systems (atom)
+
+This creates the statement: "Alice works for Intuition Systems"
+
+### **Signals**
+
+**Signals** represent user attestations or endorsements of atoms and triples. They indicate the strength of belief or support for a particular piece of information.
+
+**Key Characteristics:**
+- **Economic Weight**: Signals have economic value and can be traded
+- **Subjective**: Represent personal beliefs and opinions
+- **Aggregatable**: Multiple signals can be combined to show collective sentiment
+- **Time-Bound**: Signals can change over time as opinions evolve
+
+**Types of Signals:**
+- **Positive Signals**: Endorsements or agreements
+- **Negative Signals**: Disagreements or refutations
+- **Neutral Signals**: Acknowledgment without taking a position
+
+## Economic Components
+
+### **Bonding Curves**
+
+**Bonding curves** are mathematical functions that determine the price of shares in atoms and triples based on supply and demand. They create economic incentives for information quality.
+
+**Key Functions:**
+- **Price Discovery**: Automatically determine fair market value
+- **Incentive Alignment**: Reward early adopters of valuable information
+- **Liquidity**: Provide continuous trading opportunities
+- **Anti-Speculation**: Prevent manipulation through mathematical constraints
+
+**Curve Types:**
+- **Pro-Rata Curves**: Linear pricing for stable assets
+- **Bonding Curves**: Dynamic pricing that rewards early adopters
+- **Custom Curves**: Specialized functions for specific use cases
+
+### **Vaults**
+
+**Vaults** are smart contracts that hold the economic value associated with atoms and triples. They manage deposits, redemptions, and share distribution.
+
+**Key Functions:**
+- **Asset Management**: Safely store and manage user deposits
+- **Share Distribution**: Mint and burn shares based on economic activity
+- **Fee Collection**: Collect small fees to maintain the system
+- **Liquidity Provision**: Enable users to enter and exit positions
+
+**Vault Types:**
+- **Pro-Rata Vaults**: Traditional vaults with stable pricing
+- **Bonding Curve Vaults**: Dynamic vaults with variable pricing
+- **Multi-Curve Vaults**: Vaults supporting multiple pricing models
+
+### **Terms**
+
+**Terms** are the conceptual representations of atoms and triples that contain multiple vaults. They represent the underlying semantic meaning regardless of economic implementation.
+
+**Key Characteristics:**
+- **Semantic Identity**: Maintains the core meaning across different vaults
+- **Economic Flexibility**: Can have multiple vaults with different curves
+- **Market Cap Aggregation**: Combines value across all associated vaults
+- **Universal Reference**: Provides a stable identifier for the concept
 
 ## Network Components
 
-### Attestors
-Attestors are network participants who validate and verify the authenticity of data. They play a crucial role in maintaining data integrity and trust within the ecosystem.
+### **Trust Protocol**
 
-### Atom Wardens
-Atom wardens are responsible for managing and curating specific atoms. They ensure data quality and relevance within their domain of expertise.
+The **Trust Protocol** is the foundational mechanism that enables trustful interactions through cryptoeconomic incentives. It rewards users for contributing valuable information.
 
-### Trust Bonds
-Trust bonds are mechanisms that align incentives between data providers and consumers. They create economic relationships that promote data quality and reliability.
+**Core Principles:**
+- **Economic Incentives**: Users are rewarded for valuable contributions
+- **Quality Signals**: Economic activity indicates information quality
+- **Decentralized Curation**: No central authority controls information
+- **Transparent Rules**: All mechanisms are open and verifiable
 
-## Development Terms
+### **Knowledge Graph**
 
-### GraphQL API
-The primary interface for querying and interacting with Intuition data. Provides a flexible, type-safe way to access atoms, triples, and signals.
+The **Knowledge Graph** is the collective network of atoms, triples, and signals that represents humanity's shared knowledge. It grows organically through user contributions.
 
-### SDKs
-Software Development Kits that provide language-specific interfaces for building applications on Intuition. Available for multiple programming languages and frameworks.
+**Key Features:**
+- **Permissionless**: Anyone can contribute information
+- **Verifiable**: All contributions are cryptographically verifiable
+- **Composable**: Information can be combined and reused
+- **Economic**: Valuable information is economically rewarded
 
-### Primitives
-The fundamental building blocks that developers use to create applications. These include atoms, triples, signals, and bonding curves.
+### **Attestations**
+
+**Attestations** are user statements about atoms and triples that contribute to the collective knowledge. They can be positive, negative, or neutral.
+
+**Types of Attestations:**
+- **Factual Claims**: Statements about objective reality
+- **Opinions**: Subjective beliefs and preferences
+- **Endorsements**: Support for existing information
+- **Refutations**: Disagreements with existing information
+
+## Technical Components
+
+### **GraphQL API**
+
+The **GraphQL API** provides a unified interface for querying and interacting with the Intuition knowledge graph. It enables efficient data retrieval and real-time updates.
+
+**Key Features:**
+- **Real-Time Queries**: Get live data from the knowledge graph
+- **Flexible Schema**: Query exactly the data you need
+- **Subscription Support**: Receive updates as data changes
+- **Batch Operations**: Efficiently process multiple requests
+
+### **SDKs**
+
+**Software Development Kits (SDKs)** provide pre-built tools and libraries for integrating with the Intuition protocol. They simplify common development tasks.
+
+**Available SDKs:**
+- **JavaScript/TypeScript SDK**: For web applications
+- **React Components**: Pre-built UI components
+- **GraphQL Client**: Optimized for Intuition's GraphQL API
+- **Smart Contract Interfaces**: For direct blockchain interaction
+
+### **Smart Contracts**
+
+**Smart contracts** are the on-chain components that handle the economic and governance aspects of the Intuition protocol. They ensure transparency and immutability.
+
+**Core Contracts:**
+- **EthMultiVault**: Manages deposits, redemptions, and share distribution
+- **AtomWallet**: Handles atom and triple creation
+- **BondingCurveRegistry**: Manages different curve implementations
+- **TrustBonding**: Implements trust-based economic mechanisms
+
+## User Roles
+
+### **Attestors**
+
+**Attestors** are users who contribute information to the knowledge graph by creating atoms, triples, and signals. They are rewarded for valuable contributions.
+
+**Responsibilities:**
+- **Information Creation**: Add new atoms and triples to the graph
+- **Quality Assurance**: Provide signals to indicate information quality
+- **Community Building**: Participate in knowledge curation
+- **Economic Participation**: Engage with bonding curves and vaults
+
+### **Curators**
+
+**Curators** are users who specialize in organizing and validating information within the knowledge graph. They help maintain quality and coherence.
+
+**Activities:**
+- **Signal Provision**: Provide economic signals for information quality
+- **Relationship Mapping**: Create meaningful triples between atoms
+- **Quality Assessment**: Evaluate and endorse valuable information
+- **Community Leadership**: Guide discussions and resolve disputes
+
+### **Developers**
+
+**Developers** build applications and tools that interact with the Intuition protocol. They create the interfaces and experiences that make the knowledge graph accessible.
+
+**Development Areas:**
+- **Frontend Applications**: User interfaces for interacting with the graph
+- **Data Analytics**: Tools for analyzing knowledge graph data
+- **Integration Services**: APIs and services that connect to Intuition
+- **Mobile Applications**: Native mobile experiences
 
 ## Economic Terms
 
-### Data Markets
-Decentralized marketplaces where atoms can be bought, sold, and traded. Prices are determined by bonding curves and market dynamics.
+### **Market Cap**
 
-### Incentive Mechanisms
-Economic structures that encourage participation and contribution to the network. Includes rewards for data provision, validation, and curation.
+**Market cap** represents the total theoretical value of all shares in a term (atom or triple). It is calculated as the product of total shares and current share price.
 
-### Token Economics
-The economic model governing the distribution and use of tokens within the Intuition ecosystem.
+**Calculation:**
+```
+Market Cap = Total Shares × Current Share Price
+```
 
-## Technical Terms
+**Significance:**
+- **Value Indicator**: Shows the perceived value of information
+- **Comparison Metric**: Allows comparison between different terms
+- **Investment Guide**: Helps users make informed decisions
+- **Quality Signal**: Higher market caps often indicate higher quality
 
-### Smart Contracts
-Self-executing contracts that automate interactions and enforce rules within the Intuition ecosystem.
+### **Share Price**
 
-### Blockchain Transactions
-Operations that modify the state of the blockchain, including atom creation, trading, and network interactions.
+**Share price** is the current cost to purchase one share of a term. It is determined by the bonding curve function based on supply and demand.
 
-### Digital Assets
-Any digital representation of value or information that can be owned, traded, or used within the Intuition ecosystem.
+**Factors Affecting Price:**
+- **Supply**: Number of shares currently in circulation
+- **Demand**: User interest and willingness to pay
+- **Curve Function**: Mathematical relationship between supply and price
+- **Market Activity**: Recent trading volume and patterns
+
+### **Liquidity**
+
+**Liquidity** refers to the ease with which shares can be bought or sold without significantly affecting the price. High liquidity enables efficient trading.
+
+**Liquidity Factors:**
+- **Trading Volume**: Amount of shares traded regularly
+- **Market Depth**: Number of buy and sell orders
+- **Price Stability**: How much price changes with large trades
+- **Accessibility**: How easy it is for users to participate
+
+## Governance Terms
+
+### **Proposals**
+
+**Proposals** are suggested changes to the Intuition protocol that are voted on by the community. They can include parameter changes, new features, or governance updates.
+
+**Proposal Types:**
+- **Parameter Changes**: Adjusting bonding curve parameters
+- **Feature Additions**: Adding new functionality to the protocol
+- **Governance Updates**: Changing how decisions are made
+- **Emergency Actions**: Responding to critical issues
+
+### **Voting**
+
+**Voting** is the process by which the community makes decisions about the protocol. Votes are weighted by economic stake and participation.
+
+**Voting Mechanisms:**
+- **Token Weighted**: Votes are proportional to token holdings
+- **Time Locked**: Some proposals require time delays
+- **Multi-Sig**: Critical decisions require multiple approvals
+- **Emergency Powers**: Special procedures for urgent situations
 
 ---
 
-For more detailed explanations of these terms, explore the specific sections of the documentation where they are used in context. 
+> **Ready to dive deeper?** Explore our [Architecture Guide](/guides/developer-tools/deep-dive/architecture) to understand how these components work together, or check out our [Quick Start Guide](/guides/quickstart) to begin building with Intuition. 

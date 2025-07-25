@@ -3,266 +3,309 @@ id: migration-guide
 title: Migration Guide
 sidebar_label: Migration Guide
 sidebar_position: 5
-description: Guide to migrating from older versions of the Intuition GraphQL API
+description: Guide to migrating from v1.0 to v1.5 of the Intuition GraphQL API
 ---
 
-# Migration Guide
+# 🚀 v1.5 Migration Guide
 
-This guide helps you migrate from older versions of the Intuition GraphQL API to the latest version.
+**Abstract**: The Intuition API is being updated to support exciting new features, and developers using the API will need to make adjustments to their queries to continue using it. This document serves as a comprehensive guide for that process.
 
-## Version Compatibility
+## 📊 Current Status
 
-### Breaking Changes
+The Base Sepolia and Base Mainnet 1.5 backend is already live and accessible:
 
-The following changes may require updates to your existing code:
+| Environment | Endpoint |
+|-------------|----------|
+| **Base Sepolia** | `https://prod.base-sepolia-v-1-5.intuition.sh/v1/graphql` |
+| **Base Mainnet** | `https://prod.base-mainnet-v-1-0.intuition.sh/v1/graphql` |
 
-#### Schema Changes
+## ✨ New Features
 
-- **Field Renames**: Some field names have been updated for clarity
-- **Type Changes**: Some types have been modified for better type safety
-- **Deprecated Fields**: Some fields have been deprecated in favor of new ones
+### 🎯 **Core Enhancements**
 
-#### Client Configuration
+| Feature | Description |
+|---------|-------------|
+| **🏦 Bonding Curve Vaults** | New vault types with dynamic pricing models |
+| **📋 Bonding Curve Registry** | Centralized registry for curve management |
+| **⚡ Improved Batch Methods** | Enhanced batch operations for better performance |
+| **✅ Improved Approval Methods** | Better deposit/redeem and batch deposit/redeem approvals |
+| **📈 Enhanced Events & Data** | Price history, P&L, total market cap for individual vaults |
+| **📝 Introduction of 'Terms'** | New concept for atoms and triples semantics |
+| **🏛️ Multiple Vaults per Term** | Pro Rata Vault (1.0) + Bonding Curve Vaults |
+| **🔒 Security Improvements** | Updates from Consensys Diligence audit |
 
-- **Authentication**: Updated authentication mechanisms
-- **Error Handling**: New error response format
-- **Caching**: Updated caching strategies
+### 💡 **What Changed Conceptually**
 
-## Migration Steps
+We have introduced the idea of a **"Term"**. A "Term" refers to an Atom, Triple or Counter-triple as a *concept*. The URI or Data of an Atom, or the Atom IDs contained within a Triple or Counter-Triple belong to the "Term". Any economic state associated with the "Term" is stored in multiple "Vaults" associated with that Term.
 
-### Step 1: Update Dependencies
+#### 🔗 **Term Structure**
 
-Update your GraphQL package to the latest version:
-
-```bash
-npm install @0xintuition/graphql@latest
-# or
-yarn add @0xintuition/graphql@latest
-# or
-pnpm add @0xintuition/graphql@latest
+```
+┌─────────────────────────────────────┐
+│              TERM                   │
+├─────────────────────────────────────┤
+│ 🧩 Atom/Triple/Counter-triple      │
+│ 🏦 Multiple Vaults                 │
+│ 📊 Total Market Cap                │
+│ 💰 Economic State                  │
+└─────────────────────────────────────┘
 ```
 
-### Step 2: Update Client Configuration
+#### 📊 **Market Cap Calculation**
 
-If you're using a custom client configuration, update it to use the new format:
+Each Term has a `total_market_cap` value which is an aggregate market cap of all its constituent Vaults. This is *theoretical* - it represents the arithmetic product of `totalShares` and `currentSharePrice`, not actual `totalAssets`.
 
-```tsx
-// Old configuration
-import { configureClient } from '@0xintuition/graphql'
+> ⚠️ **Note**: The `total_market_cap` will generally be larger than actual `totalAssets` due to slippage effects during liquidation.
 
-configureClient({
-  endpoint: 'https://api.intuition.systems/graphql',
-  headers: {
-    'Authorization': `Bearer ${token}`
-  }
-})
+## 🔄 Migration Checklist
 
-// New configuration
-import { configureClient, API_URL_PROD } from '@0xintuition/graphql'
+### 📋 **Core Schema Changes**
 
-configureClient({
-  apiUrl: API_URL_PROD,
-  headers: {
-    'Authorization': `Bearer ${token}`
-  }
-})
+Update these field names in your GraphQL queries:
+
+| Old Field | New Field | Type Change |
+|-----------|-----------|-------------|
+| `id` | `term_id` | Primary identifier |
+| `vault` | `term` | Nested object (when referring to concept) |
+| `vault` | `vaults(where: { curve_id: {_eq: "[X]" } })` | Specific curve vault |
+| `total_shares` | `total_market_cap` | In term object or specific vault |
+| `block_timestamp` | `created_at` | `TIMESTAMP WITH TIME ZONE NOT NULL` |
+
+### ⏰ **Timestamp Field Updates**
+
+All timestamp fields have been updated:
+
+| Entity | Old Field | New Field | Additional |
+|--------|-----------|-----------|------------|
+| **Atom** | `block_timestamp` | `created_at` | + `updated_at` |
+| **Position** | `block_timestamp` | `created_at` | + `updated_at` |
+| **Vault** | `block_timestamp` | `created_at` | + `updated_at` |
+| **Triple** | `block_timestamp` | `created_at` | - |
+| **Signal** | `block_timestamp` | `created_at` | - |
+| **Deposit** | `block_timestamp` | `created_at` | - |
+| **FeeTransfer** | `block_timestamp` | `created_at` | - |
+| **Redemption** | `block_timestamp` | `created_at` | - |
+
+### 🏦 **Vault Access Changes**
+
+Instead of accessing a single vault, you now need to specify the curve:
+
+```graphql
+# OLD: Single vault access
+vault(where: { id: { _eq: "42" } }) {
+  total_shares
+  total_assets
+}
+
+# NEW: Curve-specific vault access
+vaults(where: {
+  curve_id: { _eq: "1" },
+  term_id: { _eq: "42" }
+}) {
+  total_shares
+  total_assets
+  total_market_cap
+}
 ```
 
-### Step 3: Update Query Hooks
+## 💻 Migration Examples
 
-Update your React Query hooks to use the new generated hooks:
+### 📝 **Example 1: Get Entries Query**
 
-```tsx
-// Old approach
-import { useQuery } from '@tanstack/react-query'
-import { gql } from '@apollo/client'
-
-const GET_ATOM = gql`
-  query GetAtom($id: ID!) {
-    atom(id: $id) {
+```graphql
+# OLD SCHEMA
+query GetEntries($isTypeTypeId: numeric!, $entryTypeId: numeric!, $limit: Int!, $offset: Int!) {
+  triples {
+    subject {
       id
-      content
-      metadata {
-        title
-        author
+      value {
+        thing { ... }
+      }
+      vault {
+        total_shares
       }
     }
   }
-`
-
-function AtomViewer({ atomId }: { atomId: string }) {
-  const { data, loading, error } = useQuery({
-    queryKey: ['atom', atomId],
-    queryFn: () => client.request(GET_ATOM, { id: atomId })
-  })
-  
-  // ... rest of component
 }
 
-// New approach
-import { useGetAtomQuery } from '@0xintuition/graphql'
-
-function AtomViewer({ atomId }: { atomId: string }) {
-  const { data, loading, error } = useGetAtomQuery({
-    variables: { id: atomId }
-  })
-  
-  // ... rest of component
-}
-```
-
-### Step 4: Update Mutation Hooks
-
-Update your mutation hooks to use the new generated hooks:
-
-```tsx
-// Old approach
-import { useMutation } from '@tanstack/react-query'
-
-const CREATE_ATOM = gql`
-  mutation CreateAtom($input: CreateAtomInput!) {
-    createAtom(input: $input) {
-      id
-      content
-      metadata {
-        title
-        author
+# NEW SCHEMA
+query GetEntries($isTypeTypeId: numeric!, $entryTypeId: numeric!, $limit: Int!, $offset: Int!) {
+  triples {
+    subject {
+      term_id
+      atom_value {
+        thing { ... }
+      }
+      term {
+        total_market_cap
       }
     }
   }
-`
-
-function CreateAtomForm() {
-  const [createAtom, { loading, error }] = useMutation({
-    mutationFn: (input: CreateAtomInput) => 
-      client.request(CREATE_ATOM, { input })
-  })
-  
-  // ... rest of component
-}
-
-// New approach
-import { useCreateAtomMutation } from '@0xintuition/graphql'
-
-function CreateAtomForm() {
-  const [createAtom, { loading, error }] = useCreateAtomMutation()
-  
-  // ... rest of component
 }
 ```
 
-### Step 5: Update Error Handling
+### 🔍 **Example 2: Get Entry Query**
 
-Update your error handling to use the new error format:
-
-```tsx
-// Old error handling
-function handleError(error: any) {
-  if (error.graphQLErrors) {
-    error.graphQLErrors.forEach((err: any) => {
-      console.error('GraphQL Error:', err.message)
-    })
+```graphql
+# OLD SCHEMA
+query GetEntry($id: numeric!, $typePredicateId: numeric!, $entryTypeId: numeric!) {
+  atom(id: $id) {
+    id
+    value { ... }
   }
 }
 
-// New error handling
-function handleError(error: any) {
-  if (error.graphQLErrors) {
-    error.graphQLErrors.forEach((err: any) => {
-      const errorCode = err.extensions?.code
-      switch (errorCode) {
-        case 'VALIDATION_ERROR':
-          console.error('Validation error:', err.message)
-          break
-        case 'UNAUTHORIZED':
-          console.error('Unauthorized:', err.message)
-          break
-        case 'NOT_FOUND':
-          console.error('Not found:', err.message)
-          break
-        default:
-          console.error('GraphQL error:', err.message)
-      }
-    })
+# NEW SCHEMA
+query GetEntry($term_id: numeric!, $typePredicateId: numeric!, $entryTypeId: numeric!) {
+  atom(term_id: $term_id) {
+    term_id
+    atom_value { ... }
   }
 }
 ```
 
-## Common Migration Issues
+### 🔎 **Example 3: Search Entries Query**
 
-### TypeScript Errors
+```graphql
+# OLD SCHEMA
+query SearchEntries {
+  atoms(where: {
+    value: { thing: { ... } }
+  }) {
+    id
+    value { ... }
+    vault { total_shares }
+  }
+}
 
-If you encounter TypeScript errors after migration:
-
-1. **Clear TypeScript Cache**: Delete `node_modules/.cache` and restart your TypeScript server
-2. **Regenerate Types**: Run `pnpm codegen:build` to regenerate types
-3. **Update Type Imports**: Update any manual type imports to use the new generated types
-
-### Runtime Errors
-
-If you encounter runtime errors:
-
-1. **Check API Version**: Ensure you're using the correct API version
-2. **Update Queries**: Make sure all queries use the latest schema
-3. **Test Incrementally**: Test each component individually to isolate issues
-
-### Performance Issues
-
-If you experience performance issues:
-
-1. **Optimize Queries**: Use fragments and only request needed fields
-2. **Update Caching**: Use the new caching strategies
-3. **Monitor Network**: Check for unnecessary network requests
-
-## Testing Your Migration
-
-### Automated Tests
-
-Run your existing tests to ensure everything works:
-
-```bash
-npm test
-# or
-yarn test
-# or
-pnpm test
+# NEW SCHEMA
+query SearchEntries {
+  atoms(where: {
+    atom_value: { thing: { ... } }
+  }) {
+    term_id
+    atom_value { ... }
+    term { total_market_cap }
+  }
+}
 ```
 
-### Manual Testing
+### 📊 **Example 4: Order By Changes**
 
-Test key functionality manually:
+```graphql
+# OLD
+order_by: [{ vault: { total_shares: desc } }]
 
-1. **Basic Queries**: Test fetching atoms, triples, and signals
-2. **Mutations**: Test creating and updating data
-3. **Error Handling**: Test error scenarios
-4. **Performance**: Monitor loading times and network requests
+# NEW
+order_by: [{ subject: { term: { total_market_cap: desc } }}]
+```
 
-### Integration Testing
+## 🏦 Bonding Curves
 
-Test your application end-to-end:
+### 📈 **Offset Square Root Curve 2,5e35**
 
-1. **User Flows**: Test complete user journeys
-2. **Edge Cases**: Test error conditions and edge cases
-3. **Performance**: Monitor application performance
+Our first recommended curve follows a "square root" price function pattern with an offset to make the early portion less dramatic:
 
-## Rollback Plan
+| Feature | Description |
+|---------|-------------|
+| **📊 Price Function** | Square root pattern with offset |
+| **🎯 Early Advantage** | Earliest stakers get most advantageous share price |
+| **📈 Growth Pattern** | Share price increases supralinearly (gently) |
+| **💰 Profit Potential** | Users can redeem at higher prices as share price increases |
 
-If you encounter issues during migration:
+### 🔄 **Comparison: Pro-Rata vs Bonding Curve**
 
-1. **Keep Old Version**: Don't delete the old version immediately
-2. **Feature Flags**: Use feature flags to gradually roll out changes
-3. **Monitoring**: Monitor error rates and performance metrics
-4. **Quick Rollback**: Have a plan to quickly rollback if needed
+| Aspect | Pro-Rata (1.0) | Bonding Curve (1.5) |
+|--------|----------------|---------------------|
+| **Share Price** | Always "1" (with fee adjustments) | Dynamic based on curve function |
+| **Profit Potential** | Limited (high activity required) | Significant upside potential |
+| **Risk Level** | Low (minimal downside) | Higher (price can diminish) |
+| **Economic Activity** | High activity needed for profit | Profitable with moderate activity |
 
-## Support
+## 🔧 Smart Contract Updates
 
-If you encounter issues during migration:
+### 📋 **New Bonding Curve Mutators**
 
-1. **Check Documentation**: Review the latest documentation
-2. **Community Support**: Ask questions in the community forums
-3. **Issue Reporting**: Report bugs through the official channels
-4. **Professional Support**: Contact support for enterprise customers
+```solidity
+/// @notice deposit eth into an atom vault and grant ownership of 'shares' to 'receiver'
+function depositAtomCurve(address receiver, uint256 atomId, uint256 curveId) external payable returns (uint256);
+
+/// @notice redeem shares from an atom vault for assets
+function redeemAtomCurve(uint256 percentage, address receiver, uint256 atomId, uint256 curveId) external returns (uint256);
+```
+
+### 🔍 **New Bonding Curve Accessors**
+
+```solidity
+/// @notice returns current share price for a specific curve
+function currentSharePriceCurve(uint256 vaultId, uint256 curveId) external view returns (uint256);
+
+/// @notice returns max amount of shares that can be redeemed
+function maxRedeemCurve(address owner, uint256 vaultId, uint256 curveId) external view returns (uint256);
+
+/// @notice simulates deposit effects and returns estimated shares
+function previewDepositCurve(uint256 assets, uint256 vaultId, uint256 curveId) external view returns (uint256);
+
+/// @notice simulates redemption effects and returns estimated assets
+function previewRedeemCurve(uint256 shares, uint256 vaultId, uint256 curveId) external view returns (uint256);
+```
+
+### ✅ **Updated Approval Method**
+
+```solidity
+/// @notice Set the approval type for a sender to act on behalf of the receiver
+/// @param sender address to set approval for
+/// @param approvalType type of approval to grant (NONE = 0, DEPOSIT = 1, REDEMPTION = 2, BOTH = 3)
+function approve(address sender, ApprovalTypes approvalType) external;
+```
+
+### 📦 **Batch Methods**
+
+```solidity
+/// @notice Batch create atoms and return their vault ids
+function batchCreateAtom(bytes[] calldata atomUris) external payable returns (uint256[] memory);
+
+/// @notice batch create triples and return their vault ids
+function batchCreateTriple(uint256[] calldata subjectIds, uint256[] calldata predicateIds, uint256[] calldata objectIds) external payable returns (uint256[] memory);
+
+/// @notice deposit eth into multiple terms and grant ownership of 'shares' to 'receiver'
+function batchDeposit(address receiver, uint256[] calldata termIds, uint256[] calldata amounts) external payable returns (uint256[] memory);
+
+/// @notice deposit eth into bonding curve vaults
+function batchDepositCurve(address receiver, uint256[] calldata termIds, uint256[] calldata curveIds, uint256[] calldata amounts) external payable returns (uint256[] memory);
+
+/// @notice redeem shares from multiple vaults
+function batchRedeem(uint256 percentage, address receiver, uint256[] calldata ids) external returns (uint256[] memory);
+
+/// @notice redeem shares from bonding curve vaults
+function batchRedeemCurve(uint256 percentage, address receiver, uint256[] calldata termIds, uint256[] calldata curveIds) external returns (uint256[] memory);
+```
+
+## 🚨 Important Notes
+
+### ⚠️ **Claims Deprecation**
+
+If using `claims`, it's suggested to start using `positions` instead, as the positions contain the same information and more. Claims are likely to be sunset in the near future.
+
+### 🧪 **Testing Environment**
+
+> ⚠️ **Caution**: The Dummy 1.5 contract does not contain the same dataset as the 1.0 contract on Base Sepolia. If your app relies on specific data, you may need to add it to the Dummy 1.5 contract for testing.
+
+Once the contract upgrade is completed, the 1.5 contract will have the same data set as the 1.0 version and will live at the same contract address.
+
+## �� Endpoint Changes
+
+| Environment | Old Endpoint | New Endpoint |
+|-------------|--------------|--------------|
+| **Development** | `https://prod.base-sepolia.intuition-api.com/v1/graphql` | `https://prod.base-sepolia-v-1-5.intuition.sh/v1/graphql` |
+
+## 📚 Additional Resources
+
+- 📖 [Official v1.5 Migration Guide](https://tech.docs.intuition.systems/dev/1.5-migration)
+- 🔗 [Bonding Curve Documentation](/guides/bonding-curves)
+- 🛠️ [GraphQL API Reference](/guides/developer-tools/graphql-api)
+- 💬 [Community Support](https://discord.gg/intuition)
 
 ---
 
-*This page will be expanded with more specific migration examples, troubleshooting guides, and best practices.* 
+> 🚀 **Ready to migrate?** Start with our [Quick Start Guide](/guides/quickstart) or explore the [SDK Documentation](/guides/developer-tools/sdks) to begin your v1.5 migration! 

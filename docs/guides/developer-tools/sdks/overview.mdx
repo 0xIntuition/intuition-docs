@@ -6,268 +6,240 @@ sidebar_position: 1
 description: Introduction to Intuition's Software Development Kits and their key features
 ---
 
-# SDKs Overview
+# Intuition SDK Overview
 
-Comprehensive guide to Intuition's Software Development Kits (SDKs) for different platforms and languages. Learn how to integrate Intuition into your applications using our official SDKs.
+The `@0xintuition/sdk` is your all-in-one toolkit for building with the Intuition Protocol. It helps you interact with both the on-chain and off-chain components of the protocol using a clean, typed TypeScript interface.
 
-## Available SDKs
+You can use it to:
 
-### Intuition SDK
+- 🧱 **Create semantic data** (atoms & triples)
+- 🪙 **Deposit ETH into vaults** using dynamic bonding curves
+- 🔍 **Query protocol state** via GraphQL
+- ⚙️ **Integrate GraphQL + smart contracts** together with minimal boilerplate
 
-The Intuition SDK simplifies development with the Intuition backend systems.
+Whether you're building a full dApp, a CLI tool, or just scripting some protocol interactions — this SDK will save you time and prevent bugs.
 
-**Version**: Latest  
-**Downloads/week**: Active
+---
 
-#### Installation
+##  Installation
+
+Install via your favorite package manager:
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Tabs>
+<TabItem value="pnpm" label="pnpm" default>
+
+```bash
+pnpm add @0xintuition/sdk
+```
+
+</TabItem>
+<TabItem value="npm" label="npm">
 
 ```bash
 npm install @0xintuition/sdk
 ```
 
-```bash
-pnpm install @0xintuition/sdk
-```
+</TabItem>
+<TabItem value="bun" label="bun">
 
 ```bash
-bun install @0xintuition/sdk
+bun add @0xintuition/sdk
 ```
 
-## Usage
+</TabItem>
+</Tabs>
 
-The Intuition SDK simplifies reads and writes to the Intuition backend systems, allowing developers to create and manage Atoms and Triples with ease.
+You'll also need:
 
-The SDK requires `viem@2.x.x` to execute reads and writes.
+- A Web3 provider (like MetaMask or WalletConnect)
+- A GraphQL token (only if you want to use protected queries or mutations)
+##  SDK Features & Benefits
 
-### Setup
+| Feature | Benefit |
+|---------|---------|
+| 🔁 **Unified API** | Combines GraphQL + smart contract flows in one toolkit |
+| 🧩 **Typed interface** | Safer development with full IntelliSense + type safety |
+| ⚙️ **Modular** | Use off-chain, on-chain, or both — your choice |
+| ✨ **Fast to start** | Get up and running in just a few lines | 
+## ⚡ Quick Start
+
+Here's how to initialize the SDK in one step:
 
 ```typescript
-import {
-  createPublicClient,
-  createTestClient,
-  createWalletClient,
-  http,
-  privateKeyToAccount,
-  type Chain,
-} from 'viem'
-import { base } from 'viem/chains'
+import { setup } from '@0xintuition/sdk';
 
-export const publicClient = createPublicClient({
-  chain: base,
-  transport: http(),
-})
-
-const account = privateKeyToAccount(
-  '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80',
-)
-export const walletClient = createWalletClient({
-  chain: base,
-  transport: http(),
-  account: account,
-})
+const { client, protocol } = await setup({
+  token: YOUR_GRAPHQL_TOKEN,
+  web3Provider: window.ethereum,
+  network: 'mainnet',
+});
 ```
 
-## Core Operations
+This gives you:
 
-### Reads
+- **client**: for GraphQL-based reads and writes (e.g. querying vaults or creating atoms)
+- **protocol**: for smart contract calls (e.g. deposits, redemptions)
+
+## 🧠 What is an Atom?
+
+Think of an atom as a semantic unit of information — like a digital claim or identity tag. Atoms can be:
+
+- Minted (off-chain + on-chain)
+- Grouped into triples (subject–predicate–object)
+- Deposited into, just like a vault
+
+## 🔧 Core Features
+
+### 🧬 Creating an Atom
+
+Use this when you want to define a new semantic entity.
 
 ```typescript
-import { getAtom, getTriple } from '@0xintuition/sdk'
-
-const atomData = await getAtom('124862')
-const tripleData = await getTriple('54670')
-```
-
-### Triples
-
-```typescript
-import { createAtomFromString, createTripleStatement } from '@0xintuition/sdk'
-
-// Example of creating a triple statement with three atoms
-const atom1 = await createAtomFromString(
-  { walletClient, publicClient, address: multivaultAddress },
-  'atom1',
-)
-const atom2 = await createAtomFromString(
-  { walletClient, publicClient, address: multivaultAddress },
-  'atom2',
-)
-const atom3 = await createAtomFromString(
-  { walletClient, publicClient, address: multivaultAddress },
-  'atom3',
-)
-
-const triple = await createTripleStatement(
-  { walletClient, publicClient, address: multivaultAddress },
-  {
-    args: [atom1.state.vaultId, atom2.state.vaultId, atom3.state.vaultId],
+const atom = await client.createAtom({
+  owner: '0xYourWallet',
+  label: 'test-atom-1',
+  metadata: {
+    name: 'My Atom',
+    description: 'A semantic unit for testing',
   },
-)
+});
 ```
 
-## Atoms
+📘 This creates an off-chain representation. It can later be linked with vaults or used in triples.
 
-### Create Atom from String
+### 🔗 Creating a Triple (S–P–O)
+
+Triples allow you to relate atoms together like:
+
+*Alice → knows → Bob*
 
 ```typescript
-import { createAtomFromString, getEthMultiVaultAddress } from '@0xintuition/sdk'
-
-const ethMultiVaultAddress = getEthMultiVaultAddress(walletClient.chain.id)
-const data = await createAtomFromString(
-  { walletClient, publicClient, address: ethMultiVaultAddress },
-  'is great',
-)
+await client.createTriple({
+  subject: atomIdAlice,
+  predicate: atomIdKnows,
+  object: atomIdBob,
+  curveId: 4, // Optional: attach a bonding curve
+});
 ```
 
-### Create Atom from IPFS URI
+You can use bonding curves to influence the economics of creating or modifying semantic relationships.
+
+### 📈 Previewing a Deposit (Off-chain)
+
+Want to know how many shares a user would receive before they actually send ETH?
 
 ```typescript
-import {
-  createAtomFromIpfsUri,
-  getEthMultiVaultAddress,
-} from '@0xintuition/sdk'
+const preview = await client.previewDeposit({
+  atomId: '123',
+  amountWei: '1000000000000000000', // 1 ETH
+  curveId: 4,
+});
 
-const ethMultiVaultAddress = getEthMultiVaultAddress(walletClient.chain.id)
-const data = await createAtomFromIpfsUri(
-  { walletClient, publicClient, address: ethMultiVaultAddress },
-  'ipfs://bafkreib7534cszxn2c6qwoviv43sqh244yfrxomjbealjdwntd6a7atq6u',
-)
+console.log(preview.shares); // e.g. 0.82 shares
 ```
 
-### Create Atom from IPFS Upload
+Great for frontend apps that want to show "you'll receive X shares for Y ETH" in real time.
+
+### 💸 Making a Deposit (On-chain)
+
+Once the user confirms, you can submit the transaction:
 
 ```typescript
-import {
-  createAtomFromIpfsUpload,
-  getEthMultiVaultAddress,
-} from '@0xintuition/sdk'
-
-const ethMultiVaultAddress = getEthMultiVaultAddress(walletClient.chain.id)
-const data = await createAtomFromIpfsUpload(
-  {
-    walletClient,
-    publicClient,
-    address: ethMultiVaultAddress,
-    pinataApiKey: 'your-pinata-api-key',
-  },
-  {
-    url: 'https://www.intuition.systems/',
-    name: 'Intuition',
-    description: 'A decentralized trust protocol',
-    image: 'https://example.com/image.png',
-    tags: ['decentralized', 'trust', 'protocol'],
-    twitter: 'https://twitter.com/intuition_systems',
-    github: 'github.com/intuition-systems',
-  },
-)
+const tx = await protocol.vaults.depositAtomCurve('123', '1000000000000000000', 4);
+await tx.wait();
 ```
 
-### Create a Thing
+This deposits ETH into the atom vault, mints vault shares for the user, and enforces any curve logic associated.
 
-```typescript
-import { createThing, getEthMultiVaultAddress } from '@0xintuition/sdk'
 
-const ethMultiVaultAddress = getEthMultiVaultAddress(walletClient.chain.id)
-const data = await createThing(
-  { walletClient, publicClient, address: ethMultiVaultAddress },
-  {
-    url: 'https://www.intuition.systems/',
-    name: 'Intuition',
-    description: 'A decentralized trust protocol',
-    image: 'https://example.com/image.png',
-  },
-)
-```
 
-### Create an Ethereum Account
+## 💻 Real Example: React Component
 
-```typescript
-import {
-  createEthereumAccount,
-  getEthMultiVaultAddress,
-} from '@0xintuition/sdk'
+Here's a self-contained UI snippet that previews and executes a deposit:
 
-const ethMultiVaultAddress = getEthMultiVaultAddress(walletClient.chain.id)
-const data = await createEthereumAccount(
-  { walletClient, publicClient, address: ethMultiVaultAddress },
-  {
-    address: '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045',
-    chainId: 1, // Mainnet
-  },
-)
-```
+```tsx
+import React from 'react';
+import { setup } from '@0xintuition/sdk';
 
-## Response Format
+function DepositComponent({ atomId }) {
+  const [shares, setShares] = React.useState(null);
 
-After successfully creating a new Atom, the SDK will return a data object containing the URI, transaction hash, and other relevant state.
+  React.useEffect(() => {
+    (async () => {
+      const { client } = await setup({ 
+        token: TOKEN, 
+        web3Provider: window.ethereum, 
+        network: 'mainnet' 
+      });
+      const preview = await client.previewDeposit({ 
+        atomId, 
+        amountWei: '1000000000000000000', 
+        curveId: 4 
+      });
+      setShares(preview.shares);
+    })();
+  }, [atomId]);
 
-```typescript
-const data: {
-    uri: string
-    transactionHash: `0x${string}`;
-    state: {
-        sender: `0x${string}`;
-        receiver: `0x${string}`;
-        receiverTotalSharesInVault: bigint;
-        senderAssetsAfterTotalFees: bigint;
-        sharesForReceiver: bigint;
-        entryFee: bigint;
-        vaultId: bigint;
-        isTriple: boolean;
-        isAtomWallet: boolean;
-    };
+  const handleDeposit = async () => {
+    const { protocol } = await setup({ 
+      token: TOKEN, 
+      web3Provider: window.ethereum, 
+      network: 'mainnet' 
+    });
+    const tx = await protocol.vaults.depositAtomCurve(atomId, '1000000000000000000', 4);
+    await tx.wait();
+    alert('✅ Deposit confirmed');
+  };
+
+  return (
+    <div>
+      <p>Estimated Shares: {shares}</p>
+      <button onClick={handleDeposit}>Deposit 1 ETH</button>
+    </div>
+  );
 }
 ```
 
-## Examples
+## 🛠️ Advanced Examples
 
-### React Component Example
+### Get Vault Address for Atom
 
 ```typescript
-import * as React from 'react'
-import { createThing, getEthMultiVaultAddress } from '@0xintuition/sdk'
-import { useChainId, usePublicClient, useWalletClient } from 'wagmi'
-
-type IntuitionButton = React.HTMLAttributes<HTMLElement>
-
-const IntuitionButton = ({ children, className }: IntuitionButton) => {
-  const chainId = useChainId()
-  const publicClient = usePublicClient()
-  const { data: walletClient } = useWalletClient()
-
-  const handleClick = async () => {
-    const ethMultiVaultAddress = getEthMultiVaultAddress(chainId)
-    const data = await createThing(
-      { walletClient, publicClient, address: ethMultiVaultAddress },
-      {
-        url: 'https://www.intuition.systems/',
-        name: 'Intuition',
-        description: 'A decentralized trust protocol.',
-        image: 'https://example.com/image.png',
-      },
-    )
-  }
-
-  return <button onClick={handleClick}>Create Thing</button>
-}
-
-export { IntuitionButton }
+const vaultAddress = protocol.vaults.getAtomVault(atomId);
 ```
 
-## Development
+### Read Curve Configuration
 
-### Building
+Useful if you're rendering UI based on curve behavior:
 
-Run `pnpm build` to build the library.
+```typescript
+const curve = await protocol.curves.getCurveConfig(4);
+```
 
-### Running Unit Tests
+### Register a Custom Curve (Admin Only)
 
-Run `pnpm test` to execute the unit tests.
+Want to test your own economic model?
 
-### Contributing
+```typescript
+const curveId = await protocol.curves.registerCustomCurve('0xYourCurveContractAddress');
+```
 
-Contributions are welcome! Please see the main repository for more information on how to contribute.
+## 🔍 Why This SDK is Worth Using
 
----
+| Feature | What It Means for You |
+|---------|----------------------|
+| 🔁 **Unified API** | No more stitching GraphQL + Ethers logic yourself |
+| 🧩 **Fully typed** | Safe autocomplete in VS Code, fewer bugs |
+| ⚙️ **Modular** | Use only what you need: client, protocol, or both |
+| 🚀 **Fast to onboard** | No manual ABI wiring, GraphQL schema juggling, or hacks |
 
-The SDKs provide the foundation for building applications on Intuition across different platforms and languages. 
+## 📚 Resources
+
+- 📘 [npmjs/Intuition](https://www.npmjs.com/package/@0xintuition/sdk)
+- 🌐 [Portal UI](https://portal.intuition.systems)
+- 🔍 [GraphQL Explorer](/guides/developer-tools/graphql-api)
+- 💬 [Intuition Discord](https://discord.gg/intuition)
+

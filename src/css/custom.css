@@ -295,7 +295,14 @@ details p {
 }
 
 .menu__list-item a.menu__link--active,
-.navbar__item a.navbar__link--active,
+.navbar__item a.navbar__link--active {
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+  border-radius: 4px !important;
+  background: var(--ifm-color-emphasis-100) !important;
+  color: var(--ifm-font-color-base) !important;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease !important;
+}
+
 .menu__list-item a.menu__link:hover,
 .navbar__item a.navbar__link:hover {
   border: 1px solid rgba(255, 255, 255, 0.4) !important;
@@ -303,6 +310,91 @@ details p {
   background: var(--ifm-color-emphasis-100) !important;
   color: var(--ifm-font-color-base) !important;
   transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease !important;
+}
+
+/* Animated glowing borders for main guide section cards - HOVER ONLY */
+.homepage-card[href*="vision"]:hover,
+.homepage-card[href*="speed-run"]:hover,
+.homepage-card[href*="hub"]:hover,
+.homepage-card[href*="developer-tools"]:hover {
+  position: relative !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+}
+
+.homepage-card[href*="vision"]:hover::before,
+.homepage-card[href*="speed-run"]:hover::before,
+.homepage-card[href*="hub"]:hover::before,
+.homepage-card[href*="developer-tools"]:hover::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 8px;
+  padding: 2px;
+  background: linear-gradient(45deg,
+    rgba(255, 255, 255, 0.3), rgba(240, 240, 240, 0.2),
+    rgba(255, 255, 255, 0.4), rgba(245, 245, 245, 0.3),
+    rgba(255, 255, 255, 0.3), rgba(250, 250, 250, 0.2),
+    rgba(255, 255, 255, 0.4), rgba(240, 240, 240, 0.3),
+    rgba(255, 255, 255, 0.3));
+  background-size: 400% 400%;
+  animation: subtleGlow 6s ease-in-out infinite;
+  z-index: -1;
+  display: block !important;
+}
+
+.homepage-card[href*="vision"]:hover::after,
+.homepage-card[href*="speed-run"]:hover::after,
+.homepage-card[href*="hub"]:hover::after,
+.homepage-card[href*="developer-tools"]:hover::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  right: 2px;
+  bottom: 2px;
+  background: var(--docs-color-background);
+  border-radius: 6px;
+  z-index: -1;
+  display: block !important;
+}
+
+/* Change text color to black on hover for guide cards */
+.homepage-card[href*="vision"]:hover,
+.homepage-card[href*="speed-run"]:hover,
+.homepage-card[href*="hub"]:hover,
+.homepage-card[href*="developer-tools"]:hover {
+  color: #000000 !important;
+  text-decoration: none !important;
+}
+
+.homepage-card[href*="vision"]:hover h3,
+.homepage-card[href*="speed-run"]:hover h3,
+.homepage-card[href*="hub"]:hover h3,
+.homepage-card[href*="developer-tools"]:hover h3 {
+  color: #000000 !important;
+}
+
+.homepage-card[href*="vision"]:hover p,
+.homepage-card[href*="speed-run"]:hover p,
+.homepage-card[href*="hub"]:hover p,
+.homepage-card[href*="developer-tools"]:hover p {
+  color: #000000 !important;
+}
+
+@keyframes subtleGlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 .menu__list-item a.menu__link--active::before,
