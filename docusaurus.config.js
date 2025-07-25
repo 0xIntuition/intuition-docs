@@ -187,7 +187,6 @@ const config = {
           'solidity',
           'typescript',
           'javascript',
-          'math',
           'cpp',
         ],
         magicComments: [
