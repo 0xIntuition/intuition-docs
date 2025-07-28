@@ -76,4 +76,8 @@ Signal in Intuition refers to any action that expresses intent, belief, or suppo
 
 Users hold positions on Atoms and Triples, signaling their stance by increasing their balance on the relevant entities. Signals contribute to the nuanced expression of trust and belief, allowing for a dynamic and tiered system of preferences within the decentralized ecosystem.
 
-It is important to note that creating an Atom or Triple is distinctly different from taking a position on them. While users have the option to both create and take a position on an Atom/Triple at the time of creation, this Initial Deposit is not required. A user who makes no Initial Deposit will only create an Atom or Triple, which does not constitute a Signal. 
+It is important to note that creating an Atom or Triple is distinctly different from taking a position on them. While users have the option to both create and take a position on an Atom/Triple at the time of creation, this Initial Deposit is not required. A user who makes no Initial Deposit will only create an Atom or Triple, which does not constitute a Signal.
+
+# Fundamentals
+
+*Content coming soon...* 

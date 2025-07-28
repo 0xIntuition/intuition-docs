@@ -35,19 +35,43 @@ module.exports = {
       label: 'Developer Tools',
       items: [
         'guides/developer-tools/deep-dive',
-        'guides/developer-tools/graphql-api',
-        'guides/developer-tools/sdks',
+        {
+          type: 'category',
+          label: 'Architecture',
+          items: [
+            'guides/developer-tools/contracts/contract-architecture',
+          ],
+        },
+        {
+          type: 'category',
+          label: 'Primitives',
+          items: [
+            {
+              type: 'category',
+              label: 'Fundamentals',
+              items: [
+                'guides/developer-tools/deep-dive/primitives/fundamentals/atoms',
+                'guides/developer-tools/deep-dive/primitives/fundamentals/triples',
+                'guides/developer-tools/deep-dive/primitives/fundamentals/signal',
+                'guides/developer-tools/deep-dive/primitives/fundamentals/fees-rewards',
+                'guides/developer-tools/deep-dive/primitives/fundamentals/state-interpretations',
+              ],
+            },
+            'guides/developer-tools/deep-dive/primitives',
+          ],
+        },
         {
           type: 'category',
           label: 'Contracts',
           items: [
-            'guides/developer-tools/contracts/contract-architecture',
             'guides/developer-tools/contracts/ethmultivault',
             'guides/developer-tools/contracts/atomwallet',
             'guides/developer-tools/contracts/errors',
             'guides/developer-tools/audit-reports',
           ],
         },
+        'guides/developer-tools/graphql-api',
+        'guides/developer-tools/sdks',
       ],
     },
 
@@ -58,6 +82,7 @@ module.exports = {
         'guides/bonding-curves/index',
       ],
     },
+
     {
       type: 'category',
       label: 'Intuition Hub',
