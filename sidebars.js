@@ -7,7 +7,6 @@ module.exports = {
       items: [
         'guides/overview/index',
         'guides/overview/why-intuition',
-        'guides/overview/the-primitives',
         'guides/overview/the-economics',
         'guides/overview/key-terms',
       ],
@@ -51,6 +50,7 @@ module.exports = {
         },
       ],
     },
+
     {
       type: 'category',
       label: 'Bonding Curves',
@@ -65,6 +65,8 @@ module.exports = {
         'guides/hub/index',
         'guides/hub/explorer',
         'guides/hub/bridge',
+        'guides/hub/portal',
+        'guides/hub/browser-extension',
         'guides/hub/rpc',
         'guides/hub/network-health',
       ],

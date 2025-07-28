@@ -14,21 +14,9 @@ Intuition's vision is to create a future where trust online is programmable, por
 
 ### **Core Principles**
 
-<div style={{ 
-  background: 'var(--ifm-color-emphasis-100)',
-  border: '2px solid var(--ifm-color-primary)',
-  borderRadius: '12px', 
-  padding: '24px', 
-  margin: '20px 0',
-  boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-  color: 'var(--ifm-font-color-base)'
-}}>
-
 - **People and organizations can prove and discover knowledge across apps and ecosystems**
 - **Social and factual claims are verifiable and incentive-aligned**
 - **Developers have the tools to build collaborative, data-rich applications**
-
-</div>
 
 By refining, expressing, and managing identity and data, Intuition gives every entity better "intuition" in their digital interactions — ultimately enhancing the trustworthiness of the entire ecosystem.
 
