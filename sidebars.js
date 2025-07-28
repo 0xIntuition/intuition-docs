@@ -6,7 +6,6 @@ module.exports = {
       label: 'Overview',
       items: [
         'guides/overview/index',
-        'guides/overview/vision',
         'guides/overview/why-intuition',
         'guides/overview/the-primitives',
         'guides/overview/the-economics',
@@ -39,7 +38,24 @@ module.exports = {
         'guides/developer-tools/deep-dive',
         'guides/developer-tools/graphql-api',
         'guides/developer-tools/sdks',
-        'guides/developer-tools/contracts',
+        {
+          type: 'category',
+          label: 'Contracts',
+          items: [
+            'guides/developer-tools/contracts/contract-architecture',
+            'guides/developer-tools/contracts/ethmultivault',
+            'guides/developer-tools/contracts/atomwallet',
+            'guides/developer-tools/contracts/errors',
+            'guides/developer-tools/audit-reports',
+          ],
+        },
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Bonding Curves',
+      items: [
+        'guides/bonding-curves/index',
       ],
     },
     {

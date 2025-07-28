@@ -6,101 +6,90 @@ sidebar_position: 1
 description: Deep dive into Intuition's system architecture and design principles
 ---
 
-# The Intuition System
+# The Intuition System Architecture
 
-Intuition is an ecosystem of technologies composing a universal and permissionless knowledge graph, capable of handling both objective facts and subjective opinions. Intuition's vertically integrated knowledge stack offers a comprehensive suite of developer tooling to streamline the development of the next generation of technologies powered by humanity's collective intuition.
+## Overview
 
-## 🌐 Open Social Knowledge Graph
 
-Intuition's open social knowledge graph is built to harness collective wisdom in a structured, permissionless, and fully decentralized manner. The system's resulting state is open and accessible to everyone, enabling limitless use cases and expanding the information available about the countless entities we engage with daily—whether it's a pseudonym, a smart contract, an organization, or a piece of content. This approach empowers users with a richer understanding of the ecosystem and facilitates more informed interactions.
+Intuition is an ecosystem of technologies composing a universal and permissionless knowledge graph, capable of handling both objective facts and subjective opinions. Intuition’s vertically integrated knowledge stack offers a comprehensive suite of developer tooling to streamline the development of the next generation of technologies powered by humanity’s collective intuition.
 
-## 📊 State of the Graph
+![Intuition System Overview](/img/intro_int.png)
 
-The Intuition system leverages a combination of on-chain and off-chain interactions to create, store, and manage data within the Intuition knowledge graph in the following ways:
+Intuition’s open social knowledge graph is built to harness collective wisdom in a structured, permissionless, and fully decentralized manner. The system’s resulting state is open and accessible to everyone, enabling limitless use cases and expanding the information available about the countless entities we engage with daily—whether it’s a pseudonym, a smart contract, an organization, or a piece of content. This approach empowers users with a richer understanding of the ecosystem and facilitates more informed interactions.
 
-### 🔗 On-Chain State
 
-The on-chain state of Intuition is composed of the nodes, edges, and weights of the Intuition Graph. Each node represents an **Atom**, each edge represents a **Triple** which displays the relationships between Atoms, and weight is represented by users' **Signal** with respect to each node and edge, expressing 'who is presently attesting to what'. You can interpret this state as 'things, the relationships between those things, and the weights of things and their relationships'. The 'things' themselves are stored off-chain, as each Atom points to some arbitrary URI.
+## Core Architecture Components
 
-More specifically, the on-chain state of Intuition is composed of:
+### Protocol Layer
 
-#### 🧩 **Atoms**
-- Point to any arbitrary URI, their associated Smart Contract Wallets, and their respective Vaults
-- May link to any arbitrary data via their `atomURI`, allowing any data across the web to be captured in the Intuition System
+- **Smart Contracts**: Handle vaults, bonding curves, attestations, and staking logic
 
-#### 🔗 **Triples**
-- Each composed of 3 Atoms, and their positive and negative Vaults
-- These vaults are used for attestations **For** and **Against** each Triple, respectively
-- Allow for the expression of semantic relationships between Atoms, to express arbitrarily-complex statements
+### Network Layer
 
-#### ⚡ **Signals**
-- Representative of 'who is attesting to what'
-- Signal is dictated by balances with respect to each Atom/Triple vault
-- If a user's position with respect to a vault is 0, this state is interpreted as the user saying nothing
-- If a user's position is some non-negative number, the state is interpreted as their conviction with respect to that Atom/Triple being weighted proportionately
+- **Decentralized Communication**: Handles data distribution and real-time synchronization
+- **Indexing Infrastructure**: Merges on-chain and off-chain data into a unified state
 
-The unified system state - which can be likened to the nodes, edges, and weights of the knowledge graph.
+### Application Layer
 
-### 🌍 Off-Chain State
+- **GraphQL API**: Unified interface to access structured knowledge
+- **SDKs**: Developer libraries to build applications
+- **Modules**: Reusable components, UIs, templates, and apps like the Portal
 
-All Atoms point to some arbitrary URI, meaning that the on-chain state of Intuition can represent any on-chain or off-chain data. This means that Intuition can reference anything across the web—a Medium publication, a Spotify song, an IPFS CID, a Ceramic Stream, an ETH address—anything with an associated URI can be mapped on Intuition.
+## System State
 
-You can think of this architecture as similar to the data storage methods often used for NFTs, combining on-chain and off-chain elements. This approach leverages on-chain ownership and immutability while maintaining the flexibility and richness of off-chain metadata. In most NFTs, smart contracts mint an ERC-721 tokens, recorded on-chain for ownership and transfer tracking, while the comprehensive metadata is stored off-chain.
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
-The **Intuition Backend** indexes the on-chain and off-chain state, and unifies it into a singular, traversable knowledge graph—allowing it to be easily queried. The Intuition Backend can be run by anyone, allowing anyone to replicate the Intuition Knowledge graph locally for their own purposes. The Intuition Backend transforms the incoming data at different levels of opinionated interpretation, and allows developers to subscribe to a queue of data at any level of interpretation.
+<Tabs>
+<TabItem value="onchain" label="On-Chain">
 
-The Intuition team itself also runs the Intuition Backend, and indexes the data into a unified set of databases—serving a unified API on top of the aggregated dataset, for ease of developer experience.
+- **Atoms**: Point to any arbitrary URI; represent entities
+- **Triples**: Semantic statements made up of three Atoms (Subject, Predicate, Object)
+- **Signals**: Balances in vaults indicate user conviction
 
-## 🏗️ Foundation
+</TabItem>
+<TabItem value="offchain" label="Off-Chain">
 
-### The Trust Protocol
+- **URIs can link to**: IPFS, Ceramic, ENS, Ethereum addresses, etc.
+- **Mirrors common NFT architectures** — combining immutability with rich metadata
 
-The Intuition protocol provides the infrastructure for a new information economy, using cryptoeconomic incentives to promote the expression, structuring, and curation of high-quality, semantic data. Specifically, the protocol is designed to promote:
+</TabItem>
+<TabItem value="backend" label="Backend">
 
-- **The creation of useful data**
-- **Convergence on universal canonical identifiers** for all things
-- **Convergence on data standards, schemas, and formats**
+- **Indexes both layers** and serves unified queries via API
+- **Can be run independently** or use hosted version
 
-The Intuition protocol can be thought of as a consensus mechanism for the 'state of the state' of decentralized systems. While traditional consensus mechanisms allow a distributed group of participants to come to consensus on the state of a system (such as a ledger, or a 'world computer'), Intuition allows for distributed consensus on the 'state of the state'—that is, the language that is spoken on top of the system. This goal of encouraging all systems to speak the same language is in pursuit of the realization of the **Semantic Web**—a maximally machine-readable, interoperable internet.
+</TabItem>
+</Tabs>
 
-By rewarding users for contributing useful data and fostering consensus on canonical identifiers and shared data standards, the Intuition protocol creates a unified framework where data can be transparently sourced, verified, and enriched.
+## Trust Protocol & Economic Layer
 
-Intuition's infrastructure also facilitates the creation of decentralized identity and reputation data via peer-to-peer attestations about any subject and its decentralized identifier (DID). If someone endorses you as trustworthy, that metadata will no longer be associated with just the LinkedIn you, or the Twitter you. Instead of being stuck within a given platform, the knowledge tied to DIDs can be leveraged and contributed to by any application.
+The Intuition Protocol is a semantic consensus layer:
 
-The Intuition Protocol is designed to be completely unopinionated, allowing anything to attest to anything about anything, while retaining a semantic structure that allows the data to be easily traversed and utilized. This approach encourages the creation of valuable data and makes navigating the resulting information straightforward. Users can search for a specific person or smart contract to view associated claims or use a set of tags to identify entities matching particular criteria. Rather than making judgments about the validity of claims, Intuition enables the principle of 'anyone can say anything about anything,' and provides robust tools to explore, analyze, and filter what has been said.
+- **Rewards creation and curation** of valuable data
+- **Encourages convergence** on canonical identifiers and standards
+- **Enables decentralized reputation systems**
 
-While the protocol remains completely unopinionated, data can be arbitrarily filtered higher up the stack. For instance, different algorithms can be run to only display data that might be relevant to a specific user, or a user can filter attestations for only voices they trust.
+It operates unopinionatedly — allowing anything to say anything about anything — while enabling filtering, ranking, and trust scoring on higher layers.
 
-## 🔧 Services
+## Developer-Facing Services
 
-### 📊 Indexing
+### Indexing
 
-The Indexing layer of Intuition seamlessly integrates both on-chain and off-chain data into a unified, semantic knowledge graph. This structured framework provides developers with access to a rich, context-aware dataset that transcends traditional data silos, allowing for a web-wide view that enhances the depth and precision of applications built on the protocol. By indexing data from smart contracts, decentralized storage solutions, and even traditional web data sources, Intuition creates a comprehensive ecosystem where relationships between entities are clearly defined and easily navigable.
+- **Merges on-chain and off-chain data** into a semantic graph
+- **Supports complex identity, DeFi, and governance use cases**
 
-With powerful indexing capability, applications gain enhanced reliability and flexibility, supporting use cases such as advanced DeFi analytics, verifiable reputation systems, and cross-platform identity solutions. This comprehensive approach not only simplifies data retrieval but also empowers developers to build more innovative applications that make full use of the Web3 ecosystem.
+### Data Access / API
 
-### 🔌 Data Access / API
+- **Query real-time knowledge graph state**
+- **Supports streaming, subscriptions, and tagged metadata**
 
-Intuition's Trust Graph is designed for maximum accessibility and usability by applications. The Data Access layer allows developers to stream real-time data from the knowledge graph to the database best suited for their use case. The knowledge graph can also be queried directly, empowering developers to build responsive, data-driven applications and ensures that queries can be executed with high efficiency, enabling applications to surface insights that would otherwise remain hidden. Developers can benefit from features like real-time data updates and semantic tagging, which facilitate deeper analysis and improved decision-making.
+### SDK
 
-## 🧩 Modules
+- **Attestations can be embedded** in existing UX (e.g., likes, follows)
+- **Data is portable, composable, and rewardable**
 
-Modules are any application-layer development integrated with Intuition, such as a component, component library, or platform. While our vision involves every app across the web being integrated with Intuition, we are focusing on building a few applications ourselves to bootstrap the ecosystem by seeding utility of the knowledge graph.
+### Templates & Modules
 
-### 🎨 1UI
-
-1UI is a smart component library integrated with Intuition, allowing developers to easily integrate Intuition-integrated components into applications of their choosing. Think of a Profile card, loaded with all of the information about a user. 1UI is an extension of shadcn, which allows shadcn to be used as a base library in most instances.
-
-### 📋 Templates
-
-Intuition offers templates and pre-built integrations to significantly reduce development complexity. Removing much of the integration work allows developers to focus on innovating, achieve faster deployments, and ensure a high-quality user experience.
-
-### 🛠️ SDK
-
-Intuition's SDK empowers developers to seamlessly integrate attestations into their existing features, enhancing the visibility, utility, and incentives of the data they already generate. For example, a "thumbs up" for a Web3 app on a product hunt site or a "like" on social platform content can exist on Intuition's open graph instead of being locked within app-specific silos. This data can then be easily queried and displayed across applications, enriching the user experience. Development efforts in the future will focus on building out and enhancing the SDK to support evolving developer needs and new use cases.
-
-### 🏠 In-House Applications
-
-To demonstrate the capabilities of the system, the Intuition team is also building a suite of in-house applications, meant to provide users and developers alike with an understanding of the system. These applications are also designed to allow developers a jumping-off point for the development of their apps, regardless of their preferred medium—whether a web app, mobile app, browser extension, or anything in-between.
-
-Intuition's initial applications allow users to create and navigate attestations regarding people and things within the web3 ecosystem, a space where qualitative reputation and identity data is acutely lacking. Leveraging users' social graphs (i.e., the people and organizations they "follow") and distributed trust algorithms (e.g., EigenTrust), the application will be able to prioritize the display of relevant activity and tailor attestation weighting. In-house applications are built with composability and re-usability in mind and aim to make it as easy as possible for others to also build on top of Intuition through the open-sourcing of our front-end libraries. 
+- **UI libraries and components** (e.g., 1UI built on shadcn)
+- **In-house apps** to jumpstart exploration and integration

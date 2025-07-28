@@ -8,210 +8,90 @@ description: Guide to writing data using GraphQL mutations in the Intuition API
 
 # Writes
 
-This section covers how to write data to the Intuition system using GraphQL mutations.
+## GraphQL Mutations
 
-## Basic Mutations
+Our GraphQL API provides convenient mutations to help structure and publish Atom metadata following common schemas and best practices. While the protocol supports any URI scheme, these mutations offer an opinionated approach to creating well-structured, interoperable data.
 
-### Creating Atoms
+## Current Schema Support
 
-```graphql
-mutation CreateAtom($input: CreateAtomInput!) {
-  createAtom(input: $input) {
-    id
-    content
-    metadata {
-      title
-      author
-      createdAt
-    }
-  }
-}
-```
-
-### Creating Triples
+Currently, our default schema is the **Thing schema**. This provides essential properties for describing any entity:
 
 ```graphql
-mutation CreateTriple($input: CreateTripleInput!) {
-  createTriple(input: $input) {
-    id
-    subject {
-      id
-      content
-    }
-    predicate
-    object {
-      id
-      content
-    }
-    metadata {
-      createdAt
-      confidence
-    }
+mutation UploadThing(
+  $name: String!
+  $description: String!
+  $image: String!
+  $url: String!
+) {
+  uploadThing(
+    arg1: { name: $name, description: $description, image: $image, url: $url }
+  ) {
+    cid
   }
 }
 ```
 
-### Creating Signals
+### Example Usage
 
-```graphql
-mutation CreateSignal($input: CreateSignalInput!) {
-  createSignal(input: $input) {
-    id
-    type
-    data
-    timestamp
-    source
-  }
+```json
+{
+  "name": "My First Thing",
+  "description": "This is an example description",
+  "image": "ipfs://Qm...", // IPFS URI for image
+  "url": "https://example.com" // Reference URL
 }
 ```
 
-## Advanced Mutations
+The mutation returns an IPFS CID that can be used when creating an Atom:
 
-### Batch Operations
-
-```graphql
-mutation CreateMultipleAtoms($inputs: [CreateAtomInput!]!) {
-  createMultipleAtoms(inputs: $inputs) {
-    atoms {
-      id
-      content
-      metadata {
-        title
-        createdAt
-      }
-    }
-    errors {
-      index
-      message
-    }
-  }
-}
+```typescript
+const { cid } = await uploadThing(thingData)
+const atomId = await createAtom(cid)
 ```
 
-### Conditional Mutations
+## Upcoming Schema Support
 
-```graphql
-mutation UpdateAtomIfExists($id: ID!, $input: UpdateAtomInput!) {
-  updateAtomIfExists(id: $id, input: $input) {
-    id
-    content
-    metadata {
-      title
-      updatedAt
-    }
-  }
-}
-```
-
-## React Query Mutations
-
-### Using Generated Mutation Hooks
-
-```tsx
-import { useCreateAtomMutation } from '@0xintuition/graphql'
-
-function CreateAtomForm() {
-  const [createAtom, { loading, error }] = useCreateAtomMutation()
-
-  const handleSubmit = async (formData: FormData) => {
-    try {
-      const result = await createAtom({
-        variables: {
-          input: {
-            content: formData.get('content') as string,
-            metadata: {
-              title: formData.get('title') as string,
-              author: formData.get('author') as string
-            }
-          }
-        }
-      })
-      
-      console.log('Atom created:', result.data?.createAtom)
-    } catch (err) {
-      console.error('Error creating atom:', err)
-    }
-  }
-
-  return (
-    <form onSubmit={handleSubmit}>
-      {/* form fields */}
-      <button type="submit" disabled={loading}>
-        {loading ? 'Creating...' : 'Create Atom'}
-      </button>
-      {error && <div>Error: {error.message}</div>}
-    </form>
-  )
-}
-```
-
-### Optimistic Updates
-
-```tsx
-import { useCreateAtomMutation, useGetAtomsQuery } from '@0xintuition/graphql'
-
-function AtomList() {
-  const { data, refetch } = useGetAtomsQuery()
-  const [createAtom] = useCreateAtomMutation()
-
-  const handleCreateAtom = async (input: CreateAtomInput) => {
-    await createAtom({
-      variables: { input },
-      onSuccess: () => {
-        // Refetch the list to show the new atom
-        refetch()
-      },
-      onError: (error) => {
-        console.error('Failed to create atom:', error)
-      }
-    })
-  }
-
-  return (
-    <div>
-      {/* atom list */}
-      <CreateAtomForm onSubmit={handleCreateAtom} />
-    </div>
-  )
-}
-```
-
-## Error Handling
-
-### Validation Errors
-
-```tsx
-function handleMutationError(error: any) {
-  if (error.graphQLErrors) {
-    error.graphQLErrors.forEach((err: any) => {
-      if (err.extensions?.code === 'VALIDATION_ERROR') {
-        // Handle validation errors
-        console.error('Validation error:', err.message)
-      }
-    })
-  }
-}
-```
-
-### Network Errors
-
-```tsx
-function handleNetworkError(error: any) {
-  if (error.networkError) {
-    console.error('Network error:', error.networkError.message)
-    // Implement retry logic or show user-friendly message
-  }
-}
-```
+We are actively expanding our mutation support to include schemas from **schema.org**. Additionally, we'll be adding support for **CAIP-10 addresses** to enable cross-chain identity resolution.
 
 ## Best Practices
 
-1. **Validate Input**: Always validate input data before sending mutations
-2. **Handle Errors**: Implement comprehensive error handling
-3. **Optimistic Updates**: Use optimistic updates for better UX
-4. **Batch Operations**: Use batch mutations when possible
-5. **Type Safety**: Leverage generated types for mutation inputs
+### Complete Metadata
+Provide as much relevant metadata as possible to improve the Atom's utility across different contexts.
 
----
+### Persistent Storage
+All metadata is stored on IPFS, ensuring data availability and immutability.
 
-*This page will be expanded with more mutation examples, advanced patterns, and error handling strategies.* 
+### URI Standards
+Use standard URI formats:
+- **IPFS**: `ipfs://Qm...`
+- **HTTP(S)**: `https://...`
+- **CAIP-10** (coming soon): `eip155:1:0x...`
+
+## Example Workflows
+
+### Basic Thing Creation
+
+```typescript
+// 1. Upload metadata
+const thingData = {
+  name: 'Example Thing',
+  description: 'Description...',
+  image: 'ipfs://Qm...',
+  url: 'https://...',
+}
+
+const { cid } = await uploadThing(thingData)
+
+// 2. Create Atom with returned CID
+const atomId = await createAtom(cid)
+```
+
+## TypeScript Integration
+
+We maintain a package, `graphql` within our `intuition-ts` monorepo that auto-generates TypeScript types and React hooks to make integrations easier. This includes type-safe mutations, queries, and React hooks for all supported schemas.
+
+We are actively finalizing patterns to properly externalize this package, which will be released shortly. This guide will be updated to provide example implementations once the package is released.
+
+## Future Schema Support
+
+We are also actively expanding our mutation support to include schemas from **schema.org** as well as **CAIP-10 addresses** to enable cross-chain identity resolution. 

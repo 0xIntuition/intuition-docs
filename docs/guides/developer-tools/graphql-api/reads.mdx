@@ -8,83 +8,282 @@ description: Guide to reading data using GraphQL queries in the Intuition API
 
 # Reads
 
-This section covers how to read data from the Intuition system using GraphQL queries.
+## GraphQL API
 
-## Basic Queries
+Our GraphQL API provides a flexible and efficient way to interact with our atomic data structure system. Through this documentation, you'll learn how to query and manipulate atomic data using our GraphQL endpoints. To help you explore and test the API interactively, we've integrated Apollo Explorer sandbox environments throughout this documentation.
 
-### Fetching Single Atoms
+These interactive playgrounds allow you to experiment with queries in real-time, seeing exactly how the API responds to different inputs and parameters.
+
+This documentation will be split into sections by primitive, such as `Atoms`, `Triples`, and so on.
+
+:::tip
+We maintain a GraphQL SDK for our API that includes these queries with additional hooks for React developers to use directly in their apps. You can find it here: [https://github.com/0xIntuition/intuition-ts/tree/main/packages/graphql](https://github.com/0xIntuition/intuition-ts/tree/main/packages/graphql)
+
+Our SDK utilizes GraphQL Codegen and Fragments, but for the sake of clarity and simplicity the query examples in the playgrounds won't utilize Fragments.
+:::
+
+## Backend Architecture Overview
+
+This architecture diagram illustrates the data flow and integration stack for the Intuition backend. We ingest data from two primary RPC sources: our EthMultiVault contract and a ChainLinkOracle contract. This blockchain data is processed in a Docker environment indexed through Substreams, parsing and structuring the data into a PostgreSQL database.
+
+Hasura then provides a GraphQL API layer on top of Postgres, enabling flexible data querying powering our app layers. This architecture provides efficient blockchain data indexing, reliable storage, and scalable API access. Our upcoming GraphQL SDK will further streamline the process for app developers looking to consume our data for building and extending the Intuition protocol.
+
+## GraphQL Playground
+
+The interactive Apollo Sandbox below lets you explore our GraphQL API in real-time. You can write and execute queries, inspect the schema, and see live responses from our API. We've set up this environment to help you get familiar with our data structure and available operations.
+
+Try starting with some basic queries like fetching atoms or exploring relationship triples. Here's a query to get you started:
+
+import ExplorerEmbed from '@site/src/components/ExplorerEmbed';
+
+<ExplorerEmbed />
 
 ```graphql
-query GetAtom($id: ID!) {
-  atom(id: $id) {
+query GetAtoms(
+  $limit: Int
+  $offset: Int
+  $orderBy: [atoms_order_by!]
+  $where: atoms_bool_exp
+) {
+  atoms_aggregate(where: $where) {
+    aggregate {
+      count
+    }
+  }
+  atoms(limit: $limit, offset: $offset, order_by: $orderBy, where: $where) {
+    # AtomMetadata fields
     id
-    content
-    metadata {
-      title
-      author
-      createdAt
-      tags
+    image
+    label
+    emoji
+    type
+    wallet_id
+    creator {
+      id
+      label
+      image
+    }
+
+    # AtomTxn fields
+    block_number
+    block_timestamp
+    transaction_hash
+    creator_id
+
+    # AtomVaultDetails fields
+    vault_id
+    wallet_id
+    vault {
+      position_count
+      total_shares
+      current_share_price
+      positions_aggregate {
+        aggregate {
+          count
+          sum {
+            shares
+          }
+        }
+      }
+      positions {
+        id
+        account {
+          label
+          id
+        }
+        shares
+      }
     }
   }
 }
 ```
 
-### Fetching Multiple Atoms
+You can start with this initial `GetAtoms` query in the Apollo Sandbox or write your own. The schema Explorer (docs tab) on the left side of the sandbox shows all available queries, mutations, and types. As you type, you'll get real-time autocompletion and documentation hints to help you build your queries. You can then click the play button to see the response and then adjust your query as you explore our data.
+
+Need inspiration? Check out the example queries in the GraphQL API Example Queries page to get started, or jump right in and start exploring!
+
+## Query Examples
+
+### GetAtoms
+
+The `GetAtoms` query is the primary way to fetch atom data from the Intuition system. It provides comprehensive information about atoms including metadata, transaction details, and vault information.
 
 ```graphql
-query GetAtoms($limit: Int, $offset: Int) {
-  atoms(limit: $limit, offset: $offset) {
+query GetAtoms(
+  $limit: Int
+  $offset: Int
+  $orderBy: [atoms_order_by!]
+  $where: atoms_bool_exp
+) {
+  atoms_aggregate(where: $where) {
+    aggregate {
+      count
+    }
+  }
+  atoms(limit: $limit, offset: $offset, order_by: $orderBy, where: $where) {
+    # AtomMetadata fields
     id
-    content
-    metadata {
-      title
-      createdAt
+    image
+    label
+    emoji
+    type
+    wallet_id
+    creator {
+      id
+      label
+      image
+    }
+
+    # AtomTxn fields
+    block_number
+    block_timestamp
+    transaction_hash
+    creator_id
+
+    # AtomVaultDetails fields
+    vault_id
+    wallet_id
+    vault {
+      position_count
+      total_shares
+      current_share_price
+      positions_aggregate {
+        aggregate {
+          count
+          sum {
+            shares
+          }
+        }
+      }
+      positions {
+        id
+        account {
+          label
+          id
+        }
+        shares
+      }
     }
   }
 }
 ```
 
-### Fetching Triples
+### GetAccounts
+
+Query account information including balances and positions.
 
 ```graphql
-query GetTriples($subject: ID, $predicate: String, $object: ID) {
-  triples(subject: $subject, predicate: $predicate, object: $object) {
+query GetAccounts($limit: Int, $offset: Int) {
+  accounts(limit: $limit, offset: $offset) {
+    id
+    label
+    image
+    positions {
+      id
+      shares
+      vault {
+        id
+        atom {
+          label
+          image
+        }
+      }
+    }
+  }
+}
+```
+
+### GetTriples
+
+Fetch relationship triples between atoms.
+
+```graphql
+query GetTriples($limit: Int, $offset: Int) {
+  triples(limit: $limit, offset: $offset) {
     id
     subject {
       id
-      content
+      label
+      image
     }
     predicate
     object {
       id
-      content
+      label
+      image
     }
     metadata {
-      createdAt
       confidence
+      created_at
     }
   }
 }
 ```
 
-## Advanced Queries
+### GetPositions
+
+Query user positions in atom vaults.
+
+```graphql
+query GetPositions($accountId: String!) {
+  positions(where: { account_id: { _eq: $accountId } }) {
+    id
+    shares
+    vault {
+      id
+      atom {
+        label
+        image
+      }
+      current_share_price
+      total_shares
+    }
+  }
+}
+```
+
+### GetVaults
+
+Fetch vault information including share prices and positions.
+
+```graphql
+query GetVaults($limit: Int, $offset: Int) {
+  vaults(limit: $limit, offset: $offset) {
+    id
+    atom {
+      id
+      label
+      image
+    }
+    current_share_price
+    total_shares
+    position_count
+    positions_aggregate {
+      aggregate {
+        count
+        sum {
+          shares
+        }
+      }
+    }
+  }
+}
+```
+
+## Utilities
 
 ### Search and Filtering
 
 ```graphql
-query SearchAtoms($query: String!, $filters: AtomFilters) {
-  searchAtoms(query: $query, filters: $filters) {
+query SearchAtoms($query: String!, $filters: atoms_bool_exp) {
+  atoms(where: $filters) {
     id
-    content
-    metadata {
-      title
-      tags
-      createdAt
-    }
-    relevance
-    highlights {
-      field
-      snippet
+    label
+    image
+    type
+    creator {
+      id
+      label
     }
   }
 }
@@ -98,11 +297,9 @@ query GetAtomsPaginated($first: Int, $after: String) {
     edges {
       node {
         id
-        content
-        metadata {
-          title
-          createdAt
-        }
+        label
+        image
+        type
       }
       cursor
     }
@@ -116,69 +313,19 @@ query GetAtomsPaginated($first: Int, $after: String) {
 }
 ```
 
-### Aggregations
+## React Integration
 
-```graphql
-query GetAtomStats($filters: AtomFilters) {
-  atomStats(filters: $filters) {
-    totalCount
-    averageContentLength
-    topTags {
-      tag
-      count
-    }
-    createdAtDistribution {
-      date
-      count
-    }
-  }
-}
-```
-
-## React Query Integration
-
-### Basic Query Hook
+### Using the GraphQL SDK
 
 ```tsx
-import { useGetAtomQuery } from '@0xintuition/graphql'
-
-function AtomViewer({ atomId }: { atomId: string }) {
-  const { data, loading, error } = useGetAtomQuery({
-    variables: { id: atomId }
-  })
-
-  if (loading) return <div>Loading...</div>
-  if (error) return <div>Error: {error.message}</div>
-
-  const atom = data?.atom
-  if (!atom) return <div>Atom not found</div>
-
-  return (
-    <div>
-      <h1>{atom.metadata?.title}</h1>
-      <p>{atom.content}</p>
-      <div>Created: {atom.metadata?.createdAt}</div>
-    </div>
-  )
-}
-```
-
-### Infinite Queries
-
-```tsx
-import { useGetAtomsInfiniteQuery } from '@0xintuition/graphql'
+import { useGetAtomsQuery } from '@0xintuition/graphql'
 
 function AtomList() {
-  const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    loading,
-    error
-  } = useGetAtomsInfiniteQuery({
-    variables: { first: 10 },
-    getNextPageParam: (lastPage) => lastPage.atoms.pageInfo.endCursor
+  const { data, loading, error } = useGetAtomsQuery({
+    variables: {
+      limit: 10,
+      offset: 0
+    }
   })
 
   if (loading) return <div>Loading...</div>
@@ -186,113 +333,13 @@ function AtomList() {
 
   return (
     <div>
-      {data?.pages.map((page, i) => (
-        <div key={i}>
-          {page.atoms.edges.map(({ node }) => (
-            <div key={node.id}>
-              <h3>{node.metadata?.title}</h3>
-              <p>{node.content}</p>
-            </div>
-          ))}
+      {data?.atoms.map(atom => (
+        <div key={atom.id}>
+          <h3>{atom.label}</h3>
+          <img src={atom.image} alt={atom.label} />
+          <p>Type: {atom.type}</p>
         </div>
       ))}
-      
-      {hasNextPage && (
-        <button 
-          onClick={() => fetchNextPage()}
-          disabled={isFetchingNextPage}
-        >
-          {isFetchingNextPage ? 'Loading more...' : 'Load more'}
-        </button>
-      )}
-    </div>
-  )
-}
-```
-
-### Optimistic Queries
-
-```tsx
-import { useGetAtomQuery } from '@0xintuition/graphql'
-
-function OptimisticAtomViewer({ atomId }: { atomId: string }) {
-  const { data, loading, error } = useGetAtomQuery({
-    variables: { id: atomId },
-    staleTime: 5 * 60 * 1000, // 5 minutes
-    cacheTime: 10 * 60 * 1000, // 10 minutes
-  })
-
-  return (
-    <div>
-      {loading && <div>Loading...</div>}
-      {error && <div>Error: {error.message}</div>}
-      {data?.atom && (
-        <div>
-          <h1>{data.atom.metadata?.title}</h1>
-          <p>{data.atom.content}</p>
-        </div>
-      )}
-    </div>
-  )
-}
-```
-
-## Error Handling
-
-### Query Error Types
-
-```tsx
-function handleQueryError(error: any) {
-  if (error.graphQLErrors) {
-    error.graphQLErrors.forEach((err: any) => {
-      switch (err.extensions?.code) {
-        case 'NOT_FOUND':
-          console.error('Resource not found:', err.message)
-          break
-        case 'UNAUTHORIZED':
-          console.error('Unauthorized access:', err.message)
-          break
-        case 'VALIDATION_ERROR':
-          console.error('Validation error:', err.message)
-          break
-        default:
-          console.error('GraphQL error:', err.message)
-      }
-    })
-  }
-}
-```
-
-### Retry Logic
-
-```tsx
-import { useGetAtomQuery } from '@0xintuition/graphql'
-
-function ResilientAtomViewer({ atomId }: { atomId: string }) {
-  const { data, loading, error, refetch } = useGetAtomQuery({
-    variables: { id: atomId },
-    retry: 3,
-    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
-  })
-
-  const handleRetry = () => {
-    refetch()
-  }
-
-  if (loading) return <div>Loading...</div>
-  if (error) {
-    return (
-      <div>
-        <div>Error: {error.message}</div>
-        <button onClick={handleRetry}>Retry</button>
-      </div>
-    )
-  }
-
-  return (
-    <div>
-      <h1>{data?.atom?.metadata?.title}</h1>
-      <p>{data?.atom?.content}</p>
     </div>
   )
 }
@@ -300,13 +347,13 @@ function ResilientAtomViewer({ atomId }: { atomId: string }) {
 
 ## Best Practices
 
-1. **Use Fragments**: Create reusable fragments for common fields
+1. **Use the SDK**: Leverage our GraphQL SDK for type-safe queries
 2. **Optimize Queries**: Only request the fields you need
 3. **Handle Loading States**: Always show loading indicators
 4. **Implement Error Boundaries**: Catch and handle errors gracefully
-5. **Cache Strategically**: Use React Query's caching capabilities
-6. **Pagination**: Implement proper pagination for large datasets
+5. **Use Pagination**: Implement proper pagination for large datasets
+6. **Cache Strategically**: Use React Query's caching capabilities
 
 ---
 
-*This page will be expanded with more query patterns, performance optimization techniques, and advanced caching strategies.* 
+*For more examples and advanced patterns, check out our [GraphQL SDK](https://github.com/0xIntuition/intuition-ts/tree/main/packages/graphql) and [Example Queries](/guides/developer-tools/graphql-api/query-examples) page.* 

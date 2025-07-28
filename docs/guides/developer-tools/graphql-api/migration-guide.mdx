@@ -6,11 +6,11 @@ sidebar_position: 5
 description: Guide to migrating from v1.0 to v1.5 of the Intuition GraphQL API
 ---
 
-# 🚀 v1.5 Migration Guide
+# v1.5 Migration Guide
 
 **Abstract**: The Intuition API is being updated to support exciting new features, and developers using the API will need to make adjustments to their queries to continue using it. This document serves as a comprehensive guide for that process.
 
-## 📊 Current Status
+## Current Status
 
 The Base Sepolia and Base Mainnet 1.5 backend is already live and accessible:
 
@@ -21,20 +21,20 @@ The Base Sepolia and Base Mainnet 1.5 backend is already live and accessible:
 
 ## ✨ New Features
 
-### 🎯 **Core Enhancements**
+### Core Enhancements
 
 | Feature | Description |
 |---------|-------------|
 | **🏦 Bonding Curve Vaults** | New vault types with dynamic pricing models |
 | **📋 Bonding Curve Registry** | Centralized registry for curve management |
-| **⚡ Improved Batch Methods** | Enhanced batch operations for better performance |
+| **Improved Batch Methods** | Enhanced batch operations for better performance |
 | **✅ Improved Approval Methods** | Better deposit/redeem and batch deposit/redeem approvals |
-| **📈 Enhanced Events & Data** | Price history, P&L, total market cap for individual vaults |
-| **📝 Introduction of 'Terms'** | New concept for atoms and triples semantics |
-| **🏛️ Multiple Vaults per Term** | Pro Rata Vault (1.0) + Bonding Curve Vaults |
+| **Enhanced Events & Data** | Price history, P&L, total market cap for individual vaults |
+| **Introduction of 'Terms'** | New concept for atoms and triples semantics |
+| **Multiple Vaults per Term** | Pro Rata Vault (1.0) + Bonding Curve Vaults |
 | **🔒 Security Improvements** | Updates from Consensys Diligence audit |
 
-### 💡 **What Changed Conceptually**
+### What Changed Conceptually
 
 We have introduced the idea of a **"Term"**. A "Term" refers to an Atom, Triple or Counter-triple as a *concept*. The URI or Data of an Atom, or the Atom IDs contained within a Triple or Counter-Triple belong to the "Term". Any economic state associated with the "Term" is stored in multiple "Vaults" associated with that Term.
 
@@ -51,7 +51,7 @@ We have introduced the idea of a **"Term"**. A "Term" refers to an Atom, Triple 
 └─────────────────────────────────────┘
 ```
 
-#### 📊 **Market Cap Calculation**
+#### Market Cap Calculation
 
 Each Term has a `total_market_cap` value which is an aggregate market cap of all its constituent Vaults. This is *theoretical* - it represents the arithmetic product of `totalShares` and `currentSharePrice`, not actual `totalAssets`.
 

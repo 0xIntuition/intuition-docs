@@ -38,4 +38,15 @@ The platform's economic security is ensured through:
 - Anti-manipulation measures
 - Regular economic audits
 
+## Dynamic Pricing with Bonding Curves
+
+Intuition uses bonding curves to create dynamic pricing mechanisms that automatically adjust based on supply and demand. This enables:
+
+- **Automated Market Making**: Liquidity is provided automatically through mathematical curves
+- **Early Incentives**: Early participants get better prices, encouraging adoption
+- **Supply Control**: Prices increase as more tokens are minted, preventing inflation
+- **Economic Alignment**: Pricing automatically reflects the value of underlying assets
+
+Learn more about [Bonding Curves](/guides/bonding-curves) and how they power Intuition's economic model.
+
 This economic framework ensures sustainable growth while maintaining the platform's security and reliability. 

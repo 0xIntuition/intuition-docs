@@ -1,8 +1,4 @@
 {
   "label": "Bonding Curves",
-  "position": 3,
-  "link": {
-    "type": "generated-index",
-    "description": "Learn about bonding curves, their economic principles, and how to implement them in Intuition applications."
-  }
+  "position": 3
 } 

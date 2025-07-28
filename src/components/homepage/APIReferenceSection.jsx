@@ -6,13 +6,9 @@ import ThemedImage from '@theme/ThemedImage';
 
 export default function APIReferenceSection() {
   return (
-    <section className="no-underline-links relative px-6 mb-32">
-      <Head>
-        <link rel="prefetch" href="/static/landing-page/api-ref-light.png" />
-        <link rel="prefetch" href="/static/landing-page/api-ref-dark.png" />
-      </Head>
+    <section className="no-underline-links py-20 px-4">
       <div 
-        className="relative mx-auto flex w-full max-w-7xl flex-col items-center gap-10 rounded-2xl bg-gradient-to-r from-black to-zinc-800 px-6 py-20 text-center text-white dark:from-zinc-100 dark:to-white dark:text-black lg:flex-row lg:p-20 lg:text-left"
+        className="relative mx-auto flex w-full max-w-7xl flex-col items-center gap-12 rounded-2xl bg-gradient-to-r from-black to-zinc-800 px-8 py-16 text-center text-white dark:from-zinc-100 dark:to-white dark:text-black lg:flex-row lg:p-16 lg:text-left"
         style={{
           position: 'relative',
         }}
@@ -21,13 +17,13 @@ export default function APIReferenceSection() {
           href="/graphql"
           aria-label="API Reference"
           target="_blank"
-          className="absolute top-8 right-8 flex h-16 w-16 items-center justify-center rounded-full bg-zinc-600/40 dark:bg-transparent"
+          className="absolute top-6 right-6 flex h-12 w-12 items-center justify-center rounded-full bg-zinc-600/40 dark:bg-transparent"
         >
-          <ArrowUpRight className="h-6 w-6 text-zinc-400 dark:text-black" />
+          <ArrowUpRight className="h-5 w-5 text-zinc-400 dark:text-black" />
         </Link>
         <div className="relative z-10 flex-1">
-          <h2 className="text-4xl">GraphQL API Reference</h2>
-          <p className="text-zinc-400">
+          <h2 className="text-3xl lg:text-4xl font-bold mb-4">GraphQL API Reference</h2>
+          <p className="text-lg text-zinc-400 mb-6">
             Easily read data from the Intuition knowledge graph using our GraphQL API. We've created a GraphQL playground and example queries to help you get started.
           </p>
           <Link
@@ -36,8 +32,8 @@ export default function APIReferenceSection() {
           >
             Get started with Intuition GraphQL &rarr;
           </Link>
-          <ul className="mt-10 flex list-none flex-col gap-4 text-left lg:pl-0">
-            <li className="flex flex-col gap-1">
+          <ul className="mt-8 flex list-none flex-col gap-6 text-left lg:pl-0">
+            <li className="flex flex-col gap-2">
               <Link
                 href="/guides/graphql/quickstart"
                 className="group font-jakarta font-semibold text-current"
@@ -51,7 +47,7 @@ export default function APIReferenceSection() {
                 See all of a subject's claims made, and claims about about them.
               </div>
             </li>
-            <li className="flex flex-col gap-1">
+            <li className="flex flex-col gap-2">
               <Link
                 href="/guides/graphql/quickstart"
                 className="group font-jakarta font-semibold text-current"
@@ -65,7 +61,7 @@ export default function APIReferenceSection() {
                 Separate the signal from the noise by filtering results by a user's connections.
               </div>
             </li>
-            <li className="flex flex-col gap-1">
+            <li className="flex flex-col gap-2">
               <Link
                 href="/guides/graphql/quickstart"
                 className="group font-jakarta font-semibold text-current"

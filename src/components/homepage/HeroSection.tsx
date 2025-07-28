@@ -34,6 +34,14 @@ const PRODUCTS = [
     darkImage: '/img/hero3.png',
     text: "Intuition weaves scattered facts into a cryptographically trusted Web of Trust, so humans and machines can instantly surface authoritative answers, complete with provenance trails and reputation scores for any subject.",
   },
+  {
+    title: 'Explore Bonding Curves',
+    link: '/guides/bonding-curves',
+    icon: CurrencyDollarEuroFilled,
+    lightImage: '/img/hero2.png',
+    darkImage: '/img/hero2.png',
+    text: "Discover how bonding curves create dynamic pricing mechanisms that automatically adjust based on supply and demand. Learn about automated market making and economic incentives.",
+  },
 ];
 
 function HeroProduct({
@@ -57,16 +65,16 @@ function HeroProduct({
       )}
     >
       <div className="p-6 !pb-0">
-        <h3 className="mb-1.5 flex items-center gap-3 font-jakarta group-hover:text-primary">
-          <Icon className="h-7 w-7" />
+        <h3 className="mb-3 flex items-center gap-3 font-jakarta text-lg font-semibold group-hover:text-primary">
+          <Icon className="h-6 w-6" />
           <div>
             {title}
             {/* {beta && <span className="font-normal text-text-400"> (Beta)</span>} */}
           </div>
         </h3>
-        <p className="mb-0 text-sm text-zinc-400">{text}</p>
+        <p className="mb-0 text-sm leading-relaxed text-zinc-400">{text}</p>
       </div>
-      <div className="flex justify-end px-6 pt-4">
+      <div className="flex justify-end px-6 pt-6">
         <ThemedImage
           sources={{
             light: lightImage,
@@ -82,20 +90,20 @@ function HeroProduct({
 
 export default function HeroSection() {
   return (
-    <div className="noise-bg w-full py-16 px-4">
+    <div className="noise-bg w-full py-20 px-4">
       <div className="mx-auto max-w-7xl">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Hero Text Cell */}
-          <div className="flex flex-col justify-center p-6 lg:p-12">
-            <h2 className="mb-4 font-jakarta text-5xl font-bold">
-              Give your project <span className="italic">Intuition</span>.
-            </h2>
-            <p className="text-lg text-text-400">
-              Gain plug‑and‑play verifiable data, decentralized identity, and reputation for your app: query or submit signed data in one call, skip building reputation layers, and earn token rewards whenever the data you publish is used.
-            </p>
-          </div>
+        {/* Hero Text Section */}
+        <div className="text-center mb-16">
+          <h2 className="mb-6 font-jakarta text-5xl lg:text-6xl font-bold">
+            Give your project <span className="italic">Intuition</span>.
+          </h2>
+          <p className="text-lg lg:text-xl text-text-400 max-w-4xl mx-auto">
+            Gain plug‑and‑play verifiable data, decentralized identity, and reputation for your app: query or submit signed data in one call, skip building reputation layers, and earn token rewards whenever the data you publish is used.
+          </p>
+        </div>
 
-          {/* Product Cards */}
+        {/* Product Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {PRODUCTS.map((product) => (
             <div key={product.title} className="h-full">
               <HeroProduct {...product} />

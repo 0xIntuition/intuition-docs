@@ -15,38 +15,40 @@ function SDK({ icon, to, name }: { icon: string; name: string; to?: string }) {
 
 export default function SDKs() {
   return (
-    <div className="mx-auto mb-32 flex w-full max-w-5xl flex-col items-center text-center p-4 py-0">
-      <span className="mb-2 uppercase tracking-wider text-text-400">
-        SDK Documentation
-      </span>
+    <div className="py-20 mx-auto w-full max-w-7xl px-4">
+      <div className="flex flex-col items-center text-center">
+        <span className="mb-3 uppercase tracking-wider text-text-400">
+          SDK Documentation
+        </span>
 
-      <h3 className="mb-12 text-4xl">
-        Tap into the Intuition hive mind.
-      </h3>
+        <h3 className="mb-8 text-4xl lg:text-5xl font-bold">
+          Tap into the Intuition hive mind.
+        </h3>
 
-      <div className="mb-10">
-        <h4 className="mb-2 text-2xl">Packages</h4>
+        <div className="w-full max-w-4xl">
+          <h4 className="mb-3 text-2xl font-semibold">Packages</h4>
 
-        <p className="mb-6 text-text-400">
-          Build faster with our prebuilt components, queries, and more.
-        </p>
+          <p className="mb-8 text-lg text-text-400">
+            Build faster with our prebuilt components, queries, and more.
+          </p>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 place-items-center justify-center mx-auto max-w-4xl">
-          <SDK
-            name="Protocol Package"
-            to="/protocol-package"
-            icon="/static/landing-page/sdk-icons/react.png"
-          />
-          <SDK
-            name="GraphQL Package"
-            to="/graphql-package"
-            icon="/static/landing-page/sdk-icons/react.png"
-          />
-          <SDK
-            name="1UI"
-            to="/sdks/1ui"
-            icon="/static/landing-page/sdk-icons/react.png"
-          />
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 place-items-center justify-center">
+            <SDK
+              name="Protocol Package"
+              to="/protocol-package"
+              icon="/static/landing-page/sdk-icons/react.png"
+            />
+            <SDK
+              name="GraphQL Package"
+              to="/graphql-package"
+              icon="/static/landing-page/sdk-icons/react.png"
+            />
+            <SDK
+              name="1UI"
+              to="/sdks/1ui"
+              icon="/static/landing-page/sdk-icons/react.png"
+            />
+          </div>
         </div>
       </div>
     </div>

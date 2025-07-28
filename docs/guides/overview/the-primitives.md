@@ -38,4 +38,13 @@ The security framework provides:
 - Built-in access controls
 - Emergency response mechanisms
 
+## Economic Primitives
+
+Intuition's economic primitives include:
+- **Bonding Curves**: Dynamic pricing mechanisms for assets and tokens
+- **Trust Bonds**: Staking mechanisms for data verification
+- **Reward Systems**: Incentive structures for network participation
+
+Learn more about [Bonding Curves](/guides/bonding-curves) and how they enable automated market making and dynamic pricing in the Intuition ecosystem.
+
 These primitives work together to create a comprehensive development environment that addresses the core challenges in blockchain development. 

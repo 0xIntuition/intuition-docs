@@ -46,14 +46,14 @@ To preview the production build:
 npm run serve
 ```
 
-## 📚 Documentation Structure
+## Documentation Structure
 
 - `/docs` - Main documentation content
   - `/guides` - User guides and tutorials
 - `/src` - Source code for custom components and styles
 - `/static` - Static assets like images and files
 
-## 🛠️ Available Scripts
+## Available Scripts
 
 - `npm run dev` - Start development server
 - `npm run build` - Build the site for production
@@ -67,7 +67,7 @@ npm run serve
 
 We welcome contributions to improve our documentation! Please see our [Contributing Guide](CONTRIBUTING.md) for details on how to submit pull requests, report issues, and contribute to the documentation.
 
-## 📝 License
+## License
 
 This project is licensed under the terms specified in the [LICENSE](LICENSE) file.
 

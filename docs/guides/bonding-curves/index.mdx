@@ -1,16 +1,14 @@
 ---
 id: bonding-curves
 title: Bonding Curves
-sidebar_label: Introduction
+sidebar_label: Bonding Curves
 sidebar_position: 1
-description: Introduction to bonding curves and their role in the Intuition ecosystem
+description: Learn about bonding curves, their economic principles, and how to implement them in Intuition applications
 ---
 
 # Bonding Curves
 
 Bonding curves define how the price of an asset changes based on supply and demand. In the Intuition Protocol, they allow vaults to dynamically price semantic assets like atoms and triples.
-
-##  What is a Bonding Curve?
 
 A bonding curve is a pricing mechanism — it determines how much ETH a user pays (or gets back) when depositing to or redeeming from a vault. This lets projects:
 
@@ -29,6 +27,17 @@ Intuition uses bonding curves in the EthMultiVault system to handle deposits and
 | **Staking Derivatives** | Price increases with TVL, modeling yield or scarcity. |
 | **Protocol Governance** | Curves can align incentives for governance participation. |
 | **Custom Economies** | Plug in your own math logic via custom curves. |
+
+##  Design Philosophy
+
+Bonding curves in Intuition Protocol are modular by design:
+
+- **Registry-based routing**: Vaults remain clean and upgrade-safe.
+- **Symmetrical math API**: All curves implement the same interface.
+- **Upgradeable curves**: Developers can ship custom curves anytime — no need to upgrade the vault.
+
+In upcoming versions (V2), we'll simplify things even further by removing suffixes like `depositAtomCurve`, replacing them with a unified API keyed by `curveId`.
+
 
 ## How Bonding Curves Fit into the Protocol
 
@@ -52,7 +61,8 @@ BondingCurveRegistry ──→ BaseCurve (Linear, OffsetProgressive, custom...)
 
 ##  Curve Types
 
-### 1. Linear Curve (curveId = 1)
+### Linear Curve 
+#### (curveId = 1)
 
 A simple, pro-rata pricing model where every deposit gets the same rate:
 
@@ -61,10 +71,11 @@ price = totalAssets / totalShares;
 ```
 
 This is the default math embedded directly into EthMultiVault, but we include a separate LinearCurve contract for compatibility and future flexibility.
-
-💡 **Great for simple, predictable token issuance.**
-
-### 2. Offset Progressive Curve (curveId = 4)
+:::tip
+ Great for simple, predictable token issuance.
+:::
+### Offset Progressive Curve 
+#### (curveId = 4)
 
 A more dynamic curve where price increases linearly based on total supply:
 
@@ -85,11 +96,21 @@ Return = (m/2) ∗ [2 ∗ (s + offset) ∗ r − r²]
 ```
 
 Where:
+```math
 - **s** = current shares
 - **r** = shares being redeemed
+```
+:::tip 
+Ideal for data markets and staking derivatives** — you can reward early supporters and make each additional share more expensive.
+:::
 
-💡 **Ideal for data markets and staking derivatives** — you can reward early supporters and make each additional share more expensive.
+## Interactive Demo
 
+Try out different bonding curve types and see how they affect pricing:
+
+import BondingCurveDemo from '@site/src/components/BondingCurveDemo';
+
+<BondingCurveDemo />
 
 ##  Code Examples
 
@@ -97,7 +118,7 @@ Where:
 
 Deposit ETH into a vault with the Offset Progressive curve:
 
-```cpp
+```solidity
 EthMultiVault.depositAtomCurve{value: amountETH}(
     msg.sender,   // receiver of shares
     atomId,       // which atom to deposit into
@@ -130,15 +151,6 @@ vault.setBondingCurveConfig(address(registry), curveId); // optional
 
 You only need to implement the BaseCurve interface to plug in.
 
-##  Design Philosophy
-
-Bonding curves in Intuition Protocol are modular by design:
-
-- **Registry-based routing**: Vaults remain clean and upgrade-safe.
-- **Symmetrical math API**: All curves implement the same interface.
-- **Upgradeable curves**: Developers can ship custom curves anytime — no need to upgrade the vault.
-
-In upcoming versions (V2), we'll simplify things even further by removing suffixes like `depositAtomCurve`, replacing them with a unified API keyed by `curveId`.
 
 ## Share Display and User Experience
 
@@ -157,9 +169,9 @@ Intuition displays share values in a user-friendly format to make ownership easi
 - Each share = 100,000 raw units
 
 ### No Impact on Positions
-
-⚠️ **Important**: This is purely a display change. Your actual positions and the underlying smart contracts remain unchanged.
-
+:::info
+**Important**: This is purely a display change. Your actual positions and the underlying smart contracts remain unchanged.
+:::
 ##  Summary
 
 - Bonding curves are a flexible pricing tool for atoms and triples.
@@ -168,7 +180,6 @@ Intuition displays share values in a user-friendly format to make ownership easi
 - The system is secure, upgrade-safe, and open to new economic designs.
 - Share display is optimized for user experience while preserving contract integrity.
 
-If you're integrating with the protocol and want help designing your own curve — or understanding which one fits your use case — reach out in our Discord.
 
 ---
 
