@@ -20,7 +20,7 @@ The Intuition Explorer provides a comprehensive view of all activity on the Intu
 - Monitor network activity
 - Verify transactions
 - Explore addresses and their interactions
-- Track network health and performance
+- Track network performance
 
 ## Usage
 

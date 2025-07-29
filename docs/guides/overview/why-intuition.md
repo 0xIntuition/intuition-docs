@@ -1,5 +1,9 @@
 ---
-sidebar_position: 5
+id: why-intuition
+title: Why Intuition?
+sidebar_label: Why Intuition?
+sidebar_position: 2
+description: Understanding the challenges Intuition addresses and our unique approach
 ---
 # Why Intuition?
 

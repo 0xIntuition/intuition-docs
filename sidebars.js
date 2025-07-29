@@ -53,8 +53,6 @@ module.exports = {
                 'guides/developer-tools/deep-dive/primitives/fundamentals/atoms',
                 'guides/developer-tools/deep-dive/primitives/fundamentals/triples',
                 'guides/developer-tools/deep-dive/primitives/fundamentals/signal',
-                'guides/developer-tools/deep-dive/primitives/fundamentals/fees-rewards',
-                'guides/developer-tools/deep-dive/primitives/fundamentals/state-interpretations',
               ],
             },
             'guides/developer-tools/deep-dive/primitives',
@@ -93,7 +91,7 @@ module.exports = {
         'guides/hub/portal',
         'guides/hub/browser-extension',
         'guides/hub/rpc',
-        'guides/hub/network-health',
+        // 'guides/hub/network-health', // Hidden for now - can be uncommented to restore
       ],
     },
     {

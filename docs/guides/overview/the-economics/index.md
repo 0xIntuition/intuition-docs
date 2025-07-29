@@ -1,5 +1,9 @@
 ---
-sidebar_position: 3
+id: the-economics
+title: The Economics
+sidebar_label: Overview
+sidebar_position: 1
+description: Understanding Intuition's economic model and incentives
 ---
 
 # The Economics
@@ -59,7 +63,7 @@ Intuition uses bonding curves to create dynamic pricing mechanisms that automati
 - **Supply Control**: Prices increase as more tokens are minted, preventing inflation
 - **Economic Alignment**: Pricing automatically reflects the value of underlying assets
 
-Learn more about [Bonding Curves](/guides/bonding-curves) and how they power Intuition's economic model.
+Learn more about [Bonding Curves](./bonding-curves) and how they power Intuition's economic model.
 
 ## Token Economics
 

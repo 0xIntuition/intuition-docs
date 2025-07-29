@@ -42,7 +42,7 @@ const guides: Guide[] = [
     title: 'Understanding Bonding Curves',
     icon: CurrencyDollarEuroFilled,
     text: 'Learn about dynamic pricing mechanisms and automated market making with bonding curves.',
-    link: '/guides/bonding-curves',
+    link: '/guides/overview/the-economics/bonding-curves',
   },
 ];
 

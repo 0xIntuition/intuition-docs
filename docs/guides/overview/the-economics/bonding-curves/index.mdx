@@ -18,8 +18,7 @@ A bonding curve is a pricing mechanism — it determines how much ETH a user pay
 
 Intuition uses bonding curves in the EthMultiVault system to handle deposits and redemptions for both atoms (individual semantic claims) and triples (subject–predicate–object sets).
 
-
-##  Real-World Use Cases
+## Real-World Use Cases
 
 | Use Case | How Bonding Curves Help |
 |----------|-------------------------|
@@ -28,7 +27,7 @@ Intuition uses bonding curves in the EthMultiVault system to handle deposits and
 | **Protocol Governance** | Curves can align incentives for governance participation. |
 | **Custom Economies** | Plug in your own math logic via custom curves. |
 
-##  Design Philosophy
+## Design Philosophy
 
 Bonding curves in Intuition Protocol are modular by design:
 
@@ -37,7 +36,6 @@ Bonding curves in Intuition Protocol are modular by design:
 - **Upgradeable curves**: Developers can ship custom curves anytime — no need to upgrade the vault.
 
 In upcoming versions (V2), we'll simplify things even further by removing suffixes like `depositAtomCurve`, replacing them with a unified API keyed by `curveId`.
-
 
 ## How Bonding Curves Fit into the Protocol
 
@@ -59,7 +57,7 @@ BondingCurveRegistry ──→ BaseCurve (Linear, OffsetProgressive, custom...)
 - If a non-linear curve is specified, it routes to the **BondingCurveRegistry**.
 - The registry proxies math to the appropriate curve contract using a `curveId`.
 
-##  Curve Types
+## Curve Types
 
 ### Linear Curve 
 #### (curveId = 1)
@@ -71,9 +69,11 @@ price = totalAssets / totalShares;
 ```
 
 This is the default math embedded directly into EthMultiVault, but we include a separate LinearCurve contract for compatibility and future flexibility.
+
 :::tip
- Great for simple, predictable token issuance.
+Great for simple, predictable token issuance.
 :::
+
 ### Offset Progressive Curve 
 #### (curveId = 4)
 
@@ -100,8 +100,9 @@ Where:
 - **s** = current shares
 - **r** = shares being redeemed
 ```
+
 :::tip 
-Ideal for data markets and staking derivatives** — you can reward early supporters and make each additional share more expensive.
+Ideal for data markets and staking derivatives — you can reward early supporters and make each additional share more expensive.
 :::
 
 ## Interactive Demo
@@ -112,9 +113,9 @@ import BondingCurveDemo from '@site/src/components/BondingCurveDemo';
 
 <BondingCurveDemo />
 
-##  Code Examples
+## Code Examples
 
-###  Deposit Using a Curve
+### Deposit Using a Curve
 
 Deposit ETH into a vault with the Offset Progressive curve:
 
@@ -126,7 +127,7 @@ EthMultiVault.depositAtomCurve{value: amountETH}(
 );
 ```
 
-###  Preview Deposit in Frontend
+### Preview Deposit in Frontend
 
 Estimate how many shares a user would get before committing ETH:
 
@@ -140,7 +141,7 @@ You can also check the current price:
 uint256 price = registry.currentPrice(totalShares, 4);
 ```
 
-###  Register a New Curve (Admin Only)
+### Register a New Curve (Admin Only)
 
 If you've written your own curve, you can add it like this:
 
@@ -150,7 +151,6 @@ vault.setBondingCurveConfig(address(registry), curveId); // optional
 ```
 
 You only need to implement the BaseCurve interface to plug in.
-
 
 ## Share Display and User Experience
 
@@ -169,10 +169,12 @@ Intuition displays share values in a user-friendly format to make ownership easi
 - Each share = 100,000 raw units
 
 ### No Impact on Positions
+
 :::info
 **Important**: This is purely a display change. Your actual positions and the underlying smart contracts remain unchanged.
 :::
-##  Summary
+
+## Summary
 
 - Bonding curves are a flexible pricing tool for atoms and triples.
 - Intuition supports multiple curve types, each with their own pricing logic.
@@ -180,7 +182,6 @@ Intuition displays share values in a user-friendly format to make ownership easi
 - The system is secure, upgrade-safe, and open to new economic designs.
 - Share display is optimized for user experience while preserving contract integrity.
 
-
 ---
 
-*This section will be expanded with detailed mathematical formulas, implementation guides, and real-world examples.*
+*This section will be expanded with detailed mathematical formulas, implementation guides, and real-world examples.* 

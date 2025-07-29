@@ -514,3 +514,10 @@ html[data-theme='dark'] .navbar__item a.navbar__link--active::after {
     bottom: 0.5px;
   }
 }
+
+/* Hide last update time timestamp */
+.theme-last-updated,
+[class*="last-updated"],
+[class*="lastUpdate"] {
+  display: none !important;
+}

@@ -303,24 +303,6 @@ const pinned = await pinThing(complexData)
 console.log('IPFS CID:', pinned.cid)
 ```
 
-## Use Cases
-
-The showcase demonstrates several real-world applications:
-
-### 1. Decentralized Identity
-Create and manage digital identities for people, organizations, and concepts.
-
-### 2. Knowledge Graphs
-Build semantic relationships between entities to create structured knowledge.
-
-### 3. Reputation Systems
-Use atoms and triples to create decentralized reputation and trust networks.
-
-### 4. Content Discovery
-Tag and categorize content for better discovery and organization.
-
-### 5. Social Networks
-Create decentralized social connections and relationships.
 
 ## Development
 
@@ -362,6 +344,10 @@ The application is designed to be easily customizable:
 - Check the [Intuition SDK Documentation](https://docs.intuition.systems)
 - Review the [Intuition Contracts](https://github.com/0xIntuition/intuition-contracts)
 - Join the [Intuition Discord](https://discord.gg/0xintuition)
+
+
+^ UPDATE LINKS 
+
 
 ## Contributing
 

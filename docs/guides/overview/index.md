@@ -150,12 +150,12 @@ At its core, Intuition enables a world where data is:
 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1rem', marginTop: '2rem', marginBottom: '2rem' }}>
 
 <div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
-<h3 style={{ marginTop: 0, marginBottom: '1rem' }}>🚀 Intuition Engine</h3>
+<h3 style={{ marginTop: 0, marginBottom: '1rem' }}>❓ Why Intuition?</h3>
 <p style={{ marginBottom: '1rem', color: 'var(--ifm-color-emphasis-700)' }}>
-Discover the core primitives that power the Intuition system: Atoms, Triples, and Signal. Learn how these building blocks create a structured, semantic web of trust.
+Learn about the challenges Intuition addresses and our unique approach to building a decentralized knowledge graph.
 </p>
-<a href="/guides/overview/overview" style={{ color: 'var(--ifm-color-primary)', textDecoration: 'none', fontWeight: '500' }}>
-Learn about Primitives →
+<a href="/guides/overview/why-intuition" style={{ color: 'var(--ifm-color-primary)', textDecoration: 'none', fontWeight: '500' }}>
+Discover Why →
 </a>
 </div>
 
@@ -170,22 +170,22 @@ Explore Economics →
 </div>
 
 <div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
+<h3 style={{ marginTop: 0, marginBottom: '1rem' }}>🔧 Primitives</h3>
+<p style={{ marginBottom: '1rem', color: 'var(--ifm-color-emphasis-700)' }}>
+Dive deep into the fundamental building blocks: Atoms, Triples, and Signal. Learn how these primitives work together to create structured, semantic data.
+</p>
+<a href="/guides/overview/the-primitives" style={{ color: 'var(--ifm-color-primary)', textDecoration: 'none', fontWeight: '500' }}>
+Explore Primitives →
+</a>
+</div>
+
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h3 style={{ marginTop: 0, marginBottom: '1rem' }}>🔑 Key Terms</h3>
 <p style={{ marginBottom: '1rem', color: 'var(--ifm-color-emphasis-700)' }}>
 Master the essential terminology and concepts that form the foundation of the Intuition ecosystem and knowledge graph.
 </p>
 <a href="/guides/overview/key-terms" style={{ color: 'var(--ifm-color-primary)', textDecoration: 'none', fontWeight: '500' }}>
 Browse Key Terms →
-</a>
-</div>
-
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
-<h3 style={{ marginTop: 0, marginBottom: '1rem' }}>❓ Why Intuition?</h3>
-<p style={{ marginBottom: '1rem', color: 'var(--ifm-color-emphasis-700)' }}>
-Learn about the challenges Intuition addresses and our unique approach to building a decentralized knowledge graph.
-</p>
-<a href="/guides/overview/why-intuition" style={{ color: 'var(--ifm-color-primary)', textDecoration: 'none', fontWeight: '500' }}>
-Discover Why →
 </a>
 </div>
 

@@ -26,8 +26,8 @@ const docs = [];
 /** @type {import('@docusaurus/plugin-content-docs').Options} */
 const defaultSettings = {
   breadcrumbs: true,
-  editUrl: 'https://github.com/0xintuition/intuition-docs/tree/main/',
-  showLastUpdateTime: true,
+  editUrl: 'https://github.com/0xIntuition/intuition-docs/tree/main/',
+  showLastUpdateTime: false,
   sidebarCollapsible: true,
   remarkPlugins: [
     [require('@docusaurus/remark-plugin-npm2yarn'), { sync: true }],

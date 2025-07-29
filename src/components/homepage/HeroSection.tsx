@@ -36,7 +36,7 @@ const PRODUCTS = [
   },
   {
     title: 'Explore Bonding Curves',
-    link: '/guides/bonding-curves',
+    link: '/guides/overview/the-economics/bonding-curves',
     icon: CurrencyDollarEuroFilled,
     lightImage: '/img/hero2.png',
     darkImage: '/img/hero2.png',
