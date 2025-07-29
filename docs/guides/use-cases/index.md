@@ -1,7 +1,7 @@
 ---
 id: use-cases
 title: Use Cases
-sidebar_label: Overview
+sidebar_label: Instances
 sidebar_position: 1
 description: Explore real-world applications and use cases for the Intuition protocol
 ---

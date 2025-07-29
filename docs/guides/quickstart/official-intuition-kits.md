@@ -4,142 +4,155 @@ sidebar_position: 3
 
 # Official Intuition Kits
 
-Jump-start your development with our official Intuition starter kits. These pre-configured templates provide everything you need to build specific types of applications.
+Jump-start your development with our official Intuition starter kits and resources. These pre-configured templates and official tools provide everything you need to build Intuition-powered applications.
+
+## Quick Navigation
+
+| Resource | Type | Purpose | Link |
+|----------|------|---------|------|
+| **Speed Run Intuition** | Showcase | Learn SDK & build reference apps | [View Details](#speed-run-intuition-kit) |
+| **TypeScript SDK** | Core Library | Main SDK for Intuition development | [GitHub](https://github.com/0xIntuition/intuition-ts) |
+| **Smart Contracts** | Protocol | Core protocol implementation | [GitHub](https://github.com/0xIntuition/intuition-contracts) |
+| **Browser Extension** | Tool | Browser integration | [GitHub](https://github.com/0xIntuition/intuition-chrome-extension) |
+| **MetaMask Snap** | Tool | Wallet integration | [GitHub](https://github.com/0xIntuition/intuition-snap) |
+| **Farcaster Frame** | Tool | Social media integration | [GitHub](https://github.com/0xIntuition/intuition-frame) |
 
 ## Available Kits
 
-### Web Application Kit
-Perfect for building web-based applications with Intuition.
+### Speed Run Intuition Kit
+A comprehensive SDK showcase demonstrating all major Intuition functions with a modern, user-friendly interface.
 
 ```bash
-# Create a new web app
-npx create-intuition-app@latest my-web-app --template web
+# Clone the showcase project
+git clone https://github.com/robbiekruszynski/intuition_speedrun.git
+cd intuition_speedrun
 
-cd my-web-app
-npm install
-npm run dev
+# Install dependencies
+pnpm install
+
+# Set up environment variables
+cp .env.example .env.local
+# Add your WalletConnect Project ID and Pinata API Token
+
+# Start development server
+pnpm dev
 ```
 
 **Features:**
-- React/Next.js setup
-- GraphQL client configuration
-- TypeScript support
-- Hot reloading
-- Built-in styling
+- Complete SDK functionality demonstration
+- Atom and triple creation examples
+- Batch operations and vault lookup
+- IPFS integration with Pinata
+- Multi-network support (Ethereum, Base, Arbitrum)
+- Real-world use case examples
 
-### Mobile Application Kit
-Build cross-platform mobile apps with Intuition.
+**Perfect for:** Learning the SDK, understanding Intuition concepts, and building reference implementations.
+
+## Official Developer Resources
+
+Based on the [official tech documentation](https://tech.docs.intuition.systems/), here are the actual available resources:
+
+### Core Development Tools
+
+| Resource | Description | Primary Use |
+|----------|-------------|-------------|
+| **[intuition-ts](https://github.com/0xIntuition/intuition-ts)** | TypeScript SDK and tools | Main SDK for application development |
+| **[intuition-contracts](https://github.com/0xIntuition/intuition-contracts)** | Smart contracts and protocol implementation | Core protocol and contract development |
+| **[intuition-rs](https://github.com/0xIntuition/intuition-rs)** | Rust implementation | High-performance applications and services |
+
+### Integration Tools
+
+| Resource | Description | Primary Use |
+|----------|-------------|-------------|
+| **[intuition-chrome-extension](https://github.com/0xIntuition/intuition-chrome-extension)** | Browser extension | Web browser integration |
+| **[intuition-snap](https://github.com/0xIntuition/intuition-snap)** | MetaMask snap | Wallet integration |
+| **[intuition-frame](https://github.com/0xIntuition/intuition-frame)** | Farcaster frame integration | Social media integration |
+
+### Documentation & Ecosystem
+
+| Resource | Description | Link |
+|----------|-------------|------|
+| **Whitepaper** | Comprehensive technical documentation | [View](https://tech.docs.intuition.systems/) |
+| **Litepaper** | Simplified overview | [View](https://tech.docs.intuition.systems/) |
+| **Explorer** | Browse and explore the Intuition network | [View](https://tech.docs.intuition.systems/) |
+| **Data Populator** | Tools for populating data | [View](https://tech.docs.intuition.systems/) |
+| **Genesis NFT** | Community tokens | [View](https://tech.docs.intuition.systems/) |
+
+## Getting Started with Official Resources
+
+### TypeScript SDK (intuition-ts)
+The official TypeScript SDK provides the core functionality for interacting with the Intuition protocol:
 
 ```bash
-# Create a new mobile app
-npx create-intuition-app@latest my-mobile-app --template mobile
+# Install the SDK
+npm install @0xintuition/sdk
 
-cd my-mobile-app
-npm install
-npm run start
+# Basic usage
+import { createAtomFromString } from '@0xintuition/sdk'
+
+const config = {
+  walletClient,
+  publicClient,
+  ethMultiVaultAddress
+}
+
+const result = await createAtomFromString(config, 'Hello World')
 ```
 
-**Features:**
-- React Native setup
-- Expo integration
-- Native Intuition SDK
-- Offline support
-- Push notifications
-
-### Backend API Kit
-Create server-side applications and APIs.
+### Smart Contracts (intuition-contracts)
+The protocol implementation includes all necessary smart contracts:
 
 ```bash
-# Create a new backend app
-npx create-intuition-app@latest my-backend --template backend
+# Clone the contracts repository
+git clone https://github.com/0xIntuition/intuition-contracts.git
+cd intuition-contracts
 
-cd my-backend
+# Install dependencies
 npm install
-npm run dev
-```
 
-**Features:**
-- Express.js server
-- GraphQL server setup
-- Database integration
-- Authentication middleware
-- API documentation
-
-### Smart Contract Kit
-Develop and deploy smart contracts on Intuition.
-
-```bash
-# Create a new smart contract project
-npx create-intuition-app@latest my-contract --template contract
-
-cd my-contract
-npm install
+# Compile contracts
 npm run compile
 ```
 
-**Features:**
-- Hardhat configuration
-- Contract templates
-- Testing framework
-- Deployment scripts
-- Gas optimization
-
-## Kit Structure
-
-Each kit includes:
-
-```
-my-app/
-├── src/
-│   ├── components/     # Reusable UI components
-│   ├── pages/         # Application pages
-│   ├── utils/         # Helper functions
-│   └── types/         # TypeScript definitions
-├── public/            # Static assets
-├── contracts/         # Smart contracts (if applicable)
-├── tests/             # Test files
-├── docs/              # Documentation
-└── package.json       # Dependencies and scripts
-```
-
-## Customization
-
-All kits are fully customizable:
-
-1. **Modify the configuration** in `intuition.config.js`
-2. **Add your own components** in the `src/` directory
-3. **Extend the GraphQL schema** for your specific needs
-4. **Customize the styling** to match your brand
-
-## Deployment
-
-Each kit includes deployment configurations:
+### Browser Extension
+Integrate Intuition directly into web browsers:
 
 ```bash
-# Build for production
-npm run build
+# Clone the extension
+git clone https://github.com/0xIntuition/intuition-chrome-extension.git
+cd intuition-chrome-extension
 
-# Deploy to Vercel (web apps)
-npm run deploy
+# Install dependencies
+npm install
 
-# Deploy to Expo (mobile apps)
-npm run publish
-
-# Deploy contracts to testnet
-npm run deploy:testnet
+# Build for development
+npm run build:dev
 ```
+
+## Development Workflow
+
+1. **Choose your starting point**: SDK, contracts, or ecosystem tools
+2. **Set up your environment**: Configure wallet connections and network settings
+3. **Build your application**: Use the SDK to create atoms, triples, and relationships
+4. **Test and deploy**: Use the provided testing frameworks and deployment scripts
 
 ## Community Support
 
-- **Discord**: Join our community for help and discussions
-- **GitHub**: Report issues and contribute to kits
-- **Documentation**: Comprehensive guides for each kit
-- **Examples**: Real-world applications built with each kit
+Based on the [official tech documentation](https://tech.docs.intuition.systems/), the Intuition community can be found on:
+
+- **[X (Twitter)](https://tech.docs.intuition.systems/)**: Follow for updates and announcements
+- **[Discord](https://tech.docs.intuition.systems/)**: Join discussions and get help
+- **[Telegram](https://tech.docs.intuition.systems/)**: Community chat
+- **[Warpcast](https://tech.docs.intuition.systems/)**: Farcaster integration
+- **[Medium](https://tech.docs.intuition.systems/)**: Blog posts and articles
+- **[Galxe](https://tech.docs.intuition.systems/)**: Community events
+- **[Mirror](https://tech.docs.intuition.systems/)**: Decentralized publishing
 
 ## Next Steps
 
 - Explore [Community-Built Kits](/guides/quickstart/community-built-kits) for additional templates
 - Learn about [Smart Contracts](/guides/smart-contracts) for advanced features
 - Check out the [GraphQL API](/graphql) for data integration
+- Visit the [official tech documentation](https://tech.docs.intuition.systems/) for comprehensive guides
 
-Choose the kit that best fits your project and start building with Intuition! 
+Start building with the official Intuition resources and join the community! 

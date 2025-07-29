@@ -10,46 +10,118 @@ export default function BondingCurveDemo({ className }: BondingCurveDemoProps) {
   const [curveType, setCurveType] = useState<'linear' | 'offset-progressive'>('linear');
   const [amount, setAmount] = useState(10);
 
+  // LinearCurve contract math implementation
+  const convertToShares = (assets: number, totalAssets: number, totalShares: number): number => {
+    if (totalShares === 0) {
+      return assets; // 1:1 initial deposit
+    }
+    return (assets * totalShares) / totalAssets;
+  };
+
+  const convertToAssets = (shares: number, totalShares: number, totalAssets: number): number => {
+    if (totalShares === 0) {
+      return shares; // 1:1 initial deposit
+    }
+    return (shares * totalAssets) / totalShares;
+  };
+
+  // Offset Progressive Curve parameters (matching contract)
+  const SLOPE = 0.01; // 1% slope
+  const OFFSET = 50; // Offset value
+  const HALF_SLOPE = SLOPE / 2;
+
   const calculatePrice = (currentSupply: number, curve: string) => {
     switch (curve) {
       case 'linear':
-        return currentSupply * 0.01;
+        // For linear curve: price = totalAssets / totalShares
+        // We'll use a base of 100 ETH total assets for demo purposes
+        const totalAssets = 100;
+        return totalAssets / currentSupply;
       case 'offset-progressive':
-        // P(s) = m * (s + offset) where m = 0.01, offset = 50
-        return 0.01 * (currentSupply + 50);
+        // P(s) = m * (s + offset) where m = SLOPE, offset = OFFSET
+        return SLOPE * (currentSupply + OFFSET);
       default:
-        return currentSupply * 0.01;
+        return 100 / currentSupply;
     }
+  };
+
+  // Offset Progressive Curve: shares = sqrt((s + offset)² + 2a/m) - (s + offset)
+  const calculateOffsetProgressiveShares = (assets: number, totalShares: number): number => {
+    const currentSupplyWithOffset = totalShares + OFFSET;
+    const shares = Math.sqrt(Math.pow(currentSupplyWithOffset, 2) + (2 * assets) / SLOPE) - currentSupplyWithOffset;
+    return Math.max(0, shares);
+  };
+
+  // Offset Progressive Curve: assets = (2(s + offset)r - r²) * m/2
+  const calculateOffsetProgressiveAssets = (shares: number, totalShares: number): number => {
+    const currentSupplyWithOffset = totalShares + OFFSET;
+    const assets = (2 * currentSupplyWithOffset * shares - Math.pow(shares, 2)) * HALF_SLOPE;
+    return Math.max(0, assets);
   };
 
   const calculateCost = (currentSupply: number, amount: number, curve: string) => {
     switch (curve) {
       case 'linear': {
-        // For linear: cost = (startPrice + endPrice) / 2 * amount
-        const startPrice = calculatePrice(currentSupply, curve);
-        const endPrice = calculatePrice(currentSupply + amount, curve);
-        return ((startPrice + endPrice) / 2) * amount;
+        // For linear curve: shares = assets (1:1 ratio when supply is 0)
+        // When supply > 0: shares = (assets * totalShares) / totalAssets
+        const totalAssets = 100; // Base assets for demo
+        const totalShares = currentSupply;
+        
+        if (totalShares === 0) {
+          // Initial deposit: 1:1 ratio
+          return amount;
+        } else {
+          // Subsequent deposits: use conversion formula
+          const sharesReceived = convertToShares(amount, totalAssets, totalShares);
+          return amount; // Cost is the ETH amount deposited
+        }
       }
       case 'offset-progressive': {
-        // Cost = (m/2) * [(s₂ + offset)² − (s₁ + offset)²]
-        // where m = 0.01, offset = 50
-        const m = 0.01;
-        const offset = 50;
-        const s1 = currentSupply;
-        const s2 = currentSupply + amount;
-        return (m / 2) * (Math.pow(s2 + offset, 2) - Math.pow(s1 + offset, 2));
+        // Calculate shares received for the given ETH amount
+        const sharesReceived = calculateOffsetProgressiveShares(amount, currentSupply);
+        // Cost is the ETH amount deposited
+        return amount;
       }
       default: {
-        const startPrice = calculatePrice(currentSupply, curve);
-        const endPrice = calculatePrice(currentSupply + amount, curve);
-        return ((startPrice + endPrice) / 2) * amount;
+        const totalAssets = 100;
+        const totalShares = currentSupply;
+        if (totalShares === 0) {
+          return amount;
+        } else {
+          const sharesReceived = convertToShares(amount, totalAssets, totalShares);
+          return amount;
+        }
       }
+    }
+  };
+
+  const calculateSharesReceived = (currentSupply: number, amount: number, curve: string) => {
+    switch (curve) {
+      case 'linear': {
+        const totalAssets = 100;
+        const totalShares = currentSupply;
+        
+        if (totalShares === 0) {
+          // Initial deposit: 1:1 ratio
+          return amount;
+        } else {
+          // Subsequent deposits: use conversion formula
+          return convertToShares(amount, totalAssets, totalShares);
+        }
+      }
+      case 'offset-progressive': {
+        // Use the correct formula from the contract
+        return calculateOffsetProgressiveShares(amount, currentSupply);
+      }
+      default:
+        return amount;
     }
   };
 
   const currentPrice = calculatePrice(supply, curveType);
   const cost = calculateCost(supply, amount, curveType);
-  const newPrice = calculatePrice(supply + amount, curveType);
+  const sharesReceived = calculateSharesReceived(supply, amount, curveType);
+  const newPrice = calculatePrice(supply + sharesReceived, curveType);
 
   return (
     <div className={clsx('bonding-curve-demo p-6 bg-gray-50 dark:bg-gray-800 rounded-lg', className)}>
@@ -88,7 +160,7 @@ export default function BondingCurveDemo({ className }: BondingCurveDemoProps) {
 
             <div>
               <label className="block text-sm font-medium mb-1">
-                Purchase Amount: {amount}
+                Purchase Amount (ETH): {amount}
               </label>
               <input
                 type="range"
@@ -107,18 +179,23 @@ export default function BondingCurveDemo({ className }: BondingCurveDemoProps) {
           
           <div className="space-y-3 text-sm">
             <div className="flex justify-between">
-              <span>Current Price:</span>
-              <span className="font-mono">${currentPrice.toFixed(4)}</span>
+              <span>Current Price (ETH per share):</span>
+              <span className="font-mono">{currentPrice.toFixed(4)} ETH</span>
             </div>
             
             <div className="flex justify-between">
               <span>Purchase Cost:</span>
-              <span className="font-mono">${cost.toFixed(4)}</span>
+              <span className="font-mono">{cost.toFixed(4)} ETH</span>
             </div>
             
             <div className="flex justify-between">
-              <span>New Price:</span>
-              <span className="font-mono">${newPrice.toFixed(4)}</span>
+              <span>Shares Received:</span>
+              <span className="font-mono">{sharesReceived.toFixed(4)}</span>
+            </div>
+            
+            <div className="flex justify-between">
+              <span>New Price (ETH per share):</span>
+              <span className="font-mono">{newPrice.toFixed(4)} ETH</span>
             </div>
             
             <div className="flex justify-between">
@@ -134,8 +211,8 @@ export default function BondingCurveDemo({ className }: BondingCurveDemoProps) {
 
           <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded">
             <p className="text-sm">
-              <strong>How it works:</strong> As you increase supply, the price automatically adjusts based on the bonding curve. 
-              Early buyers get better prices, creating incentives for early adoption.
+              <strong>Linear Curve Note:</strong> Initial deposits are 1:1 (ETH deposited = shares received). 
+              Subsequent deposits use the conversion formula: shares = (assets × totalShares) / totalAssets.
             </p>
           </div>
         </div>

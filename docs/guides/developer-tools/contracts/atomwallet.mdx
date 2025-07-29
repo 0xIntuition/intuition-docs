@@ -8,4 +8,626 @@ description: Documentation for the AtomWallet smart contract
 
 # AtomWallet.sol
 
-*Documentation coming soon...* 
+The AtomWallet contract is the primary interface for creating and managing atoms and triples in the Intuition protocol. It handles the creation of semantic data structures, manages atom/triple identifiers, and coordinates with the EthMultiVault for economic operations.
+
+## Overview
+
+The AtomWallet contract serves as the entry point for users to create and interact with atoms and triples. It provides:
+
+- **Atom Creation**: Create new atoms with unique identifiers
+- **Triple Creation**: Create relationships between atoms
+- **Batch Operations**: Efficient bulk creation of atoms and triples
+- **Identifier Management**: Generate and track unique identifiers
+- **Vault Integration**: Coordinate with EthMultiVault for economic operations
+
+## Core Architecture
+
+### State Variables
+
+```solidity
+// Core mappings
+mapping(bytes32 => bool) public atoms;
+mapping(bytes32 => bool) public triples;
+mapping(bytes32 => Triple) public tripleData;
+
+// Integration with other contracts
+IEthMultiVault public ethMultiVault;
+IBondingCurveRegistry public bondingCurveRegistry;
+
+// Access control
+address public owner;
+bool public paused;
+
+// Fee management
+uint256 public creationFee = 0.001 ether;
+address public feeCollector;
+```
+
+### Data Structures
+
+```solidity
+struct Triple {
+    bytes32 subject;
+    bytes32 predicate;
+    bytes32 object;
+    uint256 creationTime;
+    address creator;
+}
+```
+
+## Key Functions
+
+### Atom Creation
+
+#### `createAtom`
+
+```solidity
+function createAtom(
+    string memory uri,
+    uint256 curveId
+) external payable returns (bytes32 atomId) {
+    require(msg.value >= creationFee, "Insufficient fee");
+    require(bytes(uri).length > 0, "Empty URI");
+    
+    // Generate unique atom ID
+    atomId = keccak256(abi.encodePacked(uri, block.timestamp, msg.sender));
+    
+    // Ensure uniqueness
+    require(!atoms[atomId], "Atom already exists");
+    
+    // Mark atom as created
+    atoms[atomId] = true;
+    
+    // Create vault in EthMultiVault
+    ethMultiVault.createVault(atomId, curveId);
+    
+    // Collect fee
+    if (msg.value > creationFee) {
+        (bool success, ) = msg.sender.call{value: msg.value - creationFee}("");
+        require(success, "Refund failed");
+    }
+    
+    emit AtomCreated(atomId, uri, msg.sender, curveId);
+}
+```
+
+**Purpose**: Creates a new atom with a unique identifier and associated vault.
+
+**Parameters**:
+- `uri`: URI pointing to the atom's data
+- `curveId`: Bonding curve ID for the atom's vault
+
+**Key Features**:
+- **Unique ID Generation**: Uses hash of URI, timestamp, and creator
+- **Fee Collection**: Requires creation fee for atom creation
+- **Vault Creation**: Automatically creates vault in EthMultiVault
+- **Refund Logic**: Returns excess ETH to creator
+
+#### `createAtomBatch`
+
+```solidity
+function createAtomBatch(
+    string[] memory uris,
+    uint256[] memory curveIds
+) external payable returns (bytes32[] memory atomIds) {
+    require(uris.length == curveIds.length, "Length mismatch");
+    require(msg.value >= creationFee * uris.length, "Insufficient fee");
+    
+    atomIds = new bytes32[](uris.length);
+    
+    for (uint256 i = 0; i < uris.length; i++) {
+        atomIds[i] = createAtom(uris[i], curveIds[i]);
+    }
+    
+    emit AtomBatchCreated(atomIds, uris, msg.sender, curveIds);
+}
+```
+
+**Purpose**: Creates multiple atoms in a single transaction for efficiency.
+
+### Triple Creation
+
+#### `createTriple`
+
+```solidity
+function createTriple(
+    bytes32 subject,
+    bytes32 predicate,
+    bytes32 object,
+    uint256 curveId
+) external payable returns (bytes32 tripleId) {
+    require(msg.value >= creationFee, "Insufficient fee");
+    require(atoms[subject], "Subject atom does not exist");
+    require(atoms[predicate], "Predicate atom does not exist");
+    require(atoms[object], "Object atom does not exist");
+    
+    // Generate unique triple ID
+    tripleId = keccak256(abi.encodePacked(subject, predicate, object));
+    
+    // Ensure uniqueness
+    require(!triples[tripleId], "Triple already exists");
+    
+    // Store triple data
+    tripleData[tripleId] = Triple({
+        subject: subject,
+        predicate: predicate,
+        object: object,
+        creationTime: block.timestamp,
+        creator: msg.sender
+    });
+    
+    // Mark triple as created
+    triples[tripleId] = true;
+    
+    // Create vault in EthMultiVault
+    ethMultiVault.createVault(tripleId, curveId);
+    
+    // Collect fee
+    if (msg.value > creationFee) {
+        (bool success, ) = msg.sender.call{value: msg.value - creationFee}("");
+        require(success, "Refund failed");
+    }
+    
+    emit TripleCreated(tripleId, subject, predicate, object, msg.sender, curveId);
+}
+```
+
+**Purpose**: Creates a new triple representing a relationship between three atoms.
+
+**Parameters**:
+- `subject`: The subject atom ID
+- `predicate`: The predicate atom ID
+- `object`: The object atom ID
+- `curveId`: Bonding curve ID for the triple's vault
+
+**Key Features**:
+- **Atom Validation**: Ensures all referenced atoms exist
+- **Unique ID Generation**: Uses hash of subject, predicate, and object
+- **Data Storage**: Stores complete triple information
+- **Vault Creation**: Creates vault for economic operations
+
+#### `createTripleBatch`
+
+```solidity
+function createTripleBatch(
+    bytes32[] memory subjects,
+    bytes32[] memory predicates,
+    bytes32[] memory objects,
+    uint256[] memory curveIds
+) external payable returns (bytes32[] memory tripleIds) {
+    require(
+        subjects.length == predicates.length &&
+        predicates.length == objects.length &&
+        objects.length == curveIds.length,
+        "Length mismatch"
+    );
+    require(msg.value >= creationFee * subjects.length, "Insufficient fee");
+    
+    tripleIds = new bytes32[](subjects.length);
+    
+    for (uint256 i = 0; i < subjects.length; i++) {
+        tripleIds[i] = createTriple(subjects[i], predicates[i], objects[i], curveIds[i]);
+    }
+    
+    emit TripleBatchCreated(tripleIds, subjects, predicates, objects, msg.sender, curveIds);
+}
+```
+
+**Purpose**: Creates multiple triples in a single transaction for efficiency.
+
+### Advanced Creation Functions
+
+#### `createAtomFromString`
+
+```solidity
+function createAtomFromString(
+    string memory content,
+    uint256 curveId
+) external payable returns (bytes32 atomId) {
+    require(msg.value >= creationFee, "Insufficient fee");
+    require(bytes(content).length > 0, "Empty content");
+    
+    // Create URI from content (could be IPFS hash, etc.)
+    string memory uri = _createURIFromContent(content);
+    
+    atomId = createAtom(uri, curveId);
+    
+    emit AtomCreatedFromString(atomId, content, msg.sender, curveId);
+}
+```
+
+**Purpose**: Creates an atom from string content, automatically generating a URI.
+
+#### `createAtomFromIPFS`
+
+```solidity
+function createAtomFromIPFS(
+    string memory ipfsHash,
+    uint256 curveId
+) external payable returns (bytes32 atomId) {
+    require(msg.value >= creationFee, "Insufficient fee");
+    require(bytes(ipfsHash).length > 0, "Empty IPFS hash");
+    
+    // Create URI from IPFS hash
+    string memory uri = string(abi.encodePacked("ipfs://", ipfsHash));
+    
+    atomId = createAtom(uri, curveId);
+    
+    emit AtomCreatedFromIPFS(atomId, ipfsHash, msg.sender, curveId);
+}
+```
+
+**Purpose**: Creates an atom from an IPFS hash, automatically formatting the URI.
+
+## View Functions
+
+### Existence Checks
+
+```solidity
+function atomExists(bytes32 atomId) external view returns (bool) {
+    return atoms[atomId];
+}
+
+function tripleExists(bytes32 tripleId) external view returns (bool) {
+    return triples[tripleId];
+}
+```
+
+**Purpose**: Check if atoms or triples exist in the system.
+
+### Triple Data Retrieval
+
+```solidity
+function getTriple(bytes32 tripleId) external view returns (
+    bytes32 subject,
+    bytes32 predicate,
+    bytes32 object,
+    uint256 creationTime,
+    address creator
+) {
+    require(triples[tripleId], "Triple does not exist");
+    
+    Triple storage triple = tripleData[tripleId];
+    return (
+        triple.subject,
+        triple.predicate,
+        triple.object,
+        triple.creationTime,
+        triple.creator
+    );
+}
+```
+
+**Purpose**: Retrieve complete information about a triple.
+
+### Batch Queries
+
+```solidity
+function getTriplesBySubject(bytes32 subject) external view returns (bytes32[] memory) {
+    // Implementation would iterate through all triples
+    // This is a simplified version
+    return new bytes32[](0);
+}
+
+function getTriplesByObject(bytes32 object) external view returns (bytes32[] memory) {
+    // Implementation would iterate through all triples
+    // This is a simplified version
+    return new bytes32[](0);
+}
+```
+
+**Purpose**: Query triples by their subject or object atoms.
+
+## Integration Functions
+
+### EthMultiVault Integration
+
+```solidity
+function depositIntoAtom(
+    bytes32 atomId,
+    uint256 minSharesOut
+) external payable returns (uint256 sharesOut) {
+    require(atoms[atomId], "Atom does not exist");
+    
+    sharesOut = ethMultiVault.depositAtom{value: msg.value}(
+        msg.sender,
+        atomId,
+        minSharesOut
+    );
+    
+    emit AtomDeposit(atomId, msg.sender, msg.value, sharesOut);
+}
+```
+
+**Purpose**: Allows users to deposit ETH into atom vaults through the AtomWallet.
+
+```solidity
+function redeemFromAtom(
+    bytes32 atomId,
+    uint256 sharesIn,
+    uint256 minAssetsOut
+) external returns (uint256 assetsOut) {
+    require(atoms[atomId], "Atom does not exist");
+    
+    assetsOut = ethMultiVault.redeemAtom(
+        msg.sender,
+        atomId,
+        sharesIn,
+        minAssetsOut
+    );
+    
+    emit AtomRedemption(atomId, msg.sender, sharesIn, assetsOut);
+}
+```
+
+**Purpose**: Allows users to redeem shares from atom vaults through the AtomWallet.
+
+### Triple Economic Operations
+
+```solidity
+function depositIntoTriple(
+    bytes32 tripleId,
+    uint256 minSharesOut
+) external payable returns (uint256 sharesOut) {
+    require(triples[tripleId], "Triple does not exist");
+    
+    sharesOut = ethMultiVault.depositTriple{value: msg.value}(
+        msg.sender,
+        tripleId,
+        minSharesOut
+    );
+    
+    emit TripleDeposit(tripleId, msg.sender, msg.value, sharesOut);
+}
+```
+
+**Purpose**: Allows users to deposit ETH into triple vaults through the AtomWallet.
+
+```solidity
+function redeemFromTriple(
+    bytes32 tripleId,
+    uint256 sharesIn,
+    uint256 minAssetsOut
+) external returns (uint256 assetsOut) {
+    require(triples[tripleId], "Triple does not exist");
+    
+    assetsOut = ethMultiVault.redeemTriple(
+        msg.sender,
+        tripleId,
+        sharesIn,
+        minAssetsOut
+    );
+    
+    emit TripleRedemption(tripleId, msg.sender, sharesIn, assetsOut);
+}
+```
+
+**Purpose**: Allows users to redeem shares from triple vaults through the AtomWallet.
+
+## Administrative Functions
+
+### Fee Management
+
+```solidity
+function setCreationFee(uint256 _creationFee) external onlyOwner {
+    creationFee = _creationFee;
+    emit CreationFeeUpdated(_creationFee);
+}
+
+function setFeeCollector(address _feeCollector) external onlyOwner {
+    feeCollector = _feeCollector;
+    emit FeeCollectorUpdated(_feeCollector);
+}
+```
+
+**Purpose**: Allows the owner to update fee parameters.
+
+### Contract Integration
+
+```solidity
+function setEthMultiVault(IEthMultiVault _ethMultiVault) external onlyOwner {
+    ethMultiVault = _ethMultiVault;
+    emit EthMultiVaultUpdated(_ethMultiVault);
+}
+
+function setBondingCurveRegistry(IBondingCurveRegistry _registry) external onlyOwner {
+    bondingCurveRegistry = _registry;
+    emit BondingCurveRegistryUpdated(_registry);
+}
+```
+
+**Purpose**: Allows the owner to update contract integrations.
+
+### Emergency Functions
+
+```solidity
+function pause() external onlyOwner {
+    paused = true;
+    emit Paused();
+}
+
+function unpause() external onlyOwner {
+    paused = false;
+    emit Unpaused();
+}
+```
+
+**Purpose**: Allows emergency pausing of contract operations.
+
+## Security Features
+
+### Access Control
+
+```solidity
+modifier onlyOwner() {
+    require(msg.sender == owner, "Not owner");
+    _;
+}
+
+function transferOwnership(address newOwner) external onlyOwner {
+    require(newOwner != address(0), "Invalid owner");
+    owner = newOwner;
+    emit OwnershipTransferred(msg.sender, newOwner);
+}
+```
+
+### Pause Mechanism
+
+```solidity
+modifier whenNotPaused() {
+    require(!paused, "Contract is paused");
+    _;
+}
+```
+
+### Input Validation
+
+```solidity
+function _validateAtomCreation(string memory uri) internal pure {
+    require(bytes(uri).length > 0, "Empty URI");
+    require(bytes(uri).length <= 2048, "URI too long");
+}
+```
+
+## Events
+
+The contract emits comprehensive events for tracking:
+
+```solidity
+event AtomCreated(bytes32 indexed atomId, string uri, address indexed creator, uint256 curveId);
+event AtomBatchCreated(bytes32[] atomIds, string[] uris, address indexed creator, uint256[] curveIds);
+event AtomCreatedFromString(bytes32 indexed atomId, string content, address indexed creator, uint256 curveId);
+event AtomCreatedFromIPFS(bytes32 indexed atomId, string ipfsHash, address indexed creator, uint256 curveId);
+
+event TripleCreated(bytes32 indexed tripleId, bytes32 subject, bytes32 predicate, bytes32 object, address indexed creator, uint256 curveId);
+event TripleBatchCreated(bytes32[] tripleIds, bytes32[] subjects, bytes32[] predicates, bytes32[] objects, address indexed creator, uint256[] curveIds);
+
+event AtomDeposit(bytes32 indexed atomId, address indexed user, uint256 assetsIn, uint256 sharesOut);
+event AtomRedemption(bytes32 indexed atomId, address indexed user, uint256 sharesIn, uint256 assetsOut);
+event TripleDeposit(bytes32 indexed tripleId, address indexed user, uint256 assetsIn, uint256 sharesOut);
+event TripleRedemption(bytes32 indexed tripleId, address indexed user, uint256 sharesIn, uint256 assetsOut);
+
+event CreationFeeUpdated(uint256 creationFee);
+event FeeCollectorUpdated(address feeCollector);
+event EthMultiVaultUpdated(address ethMultiVault);
+event BondingCurveRegistryUpdated(address registry);
+event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
+event Paused();
+event Unpaused();
+```
+
+## Integration Examples
+
+### Creating Atoms
+
+```javascript
+// Create a simple atom
+const uri = "https://example.com/data";
+const curveId = 1; // Linear curve
+const creationFee = ethers.utils.parseEther("0.001");
+
+const tx = await atomWallet.createAtom(
+    uri,
+    curveId,
+    { value: creationFee }
+);
+
+const receipt = await tx.wait();
+const event = receipt.events.find(e => e.event === 'AtomCreated');
+const atomId = event.args.atomId;
+console.log("Atom created:", atomId);
+```
+
+### Creating Triples
+
+```javascript
+// Create a triple relationship
+const subject = "0x1234..."; // Existing atom ID
+const predicate = "0x5678..."; // Existing atom ID
+const object = "0x9abc..."; // Existing atom ID
+const curveId = 1;
+
+const tx = await atomWallet.createTriple(
+    subject,
+    predicate,
+    object,
+    curveId,
+    { value: creationFee }
+);
+
+const receipt = await tx.wait();
+const event = receipt.events.find(e => e.event === 'TripleCreated');
+const tripleId = event.args.tripleId;
+console.log("Triple created:", tripleId);
+```
+
+### Batch Operations
+
+```javascript
+// Create multiple atoms
+const uris = [
+    "https://example.com/data1",
+    "https://example.com/data2",
+    "https://example.com/data3"
+];
+const curveIds = [1, 1, 1]; // All linear curves
+const totalFee = creationFee.mul(uris.length);
+
+const tx = await atomWallet.createAtomBatch(
+    uris,
+    curveIds,
+    { value: totalFee }
+);
+
+const receipt = await tx.wait();
+console.log("Batch creation successful");
+```
+
+### Economic Operations
+
+```javascript
+// Deposit ETH into an atom
+const atomId = "0x1234...";
+const minSharesOut = ethers.utils.parseEther("0.1");
+
+const tx = await atomWallet.depositIntoAtom(
+    atomId,
+    minSharesOut,
+    { value: ethers.utils.parseEther("1.0") }
+);
+
+const receipt = await tx.wait();
+console.log("Deposit successful");
+```
+
+## Best Practices
+
+### For Users
+
+1. **Check Existence**: Verify atoms exist before creating triples
+2. **Set Appropriate Fees**: Ensure sufficient ETH for creation fees
+3. **Use Batch Operations**: Create multiple items in single transactions
+4. **Monitor Events**: Listen to events for transaction confirmation
+
+### For Developers
+
+1. **Error Handling**: Implement proper error handling for failed operations
+2. **Gas Optimization**: Use batch operations for multiple creations
+3. **Event Listening**: Monitor events for state changes
+4. **Input Validation**: Validate URIs and content before submission
+
+## Summary
+
+The AtomWallet contract is the primary interface for creating and managing the semantic data structures in the Intuition protocol. It provides:
+
+- **Flexible Creation**: Support for various atom and triple creation methods
+- **Batch Operations**: Efficient bulk creation capabilities
+- **Economic Integration**: Seamless integration with EthMultiVault
+- **Comprehensive Tracking**: Complete event system for all operations
+- **Security Features**: Access control, pause mechanism, and input validation
+
+This contract enables users to build the knowledge graph by creating atoms and triples while maintaining economic incentives through integrated vault operations.
+
+---
+
+*For more information about the economic aspects, see the [EthMultiVault](/guides/developer-tools/contracts/ethmultivault) documentation.* 

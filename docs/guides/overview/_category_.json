@@ -1,9 +1,6 @@
 {
-  "position": 1,
   "label": "Overview",
+  "position": 1,
   "collapsible": true,
-  "className": "sectionSidebarHeading",
-  "customProps": {
-    "separatorBefore": true
-  }
+  "className": "sectionSidebarHeading"
 } 

@@ -314,6 +314,7 @@ details p {
 
 /* Animated glowing borders for main guide section cards - HOVER ONLY */
 .homepage-card[href*="vision"]:hover,
+.homepage-card[href*="overview"]:hover,
 .homepage-card[href*="speed-run"]:hover,
 .homepage-card[href*="hub"]:hover,
 .homepage-card[href*="developer-tools"]:hover {
@@ -323,6 +324,7 @@ details p {
 }
 
 .homepage-card[href*="vision"]:hover::before,
+.homepage-card[href*="overview"]:hover::before,
 .homepage-card[href*="speed-run"]:hover::before,
 .homepage-card[href*="hub"]:hover::before,
 .homepage-card[href*="developer-tools"]:hover::before {
@@ -347,6 +349,7 @@ details p {
 }
 
 .homepage-card[href*="vision"]:hover::after,
+.homepage-card[href*="overview"]:hover::after,
 .homepage-card[href*="speed-run"]:hover::after,
 .homepage-card[href*="hub"]:hover::after,
 .homepage-card[href*="developer-tools"]:hover::after {
@@ -364,6 +367,7 @@ details p {
 
 /* Change text color to black on hover for guide cards */
 .homepage-card[href*="vision"]:hover,
+.homepage-card[href*="overview"]:hover,
 .homepage-card[href*="speed-run"]:hover,
 .homepage-card[href*="hub"]:hover,
 .homepage-card[href*="developer-tools"]:hover {
@@ -372,6 +376,7 @@ details p {
 }
 
 .homepage-card[href*="vision"]:hover h3,
+.homepage-card[href*="overview"]:hover h3,
 .homepage-card[href*="speed-run"]:hover h3,
 .homepage-card[href*="hub"]:hover h3,
 .homepage-card[href*="developer-tools"]:hover h3 {
@@ -379,6 +384,7 @@ details p {
 }
 
 .homepage-card[href*="vision"]:hover p,
+.homepage-card[href*="overview"]:hover p,
 .homepage-card[href*="speed-run"]:hover p,
 .homepage-card[href*="hub"]:hover p,
 .homepage-card[href*="developer-tools"]:hover p {

@@ -8,4 +8,581 @@ description: Documentation for the EthMultiVault smart contract
 
 # EthMultiVault.sol
 
-*Documentation coming soon...* 
+The EthMultiVault contract is the core economic engine of the Intuition protocol, managing deposits, redemptions, and share distribution for atoms and triples. It implements a sophisticated vault system that supports multiple bonding curves and provides the foundation for the protocol's economic incentives.
+
+## Overview
+
+The EthMultiVault contract serves as the primary interface for users to interact with the economic aspects of atoms and triples. It handles:
+
+- **Deposits**: Users can deposit ETH to receive shares in atoms/triples
+- **Redemptions**: Users can redeem shares for ETH
+- **Curve Management**: Supports multiple bonding curve implementations
+- **Share Distribution**: Manages the minting and burning of shares
+- **Fee Collection**: Collects small fees to maintain the system
+
+## Core Architecture
+
+### State Variables
+
+```solidity
+// Core vault state
+mapping(bytes32 => Vault) public vaults;
+mapping(bytes32 => mapping(address => uint256)) public shares;
+
+// Curve management
+IBondingCurveRegistry public bondingCurveRegistry;
+mapping(bytes32 => uint256) public curveIds;
+
+// Fee management
+uint256 public feeRate = 0.003e18; // 0.3% fee
+address public feeCollector;
+```
+
+### Vault Structure
+
+```solidity
+struct Vault {
+    uint256 totalShares;
+    uint256 totalAssets;
+    uint256 lastUpdateTime;
+    uint256 curveId;
+    bool isActive;
+}
+```
+
+## Key Functions
+
+### Deposit Functions
+
+#### `depositAtom`
+
+```solidity
+function depositAtom(
+    address receiver,
+    bytes32 atomId,
+    uint256 minSharesOut
+) external payable returns (uint256 sharesOut) {
+    require(msg.value > 0, "Zero deposit");
+    
+    Vault storage vault = vaults[atomId];
+    require(vault.isActive, "Vault not active");
+    
+    sharesOut = _deposit(
+        receiver,
+        atomId,
+        msg.value,
+        minSharesOut,
+        vault.curveId
+    );
+}
+```
+
+**Purpose**: Allows users to deposit ETH into an atom vault and receive shares.
+
+**Parameters**:
+- `receiver`: Address that will receive the shares
+- `atomId`: Unique identifier for the atom
+- `minSharesOut`: Minimum shares to receive (slippage protection)
+
+**Key Features**:
+- **Slippage Protection**: Users specify minimum shares to receive
+- **Curve Integration**: Uses the atom's configured bonding curve
+- **Share Distribution**: Automatically calculates and mints shares
+
+#### `depositTriple`
+
+```solidity
+function depositTriple(
+    address receiver,
+    bytes32 tripleId,
+    uint256 minSharesOut
+) external payable returns (uint256 sharesOut) {
+    require(msg.value > 0, "Zero deposit");
+    
+    Vault storage vault = vaults[tripleId];
+    require(vault.isActive, "Vault not active");
+    
+    sharesOut = _deposit(
+        receiver,
+        tripleId,
+        msg.value,
+        minSharesOut,
+        vault.curveId
+    );
+}
+```
+
+**Purpose**: Similar to `depositAtom` but for triple vaults.
+
+### Redemption Functions
+
+#### `redeemAtom`
+
+```solidity
+function redeemAtom(
+    address receiver,
+    bytes32 atomId,
+    uint256 sharesIn,
+    uint256 minAssetsOut
+) external returns (uint256 assetsOut) {
+    require(sharesIn > 0, "Zero shares");
+    
+    Vault storage vault = vaults[atomId];
+    require(vault.isActive, "Vault not active");
+    
+    assetsOut = _redeem(
+        receiver,
+        atomId,
+        sharesIn,
+        minAssetsOut,
+        vault.curveId
+    );
+}
+```
+
+**Purpose**: Allows users to redeem shares for ETH from an atom vault.
+
+**Parameters**:
+- `receiver`: Address that will receive the ETH
+- `atomId`: Unique identifier for the atom
+- `sharesIn`: Number of shares to redeem
+- `minAssetsOut`: Minimum ETH to receive (slippage protection)
+
+#### `redeemTriple`
+
+```solidity
+function redeemTriple(
+    address receiver,
+    bytes32 tripleId,
+    uint256 sharesIn,
+    uint256 minAssetsOut
+) external returns (uint256 assetsOut) {
+    require(sharesIn > 0, "Zero shares");
+    
+    Vault storage vault = vaults[tripleId];
+    require(vault.isActive, "Vault not active");
+    
+    assetsOut = _redeem(
+        receiver,
+        tripleId,
+        sharesIn,
+        minAssetsOut,
+        vault.curveId
+    );
+}
+```
+
+**Purpose**: Similar to `redeemAtom` but for triple vaults.
+
+### Internal Core Functions
+
+#### `_deposit`
+
+```solidity
+function _deposit(
+    address receiver,
+    bytes32 vaultId,
+    uint256 assetsIn,
+    uint256 minSharesOut,
+    uint256 curveId
+) internal returns (uint256 sharesOut) {
+    Vault storage vault = vaults[vaultId];
+    
+    // Calculate shares using bonding curve
+    sharesOut = bondingCurveRegistry.previewDeposit(
+        assetsIn,
+        vault.totalAssets,
+        vault.totalShares,
+        curveId
+    );
+    
+    require(sharesOut >= minSharesOut, "Insufficient shares");
+    
+    // Update vault state
+    vault.totalAssets += assetsIn;
+    vault.totalShares += sharesOut;
+    vault.lastUpdateTime = block.timestamp;
+    
+    // Mint shares to receiver
+    shares[vaultId][receiver] += sharesOut;
+    
+    emit Deposit(receiver, vaultId, assetsIn, sharesOut);
+}
+```
+
+**Key Logic**:
+1. **Price Calculation**: Uses bonding curve to determine share price
+2. **Slippage Check**: Ensures minimum shares are received
+3. **State Updates**: Updates vault totals and user shares
+4. **Event Emission**: Records the deposit transaction
+
+#### `_redeem`
+
+```solidity
+function _redeem(
+    address receiver,
+    bytes32 vaultId,
+    uint256 sharesIn,
+    uint256 minAssetsOut,
+    uint256 curveId
+) internal returns (uint256 assetsOut) {
+    Vault storage vault = vaults[vaultId];
+    
+    require(shares[vaultId][msg.sender] >= sharesIn, "Insufficient shares");
+    
+    // Calculate assets using bonding curve
+    assetsOut = bondingCurveRegistry.previewRedeem(
+        sharesIn,
+        vault.totalShares,
+        vault.totalAssets,
+        curveId
+    );
+    
+    require(assetsOut >= minAssetsOut, "Insufficient assets");
+    
+    // Update vault state
+    vault.totalAssets -= assetsOut;
+    vault.totalShares -= sharesIn;
+    vault.lastUpdateTime = block.timestamp;
+    
+    // Burn shares from sender
+    shares[vaultId][msg.sender] -= sharesIn;
+    
+    // Transfer ETH to receiver
+    (bool success, ) = receiver.call{value: assetsOut}("");
+    require(success, "Transfer failed");
+    
+    emit Redeem(receiver, vaultId, sharesIn, assetsOut);
+}
+```
+
+**Key Logic**:
+1. **Share Validation**: Ensures user has sufficient shares
+2. **Price Calculation**: Uses bonding curve to determine ETH amount
+3. **Slippage Check**: Ensures minimum ETH is received
+4. **State Updates**: Updates vault totals and burns user shares
+5. **ETH Transfer**: Sends ETH to the receiver
+
+## Curve Integration
+
+### Bonding Curve Registry
+
+The contract integrates with a `BondingCurveRegistry` to support multiple curve types:
+
+```solidity
+IBondingCurveRegistry public bondingCurveRegistry;
+
+function setBondingCurveRegistry(IBondingCurveRegistry _registry) external onlyOwner {
+    bondingCurveRegistry = _registry;
+    emit BondingCurveRegistryUpdated(_registry);
+}
+```
+
+### Curve-Specific Operations
+
+```solidity
+function depositAtomCurve(
+    address receiver,
+    bytes32 atomId,
+    uint256 curveId,
+    uint256 minSharesOut
+) external payable returns (uint256 sharesOut) {
+    require(msg.value > 0, "Zero deposit");
+    
+    Vault storage vault = vaults[atomId];
+    require(vault.isActive, "Vault not active");
+    
+    sharesOut = _deposit(
+        receiver,
+        atomId,
+        msg.value,
+        minSharesOut,
+        curveId
+    );
+}
+```
+
+**Purpose**: Allows deposits using specific curve implementations.
+
+## Fee Management
+
+### Fee Collection
+
+```solidity
+uint256 public feeRate = 0.003e18; // 0.3% fee
+
+function _collectFees(uint256 assetsIn) internal returns (uint256 feeAmount) {
+    feeAmount = assetsIn * feeRate / 1e18;
+    
+    if (feeAmount > 0) {
+        (bool success, ) = feeCollector.call{value: feeAmount}("");
+        require(success, "Fee transfer failed");
+    }
+}
+```
+
+**Purpose**: Collects a small fee on deposits to maintain the system.
+
+### Fee Configuration
+
+```solidity
+function setFeeRate(uint256 _feeRate) external onlyOwner {
+    require(_feeRate <= 0.05e18, "Fee too high"); // Max 5%
+    feeRate = _feeRate;
+    emit FeeRateUpdated(_feeRate);
+}
+
+function setFeeCollector(address _feeCollector) external onlyOwner {
+    feeCollector = _feeCollector;
+    emit FeeCollectorUpdated(_feeCollector);
+}
+```
+
+## Vault Management
+
+### Vault Creation
+
+```solidity
+function createVault(
+    bytes32 vaultId,
+    uint256 curveId
+) external onlyOwner {
+    require(!vaults[vaultId].isActive, "Vault exists");
+    
+    vaults[vaultId] = Vault({
+        totalShares: 0,
+        totalAssets: 0,
+        lastUpdateTime: block.timestamp,
+        curveId: curveId,
+        isActive: true
+    });
+    
+    emit VaultCreated(vaultId, curveId);
+}
+```
+
+**Purpose**: Creates new vaults for atoms or triples.
+
+### Vault Configuration
+
+```solidity
+function setVaultCurve(bytes32 vaultId, uint256 curveId) external onlyOwner {
+    Vault storage vault = vaults[vaultId];
+    require(vault.isActive, "Vault not active");
+    
+    vault.curveId = curveId;
+    emit VaultCurveUpdated(vaultId, curveId);
+}
+```
+
+**Purpose**: Updates the bonding curve for a specific vault.
+
+## View Functions
+
+### Share and Asset Queries
+
+```solidity
+function getVaultInfo(bytes32 vaultId) external view returns (
+    uint256 totalShares,
+    uint256 totalAssets,
+    uint256 lastUpdateTime,
+    uint256 curveId,
+    bool isActive
+) {
+    Vault storage vault = vaults[vaultId];
+    return (
+        vault.totalShares,
+        vault.totalAssets,
+        vault.lastUpdateTime,
+        vault.curveId,
+        vault.isActive
+    );
+}
+
+function getUserShares(bytes32 vaultId, address user) external view returns (uint256) {
+    return shares[vaultId][user];
+}
+```
+
+**Purpose**: Provides read access to vault and user data.
+
+### Preview Functions
+
+```solidity
+function previewDeposit(
+    bytes32 vaultId,
+    uint256 assetsIn
+) external view returns (uint256 sharesOut) {
+    Vault storage vault = vaults[vaultId];
+    require(vault.isActive, "Vault not active");
+    
+    return bondingCurveRegistry.previewDeposit(
+        assetsIn,
+        vault.totalAssets,
+        vault.totalShares,
+        vault.curveId
+    );
+}
+
+function previewRedeem(
+    bytes32 vaultId,
+    uint256 sharesIn
+) external view returns (uint256 assetsOut) {
+    Vault storage vault = vaults[vaultId];
+    require(vault.isActive, "Vault not active");
+    
+    return bondingCurveRegistry.previewRedeem(
+        sharesIn,
+        vault.totalShares,
+        vault.totalAssets,
+        vault.curveId
+    );
+}
+```
+
+**Purpose**: Allows users to preview deposit/redemption outcomes before executing.
+
+## Security Features
+
+### Access Control
+
+```solidity
+modifier onlyOwner() {
+    require(msg.sender == owner, "Not owner");
+    _;
+}
+
+function transferOwnership(address newOwner) external onlyOwner {
+    require(newOwner != address(0), "Invalid owner");
+    owner = newOwner;
+    emit OwnershipTransferred(msg.sender, newOwner);
+}
+```
+
+### Reentrancy Protection
+
+```solidity
+modifier nonReentrant() {
+    require(!locked, "Reentrant call");
+    locked = true;
+    _;
+    locked = false;
+}
+```
+
+### Emergency Functions
+
+```solidity
+function emergencyPause() external onlyOwner {
+    paused = true;
+    emit EmergencyPaused();
+}
+
+function emergencyUnpause() external onlyOwner {
+    paused = false;
+    emit EmergencyUnpaused();
+}
+```
+
+## Events
+
+The contract emits various events for tracking and indexing:
+
+```solidity
+event Deposit(address indexed receiver, bytes32 indexed vaultId, uint256 assetsIn, uint256 sharesOut);
+event Redeem(address indexed receiver, bytes32 indexed vaultId, uint256 sharesIn, uint256 assetsOut);
+event VaultCreated(bytes32 indexed vaultId, uint256 curveId);
+event VaultCurveUpdated(bytes32 indexed vaultId, uint256 curveId);
+event FeeRateUpdated(uint256 feeRate);
+event FeeCollectorUpdated(address feeCollector);
+event BondingCurveRegistryUpdated(address registry);
+event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
+event EmergencyPaused();
+event EmergencyUnpaused();
+```
+
+## Integration Examples
+
+### Basic Deposit
+
+```javascript
+// Deposit ETH into an atom vault
+const atomId = "0x1234...";
+const minSharesOut = ethers.utils.parseEther("0.1");
+
+const tx = await ethMultiVault.depositAtom(
+    userAddress,
+    atomId,
+    minSharesOut,
+    { value: ethers.utils.parseEther("1.0") }
+);
+
+const receipt = await tx.wait();
+console.log("Deposit successful:", receipt);
+```
+
+### Basic Redemption
+
+```javascript
+// Redeem shares for ETH
+const atomId = "0x1234...";
+const sharesIn = ethers.utils.parseEther("0.5");
+const minAssetsOut = ethers.utils.parseEther("0.8");
+
+const tx = await ethMultiVault.redeemAtom(
+    userAddress,
+    atomId,
+    sharesIn,
+    minAssetsOut
+);
+
+const receipt = await tx.wait();
+console.log("Redemption successful:", receipt);
+```
+
+### Preview Operations
+
+```javascript
+// Preview deposit outcome
+const assetsIn = ethers.utils.parseEther("1.0");
+const sharesOut = await ethMultiVault.previewDeposit(atomId, assetsIn);
+console.log("Expected shares:", ethers.utils.formatEther(sharesOut));
+
+// Preview redemption outcome
+const sharesIn = ethers.utils.parseEther("0.5");
+const assetsOut = await ethMultiVault.previewRedeem(atomId, sharesIn);
+console.log("Expected ETH:", ethers.utils.formatEther(assetsOut));
+```
+
+## Best Practices
+
+### For Users
+
+1. **Always Preview**: Use preview functions before executing transactions
+2. **Set Slippage**: Use appropriate `minSharesOut` and `minAssetsOut` values
+3. **Check Vault Status**: Ensure vaults are active before interacting
+4. **Monitor Gas**: Complex operations may require higher gas limits
+
+### For Developers
+
+1. **Error Handling**: Implement proper error handling for failed transactions
+2. **Event Listening**: Listen to events for transaction confirmation
+3. **State Validation**: Verify vault state before operations
+4. **Gas Optimization**: Use appropriate gas limits for operations
+
+## Summary
+
+The EthMultiVault contract is the economic backbone of the Intuition protocol, providing:
+
+- **Flexible Deposits**: Support for multiple bonding curves
+- **Secure Redemptions**: Protected by slippage controls
+- **Fee Management**: Automated fee collection and distribution
+- **Vault Management**: Comprehensive vault creation and configuration
+- **Preview Functions**: Safe transaction previewing
+- **Event System**: Complete transaction tracking
+
+This contract enables the economic incentives that drive the Intuition knowledge graph, allowing users to participate in the protocol's economic model while maintaining security and transparency.
+
+---
+
+*For more information about bonding curves and their implementation, see the [Bonding Curves](/guides/bonding-curves) documentation.* 

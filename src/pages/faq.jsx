@@ -10,16 +10,12 @@ import ReactMarkdown from 'react-markdown';
 import FAQs from '../faq';
 import { useEffect } from 'react';
 
-const tags = FAQs.reduce((allTags, faq) => {
-  if (!faq.tags) return allTags;
-
-  for (const tag of faq.tags) {
-    if (!allTags.includes(tag)) {
-      allTags.push(tag);
-    }
-  }
-  return allTags;
-}, []);
+// Define the three main categories
+const CATEGORIES = {
+  General: ['General', 'Getting Started', 'Community', 'Use Cases'],
+  Technical: ['Development', 'Protocol', 'SDK', 'API', 'Smart Contracts'],
+  Economic: ['Tokenomics', 'Staking', 'Rewards', 'Economics', 'Financial']
+};
 
 function Accordion({ title, children, open, onOpen, onClose }) {
   const headingId = paramCase(title);
@@ -103,7 +99,7 @@ function Accordion({ title, children, open, onOpen, onClose }) {
 export default function FAQPage() {
   const [activeFAQ, setActiveFAQ] = useState('');
   const [query, setQuery] = useState('');
-  const [activeTab, setActiveTab] = useState('All');
+  const [activeTab, setActiveTab] = useState('General');
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -122,31 +118,32 @@ export default function FAQPage() {
 
   const filteredFAQs = useMemo(() => {
     if (query.trim() === '') {
-      if (activeTab === 'All') {
-        return FAQs;
-      }
-      return FAQs.filter((faq) => faq.tags.includes(activeTab));
+      // Filter by active tab category
+      const categoryTags = CATEGORIES[activeTab] || [];
+      return FAQs.filter((faq) => 
+        faq.tags && faq.tags.some(tag => categoryTags.includes(tag))
+      );
     }
 
+    // If there's a search query, search across all FAQs
     return FAQs.filter((faq) => {
-      const str = faq.question + ' ' + faq.answer + ' ' + faq.tags.join(' ');
+      const str = faq.question + ' ' + faq.answer + ' ' + (faq.tags ? faq.tags.join(' ') : '');
       return str.toLowerCase().includes(query.toLowerCase());
     });
   }, [activeTab, query]);
 
-  function Pill({ tag }) {
+  function TabButton({ category, label }) {
     return (
       <button
         className={clsx(
-          'cursor-pointer rounded-md border-none px-3.5 py-1.5 font-jakarta text-sm font-medium',
-          activeTab === tag
+          'cursor-pointer rounded-md border-none px-6 py-3 font-jakarta text-sm font-medium transition-colors',
+          activeTab === category
             ? 'bg-primary text-white'
-            : 'bg-secondary-800 text-black dark:text-white',
+            : 'bg-secondary-800 text-black hover:bg-secondary-700 dark:text-white dark:hover:bg-secondary-600',
         )}
-        data-tag={tag}
-        onClick={() => setActiveTab(tag)}
+        onClick={() => setActiveTab(category)}
       >
-        {tag}
+        {label}
       </button>
     );
   }
@@ -186,19 +183,20 @@ export default function FAQPage() {
           {query.trim() !== '' ? (
             filteredFAQs.length === 0 ? (
               <div className="mb-12 text-2xl font-semibold">
-                😢 Sorry, no results matched your search terms
+                Sorry, no results matched your search terms
               </div>
             ) : (
               <div className="mb-12 text-xl font-semibold">
-                🙌 Showing {filteredFAQs.length} results for &quot;{query}&quot;
+                Showing {filteredFAQs.length} results for &quot;{query}&quot;
               </div>
             )
           ) : (
-            <div className="inline-flex items-center gap-2 rounded-lg bg-zinc-100 p-2 dark:bg-zinc-800">
-              <Pill tag="All" />
-              {tags.map((tag) => (
-                <Pill tag={tag} key={tag} />
-              ))}
+            <div className="mb-8">
+              <div className="inline-flex items-center gap-2 rounded-lg bg-zinc-100 p-2 dark:bg-zinc-800">
+                <TabButton category="General" label="General" />
+                <TabButton category="Technical" label="Technical" />
+                <TabButton category="Economic" label="Economic" />
+              </div>
             </div>
           )}
 
