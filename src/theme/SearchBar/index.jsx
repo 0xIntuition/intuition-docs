@@ -21,6 +21,7 @@ import Translate from '@docusaurus/Translate';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import { createPortal } from 'react-dom';
 import translations from '@theme/SearchTranslations';
+import { ChefAI } from '../../components/ChefAI';
 
 let DocSearchModal = null;
 function Hit({ hit, children }) {
@@ -204,5 +205,10 @@ function DocSearch({ contextualSearch, externalUrlRegex, ...props }) {
 }
 export default function SearchBar() {
   const { siteConfig } = useDocusaurusContext();
-  return <DocSearch {...siteConfig.themeConfig.algolia} />;
+  return (
+    <>
+      <ChefAI />
+      <DocSearch {...siteConfig.themeConfig.algolia} />
+    </>
+  );
 }
