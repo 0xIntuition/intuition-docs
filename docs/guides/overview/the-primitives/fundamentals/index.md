@@ -1,7 +1,7 @@
 ---
 id: fundamentals
 title: Fundamentals
-sidebar_label: Overview
+sidebar_label: Fundamentals
 sidebar_position: 1
 description: Core concepts and fundamentals of Intuition primitives
 ---
@@ -97,8 +97,8 @@ Learn about State Interpretations →
 <h3 style={{ marginTop: 0, marginBottom: '1rem' }}>Recommended Reading Order</h3>
 <ol style={{ margin: 0, paddingLeft: '1.5rem' }}>
 <li><strong>Atoms</strong> - Start with the basic building blocks</li>
-<li><strong>Triples</strong> - Learn how relationships are formed</li>
-<li><strong>Signal</strong> - Understand how trust and belief are expressed</li>
+<li><strong>Triples</strong> - Learn how Atoms combine to form relationships</li>
+<li><strong>Signal</strong> - Understand how users interact with Atoms</li>
 <li><strong>Fees & Rewards</strong> - Explore the economic mechanisms</li>
 <li><strong>State Interpretations</strong> - Discover flexible analysis approaches</li>
 </ol>

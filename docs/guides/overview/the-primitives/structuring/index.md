@@ -1,7 +1,7 @@
 ---
 id: structuring
 title: Structuring
-sidebar_label: Overview
+sidebar_label: Structuring
 sidebar_position: 1
 description: Advanced techniques for structuring data with Atoms and Triples
 ---
