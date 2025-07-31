@@ -58,20 +58,28 @@ A portion of the fee grants users ownership of the data they interact with, prom
 2. **Rewarding Data Owners**  
 Another portion is distributed to existing data owners, incentivizing the creation and maintenance of valuable data.
 
-### Incentivizing Fractal Data Structures
+## Incentivizing Fractal Data Structures
 
-Intuition's data model—built on Atoms, Triples, and Signal—allows for programmatic value distribution throughout the system. Consider a user who wishes to create a new data entry stating that they like a YouTube video. The user must pay a fee to create this data which rewards previous owners of related data. If the user wishes to obtain ownership in the statement, they must make an initial deposit. 
+Intuition's data model—built on Atoms, Triples, and Signal—allows for programmatic value distribution throughout the system.
 
-Other users who agree with this statement can also deposit to signal their agreement, which pays existing depositors on the Triple and underlying Atoms and increases the share price of the Triple. In other words, future depositors reinforce the validity and increase the value of the underlying data. This process helps to ensure that only high-quality, relevant data remains prominent, as users are financially incentivized to support accurate and meaningful information.
+<div style={{ backgroundColor: 'var(--ifm-color-emphasis-50)', padding: '1.5rem', borderRadius: '8px', marginTop: '2rem', marginBottom: '2rem' }}>
+<h3 style={{ marginTop: 0, marginBottom: '1rem' }}>Example: YouTube Video Like</h3>
+<p style={{ margin: 0, fontSize: '0.9rem' }}>
+Consider a user who wishes to create a new data entry stating that they like a YouTube video. The user must pay a fee to create this data which rewards previous owners of related data. If the user wishes to obtain ownership in the statement, they must make an initial deposit.
+</p>
+</div>
 
-* **Creating Data**: A user pays a fee to state they like a YouTube video.  
-  * The Triple creation fee rewards prior owners of related data.  
-  * The initial deposit grants ownership of the statement.
-* **Reinforcing Data**: Other users can also stake on the Triple to explicitly agree with the statement, reinforcing its validity and increasing its value.
+Other users who agree with this statement can also deposit to signal their agreement, which pays existing depositors on the Triple and underlying Atoms and increases the share price of the Triple. In other words, future depositors reinforce the validity and increase the value of the underlying data.
+
+**Creating Data**: A user pays a fee to state they like a YouTube video.  
+- The Triple creation fee rewards prior owners of related data.  
+- The initial deposit grants ownership of the statement.
+
+**Reinforcing Data**: Other users can also stake on the Triple to explicitly agree with the statement, reinforcing its validity and increasing its value.
 
 This model ensures high-quality, relevant data remains prominent while incentivizing accuracy and meaningful contributions.
 
-### Aligning Incentives with Data Structures
+## Aligning Incentives with Data Structures
 
 Intuition's economic model motivates users to interact with data they believe will gain engagement. The explicit structure of data encourages users to converge on:
 
@@ -80,7 +88,7 @@ Intuition's economic model motivates users to interact with data they believe wi
 
 This drives fractal consensus, ensuring scalability from individual Atoms to complex nested Triples.
 
-### Promoting a Self-Regulating Ecosystem
+## Promoting a Self-Regulating Ecosystem
 
 By integrating economic incentives, Intuition creates a self-regulating system that achieves:
 
@@ -88,4 +96,11 @@ By integrating economic incentives, Intuition creates a self-regulating system t
 * **Meaningful Contributions**: Rewards motivate high-quality data creation.
 * **Structured Consensus**: Users are incentivized to align on effective data representations.
 
-By integrating these economic principles, Intuition not only secures the system against malicious attacks but also promotes a healthy, self-regulating ecosystem where users are rewarded for their contributions to the integrity and value of the data. 
+By integrating these economic principles, Intuition not only secures the system against malicious attacks but also promotes a healthy, self-regulating ecosystem where users are rewarded for their contributions to the integrity and value of the data.
+
+## Next Steps
+
+Now that you understand Fees & Rewards, explore:
+- [State Interpretations](/guides/overview/the-primitives/fundamentals/state-interpretations) - Learn how the system state is interpreted
+- [Calculating Rewards](/guides/overview/the-primitives/structuring/calculating-rewards) - Advanced techniques for reward calculation
+- [Signal](/guides/overview/the-primitives/fundamentals/signal) - Understand how users interact with the economic system 
