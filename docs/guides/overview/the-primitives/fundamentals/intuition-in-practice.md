@@ -12,7 +12,7 @@ The introduction of Intuition's core primitives lays a robust foundation for con
 
 To illustrate this, consider the experience of buying a product on Amazon. With Intuition's primitives, this process can be reimagined in a decentralized, trustless manner:
 
-## 1. Atoms and Triples
+## Atoms and Triples
 
 Every user, product, review, and transaction can be represented as discrete objects (Atoms) and linked through relationships (Triples). For instance, a Triple could link a product (Atom) to a review (Atom) through a relationship like "hasReview."
 
@@ -42,7 +42,7 @@ did:ethr:mainnet:0x...review456
 </div>
 </div>
 
-## 2. Signal
+## Signal
 
 Each review can be evaluated for credibility using the Signal primitive. Reviews and Signals from verified purchasers or highly reputable users can carry more weight, helping users discern trustworthy feedback from potentially fraudulent reviews.
 
@@ -72,7 +72,7 @@ Automatic flagging of suspicious review patterns
 </div>
 </div>
 
-## 3. Fees, Economics, and Incentives
+## Fees, Economics, and Incentives
 
 Users are encouraged to express themselves, and reviewers are incentivized to provide honest and detailed feedback. Users earn money for their valuable data contributions, and their reputation becomes cross-contextual, increasing its significance beyond a single platform.
 
@@ -135,7 +135,7 @@ Valuable insights from trusted sources prioritized
 </div>
 </div>
 
-## 4. Interpretations
+## Interpretations
 
 The listing of a product on a marketplace such as Amazon can be represented as a literal interpretation. For instance, adding a product to a marketplace can be as straightforward as creating a Triple like [Product][listedOn] [Amazon].
 
@@ -168,7 +168,7 @@ Third-party verification and validation
 </div>
 </div>
 
-## 5. Algorithms
+## Algorithms
 
 Users can choose from various algorithms to filter and sort reviews based on their preferences. For instance, an algorithm can prioritize reviews from users with similar purchase histories or highlight reviews that mention specific product features.
 
@@ -198,7 +198,7 @@ Weight reviews based on user trust networks
 </div>
 </div>
 
-## 6. Reality Tunnel
+## Reality Tunnel
 
 Users can compose together interpretations and algorithms to create curated 'views' of data, allowing them to find the voices they trust among thousands of anonymous voices.
 
@@ -228,7 +228,7 @@ Tailored data presentation based on preferences
 </div>
 </div>
 
-## 7. Portable Identity and Data
+## Portable Identity and Data
 
 Identities and data become universal, and can be referenced and integrated anywhere across the web. Users can see a product's aggregated reviews across Amazon, Facebook Marketplace, Craigslist, or eBay, provided the same canonical identifier for the products is used in each context.
 

@@ -96,6 +96,125 @@
   @apply rounded-lg;
 }
 @layer components {
+  /* Card hover effects for documentation */
+  .docs-card {
+    transition: all 0.3s ease;
+    transform: translateY(0);
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .docs-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    border-color: var(--ifm-color-primary) !important;
+    box-shadow: 0 0 20px rgba(var(--ifm-color-primary-rgb), 0.3) !important;
+  }
+  
+  /* Dark theme adjustments */
+  html[data-theme='dark'] .docs-card:hover {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4), 0 0 20px rgba(var(--ifm-color-primary-rgb), 0.4) !important;
+  }
+  
+  /* Soft glow effect on hover */
+  .docs-card:hover::before {
+    content: '';
+    position: absolute;
+    top: -3px;
+    left: -3px;
+    right: -3px;
+    bottom: -3px;
+    background: linear-gradient(45deg, var(--ifm-color-primary), transparent);
+    border-radius: 11px;
+    z-index: -1;
+    opacity: 0.2;
+    transition: opacity 0.3s ease;
+    filter: blur(2px);
+  }
+  
+  /* Alternative selector for cards without the class */
+  div[style*="borderRadius: '8px'"][style*="padding: '1.5rem'"] {
+    transition: all 0.3s ease;
+    transform: translateY(0);
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+  }
+  
+  div[style*="borderRadius: '8px'"][style*="padding: '1.5rem'"]:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15), 0 0 20px rgba(var(--ifm-color-primary-rgb), 0.3) !important;
+    border-color: var(--ifm-color-primary) !important;
+  }
+  
+  html[data-theme='dark'] div[style*="borderRadius: '8px'"][style*="padding: '1.5rem'"]:hover {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4), 0 0 20px rgba(var(--ifm-color-primary-rgb), 0.4) !important;
+  }
+  
+  /* Uniform card sizing for grid layouts */
+  .docs-card-grid {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 2rem !important;
+    margin-top: 3rem !important;
+    margin-bottom: 3rem !important;
+    justify-content: flex-start !important;
+    align-items: stretch !important;
+  }
+  
+  /* Force spacing on all grid items */
+  .docs-card-grid > * {
+    height: 100%;
+    margin: 0 !important;
+    flex: 1 1 300px !important;
+    min-width: 300px !important;
+  }
+  
+  /* Ensure all cards have consistent height */
+  .docs-card-grid a {
+    display: flex;
+    height: 100%;
+    transition: all 0.3s ease;
+    margin: 0 !important;
+    width: 100% !important;
+  }
+  
+  .docs-card-grid a:hover {
+    transform: translateY(-2px);
+  }
+  
+  .docs-card-grid a > div {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    margin: 0 !important;
+  }
+  
+  /* Make card content flex to fill available space */
+  .docs-card-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .docs-card-content p {
+    flex: 1;
+    margin-bottom: 1rem;
+  }
+  
+  .docs-card-tags {
+    margin-bottom: 1rem;
+  }
+  
+  .docs-card-action {
+    margin-top: auto;
+  }
+  
   .noise-bg {
     background-image: linear-gradient(
         to bottom,
