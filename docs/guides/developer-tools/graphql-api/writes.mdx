@@ -1,0 +1,360 @@
+---
+id: writes
+title: Writes
+sidebar_label: Writes
+sidebar_position: 3
+description: Guide to writing data using GraphQL mutations in the Intuition API
+---
+
+# Writes
+
+## GraphQL Mutations
+
+Our GraphQL API provides convenient mutations to help structure and publish Atom metadata following common schemas and best practices. While the protocol supports any URI scheme, these mutations offer an opinionated approach to creating well-structured, interoperable data.
+
+## Current Schema Support
+
+Currently, our default schema is the **Thing schema**. This provides essential properties for describing any entity:
+
+```graphql
+mutation UploadThing(
+  $name: String!
+  $description: String!
+  $image: String!
+  $url: String!
+) {
+  uploadThing(
+    arg1: { name: $name, description: $description, image: $image, url: $url }
+  ) {
+    cid
+  }
+}
+```
+
+### Example Usage
+
+```json
+{
+  "name": "My First Thing",
+  "description": "This is an example description",
+  "image": "ipfs://Qm...", // IPFS URI for image
+  "url": "https://example.com" // Reference URL
+}
+```
+
+The mutation returns an IPFS CID that can be used when creating an Atom:
+
+```typescript
+const { cid } = await uploadThing(thingData)
+const atomId = await createAtom(cid)
+```
+
+## Advanced Mutation Examples
+
+### Creating Atoms with Metadata
+
+```graphql
+mutation CreateAtomWithMetadata($uri: String!, $curveId: Int!) {
+  createAtom(uri: $uri, curveId: $curveId) {
+    id
+    uri
+    createdAt
+    vault {
+      id
+      curveId
+      isActive
+    }
+  }
+}
+```
+
+### Creating Triples
+
+```graphql
+mutation CreateTriple(
+  $subjectId: String!
+  $predicateId: String!
+  $objectId: String!
+  $curveId: Int!
+) {
+  createTriple(
+    subjectId: $subjectId
+    predicateId: $predicateId
+    objectId: $objectId
+    curveId: $curveId
+  ) {
+    id
+    subject {
+      id
+      uri
+    }
+    predicate {
+      id
+      uri
+    }
+    object {
+      id
+      uri
+    }
+    positiveVault {
+      id
+      curveId
+    }
+    negativeVault {
+      id
+      curveId
+    }
+  }
+}
+```
+
+### Taking Positions on Atoms
+
+```graphql
+mutation TakePositionOnAtom(
+  $atomId: String!
+  $shares: String!
+  $curveId: Int!
+) {
+  takePosition(
+    atomId: $atomId
+    shares: $shares
+    curveId: $curveId
+  ) {
+    id
+    user
+    shares
+    assets
+    atom {
+      id
+      uri
+    }
+    vault {
+      id
+      curveId
+    }
+  }
+}
+```
+
+### Taking Positions on Triples
+
+```graphql
+mutation TakePositionOnTriple(
+  $tripleId: String!
+  $shares: String!
+  $isPositive: Boolean!
+  $curveId: Int!
+) {
+  takeTriplePosition(
+    tripleId: $tripleId
+    shares: $shares
+    isPositive: $isPositive
+    curveId: $curveId
+  ) {
+    id
+    user
+    shares
+    assets
+    isPositive
+    triple {
+      id
+      subject {
+        uri
+      }
+      predicate {
+        uri
+      }
+      object {
+        uri
+      }
+    }
+    vault {
+      id
+      curveId
+    }
+  }
+}
+```
+
+## Example Workflows
+
+### Basic Thing Creation
+
+```typescript
+// 1. Upload metadata
+const thingData = {
+  name: 'Example Thing',
+  description: 'Description...',
+  image: 'ipfs://Qm...',
+  url: 'https://...',
+}
+
+const { cid } = await uploadThing(thingData)
+
+// 2. Create Atom with returned CID
+const atomId = await createAtom(cid)
+```
+
+### Creating a Knowledge Graph Entry
+
+```typescript
+// 1. Create subject atom
+const subjectData = {
+  name: 'Alice',
+  description: 'A person',
+  image: 'ipfs://QmAlice...',
+  url: 'https://example.com/alice'
+}
+const { cid: subjectCid } = await uploadThing(subjectData)
+const subjectAtom = await createAtom(subjectCid)
+
+// 2. Create predicate atom
+const predicateData = {
+  name: 'knows',
+  description: 'Relationship indicating knowledge',
+  image: 'ipfs://QmKnows...',
+  url: 'https://example.com/knows'
+}
+const { cid: predicateCid } = await uploadThing(predicateData)
+const predicateAtom = await createAtom(predicateCid)
+
+// 3. Create object atom
+const objectData = {
+  name: 'Bob',
+  description: 'Another person',
+  image: 'ipfs://QmBob...',
+  url: 'https://example.com/bob'
+}
+const { cid: objectCid } = await uploadThing(objectData)
+const objectAtom = await createAtom(objectCid)
+
+// 4. Create triple relationship
+const triple = await createTriple({
+  subjectId: subjectAtom.id,
+  predicateId: predicateAtom.id,
+  objectId: objectAtom.id,
+  curveId: 1
+})
+
+// 5. Take a position on the triple
+const position = await takeTriplePosition({
+  tripleId: triple.id,
+  shares: '1000000000000000000', // 1 share in wei
+  isPositive: true,
+  curveId: 1
+})
+```
+
+### Variables for Testing
+
+```json
+{
+  "uri": "ipfs://QmExample...",
+  "curveId": 1,
+  "subjectId": "0x1234567890abcdef1234567890abcdef12345678",
+  "predicateId": "0xabcdef1234567890abcdef1234567890abcdef12",
+  "objectId": "0x9876543210fedcba9876543210fedcba98765432",
+  "atomId": "0x1234567890abcdef1234567890abcdef12345678",
+  "tripleId": "0xabcdef1234567890abcdef1234567890abcdef12",
+  "shares": "1000000000000000000",
+  "isPositive": true
+}
+```
+
+## Upcoming Schema Support
+
+We are actively expanding our mutation support to include schemas from **schema.org**. Additionally, we'll be adding support for **CAIP-10 addresses** to enable cross-chain identity resolution.
+
+## Best Practices
+
+### Complete Metadata
+Provide as much relevant metadata as possible to improve the Atom's utility across different contexts.
+
+### Persistent Storage
+All metadata is stored on IPFS, ensuring data availability and immutability.
+
+### URI Standards
+Use standard URI formats:
+- **IPFS**: `ipfs://Qm...`
+- **HTTP(S)**: `https://...`
+- **CAIP-10** (coming soon): `eip155:1:0x...`
+
+### Error Handling
+Always handle potential errors in mutations:
+
+```typescript
+try {
+  const result = await createAtom(uri, curveId)
+  console.log('Atom created:', result.id)
+} catch (error) {
+  console.error('Failed to create atom:', error.message)
+}
+```
+
+### Gas Estimation
+For on-chain operations, always estimate gas before executing:
+
+```typescript
+const gasEstimate = await contract.estimateGas.createAtom(uri, curveId)
+const tx = await contract.createAtom(uri, curveId, { gasLimit: gasEstimate })
+```
+
+## TypeScript Integration
+
+We maintain a package, `graphql` within our `intuition-ts` monorepo that auto-generates TypeScript types and React hooks to make integrations easier. This includes type-safe mutations, queries, and React hooks for all supported schemas.
+
+### Using Generated Hooks
+
+```typescript
+import { 
+  useUploadThingMutation, 
+  useCreateAtomMutation, 
+  useCreateTripleMutation,
+  useTakePositionMutation 
+} from '@0xintuition/graphql'
+
+function CreateAtomComponent() {
+  const [uploadThing, { loading: uploading }] = useUploadThingMutation()
+  const [createAtom, { loading: creating }] = useCreateAtomMutation()
+
+  const handleCreateAtom = async (thingData: ThingData) => {
+    try {
+      // Upload metadata
+      const { data: uploadResult } = await uploadThing({
+        variables: thingData
+      })
+
+      // Create atom with returned CID
+      const { data: atomResult } = await createAtom({
+        variables: {
+          uri: uploadResult.uploadThing.cid,
+          curveId: 1
+        }
+      })
+
+      console.log('Atom created:', atomResult.createAtom.id)
+    } catch (error) {
+      console.error('Failed to create atom:', error)
+    }
+  }
+
+  return (
+    <button 
+      onClick={() => handleCreateAtom(thingData)}
+      disabled={uploading || creating}
+    >
+      {uploading || creating ? 'Creating...' : 'Create Atom'}
+    </button>
+  )
+}
+```
+
+We are actively finalizing patterns to properly externalize this package, which will be released shortly. This guide will be updated to provide example implementations once the package is released.
+
+
+## Related Resources
+
+- [GraphQL API Overview](/guides/developer-tools/graphql-api/overview)
+- [GraphQL Reads](/guides/developer-tools/graphql-api/reads)
+- [Intuition GraphQL Package Source](https://github.com/0xIntuition/intuition-ts/tree/main/packages/graphql) 

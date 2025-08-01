@@ -1,0 +1,311 @@
+---
+id: migration-guide
+title: Migration Guide
+sidebar_label: Migration Guide
+sidebar_position: 5
+description: Guide to migrating from v1.0 to v1.5 of the Intuition GraphQL API
+---
+
+# v1.5 Migration Guide
+
+**Abstract**: The Intuition API is being updated to support exciting new features, and developers using the API will need to make adjustments to their queries to continue using it. This document serves as a comprehensive guide for that process.
+
+## Current Status
+
+The Base Sepolia and Base Mainnet 1.5 backend is already live and accessible:
+
+| Environment | Endpoint |
+|-------------|----------|
+| **Base Sepolia** | `https://prod.base-sepolia-v-1-5.intuition.sh/v1/graphql` |
+| **Base Mainnet** | `https://prod.base-mainnet-v-1-0.intuition.sh/v1/graphql` |
+
+## ✨ New Features
+
+### Core Enhancements
+
+| Feature | Description |
+|---------|-------------|
+| **🏦 Bonding Curve Vaults** | New vault types with dynamic pricing models |
+| **📋 Bonding Curve Registry** | Centralized registry for curve management |
+| **Improved Batch Methods** | Enhanced batch operations for better performance |
+| **✅ Improved Approval Methods** | Better deposit/redeem and batch deposit/redeem approvals |
+| **Enhanced Events & Data** | Price history, P&L, total market cap for individual vaults |
+| **Introduction of 'Terms'** | New concept for atoms and triples semantics |
+| **Multiple Vaults per Term** | Pro Rata Vault (1.0) + Bonding Curve Vaults |
+| **🔒 Security Improvements** | Updates from Consensys Diligence audit |
+
+### What Changed Conceptually
+
+We have introduced the idea of a **"Term"**. A "Term" refers to an Atom, Triple or Counter-triple as a *concept*. The URI or Data of an Atom, or the Atom IDs contained within a Triple or Counter-Triple belong to the "Term". Any economic state associated with the "Term" is stored in multiple "Vaults" associated with that Term.
+
+#### 🔗 **Term Structure**
+
+```
+┌─────────────────────────────────────┐
+│              TERM                   │
+├─────────────────────────────────────┤
+│ 🧩 Atom/Triple/Counter-triple      │
+│ 🏦 Multiple Vaults                 │
+│ 📊 Total Market Cap                │
+│ 💰 Economic State                  │
+└─────────────────────────────────────┘
+```
+
+#### Market Cap Calculation
+
+Each Term has a `total_market_cap` value which is an aggregate market cap of all its constituent Vaults. This is *theoretical* - it represents the arithmetic product of `totalShares` and `currentSharePrice`, not actual `totalAssets`.
+
+> ⚠️ **Note**: The `total_market_cap` will generally be larger than actual `totalAssets` due to slippage effects during liquidation.
+
+## 🔄 Migration Checklist
+
+### 📋 **Core Schema Changes**
+
+Update these field names in your GraphQL queries:
+
+| Old Field | New Field | Type Change |
+|-----------|-----------|-------------|
+| `id` | `term_id` | Primary identifier |
+| `vault` | `term` | Nested object (when referring to concept) |
+| `vault` | `vaults(where: { curve_id: {_eq: "[X]" } })` | Specific curve vault |
+| `total_shares` | `total_market_cap` | In term object or specific vault |
+| `block_timestamp` | `created_at` | `TIMESTAMP WITH TIME ZONE NOT NULL` |
+
+### ⏰ **Timestamp Field Updates**
+
+All timestamp fields have been updated:
+
+| Entity | Old Field | New Field | Additional |
+|--------|-----------|-----------|------------|
+| **Atom** | `block_timestamp` | `created_at` | + `updated_at` |
+| **Position** | `block_timestamp` | `created_at` | + `updated_at` |
+| **Vault** | `block_timestamp` | `created_at` | + `updated_at` |
+| **Triple** | `block_timestamp` | `created_at` | - |
+| **Signal** | `block_timestamp` | `created_at` | - |
+| **Deposit** | `block_timestamp` | `created_at` | - |
+| **FeeTransfer** | `block_timestamp` | `created_at` | - |
+| **Redemption** | `block_timestamp` | `created_at` | - |
+
+### 🏦 **Vault Access Changes**
+
+Instead of accessing a single vault, you now need to specify the curve:
+
+```graphql
+# OLD: Single vault access
+vault(where: { id: { _eq: "42" } }) {
+  total_shares
+  total_assets
+}
+
+# NEW: Curve-specific vault access
+vaults(where: {
+  curve_id: { _eq: "1" },
+  term_id: { _eq: "42" }
+}) {
+  total_shares
+  total_assets
+  total_market_cap
+}
+```
+
+## 💻 Migration Examples
+
+### 📝 **Example 1: Get Entries Query**
+
+```graphql
+# OLD SCHEMA
+query GetEntries($isTypeTypeId: numeric!, $entryTypeId: numeric!, $limit: Int!, $offset: Int!) {
+  triples {
+    subject {
+      id
+      value {
+        thing { ... }
+      }
+      vault {
+        total_shares
+      }
+    }
+  }
+}
+
+# NEW SCHEMA
+query GetEntries($isTypeTypeId: numeric!, $entryTypeId: numeric!, $limit: Int!, $offset: Int!) {
+  triples {
+    subject {
+      term_id
+      atom_value {
+        thing { ... }
+      }
+      term {
+        total_market_cap
+      }
+    }
+  }
+}
+```
+
+### 🔍 **Example 2: Get Entry Query**
+
+```graphql
+# OLD SCHEMA
+query GetEntry($id: numeric!, $typePredicateId: numeric!, $entryTypeId: numeric!) {
+  atom(id: $id) {
+    id
+    value { ... }
+  }
+}
+
+# NEW SCHEMA
+query GetEntry($term_id: numeric!, $typePredicateId: numeric!, $entryTypeId: numeric!) {
+  atom(term_id: $term_id) {
+    term_id
+    atom_value { ... }
+  }
+}
+```
+
+### 🔎 **Example 3: Search Entries Query**
+
+```graphql
+# OLD SCHEMA
+query SearchEntries {
+  atoms(where: {
+    value: { thing: { ... } }
+  }) {
+    id
+    value { ... }
+    vault { total_shares }
+  }
+}
+
+# NEW SCHEMA
+query SearchEntries {
+  atoms(where: {
+    atom_value: { thing: { ... } }
+  }) {
+    term_id
+    atom_value { ... }
+    term { total_market_cap }
+  }
+}
+```
+
+### 📊 **Example 4: Order By Changes**
+
+```graphql
+# OLD
+order_by: [{ vault: { total_shares: desc } }]
+
+# NEW
+order_by: [{ subject: { term: { total_market_cap: desc } }}]
+```
+
+## 🏦 Bonding Curves
+
+### 📈 **Offset Square Root Curve 2,5e35**
+
+Our first recommended curve follows a "square root" price function pattern with an offset to make the early portion less dramatic:
+
+| Feature | Description |
+|---------|-------------|
+| **📊 Price Function** | Square root pattern with offset |
+| **🎯 Early Advantage** | Earliest stakers get most advantageous share price |
+| **📈 Growth Pattern** | Share price increases supralinearly (gently) |
+| **💰 Profit Potential** | Users can redeem at higher prices as share price increases |
+
+### 🔄 **Comparison: Pro-Rata vs Bonding Curve**
+
+| Aspect | Pro-Rata (1.0) | Bonding Curve (1.5) |
+|--------|----------------|---------------------|
+| **Share Price** | Always "1" (with fee adjustments) | Dynamic based on curve function |
+| **Profit Potential** | Limited (high activity required) | Significant upside potential |
+| **Risk Level** | Low (minimal downside) | Higher (price can diminish) |
+| **Economic Activity** | High activity needed for profit | Profitable with moderate activity |
+
+## 🔧 Smart Contract Updates
+
+### 📋 **New Bonding Curve Mutators**
+
+```solidity
+/// @notice deposit eth into an atom vault and grant ownership of 'shares' to 'receiver'
+function depositAtomCurve(address receiver, uint256 atomId, uint256 curveId) external payable returns (uint256);
+
+/// @notice redeem shares from an atom vault for assets
+function redeemAtomCurve(uint256 percentage, address receiver, uint256 atomId, uint256 curveId) external returns (uint256);
+```
+
+### 🔍 **New Bonding Curve Accessors**
+
+```solidity
+/// @notice returns current share price for a specific curve
+function currentSharePriceCurve(uint256 vaultId, uint256 curveId) external view returns (uint256);
+
+/// @notice returns max amount of shares that can be redeemed
+function maxRedeemCurve(address owner, uint256 vaultId, uint256 curveId) external view returns (uint256);
+
+/// @notice simulates deposit effects and returns estimated shares
+function previewDepositCurve(uint256 assets, uint256 vaultId, uint256 curveId) external view returns (uint256);
+
+/// @notice simulates redemption effects and returns estimated assets
+function previewRedeemCurve(uint256 shares, uint256 vaultId, uint256 curveId) external view returns (uint256);
+```
+
+### ✅ **Updated Approval Method**
+
+```solidity
+/// @notice Set the approval type for a sender to act on behalf of the receiver
+/// @param sender address to set approval for
+/// @param approvalType type of approval to grant (NONE = 0, DEPOSIT = 1, REDEMPTION = 2, BOTH = 3)
+function approve(address sender, ApprovalTypes approvalType) external;
+```
+
+### 📦 **Batch Methods**
+
+```solidity
+/// @notice Batch create atoms and return their vault ids
+function batchCreateAtom(bytes[] calldata atomUris) external payable returns (uint256[] memory);
+
+/// @notice batch create triples and return their vault ids
+function batchCreateTriple(uint256[] calldata subjectIds, uint256[] calldata predicateIds, uint256[] calldata objectIds) external payable returns (uint256[] memory);
+
+/// @notice deposit eth into multiple terms and grant ownership of 'shares' to 'receiver'
+function batchDeposit(address receiver, uint256[] calldata termIds, uint256[] calldata amounts) external payable returns (uint256[] memory);
+
+/// @notice deposit eth into bonding curve vaults
+function batchDepositCurve(address receiver, uint256[] calldata termIds, uint256[] calldata curveIds, uint256[] calldata amounts) external payable returns (uint256[] memory);
+
+/// @notice redeem shares from multiple vaults
+function batchRedeem(uint256 percentage, address receiver, uint256[] calldata ids) external returns (uint256[] memory);
+
+/// @notice redeem shares from bonding curve vaults
+function batchRedeemCurve(uint256 percentage, address receiver, uint256[] calldata termIds, uint256[] calldata curveIds) external returns (uint256[] memory);
+```
+
+## 🚨 Important Notes
+
+### ⚠️ **Claims Deprecation**
+
+If using `claims`, it's suggested to start using `positions` instead, as the positions contain the same information and more. Claims are likely to be sunset in the near future.
+
+### 🧪 **Testing Environment**
+
+> ⚠️ **Caution**: The Dummy 1.5 contract does not contain the same dataset as the 1.0 contract on Base Sepolia. If your app relies on specific data, you may need to add it to the Dummy 1.5 contract for testing.
+
+Once the contract upgrade is completed, the 1.5 contract will have the same data set as the 1.0 version and will live at the same contract address.
+
+## �� Endpoint Changes
+
+| Environment | Old Endpoint | New Endpoint |
+|-------------|--------------|--------------|
+| **Development** | `https://prod.base-sepolia.intuition-api.com/v1/graphql` | `https://prod.base-sepolia-v-1-5.intuition.sh/v1/graphql` |
+
+## 📚 Additional Resources
+
+- 📖 [Official v1.5 Migration Guide](https://tech.docs.intuition.systems/dev/1.5-migration)
+- 🔗 [Bonding Curve Documentation](/guides/overview/the-economics/bonding-curves)
+- 🛠️ [GraphQL API Reference](/guides/developer-tools/graphql-api)
+- 💬 [Community Support](https://discord.gg/intuition)
+
+---
+
+> 🚀 **Ready to migrate?** Start with our [Quick Start Guide](/guides/quickstart) or explore the [SDK Documentation](/guides/developer-tools/sdks) to begin your v1.5 migration! 

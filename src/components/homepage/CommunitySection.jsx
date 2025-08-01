@@ -11,7 +11,7 @@ const socialLinks = [
   {
     name: 'Telegram',
     handle: 't.me/intuitionsystems',
-    icon: '✈️',
+    icon: 'Travel',
     link: 'https://t.me/intuitionsystems',
   },
   {
@@ -23,7 +23,7 @@ const socialLinks = [
   {
     name: 'Medium',
     handle: '0xintuition',
-    icon: '📝',
+    icon: 'Document',
     link: 'https://medium.com/0xintuition',
   },
   {

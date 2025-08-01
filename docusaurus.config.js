@@ -26,8 +26,8 @@ const docs = [];
 /** @type {import('@docusaurus/plugin-content-docs').Options} */
 const defaultSettings = {
   breadcrumbs: true,
-  editUrl: 'https://github.com/0xintuition/intuition-docs/tree/main/',
-  showLastUpdateTime: true,
+  editUrl: 'https://github.com/0xIntuition/intuition-docs/tree/main/',
+  showLastUpdateTime: false,
   sidebarCollapsible: true,
   remarkPlugins: [
     [require('@docusaurus/remark-plugin-npm2yarn'), { sync: true }],
@@ -142,7 +142,7 @@ const config = {
       },
       navbar: {
         logo: {
-          href: '/',
+          href: 'https://www.intuition.systems/',
           src: '/logo/light.svg',
           srcDark: '/logo/dark.svg',
           alt: 'Intuition Documentation',
@@ -154,34 +154,6 @@ const config = {
             label: 'Guides',
             to: 'guides',
             className: 'guides-top-header',
-          },
-          {
-            label: 'SDKs',
-            type: 'dropdown',
-            className: 'intuition-dropdown',
-            items: [
-              {
-                type: 'html',
-                value: sdksHTML,
-                className: 'intuition-dropdown',
-              },
-            ],
-          },
-          {
-            label: 'GraphQL API',
-            to: '/graphql',
-          },
-          {
-            label: 'Resources',
-            type: 'dropdown',
-            className: 'intuition-dropdown resources-dropdown',
-            items: [
-              {
-                type: 'html',
-                value: resourcesHTML,
-                className: 'intuition-dropdown',
-              }
-            ],
           },
           {
             type: 'search',
@@ -212,6 +184,10 @@ const config = {
           'objectivec',
           'json',
           'bash',
+          'solidity',
+          'typescript',
+          'javascript',
+          'cpp',
         ],
         magicComments: [
           {

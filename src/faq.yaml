@@ -12,7 +12,7 @@
        ```
     2. Create an account and get your API keys
     3. Start building with our guides and documentation
-  tags: [Getting Started, Development]
+  tags: [General, Getting Started, Development]
 
 - question: What can I build with Intuition?
   answer: |
@@ -22,14 +22,14 @@
     - Data verification systems
     - AI-powered applications
     - Trust and reputation systems
-  tags: [Development, Use Cases]
+  tags: [General, Use Cases, Development]
 
 - question: How does staking work?
   answer: |
     Staking in Intuition involves depositing $TRUST tokens to back your claims. 
     The more tokens you stake, the higher the potential rewards when your data is used. 
     Staking also helps ensure data quality as stakes can be slashed for incorrect information.
-  tags: [Protocol, Tokenomics]
+  tags: [Economic, Tokenomics, Staking]
 
 - question: How do I contribute to the protocol?
   answer: |
@@ -39,4 +39,83 @@
     3. Participate in governance
     4. Help improve documentation
     5. Join the developer community
-  tags: [Community, Development]
+  tags: [General, Community, Development]
+
+- question: What are bonding curves?
+  answer: |
+    Bonding curves are mathematical functions that determine the price of tokens based on supply. 
+    In Intuition, they're used for dynamic pricing of data and automated market making. 
+    As more tokens are purchased, the price increases according to the curve formula.
+  tags: [Technical, Protocol, Economics]
+
+- question: How do rewards work?
+  answer: |
+    Rewards are distributed to users who contribute valuable data and stake tokens. 
+    The reward amount depends on the quality and usage of your data, as well as the amount staked. 
+    Rewards are paid out in $TRUST tokens and can be claimed periodically.
+  tags: [Economic, Rewards, Tokenomics]
+
+- question: What is the GraphQL API?
+  answer: |
+    The GraphQL API provides a flexible way to query and interact with Intuition data. 
+    It allows you to fetch atoms, triples, and other protocol data with precise queries. 
+    The API supports real-time subscriptions and efficient data fetching.
+  tags: [Technical, API, Development]
+
+- question: How do smart contracts work in Intuition?
+  answer: |
+    Intuition uses smart contracts to manage staking, rewards, and data verification. 
+    The contracts handle token transfers, stake management, and reward distribution automatically. 
+    They ensure transparency and trustlessness in the protocol operations.
+  tags: [Technical, Smart Contracts, Protocol]
+
+- question: What is the $TRUST token?
+  answer: |
+    $TRUST is the native token of the Intuition protocol. It's used for staking, governance, 
+    and as a reward mechanism. Token holders can participate in protocol decisions and earn 
+    rewards for contributing to the network.
+  tags: [Economic, Tokenomics, Financial]
+
+- question: How do I integrate Intuition into my app?
+  answer: |
+    Integration involves several steps:
+    1. Install the appropriate SDK (React, Node.js, etc.)
+    2. Configure your API keys and endpoints
+    3. Implement data submission and querying
+    4. Add staking and reward mechanisms
+    5. Test thoroughly before deployment
+  tags: [Technical, Development, SDK]
+
+- question: What are atoms and triples?
+  answer: |
+    Atoms are the basic units of data in Intuition, representing individual claims or facts. 
+    Triples are structured data in subject-predicate-object format, enabling complex relationships. 
+    Together, they form the foundation of Intuition's knowledge graph.
+  tags: [Technical, Protocol, Development]
+
+- question: How is data quality ensured?
+  answer: |
+    Data quality is maintained through multiple mechanisms:
+    - Staking requirements for data submission
+    - Community verification and voting
+    - Automated quality checks
+    - Slashing penalties for incorrect data
+    - Reputation systems
+  tags: [General, Protocol, Economic]
+
+- question: What are the gas costs?
+  answer: |
+    Gas costs depend on the network and transaction type. Staking, data submission, and 
+    reward claims all incur gas fees. Costs vary based on network congestion and transaction 
+    complexity. Consider batching operations to optimize costs.
+  tags: [Economic, Financial, Technical]
+
+- question: How do I become a validator?
+  answer: |
+    To become a validator, you need to:
+    1. Meet minimum stake requirements
+    2. Run a node with proper infrastructure
+    3. Participate in consensus mechanisms
+    4. Maintain uptime and performance
+    5. Follow protocol governance rules
+  tags: [Technical, Development, Economic]

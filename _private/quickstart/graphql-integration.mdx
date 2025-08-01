@@ -1,0 +1,87 @@
+---
+title: Quick Integration with GraphQL
+sidebar_position: 999
+description: Learn how to integrate GraphQL APIs with your Intuition application
+---
+
+# Quick Integration with GraphQL
+
+This guide demonstrates how to integrate GraphQL APIs with your Intuition application to fetch and display blockchain data efficiently.
+
+## Setting Up GraphQL Client
+
+First, set up your GraphQL client in your Intuition app:
+
+```typescript
+import { createClient } from '@intuition/graphql-client'
+
+const client = createClient({
+  url: 'https://api.intuition.dev/graphql',
+  headers: {
+    'Authorization': 'Bearer YOUR_API_KEY'
+  }
+})
+```
+
+## Basic Query Example
+
+Here's a simple query to fetch blockchain data:
+
+```typescript
+const QUERY = `
+  query GetLatestBlocks {
+    blocks(first: 10) {
+      number
+      hash
+      timestamp
+      transactions {
+        hash
+        from
+        to
+        value
+      }
+    }
+  }
+`
+
+// Execute the query
+const data = await client.query(QUERY)
+```
+
+## Using with React Components
+
+Integrate GraphQL queries with your React components:
+
+```typescript
+import { useQuery } from '@intuition/react-hooks'
+
+function BlockExplorer() {
+  const { data, loading, error } = useQuery(QUERY)
+  
+  if (loading) return <div>Loading...</div>
+  if (error) return <div>Error: {error.message}</div>
+  
+  return (
+    <div>
+      {data.blocks.map(block => (
+        <div key={block.hash}>
+          Block #{block.number}: {block.hash}
+        </div>
+      ))}
+    </div>
+  )
+}
+```
+
+## Best Practices
+
+1. Use fragments for reusable pieces of queries
+2. Implement proper error handling
+3. Cache responses when appropriate
+4. Use pagination for large datasets
+
+## Next Steps
+
+- Learn about contract interactions in the next guide
+- Explore advanced GraphQL features
+- Check out our GraphQL API reference 

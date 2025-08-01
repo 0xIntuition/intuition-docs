@@ -1,0 +1,8 @@
+{
+  "label": "Deep Dive",
+  "position": 1,
+  "link": {
+    "type": "generated-index",
+    "description": "Advanced topics and detailed explanations of Intuition's core concepts and architecture."
+  }
+} 

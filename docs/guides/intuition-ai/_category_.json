@@ -1,10 +1,4 @@
 {
-  "position": 5,
   "label": "Intuition AI",
-  "collapsible": true,
-  "className": "sectionSidebarHeading",
-  "customProps": {
-    "separatorBefore": true,
-    "separatorAfter": true
-  }
+  "position": 7
 } 

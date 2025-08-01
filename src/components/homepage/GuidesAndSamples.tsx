@@ -3,6 +3,7 @@ import Link from '@docusaurus/Link';
 import {
   AppsAddInRegular,
   ArrowRightFilled,
+  CurrencyDollarEuroFilled,
   DocumentRegular,
   OpenRegular,
   RecordRegular,
@@ -23,19 +24,25 @@ const guides: Guide[] = [
     title: 'Creating an Intuition-Powered Application',
     icon: RecordRegular,
     text: 'Get started quickly building applications never before possible by using Intuition!',
-    link: '/guides/quickstart/create-intuition-app',
+    link: '/guides/quickstart/official-intuition-kits',
   },
   {
     title: 'Integrate Your Existing Application with Intuition',
     icon: VideoRegular,
     text: 'Learn how to quickly integrate your existing application with Intuition using GraphQL.',
-    link: '/guides/quickstart/graphql-integration',
+    link: '/guides/developer-tools/graphql-api',
   },
   {
     title: 'Smart Contract Interactions',
     icon: AppsAddInRegular,
     text: 'Learn how to directly interact with the Intuition smart contract suite.',
-    link: '/guides/quickstart/contract-interactions',
+    link: '/guides/developer-tools/contracts/contract-architecture',
+  },
+  {
+    title: 'Understanding Bonding Curves',
+    icon: CurrencyDollarEuroFilled,
+    text: 'Learn about dynamic pricing mechanisms and automated market making with bonding curves.',
+    link: '/guides/introduction/the-economics/bonding-curves',
   },
 ];
 
@@ -128,46 +135,48 @@ function Sample({ title, platform, blog, source, demo }: Sample) {
 
 export default function GuidesAndSamples() {
   return (
-    <section className="no-underline-links my-40 mx-auto flex w-full max-w-5xl flex-col gap-10 p-4 py-0 md:flex-row md:gap-0">
-      <div className="flex-1">
-        <div className="mb-8 flex items-center justify-between">
-          <h3 className="m-0">Popular how to guides</h3>
+    <section className="no-underline-links py-20 mx-auto w-full max-w-7xl px-4">
+      <div className="flex flex-col gap-16 md:flex-row md:gap-20">
+        <div className="flex-1">
+          <div className="mb-8 flex items-center justify-between">
+            <h3 className="m-0 text-2xl font-bold">Popular how to guides</h3>
 
-          <Link to="/guides" className="font-jakarta text-sm font-semibold">
-            View more guides <ArrowRightFilled className="ml-1" />
-          </Link>
+            <Link to="/guides" className="font-jakarta text-sm font-semibold">
+              View more guides <ArrowRightFilled className="ml-1" />
+            </Link>
+          </div>
+
+          <div className="flex flex-col gap-4">
+            {guides.map((guide) => (
+              <Guide {...guide} key={guide.title} />
+            ))}
+          </div>
         </div>
 
-        <div className="flex flex-col gap-4">
-          {guides.map((guide) => (
-            <Guide {...guide} key={guide.title} />
-          ))}
-        </div>
-      </div>
+        <div
+          className={clsx(
+            'mx-8 block flex-shrink-0 bg-gradient-to-b from-transparent via-secondary-700 to-transparent',
+            'hidden w-px md:block',
+          )}
+        />
 
-      <div
-        className={clsx(
-          'mx-8 block flex-shrink-0 bg-gradient-to-b from-transparent via-secondary-700 to-transparent',
-          'hidden w-px md:block',
-        )}
-      />
+        <div className="w-full md:max-w-sm">
+          <div className="mb-8 flex items-center justify-between">
+            <h3 className="m-0 text-2xl font-bold">Popular sample apps</h3>
 
-      <div className="w-full md:max-w-sm">
-        <div className="mb-8 flex items-center justify-between">
-          <h3 className="m-0">Popular sample apps</h3>
+            <Link
+              to="https://github.com/0xIntuition"
+              className="font-jakarta text-sm font-semibold"
+            >
+              All apps <ArrowRightFilled className="ml-1" />
+            </Link>
+          </div>
 
-          <Link
-            to="https://github.com/0xIntuition"
-            className="font-jakarta text-sm font-semibold"
-          >
-            All apps <ArrowRightFilled className="ml-1" />
-          </Link>
-        </div>
-
-        <div className="flex flex-col gap-4">
-          {samples.map((sample) => (
-            <Sample {...sample} key={sample.title} />
-          ))}
+          <div className="flex flex-col gap-4">
+            {samples.map((sample) => (
+              <Sample {...sample} key={sample.title} />
+            ))}
+          </div>
         </div>
       </div>
     </section>

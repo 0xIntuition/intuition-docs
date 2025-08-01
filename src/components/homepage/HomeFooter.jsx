@@ -7,7 +7,7 @@ import BrowserOnly from '@docusaurus/BrowserOnly';
 import ThemedImage from '@theme/ThemedImage';
 
 const overview = [
-  { name: 'The Vision', href: '/guides/overview/vision' },
+  { name: 'Overview', href: '/guides/overview' },
   { name: 'Why Intuition?', href: '/guides/overview/why-intuition' },
 ];
 

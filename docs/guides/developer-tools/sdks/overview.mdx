@@ -1,0 +1,438 @@
+---
+id: overview
+title: SDK Guide
+sidebar_label: SDK Guide
+sidebar_position: 1
+description: Complete guide to using the Intuition SDK for development
+---
+
+# Intuition SDK Guide
+
+The Intuition SDK is your toolkit for building with the Intuition Protocol. Think of it as a friendly bridge between your application and Intuition's powerful knowledge graph system.
+
+## What does the SDK do?
+
+The SDK makes it easy to:
+
+- **Create and manage semantic data** - Build atoms (individual pieces of information) and triples (relationships between atoms)
+- **Interact with the blockchain** - Handle deposits, withdrawals, and smart contract interactions seamlessly
+- **Query the knowledge graph** - Search and retrieve data from Intuition's decentralized database
+- **Build user-friendly apps** - Focus on your app's features while the SDK handles the complex protocol interactions
+
+Whether you're building a social platform, a data verification tool, or any application that needs to work with verifiable, decentralized information, the SDK provides the building blocks you need.
+
+The Intuition SDK simplifies development with the Intuition backend systems, providing a clean TypeScript interface for creating and managing Atoms and Triples with ease.
+
+## Installation
+
+### From NPM Registry
+
+Install the SDK using your preferred package manager:
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Tabs>
+<TabItem value="npm" label="npm" default>
+
+```bash
+npm install @0xintuition/sdk
+```
+
+</TabItem>
+<TabItem value="pnpm" label="pnpm">
+
+```bash
+pnpm install @0xintuition/sdk
+```
+
+</TabItem>
+<TabItem value="bun" label="bun">
+
+```bash
+bun install @0xintuition/sdk
+```
+
+</TabItem>
+</Tabs>
+
+### Local Development
+
+For local development or testing with a custom build:
+
+<Tabs>
+<TabItem value="npm-local" label="npm" default>
+
+```bash
+# Clone the repository
+git clone https://github.com/0xintuition/sdk.git
+cd sdk
+
+# Install dependencies
+npm install
+
+# Build the package
+npm run build
+
+# Link locally
+npm link
+
+# In your project
+npm link @0xintuition/sdk
+```
+
+</TabItem>
+<TabItem value="pnpm-local" label="pnpm">
+
+```bash
+# Clone the repository
+git clone https://github.com/0xintuition/sdk.git
+cd sdk
+
+# Install dependencies
+pnpm install
+
+# Build the package
+pnpm build
+
+# Link locally
+pnpm link --global
+
+# In your project
+pnpm link --global @0xintuition/sdk
+```
+
+</TabItem>
+<TabItem value="bun-local" label="bun">
+
+```bash
+# Clone the repository
+git clone https://github.com/0xintuition/sdk.git
+cd sdk
+
+# Install dependencies
+bun install
+
+# Build the package
+bun run build
+
+# Link locally
+bun link
+
+# In your project
+bun link @0xintuition/sdk
+```
+
+</TabItem>
+</Tabs>
+
+## Prerequisites
+
+The SDK requires **viem@2.x.x** to execute reads and writes. Make sure you have it installed:
+
+```bash
+npm install viem@^2.0.0
+```
+
+## Setup
+
+### Basic Client Configuration
+
+Set up your viem clients for interacting with the Intuition protocol:
+
+```typescript
+import {
+  createPublicClient,
+  createTestClient,
+  createWalletClient,
+  http,
+  privateKeyToAccount,
+  type Chain,
+} from 'viem'
+import { base } from 'viem/chains'
+
+// Public client for read operations
+export const publicClient = createPublicClient({
+  chain: base,
+  transport: http(),
+})
+
+// Wallet client for write operations
+const account = privateKeyToAccount(
+  '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80',
+)
+export const walletClient = createWalletClient({
+  chain: base,
+  transport: http(),
+  account: account,
+})
+```
+
+## Reading Data
+
+### Fetching Atoms and Triples
+
+```typescript
+import { getAtom, getTriple } from '@0xintuition/sdk'
+
+// Get atom data by ID
+const atomData = await getAtom('124862')
+
+// Get triple data by ID
+const tripleData = await getTriple('54670')
+```
+
+## Creating Triples
+
+Triples connect three atoms in a subject-predicate-object relationship:
+
+```typescript
+import { createAtomFromString, createTripleStatement } from '@0xintuition/sdk'
+
+// Create three atoms first
+const atom1 = await createAtomFromString(
+  { walletClient, publicClient, address: multivaultAddress },
+  'atom1',
+)
+const atom2 = await createAtomFromString(
+  { walletClient, publicClient, address: multivaultAddress },
+  'atom2',
+)
+const atom3 = await createAtomFromString(
+  { walletClient, publicClient, address: multivaultAddress },
+  'atom3',
+)
+
+// Create a triple statement connecting the three atoms
+const triple = await createTripleStatement(
+  { walletClient, publicClient, address: multivaultAddress },
+  {
+    args: [atom1.state.vaultId, atom2.state.vaultId, atom3.state.vaultId],
+  },
+)
+```
+
+## Creating Atoms
+
+### Create Atom from String
+
+The simplest way to create an atom with a text label:
+
+```typescript
+import { createAtomFromString, getEthMultiVaultAddress } from '@0xintuition/sdk'
+
+const ethMultiVaultAddress = getEthMultiVaultAddress(walletClient.chain.id)
+const data = await createAtomFromString(
+  { walletClient, publicClient, address: ethMultiVaultAddress },
+  'is great',
+)
+```
+
+### Create Atom from IPFS URI
+
+Create an atom that references content stored on IPFS:
+
+```typescript
+import {
+  createAtomFromIpfsUri,
+  getEthMultiVaultAddress,
+} from '@0xintuition/sdk'
+
+const ethMultiVaultAddress = getEthMultiVaultAddress(walletClient.chain.id)
+const data = await createAtomFromIpfsUri(
+  { walletClient, publicClient, address: ethMultiVaultAddress },
+  'ipfs://bafkreib7534cszxn2c6qwoviv43sqh244yfrxomjbealjdwntd6a7atq6u',
+)
+```
+
+### Create Atom from IPFS Upload
+
+Upload metadata to IPFS and create an atom in one step:
+
+```typescript
+import {
+  createAtomFromIpfsUpload,
+  getEthMultiVaultAddress,
+} from '@0xintuition/sdk'
+
+const ethMultiVaultAddress = getEthMultiVaultAddress(walletClient.chain.id)
+const data = await createAtomFromIpfsUpload(
+  {
+    walletClient,
+    publicClient,
+    address: ethMultiVaultAddress,
+    pinataApiKey: 'your-pinata-api-key',
+  },
+  {
+    url: 'https://www.intuition.systems/',
+    name: 'Intuition',
+    description: 'A decentralized trust protocol',
+    image: 'https://example.com/image.png',
+    tags: ['decentralized', 'trust', 'protocol'],
+    twitter: 'https://twitter.com/intuition_systems',
+    github: 'github.com/intuition-systems',
+  },
+)
+```
+
+### Create a Thing
+
+Create a "thing" atom with structured metadata:
+
+```typescript
+import { createThing, getEthMultiVaultAddress } from '@0xintuition/sdk'
+
+const ethMultiVaultAddress = getEthMultiVaultAddress(walletClient.chain.id)
+const data = await createThing(
+  { walletClient, publicClient, address: ethMultiVaultAddress },
+  {
+    url: 'https://www.intuition.systems/',
+    name: 'Intuition',
+    description: 'A decentralized trust protocol',
+    image: 'https://example.com/image.png',
+  },
+)
+```
+
+### Create an Ethereum Account
+
+Create an atom representing an Ethereum account:
+
+```typescript
+import {
+  createEthereumAccount,
+  getEthMultiVaultAddress,
+} from '@0xintuition/sdk'
+
+const ethMultiVaultAddress = getEthMultiVaultAddress(walletClient.chain.id)
+const data = await createEthereumAccount(
+  { walletClient, publicClient, address: ethMultiVaultAddress },
+  {
+    address: '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045',
+    chainId: 1, // Mainnet
+  },
+)
+```
+
+## Response Data Structure
+
+After successfully creating a new Atom, the SDK returns a data object containing:
+
+```typescript
+const data: {
+    uri: string
+    transactionHash: `0x${string}`;
+    state: {
+        sender: `0x${string}`;
+        receiver: `0x${string}`;
+        receiverTotalSharesInVault: bigint;
+        senderAssetsAfterTotalFees: bigint;
+        sharesForReceiver: bigint;
+        entryFee: bigint;
+        vaultId: bigint;
+        isTriple: boolean;
+        isAtomWallet: boolean;
+    };
+}
+```
+
+## React Integration Example
+
+Here's a complete React component that creates a "thing" atom:
+
+```tsx
+import * as React from 'react'
+import { createThing, getEthMultiVaultAddress } from '@0xintuition/sdk'
+import { useChainId, usePublicClient, useWalletClient } from 'wagmi'
+
+type IntuitionButton = React.HTMLAttributes<HTMLElement>
+
+const IntuitionButton = ({ children, className }: IntuitionButton) => {
+  const chainId = useChainId()
+  const publicClient = usePublicClient()
+  const { data: walletClient } = useWalletClient()
+
+  const handleClick = async () => {
+    const ethMultiVaultAddress = getEthMultiVaultAddress(chainId)
+    const data = await createThing(
+      { walletClient, publicClient, address: ethMultiVaultAddress },
+      {
+        url: 'https://www.intuition.systems/',
+        name: 'Intuition',
+        description: 'A decentralized trust protocol.',
+        image: 'https://example.com/image.png',
+      },
+    )
+  }
+
+  return <button onClick={handleClick}>Create Thing</button>
+}
+
+export { IntuitionButton }
+```
+
+## Development
+
+### Building the SDK
+
+<Tabs>
+<TabItem value="npm-build" label="npm" default>
+
+```bash
+npm run build
+```
+
+</TabItem>
+<TabItem value="pnpm-build" label="pnpm">
+
+```bash
+pnpm build
+```
+
+</TabItem>
+<TabItem value="bun-build" label="bun">
+
+```bash
+bun run build
+```
+
+</TabItem>
+</Tabs>
+
+### Running Tests
+
+<Tabs>
+<TabItem value="npm-test" label="npm" default>
+
+```bash
+npm test
+```
+
+</TabItem>
+<TabItem value="pnpm-test" label="pnpm">
+
+```bash
+pnpm test
+```
+
+</TabItem>
+<TabItem value="bun-test" label="bun">
+
+```bash
+bun test
+```
+
+</TabItem>
+</Tabs>
+
+
+
+## Resources
+
+- [NPMJS/Intuition](https://www.npmjs.com/package/@0xintuition/sdk)
+- [Github Repo](https://github.com/0xIntuition/intuition-ts/tree/main/packages/sdk)
+- [Intuition Discord](https://discord.gg/intuition)
+
+## Contributing
+
+Contributions are welcome! Please see the main repository for more information on how to contribute.

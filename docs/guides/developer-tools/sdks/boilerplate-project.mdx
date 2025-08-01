@@ -1,0 +1,136 @@
+---
+id: boilerplate-project
+title: Boilerplate Project
+sidebar_label: Boilerplate Project
+sidebar_position: 2
+description: Get started quickly with Intuition using our boilerplate projects
+---
+
+# Boilerplate Project
+
+Get started quickly with Intuition using our pre-configured boilerplate projects. These templates provide a solid foundation for building applications on Intuition.
+
+## Available Boilerplates
+
+### Next.js Boilerplate
+
+A full-stack Next.js application with Intuition integration.
+
+**Features:**
+- Next.js 14 with App Router
+- TypeScript support
+- Tailwind CSS for styling
+- Intuition SDK integration
+- Wallet connection with wagmi
+- Example components and pages
+
+**Quick Start:**
+
+```bash
+npx create-next-app@latest my-intuition-app --typescript --tailwind --eslint
+cd my-intuition-app
+npm install @0xintuition/sdk wagmi viem
+```
+
+### React Boilerplate
+
+A React application with Intuition integration.
+
+**Features:**
+- React 18 with TypeScript
+- Vite for fast development
+- Intuition SDK integration
+- Wallet connection
+- Example components
+
+**Quick Start:**
+
+```bash
+npm create vite@latest my-intuition-app -- --template react-ts
+cd my-intuition-app
+npm install @0xintuition/sdk wagmi viem
+```
+
+### Remix Boilerplate
+
+A Remix application with Intuition integration.
+
+**Features:**
+- Remix with TypeScript
+- Intuition SDK integration
+- Server-side rendering
+- Example components
+
+**Quick Start:**
+
+```bash
+npx create-remix@latest my-intuition-app
+cd my-intuition-app
+npm install @0xintuition/sdk wagmi viem
+```
+
+## Project Structure
+
+A typical Intuition boilerplate project includes:
+
+```
+my-intuition-app/
+├── src/
+│   ├── components/
+│   │   ├── IntuitionButton.tsx
+│   │   ├── AtomViewer.tsx
+│   │   └── TripleViewer.tsx
+│   ├── hooks/
+│   │   └── useIntuition.ts
+│   ├── lib/
+│   │   ├── intuition.ts
+│   │   └── wagmi.ts
+│   └── pages/
+│       ├── index.tsx
+│       └── atoms.tsx
+├── public/
+├── package.json
+└── README.md
+```
+
+## Configuration
+
+### Environment Variables
+
+Create a `.env.local` file with your configuration:
+
+```env
+NEXT_PUBLIC_INTUITION_API_URL=https://api.intuition.systems
+NEXT_PUBLIC_CHAIN_ID=8453
+NEXT_PUBLIC_MULTIVAULT_ADDRESS=0x...
+```
+
+### Wagmi Configuration
+
+Set up wagmi for wallet connection:
+
+```typescript
+import { createConfig, configureChains } from 'wagmi'
+import { base } from 'wagmi/chains'
+import { publicProvider } from 'wagmi/providers/public'
+import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
+
+const { chains, publicClient, webSocketPublicClient } = configureChains(
+  [base],
+  [publicProvider()]
+)
+
+export const config = createConfig({
+  autoConnect: true,
+  connectors: [
+    new MetaMaskConnector({ chains })
+  ],
+  publicClient,
+  webSocketPublicClient,
+})
+```
+
+### Intuition Configuration
+
+update with sc
+*This page will be expanded with more boilerplate examples, deployment guides, and advanced customization options.* 

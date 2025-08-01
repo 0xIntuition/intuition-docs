@@ -21,7 +21,7 @@ export default function OneUI() {
 
         <div className="mb-6 p-4 bg-primary-50 rounded-lg">
           <p className="text-primary-800">
-            📚 Check out our <a href="https://0xintuition.github.io/intuition-ts/" className="font-semibold underline">Storybook</a> for interactive examples and detailed component documentation.
+            Check out our <a href="https://0xintuition.github.io/intuition-ts/" className="font-semibold underline">Storybook</a> for interactive examples and detailed component documentation.
           </p>
         </div>
 

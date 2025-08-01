@@ -1,0 +1,95 @@
+---
+id: architecture
+title: Architecture
+sidebar_label: Architecture
+sidebar_position: 1
+description: Deep dive into Intuition's system architecture and design principles
+---
+
+# The Intuition System Architecture
+
+## Overview
+
+
+Intuition is an ecosystem of technologies composing a universal and permissionless knowledge graph, capable of handling both objective facts and subjective opinions. Intuition’s vertically integrated knowledge stack offers a comprehensive suite of developer tooling to streamline the development of the next generation of technologies powered by humanity’s collective intuition.
+
+![Intuition System Overview](/img/intro_int.png)
+
+Intuition’s open social knowledge graph is built to harness collective wisdom in a structured, permissionless, and fully decentralized manner. The system’s resulting state is open and accessible to everyone, enabling limitless use cases and expanding the information available about the countless entities we engage with daily—whether it’s a pseudonym, a smart contract, an organization, or a piece of content. This approach empowers users with a richer understanding of the ecosystem and facilitates more informed interactions.
+
+
+## Core Architecture Components
+
+### Protocol Layer
+
+- **Smart Contracts**: Handle vaults, bonding curves, attestations, and staking logic
+
+### Network Layer
+
+- **Decentralized Communication**: Handles data distribution and real-time synchronization
+- **Indexing Infrastructure**: Merges on-chain and off-chain data into a unified state
+
+### Application Layer
+
+- **GraphQL API**: Unified interface to access structured knowledge
+- **SDKs**: Developer libraries to build applications
+- **Modules**: Reusable components, UIs, templates, and apps like the Portal
+
+## System State
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Tabs>
+<TabItem value="onchain" label="On-Chain">
+
+- **Atoms**: Point to any arbitrary URI; represent entities
+- **Triples**: Semantic statements made up of three Atoms (Subject, Predicate, Object)
+- **Signals**: Balances in vaults indicate user conviction
+
+</TabItem>
+<TabItem value="offchain" label="Off-Chain">
+
+- **URIs can link to**: IPFS, Ceramic, ENS, Ethereum addresses, etc.
+- **Mirrors common NFT architectures** — combining immutability with rich metadata
+
+</TabItem>
+<TabItem value="backend" label="Backend">
+
+- **Indexes both layers** and serves unified queries via API
+- **Can be run independently** or use hosted version
+
+</TabItem>
+</Tabs>
+
+## Trust Protocol & Economic Layer
+
+The Intuition Protocol is a semantic consensus layer:
+
+- **Rewards creation and curation** of valuable data
+- **Encourages convergence** on canonical identifiers and standards
+- **Enables decentralized reputation systems**
+
+It operates unopinionatedly — allowing anything to say anything about anything — while enabling filtering, ranking, and trust scoring on higher layers.
+
+## Developer-Facing Services
+
+### Indexing
+
+- **Merges on-chain and off-chain data** into a semantic graph
+- **Supports complex identity, DeFi, and governance use cases**
+
+### Data Access / API
+
+- **Query real-time knowledge graph state**
+- **Supports streaming, subscriptions, and tagged metadata**
+
+### SDK
+
+- **Attestations can be embedded** in existing UX (e.g., likes, follows)
+- **Data is portable, composable, and rewardable**
+
+### Templates & Modules
+
+- **UI libraries and components** (e.g., 1UI built on shadcn)
+- **In-house apps** to jumpstart exploration and integration

@@ -1,0 +1,463 @@
+---
+id: overview
+title: Overview
+sidebar_label: Overview
+sidebar_position: 1
+description: Introduction to the Intuition GraphQL API and its key features
+---
+
+# GraphQL API Overview
+
+The Intuition GraphQL package provides a type-safe interface for interacting with the Intuition API. It serves as the core data fetching layer, offering generated types and React Query hooks for seamless integration with the semantic knowledge graph.
+
+## Key Features
+
+- Type-safe GraphQL operations leveraging code gen
+- React Query hooks for data fetching
+- Reusable GraphQL fragments
+- Local-first schema with remote fallback
+- Portable package design
+
+## Quick Start
+
+1. Install the package:
+`pnpm add @0xintuition/graphql` 
+
+2. (Optional) Configure the client in your app's root (`root.tsx` or Next.js `layout.tsx`)
+
+```tsx
+import { configureClient, API_URL_DEV } from '@0xintuition/graphql`
+
+// Configure GraphQL client at module initialization using the URLs from the package. For now, we should use the local URL for development
+// This can be updated to use the same environment approach that we use in Portal in the future, or leave up to the template user to configure however makes sense for their use case
+configureClient({
+  apiUrl: API_URL_DEV,
+})
+```
+
+- This step is entirely optional. If you omit it the GraphQL package queries and hooks will use the default API URL from the package, which is currently `API_URL_PROD` .
+- `API_URL_DEV` and `API_URL_LOCAL` are both exported from the GraphQL package. You can import these for use with `configureClient` as shown in the above example.
+
+## Schema Management
+
+The package uses a local-first approach for schema management:
+
+- Local `schema.graphql` as source of truth
+- Remote schema fallback for resilience
+- Automatic schema generation during builds
+- Version controlled schema for team consistency
+
+## Development Workflow
+
+1. **Code Generation**
+    - `pnpm codegen:build # Generate types`
+    - `pnpm codegen:watch # Watch mode for development`
+2. **Building**
+    - `pnpm build # Full build with codegen`
+    - `pnpm dev # Development mode with watch`
+3. **Testing**
+    - ****`pnpm test`
+
+## Package Structure
+
+```bash
+graphql/
+├── src/
+│ ├── client.ts # Client configuration
+│ ├── fragments/ # Reusable fragments
+│ ├── queries/ # GraphQL queries
+│ ├── mutations/ # GraphQL mutations
+│ └── generated/ # Generated types
+├── schema.graphql # Schema definition
+└── codegen.ts # Codegen config
+```
+
+## Package Approach
+
+1. **Schema Updates**
+    - Uses the local schema committed in the repository as the priority for the codegen and uses the remote URL as the fallback
+2. **Query Organization**
+    - Uses fragments for reusable fields
+    - Includes use-case specific queries as well as general purpose queries
+3. **Type Safety**
+    - Leverages generated types from our schema
+    - Generates React Query hooks as well as document queries that can be used in a server context (or used with another client such as Apollo)
+4. **Client Configuration**
+    - Default client configuration can be overridden in each consumer app
+    - Supports environment-specific API URLs
+
+## Source Code
+
+The GraphQL package source code is available on GitHub: [intuition-ts/packages/graphql](https://github.com/0xIntuition/intuition-ts/tree/main/packages/graphql)
+
+## Playground
+
+Explore Intuition's GraphQL API with these example queries. You can copy and paste these into the interactive playground in the [Reads](/guides/developer-tools/graphql-api/reads) section to see real data from the Intuition knowledge graph.
+
+### Query Atoms
+
+```graphql
+query GetAtoms {
+  atoms(first: 10, orderBy: createdAt, orderDirection: desc) {
+    id
+    uri
+    createdAt
+    totalShares
+    totalAssets
+    vault {
+      id
+      curveId
+      isActive
+    }
+  }
+}
+```
+
+### Query Triples
+
+```graphql
+query GetTriples {
+  triples(first: 10, orderBy: createdAt, orderDirection: desc) {
+    id
+    subject {
+      id
+      uri
+    }
+    predicate {
+      id
+      uri
+    }
+    object {
+      id
+      uri
+    }
+    createdAt
+    positiveVault {
+      id
+      totalShares
+      totalAssets
+    }
+    negativeVault {
+      id
+      totalShares
+      totalAssets
+    }
+  }
+}
+```
+
+### Query User Positions
+
+```graphql
+query GetUserPositions($userAddress: String!) {
+  userPositions(where: { user: $userAddress }) {
+    id
+    user
+    atom {
+      id
+      uri
+    }
+    triple {
+      id
+      subject {
+        uri
+      }
+      predicate {
+        uri
+      }
+      object {
+        uri
+      }
+    }
+    shares
+    assets
+    vault {
+      id
+      curveId
+    }
+  }
+}
+```
+
+### Query Atom by ID
+
+```graphql
+query GetAtomById($atomId: String!) {
+  atom(id: $atomId) {
+    id
+    uri
+    createdAt
+    totalShares
+    totalAssets
+    vault {
+      id
+      curveId
+      isActive
+    }
+    positions {
+      id
+      user
+      shares
+      assets
+    }
+  }
+}
+```
+
+### Query Triple by ID
+
+```graphql
+query GetTripleById($tripleId: String!) {
+  triple(id: $tripleId) {
+    id
+    subject {
+      id
+      uri
+    }
+    predicate {
+      id
+      uri
+    }
+    object {
+      id
+      uri
+    }
+    createdAt
+    positiveVault {
+      id
+      totalShares
+      totalAssets
+    }
+    negativeVault {
+      id
+      totalShares
+      totalAssets
+    }
+    positions {
+      id
+      user
+      shares
+      assets
+      isPositive
+    }
+  }
+}
+```
+
+### Search Atoms by URI
+
+```graphql
+query SearchAtoms($searchTerm: String!) {
+  atoms(where: { uri_contains: $searchTerm }, first: 20) {
+    id
+    uri
+    createdAt
+    totalShares
+    totalAssets
+  }
+}
+```
+
+### Get Vault Statistics
+
+```graphql
+query GetVaultStats {
+  vaults(first: 10, orderBy: totalAssets, orderDirection: desc) {
+    id
+    atom {
+      id
+      uri
+    }
+    triple {
+      id
+      subject {
+        uri
+      }
+      predicate {
+        uri
+      }
+      object {
+        uri
+      }
+    }
+    totalShares
+    totalAssets
+    curveId
+    isActive
+  }
+}
+```
+
+### Query with Fragments
+
+```graphql
+fragment AtomFields on Atom {
+  id
+  uri
+  createdAt
+  totalShares
+  totalAssets
+}
+
+fragment VaultFields on Vault {
+  id
+  curveId
+  isActive
+  totalShares
+  totalAssets
+}
+
+query GetAtomsWithFragments {
+  atoms(first: 5) {
+    ...AtomFields
+    vault {
+      ...VaultFields
+    }
+  }
+}
+```
+
+### Query Curve Information
+
+```graphql
+query GetCurveInfo {
+  curves(first: 10) {
+    id
+    name
+    slope
+    offset
+    maxShares
+    maxAssets
+  }
+}
+```
+
+### Query User Activity
+
+```graphql
+query GetUserActivity($userAddress: String!) {
+  userPositions(where: { user: $userAddress }, first: 20, orderBy: createdAt, orderDirection: desc) {
+    id
+    createdAt
+    shares
+    assets
+    atom {
+      id
+      uri
+      totalShares
+      totalAssets
+    }
+    triple {
+      id
+      subject {
+        uri
+      }
+      predicate {
+        uri
+      }
+      object {
+        uri
+      }
+    }
+    vault {
+      id
+      curveId
+    }
+  }
+}
+```
+
+### Variables for Testing
+
+Use these variables in the playground to test the queries:
+
+```json
+{
+  "userAddress": "0x742d35Cc6634C0532925a3b8D4C9db96C4b4d8b6",
+  "atomId": "0x1234567890abcdef1234567890abcdef12345678",
+  "tripleId": "0xabcdef1234567890abcdef1234567890abcdef12",
+  "searchTerm": "intuition"
+}
+```
+
+### Example Response Structure
+
+When you run these queries, you'll get responses like:
+
+```json
+{
+  "data": {
+    "atoms": [
+      {
+        "id": "0x1234567890abcdef1234567890abcdef12345678",
+        "uri": "https://example.com/atom1",
+        "createdAt": "2024-01-15T10:30:00Z",
+        "totalShares": "1000000000000000000",
+        "totalAssets": "500000000000000000",
+        "vault": {
+          "id": "0xabcdef1234567890abcdef1234567890abcdef12",
+          "curveId": 1,
+          "isActive": true
+        }
+      }
+    ]
+  }
+}
+```
+
+### Using React Query Hooks
+
+The GraphQL package also provides React Query hooks for easy integration:
+
+```tsx
+import { useAtomsQuery, useTriplesQuery, useUserPositionsQuery } from '@0xintuition/graphql'
+
+function MyComponent() {
+  // Query atoms
+  const { data: atoms, isLoading: atomsLoading } = useAtomsQuery({
+    variables: { first: 10 }
+  })
+
+  // Query triples
+  const { data: triples, isLoading: triplesLoading } = useTriplesQuery({
+    variables: { first: 10 }
+  })
+
+  // Query user positions
+  const { data: positions } = useUserPositionsQuery({
+    variables: { userAddress: '0x742d35Cc6634C0532925a3b8D4C9db96C4b4d8b6' }
+  })
+
+  if (atomsLoading || triplesLoading) {
+    return <div>Loading...</div>
+  }
+
+  return (
+    <div>
+      <h2>Atoms ({atoms?.atoms?.length || 0})</h2>
+      {atoms?.atoms?.map(atom => (
+        <div key={atom.id}>
+          <strong>{atom.uri}</strong> - {atom.totalShares} shares
+        </div>
+      ))}
+      
+      <h2>Triples ({triples?.triples?.length || 0})</h2>
+      {triples?.triples?.map(triple => (
+        <div key={triple.id}>
+          {triple.subject.uri} - {triple.predicate.uri} - {triple.object.uri}
+        </div>
+      ))}
+    </div>
+  )
+}
+```
+
+Try these queries in the interactive playground in the [Reads](/guides/developer-tools/graphql-api/reads) section to explore the Intuition knowledge graph and see how the data is structured!
+
+## Related Resources
+
+- [GraphQL Code Generator](https://the-guild.dev/graphql/codegen)
+- [React Query Documentation](https://tanstack.com/query)
+- [Intuition GraphQL Package Source](https://github.com/0xIntuition/intuition-ts/tree/main/packages/graphql)
+
+The GraphQL API provides the foundation for building powerful applications on Intuition. 

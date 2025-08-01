@@ -10,16 +10,16 @@ import { Link } from 'react-router-dom';
 
 export default function FeaturedApps() {
   return (
-    <div className="noise-bg w-full">
-      <section className="mx-auto mb-16 md:mb-32 w-full max-w-[90vw] 2xl:max-w-[80vw] flex flex-col p-4 py-0">
-        <div className="flex flex-col items-center justify-between py-8 md:py-14 mt-16 md:mt-32">
-          <h2 className="mb-4 font-jakarta text-3xl md:text-5xl font-bold text-center">Featured Apps</h2>
-          <p className="max-w-xl text-center text-text-400 px-4 md:px-0">
+    <div className="noise-bg w-full py-20">
+      <section className="mx-auto w-full max-w-7xl flex flex-col px-4">
+        <div className="flex flex-col items-center justify-between py-8 md:py-12">
+          <h2 className="mb-6 font-jakarta text-3xl md:text-5xl font-bold text-center">Featured Apps</h2>
+          <p className="max-w-2xl text-center text-lg text-text-400">
             Discover innovative applications built on Intuition's knowledge graph. These apps showcase the power of decentralized data and reputation systems.
           </p>
         </div>
-        <div className="mx-auto w-full max-w-5xl">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16 place-items-center justify-items-center">
+        <div className="mx-auto w-full max-w-6xl">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 place-items-center justify-items-center">
             <Card
               title="The Portal"
               icon={<PersonStarburstRegular className="w-8 h-8" />}
@@ -43,7 +43,7 @@ export default function FeaturedApps() {
             />
           </div>
         </div>
-        <div className="mt-16 flex justify-center">
+        <div className="mt-12 flex justify-center">
           <Link
             to="/apps"
             className="explore-ecosystem-btn"
