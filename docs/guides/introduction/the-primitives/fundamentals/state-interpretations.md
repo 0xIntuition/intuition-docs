@@ -19,9 +19,9 @@ While the system does not enforce specific interpretations, understanding variou
 
 ## Types of Interpretations
 
-<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem', marginTop: '2rem', marginBottom: '2rem' }}>
+<div style={{ display: 'flex', flexDirection: 'row', gap: '1.5rem', marginTop: '2rem', marginBottom: '2rem', flexWrap: 'wrap' }}>
 
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)', flex: '1', minWidth: '300px' }}>
 <h3 style={{ marginTop: 0, marginBottom: '1rem' }}>Literal Interpretations</h3>
 <p style={{ marginBottom: '1rem', color: 'var(--ifm-color-emphasis-700)' }}>
 Structured, explicit expressions of the state that form the foundation for higher-order applications by defining clear and consistent frameworks for data usage.
@@ -36,7 +36,7 @@ Structured, explicit expressions of the state that form the foundation for highe
 </div>
 </div>
 
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)', flex: '1', minWidth: '300px' }}>
 <h3 style={{ marginTop: 0, marginBottom: '1rem' }}>Algorithms</h3>
 <p style={{ marginBottom: '1rem', color: 'var(--ifm-color-emphasis-700)' }}>
 Tools for filtering and interpreting data, providing flexibility beyond deterministic logic. Essential for extracting meaningful signal from noise in a permissionless environment.
@@ -51,7 +51,7 @@ Tools for filtering and interpreting data, providing flexibility beyond determin
 </div>
 </div>
 
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)', flex: '1', minWidth: '300px' }}>
 <h3 style={{ marginTop: 0, marginBottom: '1rem' }}>Reality Tunnels</h3>
 <p style={{ marginBottom: '1rem', color: 'var(--ifm-color-emphasis-700)' }}>
 Modular combinations of literal interpretations, algorithms, and other components that provide tailored perspectives on data.
@@ -97,13 +97,13 @@ This structured interpretation allows implementers to provision access programma
 <div style={{ backgroundColor: 'var(--ifm-color-emphasis-50)', padding: '1.5rem', borderRadius: '8px', marginTop: '2rem', marginBottom: '2rem' }}>
 <h3 style={{ marginTop: 0, marginBottom: '1rem' }}>Cross-System Applications</h3>
 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
-<div>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '6px', padding: '1rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.5rem' }}>Financial Applications</h4>
 <p style={{ margin: 0, fontSize: '0.9rem' }}>
 Adjusting loan-to-value ratios based on access control data.
 </p>
 </div>
-<div>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '6px', padding: '1rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.5rem' }}>Reputational Systems</h4>
 <p style={{ margin: 0, fontSize: '0.9rem' }}>
 Modifying reputational scores in specific contexts based on access patterns.
@@ -136,15 +136,15 @@ This decoupling of algorithms from applications allows for greater customization
 Consider an algorithm that filters data based on a user's social graph:
 </p>
 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '1rem' }}>
-<div style={{ textAlign: 'center' }}>
+<div style={{ textAlign: 'center', border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '6px', padding: '1rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.5rem', color: 'var(--ifm-color-primary)' }}>One Degree</h4>
 <p style={{ margin: 0, fontFamily: 'monospace', fontSize: '0.9rem' }}>100% Weight</p>
 </div>
-<div style={{ textAlign: 'center' }}>
+<div style={{ textAlign: 'center', border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '6px', padding: '1rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.5rem', color: 'var(--ifm-color-primary)' }}>Two Degrees</h4>
 <p style={{ margin: 0, fontFamily: 'monospace', fontSize: '0.9rem' }}>80% Weight</p>
 </div>
-<div style={{ textAlign: 'center' }}>
+<div style={{ textAlign: 'center', border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '6px', padding: '1rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.5rem', color: 'var(--ifm-color-primary)' }}>Three Degrees</h4>
 <p style={{ margin: 0, fontFamily: 'monospace', fontSize: '0.9rem' }}>60% Weight</p>
 </div>
@@ -163,13 +163,13 @@ The modular nature of Intuition's data interpretation mechanisms enables the cre
 <h3 style={{ marginTop: 0, marginBottom: '1rem' }}>Example: Trust Graph Reality Tunnel</h3>
 <div style={{ backgroundColor: 'var(--ifm-background-color)', padding: '1rem', borderRadius: '6px', border: '1px solid var(--ifm-color-emphasis-300)' }}>
 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
-<div>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '6px', padding: '1rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.5rem', color: 'var(--ifm-color-primary)' }}>Triple Structure</h4>
 <p style={{ margin: 0, fontSize: '0.9rem', fontFamily: 'monospace' }}>
 [Subject] [in trust graph] [Vitalik's Web3 Trust Graph]
 </p>
 </div>
-<div>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '6px', padding: '1rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.5rem', color: 'var(--ifm-color-primary)' }}>Components</h4>
 <ul style={{ margin: 0, paddingLeft: '1rem', fontSize: '0.9rem' }}>
 <li>Curator assigns weights to users</li>
@@ -201,19 +201,19 @@ The flexibility to create and toggle between Reality Tunnels transforms how user
 <div style={{ backgroundColor: 'var(--ifm-color-emphasis-50)', padding: '1.5rem', borderRadius: '8px', marginTop: '2rem', marginBottom: '2rem' }}>
 <h3 style={{ marginTop: 0, marginBottom: '1rem' }}>Benefits</h3>
 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
-<div>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '6px', padding: '1rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.5rem' }}>Enriched Discussions</h4>
 <p style={{ margin: 0, fontSize: '0.9rem' }}>
 Multiple perspectives lead to more comprehensive and nuanced discussions.
 </p>
 </div>
-<div>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '6px', padding: '1rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.5rem' }}>Improved Decision-Making</h4>
 <p style={{ margin: 0, fontSize: '0.9rem' }}>
 Access to diverse viewpoints enables better-informed decisions.
 </p>
 </div>
-<div>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '6px', padding: '1rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.5rem' }}>Adaptable Ecosystem</h4>
 <p style={{ margin: 0, fontSize: '0.9rem' }}>
 The system remains adaptable and inclusive for all participants.
@@ -227,6 +227,7 @@ This approach enriches discussions, improves decision-making, and ensures the ec
 ## Next Steps
 
 Now that you understand State Interpretations, explore:
-- [Structuring](/guides/overview/the-primitives/structuring) - Learn advanced techniques for working with interpretations
-- [Signal](/guides/overview/the-primitives/fundamentals/signal) - Understand how signal influences interpretations
+
+- [Structuring](/guides/introduction/the-primitives/structuring) - Learn advanced techniques for working with interpretations
+- [Signal](/guides/introduction/the-primitives/fundamentals/signal) - Understand how signal influences interpretations
 - [Developer Tools](/guides/developer-tools) - Implement custom interpretations and algorithms 

@@ -142,7 +142,7 @@ const config = {
       },
       navbar: {
         logo: {
-          href: '/',
+          href: 'https://www.intuition.systems/',
           src: '/logo/light.svg',
           srcDark: '/logo/dark.svg',
           alt: 'Intuition Documentation',

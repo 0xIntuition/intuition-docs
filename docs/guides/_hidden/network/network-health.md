@@ -8,7 +8,7 @@ Monitor the health and performance of the Intuition network in real-time.
 
 ## Network Status
 
-### Current Status: **Operational** ✅
+### Current Status: **Operational**
 
 - **Uptime**: 99.9%
 - **Active Validators**: 150+

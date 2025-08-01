@@ -68,9 +68,11 @@ Though all systems naturally generate implicit signal, explicit signal in Intuit
 <div style={{ backgroundColor: 'var(--ifm-color-emphasis-50)', padding: '1.5rem', borderRadius: '8px', marginTop: '2rem', marginBottom: '2rem' }}>
 <h3 style={{ marginTop: 0, marginBottom: '1rem' }}>Key Innovation</h3>
 <p style={{ margin: 0, fontSize: '0.9rem' }}>
-In Intuition, these semantic statements do not have a single 'issuer' - instead, anyone/anything can signal support or rejection of any existing statement/attestation at any point in time. This decoupling of information from 'who is presently expressing/supporting that information' introduces the ability to accommodate many-to-one attestations, making the data significantly more usable.
+In Intuition, these semantic statements do not have a single 'issuer' - instead, anyone/anything can signal support or rejection of any existing statement/attestation at any point in time. This decoupling of information from 'who is presently expressing/supporting that information' introduces the ability to accommodate many-to-one attestations, making the data significantly more usable - especially for more complex use cases that involve the concept of transitive signal, such as reputation.
 </p>
 </div>
+
+<img src="/img/signal_1.png" alt="Signal Many-to-One Attestations" style={{ width: '100%', maxWidth: '800px', margin: '2rem auto', display: 'block', borderRadius: '8px' }} />
 
 To accomplish this, the Intuition system enables users to maintain positions on Atoms and Triples, interpreting these positions as explicit signal from the user. This mechanism can be implemented using tokens or other accounting systems that have the ability to track user balances over time across an arbitrarily large number of entities.
 
@@ -78,22 +80,24 @@ To accomplish this, the Intuition system enables users to maintain positions on 
 
 Within the Intuition framework, users signal their belief in the relevance of an Atom by adjusting their balance on that Atom. This balance can be increased or decreased arbitrarily.
 
+<img src="/img/signal_2.png" alt="Atom Signal Balance" style={{ width: '100%', maxWidth: '800px', margin: '2rem auto', display: 'block', borderRadius: '8px' }} />
+
 <div style={{ backgroundColor: 'var(--ifm-color-emphasis-50)', padding: '1.5rem', borderRadius: '8px', marginTop: '2rem', marginBottom: '2rem' }}>
 <h3 style={{ marginTop: 0, marginBottom: '1rem' }}>Balance Interpretation</h3>
 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
-<div>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '6px', padding: '1rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.5rem' }}>Zero Balance</h4>
 <p style={{ margin: 0, fontSize: '0.9rem' }}>
 Implies no signal, indicating neutral stance on the Atom's relevance.
 </p>
 </div>
-<div>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '6px', padding: '1rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.5rem' }}>Positive Balance</h4>
 <p style={{ margin: 0, fontSize: '0.9rem' }}>
 Indicates a degree of belief in the Atom's relevance, with higher balances showing stronger belief.
 </p>
 </div>
-<div>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '6px', padding: '1rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.5rem' }}>Negative Balance</h4>
 <p style={{ margin: 0, fontSize: '0.9rem' }}>
 May be used to explicitly signal the irrelevance of an Atom (if supported by the implementation).
@@ -111,19 +115,19 @@ In the Intuition framework, users signal their belief in both the relevance and 
 <div style={{ backgroundColor: 'var(--ifm-color-emphasis-50)', padding: '1.5rem', borderRadius: '8px', marginTop: '2rem', marginBottom: '2rem' }}>
 <h3 style={{ marginTop: 0, marginBottom: '1rem' }}>Triple Balance System</h3>
 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
-<div>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '6px', padding: '1rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.5rem' }}>Zero Balance</h4>
 <p style={{ margin: 0, fontSize: '0.9rem' }}>
 Indicates no signal, neutral stance on the Triple.
 </p>
 </div>
-<div>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '6px', padding: '1rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.5rem' }}>Positive Balance</h4>
 <p style={{ margin: 0, fontSize: '0.9rem' }}>
 Affirms the Triple, indicating it is considered true and relevant.
 </p>
 </div>
-<div>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '6px', padding: '1rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.5rem' }}>Negative Balance</h4>
 <p style={{ margin: 0, fontSize: '0.9rem' }}>
 Signals rejection of the Triple, indicating it is considered false and relevant.
@@ -138,24 +142,26 @@ Signals rejection of the Triple, indicating it is considered false and relevant.
 <h3 style={{ marginTop: 0, marginBottom: '1rem' }}>Example: "[Vitalik][is][trustworthy]"</h3>
 <div style={{ backgroundColor: 'var(--ifm-background-color)', padding: '1rem', borderRadius: '6px', border: '1px solid var(--ifm-color-emphasis-300)' }}>
 <p style={{ margin: '0 0 1rem 0', fontSize: '0.9rem' }}>
-Users would express their belief in its truthfulness, and the relevancy of this truthfulness, by increasing their balance on the affirmative side of the Triple, or signal disbelief by decreasing their balance into the negative.
+For example, with a Triple asserting "[Vitalik][is] [trustworthy]," users would express their belief in its truthfulness, and the relevancy of this truthfulness, by increasing their balance on the affirmative side of the Triple, or signal disbelief by decreasing their balance into the negative. This mechanism allows for nuanced expressions of trust and belief within the decentralized ecosystem.
 </p>
 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '1rem' }}>
-<div style={{ textAlign: 'center' }}>
+<div style={{ textAlign: 'center', border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '6px', padding: '1rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.5rem', color: 'var(--ifm-color-primary)' }}>Positive Balance</h4>
 <p style={{ margin: 0, fontFamily: 'monospace', fontSize: '0.9rem' }}>Believes Vitalik is trustworthy</p>
 </div>
-<div style={{ textAlign: 'center' }}>
+<div style={{ textAlign: 'center', border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '6px', padding: '1rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.5rem', color: 'var(--ifm-color-primary)' }}>Negative Balance</h4>
 <p style={{ margin: 0, fontFamily: 'monospace', fontSize: '0.9rem' }}>Believes Vitalik is not trustworthy</p>
 </div>
-<div style={{ textAlign: 'center' }}>
+<div style={{ textAlign: 'center', border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '6px', padding: '1rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.5rem', color: 'var(--ifm-color-primary)' }}>Zero Balance</h4>
 <p style={{ margin: 0, fontFamily: 'monospace', fontSize: '0.9rem' }}>No opinion on Vitalik's trustworthiness</p>
 </div>
 </div>
 </div>
 </div>
+
+<img src="/img/signal_3.png" alt="Triple Signal Example" style={{ width: '100%', maxWidth: '800px', margin: '2rem auto', display: 'block', borderRadius: '8px' }} />
 
 This mechanism allows for nuanced expressions of trust and belief within the decentralized ecosystem.
 
@@ -166,13 +172,13 @@ This system enables each "statement" to exist in different states based on who i
 <div style={{ backgroundColor: 'var(--ifm-color-emphasis-50)', padding: '1.5rem', borderRadius: '8px', marginTop: '2rem', marginBottom: '2rem' }}>
 <h3 style={{ marginTop: 0, marginBottom: '1rem' }}>Traditional vs Intuition Model</h3>
 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1rem' }}>
-<div>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '6px', padding: '1rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.5rem' }}>Traditional One-to-One</h4>
 <p style={{ margin: 0, fontSize: '0.9rem' }}>
 If a user had 1,000 followers, there would be 1,000 separate "following" claims. Most of this data would be redundant, as the "following Y" part would remain constant across all claims.
 </p>
 </div>
-<div>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '6px', padding: '1rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.5rem' }}>Intuition Model</h4>
 <p style={{ margin: 0, fontSize: '0.9rem' }}>
 A single Triple representing "I am following Y." Users adjust their balances on this statement to express their stance. To see all followers of Y, examine the Triple and identify who has positive balances.
@@ -195,6 +201,7 @@ This not only enhances the granularity of data but also provides richer insights
 ## Next Steps
 
 Now that you understand Signal, explore:
-- [Fees & Rewards](/guides/overview/the-primitives/fundamentals/fees-rewards) - Learn about the economic incentives
-- [Capturing Signal](/guides/overview/the-primitives/structuring/capturing-signal) - Advanced techniques for signal capture
-- [State Interpretations](/guides/overview/the-primitives/fundamentals/state-interpretations) - Understand how signal is interpreted 
+
+- [Fees & Rewards](/guides/introduction/the-primitives/fundamentals/fees-rewards) - Learn about the economic incentives
+- [Capturing Signal](/guides/introduction/the-primitives/structuring/capturing-signal) - Advanced techniques for signal capture
+- [State Interpretations](/guides/introduction/the-primitives/fundamentals/state-interpretations) - Understand how signal is interpreted 

@@ -24,25 +24,25 @@ const guides: Guide[] = [
     title: 'Creating an Intuition-Powered Application',
     icon: RecordRegular,
     text: 'Get started quickly building applications never before possible by using Intuition!',
-    link: '/guides/quickstart/create-intuition-app',
+    link: '/guides/quickstart/official-intuition-kits',
   },
   {
     title: 'Integrate Your Existing Application with Intuition',
     icon: VideoRegular,
     text: 'Learn how to quickly integrate your existing application with Intuition using GraphQL.',
-    link: '/guides/quickstart/graphql-integration',
+    link: '/guides/developer-tools/graphql-api',
   },
   {
     title: 'Smart Contract Interactions',
     icon: AppsAddInRegular,
     text: 'Learn how to directly interact with the Intuition smart contract suite.',
-    link: '/guides/quickstart/contract-interactions',
+    link: '/guides/developer-tools/contracts/contract-architecture',
   },
   {
     title: 'Understanding Bonding Curves',
     icon: CurrencyDollarEuroFilled,
     text: 'Learn about dynamic pricing mechanisms and automated market making with bonding curves.',
-    link: '/guides/overview/the-economics/bonding-curves',
+    link: '/guides/introduction/the-economics/bonding-curves',
   },
 ];
 

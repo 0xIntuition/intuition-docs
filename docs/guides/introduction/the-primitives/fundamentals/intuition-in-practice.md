@@ -290,4 +290,4 @@ For instance, when buying a product, users can access a wealth of credible revie
 
 ## Next Steps
 
-Now that you understand how Intuition primitives work together in practice, explore the [Structuring](/guides/overview/the-primitives/structuring) section to learn advanced techniques for working with Atoms and Triples in real-world applications. 
+Now that you understand how Intuition primitives work together in practice, explore the [Structuring](/guides/introduction/the-primitives/structuring) section to learn advanced techniques for working with Atoms and Triples in real-world applications. 

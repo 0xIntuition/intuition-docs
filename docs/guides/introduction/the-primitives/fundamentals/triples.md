@@ -69,15 +69,15 @@ These connections can be visualized as a graph where each node and edge is an At
 <h3 style={{ marginTop: 0, marginBottom: '1rem' }}>Simple Triple Example</h3>
 <div style={{ backgroundColor: 'var(--ifm-background-color)', padding: '1rem', borderRadius: '6px', border: '1px solid var(--ifm-color-emphasis-300)' }}>
 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '1rem', marginBottom: '1rem' }}>
-<div style={{ textAlign: 'center' }}>
+<div style={{ textAlign: 'center', border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '6px', padding: '1rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.5rem', color: 'var(--ifm-color-primary)' }}>Subject</h4>
 <p style={{ margin: 0, fontFamily: 'monospace', fontSize: '0.9rem' }}>"Bob"</p>
 </div>
-<div style={{ textAlign: 'center' }}>
+<div style={{ textAlign: 'center', border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '6px', padding: '1rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.5rem', color: 'var(--ifm-color-primary)' }}>Predicate</h4>
 <p style={{ margin: 0, fontFamily: 'monospace', fontSize: '0.9rem' }}>"age"</p>
 </div>
-<div style={{ textAlign: 'center' }}>
+<div style={{ textAlign: 'center', border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '6px', padding: '1rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.5rem', color: 'var(--ifm-color-primary)' }}>Object</h4>
 <p style={{ margin: 0, fontFamily: 'monospace', fontSize: '0.9rem' }}>"34"</p>
 </div>
@@ -95,19 +95,19 @@ Triples offer a flexible yet structured method for representing data relationshi
 <div style={{ backgroundColor: 'var(--ifm-color-emphasis-50)', padding: '1.5rem', borderRadius: '8px', marginTop: '2rem', marginBottom: '2rem' }}>
 <h3 style={{ marginTop: 0, marginBottom: '1rem' }}>Key Benefits</h3>
 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1rem' }}>
-<div>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '6px', padding: '1rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.5rem' }}>Flexibility</h4>
 <p style={{ margin: 0, fontSize: '0.9rem' }}>
 This flexibility is crucial for capturing intricate relationships and dynamics within data.
 </p>
 </div>
-<div>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '6px', padding: '1rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.5rem' }}>Scalability</h4>
 <p style={{ margin: 0, fontSize: '0.9rem' }}>
 Enabling users to construct sophisticated applications and services on the Intuition framework.
 </p>
 </div>
-<div>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '6px', padding: '1rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.5rem' }}>Precision</h4>
 <p style={{ margin: 0, fontSize: '0.9rem' }}>
 This approach maintains discrete, referenceable units for data at every layer of the structure.
@@ -125,19 +125,19 @@ Akin to the process outlined for Atoms, the structure of Triples allows users to
 <div style={{ backgroundColor: 'var(--ifm-color-emphasis-50)', padding: '1.5rem', borderRadius: '8px', marginTop: '2rem', marginBottom: '2rem' }}>
 <h3 style={{ marginTop: 0, marginBottom: '1rem' }}>TCR Advantages</h3>
 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1rem' }}>
-<div>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '6px', padding: '1rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.5rem' }}>Economic Rewards</h4>
 <p style={{ margin: 0, fontSize: '0.9rem' }}>
 The TCR encourages system participants to adopt common ways of structuring data by offering economic rewards.
 </p>
 </div>
-<div>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '6px', padding: '1rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.5rem' }}>Organic Structuring</h4>
 <p style={{ margin: 0, fontSize: '0.9rem' }}>
 This approach promotes an organic, incentive-driven structuring of data.
 </p>
 </div>
-<div>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '6px', padding: '1rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.5rem' }}>Effective Standardization</h4>
 <p style={{ margin: 0, fontSize: '0.9rem' }}>
 Contrasts with more rigid and traditional methods such as standards committees, which often struggle to achieve effective standardization.
@@ -151,6 +151,7 @@ The TCR encourages system participants to adopt common ways of structuring data 
 ## Next Steps
 
 Now that you understand Triples, explore:
-- [Signal](/guides/overview/the-primitives/fundamentals/signal) - Learn how users interact with Triples
-- [Structuring Triples](/guides/overview/the-primitives/structuring/triples) - Advanced techniques for working with Triples
-- [Fees & Rewards](/guides/overview/the-primitives/fundamentals/fees-rewards) - Understand the economic model 
+
+- [Signal](/guides/introduction/the-primitives/fundamentals/signal) - Learn how users interact with Triples
+- [Structuring Triples](/guides/introduction/the-primitives/structuring/triples) - Advanced techniques for working with Triples
+- [Fees & Rewards](/guides/introduction/the-primitives/fundamentals/fees-rewards) - Understand the economic model 

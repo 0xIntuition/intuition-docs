@@ -12,9 +12,9 @@ Master the core concepts that form the foundation of the Intuition system. These
 
 ## Explore Fundamentals
 
-<div className="docs-card-grid">
+<div className="docs-card-grid" style={{ display: 'flex', flexWrap: 'wrap', gap: '2rem', marginTop: '3rem', marginBottom: '3rem', justifyContent: 'flex-start', alignItems: 'stretch' }}>
 
-<a href="/guides/overview/the-primitives/fundamentals/atoms" style={{ textDecoration: 'none', color: 'inherit' }}>
+<a href="/guides/introduction/the-primitives/fundamentals/atoms" style={{ textDecoration: 'none', color: 'inherit' }}>
 <div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }} className="docs-card">
 <h3 style={{ marginTop: 0, marginBottom: '1rem' }}>Atoms</h3>
 <div className="docs-card-content">
@@ -30,7 +30,7 @@ Learn about the atomic units of knowledge in Intuition - unique, persistent iden
 </div>
 </a>
 
-<a href="/guides/overview/the-primitives/fundamentals/triples" style={{ textDecoration: 'none', color: 'inherit' }}>
+<a href="/guides/introduction/the-primitives/fundamentals/triples" style={{ textDecoration: 'none', color: 'inherit' }}>
 <div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }} className="docs-card">
 <h3 style={{ marginTop: 0, marginBottom: '1rem' }}>Triples</h3>
 <div className="docs-card-content">
@@ -46,7 +46,7 @@ Discover how Triples create relationships between Atoms, forming the semantic st
 </div>
 </a>
 
-<a href="/guides/overview/the-primitives/fundamentals/signal" style={{ textDecoration: 'none', color: 'inherit' }}>
+<a href="/guides/introduction/the-primitives/fundamentals/signal" style={{ textDecoration: 'none', color: 'inherit' }}>
 <div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }} className="docs-card">
 <h3 style={{ marginTop: 0, marginBottom: '1rem' }}>Signal</h3>
 <div className="docs-card-content">
@@ -62,7 +62,7 @@ Understand how Signal expresses intent, belief, and support within the Intuition
 </div>
 </a>
 
-<a href="/guides/overview/the-primitives/fundamentals/fees-rewards" style={{ textDecoration: 'none', color: 'inherit' }}>
+<a href="/guides/introduction/the-primitives/fundamentals/fees-rewards" style={{ textDecoration: 'none', color: 'inherit' }}>
 <div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }} className="docs-card">
 <h3 style={{ marginTop: 0, marginBottom: '1rem' }}>Fees & Rewards</h3>
 <div className="docs-card-content">
@@ -78,7 +78,7 @@ Explore the economic mechanisms that incentivize quality contributions and maint
 </div>
 </a>
 
-<a href="/guides/overview/the-primitives/fundamentals/state-interpretations" style={{ textDecoration: 'none', color: 'inherit' }}>
+<a href="/guides/introduction/the-primitives/fundamentals/state-interpretations" style={{ textDecoration: 'none', color: 'inherit' }}>
 <div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }} className="docs-card">
 <h3 style={{ marginTop: 0, marginBottom: '1rem' }}>State Interpretations</h3>
 <div className="docs-card-content">
@@ -94,7 +94,7 @@ Discover how Intuition's state can be interpreted in countless ways, avoiding "t
 </div>
 </a>
 
-<a href="/guides/overview/the-primitives/fundamentals/intuition-in-practice" style={{ textDecoration: 'none', color: 'inherit' }}>
+<a href="/guides/introduction/the-primitives/fundamentals/intuition-in-practice" style={{ textDecoration: 'none', color: 'inherit' }}>
 <div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }} className="docs-card">
 <h3 style={{ marginTop: 0, marginBottom: '1rem' }}>Intuition in Practice</h3>
 <div className="docs-card-content">
@@ -127,6 +127,6 @@ For the best learning experience, we recommend following this sequence:
 
 After mastering the fundamentals, explore:
 
-- **[Structuring](/guides/overview/the-primitives/structuring)** - Advanced techniques for organizing data
+- **[Structuring](/guides/introduction/the-primitives/structuring)** - Advanced techniques for organizing data
 - **[Developer Tools](/guides/developer-tools)** - Practical tools for building with Intuition
 - **[Use Cases](/guides/use-cases)** - Real-world applications and examples 

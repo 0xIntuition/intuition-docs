@@ -18,25 +18,23 @@ Intuition introduces three new primitives:
 
 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem', marginTop: '2rem', marginBottom: '2rem' }}>
 
-<div style={{ border: '1px solid #e5e7eb', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'white', boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)' }}>
-<h3 style={{ marginTop: 0, marginBottom: '1rem', color: '#111827' }}>Fundamentals</h3>
-<p style={{ marginBottom: '1rem', color: '#6b7280', lineHeight: '1.6' }}>
+<a href="/guides/introduction/the-primitives/fundamentals" style={{ textDecoration: 'none', color: 'inherit' }}>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)', boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)', height: '100%', display: 'flex', flexDirection: 'column' }} className="docs-card">
+<h3 style={{ marginTop: 0, marginBottom: '1rem', color: 'var(--ifm-color-emphasis-900)' }}>Fundamentals</h3>
+<p style={{ marginBottom: '1rem', color: 'var(--ifm-color-emphasis-700)', lineHeight: '1.6', flex: 1 }}>
 Learn the core concepts of Atoms, Triples, Signal, Fees & Rewards, and State Interpretations. Master the building blocks of the Intuition system.
 </p>
-<a href="/guides/overview/the-primitives/fundamentals" style={{ color: '#3b82f6', textDecoration: 'none', fontWeight: '500' }}>
-Explore Fundamentals →
-</a>
 </div>
+</a>
 
-<div style={{ border: '1px solid #e5e7eb', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'white', boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)' }}>
-<h3 style={{ marginTop: 0, marginBottom: '1rem', color: '#111827' }}>Structuring</h3>
-<p style={{ marginBottom: '1rem', color: '#6b7280', lineHeight: '1.6' }}>
+<a href="/guides/introduction/the-primitives/structuring" style={{ textDecoration: 'none', color: 'inherit' }}>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)', boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)', height: '100%', display: 'flex', flexDirection: 'column' }} className="docs-card">
+<h3 style={{ marginTop: 0, marginBottom: '1rem', color: 'var(--ifm-color-emphasis-900)' }}>Structuring</h3>
+<p style={{ marginBottom: '1rem', color: 'var(--ifm-color-emphasis-700)', lineHeight: '1.6', flex: 1 }}>
 Discover advanced techniques for structuring data with Atoms and Triples, capturing signal, and calculating rewards in the Intuition ecosystem.
 </p>
-<a href="/guides/overview/the-primitives/structuring" style={{ color: '#3b82f6', textDecoration: 'none', fontWeight: '500' }}>
-Explore Structuring →
-</a>
 </div>
+</a>
 
 </div>
 
@@ -44,39 +42,39 @@ Explore Structuring →
 
 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem', marginTop: '2rem', marginBottom: '2rem' }}>
 
-<div style={{ border: '1px solid #e5e7eb', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'white', boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)' }}>
-<h3 style={{ marginTop: 0, marginBottom: '1rem', color: '#111827' }}>Atoms</h3>
-<p style={{ marginBottom: '1rem', color: '#6b7280', lineHeight: '1.6' }}>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)', boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)' }}>
+<h3 style={{ marginTop: 0, marginBottom: '1rem', color: 'var(--ifm-color-emphasis-900)' }}>Atoms</h3>
+<p style={{ marginBottom: '1rem', color: 'var(--ifm-color-emphasis-700)', lineHeight: '1.6' }}>
 The most basic units of knowledge within Intuition, functioning as unique, globally persistent, decentralized identifiers for all things—people, concepts, products, and more.
 </p>
 <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '1rem' }}>
-<span style={{ backgroundColor: '#f3f4f6', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: '#374151' }}>Subjects</span>
-<span style={{ backgroundColor: '#f3f4f6', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: '#374151' }}>Predicates</span>
-<span style={{ backgroundColor: '#f3f4f6', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: '#374151' }}>Objects</span>
+<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>Subjects</span>
+<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>Predicates</span>
+<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>Objects</span>
 </div>
 </div>
 
-<div style={{ border: '1px solid #e5e7eb', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'white', boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)' }}>
-<h3 style={{ marginTop: 0, marginBottom: '1rem', color: '#111827' }}>Triples</h3>
-<p style={{ marginBottom: '1rem', color: '#6b7280', lineHeight: '1.6' }}>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)', boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)' }}>
+<h3 style={{ marginTop: 0, marginBottom: '1rem', color: 'var(--ifm-color-emphasis-900)' }}>Triples</h3>
+<p style={{ marginBottom: '1rem', color: 'var(--ifm-color-emphasis-700)', lineHeight: '1.6' }}>
 Higher-order structures used to define relationships between Atoms. Each Triple consists of three components: a Subject, Predicate, and Object.
 </p>
 <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '1rem' }}>
-<span style={{ backgroundColor: '#f3f4f6', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: '#374151' }}>Relationships</span>
-<span style={{ backgroundColor: '#f3f4f6', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: '#374151' }}>Semantic</span>
-<span style={{ backgroundColor: '#f3f4f6', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: '#374151' }}>Machine-readable</span>
+<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>Relationships</span>
+<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>Semantic</span>
+<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>Machine-readable</span>
 </div>
 </div>
 
-<div style={{ border: '1px solid #e5e7eb', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'white', boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)' }}>
-<h3 style={{ marginTop: 0, marginBottom: '1rem', color: '#111827' }}>Signal</h3>
-<p style={{ marginBottom: '1rem', color: '#6b7280', lineHeight: '1.6' }}>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)', boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)' }}>
+<h3 style={{ marginTop: 0, marginBottom: '1rem', color: 'var(--ifm-color-emphasis-900)' }}>Signal</h3>
+<p style={{ marginBottom: '1rem', color: 'var(--ifm-color-emphasis-700)', lineHeight: '1.6' }}>
 Actions that express intent, belief, or support within the system. Signals can be explicit or implicit, contributing to trust and belief expression.
 </p>
 <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '1rem' }}>
-<span style={{ backgroundColor: '#f3f4f6', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: '#374151' }}>Trust</span>
-<span style={{ backgroundColor: '#f3f4f6', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: '#374151' }}>Belief</span>
-<span style={{ backgroundColor: '#f3f4f6', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: '#374151' }}>Support</span>
+<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>Trust</span>
+<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>Belief</span>
+<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>Support</span>
 </div>
 </div>
 
@@ -90,10 +88,10 @@ Atoms are categorized into three primary roles within semantic structures: **Sub
 
 ### Example Triple Structure
 
-<div style={{ backgroundColor: '#f9fafb', padding: '1rem', borderRadius: '8px', margin: '1rem 0', border: '1px solid #e5e7eb' }}>
-<p style={{ margin: '0 0 0.5rem 0', fontWeight: '600', color: '#111827' }}>Subject - Predicate - Object</p>
-<p style={{ margin: '0', fontFamily: 'monospace', fontSize: '0.9rem', color: '#374151' }}>
-<strong>Alice</strong> <span style={{ color: '#6b7280' }}>[Subject]</span> <strong>- hasAccessTo</strong> <span style={{ color: '#6b7280' }}>[Predicate]</span> <strong>- Intuition</strong> <span style={{ color: '#6b7280' }}>[Object]</span>
+<div style={{ backgroundColor: 'var(--ifm-color-emphasis-50)', padding: '1rem', borderRadius: '8px', margin: '1rem 0', border: '1px solid var(--ifm-color-emphasis-300)' }}>
+<p style={{ margin: '0 0 0.5rem 0', fontWeight: '600', color: 'var(--ifm-color-emphasis-900)' }}>Subject - Predicate - Object</p>
+<p style={{ margin: '0', fontFamily: 'monospace', fontSize: '0.9rem', color: 'var(--ifm-color-emphasis-700)' }}>
+<strong>Alice</strong> <span style={{ color: 'var(--ifm-color-emphasis-600)' }}>[Subject]</span> <strong>- hasAccessTo</strong> <span style={{ color: 'var(--ifm-color-emphasis-600)' }}>[Predicate]</span> <strong>- Intuition</strong> <span style={{ color: 'var(--ifm-color-emphasis-600)' }}>[Object]</span>
 </p>
 </div>
 
@@ -103,9 +101,9 @@ Atoms are categorized into three primary roles within semantic structures: **Sub
 
 Further illustrating the flexibility of Atoms, **Intuition** can also act as a **Subject:**
 
-<div style={{ backgroundColor: '#f9fafb', padding: '1rem', borderRadius: '8px', margin: '1rem 0', border: '1px solid #e5e7eb' }}>
-<p style={{ margin: '0', fontFamily: 'monospace', fontSize: '0.9rem', color: '#374151' }}>
-<strong>Intuition</strong> <span style={{ color: '#6b7280' }}>[Subject]</span> <strong>- is a</strong> <span style={{ color: '#6b7280' }}>[Predicate]</span> <strong>- Ethereum-based attestation protocol</strong> <span style={{ color: '#6b7280' }}>[Object]</span>
+<div style={{ backgroundColor: 'var(--ifm-color-emphasis-50)', padding: '1rem', borderRadius: '8px', margin: '1rem 0', border: '1px solid var(--ifm-color-emphasis-300)' }}>
+<p style={{ margin: '0', fontFamily: 'monospace', fontSize: '0.9rem', color: 'var(--ifm-color-emphasis-700)' }}>
+<strong>Intuition</strong> <span style={{ color: 'var(--ifm-color-emphasis-600)' }}>[Subject]</span> <strong>- is a</strong> <span style={{ color: 'var(--ifm-color-emphasis-600)' }}>[Predicate]</span> <strong>- Ethereum-based attestation protocol</strong> <span style={{ color: 'var(--ifm-color-emphasis-600)' }}>[Object]</span>
 </p>
 </div>
 

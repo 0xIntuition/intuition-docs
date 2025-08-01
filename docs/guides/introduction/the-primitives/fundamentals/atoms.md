@@ -125,19 +125,19 @@ To ensure reliable referencing of entities, concepts, or data within an Atom, ea
 <div style={{ backgroundColor: 'var(--ifm-color-emphasis-50)', padding: '1.5rem', borderRadius: '8px', marginTop: '2rem', marginBottom: '2rem' }}>
 <h3 style={{ marginTop: 0, marginBottom: '1rem' }}>Recommended Data Practices</h3>
 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1rem' }}>
-<div>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '6px', padding: '1rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.5rem' }}>Verifiable Data Registry</h4>
 <p style={{ margin: 0, fontSize: '0.9rem' }}>
 Use a Verifiable Data Registry to strengthen data usability through guarantees around immutability, availability, liveness, and persistence.
 </p>
 </div>
-<div>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '6px', padding: '1rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.5rem' }}>Supported Structures</h4>
 <p style={{ margin: 0, fontSize: '0.9rem' }}>
 Adhere to supported data structures and schemas for better interoperability and reliability.
 </p>
 </div>
-<div>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '6px', padding: '1rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.5rem' }}>Timestamp Inclusion</h4>
 <p style={{ margin: 0, fontSize: '0.9rem' }}>
 For mutable data, include a timestamp to ensure future references understand exactly what the data represented at the moment of attestation.
@@ -181,6 +181,7 @@ As users increasingly interact with these Atoms, a TCR emerges, ranking Atoms ba
 ## Next Steps
 
 Now that you understand Atoms, explore:
-- [Triples](/guides/overview/the-primitives/fundamentals/triples) - Learn how Atoms combine to form relationships
-- [Signal](/guides/overview/the-primitives/fundamentals/signal) - Understand how users interact with Atoms
-- [Structuring Atoms](/guides/overview/the-primitives/structuring/atoms) - Advanced techniques for working with Atoms 
+
+- [Triples](/guides/introduction/the-primitives/fundamentals/triples) - Learn how Atoms combine to form relationships
+- [Signal](/guides/introduction/the-primitives/fundamentals/signal) - Understand how users interact with Atoms
+- [Structuring Atoms](/guides/introduction/the-primitives/structuring/atoms) - Advanced techniques for working with Atoms 

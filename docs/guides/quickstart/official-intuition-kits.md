@@ -136,18 +136,6 @@ npm run build:dev
 3. **Build your application**: Use the SDK to create atoms, triples, and relationships
 4. **Test and deploy**: Use the provided testing frameworks and deployment scripts
 
-## Community Support
-
-Based on the [official tech documentation](https://tech.docs.intuition.systems/), the Intuition community can be found on:
-
-- **[X (Twitter)](https://tech.docs.intuition.systems/)**: Follow for updates and announcements
-- **[Discord](https://tech.docs.intuition.systems/)**: Join discussions and get help
-- **[Telegram](https://tech.docs.intuition.systems/)**: Community chat
-- **[Warpcast](https://tech.docs.intuition.systems/)**: Farcaster integration
-- **[Medium](https://tech.docs.intuition.systems/)**: Blog posts and articles
-- **[Galxe](https://tech.docs.intuition.systems/)**: Community events
-- **[Mirror](https://tech.docs.intuition.systems/)**: Decentralized publishing
-
 ## Next Steps
 
 - Explore [Community-Built Kits](/guides/quickstart/community-built-kits) for additional templates

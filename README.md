@@ -71,7 +71,7 @@ We welcome contributions to improve our documentation! Please see our [Contribut
 
 This project is licensed under the terms specified in the [LICENSE](LICENSE) file.
 
-## 🔗 Links
+## Links
 
 - [Documentation Site](https://docs.intuition.systems)
 - [Intuition Systems](https://intuition.systems)
