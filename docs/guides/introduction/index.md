@@ -2,7 +2,7 @@
 id: introduction
 title: Introduction
 sidebar_label: Introduction
-sidebar_position: 1
+sidebar_position: 2
 description: Learn about Intuition's vision and the problems it solves
 ---
 

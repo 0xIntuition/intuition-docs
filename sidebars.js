@@ -3,12 +3,14 @@ module.exports = {
     'intro',
     {
       type: 'category',
-      label: 'Overview',
+      label: 'Welcome',
       items: [
-        'guides/overview/index',
-        'guides/overview/why-intuition',
-        'guides/overview/the-economics',
-        'guides/overview/key-terms',
+        'guides/introduction/overview',
+        'guides/introduction/index',
+        'guides/introduction/why-intuition',
+        'guides/introduction/key-terms',
+        'guides/introduction/the-economics',
+        'guides/introduction/the-primitives',
       ],
     },
     {

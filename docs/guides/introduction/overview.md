@@ -2,7 +2,7 @@
 id: overview
 title: Overview
 sidebar_label: Overview
-sidebar_position: 2
+sidebar_position: 1
 description: Learn about Intuition's core concepts, architecture, and economic model
 ---
 
@@ -207,9 +207,9 @@ Intuition can be thought of as a consensus mechanism for the 'state of the state
 
 ## Key Benefits for Users
 
-<div style={{ display: 'flex', flexDirection: 'row', gap: '1.5rem', marginBottom: '2rem', flexWrap: 'wrap' }}>
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.5rem', marginBottom: '2rem' }}>
 
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)', flex: '1', minWidth: '250px' }}>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>For Developers</h4>
 <ul style={{ margin: 0, paddingLeft: '1.5rem', fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
 <li style={{ marginBottom: '0.5rem' }}><strong>Rich Data APIs</strong>: Access comprehensive, structured data about any entity</li>
@@ -220,7 +220,7 @@ Intuition can be thought of as a consensus mechanism for the 'state of the state
 </ul>
 </div>
 
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)', flex: '1', minWidth: '250px' }}>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>For Content Creators</h4>
 <ul style={{ margin: 0, paddingLeft: '1.5rem', fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
 <li style={{ marginBottom: '0.5rem' }}><strong>Own Your Data</strong>: Maintain control over your contributions and earn from them</li>
@@ -230,7 +230,7 @@ Intuition can be thought of as a consensus mechanism for the 'state of the state
 </ul>
 </div>
 
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)', flex: '1', minWidth: '250px' }}>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>For Organizations</h4>
 <ul style={{ margin: 0, paddingLeft: '1.5rem', fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
 <li style={{ marginBottom: '0.5rem' }}><strong>Verifiable Credentials</strong>: Issue and verify credentials with cryptographic proof</li>
@@ -240,7 +240,7 @@ Intuition can be thought of as a consensus mechanism for the 'state of the state
 </ul>
 </div>
 
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)', flex: '1', minWidth: '250px' }}>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>For Researchers</h4>
 <ul style={{ margin: 0, paddingLeft: '1.5rem', fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
 <li style={{ marginBottom: '0.5rem' }}><strong>Rich Data Sets</strong>: Access comprehensive, structured data for analysis</li>
