@@ -20,19 +20,19 @@ Every user, product, review, and transaction can be represented as discrete obje
 <h3 style={{ marginTop: 0, marginBottom: '1rem' }}>Example: Product Review System</h3>
 <div style={{ backgroundColor: 'var(--ifm-background-color)', padding: '1rem', borderRadius: '6px', border: '1px solid var(--ifm-color-emphasis-300)' }}>
 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
-<div>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '6px', padding: '1rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.5rem', color: 'var(--ifm-color-primary)' }}>Product Atom</h4>
 <p style={{ margin: 0, fontFamily: 'monospace', fontSize: '0.9rem' }}>
 did:ethr:mainnet:0x...product123
 </p>
 </div>
-<div>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '6px', padding: '1rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.5rem', color: 'var(--ifm-color-primary)' }}>Review Atom</h4>
 <p style={{ margin: 0, fontFamily: 'monospace', fontSize: '0.9rem' }}>
 did:ethr:mainnet:0x...review456
 </p>
 </div>
-<div>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '6px', padding: '1rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.5rem', color: 'var(--ifm-color-primary)' }}>Triple Relationship</h4>
 <p style={{ margin: 0, fontFamily: 'monospace', fontSize: '0.9rem' }}>
 [Product] [hasReview] [Review]
@@ -50,19 +50,19 @@ Each review can be evaluated for credibility using the Signal primitive. Reviews
 <h3 style={{ marginTop: 0, marginBottom: '1rem' }}>Credibility Evaluation</h3>
 <div style={{ backgroundColor: 'var(--ifm-background-color)', padding: '1rem', borderRadius: '6px', border: '1px solid var(--ifm-color-emphasis-300)' }}>
 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1rem' }}>
-<div>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '6px', padding: '1rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.5rem', color: 'var(--ifm-color-primary)' }}>Verified Purchaser</h4>
 <p style={{ margin: 0, fontSize: '0.9rem' }}>
 Higher signal weight due to confirmed purchase
 </p>
 </div>
-<div>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '6px', padding: '1rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.5rem', color: 'var(--ifm-color-primary)' }}>Reputable User</h4>
 <p style={{ margin: 0, fontSize: '0.9rem' }}>
 Enhanced credibility based on historical accuracy
 </p>
 </div>
-<div>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '6px', padding: '1rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.5rem', color: 'var(--ifm-color-primary)' }}>Fraud Detection</h4>
 <p style={{ margin: 0, fontSize: '0.9rem' }}>
 Automatic flagging of suspicious review patterns
@@ -83,19 +83,19 @@ Users are encouraged to express themselves, and reviewers are incentivized to pr
 For example, a user's status as a trusted reviewer on Amazon could serve as a valuable reputation data point in other contexts, such as securing better loan-to-value ratios in decentralized finance (DeFi) or enhancing the ability to obtain a loan.
 </p>
 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
-<div>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '6px', padding: '1rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.5rem', color: 'var(--ifm-color-primary)' }}>DeFi Integration</h4>
 <p style={{ margin: 0, fontSize: '0.9rem' }}>
 Better loan-to-value ratios based on reputation
 </p>
 </div>
-<div>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '6px', padding: '1rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.5rem', color: 'var(--ifm-color-primary)' }}>Portable Trust</h4>
 <p style={{ margin: 0, fontSize: '0.9rem' }}>
 Reputation follows users across platforms
 </p>
 </div>
-<div>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '6px', padding: '1rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.5rem', color: 'var(--ifm-color-primary)' }}>Economic Rewards</h4>
 <p style={{ margin: 0, fontSize: '0.9rem' }}>
 Earn tokens for valuable contributions
@@ -113,19 +113,19 @@ Additionally, users might be more inclined to attest to useful information about
 <h3 style={{ marginTop: 0, marginBottom: '1rem' }}>Trust Graph Benefits</h3>
 <div style={{ backgroundColor: 'var(--ifm-background-color)', padding: '1rem', borderRadius: '6px', border: '1px solid var(--ifm-color-emphasis-300)' }}>
 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1rem' }}>
-<div>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '6px', padding: '1rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.5rem', color: 'var(--ifm-color-primary)' }}>Portable Connections</h4>
 <p style={{ margin: 0, fontSize: '0.9rem' }}>
 Take your social graph anywhere you go
 </p>
 </div>
-<div>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '6px', padding: '1rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.5rem', color: 'var(--ifm-color-primary)' }}>Weighted Reviews</h4>
 <p style={{ margin: 0, fontSize: '0.9rem' }}>
 Trusted individual reviews > anonymous reviews
 </p>
 </div>
-<div>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '6px', padding: '1rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.5rem', color: 'var(--ifm-color-primary)' }}>Prioritized Insights</h4>
 <p style={{ margin: 0, fontSize: '0.9rem' }}>
 Valuable insights from trusted sources prioritized

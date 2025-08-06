@@ -81,19 +81,19 @@ Learn about Reward Calculation →
 <div style={{ backgroundColor: 'var(--ifm-color-emphasis-50)', padding: '1.5rem', borderRadius: '8px', marginTop: '2rem' }}>
 <h3 style={{ marginTop: 0, marginBottom: '1rem' }}>Key Principles</h3>
 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1rem' }}>
-<div>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '6px', padding: '1rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.5rem' }}>Modularity</h4>
 <p style={{ margin: 0, fontSize: '0.9rem' }}>
 Design structures that can be easily combined and reused across different contexts.
 </p>
 </div>
-<div>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '6px', padding: '1rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.5rem' }}>Scalability</h4>
 <p style={{ margin: 0, fontSize: '0.9rem' }}>
 Ensure your data structures can grow and evolve without breaking existing relationships.
 </p>
 </div>
-<div>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '6px', padding: '1rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.5rem' }}>Interoperability</h4>
 <p style={{ margin: 0, fontSize: '0.9rem' }}>
 Create structures that work seamlessly with other systems and data sources.
