@@ -129,6 +129,75 @@ Chrome extension for accessing the Intuition knowledge graph across the web. Enh
 </div>
 </a>
 
+<a href="/guides/hub/data-populator" style={{ textDecoration: 'none', color: 'inherit' }}>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }} className="docs-card">
+<div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
+<div style={{ width: '40px', height: '40px', borderRadius: '8px', backgroundColor: '#06B6D4', display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: '1rem' }}>
+<svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+<path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+</svg>
+</div>
+<h3 style={{ margin: 0 }}>Data Populator</h3>
+</div>
+<div className="docs-card-content">
+<p style={{ marginBottom: '1rem', color: 'var(--ifm-color-emphasis-700)' }}>
+Specialized tool for efficiently populating the Intuition knowledge graph with high-quality, structured data. Bulk import and validation capabilities. <strong>Essential for data migration</strong> - use for bulk data import and validation.
+</p>
+<div className="docs-card-tags" style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem' }}>Bulk Import</span>
+<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem' }}>Validation</span>
+<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem' }}>Quality</span>
+</div>
+</div>
+</div>
+</a>
+
+<a href="/guides/hub/metamask-snap" style={{ textDecoration: 'none', color: 'inherit' }}>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }} className="docs-card">
+<div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
+<div style={{ width: '40px', height: '40px', borderRadius: '8px', backgroundColor: '#F7931E', display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: '1rem' }}>
+<svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+</svg>
+</div>
+<h3 style={{ margin: 0 }}>MetaMask Snap</h3>
+</div>
+<div className="docs-card-content">
+<p style={{ marginBottom: '1rem', color: 'var(--ifm-color-emphasis-700)' }}>
+MetaMask extension for seamless Intuition integration. Manage identities, make claims, and stake directly from your wallet. <strong>Perfect for wallet users</strong> - access Intuition features directly from MetaMask.
+</p>
+<div className="docs-card-tags" style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem' }}>MetaMask</span>
+<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem' }}>Wallet</span>
+<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem' }}>Integration</span>
+</div>
+</div>
+</div>
+</a>
+
+<a href="/guides/hub/farcaster-frames" style={{ textDecoration: 'none', color: 'inherit' }}>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }} className="docs-card">
+<div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
+<div style={{ width: '40px', height: '40px', borderRadius: '8px', backgroundColor: '#EC4899', display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: '1rem' }}>
+<svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+</svg>
+</div>
+<h3 style={{ margin: 0 }}>Farcaster Frames</h3>
+</div>
+<div className="docs-card-content">
+<p style={{ marginBottom: '1rem', color: 'var(--ifm-color-emphasis-700)' }}>
+Interactive frames for Farcaster that bring Intuition's knowledge graph into social media. Create identities and verify claims through posts. <strong>Great for social engagement</strong> - integrate Intuition into your social media experience.
+</p>
+<div className="docs-card-tags" style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem' }}>Farcaster</span>
+<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem' }}>Social</span>
+<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem' }}>Interactive</span>
+</div>
+</div>
+</div>
+</a>
+
 </div>
 
 ## Support
