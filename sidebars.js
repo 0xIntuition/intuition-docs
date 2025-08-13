@@ -37,44 +37,15 @@ module.exports = {
       label: 'Developer Tools',
       items: [
         'guides/developer-tools/deep-dive',
-        {
-          type: 'category',
-          label: 'Architecture',
-          items: [
-            'guides/developer-tools/contracts/contract-architecture',
-          ],
-        },
-        {
-          type: 'category',
-          label: 'Primitives',
-          items: [
-            {
-              type: 'category',
-              label: 'Fundamentals',
-              items: [
-                'guides/developer-tools/deep-dive/primitives/fundamentals/atoms',
-                'guides/developer-tools/deep-dive/primitives/fundamentals/triples',
-                'guides/developer-tools/deep-dive/primitives/fundamentals/signal',
-              ],
-            },
-            'guides/developer-tools/deep-dive/primitives',
-          ],
-        },
-        {
-          type: 'category',
-          label: 'Contracts',
-          items: [
-            'guides/developer-tools/contracts/ethmultivault',
-            'guides/developer-tools/contracts/atomwallet',
-            'guides/developer-tools/contracts/errors',
-            'guides/developer-tools/audit-reports',
-          ],
-        },
+        'guides/developer-tools/contracts/contract-architecture',
+        'guides/developer-tools/contracts/ethmultivault',
+        'guides/developer-tools/contracts/atomwallet',
+        'guides/developer-tools/contracts/errors',
+        'guides/developer-tools/audit-reports',
         'guides/developer-tools/graphql-api',
         'guides/developer-tools/sdks',
       ],
     },
-
     {
       type: 'category',
       label: 'Bonding Curves',
@@ -83,19 +54,7 @@ module.exports = {
       ],
     },
 
-    {
-      type: 'category',
-      label: 'Intuition Hub',
-      items: [
-        'guides/hub/index',
-        'guides/hub/explorer',
-        'guides/hub/bridge',
-        'guides/hub/portal',
-        'guides/hub/browser-extension',
-        'guides/hub/rpc',
-        // 'guides/hub/network-health', // Hidden for now - can be uncommented to restore
-      ],
-    },
+
     {
       type: 'category',
       label: 'Intuition Node',

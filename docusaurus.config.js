@@ -20,9 +20,6 @@ const meta = {
   onBrokenLinks: 'warn',
 };
 
-/** @type {import('@docusaurus/plugin-content-docs').Options[]} */
-const docs = [];
-
 /** @type {import('@docusaurus/plugin-content-docs').Options} */
 const defaultSettings = {
   breadcrumbs: true,
@@ -34,6 +31,9 @@ const defaultSettings = {
   ],
   sidebarPath: require.resolve('./sidebars-default.js'),
 };
+
+/** @type {import('@docusaurus/plugin-content-docs').Options[]} */
+const docs = [];
 
 /**
  * Create a section
@@ -154,6 +154,16 @@ const config = {
             label: 'Guides',
             to: 'guides',
             className: 'guides-top-header',
+          },
+          {
+            label: 'Intuition Hub',
+            to: 'guides/hub',
+            className: 'hub-top-header',
+          },
+          {
+            label: 'Developer Tools',
+            to: 'guides/developer-tools',
+            className: 'developer-tools-top-header',
           },
           {
             type: 'search',
