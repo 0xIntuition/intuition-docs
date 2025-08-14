@@ -93,7 +93,7 @@ Dive deep into the fundamental building blocks: Atoms, Triples, and Signal. Lear
 </div>
 </a>
 
-<a href="/guides/introduction/key-terms" style={{ textDecoration: 'none', color: 'inherit' }}>
+<a href="/guides/resources/key-terms" style={{ textDecoration: 'none', color: 'inherit' }}>
 <div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)', height: '100%', display: 'flex', flexDirection: 'column' }} className="docs-card">
 <h3 style={{ marginTop: 0, marginBottom: '1rem' }}>Key Terms</h3>
 <p style={{ marginBottom: '1rem', color: 'var(--ifm-color-emphasis-700)', flex: 1 }}>

@@ -1,14 +1,10 @@
 module.exports = {
   docs: [
-    'intro',
     {
       type: 'category',
       label: 'Welcome',
       items: [
-        'guides/introduction/overview',
-        'guides/introduction/index',
         'guides/introduction/why-intuition',
-        'guides/introduction/key-terms',
         'guides/introduction/the-economics',
         'guides/introduction/the-primitives',
       ],
@@ -53,8 +49,6 @@ module.exports = {
         'guides/bonding-curves/index',
       ],
     },
-
-
     {
       type: 'category',
       label: 'Intuition Node',
@@ -88,7 +82,7 @@ module.exports = {
       type: 'category',
       label: 'Resources',
       items: [
-        'guides/resources/index',
+        'guides/resources/key-terms',
         'guides/resources/faq',
         'guides/resources/community-and-support',
         'guides/resources/utilities',

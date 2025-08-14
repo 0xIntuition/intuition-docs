@@ -358,7 +358,7 @@ Explore Primitives →
 <p style={{ marginBottom: '1rem', color: 'var(--ifm-color-emphasis-700)' }}>
 Master the essential terminology and concepts that form the foundation of the Intuition ecosystem and knowledge graph.
 </p>
-<a href="/guides/introduction/key-terms" style={{ color: 'var(--ifm-color-primary)', textDecoration: 'none', fontWeight: '500' }}>
+<a href="/guides/resources/key-terms" style={{ color: 'var(--ifm-color-primary)', textDecoration: 'none', fontWeight: '500' }}>
 Browse Key Terms →
 </a>
 </div>
