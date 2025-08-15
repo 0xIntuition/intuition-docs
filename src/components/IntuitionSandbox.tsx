@@ -4,6 +4,10 @@ interface SandboxResult {
   type: 'success' | 'error' | 'info';
   message: string;
   data?: any;
+  parsedData?: {
+    type: 'atom' | 'triple' | 'transaction' | 'contract';
+    [key: string]: any;
+  };
 }
 
 interface WalletState {
@@ -11,6 +15,360 @@ interface WalletState {
   address?: string;
   chainId?: number;
 }
+
+// Interactive display components
+const AtomDisplay: React.FC<{ data: any }> = ({ data }) => (
+  <div style={{ 
+    border: '1px solid var(--ifm-color-emphasis-300)', 
+    borderRadius: '8px', 
+    padding: '1rem',
+    backgroundColor: 'var(--ifm-background-color)'
+  }}>
+    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
+      <div style={{ 
+        width: '40px', 
+        height: '40px', 
+        backgroundColor: 'var(--ifm-color-primary)', 
+        borderRadius: '50%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginRight: '1rem',
+        fontSize: '1.2rem'
+      }}>
+        ⚛️
+      </div>
+      <div>
+        <h3 style={{ margin: 0, fontSize: '1.1rem' }}>{data.name || 'Atom'}</h3>
+        <p style={{ margin: 0, fontSize: '0.85rem', opacity: 0.7 }}>ID: {data.id}</p>
+      </div>
+    </div>
+    
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
+      <div>
+        <strong style={{ fontSize: '0.9rem', color: 'var(--ifm-color-emphasis-700)' }}>Type:</strong>
+        <p style={{ margin: '0.25rem 0', padding: '0.25rem 0.5rem', backgroundColor: 'var(--ifm-color-primary-lightest)', borderRadius: '4px', fontSize: '0.85rem' }}>
+          {data.type || 'General'}
+        </p>
+      </div>
+      <div>
+        <strong style={{ fontSize: '0.9rem', color: 'var(--ifm-color-emphasis-700)' }}>Vault ID:</strong>
+        <p style={{ margin: '0.25rem 0', fontFamily: 'monospace', fontSize: '0.85rem' }}>{data.vaultId}</p>
+      </div>
+      <div>
+        <strong style={{ fontSize: '0.9rem', color: 'var(--ifm-color-emphasis-700)' }}>Total Shares:</strong>
+        <p style={{ margin: '0.25rem 0', fontFamily: 'monospace', fontSize: '0.85rem' }}>
+          {data.totalShares ? (BigInt(data.totalShares) / BigInt(10**18)).toString() + ' ETH' : 'N/A'}
+        </p>
+      </div>
+      <div>
+        <strong style={{ fontSize: '0.9rem', color: 'var(--ifm-color-emphasis-700)' }}>Signal Count:</strong>
+        <p style={{ margin: '0.25rem 0', fontSize: '0.85rem' }}>{data.signalCount || 0} signals</p>
+      </div>
+    </div>
+    
+    {data.description && (
+      <div style={{ marginTop: '1rem', padding: '0.75rem', backgroundColor: 'var(--ifm-color-emphasis-50)', borderRadius: '4px' }}>
+        <strong style={{ fontSize: '0.9rem' }}>Description:</strong>
+        <p style={{ margin: '0.5rem 0 0 0', fontSize: '0.85rem' }}>{data.description}</p>
+      </div>
+    )}
+  </div>
+);
+
+const TripleDisplay: React.FC<{ data: any }> = ({ data }) => (
+  <div style={{ 
+    border: '1px solid var(--ifm-color-emphasis-300)', 
+    borderRadius: '8px', 
+    padding: '1rem',
+    backgroundColor: 'var(--ifm-background-color)'
+  }}>
+    <div style={{ marginBottom: '1rem' }}>
+      <h3 style={{ margin: 0, fontSize: '1.1rem', display: 'flex', alignItems: 'center' }}>
+        🔗 Triple Statement
+        <span style={{ 
+          marginLeft: '1rem', 
+          padding: '0.25rem 0.5rem', 
+          backgroundColor: (data.confidence && parseFloat(data.confidence) >= 70) ? 'var(--ifm-color-success-lightest)' : 'var(--ifm-color-warning-lightest)', 
+          borderRadius: '4px', 
+          fontSize: '0.8rem',
+          fontWeight: 'normal'
+        }}>
+          {data.confidence || '50%'} confidence
+        </span>
+      </h3>
+    </div>
+    
+    <div style={{ 
+      display: 'flex', 
+      alignItems: 'center', 
+      padding: '1rem', 
+      backgroundColor: 'var(--ifm-color-emphasis-50)', 
+      borderRadius: '8px',
+      marginBottom: '1rem',
+      flexWrap: 'wrap',
+      gap: '0.5rem'
+    }}>
+      <div style={{ 
+        padding: '0.5rem 1rem', 
+        backgroundColor: 'var(--ifm-color-primary-lightest)', 
+        borderRadius: '6px',
+        fontWeight: '500',
+        fontSize: '0.9rem'
+      }}>
+        {data.subject?.label || 'Subject'}
+      </div>
+      <span style={{ fontSize: '1.2rem', margin: '0 0.5rem' }}>→</span>
+      <div style={{ 
+        padding: '0.5rem 1rem', 
+        backgroundColor: 'var(--ifm-color-secondary-lightest)', 
+        borderRadius: '6px',
+        fontWeight: '500',
+        fontSize: '0.9rem'
+      }}>
+        {data.predicate?.label || 'Predicate'}
+      </div>
+      <span style={{ fontSize: '1.2rem', margin: '0 0.5rem' }}>→</span>
+      <div style={{ 
+        padding: '0.5rem 1rem', 
+        backgroundColor: 'var(--ifm-color-success-lightest)', 
+        borderRadius: '6px',
+        fontWeight: '500',
+        fontSize: '0.9rem'
+      }}>
+        {data.object?.label || 'Object'}
+      </div>
+    </div>
+    
+    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+      <div style={{ padding: '0.75rem', border: '1px solid var(--ifm-color-success)', borderRadius: '6px' }}>
+        <strong style={{ color: 'var(--ifm-color-success-darkest)', fontSize: '0.9rem' }}>👍 Positive Vault</strong>
+        <p style={{ margin: '0.5rem 0 0 0', fontFamily: 'monospace', fontSize: '0.8rem' }}>
+          {data.positiveVault?.totalAssets ? (BigInt(data.positiveVault.totalAssets) / BigInt(10**18)).toString() + ' ETH' : '0 ETH'}
+        </p>
+      </div>
+      <div style={{ padding: '0.75rem', border: '1px solid var(--ifm-color-danger)', borderRadius: '6px' }}>
+        <strong style={{ color: 'var(--ifm-color-danger-darkest)', fontSize: '0.9rem' }}>👎 Negative Vault</strong>
+        <p style={{ margin: '0.5rem 0 0 0', fontFamily: 'monospace', fontSize: '0.8rem' }}>
+          {data.negativeVault?.totalAssets ? (BigInt(data.negativeVault.totalAssets) / BigInt(10**18)).toString() + ' ETH' : '0 ETH'}
+        </p>
+      </div>
+    </div>
+  </div>
+);
+
+const TransactionDisplay: React.FC<{ data: any }> = ({ data }) => (
+  <div style={{ 
+    border: '1px solid var(--ifm-color-emphasis-300)', 
+    borderRadius: '8px', 
+    padding: '1rem',
+    backgroundColor: 'var(--ifm-background-color)'
+  }}>
+    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
+      <div style={{ 
+        width: '40px', 
+        height: '40px', 
+        backgroundColor: 'var(--ifm-color-success)', 
+        borderRadius: '50%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginRight: '1rem',
+        fontSize: '1.2rem'
+      }}>
+        ✅
+      </div>
+      <div>
+        <h3 style={{ margin: 0, fontSize: '1.1rem' }}>Transaction Confirmed</h3>
+        <p style={{ margin: 0, fontSize: '0.85rem', opacity: 0.7 }}>Block #{data.blockNumber}</p>
+      </div>
+    </div>
+    
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
+      <div>
+        <strong style={{ fontSize: '0.9rem', color: 'var(--ifm-color-emphasis-700)' }}>Transaction Hash:</strong>
+        <a 
+          href={data.explorerUrl} 
+          target="_blank" 
+          rel="noopener noreferrer"
+          style={{ 
+            display: 'block',
+            margin: '0.25rem 0', 
+            fontFamily: 'monospace', 
+            fontSize: '0.8rem',
+            color: 'var(--ifm-color-primary)',
+            textDecoration: 'none',
+            wordBreak: 'break-all'
+          }}
+        >
+          {data.transactionHash}
+        </a>
+      </div>
+      <div>
+        <strong style={{ fontSize: '0.9rem', color: 'var(--ifm-color-emphasis-700)' }}>Network:</strong>
+        <p style={{ margin: '0.25rem 0', fontSize: '0.85rem' }}>{data.network}</p>
+      </div>
+      <div>
+        <strong style={{ fontSize: '0.9rem', color: 'var(--ifm-color-emphasis-700)' }}>Gas Used:</strong>
+        <p style={{ margin: '0.25rem 0', fontFamily: 'monospace', fontSize: '0.85rem' }}>{data.gasUsed?.toLocaleString()}</p>
+      </div>
+      <div>
+        <strong style={{ fontSize: '0.9rem', color: 'var(--ifm-color-emphasis-700)' }}>Created Vault:</strong>
+        <p style={{ margin: '0.25rem 0', fontFamily: 'monospace', fontSize: '0.85rem' }}>#{data.vaultId}</p>
+      </div>
+    </div>
+  </div>
+);
+
+const ContractDisplay: React.FC<{ data: any }> = ({ data }) => (
+  <div style={{ 
+    border: '1px solid var(--ifm-color-emphasis-300)', 
+    borderRadius: '8px', 
+    padding: '1rem',
+    backgroundColor: 'var(--ifm-background-color)'
+  }}>
+    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
+      <div style={{ 
+        width: '40px', 
+        height: '40px', 
+        backgroundColor: 'var(--ifm-color-secondary)', 
+        borderRadius: '50%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginRight: '1rem',
+        fontSize: '1.2rem'
+      }}>
+        🏦
+      </div>
+      <div>
+        <h3 style={{ margin: 0, fontSize: '1.1rem' }}>EthMultiVault Contract</h3>
+        <p style={{ margin: 0, fontSize: '0.85rem', opacity: 0.7 }}>Base Sepolia Testnet</p>
+      </div>
+    </div>
+    
+    <div style={{ 
+      padding: '1rem', 
+      backgroundColor: 'var(--ifm-color-emphasis-50)', 
+      borderRadius: '6px',
+      marginBottom: '1rem'
+    }}>
+      <strong style={{ fontSize: '0.9rem' }}>Contract Address:</strong>
+      <a 
+        href={data.explorerUrl} 
+        target="_blank" 
+        rel="noopener noreferrer"
+        style={{ 
+          display: 'block',
+          margin: '0.5rem 0', 
+          fontFamily: 'monospace', 
+          fontSize: '0.9rem',
+          color: 'var(--ifm-color-primary)',
+          textDecoration: 'none'
+        }}
+      >
+        {data.address}
+      </a>
+    </div>
+    
+    <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--ifm-color-emphasis-700)' }}>
+      This contract manages all atom and triple vaults on the Intuition protocol. 
+      It handles creation, deposits, withdrawals, and economic incentives.
+    </p>
+  </div>
+);
+
+// Parse logs to create structured data for interactive display
+const parseLogsForDisplay = (logs: string[], code: string) => {
+  // Detect what type of operation was performed based on code content
+  if (code.includes('createAtomFromString')) {
+    return {
+      type: 'transaction' as const,
+      operation: 'Create Atom',
+      vaultId: Math.floor(Math.random() * 50000) + 1000,
+      transactionHash: `0xa1b2c3d4e5f6789012345678901234567890abcdef1234567890abcdef123456`,
+      blockNumber: 14000000 + Math.floor(Math.random() * 100000),
+      gasUsed: 150000 + Math.floor(Math.random() * 50000),
+      network: 'Base Sepolia',
+      explorerUrl: `https://sepolia.basescan.org/tx/0xa1b2c3d4e5f6789012345678901234567890abcdef1234567890abcdef123456`
+    };
+  }
+  
+  if (code.includes('createTripleStatement')) {
+    return {
+      type: 'transaction' as const,
+      operation: 'Create Triple',
+      vaultId: Math.floor(Math.random() * 50000) + 1000,
+      transactionHash: `0xf1e2d3c4b5a6789012345678901234567890fedcba1234567890fedcba654321`,
+      blockNumber: 14000000 + Math.floor(Math.random() * 100000),
+      gasUsed: 180000 + Math.floor(Math.random() * 70000),
+      network: 'Base Sepolia',
+      explorerUrl: `https://sepolia.basescan.org/tx/0xf1e2d3c4b5a6789012345678901234567890fedcba1234567890fedcba654321`
+    };
+  }
+  
+  if (code.includes('getAtom')) {
+    const atomExamples = [
+      { name: 'Ethereum', type: 'Blockchain', description: 'Leading smart contract platform' },
+      { name: 'Vitalik Buterin', type: 'Person', description: 'Ethereum co-founder and researcher' },
+      { name: 'DeFi', type: 'Concept', description: 'Decentralized Finance ecosystem' },
+      { name: 'Base Network', type: 'Blockchain', description: 'Layer 2 scaling solution by Coinbase' }
+    ];
+    
+    const example = atomExamples[Math.floor(Math.random() * atomExamples.length)];
+    
+    return {
+      type: 'atom' as const,
+      id: '1001',
+      name: example.name,
+      type: example.type,
+      description: example.description,
+      vaultId: Math.floor(Math.random() * 50000) + 1000,
+      totalShares: (BigInt(Math.floor(Math.random() * 100) + 50) * BigInt(10**18)).toString(),
+      totalAssets: (BigInt(Math.floor(Math.random() * 50) + 25) * BigInt(10**18)).toString(),
+      signalCount: Math.floor(Math.random() * 500) + 100,
+    };
+  }
+  
+  if (code.includes('getTriple')) {
+    const tripleExamples = [
+      { subject: 'Vitalik Buterin', predicate: 'is creator of', object: 'Ethereum' },
+      { subject: 'Base Network', predicate: 'is built on', object: 'Ethereum' },
+      { subject: 'DeFi', predicate: 'enables', object: 'Decentralized Trading' },
+      { subject: 'Smart Contracts', predicate: 'power', object: 'Web3 Applications' }
+    ];
+    
+    const example = tripleExamples[Math.floor(Math.random() * tripleExamples.length)];
+    const positiveSignal = Math.random() * 80 + 20;
+    
+    return {
+      type: 'triple' as const,
+      id: '2001',
+      subject: { label: example.subject },
+      predicate: { label: example.predicate },
+      object: { label: example.object },
+      confidence: `${positiveSignal.toFixed(1)}%`,
+      positiveVault: {
+        totalAssets: (BigInt(Math.floor(positiveSignal * 10) + 50) * BigInt(10**18)).toString()
+      },
+      negativeVault: {
+        totalAssets: (BigInt(Math.floor((100 - positiveSignal) * 5) + 10) * BigInt(10**18)).toString()
+      },
+      signalCount: Math.floor(Math.random() * 200) + 50
+    };
+  }
+  
+  if (code.includes('getEthMultiVaultAddress')) {
+    return {
+      type: 'contract' as const,
+      address: '0x430BbF52503Bd4801E51182f4cB9f8F534225DE5',
+      network: 'Base Sepolia',
+      explorerUrl: 'https://sepolia.basescan.org/address/0x430BbF52503Bd4801E51182f4cB9f8F534225DE5'
+    };
+  }
+  
+  return null;
+};
 
 // Check for SDK availability without importing
 const checkSDKAvailability = () => {
@@ -235,22 +593,26 @@ console.log('Explorer:', atom.explorerUrl);`);
         const mockPublicClient = { chain: { id: 84532 } };
         const ethMultiVaultAddress = mockGetEthMultiVaultAddress();
 
-        await executeCode(
-          mockCreateAtomFromString,
-          mockCreateTripleStatement,
-          mockGetEthMultiVaultAddress,
+      await executeCode(
+        mockCreateAtomFromString,
+        mockCreateTripleStatement,
+        mockGetEthMultiVaultAddress,
           mockGetAtom,
           mockGetTriple,
-          mockWalletClient,
-          mockPublicClient,
-          ethMultiVaultAddress,
-          mockConsole
-        );
+        mockWalletClient,
+        mockPublicClient,
+        ethMultiVaultAddress,
+        mockConsole
+      );
 
-        setResult({
-          type: 'success',
-          message: 'Demo code executed successfully! (Simulated responses)',
-          data: logs.length > 0 ? logs.join('\n') : 'No output'
+              // Parse the logs to create structured data for display
+        const parsedData = parseLogsForDisplay(logs, code);
+
+      setResult({
+        type: 'success',
+          message: 'Demo executed successfully! (Simulated responses)',
+          data: logs.length > 0 ? logs.join('\n') : 'No output',
+          parsedData
         });
 
       } else {
@@ -409,7 +771,7 @@ console.log('Created post triple:', postTriple.state.vaultId);`
         {/* Read operations - no wallet needed */}
         <div style={{ marginBottom: '0.75rem' }}>
           <span style={{ fontSize: '0.85rem', color: 'var(--ifm-color-success)', fontWeight: 'bold', marginRight: '0.5rem' }}>
-            📖 Read Operations (No wallet needed):
+            📖 Read Operations (Demo - No wallet needed):
           </span>
           <button
             onClick={() => loadExample('read-atom')}
@@ -427,23 +789,23 @@ console.log('Created post triple:', postTriple.state.vaultId);`
           >
             Read Atom Data
           </button>
-          <button
+        <button
             onClick={() => loadExample('read-triple')}
-            style={{
-              marginRight: '0.5rem',
-              marginBottom: '0.5rem',
+          style={{
+            marginRight: '0.5rem',
+            marginBottom: '0.5rem',
               padding: '0.4rem 0.8rem',
               border: '1px solid var(--ifm-color-success)',
-              borderRadius: '4px',
-              backgroundColor: 'transparent',
+            borderRadius: '4px',
+            backgroundColor: 'transparent',
               color: 'var(--ifm-color-success)',
               cursor: 'pointer',
               fontSize: '0.85rem'
-            }}
-          >
+          }}
+        >
             Read Triple Statement
-          </button>
-          <button
+        </button>
+        <button
             onClick={() => loadExample('check-vault')}
             style={{
               marginRight: '0.5rem',
@@ -461,43 +823,43 @@ console.log('Created post triple:', postTriple.state.vaultId);`
           </button>
         </div>
 
-        {/* Write operations - wallet required */}
+        {/* Write operations - would require wallet in real usage */}
         <div>
-          <span style={{ fontSize: '0.85rem', color: 'var(--ifm-color-warning)', fontWeight: 'bold', marginRight: '0.5rem' }}>
-            ✍️ Write Operations (Wallet required):
+          <span style={{ fontSize: '0.85rem', color: 'var(--ifm-color-info)', fontWeight: 'bold', marginRight: '0.5rem' }}>
+            ✍️ Write Operations (Demo - Would require wallet in real usage):
           </span>
           <button
             onClick={() => loadExample('create-defi-atom')}
-            style={{
-              marginRight: '0.5rem',
-              marginBottom: '0.5rem',
+          style={{
+            marginRight: '0.5rem',
+            marginBottom: '0.5rem',
               padding: '0.4rem 0.8rem',
-              border: '1px solid var(--ifm-color-warning)',
-              borderRadius: '4px',
-              backgroundColor: 'transparent',
-              color: 'var(--ifm-color-warning)',
+              border: '1px solid var(--ifm-color-info)',
+            borderRadius: '4px',
+            backgroundColor: 'transparent',
+              color: 'var(--ifm-color-info)',
               cursor: 'pointer',
               fontSize: '0.85rem'
-            }}
-          >
+          }}
+        >
             Create DeFi Atom
-          </button>
-          <button
+        </button>
+        <button
             onClick={() => loadExample('create-triple')}
-            style={{
-              marginRight: '0.5rem',
-              marginBottom: '0.5rem',
+          style={{
+            marginRight: '0.5rem',
+            marginBottom: '0.5rem',
               padding: '0.4rem 0.8rem',
-              border: '1px solid var(--ifm-color-warning)',
-              borderRadius: '4px',
-              backgroundColor: 'transparent',
-              color: 'var(--ifm-color-warning)',
+              border: '1px solid var(--ifm-color-info)',
+            borderRadius: '4px',
+            backgroundColor: 'transparent',
+              color: 'var(--ifm-color-info)',
               cursor: 'pointer',
               fontSize: '0.85rem'
-            }}
-          >
+          }}
+        >
             Create Relationship
-          </button>
+        </button>
         </div>
       </div>
 
@@ -555,30 +917,82 @@ console.log('Created post triple:', postTriple.state.vaultId);`
         </button>
       </div>
 
-      {/* Results */}
+      {/* Interactive Results Display */}
       {result && (
         <div style={{
-          padding: '1rem',
-          borderRadius: '4px',
-          backgroundColor: result.type === 'success' 
-            ? 'var(--ifm-color-success-lightest)' 
-            : 'var(--ifm-color-danger-lightest)',
-          border: `1px solid ${result.type === 'success' 
-            ? 'var(--ifm-color-success)' 
-            : 'var(--ifm-color-danger)'}`,
-          color: result.type === 'success' 
-            ? 'var(--ifm-color-success-darkest)' 
-            : 'var(--ifm-color-danger-darkest)'
+          marginTop: '1rem',
+          border: '1px solid var(--ifm-color-emphasis-300)',
+          borderRadius: '8px',
+          overflow: 'hidden'
         }}>
-          <strong>{result.type === 'success' ? 'Success!' : 'Error:'}</strong>
-          <div style={{ marginTop: '0.5rem', fontFamily: 'monospace', fontSize: '14px', whiteSpace: 'pre-wrap' }}>
-            {result.message}
-            {result.data && (
-              <div style={{ marginTop: '0.5rem', padding: '0.5rem', backgroundColor: 'rgba(0,0,0,0.1)', borderRadius: '4px' }}>
-                {result.data}
-              </div>
-            )}
+          {/* Result Header */}
+          <div style={{
+            padding: '1rem',
+            backgroundColor: result.type === 'error' ? 'var(--ifm-color-danger-lightest)' :
+                            result.type === 'success' ? 'var(--ifm-color-success-lightest)' :
+                            'var(--ifm-color-info-lightest)',
+            borderBottom: result.parsedData ? '1px solid var(--ifm-color-emphasis-300)' : 'none'
+          }}>
+            <h4 style={{ 
+              marginTop: 0, 
+              marginBottom: '0.25rem',
+              color: result.type === 'error' ? 'var(--ifm-color-danger-darkest)' :
+                     result.type === 'success' ? 'var(--ifm-color-success-darkest)' :
+                     'var(--ifm-color-info-darkest)',
+              fontSize: '1rem'
+            }}>
+              {result.type === 'error' ? '❌ Error' : 
+               result.type === 'success' ? '✅ Execution Successful' : 
+               'ℹ️ Query Result'}
+            </h4>
+            <p style={{ margin: 0, fontSize: '0.9rem', opacity: 0.8 }}>{result.message}</p>
           </div>
+
+          {/* Interactive Data Display */}
+          {result.parsedData && (
+            <div style={{ padding: '1rem' }}>
+              {result.parsedData.type === 'atom' && (
+                <AtomDisplay data={result.parsedData} />
+              )}
+              {result.parsedData.type === 'triple' && (
+                <TripleDisplay data={result.parsedData} />
+              )}
+              {result.parsedData.type === 'transaction' && (
+                <TransactionDisplay data={result.parsedData} />
+              )}
+              {result.parsedData.type === 'contract' && (
+                <ContractDisplay data={result.parsedData} />
+              )}
+            </div>
+          )}
+
+          {/* Console Output (collapsible) */}
+          {result.data && (
+            <details style={{ marginTop: result.parsedData ? '0' : '1rem' }}>
+              <summary style={{
+                padding: '0.75rem 1rem',
+                backgroundColor: 'var(--ifm-color-emphasis-50)',
+                cursor: 'pointer',
+                borderTop: '1px solid var(--ifm-color-emphasis-300)',
+                fontSize: '0.9rem',
+                fontWeight: '500'
+              }}>
+                🔍 View Console Output
+              </summary>
+              <pre style={{
+                margin: 0,
+                padding: '1rem',
+                backgroundColor: 'var(--ifm-color-emphasis-100)',
+                fontSize: '0.8rem',
+                fontFamily: 'monospace',
+                whiteSpace: 'pre-wrap',
+                overflow: 'auto',
+                maxHeight: '300px'
+              }}>
+                {result.data}
+              </pre>
+            </details>
+          )}
         </div>
       )}
 
@@ -618,7 +1032,7 @@ console.log('Created post triple:', postTriple.state.vaultId);`
         3. Read operations work without wallet connection
       </div>
 
-      {/* CodeSandbox Integration */}
+      {/* Real SDK Setup Guide */}
       <div style={{
         marginTop: '1.5rem',
         padding: '1rem',
@@ -627,68 +1041,39 @@ console.log('Created post triple:', postTriple.state.vaultId);`
         borderRadius: '6px'
       }}>
         <h4 style={{ marginTop: 0, marginBottom: '0.75rem', fontSize: '1rem' }}>
-          🚀 Try Real SDK Examples
+          🚀 Ready for Real SDK Integration?
         </h4>
         <p style={{ marginBottom: '1rem', fontSize: '0.9rem', color: 'var(--ifm-color-emphasis-700)' }}>
-          Want to experiment with the actual Intuition SDK? Check out these live CodeSandbox environments with pre-configured setups:
+          To use the actual Intuition SDK in your project, follow these steps:
         </p>
         
-        <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-          <a
-            href="https://codesandbox.io/p/sandbox/intuition-sdk-basic-atoms-example"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              display: 'inline-block',
-              padding: '0.5rem 1rem',
-              backgroundColor: 'var(--ifm-color-primary)',
-              color: 'white',
-              textDecoration: 'none',
-              borderRadius: '4px',
-              fontSize: '0.85rem',
-              fontWeight: '500'
-            }}
-          >
-            📝 Basic Atoms Example
-          </a>
-          <a
-            href="https://codesandbox.io/p/sandbox/intuition-sdk-triples-relationships"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              display: 'inline-block',
-              padding: '0.5rem 1rem',
-              backgroundColor: 'var(--ifm-color-primary)',
-              color: 'white',
-              textDecoration: 'none',
-              borderRadius: '4px',
-              fontSize: '0.85rem',
-              fontWeight: '500'
-            }}
-          >
-            🔗 Triples & Relationships
-          </a>
-          <a
-            href="https://codesandbox.io/p/sandbox/intuition-sdk-social-app-demo"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              display: 'inline-block',
-              padding: '0.5rem 1rem',
-              backgroundColor: 'var(--ifm-color-primary)',
-              color: 'white',
-              textDecoration: 'none',
-              borderRadius: '4px',
-              fontSize: '0.85rem',
-              fontWeight: '500'
-            }}
-          >
-            👥 Social App Demo
-          </a>
+        <div style={{ 
+          backgroundColor: 'var(--ifm-color-emphasis-100)', 
+          padding: '1rem', 
+          borderRadius: '4px',
+          marginBottom: '1rem',
+          fontFamily: 'monospace',
+          fontSize: '0.85rem'
+        }}>
+          <div style={{ marginBottom: '0.5rem', color: 'var(--ifm-color-emphasis-600)' }}>
+            # Install the SDK
+          </div>
+          <div style={{ marginBottom: '1rem' }}>
+            npm install @0xintuition/sdk viem
+          </div>
+          
+          <div style={{ marginBottom: '0.5rem', color: 'var(--ifm-color-emphasis-600)' }}>
+            # Basic setup
+          </div>
+          <div>
+            import &#123; createPublicClient, http &#125; from 'viem'<br/>
+            import &#123; baseSepolia &#125; from 'viem/chains'<br/>
+            import &#123; createAtomFromString &#125; from '@0xintuition/sdk'
+          </div>
         </div>
         
-        <p style={{ marginTop: '0.75rem', marginBottom: 0, fontSize: '0.8rem', color: 'var(--ifm-color-emphasis-600)' }}>
-          💡 Each CodeSandbox includes wallet integration, testnet setup, and step-by-step examples you can modify and run.
+        <p style={{ marginBottom: 0, fontSize: '0.85rem', color: 'var(--ifm-color-emphasis-600)' }}>
+          📖 For complete setup instructions and examples, check out the <a href="/guides/developer-tools/sdks/overview" style={{ color: 'var(--ifm-color-primary)' }}>SDK Documentation</a>.
         </p>
       </div>
     </div>
