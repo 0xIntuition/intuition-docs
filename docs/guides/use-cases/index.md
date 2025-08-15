@@ -3,166 +3,245 @@ id: use-cases
 title: Use Cases
 sidebar_label: Use Cases
 sidebar_position: 1
-description: Explore real-world applications and use cases for the Intuition protocol
+description: Discover how to build amazing applications with Intuition's decentralized knowledge graph
 ---
 
 # Use Cases
 
-Intuition's decentralized knowledge graph enables a wide range of applications that benefit from verifiable, structured data. Here are some key use cases and implementation examples.
+Intuition transforms how applications handle trust, identity, and knowledge. Instead of building isolated data silos, you can tap into a **universal knowledge graph** where reputation, relationships, and verification work across every app.
 
 import IntuitionSandbox from '@site/src/components/IntuitionSandbox';
 
-## Live Code Sandbox
 
-Test Intuition SDK code snippets directly in your browser:
 
 <IntuitionSandbox />
 
-## Quick Examples
+## Real-World Applications
 
-Here are some quick examples of how to implement common use cases with Intuition:
+Here's how developers are using Intuition to build the future of trust online:
 
-### Product Reviews
+### **Universal Developer Reputation**
 
-```typescript
-// Example structure for product review system
-import { createAtomFromString, createTripleStatement, getEthMultiVaultAddress } from '@0xintuition/sdk'
+*"What if your GitHub contributions and Discord expertise worked everywhere?"*
 
-// Get the correct vault address for the current chain
-const ethMultiVaultAddress = getEthMultiVaultAddress(walletClient.chain.id)
+Imagine a world where your proven Solidity skills from GitHub automatically give you trusted status in Discord servers, job applications, and any developer platform. No more proving yourself repeatedly - your code speaks once, everywhere.
 
-// Create product atom - represents the product being reviewed
-// This creates a unique identifier for the iPhone 15 Pro in the knowledge graph
-const productAtom = await createAtomFromString(
-  { walletClient, publicClient, address: ethMultiVaultAddress },
-  'iPhone 15 Pro - Apple Electronics'
-)
+<div style={{ 
+  backgroundColor: 'var(--ifm-color-emphasis-50)', 
+  padding: '1.5rem', 
+  borderRadius: '8px', 
+  marginBottom: '2rem',
+  border: '1px solid var(--ifm-color-emphasis-300)'
+}}>
 
-// Create user atom - represents the user who is writing the review
-// This creates a unique identifier for the user in the knowledge graph
-const userAtom = await createAtomFromString(
-  { walletClient, publicClient, address: ethMultiVaultAddress },
-  'user:alice_dev'
-)
+**The Magic Moment:**
+- Alice contributes to 50+ Solidity repos on GitHub with high-quality PRs
+- Her code expertise atoms accumulate **real economic value** from developer signals
+- Bob sees Alice join a Discord server and **instantly knows** she's a proven Solidity expert
+- Alice's reputation becomes **portable wealth** she owns forever
 
-// Create review relationship - links the user to the product they're reviewing
-// This creates a semantic statement: "user:alice_dev REVIEWS iPhone 15 Pro"
-const reviewTriple = await createTripleStatement(
-  { walletClient, publicClient, address: ethMultiVaultAddress },
-  {
-    args: [userAtom.state.vaultId, 'REVIEWS', productAtom.state.vaultId]
-  }
-)
+**Key Relationships:**
+```
+Alice → CONTRIBUTED_TO → Uniswap V4 Repository
+Alice → HAS_EXPERTISE → Solidity Development (verified via commits)
+DevCommunity → VALIDATES → Alice's Code Quality (92% positive signals)
+Alice → EARNED → 3.2 ETH from expertise signals across platforms
 ```
 
-### Social Network Post
+</div>
 
-```typescript
-// Example structure for social network post
-import { createAtomFromString, createTripleStatement, getEthMultiVaultAddress } from '@0xintuition/sdk'
+### **Decentralized Social Media**
 
-// Get the correct vault address for the current chain
-const ethMultiVaultAddress = getEthMultiVaultAddress(walletClient.chain.id)
+*"What if your followers, content, and reputation weren't trapped in one app?"*
 
-// Create post content atom - represents the actual post content
-// This stores the text content of the social media post
-const postAtom = await createAtomFromString(
-  { walletClient, publicClient, address: ethMultiVaultAddress },
-  'Just deployed my first Intuition app!'
-)
+Build Twitter/LinkedIn where users **own their social graph**. Followers, endorsements, and content relationships exist on Intuition's universal graph - accessible to any social app that wants to integrate.
 
-// Create user atom - represents the author of the post
-// This identifies who created the post
-const userAtom = await createAtomFromString(
-  { walletClient, publicClient, address: ethMultiVaultAddress },
-  'user:alice_dev'
-)
+<div style={{ 
+  backgroundColor: 'var(--ifm-color-emphasis-50)', 
+  padding: '1.5rem', 
+  borderRadius: '8px', 
+  marginBottom: '2rem',
+  border: '1px solid var(--ifm-color-emphasis-300)'
+}}>
 
-// Link post to user - creates the authorship relationship
-// This creates a semantic statement: "user:alice_dev AUTHORED post content"
-const postTriple = await createTripleStatement(
-  { walletClient, publicClient, address: ethMultiVaultAddress },
-  {
-    args: [userAtom.state.vaultId, 'AUTHORED', postAtom.state.vaultId]
-  }
-)
+**The Magic Moment:**
+- Sarah builds 10K followers on YourApp
+- NewSocialApp launches and **instantly** recognizes Sarah's following
+- Sarah's endorsements of blockchain content **carry verifiable weight**
+- Brands can **trustlessly** find influencers with real engagement history
+
+**Key Relationships:**
+```
+Sarah → FOLLOWS → Vitalik Buterin
+Sarah → POSTED → "DeFi is changing finance"
+TechBrand → ENDORSES → Sarah (verified engagement data)
+Sarah → INFLUENCES → Blockchain Category (measurable signal strength)
 ```
 
-### Identity Verification
+</div>
 
-```typescript
-// Example structure for identity verification
-import { createAtomFromString, createTripleStatement, getEthMultiVaultAddress } from '@0xintuition/sdk'
+### **Universal Identity & Verification**
 
-// Get the correct vault address for the current chain
-const ethMultiVaultAddress = getEthMultiVaultAddress(walletClient.chain.id)
+*"What if your credentials worked everywhere, without Big Tech?"*
 
-// Create user identity atom - represents the person being verified
-// This creates a unique identifier for the user's identity
-const userAtom = await createAtomFromString(
-  { walletClient, publicClient, address: ethMultiVaultAddress },
-  'user:alice_dev'
-)
+Create identity systems where university degrees, professional certifications, and community endorsements create a **permanent, portable reputation** that no platform can delete or manipulate.
 
-// Create verification authority atom - represents the verifying institution
-// This could be a government agency, university, or other trusted entity
-const authorityAtom = await createAtomFromString(
-  { walletClient, publicClient, address: ethMultiVaultAddress },
-  'verification:government_id'
-)
+<div style={{ 
+  backgroundColor: 'var(--ifm-color-emphasis-50)', 
+  padding: '1.5rem', 
+  borderRadius: '8px', 
+  marginBottom: '2rem',
+  border: '1px solid var(--ifm-color-emphasis-300)'
+}}>
 
-// Create verification relationship - links the authority to the user
-// This creates a semantic statement: "user:alice_dev VERIFIED_BY government_id"
-const verificationTriple = await createTripleStatement(
-  { walletClient, publicClient, address: ethMultiVaultAddress },
-  {
-    args: [userAtom.state.vaultId, 'VERIFIED_BY', authorityAtom.state.vaultId]
-  }
-)
+**The Magic Moment:**
+- MIT verifies Alex's computer science degree on Intuition
+- Alex applies for jobs on **any platform** with instant credential verification
+- Alex's GitHub contributions **automatically** link to their verified expertise
+- Employers save weeks of background checks with **cryptographic proof**
+
+**Key Relationships:**
+```
+MIT → GRANTED_DEGREE → Alex Chen → Computer Science
+Google → EMPLOYED → Alex Chen (verified work history)
+Alex Chen → CONTRIBUTED_TO → TensorFlow (verified GitHub activity)
+TechRecruiter → TRUSTS → Alex Chen (aggregated signal strength: 94%)
 ```
 
-## Use Case Categories
-
-<div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', marginBottom: '2rem' }}>
-
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }} className="docs-card">
-<h3 style={{ marginTop: 0, marginBottom: '1rem' }}>Knowledge Curation</h3>
-<p style={{ marginBottom: '1rem', color: 'var(--ifm-color-emphasis-700)' }}>
-Build decentralized knowledge bases, educational platforms, and content discovery systems. Enable expert verification and community-driven content curation.
-</p>
-<a href="/guides/use-cases/knowledge-curation" style={{ color: 'var(--ifm-color-primary)', textDecoration: 'none', fontWeight: '500' }}>
-Explore Knowledge Curation →
-</a>
 </div>
 
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }} className="docs-card">
-<h3 style={{ marginTop: 0, marginBottom: '1rem' }}>Social Platforms</h3>
-<p style={{ marginBottom: '1rem', color: 'var(--ifm-color-emphasis-700)' }}>
-Create decentralized social networks with verifiable user identities, content attribution, and reputation systems.
+## Why This Changes Everything
+
+### **Break Data Silos**
+Your reputation on Platform A instantly works on Platform B. No more starting from zero every time.
+
+### **Monetize Your Knowledge**
+Expert answers, quality content, and trusted relationships generate **real economic value** through Intuition's bonding curves.
+
+### **Build on Trust**
+Create applications that leverage **existing reputation** instead of building trust systems from scratch.
+
+### **Network Effects**
+Every app that joins Intuition makes the knowledge graph more valuable for **everyone**.
+
+## Start Building
+
+Ready to create applications that break free from data silos? Here are some starter ideas:
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem', marginTop: '2rem' }}>
+
+<div style={{ 
+  border: '1px solid var(--ifm-color-emphasis-300)', 
+  borderRadius: '8px', 
+  padding: '1.5rem', 
+  backgroundColor: 'var(--ifm-background-color)',
+  transition: 'all 0.2s ease',
+  cursor: 'pointer'
+}} className="docs-card">
+<h3 style={{ marginTop: 0, marginBottom: '1rem', display: 'flex', alignItems: 'center' }}>
+  **Knowledge Markets**
+</h3>
+<p style={{ marginBottom: '1rem', color: 'var(--ifm-color-emphasis-700)', fontSize: '0.95rem' }}>
+  Create educational platforms where expert knowledge has economic value. Students pay for verified expertise, teachers earn from their reputation.
 </p>
-<a href="/guides/use-cases/social-platforms" style={{ color: 'var(--ifm-color-primary)', textDecoration: 'none', fontWeight: '500' }}>
-Explore Social Platforms →
-</a>
+<div style={{ fontSize: '0.85rem', color: 'var(--ifm-color-emphasis-600)' }}>
+  **Core Atoms:** Experts, Courses, Certifications, Reviews
+</div>
 </div>
 
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }} className="docs-card">
-<h3 style={{ marginTop: 0, marginBottom: '1rem' }}>Trust & Reputation</h3>
-<p style={{ marginBottom: '1rem', color: 'var(--ifm-color-emphasis-700)' }}>
-Build cross-platform identity systems, credential verification, and reputation networks that work across applications.
+<div style={{ 
+  border: '1px solid var(--ifm-color-emphasis-300)', 
+  borderRadius: '8px', 
+  padding: '1.5rem', 
+  backgroundColor: 'var(--ifm-background-color)',
+  transition: 'all 0.2s ease',
+  cursor: 'pointer'
+}} className="docs-card">
+<h3 style={{ marginTop: 0, marginBottom: '1rem', display: 'flex', alignItems: 'center' }}>
+  **Professional Networks**
+</h3>
+<p style={{ marginBottom: '1rem', color: 'var(--ifm-color-emphasis-700)', fontSize: '0.95rem' }}>
+  Build LinkedIn alternatives where endorsements and work history are cryptographically verifiable and portable across platforms.
 </p>
-<a href="/guides/use-cases/trust-reputation" style={{ color: 'var(--ifm-color-primary)', textDecoration: 'none', fontWeight: '500' }}>
-Explore Trust & Reputation →
-</a>
+<div style={{ fontSize: '0.85rem', color: 'var(--ifm-color-emphasis-600)' }}>
+  **Core Atoms:** Professionals, Companies, Skills, Endorsements
+</div>
 </div>
 
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }} className="docs-card">
-<h3 style={{ marginTop: 0, marginBottom: '1rem' }}>Verification & Q&A</h3>
-<p style={{ marginBottom: '1rem', color: 'var(--ifm-color-emphasis-700)' }}>
-Create decentralized fact-checking systems, Q&A platforms, and verification networks with expert attestation.
+<div style={{ 
+  border: '1px solid var(--ifm-color-emphasis-300)', 
+  borderRadius: '8px', 
+  padding: '1.5rem', 
+  backgroundColor: 'var(--ifm-background-color)',
+  transition: 'all 0.2s ease',
+  cursor: 'pointer'
+}} className="docs-card">
+<h3 style={{ marginTop: 0, marginBottom: '1rem', display: 'flex', alignItems: 'center' }}>
+  **Fact-Checking Networks**
+</h3>
+<p style={{ marginBottom: '1rem', color: 'var(--ifm-color-emphasis-700)', fontSize: '0.95rem' }}>
+  Create decentralized verification systems where claims are validated by expert consensus and economic incentives.
 </p>
-<a href="/guides/use-cases/verification-qa" style={{ color: 'var(--ifm-color-primary)', textDecoration: 'none', fontWeight: '500' }}>
-Explore Verification & Q&A →
-</a>
+<div style={{ fontSize: '0.85rem', color: 'var(--ifm-color-emphasis-600)' }}>
+  **Core Atoms:** Claims, Validators, Evidence, Verdicts
+</div>
+</div>
+
+<div style={{ 
+  border: '1px solid var(--ifm-color-emphasis-300)', 
+  borderRadius: '8px', 
+  padding: '1.5rem', 
+  backgroundColor: 'var(--ifm-background-color)',
+  transition: 'all 0.2s ease',
+  cursor: 'pointer'
+}} className="docs-card">
+<h3 style={{ marginTop: 0, marginBottom: '1rem', display: 'flex', alignItems: 'center' }}>
+  **Gaming Reputation**
+</h3>
+<p style={{ marginBottom: '1rem', color: 'var(--ifm-color-emphasis-700)', fontSize: '0.95rem' }}>
+  Build gaming platforms where player skills, achievements, and team ratings work across every game and tournament.
+</p>
+<div style={{ fontSize: '0.85rem', color: 'var(--ifm-color-emphasis-600)' }}>
+  **Core Atoms:** Players, Games, Achievements, Teams
+</div>
+</div>
+
+<div style={{ 
+  border: '1px solid var(--ifm-color-emphasis-300)', 
+  borderRadius: '8px', 
+  padding: '1.5rem', 
+  backgroundColor: 'var(--ifm-background-color)',
+  transition: 'all 0.2s ease',
+  cursor: 'pointer'
+}} className="docs-card">
+<h3 style={{ marginTop: 0, marginBottom: '1rem', display: 'flex', alignItems: 'center' }}>
+  **Trust-Based Commerce**
+</h3>
+<p style={{ marginBottom: '1rem', color: 'var(--ifm-color-emphasis-700)', fontSize: '0.95rem' }}>
+  Create marketplaces where seller reputation, product authenticity, and buyer feedback create a trustless commerce layer.
+</p>
+<div style={{ fontSize: '0.85rem', color: 'var(--ifm-color-emphasis-600)' }}>
+  **Core Atoms:** Sellers, Products, Reviews, Transactions
+</div>
+</div>
+
+<div style={{ 
+  border: '1px solid var(--ifm-color-emphasis-300)', 
+  borderRadius: '8px', 
+  padding: '1.5rem', 
+  backgroundColor: 'var(--ifm-background-color)',
+  transition: 'all 0.2s ease',
+  cursor: 'pointer'
+}} className="docs-card">
+<h3 style={{ marginTop: 0, marginBottom: '1rem', display: 'flex', alignItems: 'center' }}>
+  **Governance Networks**
+</h3>
+<p style={{ marginBottom: '1rem', color: 'var(--ifm-color-emphasis-700)', fontSize: '0.95rem' }}>
+  Build DAO governance systems where voting power is based on verifiable expertise and stake in specific domains.
+</p>
+<div style={{ fontSize: '0.85rem', color: 'var(--ifm-color-emphasis-600)' }}>
+  **Core Atoms:** Proposals, Voters, Expertise, Decisions
+</div>
 </div>
 
 </div> 

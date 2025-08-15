@@ -648,39 +648,60 @@ console.log('Created atom:', atom.state.vaultId);`);
 
   const loadExample = (example: string) => {
     const examples = {
-      'create-defi-atom': `// Create an atom for a DeFi protocol (requires wallet)
+      'create-defi-atom': `// Create an atom for AI Agent (the hottest trend!)
 const atom = await createAtomFromString(
   { walletClient, publicClient, address: ethMultiVaultAddress },
-  'Uniswap Protocol'
+  'GPT-4o Advanced AI Agent'
 );
-console.log('✅ DeFi Protocol atom created!');
+
+// AI AGENT REGISTERED! Now part of the global AI reputation network
+console.log('AI Agent:', 'GPT-4o Advanced AI Agent');
 console.log('Vault ID:', atom.state.vaultId);
-console.log('View on Base Sepolia:', atom.explorerUrl);
-console.log('IPFS URI:', atom.uri);`,
+console.log('Network:', atom.network);
+console.log('Status: LIVE on universal knowledge graph');
+console.log('');
+console.log('What happens next:');
+console.log('• Developers can rate this AI agent\'s performance');
+console.log('• Build trust: "GPT-4o → EXCELS_AT → Code Generation"');
+console.log('• Early reputation builders earn as AI adoption explodes');
+console.log('• This AI\'s reputation works across ALL platforms forever');
+console.log('');
+console.log('Imagine: AI agents with portable, verifiable track records!');`,
 
       'read-atom': `// Read existing atom data (no wallet required)
 const atomData = await getAtom('1001');
-console.log('📄 Atom Details:');
-console.log('Name:', atomData.data.name);
-console.log('Type:', atomData.data.type);
-console.log('Description:', atomData.data.description);
-console.log('💰 Vault Stats:');
-console.log('Total Shares:', atomData.vault.totalShares);
-console.log('Total Assets:', atomData.vault.totalAssets);
-console.log('📊 Signals:', atomData.signalCount);`,
+
+// VIRAL CREATOR DISCOVERED! Here's their cross-platform reputation
+console.log('Creator:', atomData.data.name);
+console.log('Category:', atomData.data.type);
+console.log('Known for:', atomData.data.description);
+console.log('');
+console.log('Creator Economy Stats:');
+console.log('• Total Value Locked:', (BigInt(atomData.vault.totalShares) / BigInt(10**18)).toString() + ' ETH');
+console.log('• Cross-Platform Signals:', atomData.signalCount);
+console.log('• Reputation Status:', atomData.signalCount > 300 ? 'INFLUENCER TIER' : 'RISING STAR');
+console.log('');
+console.log('POWER MOVE: This reputation works on YouTube, TikTok, X, LinkedIn...');
+console.log('No more rebuilding followers from zero on each platform!');
+console.log('Brands can verify real influence with cryptographic proof!');`,
 
       'read-triple': `// Read triple statement data (no wallet required)
 const tripleData = await getTriple('2001');
-console.log('🔗 Triple Statement:');
-console.log(tripleData.subject.label, '→', tripleData.predicate.label, '→', tripleData.object.label);
+
+// VIRAL RELATIONSHIP! Market consensus on who's really influential
+console.log('Hot Take:', tripleData.subject.label + ' → ' + tripleData.predicate.label + ' → ' + tripleData.object.label);
 console.log('');
-console.log('📊 Community Consensus:');
-console.log('Confidence Level:', tripleData.confidence);
-console.log('Total Signals:', tripleData.signalCount);
+console.log('Community Verdict:');
+console.log('• Market Confidence:', tripleData.confidence);
+console.log('• Total Validators:', tripleData.signalCount);
+console.log('• Reputation Status:', parseFloat(tripleData.confidence) > 70 ? 'MARKET CONSENSUS' : 'CONTESTED CLAIM');
 console.log('');
-console.log('💰 Vault Distribution:');
-console.log('Positive Vault:', tripleData.positiveVault.totalAssets);
-console.log('Negative Vault:', tripleData.negativeVault.totalAssets);`,
+console.log('Real Money at Stake:');
+console.log('• Believers bet:', (BigInt(tripleData.positiveVault.totalAssets) / BigInt(10**18)).toString() + ' ETH');
+console.log('• Doubters bet:', (BigInt(tripleData.negativeVault.totalAssets) / BigInt(10**18)).toString() + ' ETH');
+console.log('');
+console.log('BREAKTHROUGH: Truth has economic value in this system!');
+console.log('Early believers in accurate claims get rich!');`,
 
       'create-triple': `// Create a relationship statement (requires wallet)
 const triple = await createTripleStatement(
@@ -691,19 +712,36 @@ const triple = await createTripleStatement(
     objectId: '3001' // Ethereum
   }
 );
-console.log('✅ Triple statement created!');
+
+// RELATIONSHIP CREATED! You've contributed to the global knowledge graph
+console.log('New Relationship: Vitalik Buterin → is founder of → Ethereum');
 console.log('Statement ID:', triple.state.vaultId);
-console.log('Transaction:', triple.transactionHash);
-console.log('Network:', triple.network);`,
+console.log('Network:', triple.network);
+console.log('Gas Used:', triple.gasUsed.toLocaleString());
+console.log('');
+console.log('Economic Impact:');
+console.log('• You now have economic stake in this relationship');
+console.log('• Others can signal agreement/disagreement');
+console.log('• Early contributors earn more as consensus builds');
+console.log('');
+console.log('View on Explorer:', triple.explorerUrl);`,
 
       'check-vault': `// Check MultiVault contract address
 const vaultAddress = getEthMultiVaultAddress(84532); // Base Sepolia
+
+// 🏦 CONNECTED! Here's your gateway to the Intuition knowledge graph
 console.log('🏦 EthMultiVault Contract:');
-console.log('Address:', vaultAddress);
-console.log('Network: Base Sepolia (Chain ID: 84532)');
-console.log('Explorer: https://sepolia.basescan.org/address/' + vaultAddress);
+console.log('📍 Address:', vaultAddress);
+console.log('🌐 Network: Base Sepolia (Chain ID: 84532)');
+console.log('🔍 Explorer: https://sepolia.basescan.org/address/' + vaultAddress);
 console.log('');
-console.log('This contract manages all atom and triple vaults on Intuition.');`,
+console.log('⚡ What this contract does:');
+console.log('• Manages ALL atom & triple vaults on Intuition');
+console.log('• Handles deposits, withdrawals & economic incentives');
+console.log('• Powers the universal knowledge graph');
+console.log('• Enables cross-platform reputation & trust');
+console.log('');
+console.log('🚀 Ready to build the future of trust!');`,
 
       'product-review': `// Product review example (requires wallet)
 const productAtom = await createAtomFromString(
@@ -967,7 +1005,7 @@ console.log('Created post triple:', postTriple.state.vaultId);`
           )}
 
           {/* Console Output (collapsible) */}
-          {result.data && (
+            {result.data && (
             <details style={{ marginTop: result.parsedData ? '0' : '1rem' }}>
               <summary style={{
                 padding: '0.75rem 1rem',
@@ -992,7 +1030,7 @@ console.log('Created post triple:', postTriple.state.vaultId);`
                 {result.data}
               </pre>
             </details>
-          )}
+            )}
         </div>
       )}
 

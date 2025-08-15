@@ -19,15 +19,7 @@ module.exports = {
         'guides/quickstart/community-built-kits',
       ],
     },
-    {
-      type: 'category',
-      label: 'Use Cases',
-      items: [
-        'guides/use-cases/index',
-        'guides/use-cases/decentralized-stack-overflow',
-        'guides/use-cases/decentralized-social-media'
-      ],
-    },
+    'guides/use-cases/index',
     {
       type: 'category',
       label: 'Developer Tools',
