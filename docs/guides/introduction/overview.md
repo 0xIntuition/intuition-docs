@@ -18,23 +18,23 @@ Welcome to the Intuition documentation — your gateway to building with the wor
 
 Intuition's vision is to create a future where trust online is programmable, portable, and permissionless. We believe in a new digital infrastructure where:
 
-<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem', marginBottom: '2rem' }}>
+<div style={{ display: 'flex', flexDirection: 'row', gap: '1.5rem', marginBottom: '2rem', flexWrap: 'wrap' }}>
 
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)', flex: '1', minWidth: '300px' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>Cross-Platform Knowledge</h4>
 <p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
 People and organizations can prove and discover knowledge across apps and ecosystems
 </p>
 </div>
 
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)', flex: '1', minWidth: '300px' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>Verifiable Claims</h4>
 <p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
 Social and factual claims are verifiable and incentive-aligned
 </p>
 </div>
 
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)', flex: '1', minWidth: '300px' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>Developer Empowerment</h4>
 <p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
 Developers have the tools to build collaborative, data-rich applications

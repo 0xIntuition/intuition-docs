@@ -147,7 +147,7 @@ const newDataPoint = await client.createDataPoint({
         </p>
         <ul className="list-disc pl-6 mb-6">
           <li className="mb-2">Check our <a href="/docs/api-reference" className="text-primary-500 hover:underline">API Reference</a></li>
-          <li className="mb-2">Visit our <a href="https://github.com/intuition/graphql-sdk" className="text-primary-500 hover:underline">GitHub repository</a></li>
+          <li className="mb-2">Visit our <a href="https://github.com/0xIntuition/intuition-ts/tree/main/packages/graphql" className="text-primary-500 hover:underline">GitHub repository</a></li>
           <li className="mb-2">Join our <a href="/community" className="text-primary-500 hover:underline">Discord community</a></li>
         </ul>
       </div>
