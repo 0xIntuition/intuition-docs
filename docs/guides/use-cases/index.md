@@ -128,24 +128,17 @@ Every app that joins Intuition makes the knowledge graph more valuable for **eve
 
 Ready to create applications that break free from data silos? Here are some starter ideas:
 
-<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem', marginTop: '2rem' }}>
+<div className="uniform-card-grid">
 
-<div style={{ 
-  border: '1px solid var(--ifm-color-emphasis-300)', 
-  borderRadius: '8px', 
-  padding: '1.5rem', 
-  backgroundColor: 'var(--ifm-background-color)',
-  transition: 'all 0.2s ease',
-  cursor: 'pointer'
-}} className="docs-card">
-<h3 style={{ marginTop: 0, marginBottom: '1rem', display: 'flex', alignItems: 'center' }}>
-  **Knowledge Markets**
+<div className="uniform-card">
+<h3 className="uniform-card-title">
+  Knowledge Markets
 </h3>
-<p style={{ marginBottom: '1rem', color: 'var(--ifm-color-emphasis-700)', fontSize: '0.95rem' }}>
+<p className="uniform-card-content" style={{ marginBottom: '1.5rem' }}>
   Create educational platforms where expert knowledge has economic value. Students pay for verified expertise, teachers earn from their reputation.
 </p>
-<div style={{ fontSize: '0.85rem', color: 'var(--ifm-color-emphasis-600)' }}>
-  **Core Atoms:** Experts, Courses, Certifications, Reviews
+<div style={{ fontSize: '0.9rem', color: 'var(--ifm-color-emphasis-600)', fontWeight: '500' }}>
+  Core Atoms: Experts, Courses, Certifications, Reviews
 </div>
 </div>
 

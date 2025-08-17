@@ -496,4 +496,200 @@ html[data-theme='dark'] .faq-button:hover {
   }
 }
 
+/* Hub card hover effects */
+.hub-card:hover div {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+  border-color: var(--ifm-color-primary-light) !important;
+}
+
+.hub-card {
+  transition: all 0.3s ease;
+}
+
+/* Enhanced gradient backgrounds */
+.hub-gradient-purple {
+  background: linear-gradient(135deg, #7C3AED, #A855F7);
+}
+
+.hub-gradient-blue {
+  background: linear-gradient(135deg, #3B82F6, #1D4ED8);
+}
+
+.hub-gradient-green {
+  background: linear-gradient(135deg, #10B981, #047857);
+}
+
+.hub-gradient-orange {
+  background: linear-gradient(135deg, #F59E0B, #D97706);
+}
+
+.hub-gradient-red {
+  background: linear-gradient(135deg, #EF4444, #DC2626);
+}
+
+.hub-gradient-indigo {
+  background: linear-gradient(135deg, #6366F1, #4F46E5);
+}
+
+.hub-gradient-pink {
+  background: linear-gradient(135deg, #EC4899, #BE185D);
+}
+
+.hub-gradient-cyan {
+  background: linear-gradient(135deg, #06B6D4, #0891B2);
+}
+
+/* Hero section animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hub-hero {
+  animation: fadeInUp 1s ease-out;
+}
+
+/* Card stagger animation */
+.hub-card:nth-child(1) { animation-delay: 0.1s; }
+.hub-card:nth-child(2) { animation-delay: 0.2s; }
+.hub-card:nth-child(3) { animation-delay: 0.3s; }
+.hub-card:nth-child(4) { animation-delay: 0.4s; }
+.hub-card:nth-child(5) { animation-delay: 0.5s; }
+.hub-card:nth-child(6) { animation-delay: 0.6s; }
+
+.hub-card {
+  animation: fadeInUp 0.6s ease-out both;
+}
+
+/* Uniform card styles for consistent appearance */
+.uniform-card {
+  border: 1px solid var(--ifm-color-emphasis-200);
+  borderRadius: 16px;
+  padding: 2rem;
+  backgroundColor: var(--ifm-background-color);
+  boxShadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  height: 100%;
+  display: flex;
+  flexDirection: column;
+  transition: all 0.3s ease;
+}
+
+.uniform-card:hover {
+  transform: translateY(-2px);
+  boxShadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  borderColor: var(--ifm-color-primary-light);
+}
+
+.uniform-card-grid {
+  display: grid;
+  gridTemplateColumns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+  marginBottom: 3rem;
+}
+
+.uniform-card-grid-small {
+  display: grid;
+  gridTemplateColumns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  marginBottom: 3rem;
+}
+
+.uniform-card-title {
+  marginTop: 0;
+  marginBottom: 1.5rem;
+  color: var(--ifm-color-primary);
+  fontSize: 1.25rem;
+  fontWeight: 600;
+}
+
+.uniform-card-content {
+  fontSize: 0.95rem;
+  lineHeight: 1.6;
+  flexGrow: 1;
+}
+
+.uniform-card-list {
+  paddingLeft: 1.5rem;
+  lineHeight: 1.8;
+  margin: 0;
+  fontSize: 0.95rem;
+}
+
+/* Clean section spacing */
+.clean-section {
+  marginBottom: 4rem;
+}
+
+.clean-section:last-child {
+  marginBottom: 2rem;
+}
+
+/* Typography improvements */
+.clean-heading {
+  fontSize: 2rem;
+  fontWeight: 700;
+  marginBottom: 1rem;
+  color: var(--ifm-color-emphasis-900);
+}
+
+.clean-subheading {
+  fontSize: 1.5rem;
+  fontWeight: 600;
+  marginBottom: 1.5rem;
+  color: var(--ifm-color-emphasis-800);
+}
+
+/* Minimal, clean styling for better readability */
+.minimal-container {
+  maxWidth: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* Custom layout for hub "What's Available" section */
+.hub-layout-2-1 {
+  display: grid;
+  gridTemplateColumns: repeat(2, 1fr);
+  gap: 2rem;
+  marginBottom: 2rem;
+}
+
+.hub-layout-centered {
+  display: grid;
+  gridTemplateColumns: 1fr;
+  gap: 2rem;
+  marginBottom: 3rem;
+  maxWidth: 50%;
+  margin: 0 auto 3rem auto;
+}
+
+@media (max-width: 768px) {
+  .uniform-card-grid,
+  .uniform-card-grid-small {
+    gridTemplateColumns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .uniform-card {
+    padding: 1.5rem;
+  }
+  
+  /* Mobile responsive for hub layout */
+  .hub-layout-2-1 {
+    gridTemplateColumns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .hub-layout-centered {
+    maxWidth: 100%;
+    margin: 0 0 3rem 0;
+  }
+}
 

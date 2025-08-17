@@ -729,19 +729,19 @@ console.log('View on Explorer:', triple.explorerUrl);`,
       'check-vault': `// Check MultiVault contract address
 const vaultAddress = getEthMultiVaultAddress(84532); // Base Sepolia
 
-// 🏦 CONNECTED! Here's your gateway to the Intuition knowledge graph
-console.log('🏦 EthMultiVault Contract:');
-console.log('📍 Address:', vaultAddress);
-console.log('🌐 Network: Base Sepolia (Chain ID: 84532)');
-console.log('🔍 Explorer: https://sepolia.basescan.org/address/' + vaultAddress);
+// CONNECTED! Here's your gateway to the Intuition knowledge graph
+console.log('EthMultiVault Contract:');
+console.log('Address:', vaultAddress);
+console.log('Network: Base Sepolia (Chain ID: 84532)');
+console.log('Explorer: https://sepolia.basescan.org/address/' + vaultAddress);
 console.log('');
-console.log('⚡ What this contract does:');
+console.log('What this contract does:');
 console.log('• Manages ALL atom & triple vaults on Intuition');
 console.log('• Handles deposits, withdrawals & economic incentives');
 console.log('• Powers the universal knowledge graph');
 console.log('• Enables cross-platform reputation & trust');
 console.log('');
-console.log('🚀 Ready to build the future of trust!');`,
+console.log('Ready to build the future of trust!');`,
 
       'product-review': `// Product review example (requires wallet)
 const productAtom = await createAtomFromString(

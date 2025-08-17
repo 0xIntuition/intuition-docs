@@ -32,6 +32,9 @@ module.exports = {
         'guides/developer-tools/audit-reports',
         'guides/developer-tools/graphql-api',
         'guides/developer-tools/sdks',
+        'guides/hub/data-populator',
+        'guides/hub/metamask-snap',
+        'guides/hub/farcaster-frames',
       ],
     },
     {
@@ -48,6 +51,18 @@ module.exports = {
         'guides/run-node/index',
         'guides/run-node/run-an-intuition-node',
         'guides/run-node/intuition-rs'
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Intuition Hub',
+      items: [
+        'guides/hub/index',
+        'guides/hub/bridge',
+        'guides/hub/portal',
+        'guides/hub/explorer',
+        'guides/hub/rpc',
+        'guides/hub/browser-extension',
       ],
     },
     {
@@ -74,8 +89,10 @@ module.exports = {
       type: 'category',
       label: 'Resources',
       items: [
+        'guides/resources/index',
         'guides/resources/key-terms',
         'guides/resources/faq',
+        'guides/resources/network-health',
         'guides/resources/community-and-support',
         'guides/resources/utilities',
         'guides/resources/audits',
