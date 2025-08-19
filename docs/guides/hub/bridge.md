@@ -4,57 +4,21 @@ description: Bridge assets between Ethereum testnets and Intuition testnet
 sidebar_position: 3
 ---
 
-<div style={{
-  background: 'linear-gradient(135deg, #F59E0B 0%, #D97706 100%)',
-  borderRadius: '16px',
-  padding: '3rem 2rem',
-  marginBottom: '3rem',
-  color: 'white',
-  textAlign: 'center'
-}}>
-  <div style={{ 
-    display: 'flex', 
-    alignItems: 'center', 
-    justifyContent: 'center',
-    marginBottom: '1rem'
-  }}>
-    <div style={{ 
-      width: '80px', 
-      height: '80px', 
-      borderRadius: '20px', 
-      backgroundColor: 'rgba(255, 255, 255, 0.2)', 
-      display: 'flex', 
-      alignItems: 'center', 
-      justifyContent: 'center',
-      marginRight: '1.5rem'
-    }}>
-      <svg width="40" height="40" viewBox="0 0 24 24" fill="white">
-        <path d="M6 6v2h8.59L5 17.59 6.41 19 16 9.41V18h2V6z"/>
-      </svg>
-    </div>
-    <h1 style={{ 
-      fontSize: '3rem', 
-      fontWeight: '700', 
-      margin: 0,
-      textShadow: '0 2px 4px rgba(0,0,0,0.3)'
-    }}>
-      Bridge
-    </h1>
-  </div>
-  <p style={{ 
-    fontSize: '1.25rem', 
-    opacity: '0.9',
-    maxWidth: '700px',
-    margin: '0 auto',
-    lineHeight: '1.6'
-  }}>
-    Secure cross-chain transfers between Ethereum testnets and the Intuition testnet. Built for testing and development, move assets safely between networks during the development process.
-  </p>
+# Bridge
+
+<div className="bridge-intro">
+Secure cross-chain transfers between Ethereum testnets and the Intuition testnet. Built for testing and development, move assets safely between networks during the development process.
 </div>
 
-## Quick Access
-
-Access the Bridge directly at: [https://testnet.bridge.intuition.systems/](https://testnet.bridge.intuition.systems/)
+<div className="bridge-access-card">
+<div className="bridge-access-content">
+<h3>Access Bridge</h3>
+<p>Start bridging assets between networks</p>
+<a href="https://testnet.bridge.intuition.systems/" target="_blank" rel="noopener noreferrer" className="bridge-access-button">
+Open Bridge →
+</a>
+</div>
+</div>
 
 ## Overview
 
@@ -77,27 +41,59 @@ The bridge currently supports transfers from:
 
 ## How to Use the Bridge
 
-### **Step 1: Connect Your Wallet**
-1. Visit [https://testnet.bridge.intuition.systems/](https://testnet.bridge.intuition.systems/)
-2. Connect your Web3 wallet (MetaMask recommended)
-3. Ensure you're connected to the source network
+<div className="bridge-steps">
 
-### **Step 2: Select Transfer Details**
-1. Choose the source network (e.g., Ethereum Sepolia)
-2. Select the destination network (Intuition Testnet)
-3. Choose the asset you want to bridge
-4. Enter the amount to transfer
+<div className="bridge-step">
+<div className="bridge-step-number">1</div>
+<div className="bridge-step-content">
+<h3>Connect Your Wallet</h3>
+<ul className="green-checklist">
+<li>Visit the bridge interface</li>
+<li>Connect your Web3 wallet (MetaMask recommended)</li>
+<li>Ensure you're connected to the source network</li>
+</ul>
+</div>
+</div>
 
-### **Step 3: Initiate Transfer**
-1. Review transfer details and fees
-2. Confirm the transaction in your wallet
-3. Wait for transaction confirmation on source network
-4. Monitor bridge status for completion
+<div className="bridge-step">
+<div className="bridge-step-number">2</div>
+<div className="bridge-step-content">
+<h3>Select Transfer Details</h3>
+<ul className="green-checklist">
+<li>Choose the source network (e.g., Ethereum Sepolia)</li>
+<li>Select the destination network (Intuition Testnet)</li>
+<li>Choose the asset you want to bridge</li>
+<li>Enter the amount to transfer</li>
+</ul>
+</div>
+</div>
 
-### **Step 4: Claim on Destination**
-1. Switch your wallet to Intuition Testnet
-2. Complete the claiming process if required
-3. Verify assets have arrived in your wallet
+<div className="bridge-step">
+<div className="bridge-step-number">3</div>
+<div className="bridge-step-content">
+<h3>Initiate Transfer</h3>
+<ul className="green-checklist">
+<li>Review transfer details and fees</li>
+<li>Confirm the transaction in your wallet</li>
+<li>Wait for transaction confirmation on source network</li>
+<li>Monitor bridge status for completion</li>
+</ul>
+</div>
+</div>
+
+<div className="bridge-step">
+<div className="bridge-step-number">4</div>
+<div className="bridge-step-content">
+<h3>Claim on Destination</h3>
+<ul className="green-checklist">
+<li>Switch your wallet to Intuition Testnet</li>
+<li>Complete the claiming process if required</li>
+<li>Verify assets have arrived in your wallet</li>
+</ul>
+</div>
+</div>
+
+</div>
 
 ## Security Features
 
