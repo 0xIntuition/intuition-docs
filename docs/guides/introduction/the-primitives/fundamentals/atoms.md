@@ -57,19 +57,19 @@ To solve for these requirements, the concepts of Atoms emerge as the foundation 
 <div style={{ backgroundColor: 'var(--ifm-color-emphasis-50)', padding: '1.5rem', borderRadius: '8px', marginTop: '2rem', marginBottom: '2rem' }}>
 <h3 style={{ marginTop: 0, marginBottom: '1rem' }}>Key Benefits of Atoms</h3>
 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1rem' }}>
-<div>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '6px', padding: '1rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.5rem' }}>Universal Reference</h4>
 <p style={{ margin: 0, fontSize: '0.9rem' }}>
 Start to reference data universally across the web.
 </p>
 </div>
-<div>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '6px', padding: '1rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.5rem' }}>User Equity</h4>
 <p style={{ margin: 0, fontSize: '0.9rem' }}>
 Grant users equity in data as they signal its relevancy through usage.
 </p>
 </div>
-<div>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '6px', padding: '1rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.5rem' }}>Active Participation</h4>
 <p style={{ margin: 0, fontSize: '0.9rem' }}>
 Reward users for signaling the relevancy of data, encouraging active participation.

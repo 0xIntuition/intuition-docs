@@ -1,0 +1,153 @@
+---
+title: Network Health
+description: Real-time network health monitoring for the Intuition protocol
+---
+
+# Network Health
+
+The Intuition Network Health page provides real-time monitoring of all Intuition testnet services and infrastructure. This status page tracks uptime, performance metrics, and incident reports to ensure transparency for developers building on the protocol.
+
+## Access Network Status
+
+<a href="https://testnet.uptime.intuition.systems/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+<div className="uniform-card clickable-card" style={{
+  backgroundColor: 'var(--ifm-color-emphasis-50)',
+  border: '2px solid var(--ifm-color-primary)',
+  borderRadius: '16px',
+  padding: '2rem',
+  marginBottom: '2rem',
+  textAlign: 'center'
+}}>
+  <div style={{
+    width: '80px',
+    height: '80px',
+    borderRadius: '20px',
+    background: 'linear-gradient(135deg, var(--ifm-color-primary), var(--ifm-color-primary-dark))',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: '0 auto 1.5rem auto',
+    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)'
+  }}>
+    <svg width="32" height="32" viewBox="0 0 24 24" fill="white">
+      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+    </svg>
+  </div>
+  <h3 style={{
+    fontSize: '1.5rem',
+    fontWeight: '600',
+    marginBottom: '1rem',
+    color: 'var(--ifm-color-primary-dark)'
+  }}>
+    Live Network Status
+  </h3>
+  <p style={{
+    fontSize: '1.1rem',
+    marginBottom: '1.5rem',
+    color: 'var(--ifm-color-emphasis-700)',
+    lineHeight: '1.6'
+  }}>
+    View real-time status, uptime metrics, and incident reports for all Intuition testnet services
+  </p>
+  <div style={{
+    display: 'flex',
+    justifyContent: 'center',
+    marginTop: '1rem'
+  }}>
+    <div style={{
+      backgroundColor: 'var(--ifm-color-primary)',
+      color: 'var(--ifm-color-primary-contrast)',
+      padding: '0.5rem 1.25rem',
+      borderRadius: '6px',
+      fontWeight: '500',
+      fontSize: '0.9rem',
+      transition: 'all 0.2s ease'
+    }}>
+      Check Status
+    </div>
+  </div>
+</div>
+</a>
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem', marginBottom: '2rem' }}>
+
+<div>
+## What It Monitors
+
+The status page tracks critical Intuition infrastructure components:
+
+<div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginTop: '1rem' }}>
+<div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+<div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: 'var(--ifm-color-success)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+<svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"/></svg>
+</div>
+<span style={{ fontSize: '1rem', fontWeight: '500' }}><strong>Rollup RPC Healthcheck</strong>: Core network connectivity and availability</span>
+</div>
+
+<div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+<div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: 'var(--ifm-color-success)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+<svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"/></svg>
+</div>
+<span style={{ fontSize: '1rem', fontWeight: '500' }}><strong>Service Uptime</strong>: Real-time uptime percentages for all services</span>
+</div>
+
+<div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+<div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: 'var(--ifm-color-success)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+<svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"/></svg>
+</div>
+<span style={{ fontSize: '1rem', fontWeight: '500' }}><strong>Incident Tracking</strong>: Active issues and resolution progress</span>
+</div>
+
+<div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+<div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: 'var(--ifm-color-success)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+<svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"/></svg>
+</div>
+<span style={{ fontSize: '1rem', fontWeight: '500' }}><strong>Performance Metrics</strong>: Response times and network health indicators</span>
+</div>
+</div>
+</div>
+
+<div>
+## Features
+
+<div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginTop: '1rem' }}>
+<div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+<div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: 'var(--ifm-color-success)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+<svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"/></svg>
+</div>
+<span style={{ fontSize: '1rem', fontWeight: '500' }}><strong>Real-time Status</strong>: Current operational status of all services</span>
+</div>
+
+<div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+<div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: 'var(--ifm-color-success)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+<svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"/></svg>
+</div>
+<span style={{ fontSize: '1rem', fontWeight: '500' }}><strong>Historical Data</strong>: Uptime statistics and performance trends</span>
+</div>
+
+<div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+<div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: 'var(--ifm-color-success)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+<svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"/></svg>
+</div>
+<span style={{ fontSize: '1rem', fontWeight: '500' }}><strong>Incident Updates</strong>: Live updates during service disruptions</span>
+</div>
+
+<div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+<div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: 'var(--ifm-color-success)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+<svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"/></svg>
+</div>
+<span style={{ fontSize: '1rem', fontWeight: '500' }}><strong>Notifications</strong>: Subscribe to email or SMS alerts for status changes</span>
+</div>
+
+<div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+<div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: 'var(--ifm-color-success)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+<svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"/></svg>
+</div>
+<span style={{ fontSize: '1rem', fontWeight: '500' }}><strong>API Access</strong>: Programmatic access to status information</span>
+</div>
+</div>
+</div>
+
+</div>
+
+Visit [https://testnet.uptime.intuition.systems/](https://testnet.uptime.intuition.systems/) to check current network health and subscribe to status updates.

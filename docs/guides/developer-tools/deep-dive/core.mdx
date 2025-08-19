@@ -1,0 +1,219 @@
+---
+id: core
+title: Core Backend Systems
+sidebar_label: Core Backend Systems
+sidebar_position: 2
+description: Running Intuition's backend systems with intuition-rs
+---
+
+# Core Backend Systems
+
+This section covers running Intuition's off-chain backend systems using the Rust implementation (`intuition-rs`).
+
+## Overview
+
+The `intuition-rs` workspace contains the Rust implementation of Intuition's off-chain backend systems. This implementation provides high performance, memory safety, and reliability for running Intuition nodes and backend services.
+
+## Workspace Components
+
+The intuition-rs workspace contains the following crates:
+
+- **`cli`**: Contains the code to run the intuition TUI client
+- **`consumer`**: Contains the code for RAW, DECODED and RESOLVER consumers
+- **`consumer-api`**: An API to re-fetch Atoms
+- **`envio-indexer`**: Contains the code to index the base-sepolia events of our contract using envio
+- **`hasura`**: Contains the migrations and hasura config
+- **`histoflux`**: Streams historical/live events from the database to an SQS queue
+- **`image-guard`**: Contains the code to guard the images
+- **`models`**: Contains the domain models for the intuition data as basic traits for the data
+- **`rpc-proxy`**: Contains the code to proxy the RPC calls to their respective networks, caching the results of the `eth_call` method for the `currentSharePrice` function of the `EthMultiVault` contract
+- **`substreams-sink`**: Contains the code to consume the Substreams events
+
+## Prerequisites
+
+### Required Tools
+
+- **cargo make**: Install with `cargo install --force cargo-make`
+- **hasura-cli**: Required for Hasura operations
+- **AWS Configuration**: For SQS queues, configure AWS in `~/.aws/config`:
+
+```
+[default]
+aws_access_key_id = YOUR_ACCESS_KEY_ID
+aws_secret_access_key = YOUR_SECRET_ACCESS_KEY
+```
+
+### Environment Variables
+
+Create a `.env` file from `.env.sample` with the following required variables:
+
+- `PINATA_GATEWAY_TOKEN`: Token from Pinata
+- `PINATA_API_JWT`: JWT token from Pinata
+- `RPC_URL_MAINNET`: Alchemy RPC URL for mainnet
+- `RPC_URL_BASE`: Alchemy RPC URL for Base
+- `AWS_ACCESS_KEY_ID`: AWS access key
+- `AWS_SECRET_ACCESS_KEY`: AWS secret key
+- `HF_TOKEN`: Hugging Face token
+- `SUBSTREAMS_API_TOKEN`: Substreams API token
+- `HYPERSYNC_TOKEN`: Envio token
+
+## Running the Local Pipeline
+
+### Using Published Docker Images
+
+```bash
+./start.sh
+```
+
+To verify latest data using the CLI tool:
+
+```bash
+./cli.sh
+```
+
+To stop all services:
+
+```bash
+./stop.sh
+```
+
+To restart all services and clear attached volumes:
+
+```bash
+./restart.sh
+```
+
+### Building Docker Images from Source
+
+```bash
+cp .env.sample .env
+source .env
+cargo make start-docker-and-migrate
+```
+
+### Re-running Migrations
+
+```bash
+docker compose down -v
+docker compose up -d --force-recreate
+cargo make migrate-database
+```
+
+## Manual Execution
+
+### Environment Setup
+
+```bash
+cp .env.sample .env
+source .env
+```
+
+### Running Consumers
+
+**Raw Consumer (Remote SQS Queue):**
+```bash
+RUST_LOG=info cargo run --bin consumer --mode raw
+# or
+cargo make raw-consumer
+```
+
+**Decoded Consumer (Remote SQS Queue):**
+```bash
+RUST_LOG=info cargo run --bin consumer --mode decoded
+# or
+cargo make decoded-consumer
+```
+
+**Raw Consumer (Local SQS Queue):**
+```bash
+RUST_LOG=info cargo run --bin consumer --features local --mode raw --local
+# or
+cargo make raw-consumer-local
+```
+
+**Decoded Consumer (Local SQS Queue):**
+```bash
+RUST_LOG=info cargo run --bin consumer --features local --mode decoded --local
+# or
+cargo make decoded-consumer-local
+```
+
+## Development Commands
+
+### Testing
+
+```bash
+cargo nextest run
+```
+
+### Code Quality
+
+```bash
+cargo make clippy  # Run clippy
+cargo make fmt     # Run rustfmt
+```
+
+## Kubernetes Deployment (macOS)
+
+### Prerequisites
+
+```bash
+brew install minikube
+brew install k9s
+```
+
+### Setup
+
+1. **Create Secrets:**
+```bash
+kubectl create secret generic secrets --from-env-file=.env
+```
+
+2. **Start Minikube:**
+```bash
+minikube start
+```
+
+3. **Apply Kubernetes Manifests:**
+```bash
+kubectl apply -k kube_files/
+```
+
+### Management
+
+**Restart Services:**
+```bash
+kubectl rollout restart deployment
+# or
+kubectl delete deployment --all
+```
+
+## Local Ethereum Node Integration
+
+Add the following to your `.env` file:
+
+```
+BASE_MAINNET_RPC_URL=http://geth:8545
+BASE_SEPOLIA_RPC_URL=http://geth:8545
+INTUITION_CONTRACT_ADDRESS=0x04056c43d0498b22f7a0c60d4c3584fb5fa881cc
+START_BLOCK=0
+```
+
+Create local data:
+
+```bash
+cd integration-tests
+npm install
+npm run create-predicates
+```
+
+## Important Notes
+
+- All crates are under intensive development and code is subject to change
+- For indexing base events, uncomment the `substreams-sink` crate and comment the `envio-indexer` crate in `docker-compose.yml`
+- Use feature flags to differentiate between local and remote execution environments
+- Set appropriate environment variables for queue URLs (`RAW_CONSUMER_QUEUE_URL` and `DECODED_CONSUMER_QUEUE_URL`) to switch between local and remote execution
+
+## Available Commands
+
+Check all available commands in `.cargo/makefiles` for the complete list of convenience commands. 

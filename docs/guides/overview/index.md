@@ -1,1 +1,0 @@
-<h3 style={{ marginTop: 0, marginBottom: '1rem' }}>The Economics</h3> 

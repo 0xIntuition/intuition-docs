@@ -1,4 +1,4 @@
-/* Stoplight Elements tokens */
+
 
 :root {
   --font-ui: var(--ifm-font-family-base) !important;
@@ -52,7 +52,7 @@ html[data-theme='dark']
   @apply !text-primary-100;
 }
 
-/* Hides title in elements */
+
 .sl-elements-api > div:first-child > div:first-child > div:first-child {
   @apply hidden;
 }
@@ -74,7 +74,7 @@ html[data-theme='dark'] .elements-container :is(.token.boolean, .token.number) {
   padding: 0 12px !important;
 }
 
-/* Makes the API documentation take up entire space of `.main-wrapper` */
+
 .api-reference.main-wrapper {
   flex: 1 0 0;
 }

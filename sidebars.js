@@ -1,14 +1,12 @@
 module.exports = {
   docs: [
-    'intro',
     {
       type: 'category',
-      label: 'Overview',
+      label: 'Welcome',
       items: [
-        'guides/overview/index',
-        'guides/overview/why-intuition',
-        'guides/overview/the-economics',
-        'guides/overview/key-terms',
+        'guides/introduction/why-intuition',
+        'guides/introduction/the-economics',
+        'guides/introduction/the-primitives',
       ],
     },
     {
@@ -21,77 +19,29 @@ module.exports = {
         'guides/quickstart/community-built-kits',
       ],
     },
-    {
-      type: 'category',
-      label: 'Use Cases',
-      items: [
-        'guides/use-cases/index',
-        'guides/use-cases/decentralized-stack-overflow',
-        'guides/use-cases/decentralized-social-media'
-      ],
-    },
+    'guides/use-cases/index',
     {
       type: 'category',
       label: 'Developer Tools',
       items: [
         'guides/developer-tools/deep-dive',
-        {
-          type: 'category',
-          label: 'Architecture',
-          items: [
-            'guides/developer-tools/contracts/contract-architecture',
-          ],
-        },
-        {
-          type: 'category',
-          label: 'Primitives',
-          items: [
-            {
-              type: 'category',
-              label: 'Fundamentals',
-              items: [
-                'guides/developer-tools/deep-dive/primitives/fundamentals/atoms',
-                'guides/developer-tools/deep-dive/primitives/fundamentals/triples',
-                'guides/developer-tools/deep-dive/primitives/fundamentals/signal',
-              ],
-            },
-            'guides/developer-tools/deep-dive/primitives',
-          ],
-        },
-        {
-          type: 'category',
-          label: 'Contracts',
-          items: [
-            'guides/developer-tools/contracts/ethmultivault',
-            'guides/developer-tools/contracts/atomwallet',
-            'guides/developer-tools/contracts/errors',
-            'guides/developer-tools/audit-reports',
-          ],
-        },
+        'guides/developer-tools/contracts/contract-architecture',
+        'guides/developer-tools/contracts/ethmultivault',
+        'guides/developer-tools/contracts/atomwallet',
+        'guides/developer-tools/contracts/errors',
+        'guides/developer-tools/audit-reports',
         'guides/developer-tools/graphql-api',
         'guides/developer-tools/sdks',
+        'guides/hub/data-populator',
+        'guides/hub/metamask-snap',
+        'guides/hub/farcaster-frames',
       ],
     },
-
     {
       type: 'category',
       label: 'Bonding Curves',
       items: [
         'guides/bonding-curves/index',
-      ],
-    },
-
-    {
-      type: 'category',
-      label: 'Intuition Hub',
-      items: [
-        'guides/hub/index',
-        'guides/hub/explorer',
-        'guides/hub/bridge',
-        'guides/hub/portal',
-        'guides/hub/browser-extension',
-        'guides/hub/rpc',
-        // 'guides/hub/network-health', // Hidden for now - can be uncommented to restore
       ],
     },
     {
@@ -101,6 +51,18 @@ module.exports = {
         'guides/run-node/index',
         'guides/run-node/run-an-intuition-node',
         'guides/run-node/intuition-rs'
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Intuition Hub',
+      items: [
+        'guides/hub/index',
+        'guides/hub/bridge',
+        'guides/hub/portal',
+        'guides/hub/explorer',
+        'guides/hub/rpc',
+        'guides/hub/browser-extension',
       ],
     },
     {
@@ -128,7 +90,9 @@ module.exports = {
       label: 'Resources',
       items: [
         'guides/resources/index',
+        'guides/resources/key-terms',
         'guides/resources/faq',
+        'guides/resources/network-health',
         'guides/resources/community-and-support',
         'guides/resources/utilities',
         'guides/resources/audits',

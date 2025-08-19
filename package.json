@@ -27,7 +27,7 @@
     "@codesandbox/sandpack-react": "^2.13.5",
     "@codesandbox/sandpack-themes": "^2.0.21",
     "@cookbookdev/docsbot": "^4.25.11",
-    "@docsly/react": "^1.8.6",
+
     "@docusaurus/core": "^3.7.0",
     "@docusaurus/faster": "^3.7.0",
     "@docusaurus/module-type-aliases": "^3.7.0",

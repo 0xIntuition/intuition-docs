@@ -12,11 +12,12 @@ description: Custom error definitions for the Intuition protocol
 
 Library containing all custom errors detailing cases where the Intuition core protocol may revert.
 
-**Author**: 0xIntuition
+
 
 ## EthMultiVault Errors
 
-### Authentication & Access
+<details>
+<summary><strong>Authentication & Access</strong></summary>
 
 | Error | Description |
 |-------|-------------|
@@ -27,7 +28,10 @@ Library containing all custom errors detailing cases where the Intuition core pr
 | `MultiVault_CannotApproveSelf()` | Cannot approve oneself |
 | `MultiVault_CannotRevokeSelf()` | Cannot revoke oneself |
 
-### Asset Operations
+</details>
+
+<details>
+<summary><strong>Asset Operations</strong></summary>
 
 | Error | Description |
 |-------|-------------|
@@ -38,7 +42,10 @@ Library containing all custom errors detailing cases where the Intuition core pr
 | `MultiVault_MinimumDeposit()` | The deposit is below the minimum required amount |
 | `MultiVault_InsufficientDepositAmountToCoverFees()` | The deposit amount is insufficient to cover the fees |
 
-### Vault Operations
+</details>
+
+<details>
+<summary><strong>Vault Operations</strong></summary>
 
 | Error | Description |
 |-------|-------------|
@@ -47,7 +54,10 @@ Library containing all custom errors detailing cases where the Intuition core pr
 | `MultiVault_InsufficientRemainingSharesInVault(uint256 remainingShares)` | Insufficient remaining shares in the vault |
 | `MultiVault_HasCounterStake()` | There is a counter stake present |
 
-### Atom & Triple Management
+</details>
+
+<details>
+<summary><strong>Atom & Triple Management</strong></summary>
 
 | Error | Description |
 |-------|-------------|
@@ -59,7 +69,10 @@ Library containing all custom errors detailing cases where the Intuition core pr
 | `MultiVault_VaultNotTriple()` | The specified vault is not a triple |
 | `MultiVault_TripleExists(uint256 subjectId, uint256 predicateId, uint256 objectId)` | The triple already exists |
 
-### Fee Management
+</details>
+
+<details>
+<summary><strong>Fee Management</strong></summary>
 
 | Error | Description |
 |-------|-------------|
@@ -68,7 +81,10 @@ Library containing all custom errors detailing cases where the Intuition core pr
 | `MultiVault_InvalidProtocolFee()` | The protocol fee is invalid |
 | `MultiVault_InvalidAtomDepositFractionForTriple()` | The deposit fraction for an atom in a triple is invalid |
 
-### Technical Operations
+</details>
+
+<details>
+<summary><strong>Technical Operations</strong></summary>
 
 | Error | Description |
 |-------|-------------|
@@ -77,7 +93,10 @@ Library containing all custom errors detailing cases where the Intuition core pr
 | `MultiVault_TransferFailed()` | Transfer operation failed |
 | `MultiVault_ReceiveNotAllowed()` | Receive function should not be called |
 
-### Timelock Operations
+</details>
+
+<details>
+<summary><strong>Timelock Operations</strong></summary>
 
 | Error | Description |
 |-------|-------------|
@@ -85,17 +104,26 @@ Library containing all custom errors detailing cases where the Intuition core pr
 | `MultiVault_OperationAlreadyExecuted()` | Timelock operation already executed |
 | `MultiVault_OperationNotScheduled()` | Timelock operation not scheduled |
 | `MultiVault_TimelockNotExpired()` | Timelock not expired |
+| `MultiVault_InvalidTimelockDuration()` | Invalid timelock duration specified |
+| `MultiVault_OperationExpired()` | Timelock operation has expired |
+| `MultiVault_InsufficientApprovals()` | Insufficient approvals for timelock execution |
+
+</details>
 
 ## AtomWallet Errors
 
-### Authentication & Access
+<details>
+<summary><strong>Authentication & Access</strong></summary>
 
 | Error | Description |
 |-------|-------------|
 | `AtomWallet_OnlyOwner()` | Only the owner is authorized for this operation |
 | `AtomWallet_OnlyOwnerOrEntryPoint()` | Only the owner or the entry point is authorized for this action |
 
-### Signature Validation
+</details>
+
+<details>
+<summary><strong>Signature Validation</strong></summary>
 
 | Error | Description |
 |-------|-------------|
@@ -103,16 +131,22 @@ Library containing all custom errors detailing cases where the Intuition core pr
 | `AtomWallet_InvalidSignatureLength(uint256 length)` | The signature length is invalid |
 | `AtomWallet_InvalidSignatureS(bytes32 s)` | The signature 's' value is invalid |
 
-### Technical Operations
+</details>
+
+<details>
+<summary><strong>Technical Operations</strong></summary>
 
 | Error | Description |
 |-------|-------------|
 | `AtomWallet_InvalidCallDataLength()` | The call data length is invalid |
 | `AtomWallet_WrongArrayLengths()` | The array lengths do not match |
 
+</details>
+
 ## CustomMulticall3 Errors
 
-### Value & Length Validation
+<details>
+<summary><strong>Value & Length Validation</strong></summary>
 
 | Error | Description |
 |-------|-------------|
@@ -120,4 +154,6 @@ Library containing all custom errors detailing cases where the Intuition core pr
 | `CustomMulticall3_InvalidValue()` | The value provided is invalid |
 | `CustomMulticall3_InvalidValuesLength()` | The length of values is invalid |
 | `CustomMulticall3_InvalidAtomIdsLength()` | The length of atom IDs is invalid |
-| `CustomMulticall3_InvalidAtomUrisLength()` | The length of atom URIs is invalid | 
+| `CustomMulticall3_InvalidAtomUrisLength()` | The length of atom URIs is invalid |
+
+</details> 

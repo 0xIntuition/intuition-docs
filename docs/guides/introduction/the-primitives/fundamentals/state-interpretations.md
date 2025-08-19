@@ -76,13 +76,13 @@ Literal interpretations within Intuition provide structured, explicit expression
 <h3 style={{ marginTop: 0, marginBottom: '1rem' }}>Example: Access Control Mechanism</h3>
 <div style={{ backgroundColor: 'var(--ifm-background-color)', padding: '1rem', borderRadius: '6px', border: '1px solid var(--ifm-color-emphasis-300)' }}>
 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
-<div>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '6px', padding: '1rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.5rem', color: 'var(--ifm-color-primary)' }}>Triple Definition</h4>
 <p style={{ margin: 0, fontSize: '0.9rem' }}>
 A Triple is defined using the Predicate "has access to," where the Subject is a user, and the Object is a resource (e.g., System X).
 </p>
 </div>
-<div>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '6px', padding: '1rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.5rem', color: 'var(--ifm-color-primary)' }}>Literal Interpretation</h4>
 <p style={{ margin: 0, fontSize: '0.9rem' }}>
 If [Company's Multisig] attests to the Triple being True, the Subject of the Triple has access to the Object.

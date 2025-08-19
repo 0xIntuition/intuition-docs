@@ -10,6 +10,124 @@ description: Overview of Intuition's smart contract architecture and design patt
 
 This section provides a comprehensive overview of Intuition's smart contract architecture, including the core components, design patterns, and how different contracts interact with each other.
 
+## Implementation Overview
+
+<div style={{ 
+  backgroundColor: 'var(--ifm-color-emphasis-100)', 
+  border: '1px solid var(--ifm-color-emphasis-300)', 
+  borderRadius: '8px', 
+  padding: '1.5rem', 
+  margin: '2rem 0',
+  borderLeft: '4px solid var(--ifm-color-primary)'
+}}>
+
+Intuition's smart contracts are central to its blockchain architecture, handling critical on-chain activities such as the creation of Atoms (also known as Identities) and Triples (also known as Claims), as well as the staking processes on these elements. These contracts are integral to the economic interactions involved in creating and staking, ensuring a seamless and secure execution of these operations.
+
+</div>
+
+### Future Development
+
+<div style={{ 
+  backgroundColor: 'var(--ifm-color-emphasis-50)', 
+  border: '1px solid var(--ifm-color-emphasis-200)', 
+  borderRadius: '6px', 
+  padding: '1rem', 
+  margin: '1rem 0'
+}}>
+
+Future development will expand how these smart contracts are used to govern various other integral components within the Intuition system, including:
+
+- **Atom Claiming/Recovery**: Mechanisms for claiming and recovering atom ownership
+- **Off-chain Atom Data Management**: Systems for managing atom metadata and properties
+- **Bonding Curve Registry**: Registry for different bonding curve implementations
+- **Primitive Registry**: Registry for different primitive types and implementations
+- **Schema Registry**: Registry for data schemas and validation rules
+- **Algorithm Registry**: Registry for algorithms and computational primitives
+- **Interpretation Registry**: Registry for data interpretation and transformation rules
+
+</div>
+
+### Verifiable Data Registry
+
+<div style={{ 
+  backgroundColor: 'var(--ifm-color-emphasis-50)', 
+  border: '1px solid var(--ifm-color-emphasis-200)', 
+  borderRadius: '6px', 
+  padding: '1rem', 
+  margin: '1rem 0'
+}}>
+
+Acting as the Verifiable Data Registry, these smart contracts store crucial information like URIs of Atoms/Triples, the intricate relationships between them, and current stakeholder positions. They essentially form the nodes and edges of the knowledge graph. In contrast, the off-chain Verifiable Data Registry maintains the properties of these nodes and edges, creating a comprehensive and interconnected data structure.
+
+</div>
+
+### Key Components of On-Chain State
+
+<div style={{ 
+  display: 'grid', 
+  gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', 
+  gap: '1.5rem', 
+  margin: '2rem 0'
+}}>
+
+<div style={{ 
+  backgroundColor: 'var(--ifm-background-color)', 
+  border: '1px solid var(--ifm-color-emphasis-300)', 
+  borderRadius: '8px', 
+  padding: '1.5rem'
+}}>
+
+### **Atom Wallets and Vaults**
+- Atom wallets and vaults, along with their respective shares and balances
+- Economic mechanisms for atom ownership and staking
+- Share distribution and fee collection systems
+
+</div>
+
+<div style={{ 
+  backgroundColor: 'var(--ifm-background-color)', 
+  border: '1px solid var(--ifm-color-emphasis-300)', 
+  borderRadius: '8px', 
+  padding: '1.5rem'
+}}>
+
+### **AtomData**
+- AtomData, typically represented as bytes, usually pointing to a URI for off-chain data
+- Metadata storage and retrieval mechanisms
+- IPFS integration for decentralized storage
+
+</div>
+
+<div style={{ 
+  backgroundColor: 'var(--ifm-background-color)', 
+  border: '1px solid var(--ifm-color-emphasis-300)', 
+  borderRadius: '8px', 
+  padding: '1.5rem'
+}}>
+
+### **Triples and Atoms**
+- Triples and their constituent Atoms
+- Relationship mapping and validation
+- Triple creation and management systems
+
+</div>
+
+<div style={{ 
+  backgroundColor: 'var(--ifm-background-color)', 
+  border: '1px solid var(--ifm-color-emphasis-300)', 
+  borderRadius: '8px', 
+  padding: '1.5rem'
+}}>
+
+### **User Positions**
+- User positions on Atoms and Triples, reflecting current stakes
+- Indicating who is attesting to what
+- Stake tracking and reputation systems
+
+</div>
+
+</div>
+
 ## System Overview
 
 Intuition's smart contract system is built on a modular architecture that enables trustful interactions and economic incentives. The system consists of several key components:

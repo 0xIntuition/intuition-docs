@@ -20,9 +20,6 @@ const meta = {
   onBrokenLinks: 'warn',
 };
 
-/** @type {import('@docusaurus/plugin-content-docs').Options[]} */
-const docs = [];
-
 /** @type {import('@docusaurus/plugin-content-docs').Options} */
 const defaultSettings = {
   breadcrumbs: true,
@@ -34,6 +31,9 @@ const defaultSettings = {
   ],
   sidebarPath: require.resolve('./sidebars-default.js'),
 };
+
+/** @type {import('@docusaurus/plugin-content-docs').Options[]} */
+const docs = [];
 
 /**
  * Create a section
@@ -149,11 +149,25 @@ const config = {
           height: '40px',
           width: '101px',
         },
+        hideOnScroll: false,
         items: [
           {
             label: 'Guides',
             to: 'guides',
             className: 'guides-top-header',
+            position: 'left',
+          },
+          {
+            label: 'Intuition Hub',
+            to: 'guides/hub',
+            className: 'hub-top-header',
+            position: 'left',
+          },
+          {
+            label: 'Developer Tools',
+            to: 'guides/developer-tools',
+            className: 'developer-tools-top-header',
+            position: 'left',
           },
           {
             type: 'search',
@@ -210,23 +224,7 @@ const config = {
       },
     }),
 
-  // webpack: {
-  //   jsLoader: (isServer) => ({
-  //     loader: require.resolve('swc-loader'),
-  //     options: {
-  //       jsc: {
-  //         parser: {
-  //           syntax: 'typescript',
-  //           tsx: true,
-  //         },
-  //         target: 'es2017',
-  //       },
-  //       module: {
-  //         type: isServer ? 'commonjs' : 'es6',
-  //       },
-  //     },
-  //   }),
-  // },
+
 };
 
 module.exports = config;

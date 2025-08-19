@@ -46,7 +46,7 @@
   overflow-y: auto;
 }
 
-/* Resource collapsible styles */
+
 .graphql-reference .resource-header {
   display: flex;
   align-items: center;
@@ -124,7 +124,7 @@
   line-height: 1.6;
 }
 
-/* Code block styling */
+
 .graphql-reference .code-block-container {
   position: relative;
   margin: 1rem 0;
@@ -166,7 +166,7 @@
   color: white;
 }
 
-/* Responsive adjustments */
+
 @media screen and (max-width: 768px) {
   .graphql-reference .explorer-section {
     height: 400px;

@@ -24,7 +24,7 @@ Advanced techniques for creating and managing Atoms, including best practices fo
 <span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem' }}>Management</span>
 <span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem' }}>Best Practices</span>
 </div>
-<a href="/guides/overview/the-primitives/structuring/atoms" style={{ color: 'var(--ifm-color-primary)', textDecoration: 'none', fontWeight: '500' }}>
+<a href="/guides/introduction/the-primitives/structuring/atoms" style={{ color: 'var(--ifm-color-primary)', textDecoration: 'none', fontWeight: '500' }}>
 Learn about Atom Structuring →
 </a>
 </div>
@@ -39,7 +39,7 @@ Discover how to effectively structure relationships using Triples, including com
 <span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem' }}>Nested</span>
 <span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem' }}>Semantic</span>
 </div>
-<a href="/guides/overview/the-primitives/structuring/triples" style={{ color: 'var(--ifm-color-primary)', textDecoration: 'none', fontWeight: '500' }}>
+<a href="/guides/introduction/the-primitives/structuring/triples" style={{ color: 'var(--ifm-color-primary)', textDecoration: 'none', fontWeight: '500' }}>
 Learn about Triple Structuring →
 </a>
 </div>
@@ -54,7 +54,7 @@ Learn how to effectively capture and structure signal data, including user inter
 <span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem' }}>Preferences</span>
 <span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem' }}>Behavioral</span>
 </div>
-<a href="/guides/overview/the-primitives/structuring/capturing-signal" style={{ color: 'var(--ifm-color-primary)', textDecoration: 'none', fontWeight: '500' }}>
+<a href="/guides/introduction/the-primitives/structuring/capturing-signal" style={{ color: 'var(--ifm-color-primary)', textDecoration: 'none', fontWeight: '500' }}>
 Learn about Signal Capture →
 </a>
 </div>
@@ -69,7 +69,7 @@ Understand the mathematical and economic principles behind reward calculation in
 <span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem' }}>Economics</span>
 <span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem' }}>Algorithms</span>
 </div>
-<a href="/guides/overview/the-primitives/structuring/calculating-rewards" style={{ color: 'var(--ifm-color-primary)', textDecoration: 'none', fontWeight: '500' }}>
+<a href="/guides/introduction/the-primitives/structuring/calculating-rewards" style={{ color: 'var(--ifm-color-primary)', textDecoration: 'none', fontWeight: '500' }}>
 Learn about Reward Calculation →
 </a>
 </div>
@@ -81,19 +81,19 @@ Learn about Reward Calculation →
 <div style={{ backgroundColor: 'var(--ifm-color-emphasis-50)', padding: '1.5rem', borderRadius: '8px', marginTop: '2rem' }}>
 <h3 style={{ marginTop: 0, marginBottom: '1rem' }}>Key Principles</h3>
 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1rem' }}>
-<div>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '6px', padding: '1rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.5rem' }}>Modularity</h4>
 <p style={{ margin: 0, fontSize: '0.9rem' }}>
 Design structures that can be easily combined and reused across different contexts.
 </p>
 </div>
-<div>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '6px', padding: '1rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.5rem' }}>Scalability</h4>
 <p style={{ margin: 0, fontSize: '0.9rem' }}>
 Ensure your data structures can grow and evolve without breaking existing relationships.
 </p>
 </div>
-<div>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '6px', padding: '1rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.5rem' }}>Interoperability</h4>
 <p style={{ margin: 0, fontSize: '0.9rem' }}>
 Create structures that work seamlessly with other systems and data sources.
@@ -116,7 +116,7 @@ Create structures that work seamlessly with other systems and data sources.
 
 ## Prerequisites
 
-Before diving into structuring techniques, make sure you have a solid understanding of the [Fundamentals](/guides/overview/the-primitives/fundamentals) section, particularly:
+Before diving into structuring techniques, make sure you have a solid understanding of the [Fundamentals](/guides/introduction/the-primitives/fundamentals) section, particularly:
 
 - Basic concepts of Atoms, Triples, and Signal
 - Understanding of the economic model (Fees & Rewards)

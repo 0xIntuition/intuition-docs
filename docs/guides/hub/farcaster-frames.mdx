@@ -1,0 +1,287 @@
+---
+id: farcaster-frames
+title: Farcaster Frames
+sidebar_label: Farcaster Frames
+sidebar_position: 8
+description: Documentation for the Intuition Farcaster Frames integration
+---
+
+# Farcaster Frames
+
+The **Intuition Farcaster Frames** integration brings the power of Intuition's knowledge graph directly into the Farcaster social network. This integration enables users to create, verify, and interact with Intuition atoms and triples through interactive frames embedded in Farcaster posts, creating a seamless bridge between social media and decentralized knowledge.
+
+## Overview
+
+Farcaster Frames provide an interactive way for users to engage with Intuition's knowledge graph without leaving the Farcaster platform. Users can:
+
+- **Create identities** - Generate Intuition atoms directly from Farcaster posts
+- **Make claims** - Create triples and assertions through interactive frames
+- **Stake on content** - Participate in the Token Curated Registry via frame interactions
+- **Verify information** - Check the authenticity of claims and identities
+- **Build reputation** - Establish credibility through social interactions
+
+## Key Features
+
+### Interactive Identity Creation
+- Create Intuition atoms through simple frame interactions
+- Add metadata and descriptions to identities
+- Link Farcaster profiles to Intuition identities
+- Build reputation through social validation
+
+### Claim Verification
+- Verify claims and assertions through frame interactions
+- Stake on claims to express agreement or disagreement
+- View community sentiment and staking activity
+- Access detailed claim analytics and provenance
+
+### Social Integration
+- Seamless integration with Farcaster's social features
+- Cross-platform identity and reputation building
+- Social proof through community interactions
+- Viral content discovery and sharing
+
+### Trust Network Building
+- Connect Farcaster users through Intuition's trust network
+- Build reputation through social interactions
+- Access personalized recommendations based on your network
+- Establish credibility through community validation
+
+## How It Works
+
+### Frame Structure
+Farcaster Frames are interactive HTML elements embedded in Farcaster posts that enable users to:
+
+1. **View Information** - Display Intuition data and claims
+2. **Take Actions** - Create atoms, make claims, or stake on content
+3. **Get Results** - Receive confirmation and view outcomes
+4. **Share Results** - Post outcomes back to Farcaster
+
+### Integration Flow
+1. **Frame Creation** - Developers create frames with Intuition functionality
+2. **User Interaction** - Users interact with frames in Farcaster posts
+3. **Blockchain Action** - Frame triggers Intuition blockchain transactions
+4. **Result Display** - Frame shows transaction results and next steps
+5. **Social Sharing** - Users can share results back to Farcaster
+
+## Use Cases
+
+### Content Creators
+- **Create Brand Identities** - Establish verified identities for your content
+- **Make Claims** - Assert expertise and achievements through frames
+- **Build Reputation** - Earn reputation through community validation
+- **Monetize Content** - Stake on your own content and earn rewards
+
+### Researchers and Academics
+- **Share Research** - Create atoms for research findings and methodologies
+- **Verify Claims** - Use frames to verify research claims and relationships
+- **Build Credibility** - Establish academic reputation through community validation
+- **Collaborate** - Connect with other researchers through the trust network
+
+### Business and Organizations
+- **Establish Credibility** - Create verified organizational identities
+- **Share Achievements** - Make claims about partnerships and accomplishments
+- **Build Trust** - Leverage social proof for business relationships
+- **Network** - Connect with partners and customers through the trust network
+
+### Developers and Builders
+- **Integrate Intuition** - Add Intuition functionality to your Farcaster apps
+- **Build Frames** - Create custom frames with Intuition features
+- **Access Data** - Use Intuition data in your applications
+- **Contribute** - Help build the Intuition ecosystem
+
+## Frame Types
+
+### Identity Creation Frames
+- **Simple Identity** - Basic atom creation with minimal metadata
+- **Rich Identity** - Detailed atom creation with extensive metadata
+- **Profile Linking** - Link Farcaster profiles to Intuition identities
+- **Verification** - Verify existing identities through social proof
+
+### Claim Creation Frames
+- **Simple Claim** - Basic triple creation with three atom references
+- **Rich Claim** - Detailed claim creation with evidence and context
+- **Claim Discovery** - Search and discover existing claims
+- **Claim Verification** - Verify claims through community validation
+
+### Staking Frames
+- **Positive Staking** - Stake on claims to express agreement
+- **Negative Staking** - Stake against claims to express disagreement
+- **Vault Overview** - View vault statistics and your position
+- **Performance Tracking** - Monitor staking performance and returns
+
+### Social Frames
+- **Follow User** - Follow other users and build your network
+- **Reputation Check** - View reputation scores and trust relationships
+- **Recommendations** - Get personalized content recommendations
+- **Network Analysis** - Analyze your trust network and connections
+
+## Technical Implementation
+
+### Frame Development
+Frames are built using standard web technologies:
+
+```html
+<!-- Example Intuition Frame -->
+<html>
+<head>
+    <title>Intuition Identity Creation</title>
+</head>
+<body>
+    <div class="intuition-frame">
+        <h2>Create Your Identity</h2>
+        <form id="identity-form">
+            <input type="text" placeholder="Identity Name" required>
+            <textarea placeholder="Description"></textarea>
+            <button type="submit">Create Identity</button>
+        </form>
+    </div>
+    <script src="intuition-frame-sdk.js"></script>
+</body>
+</html>
+```
+
+### SDK Integration
+The Intuition Frame SDK provides easy integration:
+
+```javascript
+// Initialize the Intuition Frame SDK
+const intuitionFrame = new IntuitionFrame({
+    network: 'mainnet',
+    wallet: 'metamask'
+});
+
+// Create an atom (identity)
+const result = await intuitionFrame.createAtom({
+    name: 'Alice Johnson',
+    description: 'Software Engineer at Tech Corp',
+    metadata: {
+        profession: 'Software Engineer',
+        company: 'Tech Corp'
+    }
+});
+
+// Display the result
+frame.postMessage({
+    type: 'identity-created',
+    atomId: result.atomId,
+    transactionHash: result.transactionHash
+});
+```
+
+### Frame Validation
+All frames must meet Farcaster's validation requirements:
+
+- **Security** - Secure implementation with proper input validation
+- **Performance** - Fast loading and responsive interaction
+- **Accessibility** - Accessible to users with disabilities
+- **Compliance** - Follow Farcaster's content and behavior guidelines
+
+## Best Practices
+
+### Frame Design
+- **Simple Interface** - Keep frames simple and easy to use
+- **Clear Actions** - Make it obvious what actions users can take
+- **Immediate Feedback** - Provide immediate feedback for user actions
+- **Error Handling** - Gracefully handle errors and edge cases
+
+### Content Strategy
+- **Valuable Content** - Create frames that provide real value to users
+- **Social Sharing** - Encourage users to share frame results
+- **Community Building** - Use frames to build and engage communities
+- **Reputation Building** - Help users build reputation through frame interactions
+
+### Technical Considerations
+- **Performance** - Optimize frames for fast loading and interaction
+- **Security** - Implement proper security measures and input validation
+- **Scalability** - Design frames to handle high user volumes
+- **Monitoring** - Track frame usage and performance metrics
+
+## Integration Examples
+
+### Identity Verification Frame
+```javascript
+// Frame for verifying user identity
+const verificationFrame = {
+    title: "Verify Your Identity",
+    description: "Create a verified identity on Intuition",
+    actions: [
+        {
+            label: "Create Identity",
+            action: "create-atom",
+            parameters: {
+                name: "{{user.name}}",
+                description: "Farcaster user: {{user.username}}"
+            }
+        }
+    ]
+};
+```
+
+### Claim Verification Frame
+```javascript
+// Frame for verifying claims
+const claimFrame = {
+    title: "Verify This Claim",
+    description: "Stake on whether this claim is true",
+    actions: [
+        {
+            label: "Agree",
+            action: "stake-positive",
+            parameters: {
+                claimId: "{{claim.id}}",
+                amount: "0.01"
+            }
+        },
+        {
+            label: "Disagree",
+            action: "stake-negative",
+            parameters: {
+                claimId: "{{claim.id}}",
+                amount: "0.01"
+            }
+        }
+    ]
+};
+```
+
+## Analytics and Metrics
+
+### Frame Performance
+- **Usage Statistics** - Track frame views and interactions
+- **Conversion Rates** - Measure frame completion rates
+- **User Engagement** - Monitor user engagement and retention
+- **Social Sharing** - Track frame sharing and viral spread
+
+### Intuition Integration
+- **Atom Creation** - Track atoms created through frames
+- **Claim Activity** - Monitor claim creation and staking activity
+- **User Growth** - Measure user acquisition through frames
+- **Network Effects** - Track network growth and engagement
+
+## Development Resources
+
+### Documentation
+- [Farcaster Frames Documentation](https://docs.farcaster.xyz/developers/frames)
+- [Intuition API Documentation](/guides/developer-tools/graphql-api)
+- [Frame SDK Documentation](https://github.com/0xIntuition/intuition-frame)
+
+### Tools and SDKs
+- **Intuition Frame SDK** - Official SDK for building Intuition frames
+- **Frame Templates** - Pre-built templates for common use cases
+- **Testing Tools** - Tools for testing frames in development
+- **Analytics Dashboard** - Dashboard for tracking frame performance
+
+### Community
+- **Developer Community** - Join the Intuition developer community
+- **Frame Showcase** - Browse examples of Intuition frames
+- **Support Channels** - Get help with frame development
+- **Contribution Guidelines** - Guidelines for contributing to the ecosystem
+
+## Related Resources
+
+- [Portal](/guides/hub/portal) - Main web interface for Intuition
+- [MetaMask Snap](/guides/hub/metamask-snap) - MetaMask integration
+- [Browser Extension](/guides/hub/browser-extension) - Chrome extension
+- [Developer Tools](/guides/developer-tools) - Programmatic access
+- [API Documentation](/guides/developer-tools/graphql-api) - Technical guides
+- [Community](https://discord.gg/intuition) - Join the Intuition community 

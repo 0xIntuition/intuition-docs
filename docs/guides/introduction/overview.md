@@ -2,7 +2,7 @@
 id: overview
 title: Overview
 sidebar_label: Overview
-sidebar_position: 2
+sidebar_position: 1
 description: Learn about Intuition's core concepts, architecture, and economic model
 ---
 
@@ -18,23 +18,23 @@ Welcome to the Intuition documentation — your gateway to building with the wor
 
 Intuition's vision is to create a future where trust online is programmable, portable, and permissionless. We believe in a new digital infrastructure where:
 
-<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem', marginBottom: '2rem' }}>
+<div style={{ display: 'flex', flexDirection: 'row', gap: '1.5rem', marginBottom: '2rem', flexWrap: 'wrap' }}>
 
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)', flex: '1', minWidth: '300px' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>Cross-Platform Knowledge</h4>
 <p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
 People and organizations can prove and discover knowledge across apps and ecosystems
 </p>
 </div>
 
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)', flex: '1', minWidth: '300px' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>Verifiable Claims</h4>
 <p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
 Social and factual claims are verifiable and incentive-aligned
 </p>
 </div>
 
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)', flex: '1', minWidth: '300px' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>Developer Empowerment</h4>
 <p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
 Developers have the tools to build collaborative, data-rich applications
@@ -143,30 +143,162 @@ The Intuition system leverages a combination of on and off chain interactions to
 </p>
 </div>
 
-<div style={{ display: 'flex', flexDirection: 'row', gap: '1.5rem', marginBottom: '2rem', flexWrap: 'wrap' }}>
+<div style={{ marginBottom: '2rem' }}>
+  
+  {/* Tab Navigation */}
+  <div style={{
+    display: 'flex',
+    borderBottom: '1px solid var(--ifm-color-emphasis-200)',
+    marginBottom: '1.5rem'
+  }}>
+    <button 
+      id="onchain-tab"
+      className="state-tab active"
+      style={{
+        padding: '0.75rem 1.5rem',
+        border: 'none',
+        backgroundColor: 'transparent',
+        cursor: 'pointer',
+        fontSize: '1rem',
+        fontWeight: '600',
+        color: 'var(--ifm-color-primary)',
+        borderBottom: '2px solid var(--ifm-color-primary)',
+        marginRight: '2rem'
+      }}
+      onClick={() => {
+        document.getElementById('onchain-content').style.display = 'block';
+        document.getElementById('offchain-content').style.display = 'none';
+        document.getElementById('onchain-tab').style.color = 'var(--ifm-color-primary)';
+        document.getElementById('onchain-tab').style.borderBottom = '2px solid var(--ifm-color-primary)';
+        document.getElementById('offchain-tab').style.color = 'var(--ifm-color-emphasis-600)';
+        document.getElementById('offchain-tab').style.borderBottom = '2px solid transparent';
+      }}
+    >
+      On-Chain State
+    </button>
+    <button 
+      id="offchain-tab"
+      className="state-tab"
+      style={{
+        padding: '0.75rem 1.5rem',
+        border: 'none',
+        backgroundColor: 'transparent',
+        cursor: 'pointer',
+        fontSize: '1rem',
+        fontWeight: '600',
+        color: 'var(--ifm-color-emphasis-600)',
+        borderBottom: '2px solid transparent'
+      }}
+      onClick={() => {
+        document.getElementById('offchain-content').style.display = 'block';
+        document.getElementById('onchain-content').style.display = 'none';
+        document.getElementById('offchain-tab').style.color = 'var(--ifm-color-primary)';
+        document.getElementById('offchain-tab').style.borderBottom = '2px solid var(--ifm-color-primary)';
+        document.getElementById('onchain-tab').style.color = 'var(--ifm-color-emphasis-600)';
+        document.getElementById('onchain-tab').style.borderBottom = '2px solid transparent';
+      }}
+    >
+      Off-Chain State
+    </button>
+  </div>
 
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)', flex: '1', minWidth: '300px' }}>
-<h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>On-Chain State</h4>
-<p style={{ margin: '0 0 1rem 0', fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
-The on-chain state of Intuition is composed of the nodes, edges, and weights of the Intuition Graph:
-</p>
-<ul style={{ margin: 0, paddingLeft: '1.5rem', fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
-<li style={{ marginBottom: '0.5rem' }}><strong>Atoms</strong>: Point to any arbitrary URI, their associated Smart Contract Wallets, and their respective Vaults</li>
-<li style={{ marginBottom: '0.5rem' }}><strong>Triples</strong>: Composed of 3 Atoms with positive and negative Vaults for attestations For and Against</li>
-<li style={{ marginBottom: '0.5rem' }}><strong>Signals</strong>: Representative of 'who is attesting to what' through vault balances</li>
-<li style={{ marginBottom: '0.5rem' }}><strong>Unified System State</strong>: The nodes, edges, and weights of the knowledge graph</li>
-</ul>
-</div>
+  {/* On-Chain Content */}
+  <div id="onchain-content" style={{ display: 'block' }}>
+    <div style={{ 
+      border: '1px solid var(--ifm-color-emphasis-200)', 
+      borderRadius: '12px', 
+      padding: '2rem', 
+      backgroundColor: 'var(--ifm-background-color)' 
+    }}>
+      <h4 style={{ marginTop: 0, marginBottom: '1rem', color: 'var(--ifm-color-primary)', fontSize: '1.25rem' }}>
+        On-Chain State Components
+      </h4>
+      <p style={{ margin: '0 0 1.5rem 0', fontSize: '1rem', color: 'var(--ifm-color-emphasis-700)', lineHeight: '1.6' }}>
+        The on-chain state of Intuition is composed of the nodes, edges, and weights of the Intuition Graph:
+      </p>
+      <div style={{ display: 'grid', gap: '1rem' }}>
+        <div style={{ padding: '1rem', backgroundColor: 'var(--ifm-color-emphasis-50)', borderRadius: '8px', border: '1px solid var(--ifm-color-emphasis-200)' }}>
+          <h5 style={{ margin: '0 0 0.5rem 0', color: 'var(--ifm-color-primary)', fontSize: '1rem' }}>Atoms</h5>
+          <p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
+            Point to any arbitrary URI, their associated Smart Contract Wallets, and their respective Vaults
+          </p>
+        </div>
+        <div style={{ padding: '1rem', backgroundColor: 'var(--ifm-color-emphasis-50)', borderRadius: '8px', border: '1px solid var(--ifm-color-emphasis-200)' }}>
+          <h5 style={{ margin: '0 0 0.5rem 0', color: 'var(--ifm-color-primary)', fontSize: '1rem' }}>Triples</h5>
+          <p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
+            Composed of 3 Atoms with positive and negative Vaults for attestations For and Against
+          </p>
+        </div>
+        <div style={{ padding: '1rem', backgroundColor: 'var(--ifm-color-emphasis-50)', borderRadius: '8px', border: '1px solid var(--ifm-color-emphasis-200)' }}>
+          <h5 style={{ margin: '0 0 0.5rem 0', color: 'var(--ifm-color-primary)', fontSize: '1rem' }}>Signals</h5>
+          <p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
+            Representative of 'who is attesting to what' through vault balances
+          </p>
+        </div>
+        <div style={{ padding: '1rem', backgroundColor: 'var(--ifm-color-emphasis-50)', borderRadius: '8px', border: '1px solid var(--ifm-color-emphasis-200)' }}>
+          <h5 style={{ margin: '0 0 0.5rem 0', color: 'var(--ifm-color-primary)', fontSize: '1rem' }}>Unified System State</h5>
+          <p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
+            The nodes, edges, and weights of the knowledge graph
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
 
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)', flex: '1', minWidth: '300px' }}>
-<h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>Off-Chain State</h4>
-<p style={{ margin: '0 0 1rem 0', fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
-All Atoms point to some arbitrary URI, meaning the on-chain state can represent any on-chain or off-chain data. This means Intuition can reference anything across the web—a Medium publication, a Spotify song, an IPFS CID, a Ceramic Stream, an ETH address—anything with an associated URI can be mapped on Intuition.
-</p>
-<p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
-The <strong>Intuition Backend</strong> indexes the on-chain and off-chain state, unifying it into a singular, traversable knowledge graph that can be easily queried and replicated locally.
-</p>
-</div>
+  {/* Off-Chain Content */}
+  <div id="offchain-content" style={{ display: 'none' }}>
+    <div style={{ 
+      border: '1px solid var(--ifm-color-emphasis-200)', 
+      borderRadius: '12px', 
+      padding: '2rem', 
+      backgroundColor: 'var(--ifm-background-color)' 
+    }}>
+      <h4 style={{ marginTop: 0, marginBottom: '1rem', color: 'var(--ifm-color-primary)', fontSize: '1.25rem' }}>
+        Off-Chain State Integration
+      </h4>
+      <div style={{ marginBottom: '1.5rem' }}>
+        <p style={{ margin: '0 0 1rem 0', fontSize: '1rem', color: 'var(--ifm-color-emphasis-700)', lineHeight: '1.6' }}>
+          All Atoms point to some arbitrary URI, meaning the on-chain state can represent any on-chain or off-chain data. This means Intuition can reference anything across the web—a Medium publication, a Spotify song, an IPFS CID, a Ceramic Stream, an ETH address—anything with an associated URI can be mapped on Intuition.
+        </p>
+      </div>
+      
+      <div style={{ backgroundColor: 'var(--ifm-color-emphasis-50)', padding: '1.5rem', borderRadius: '8px', border: '1px solid var(--ifm-color-emphasis-200)', marginBottom: '1.5rem' }}>
+        <h5 style={{ margin: '0 0 1rem 0', color: 'var(--ifm-color-primary)', fontSize: '1.1rem' }}>
+          Intuition Backend
+        </h5>
+        <p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)', lineHeight: '1.6' }}>
+          The Intuition Backend indexes both on-chain and off-chain state, unifying them into a singular, traversable knowledge graph that can be easily queried and replicated locally.
+        </p>
+      </div>
+
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1rem' }}>
+        <div style={{ padding: '1rem', backgroundColor: 'var(--ifm-color-emphasis-50)', borderRadius: '8px', border: '1px solid var(--ifm-color-emphasis-200)' }}>
+          <h6 style={{ margin: '0 0 0.5rem 0', color: 'var(--ifm-color-primary)', fontSize: '0.95rem' }}>Web Content</h6>
+          <p style={{ margin: 0, fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>
+            Medium articles, websites, social media posts
+          </p>
+        </div>
+        <div style={{ padding: '1rem', backgroundColor: 'var(--ifm-color-emphasis-50)', borderRadius: '8px', border: '1px solid var(--ifm-color-emphasis-200)' }}>
+          <h6 style={{ margin: '0 0 0.5rem 0', color: 'var(--ifm-color-primary)', fontSize: '0.95rem' }}>Media Files</h6>
+          <p style={{ margin: 0, fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>
+            Spotify tracks, videos, images, documents
+          </p>
+        </div>
+        <div style={{ padding: '1rem', backgroundColor: 'var(--ifm-color-emphasis-50)', borderRadius: '8px', border: '1px solid var(--ifm-color-emphasis-200)' }}>
+          <h6 style={{ margin: '0 0 0.5rem 0', color: 'var(--ifm-color-primary)', fontSize: '0.95rem' }}>Decentralized Storage</h6>
+          <p style={{ margin: 0, fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>
+            IPFS CIDs, Ceramic Streams, Arweave links
+          </p>
+        </div>
+        <div style={{ padding: '1rem', backgroundColor: 'var(--ifm-color-emphasis-50)', borderRadius: '8px', border: '1px solid var(--ifm-color-emphasis-200)' }}>
+          <h6 style={{ margin: '0 0 0.5rem 0', color: 'var(--ifm-color-primary)', fontSize: '0.95rem' }}>Blockchain Addresses</h6>
+          <p style={{ margin: 0, fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>
+            Ethereum addresses, smart contracts, ENS names
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
 
 </div>
 
@@ -207,9 +339,9 @@ Intuition can be thought of as a consensus mechanism for the 'state of the state
 
 ## Key Benefits for Users
 
-<div style={{ display: 'flex', flexDirection: 'row', gap: '1.5rem', marginBottom: '2rem', flexWrap: 'wrap' }}>
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.5rem', marginBottom: '2rem' }}>
 
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)', flex: '1', minWidth: '250px' }}>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>For Developers</h4>
 <ul style={{ margin: 0, paddingLeft: '1.5rem', fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
 <li style={{ marginBottom: '0.5rem' }}><strong>Rich Data APIs</strong>: Access comprehensive, structured data about any entity</li>
@@ -220,7 +352,7 @@ Intuition can be thought of as a consensus mechanism for the 'state of the state
 </ul>
 </div>
 
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)', flex: '1', minWidth: '250px' }}>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>For Content Creators</h4>
 <ul style={{ margin: 0, paddingLeft: '1.5rem', fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
 <li style={{ marginBottom: '0.5rem' }}><strong>Own Your Data</strong>: Maintain control over your contributions and earn from them</li>
@@ -230,7 +362,7 @@ Intuition can be thought of as a consensus mechanism for the 'state of the state
 </ul>
 </div>
 
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)', flex: '1', minWidth: '250px' }}>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>For Organizations</h4>
 <ul style={{ margin: 0, paddingLeft: '1.5rem', fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
 <li style={{ marginBottom: '0.5rem' }}><strong>Verifiable Credentials</strong>: Issue and verify credentials with cryptographic proof</li>
@@ -240,7 +372,7 @@ Intuition can be thought of as a consensus mechanism for the 'state of the state
 </ul>
 </div>
 
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)', flex: '1', minWidth: '250px' }}>
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>For Researchers</h4>
 <ul style={{ margin: 0, paddingLeft: '1.5rem', fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
 <li style={{ marginBottom: '0.5rem' }}><strong>Rich Data Sets</strong>: Access comprehensive, structured data for analysis</li>
@@ -321,47 +453,43 @@ Rewards for quality contributions and honest behavior
 
 ## Explore the Overview
 
-<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1rem', marginTop: '2rem', marginBottom: '2rem' }}>
+<div className="uniform-card-grid">
 
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }} className="docs-card">
-<h3 style={{ marginTop: 0, marginBottom: '1rem' }}>Why Intuition?</h3>
-<p style={{ marginBottom: '1rem', color: 'var(--ifm-color-emphasis-700)' }}>
+<a href="/guides/introduction/why-intuition" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+<div className="uniform-card clickable-card">
+<h3 className="uniform-card-title">Why Intuition?</h3>
+<p className="uniform-card-content">
 Learn about the challenges Intuition addresses and our unique approach to building a decentralized knowledge graph.
 </p>
-<a href="/guides/introduction/why-intuition" style={{ color: 'var(--ifm-color-primary)', textDecoration: 'none', fontWeight: '500' }}>
-Discover Why →
-</a>
 </div>
+</a>
 
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }} className="docs-card">
-<h3 style={{ marginTop: 0, marginBottom: '1rem' }}>The Economics</h3>
-<p style={{ marginBottom: '1rem', color: 'var(--ifm-color-emphasis-700)' }}>
+<a href="/guides/introduction/the-economics" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+<div className="uniform-card clickable-card">
+<h3 className="uniform-card-title">The Economics</h3>
+<p className="uniform-card-content">
 Understand Intuition's market-based system of fees and rewards, early adopter advantages, and how economic incentives drive consensus on data structures.
 </p>
-<a href="/guides/introduction/the-economics" style={{ color: 'var(--ifm-color-primary)', textDecoration: 'none', fontWeight: '500' }}>
-Explore Economics →
-</a>
 </div>
+</a>
 
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }} className="docs-card">
-<h3 style={{ marginTop: 0, marginBottom: '1rem' }}>Primitives</h3>
-<p style={{ marginBottom: '1rem', color: 'var(--ifm-color-emphasis-700)' }}>
+<a href="/guides/introduction/the-primitives" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+<div className="uniform-card clickable-card">
+<h3 className="uniform-card-title">Primitives</h3>
+<p className="uniform-card-content">
 Dive deep into the fundamental building blocks: Atoms, Triples, and Signal. Learn how these primitives work together to create structured, semantic data.
 </p>
-<a href="/guides/introduction/the-primitives" style={{ color: 'var(--ifm-color-primary)', textDecoration: 'none', fontWeight: '500' }}>
-Explore Primitives →
-</a>
 </div>
+</a>
 
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }} className="docs-card">
-<h3 style={{ marginTop: 0, marginBottom: '1rem' }}>Key Terms</h3>
-<p style={{ marginBottom: '1rem', color: 'var(--ifm-color-emphasis-700)' }}>
+<a href="/guides/resources/key-terms" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+<div className="uniform-card clickable-card">
+<h3 className="uniform-card-title">Key Terms</h3>
+<p className="uniform-card-content">
 Master the essential terminology and concepts that form the foundation of the Intuition ecosystem and knowledge graph.
 </p>
-<a href="/guides/introduction/key-terms" style={{ color: 'var(--ifm-color-primary)', textDecoration: 'none', fontWeight: '500' }}>
-Browse Key Terms →
-</a>
 </div>
+</a>
 
 </div>
 
