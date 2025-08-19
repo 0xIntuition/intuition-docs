@@ -2,9 +2,9 @@
 sidebar_position: 1
 ---
 
-<div style={{
+<a href="/guides/quickstart/speed-run-intuition" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+<div className="uniform-card clickable-card" style={{
   backgroundColor: 'var(--ifm-color-emphasis-50)',
-  border: '1px solid var(--ifm-color-emphasis-200)',
   borderRadius: '16px',
   padding: '2rem',
   marginBottom: '3rem',
@@ -28,6 +28,7 @@ sidebar_position: 1
     Get up and running with Intuition in minutes. Choose your integration path and start building the future of trust online.
   </p>
 </div>
+</a>
 
 ## Choose Your Integration Path
 
@@ -39,16 +40,13 @@ sidebar_position: 1
 }}>
 
 <a href="/guides/quickstart/speed-run-intuition" style={{ textDecoration: 'none', color: 'inherit' }}>
-<div style={{ 
+<div className="uniform-card clickable-card" style={{ 
   border: '2px solid #10B981',
   borderRadius: '16px',
   padding: '2rem',
-  backgroundColor: 'var(--ifm-background-color)',
-  boxShadow: '0 4px 16px rgba(16, 185, 129, 0.1)',
   display: 'flex',
   alignItems: 'center',
-  gap: '2rem',
-  transition: 'all 0.3s ease'
+  gap: '2rem'
 }}>
 <div style={{
   width: '80px',
@@ -94,16 +92,12 @@ Quick Setup • Fast Results • Pre-configured
 }}>
 
 <a href="/guides/quickstart/official-intuition-kits" style={{ textDecoration: 'none', color: 'inherit' }}>
-<div style={{ 
-  border: '1px solid var(--ifm-color-emphasis-200)',
+<div className="uniform-card clickable-card" style={{ 
   borderRadius: '16px',
   padding: '2rem',
-  backgroundColor: 'var(--ifm-background-color)',
-  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
   height: '100%',
   display: 'flex',
-  flexDirection: 'column',
-  transition: 'all 0.3s ease'
+  flexDirection: 'column'
 }}>
 <div style={{
   width: '60px',
@@ -142,16 +136,12 @@ Production Ready • Best Practices • Full Featured
 </a>
 
 <a href="/guides/quickstart/community-built-kits" style={{ textDecoration: 'none', color: 'inherit' }}>
-<div style={{ 
-  border: '1px solid var(--ifm-color-emphasis-200)',
+<div className="uniform-card clickable-card" style={{ 
   borderRadius: '16px',
   padding: '2rem',
-  backgroundColor: 'var(--ifm-background-color)',
-  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
   height: '100%',
   display: 'flex',
-  flexDirection: 'column',
-  transition: 'all 0.3s ease'
+  flexDirection: 'column'
 }}>
 <div style={{
   width: '60px',
@@ -406,16 +396,17 @@ Before you begin, make sure you have:
 </div>
 
 <div style={{
-  backgroundColor: 'var(--ifm-color-primary-lightest)',
-  border: '1px solid var(--ifm-color-primary-light)',
+  background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)',
+  border: '1px solid #404040',
   borderRadius: '16px',
   padding: '2rem',
-  textAlign: 'center'
+  textAlign: 'center',
+  color: 'white'
 }}>
-<h3 style={{ marginTop: 0, marginBottom: '1rem', color: 'var(--ifm-color-primary-dark)' }}>
+<h3 style={{ marginTop: 0, marginBottom: '1rem', color: 'white' }}>
 Ready to Build the Future of Trust?
 </h3>
-<p style={{ margin: '0 0 1.5rem 0', color: 'var(--ifm-color-primary-dark)', fontSize: '1.1rem' }}>
+<p style={{ margin: '0 0 1.5rem 0', color: 'rgba(255, 255, 255, 0.9)', fontSize: '1.1rem' }}>
 Choose your integration path above and start building something amazing with Intuition!
 </p>
 <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
@@ -428,21 +419,23 @@ Choose your integration path above and start building something amazing with Int
   fontWeight: '500',
   display: 'inline-flex',
   alignItems: 'center',
-  gap: '0.5rem'
+  gap: '0.5rem',
+  transition: 'all 0.2s ease'
 }}>
 Start Speed Run
 </a>
 <a href="/guides/hub" style={{
   backgroundColor: 'transparent',
-  color: 'var(--ifm-color-primary)',
+  color: 'white',
   padding: '0.75rem 1.5rem',
   borderRadius: '8px',
   textDecoration: 'none',
   fontWeight: '500',
-  border: '1px solid var(--ifm-color-primary)',
+  border: '1px solid rgba(255, 255, 255, 0.3)',
   display: 'inline-flex',
   alignItems: 'center',
-  gap: '0.5rem'
+  gap: '0.5rem',
+  transition: 'all 0.2s ease'
 }}>
 Explore Testnet
 </a>

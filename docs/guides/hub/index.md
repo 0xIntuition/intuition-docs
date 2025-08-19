@@ -6,19 +6,22 @@ sidebar_position: 1
 description: Essential tools and applications for interacting with the Intuition ecosystem
 ---
 
-<div className="hub-hero" style={{
-  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+<a href="https://intuition-testnet.hub.caldera.xyz/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+<div className="hub-hero-professional uniform-card clickable-card" style={{
+  background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)',
   borderRadius: '16px',
   padding: '3rem 2rem',
   marginBottom: '3rem',
   color: 'white',
-  textAlign: 'center'
+  textAlign: 'center',
+  border: '1px solid #404040',
+  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)'
 }}>
   <h1 style={{ 
     fontSize: '3rem', 
     fontWeight: '700', 
     marginBottom: '1rem',
-    textShadow: '0 2px 4px rgba(0,0,0,0.3)'
+    color: 'white'
   }}>
     Intuition Hub
   </h1>
@@ -26,12 +29,28 @@ description: Essential tools and applications for interacting with the Intuition
     fontSize: '1.25rem', 
     opacity: '0.9',
     maxWidth: '600px',
-    margin: '0 auto',
-    lineHeight: '1.6'
+    margin: '0 auto 1.5rem auto',
+    lineHeight: '1.6',
+    color: 'white'
   }}>
     Essential tools and applications for interacting with the Intuition ecosystem. From exploring the knowledge graph to bridging assets across networks.
   </p>
+  <div style={{
+    display: 'inline-flex',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    color: '#1a1a1a',
+    padding: '0.5rem 1rem',
+    borderRadius: '6px',
+    fontWeight: '500',
+    fontSize: '0.875rem',
+    border: '1px solid #e5e5e5',
+    transition: 'all 0.2s ease'
+  }}>
+    Access Hub
+  </div>
 </div>
+</a>
 
 ## Quick Access
 
@@ -162,6 +181,12 @@ Ready to start building on Intuition? Follow these steps:
   width: '100%'
 }}>
 
+<a href="/guides/resources/faq#how-do-i-connect-to-the-intuition-testnet" style={{ 
+  textDecoration: 'none', 
+  color: 'inherit',
+  display: 'block',
+  transition: 'all 0.3s ease'
+}}>
 <div style={{
   padding: '2rem',
   border: '1px solid var(--ifm-color-emphasis-200)',
@@ -172,7 +197,8 @@ Ready to start building on Intuition? Follow these steps:
   height: '100%',
   display: 'flex',
   flexDirection: 'column',
-  justifyContent: 'flex-start'
+  justifyContent: 'flex-start',
+  cursor: 'pointer'
 }}>
 <div style={{
   width: '60px',
@@ -189,11 +215,21 @@ Ready to start building on Intuition? Follow these steps:
   boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)'
 }}>1</div>
 <h4 style={{ marginBottom: '1rem', fontSize: '1.1rem', fontWeight: '600' }}>Connect Your Wallet</h4>
-<p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-600)', lineHeight: '1.6' }}>
+<p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-600)', lineHeight: '1.6', marginBottom: '1rem' }}>
 Use MetaMask or any Web3 wallet to connect to the testnet
 </p>
+<div style={{ fontSize: '0.85rem', color: 'var(--ifm-color-primary)', fontWeight: '500' }}>
+View Setup Guide →
 </div>
+</div>
+</a>
 
+<a href="https://intuition-testnet.hub.caldera.xyz/" target="_blank" rel="noopener noreferrer" style={{ 
+  textDecoration: 'none', 
+  color: 'inherit',
+  display: 'block',
+  transition: 'all 0.3s ease'
+}}>
 <div style={{
   padding: '2rem',
   border: '1px solid var(--ifm-color-emphasis-200)',
@@ -204,7 +240,8 @@ Use MetaMask or any Web3 wallet to connect to the testnet
   height: '100%',
   display: 'flex',
   flexDirection: 'column',
-  justifyContent: 'flex-start'
+  justifyContent: 'flex-start',
+  cursor: 'pointer'
 }}>
 <div style={{
   width: '60px',
@@ -221,11 +258,21 @@ Use MetaMask or any Web3 wallet to connect to the testnet
   boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)'
 }}>2</div>
 <h4 style={{ marginBottom: '1rem', fontSize: '1.1rem', fontWeight: '600' }}>Get Test Tokens</h4>
-<p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-600)', lineHeight: '1.6' }}>
+<p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-600)', lineHeight: '1.6', marginBottom: '1rem' }}>
 Use the built-in faucet to obtain test tokens for transactions
 </p>
+<div style={{ fontSize: '0.85rem', color: 'var(--ifm-color-primary)', fontWeight: '500' }}>
+Open Testnet Hub →
 </div>
+</div>
+</a>
 
+<a href="/guides/hub/explorer" style={{ 
+  textDecoration: 'none', 
+  color: 'inherit',
+  display: 'block',
+  transition: 'all 0.3s ease'
+}}>
 <div style={{
   padding: '2rem',
   border: '1px solid var(--ifm-color-emphasis-200)',
@@ -236,7 +283,8 @@ Use the built-in faucet to obtain test tokens for transactions
   height: '100%',
   display: 'flex',
   flexDirection: 'column',
-  justifyContent: 'flex-start'
+  justifyContent: 'flex-start',
+  cursor: 'pointer'
 }}>
 <div style={{
   width: '60px',
@@ -253,11 +301,19 @@ Use the built-in faucet to obtain test tokens for transactions
   boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)'
 }}>3</div>
 <h4 style={{ marginBottom: '1rem', fontSize: '1.1rem', fontWeight: '600' }}>Explore Services</h4>
-<p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-600)', lineHeight: '1.6' }}>
+<p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-600)', lineHeight: '1.6', marginBottom: '1rem' }}>
 Access all testnet tools and services from the centralized dashboard
 </p>
-</div>
 
+</div>
+</a>
+
+<a href="/guides/developer-tools" style={{ 
+  textDecoration: 'none', 
+  color: 'inherit',
+  display: 'block',
+  transition: 'all 0.3s ease'
+}}>
 <div style={{
   padding: '2rem',
   border: '1px solid var(--ifm-color-emphasis-200)',
@@ -268,7 +324,8 @@ Access all testnet tools and services from the centralized dashboard
   height: '100%',
   display: 'flex',
   flexDirection: 'column',
-  justifyContent: 'flex-start'
+  justifyContent: 'flex-start',
+  cursor: 'pointer'
 }}>
 <div style={{
   width: '60px',
@@ -285,24 +342,135 @@ Access all testnet tools and services from the centralized dashboard
   boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)'
 }}>4</div>
 <h4 style={{ marginBottom: '1rem', fontSize: '1.1rem', fontWeight: '600' }}>Start Building</h4>
-<p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-600)', lineHeight: '1.6' }}>
+<p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-600)', lineHeight: '1.6', marginBottom: '1rem' }}>
 Deploy your first smart contract or create your first atom
 </p>
+
 </div>
+</a>
 
 </div>
 
 ## Network Details
 
-<div style={{ width: '100%', overflowX: 'auto' }}>
+<div style={{ 
+  width: '100%',
+  marginBottom: '3rem'
+}}>
 
-| Parameter | Value | Description |
-|-----------|-------|-------------|
-| **Network Name** | Intuition Testnet | The official name of the Intuition testnet |
-| **Chain ID** | Check hub dashboard | Current chain ID available in the hub |
-| **RPC URL** | Available in hub | RPC endpoint provided in the dashboard |
-| **Block Explorer** | Integrated explorer | Built-in blockchain explorer for transactions |
-| **Faucet** | Built-in distribution | Test token faucet for development |
+<table className="network-details-table" style={{ 
+  width: '100%', 
+  borderCollapse: 'collapse',
+  border: '1px solid var(--ifm-color-emphasis-200)',
+  borderRadius: '12px',
+  overflow: 'hidden',
+  backgroundColor: 'var(--ifm-background-color)',
+  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
+  tableLayout: 'auto'
+}}>
+<thead>
+<tr style={{ backgroundColor: 'var(--ifm-color-emphasis-100)' }}>
+<th style={{ 
+  padding: '1rem 1.5rem', 
+  textAlign: 'left',
+  fontWeight: '600',
+  color: 'var(--ifm-color-emphasis-800)',
+  borderBottom: '1px solid var(--ifm-color-emphasis-200)',
+  width: '20%'
+}}>Parameter</th>
+<th style={{ 
+  padding: '1rem 1.5rem', 
+  textAlign: 'left',
+  fontWeight: '600',
+  color: 'var(--ifm-color-emphasis-800)',
+  borderBottom: '1px solid var(--ifm-color-emphasis-200)',
+  width: '25%'
+}}>Value</th>
+<th style={{ 
+  padding: '1rem 1.5rem', 
+  textAlign: 'left',
+  fontWeight: '600',
+  color: 'var(--ifm-color-emphasis-800)',
+  borderBottom: '1px solid var(--ifm-color-emphasis-200)',
+  width: '55%'
+}}>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style={{ 
+  padding: '1rem 1.5rem', 
+  fontWeight: '600',
+  borderBottom: '1px solid var(--ifm-color-emphasis-100)'
+}}>Network Name</td>
+<td style={{ 
+  padding: '1rem 1.5rem',
+  borderBottom: '1px solid var(--ifm-color-emphasis-100)'
+}}>Intuition Testnet</td>
+<td style={{ 
+  padding: '1rem 1.5rem',
+  borderBottom: '1px solid var(--ifm-color-emphasis-100)'
+}}>The official name of the Intuition testnet</td>
+</tr>
+<tr>
+<td style={{ 
+  padding: '1rem 1.5rem', 
+  fontWeight: '600',
+  borderBottom: '1px solid var(--ifm-color-emphasis-100)'
+}}>Chain ID</td>
+<td style={{ 
+  padding: '1rem 1.5rem',
+  borderBottom: '1px solid var(--ifm-color-emphasis-100)'
+}}>Check hub dashboard</td>
+<td style={{ 
+  padding: '1rem 1.5rem',
+  borderBottom: '1px solid var(--ifm-color-emphasis-100)'
+}}>Current chain ID available in the hub</td>
+</tr>
+<tr>
+<td style={{ 
+  padding: '1rem 1.5rem', 
+  fontWeight: '600',
+  borderBottom: '1px solid var(--ifm-color-emphasis-100)'
+}}>RPC URL</td>
+<td style={{ 
+  padding: '1rem 1.5rem',
+  borderBottom: '1px solid var(--ifm-color-emphasis-100)'
+}}>Available in hub</td>
+<td style={{ 
+  padding: '1rem 1.5rem',
+  borderBottom: '1px solid var(--ifm-color-emphasis-100)'
+}}>RPC endpoint provided in the dashboard</td>
+</tr>
+<tr>
+<td style={{ 
+  padding: '1rem 1.5rem', 
+  fontWeight: '600',
+  borderBottom: '1px solid var(--ifm-color-emphasis-100)'
+}}>Block Explorer</td>
+<td style={{ 
+  padding: '1rem 1.5rem',
+  borderBottom: '1px solid var(--ifm-color-emphasis-100)'
+}}>Integrated explorer</td>
+<td style={{ 
+  padding: '1rem 1.5rem',
+  borderBottom: '1px solid var(--ifm-color-emphasis-100)'
+}}>Built-in blockchain explorer for transactions</td>
+</tr>
+<tr>
+<td style={{ 
+  padding: '1rem 1.5rem', 
+  fontWeight: '600'
+}}>Faucet</td>
+<td style={{ 
+  padding: '1rem 1.5rem'
+}}>Built-in distribution</td>
+<td style={{ 
+  padding: '1rem 1.5rem'
+}}>Test token faucet for development</td>
+</tr>
+</tbody>
+</table>
 
 </div>
 
@@ -312,7 +480,8 @@ Deploy your first smart contract or create your first atom
   display: 'grid',
   gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
   gap: '2rem',
-  marginBottom: '3rem'
+  marginBottom: '3rem',
+  width: '100%'
 }}>
 
 <div style={{
@@ -382,7 +551,7 @@ The hub integrates with all Intuition testnet services:
 }}>
 <li><a href="/guides/hub/bridge">Bridge</a> for cross-chain transfers</li>
 <li><a href="/guides/hub/explorer">Explorer</a> for blockchain exploration</li>
-<li><a href="/guides/hub/testnet-uptime">Network Status</a> for service monitoring</li>
+<li><a href="/guides/resources/network-health">Network Status</a> for service monitoring</li>
 </ul>
 </div>
 
@@ -434,7 +603,7 @@ Built with developers in mind:
   marginBottom: '3rem' 
 }}>
 
-<a href="/guides/hub/testnet-hub" style={{ 
+<a href="/guides/hub" style={{ 
   textDecoration: 'none', 
   color: 'inherit',
   display: 'block',
@@ -521,16 +690,7 @@ Development environment hub for the Intuition testnet. Access all testnet servic
 }}>Testing</span>
 </div>
 </div>
-<div style={{
-  fontSize: '0.875rem',
-  color: '#7C3AED',
-  fontWeight: '500',
-  display: 'flex',
-  alignItems: 'center',
-  flexShrink: 0
-}}>
-Learn More →
-</div>
+
 </div>
 </a>
 
@@ -620,19 +780,11 @@ Bridge assets between Ethereum testnets and Intuition testnet. Secure cross-chai
   fontWeight: '500'
 }}>Testing</span>
 </div>
-<div style={{
-  fontSize: '0.875rem',
-  color: '#F59E0B',
-  fontWeight: '500',
-  display: 'flex',
-  alignItems: 'center'
-}}>
-Learn More →
-</div>
+
 </div>
 </a>
 
-<a href="/guides/hub/testnet-uptime" style={{ 
+<a href="/guides/resources/network-health" style={{ 
   textDecoration: 'none', 
   color: 'inherit',
   display: 'block',
@@ -718,20 +870,12 @@ Real-time status monitoring for the Intuition testnet. Check service availabilit
   fontWeight: '500'
 }}>Uptime</span>
 </div>
-<div style={{
-  fontSize: '0.875rem',
-  color: '#EF4444',
-  fontWeight: '500',
-  display: 'flex',
-  alignItems: 'center'
-}}>
-Learn More →
-</div>
+
 </div>
 </a>
 
-<a href="/guides/hub/portal" style={{ textDecoration: 'none', color: 'inherit' }}>
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }} className="docs-card">
+<a href="/guides/hub/portal" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+<div className="uniform-card clickable-card">
 <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
 <div style={{ width: '40px', height: '40px', borderRadius: '8px', backgroundColor: '#6366F1', display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: '1rem' }}>
 <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
@@ -740,16 +884,9 @@ Learn More →
 </div>
 <h3 style={{ margin: 0 }}>Portal</h3>
 </div>
-<div className="docs-card-content">
-<p style={{ marginBottom: '1rem', color: 'var(--ifm-color-emphasis-700)' }}>
-The main interface for creating identities, making claims, and staking on the Intuition knowledge graph. Your gateway to the decentralized social network. <strong>Perfect for new users</strong> - start here to create your first identity and make claims.
+<p className="uniform-card-content">
+The main interface for creating identities, making claims, and staking on the Intuition knowledge graph. Your gateway to the decentralized social network. Perfect for new users - start here to create your first identity and make claims.
 </p>
-<div className="docs-card-tags" style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem' }}>Identities</span>
-<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem' }}>Claims</span>
-<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem' }}>Staking</span>
-</div>
-</div>
 </div>
 </a>
 
@@ -839,20 +976,12 @@ Blockchain explorer for the Intuition testnet. View transactions, blocks, and ne
   fontWeight: '500'
 }}>Analytics</span>
 </div>
-<div style={{
-  fontSize: '0.875rem',
-  color: '#10B981',
-  fontWeight: '500',
-  display: 'flex',
-  alignItems: 'center'
-}}>
-Learn More →
-</div>
+
 </div>
 </a>
 
-<a href="/guides/hub/rpc" style={{ textDecoration: 'none', color: 'inherit' }}>
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }} className="docs-card">
+<a href="/guides/hub/rpc" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+<div className="uniform-card clickable-card">
 <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
 <div style={{ width: '40px', height: '40px', borderRadius: '8px', backgroundColor: '#EF4444', display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: '1rem' }}>
 <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
@@ -861,21 +990,14 @@ Learn More →
 </div>
 <h3 style={{ margin: 0 }}>RPC</h3>
 </div>
-<div className="docs-card-content">
-<p style={{ marginBottom: '1rem', color: 'var(--ifm-color-emphasis-700)' }}>
-Programmatic access to the Intuition network. Query blockchain data, submit transactions, and interact with smart contracts. <strong>Ideal for developers</strong> - use for programmatic access to the network.
+<p className="uniform-card-content">
+Programmatic access to the Intuition network. Query blockchain data, submit transactions, and interact with smart contracts. Ideal for developers - use for programmatic access to the network.
 </p>
-<div className="docs-card-tags" style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem' }}>API</span>
-<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem' }}>WebSocket</span>
-<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem' }}>Authentication</span>
-</div>
-</div>
 </div>
 </a>
 
-<a href="/guides/hub/browser-extension" style={{ textDecoration: 'none', color: 'inherit' }}>
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }} className="docs-card">
+<a href="/guides/hub/browser-extension" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+<div className="uniform-card clickable-card">
 <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
 <div style={{ width: '40px', height: '40px', borderRadius: '8px', backgroundColor: '#8B5CF6', display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: '1rem' }}>
 <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
@@ -884,16 +1006,9 @@ Programmatic access to the Intuition network. Query blockchain data, submit tran
 </div>
 <h3 style={{ margin: 0 }}>Browser Extension</h3>
 </div>
-<div className="docs-card-content">
-<p style={{ marginBottom: '1rem', color: 'var(--ifm-color-emphasis-700)' }}>
-Chrome extension for accessing the Intuition knowledge graph across the web. Enhanced browsing with trusted information and security. <strong>Perfect for browsing with context</strong> - install for enhanced web browsing with trusted information.
+<p className="uniform-card-content">
+Chrome extension for accessing the Intuition knowledge graph across the web. Enhanced browsing with trusted information and security. Perfect for browsing with context - install for enhanced web browsing with trusted information.
 </p>
-<div className="docs-card-tags" style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem' }}>Chrome</span>
-<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem' }}>Security</span>
-<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem' }}>Integration</span>
-</div>
-</div>
 </div>
 </a>
 

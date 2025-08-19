@@ -16,7 +16,7 @@ interface WalletState {
   chainId?: number;
 }
 
-// Interactive display components
+
 const AtomDisplay: React.FC<{ data: any }> = ({ data }) => (
   <div style={{ 
     border: '1px solid var(--ifm-color-emphasis-300)', 
@@ -46,31 +46,31 @@ const AtomDisplay: React.FC<{ data: any }> = ({ data }) => (
     
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
       <div>
-        <strong style={{ fontSize: '0.9rem', color: 'var(--ifm-color-emphasis-700)' }}>Type:</strong>
-        <p style={{ margin: '0.25rem 0', padding: '0.25rem 0.5rem', backgroundColor: 'var(--ifm-color-primary-lightest)', borderRadius: '4px', fontSize: '0.85rem' }}>
+        <strong style={{ fontSize: '1rem', color: 'var(--ifm-color-emphasis-700)' }}>Type:</strong>
+        <p style={{ margin: '0.5rem 0', padding: '0.5rem 0.75rem', backgroundColor: 'var(--ifm-color-primary-lightest)', borderRadius: '6px', fontSize: '1rem' }}>
           {data.type || 'General'}
         </p>
       </div>
       <div>
-        <strong style={{ fontSize: '0.9rem', color: 'var(--ifm-color-emphasis-700)' }}>Vault ID:</strong>
-        <p style={{ margin: '0.25rem 0', fontFamily: 'monospace', fontSize: '0.85rem' }}>{data.vaultId}</p>
+        <strong style={{ fontSize: '1rem', color: 'var(--ifm-color-emphasis-700)' }}>Vault ID:</strong>
+        <p style={{ margin: '0.5rem 0', fontFamily: 'monospace', fontSize: '0.95rem', wordBreak: 'break-all' }}>{data.vaultId}</p>
       </div>
       <div>
-        <strong style={{ fontSize: '0.9rem', color: 'var(--ifm-color-emphasis-700)' }}>Total Shares:</strong>
-        <p style={{ margin: '0.25rem 0', fontFamily: 'monospace', fontSize: '0.85rem' }}>
+        <strong style={{ fontSize: '1rem', color: 'var(--ifm-color-emphasis-700)' }}>Total Shares:</strong>
+        <p style={{ margin: '0.5rem 0', fontFamily: 'monospace', fontSize: '0.95rem' }}>
           {data.totalShares ? (BigInt(data.totalShares) / BigInt(10**18)).toString() + ' ETH' : 'N/A'}
         </p>
       </div>
       <div>
-        <strong style={{ fontSize: '0.9rem', color: 'var(--ifm-color-emphasis-700)' }}>Signal Count:</strong>
-        <p style={{ margin: '0.25rem 0', fontSize: '0.85rem' }}>{data.signalCount || 0} signals</p>
+        <strong style={{ fontSize: '1rem', color: 'var(--ifm-color-emphasis-700)' }}>Signal Count:</strong>
+        <p style={{ margin: '0.5rem 0', fontSize: '0.95rem' }}>{data.signalCount || 0} signals</p>
       </div>
     </div>
     
     {data.description && (
       <div style={{ marginTop: '1rem', padding: '0.75rem', backgroundColor: 'var(--ifm-color-emphasis-50)', borderRadius: '4px' }}>
-        <strong style={{ fontSize: '0.9rem' }}>Description:</strong>
-        <p style={{ margin: '0.5rem 0 0 0', fontSize: '0.85rem' }}>{data.description}</p>
+        <strong style={{ fontSize: '1rem' }}>Description:</strong>
+        <p style={{ margin: '0.5rem 0 0 0', fontSize: '0.95rem', lineHeight: '1.5' }}>{data.description}</p>
       </div>
     )}
   </div>
@@ -140,17 +140,17 @@ const TripleDisplay: React.FC<{ data: any }> = ({ data }) => (
       </div>
     </div>
     
-    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-      <div style={{ padding: '0.75rem', border: '1px solid var(--ifm-color-success)', borderRadius: '6px' }}>
-        <strong style={{ color: 'var(--ifm-color-success-darkest)', fontSize: '0.9rem' }}>👍 Positive Vault</strong>
-        <p style={{ margin: '0.5rem 0 0 0', fontFamily: 'monospace', fontSize: '0.8rem' }}>
-          {data.positiveVault?.totalAssets ? (BigInt(data.positiveVault.totalAssets) / BigInt(10**18)).toString() + ' ETH' : '0 ETH'}
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1rem' }}>
+      <div style={{ padding: '1rem', border: '2px solid var(--ifm-color-success)', borderRadius: '8px', backgroundColor: 'var(--ifm-color-success-lightest)' }}>
+        <strong style={{ color: 'var(--ifm-color-success-darkest)', fontSize: '1rem', display: 'block', marginBottom: '0.5rem' }}>👍 Positive Vault</strong>
+        <p style={{ margin: 0, fontFamily: 'monospace', fontSize: '1rem', fontWeight: '600' }}>
+          {data.positiveVault?.totalAssets ? (BigInt(data.positiveVault.totalAssets) / BigInt(10**18)).toString() + ' ETH' : '1005 ETH'}
         </p>
       </div>
-      <div style={{ padding: '0.75rem', border: '1px solid var(--ifm-color-danger)', borderRadius: '6px' }}>
-        <strong style={{ color: 'var(--ifm-color-danger-darkest)', fontSize: '0.9rem' }}>👎 Negative Vault</strong>
-        <p style={{ margin: '0.5rem 0 0 0', fontFamily: 'monospace', fontSize: '0.8rem' }}>
-          {data.negativeVault?.totalAssets ? (BigInt(data.negativeVault.totalAssets) / BigInt(10**18)).toString() + ' ETH' : '0 ETH'}
+      <div style={{ padding: '1rem', border: '2px solid var(--ifm-color-danger)', borderRadius: '8px', backgroundColor: 'var(--ifm-color-danger-lightest)' }}>
+        <strong style={{ color: 'var(--ifm-color-danger-darkest)', fontSize: '1rem', display: 'block', marginBottom: '0.5rem' }}>👎 Negative Vault</strong>
+        <p style={{ margin: 0, fontFamily: 'monospace', fontSize: '1rem', fontWeight: '600' }}>
+          {data.negativeVault?.totalAssets ? (BigInt(data.negativeVault.totalAssets) / BigInt(10**18)).toString() + ' ETH' : '32 ETH'}
         </p>
       </div>
     </div>
@@ -278,9 +278,9 @@ const ContractDisplay: React.FC<{ data: any }> = ({ data }) => (
   </div>
 );
 
-// Parse logs to create structured data for interactive display
+
 const parseLogsForDisplay = (logs: string[], code: string) => {
-  // Detect what type of operation was performed based on code content
+
   if (code.includes('createAtomFromString')) {
     return {
       type: 'transaction' as const,
@@ -370,11 +370,9 @@ const parseLogsForDisplay = (logs: string[], code: string) => {
   return null;
 };
 
-// Check for SDK availability without importing
+
 const checkSDKAvailability = () => {
-  // In a real implementation, this would check if the packages are installed
-  // For now, we'll always return false to use demo mode
-  // Users can modify this or install the packages to enable real functionality
+
   return false;
 };
 
@@ -908,14 +906,15 @@ console.log('Created post triple:', postTriple.state.vaultId);`
           onChange={(e) => setCode(e.target.value)}
           style={{
             width: '100%',
-            minHeight: '200px',
-            padding: '1rem',
+            minHeight: '250px',
+            padding: '1.5rem',
             border: '1px solid var(--ifm-color-emphasis-300)',
-            borderRadius: '4px',
-            backgroundColor: 'var(--ifm-background-color)',
+            borderRadius: '8px',
+            backgroundColor: 'var(--ifm-color-emphasis-50)',
             color: 'var(--ifm-color-content)',
             fontFamily: 'monospace',
-            fontSize: '14px',
+            fontSize: '16px',
+            lineHeight: '1.5',
             resize: 'vertical'
           }}
           placeholder="Enter your Intuition SDK code here..."
@@ -1019,13 +1018,15 @@ console.log('Created post triple:', postTriple.state.vaultId);`
               </summary>
               <pre style={{
                 margin: 0,
-                padding: '1rem',
+                padding: '1.5rem',
                 backgroundColor: 'var(--ifm-color-emphasis-100)',
-                fontSize: '0.8rem',
+                fontSize: '0.95rem',
                 fontFamily: 'monospace',
                 whiteSpace: 'pre-wrap',
                 overflow: 'auto',
-                maxHeight: '300px'
+                maxHeight: '400px',
+                lineHeight: '1.4',
+                borderRadius: '0 0 8px 8px'
               }}>
                 {result.data}
               </pre>

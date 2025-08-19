@@ -228,4 +228,4 @@ Use the explorer for development:
 - Monitor your transactions and contracts
 - Integrate explorer APIs into your applications
 - Use with [Bridge](/guides/hub/bridge) for cross-chain verification
-- Check [Network Status](/guides/hub/testnet-uptime) for service health 
+- Check [Network Health](/guides/resources/network-health) for service health 

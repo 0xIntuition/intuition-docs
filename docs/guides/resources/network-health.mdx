@@ -5,201 +5,141 @@ description: Real-time network health monitoring for the Intuition protocol
 
 # Network Health
 
-The Intuition Network Health page provides real-time monitoring of all network services, infrastructure health, and uptime statistics. Powered by Better Stack, this monitoring system ensures transparency and helps developers track service availability.
+The Intuition Network Health page provides real-time monitoring of all Intuition testnet services and infrastructure. This status page tracks uptime, performance metrics, and incident reports to ensure transparency for developers building on the protocol.
 
-## Quick Access
+## Access Network Status
 
-View the current network status at: [https://testnet.uptime.intuition.systems/](https://testnet.uptime.intuition.systems/)
+<a href="https://testnet.uptime.intuition.systems/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+<div className="uniform-card clickable-card" style={{
+  backgroundColor: 'var(--ifm-color-emphasis-50)',
+  border: '2px solid var(--ifm-color-primary)',
+  borderRadius: '16px',
+  padding: '2rem',
+  marginBottom: '2rem',
+  textAlign: 'center'
+}}>
+  <div style={{
+    width: '80px',
+    height: '80px',
+    borderRadius: '20px',
+    background: 'linear-gradient(135deg, var(--ifm-color-primary), var(--ifm-color-primary-dark))',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: '0 auto 1.5rem auto',
+    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)'
+  }}>
+    <svg width="32" height="32" viewBox="0 0 24 24" fill="white">
+      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+    </svg>
+  </div>
+  <h3 style={{
+    fontSize: '1.5rem',
+    fontWeight: '600',
+    marginBottom: '1rem',
+    color: 'var(--ifm-color-primary-dark)'
+  }}>
+    Live Network Status
+  </h3>
+  <p style={{
+    fontSize: '1.1rem',
+    marginBottom: '1.5rem',
+    color: 'var(--ifm-color-emphasis-700)',
+    lineHeight: '1.6'
+  }}>
+    View real-time status, uptime metrics, and incident reports for all Intuition testnet services
+  </p>
+  <div style={{
+    display: 'flex',
+    justifyContent: 'center',
+    marginTop: '1rem'
+  }}>
+    <div style={{
+      backgroundColor: 'var(--ifm-color-primary)',
+      color: 'white',
+      padding: '0.5rem 1.25rem',
+      borderRadius: '6px',
+      fontWeight: '500',
+      fontSize: '0.9rem',
+      transition: 'all 0.2s ease'
+    }}>
+      Check Status
+    </div>
+  </div>
+</div>
+</a>
 
-## Overview
+## What It Monitors
 
-The network health monitoring tracks critical components of the Intuition infrastructure:
+The status page tracks critical Intuition infrastructure components:
 
-- Rollup RPC endpoints
-- Bridge services
-- Explorer availability
-- Network health metrics
-- Service dependencies
+<div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+<div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+<div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: 'var(--ifm-color-success)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+<svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"/></svg>
+</div>
+<span style={{ fontSize: '1rem', fontWeight: '500' }}><strong>Rollup RPC Healthcheck</strong>: Core network connectivity and availability</span>
+</div>
 
-## Current Status
+<div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+<div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: 'var(--ifm-color-success)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+<svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"/></svg>
+</div>
+<span style={{ fontSize: '1rem', fontWeight: '500' }}><strong>Service Uptime</strong>: Real-time uptime percentages for all services</span>
+</div>
 
-### **All Services Online**
-When all systems are operational, you'll see:
-- Green status indicators across all services
-- 100% uptime metrics
-- Normal response times
-- No active incidents
+<div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+<div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: 'var(--ifm-color-success)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+<svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"/></svg>
+</div>
+<span style={{ fontSize: '1rem', fontWeight: '500' }}><strong>Incident Tracking</strong>: Active issues and resolution progress</span>
+</div>
 
-### **Service Monitoring**
-The status page tracks:
-- **Rollup RPC Healthcheck**: Core network connectivity
-- **Bridge Service**: Cross-chain transfer functionality
-- **Explorer Service**: Blockchain exploration tools
-- **Hub Service**: Developer dashboard availability
+<div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+<div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: 'var(--ifm-color-success)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+<svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"/></svg>
+</div>
+<span style={{ fontSize: '1rem', fontWeight: '500' }}><strong>Performance Metrics</strong>: Response times and network health indicators</span>
+</div>
+</div>
 
-## Service Details
+## Features
 
-### **Rollup RPC Healthcheck**
-- **Purpose**: Monitors core network RPC endpoints
-- **Metrics**: Response time, availability, error rates
-- **Impact**: Affects all network interactions and transactions
-- **Status**: Real-time uptime percentage displayed
+<div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+<div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+<div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: 'var(--ifm-color-success)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+<svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"/></svg>
+</div>
+<span style={{ fontSize: '1rem', fontWeight: '500' }}><strong>Real-time Status</strong>: Current operational status of all services</span>
+</div>
 
-### **Network Health Indicators**
-Key metrics monitored include:
-- Block production consistency
-- Transaction processing speeds
-- Gas price stability
-- Network congestion levels
+<div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+<div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: 'var(--ifm-color-success)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+<svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"/></svg>
+</div>
+<span style={{ fontSize: '1rem', fontWeight: '500' }}><strong>Historical Data</strong>: Uptime statistics and performance trends</span>
+</div>
 
-## Uptime Statistics
+<div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+<div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: 'var(--ifm-color-success)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+<svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"/></svg>
+</div>
+<span style={{ fontSize: '1rem', fontWeight: '500' }}><strong>Incident Updates</strong>: Live updates during service disruptions</span>
+</div>
 
-### **Historical Data**
-- 24-hour uptime percentages
-- 7-day availability metrics
-- 30-day reliability statistics
-- Incident history and resolution times
+<div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+<div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: 'var(--ifm-color-success)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+<svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"/></svg>
+</div>
+<span style={{ fontSize: '1rem', fontWeight: '500' }}><strong>Notifications</strong>: Subscribe to email or SMS alerts for status changes</span>
+</div>
 
-### **Performance Metrics**
-- Average response times
-- Peak performance periods
-- Service degradation alerts
-- Recovery time statistics
+<div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+<div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: 'var(--ifm-color-success)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+<svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"/></svg>
+</div>
+<span style={{ fontSize: '1rem', fontWeight: '500' }}><strong>API Access</strong>: Programmatic access to status information</span>
+</div>
+</div>
 
-## Incident Management
-
-### **Incident Reporting**
-When issues occur, the status page provides:
-- Real-time incident updates
-- Estimated resolution times
-- Impact assessment
-- Progress updates during resolution
-
-### **Incident Types**
-Common incident categories:
-- **Service Outages**: Complete service unavailability
-- **Performance Degradation**: Slower than normal response times
-- **Partial Outages**: Some features affected
-- **Maintenance Windows**: Planned service interruptions
-
-## Notifications and Alerts
-
-### **Subscribe to Updates**
-Stay informed about service status:
-1. Visit the status page
-2. Click "Subscribe to status updates"
-3. Choose notification preferences:
-   - Email notifications
-   - SMS alerts (if available)
-   - RSS feeds
-   - Webhook integrations
-
-### **Alert Types**
-- **Incident Notifications**: Immediate alerts for new issues
-- **Resolution Updates**: Notifications when issues are resolved
-- **Maintenance Announcements**: Advance notice of planned work
-- **Performance Alerts**: Warnings about service degradation
-
-## Developer Integration
-
-### **Status API**
-Integrate status information into your applications:
-- JSON API for current status
-- Historical uptime data
-- Incident information
-- Webhook notifications for status changes
-
-### **Monitoring Best Practices**
-For developers building on Intuition:
-- Check status before reporting issues
-- Implement retry logic for temporary outages
-- Monitor your own application metrics
-- Subscribe to status notifications
-
-## Service Dependencies
-
-### **Critical Services**
-Understanding service relationships:
-- **Hub** depends on RPC health
-- **Bridge functionality** requires both networks
-- **Explorer** needs RPC and database services
-- **API endpoints** rely on core infrastructure
-
-### **Cascading Effects**
-When core services experience issues:
-- Dependent services may show degraded performance
-- Some features may be temporarily unavailable
-- Transactions may experience delays
-- Explorer data may lag behind
-
-## Maintenance Windows
-
-### **Planned Maintenance**
-- Advance notice provided on status page
-- Maintenance windows scheduled during low-usage periods
-- Expected duration and impact communicated
-- Progress updates during maintenance
-
-### **Emergency Maintenance**
-- Immediate notifications for critical issues
-- Real-time progress updates
-- Post-maintenance service verification
-- Incident post-mortems when applicable
-
-## Historical Performance
-
-### **Reliability Metrics**
-Track long-term network reliability:
-- Monthly uptime statistics
-- Incident frequency and duration
-- Performance trend analysis
-- Service improvement tracking
-
-### **Network Growth**
-Monitor network adoption and usage:
-- Transaction volume trends
-- Active developer metrics
-- Service utilization patterns
-- Performance under load
-
-## Using Status Information
-
-### **Before Developing**
-- Check current service status
-- Review recent incident history
-- Verify all dependencies are operational
-- Subscribe to notifications
-
-### **During Development**
-- Monitor status if experiencing issues
-- Correlate application problems with service status
-- Use status API for application health checks
-- Report unrelated issues to support
-
-### **Incident Response**
-When services are affected:
-1. Check status page for known issues
-2. Review incident updates and ETAs
-3. Implement fallback strategies if needed
-4. Wait for resolution before escalating
-
-## Contact and Support
-
-### **Status Page Issues**
-If you can't access the status page:
-- Try alternative network connections
-- Clear browser cache and cookies
-- Use mobile data vs. WiFi or vice versa
-- Contact support through alternative channels
-
-### **Additional Support**
-- [Community & Support](/guides/resources/community-and-support) for general help
-- [FAQ](/guides/resources/faq) for common questions
-- [Developer Tools](/guides/developer-tools) for technical documentation
-
-## Related Services
-
-- [Intuition Hub](/guides/hub) - Main development dashboard
-- [Bridge](/guides/hub/bridge) - Cross-chain transfers
-- [Explorer](/guides/hub/explorer) - Blockchain exploration
-- [Developer Tools](/guides/developer-tools) - Technical resources
+Visit [https://testnet.uptime.intuition.systems/](https://testnet.uptime.intuition.systems/) to check current network health and subscribe to status updates.

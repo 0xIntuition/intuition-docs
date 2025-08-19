@@ -24,7 +24,7 @@ Advanced techniques for creating and managing Atoms, including best practices fo
 <span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem' }}>Management</span>
 <span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem' }}>Best Practices</span>
 </div>
-<a href="/guides/overview/the-primitives/structuring/atoms" style={{ color: 'var(--ifm-color-primary)', textDecoration: 'none', fontWeight: '500' }}>
+<a href="/guides/introduction/the-primitives/structuring/atoms" style={{ color: 'var(--ifm-color-primary)', textDecoration: 'none', fontWeight: '500' }}>
 Learn about Atom Structuring →
 </a>
 </div>
@@ -39,7 +39,7 @@ Discover how to effectively structure relationships using Triples, including com
 <span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem' }}>Nested</span>
 <span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem' }}>Semantic</span>
 </div>
-<a href="/guides/overview/the-primitives/structuring/triples" style={{ color: 'var(--ifm-color-primary)', textDecoration: 'none', fontWeight: '500' }}>
+<a href="/guides/introduction/the-primitives/structuring/triples" style={{ color: 'var(--ifm-color-primary)', textDecoration: 'none', fontWeight: '500' }}>
 Learn about Triple Structuring →
 </a>
 </div>
@@ -54,7 +54,7 @@ Learn how to effectively capture and structure signal data, including user inter
 <span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem' }}>Preferences</span>
 <span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem' }}>Behavioral</span>
 </div>
-<a href="/guides/overview/the-primitives/structuring/capturing-signal" style={{ color: 'var(--ifm-color-primary)', textDecoration: 'none', fontWeight: '500' }}>
+<a href="/guides/introduction/the-primitives/structuring/capturing-signal" style={{ color: 'var(--ifm-color-primary)', textDecoration: 'none', fontWeight: '500' }}>
 Learn about Signal Capture →
 </a>
 </div>
@@ -69,7 +69,7 @@ Understand the mathematical and economic principles behind reward calculation in
 <span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem' }}>Economics</span>
 <span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem' }}>Algorithms</span>
 </div>
-<a href="/guides/overview/the-primitives/structuring/calculating-rewards" style={{ color: 'var(--ifm-color-primary)', textDecoration: 'none', fontWeight: '500' }}>
+<a href="/guides/introduction/the-primitives/structuring/calculating-rewards" style={{ color: 'var(--ifm-color-primary)', textDecoration: 'none', fontWeight: '500' }}>
 Learn about Reward Calculation →
 </a>
 </div>
@@ -116,7 +116,7 @@ Create structures that work seamlessly with other systems and data sources.
 
 ## Prerequisites
 
-Before diving into structuring techniques, make sure you have a solid understanding of the [Fundamentals](/guides/overview/the-primitives/fundamentals) section, particularly:
+Before diving into structuring techniques, make sure you have a solid understanding of the [Fundamentals](/guides/introduction/the-primitives/fundamentals) section, particularly:
 
 - Basic concepts of Atoms, Triples, and Signal
 - Understanding of the economic model (Fees & Rewards)

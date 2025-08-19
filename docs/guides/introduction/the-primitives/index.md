@@ -16,21 +16,21 @@ Intuition introduces three new primitives:
 
 ## Explore Primitives
 
-<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem', marginTop: '2rem', marginBottom: '2rem' }}>
+<div className="uniform-card-grid">
 
-<a href="/guides/introduction/the-primitives/fundamentals" style={{ textDecoration: 'none', color: 'inherit' }}>
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)', boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)', height: '100%', display: 'flex', flexDirection: 'column' }} className="docs-card">
-<h3 style={{ marginTop: 0, marginBottom: '1rem', color: 'var(--ifm-color-emphasis-900)' }}>Fundamentals</h3>
-<p style={{ marginBottom: '1rem', color: 'var(--ifm-color-emphasis-700)', lineHeight: '1.6', flex: 1 }}>
+<a href="/guides/introduction/the-primitives/fundamentals" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+<div className="uniform-card clickable-card">
+<h3 className="uniform-card-title">Fundamentals</h3>
+<p className="uniform-card-content">
 Learn the core concepts of Atoms, Triples, Signal, Fees & Rewards, and State Interpretations. Master the building blocks of the Intuition system.
 </p>
 </div>
 </a>
 
-<a href="/guides/introduction/the-primitives/structuring" style={{ textDecoration: 'none', color: 'inherit' }}>
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)', boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)', height: '100%', display: 'flex', flexDirection: 'column' }} className="docs-card">
-<h3 style={{ marginTop: 0, marginBottom: '1rem', color: 'var(--ifm-color-emphasis-900)' }}>Structuring</h3>
-<p style={{ marginBottom: '1rem', color: 'var(--ifm-color-emphasis-700)', lineHeight: '1.6', flex: 1 }}>
+<a href="/guides/introduction/the-primitives/structuring" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+<div className="uniform-card clickable-card">
+<h3 className="uniform-card-title">Structuring</h3>
+<p className="uniform-card-content">
 Discover advanced techniques for structuring data with Atoms and Triples, capturing signal, and calculating rewards in the Intuition ecosystem.
 </p>
 </div>
@@ -40,38 +40,38 @@ Discover advanced techniques for structuring data with Atoms and Triples, captur
 
 ## Core Primitives Overview
 
-<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem', marginTop: '2rem', marginBottom: '2rem' }}>
+<div className="uniform-card-grid-small">
 
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)', boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)' }}>
-<h3 style={{ marginTop: 0, marginBottom: '1rem', color: 'var(--ifm-color-emphasis-900)' }}>Atoms</h3>
-<p style={{ marginBottom: '1rem', color: 'var(--ifm-color-emphasis-700)', lineHeight: '1.6' }}>
+<div className="uniform-card">
+<h3 className="uniform-card-title">Atoms</h3>
+<p className="uniform-card-content">
 The most basic units of knowledge within Intuition, functioning as unique, globally persistent, decentralized identifiers for all things—people, concepts, products, and more.
 </p>
-<div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '1rem' }}>
+<div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '1rem' }}>
 <span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>Subjects</span>
 <span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>Predicates</span>
 <span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>Objects</span>
 </div>
 </div>
 
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)', boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)' }}>
-<h3 style={{ marginTop: 0, marginBottom: '1rem', color: 'var(--ifm-color-emphasis-900)' }}>Triples</h3>
-<p style={{ marginBottom: '1rem', color: 'var(--ifm-color-emphasis-700)', lineHeight: '1.6' }}>
+<div className="uniform-card">
+<h3 className="uniform-card-title">Triples</h3>
+<p className="uniform-card-content">
 Higher-order structures used to define relationships between Atoms. Each Triple consists of three components: a Subject, Predicate, and Object.
 </p>
-<div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '1rem' }}>
+<div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '1rem' }}>
 <span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>Relationships</span>
 <span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>Semantic</span>
 <span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>Machine-readable</span>
 </div>
 </div>
 
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)', boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)' }}>
-<h3 style={{ marginTop: 0, marginBottom: '1rem', color: 'var(--ifm-color-emphasis-900)' }}>Signal</h3>
-<p style={{ marginBottom: '1rem', color: 'var(--ifm-color-emphasis-700)', lineHeight: '1.6' }}>
+<div className="uniform-card">
+<h3 className="uniform-card-title">Signal</h3>
+<p className="uniform-card-content">
 Actions that express intent, belief, or support within the system. Signals can be explicit or implicit, contributing to trust and belief expression.
 </p>
-<div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '1rem' }}>
+<div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '1rem' }}>
 <span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>Trust</span>
 <span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>Belief</span>
 <span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>Support</span>

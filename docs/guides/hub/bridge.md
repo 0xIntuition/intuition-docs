@@ -162,7 +162,7 @@ Use the [Explorer](/guides/hub/explorer) to:
 ### **Getting Help**
 - Check transaction status on bridge interface
 - Use [Explorer](/guides/hub/explorer) to verify transactions
-- Monitor [Network Status](/guides/hub/testnet-uptime) for service health
+- Monitor [Network Health](/guides/resources/network-health) for service health
 - Visit [Community & Support](/guides/resources/community-and-support) for assistance
 
 ## Developer Resources
@@ -182,6 +182,6 @@ Use the [Explorer](/guides/hub/explorer) to:
 ## Next Steps
 
 - Explore bridged assets on [Explorer](/guides/hub/explorer)
-- Monitor bridge health on [Network Status](/guides/hub/testnet-uptime)
+- Monitor bridge health on [Network Health](/guides/resources/network-health)
 - Start building with [Developer Tools](/guides/developer-tools)
-- Test with the [Hub](/guides/hub/testnet-hub) 
+- Test with the [Hub](/guides/hub) 

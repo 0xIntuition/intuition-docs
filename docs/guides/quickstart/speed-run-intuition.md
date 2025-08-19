@@ -12,20 +12,88 @@ The [Intuition SDK Showcase](https://github.com/robbiekruszynski/intuition_speed
 
 ## Key Features
 
-- **Atom Creation**: Multiple methods for creating atoms (string, IPFS, Ethereum accounts, things)
-- **Triple Creation**: Create subject-predicate-object relationships between atoms
-- **Batch Operations**: Efficient bulk creation of atoms and triples
-- **Vault Lookup**: Search and view atom/triple vaults and trading data
-- **Use Cases**: Real-world examples and applications
-- **IPFS Integration**: Pinata integration for decentralized file storage
-- **Multi-Network Support**: Works on Ethereum, Arbitrum, Base (mainnet and testnets)
+<div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+<div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+<div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: 'var(--ifm-color-success)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+<svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"/></svg>
+</div>
+<span style={{ fontSize: '1rem', fontWeight: '500' }}><strong>Atom Creation</strong>: Multiple methods for creating atoms (string, IPFS, Ethereum accounts, things)</span>
+</div>
+
+<div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+<div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: 'var(--ifm-color-success)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+<svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"/></svg>
+</div>
+<span style={{ fontSize: '1rem', fontWeight: '500' }}><strong>Triple Creation</strong>: Create subject-predicate-object relationships between atoms</span>
+</div>
+
+<div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+<div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: 'var(--ifm-color-success)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+<svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"/></svg>
+</div>
+<span style={{ fontSize: '1rem', fontWeight: '500' }}><strong>Batch Operations</strong>: Efficient bulk creation of atoms and triples</span>
+</div>
+
+<div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+<div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: 'var(--ifm-color-success)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+<svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"/></svg>
+</div>
+<span style={{ fontSize: '1rem', fontWeight: '500' }}><strong>Vault Lookup</strong>: Search and view atom/triple vaults and trading data</span>
+</div>
+
+<div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+<div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: 'var(--ifm-color-success)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+<svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"/></svg>
+</div>
+<span style={{ fontSize: '1rem', fontWeight: '500' }}><strong>Use Cases</strong>: Real-world examples and applications</span>
+</div>
+
+<div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+<div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: 'var(--ifm-color-success)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+<svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"/></svg>
+</div>
+<span style={{ fontSize: '1rem', fontWeight: '500' }}><strong>IPFS Integration</strong>: Pinata integration for decentralized file storage</span>
+</div>
+
+<div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+<div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: 'var(--ifm-color-success)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+<svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"/></svg>
+</div>
+<span style={{ fontSize: '1rem', fontWeight: '500' }}><strong>Multi-Network Support</strong>: Works on Ethereum, Arbitrum, Base (mainnet and testnets)</span>
+</div>
+</div>
 
 ## Prerequisites
 
-- Node.js 18+
-- pnpm (recommended) or npm
-- MetaMask or other Web3 wallet
-- Testnet ETH for transactions
+<div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+<div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+<div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: 'var(--ifm-color-success)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+<svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"/></svg>
+</div>
+<span style={{ fontSize: '1rem', fontWeight: '500' }}>Node.js 18+</span>
+</div>
+
+<div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+<div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: 'var(--ifm-color-success)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+<svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"/></svg>
+</div>
+<span style={{ fontSize: '1rem', fontWeight: '500' }}>pnpm (recommended) or npm</span>
+</div>
+
+<div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+<div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: 'var(--ifm-color-success)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+<svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"/></svg>
+</div>
+<span style={{ fontSize: '1rem', fontWeight: '500' }}>MetaMask or other Web3 wallet</span>
+</div>
+
+<div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+<div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: 'var(--ifm-color-success)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+<svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"/></svg>
+</div>
+<span style={{ fontSize: '1rem', fontWeight: '500' }}>Testnet ETH for transactions</span>
+</div>
+</div>
 
 ## Quick Start
 
@@ -359,7 +427,7 @@ The application is designed to be easily customizable:
 ## Next Steps
 
 - Explore the [Official Intuition Kits](/guides/quickstart/official-intuition-kits) for pre-built templates
-- Learn about [Smart Contracts](/guides/smart-contracts) for advanced features
+- Learn about [Smart Contracts](/guides/developer-tools/contracts) for advanced features
 - Check out the [GraphQL API documentation](/graphql) for more query options
 - Join the [Intuition Community](https://discord.gg/0xintuition) for support and collaboration
 

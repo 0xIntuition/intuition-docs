@@ -139,7 +139,7 @@ npm run build:dev
 ## Next Steps
 
 - Explore [Community-Built Kits](/guides/quickstart/community-built-kits) for additional templates
-- Learn about [Smart Contracts](/guides/smart-contracts) for advanced features
+- Learn about [Smart Contracts](/guides/developer-tools/contracts) for advanced features
 - Check out the [GraphQL API](/graphql) for data integration
 - Visit the [official tech documentation](https://tech.docs.intuition.systems/) for comprehensive guides
 
