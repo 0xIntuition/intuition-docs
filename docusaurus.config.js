@@ -149,21 +149,25 @@ const config = {
           height: '40px',
           width: '101px',
         },
+        hideOnScroll: false,
         items: [
           {
             label: 'Guides',
             to: 'guides',
             className: 'guides-top-header',
+            position: 'left',
           },
           {
             label: 'Intuition Hub',
             to: 'guides/hub',
             className: 'hub-top-header',
+            position: 'left',
           },
           {
             label: 'Developer Tools',
             to: 'guides/developer-tools',
             className: 'developer-tools-top-header',
+            position: 'left',
           },
           {
             type: 'search',
