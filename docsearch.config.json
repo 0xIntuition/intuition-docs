@@ -35,7 +35,7 @@
       "lvl0": {
         "selector": "",
         "global": true,
-        "default_value": "Guides"
+        "default_value": "Welcome"
       },
       "lvl1": "article h1",
       "lvl2": "article h2",

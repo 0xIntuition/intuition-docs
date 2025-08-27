@@ -10,11 +10,7 @@ description: Discover how to build amazing applications with Intuition's decentr
 
 Intuition transforms how applications handle trust, identity, and knowledge. Instead of building isolated data silos, you can tap into a **universal knowledge graph** where reputation, relationships, and verification work across every app.
 
-import IntuitionSandbox from '@site/src/components/IntuitionSandbox';
 
-
-
-<IntuitionSandbox />
 
 ## Real-World Applications
 

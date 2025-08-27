@@ -1,170 +1,162 @@
 ---
 id: hub
-title: Intuition Hub
 sidebar_label: Hub Overview
 sidebar_position: 1
 description: Essential tools and applications for interacting with the Intuition ecosystem
 ---
 
-<a href="https://intuition-testnet.hub.caldera.xyz/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
-<div className="hub-hero-professional uniform-card clickable-card" style={{
-  background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)',
-  borderRadius: '16px',
-  padding: '3rem 2rem',
-  marginBottom: '3rem',
-  color: 'white',
-  textAlign: 'center',
-  border: '1px solid #404040',
-  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)'
-}}>
-  <h1 style={{ 
-    fontSize: '3rem', 
-    fontWeight: '700', 
-    marginBottom: '1rem',
-    color: 'white'
-  }}>
+<a href="https://intuition-testnet.hub.caldera.xyz/" target="_blank" rel="noopener noreferrer" className="hub-hero">
+  <h1 className="hub-hero-title">
     Intuition Hub
   </h1>
-  <p style={{ 
-    fontSize: '1.25rem', 
-    opacity: '0.9',
-    maxWidth: '600px',
-    margin: '0 auto 1.5rem auto',
-    lineHeight: '1.6',
-    color: 'white'
-  }}>
-    Essential tools and applications for interacting with the Intuition ecosystem. From exploring the knowledge graph to bridging assets across networks.
+  <p className="hub-hero-description">
+    Essential tools and applications for interacting with the Intuition ecosystem on the L3 network. From exploring the knowledge graph to bridging assets across networks.
   </p>
-  <div style={{
-    display: 'inline-flex',
-    alignItems: 'center',
-    backgroundColor: 'white',
-    color: '#1a1a1a',
-    padding: '0.5rem 1rem',
-    borderRadius: '6px',
-    fontWeight: '500',
-    fontSize: '0.875rem',
-    border: '1px solid #e5e5e5',
-    transition: 'all 0.2s ease'
-  }}>
-    Access Hub
+  <div className="hub-hero-button">
+    Enter
   </div>
-</div>
 </a>
 
-## Quick Access
 
-Access the Intuition Hub directly at: [https://intuition-testnet.hub.caldera.xyz/](https://intuition-testnet.hub.caldera.xyz/)
+## What You'll Find Inside
 
-## What's Available
+Everything you need to build and test on Intuition's L3 network:
 
-The Intuition Hub serves as your comprehensive command center for building on the Intuition protocol:
-
-<div style={{
-  display: 'grid',
-  gridTemplateColumns: '1fr 1fr 1fr',
-  gap: '2rem',
-  marginBottom: '3rem',
-  width: '100%'
-}}>
+<div className="grid-3-cols">
 
 <div style={{
   border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '16px',
-  padding: '2rem',
+  borderRadius: '20px',
+  padding: '2.5rem',
   backgroundColor: 'var(--ifm-background-color)',
-  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
+  boxShadow: '0 4px 16px rgba(0, 0, 0, 0.08)',
   height: '100%',
   display: 'flex',
-  flexDirection: 'column'
+  flexDirection: 'column',
+  transition: 'all 0.3s ease',
+  cursor: 'pointer'
 }}>
+<div style={{
+  width: '48px',
+  height: '48px',
+  borderRadius: '12px',
+  backgroundColor: 'var(--ifm-color-primary)',
+  color: 'white',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  marginBottom: '1.5rem',
+  fontSize: '1.25rem',
+  fontWeight: 'bold'
+}}>🛠️</div>
 <h3 style={{ 
   marginTop: 0, 
-  marginBottom: '1.5rem', 
-  color: 'var(--ifm-color-primary)',
-  fontSize: '1.25rem',
+  marginBottom: '1rem', 
+  color: 'var(--ifm-color-emphasis-900)',
+  fontSize: '1.3rem',
   fontWeight: '600'
 }}>
-Development Tools
+Build & Deploy
 </h3>
-<ul style={{ 
-  paddingLeft: '1.5rem', 
-  lineHeight: '1.8',
+<p style={{ 
   margin: 0,
-  flexGrow: 1,
-  fontSize: '0.95rem'
+  fontSize: '1rem',
+  lineHeight: '1.6',
+  color: 'var(--ifm-color-emphasis-700)',
+  flexGrow: 1
 }}>
-<li>Smart contract deployment and testing</li>
-<li>Transaction monitoring and debugging</li>
-<li>Network configuration and setup</li>
-<li>Developer documentation and guides</li>
-</ul>
+Deploy smart contracts, test transactions, and monitor your applications in a safe environment.
+</p>
 </div>
 
 <div style={{
   border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '16px',
-  padding: '2rem',
+  borderRadius: '20px',
+  padding: '2.5rem',
   backgroundColor: 'var(--ifm-background-color)',
-  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
+  boxShadow: '0 4px 16px rgba(0, 0, 0, 0.08)',
   height: '100%',
   display: 'flex',
-  flexDirection: 'column'
+  flexDirection: 'column',
+  transition: 'all 0.3s ease',
+  cursor: 'pointer'
 }}>
+<div style={{
+  width: '48px',
+  height: '48px',
+  borderRadius: '12px',
+  backgroundColor: 'var(--ifm-color-primary)',
+  color: 'white',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  marginBottom: '1.5rem',
+  fontSize: '1.25rem',
+  fontWeight: 'bold'
+}}>🔗</div>
 <h3 style={{ 
   marginTop: 0, 
-  marginBottom: '1.5rem', 
-  color: 'var(--ifm-color-primary)',
-  fontSize: '1.25rem',
+  marginBottom: '1rem', 
+  color: 'var(--ifm-color-emphasis-900)',
+  fontSize: '1.3rem',
   fontWeight: '600'
 }}>
-Integration Resources
+Connect & Test
 </h3>
-<ul style={{ 
-  paddingLeft: '1.5rem', 
-  lineHeight: '1.8',
+<p style={{ 
   margin: 0,
-  flexGrow: 1,
-  fontSize: '0.95rem'
+  fontSize: '1rem',
+  lineHeight: '1.6',
+  color: 'var(--ifm-color-emphasis-700)',
+  flexGrow: 1
 }}>
-<li>SDK testing and validation</li>
-<li>API endpoint testing</li>
-<li>GraphQL playground access</li>
-<li>Real-time network statistics</li>
-</ul>
+Test APIs, validate SDK integrations, and explore the GraphQL playground with real data.
+</p>
 </div>
 
 <div style={{
   border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '16px',
-  padding: '2rem',
+  borderRadius: '20px',
+  padding: '2.5rem',
   backgroundColor: 'var(--ifm-background-color)',
-  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
+  boxShadow: '0 4px 16px rgba(0, 0, 0, 0.08)',
   height: '100%',
   display: 'flex',
-  flexDirection: 'column'
+  flexDirection: 'column',
+  transition: 'all 0.3s ease',
+  cursor: 'pointer'
 }}>
+<div style={{
+  width: '48px',
+  height: '48px',
+  borderRadius: '12px',
+  backgroundColor: 'var(--ifm-color-primary)',
+  color: 'white',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  marginBottom: '1.5rem',
+  fontSize: '1.25rem',
+  fontWeight: 'bold'
+}}>⚡</div>
 <h3 style={{ 
   marginTop: 0, 
-  marginBottom: '1.5rem', 
-  color: 'var(--ifm-color-primary)',
-  fontSize: '1.25rem',
+  marginBottom: '1rem', 
+  color: 'var(--ifm-color-emphasis-900)',
+  fontSize: '1.3rem',
   fontWeight: '600'
 }}>
-Testing Infrastructure
+Monitor & Optimize
 </h3>
-<ul style={{ 
-  paddingLeft: '1.5rem', 
-  lineHeight: '1.8',
+<p style={{ 
   margin: 0,
-  flexGrow: 1,
-  fontSize: '0.95rem'
+  fontSize: '1rem',
+  lineHeight: '1.6',
+  color: 'var(--ifm-color-emphasis-700)',
+  flexGrow: 1
 }}>
-<li>Isolated testing environment</li>
-<li>Test token faucets</li>
-<li>Mock data services</li>
-<li>Performance monitoring</li>
-</ul>
+Track performance, monitor network health, and get test tokens to fuel your development.
+</p>
 </div>
 
 </div>
@@ -173,13 +165,7 @@ Testing Infrastructure
 
 Ready to start building on Intuition? Follow these steps:
 
-<div style={{
-  display: 'grid',
-  gridTemplateColumns: '1fr 1fr 1fr 1fr',
-  gap: '2rem',
-  marginBottom: '3rem',
-  width: '100%'
-}}>
+<div className="getting-started-grid">
 
 <a href="/guides/resources/faq#how-do-i-connect-to-the-intuition-testnet" style={{ 
   textDecoration: 'none', 
@@ -204,8 +190,8 @@ Ready to start building on Intuition? Follow these steps:
   width: '60px',
   height: '60px',
   borderRadius: '50%',
-  backgroundColor: 'var(--ifm-color-primary)',
-  color: 'white',
+  backgroundColor: 'var(--ifm-color-emphasis-200)',
+  color: '#000000',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -218,9 +204,7 @@ Ready to start building on Intuition? Follow these steps:
 <p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-600)', lineHeight: '1.6', marginBottom: '1rem' }}>
 Use MetaMask or any Web3 wallet to connect to the testnet
 </p>
-<div style={{ fontSize: '0.85rem', color: 'var(--ifm-color-primary)', fontWeight: '500' }}>
-View Setup Guide →
-</div>
+
 </div>
 </a>
 
@@ -247,8 +231,8 @@ View Setup Guide →
   width: '60px',
   height: '60px',
   borderRadius: '50%',
-  backgroundColor: 'var(--ifm-color-primary)',
-  color: 'white',
+  backgroundColor: 'var(--ifm-color-emphasis-200)',
+  color: '#000000',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -261,9 +245,7 @@ View Setup Guide →
 <p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-600)', lineHeight: '1.6', marginBottom: '1rem' }}>
 Use the built-in faucet to obtain test tokens for transactions
 </p>
-<div style={{ fontSize: '0.85rem', color: 'var(--ifm-color-primary)', fontWeight: '500' }}>
-Open Testnet Hub →
-</div>
+
 </div>
 </a>
 
@@ -290,8 +272,8 @@ Open Testnet Hub →
   width: '60px',
   height: '60px',
   borderRadius: '50%',
-  backgroundColor: 'var(--ifm-color-primary)',
-  color: 'white',
+  backgroundColor: 'var(--ifm-color-emphasis-200)',
+  color: '#000000',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -331,8 +313,8 @@ Access all testnet tools and services from the centralized dashboard
   width: '60px',
   height: '60px',
   borderRadius: '50%',
-  backgroundColor: 'var(--ifm-color-primary)',
-  color: 'white',
+  backgroundColor: 'var(--ifm-color-emphasis-200)',
+  color: '#000000',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -353,121 +335,49 @@ Deploy your first smart contract or create your first atom
 
 ## Network Details
 
-<div style={{ 
-  width: '100%',
-  marginBottom: '3rem'
-}}>
+<div className="network-details-container">
 
-<table className="network-details-table" style={{ 
-  width: '100%', 
-  borderCollapse: 'collapse',
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '12px',
-  overflow: 'hidden',
-  backgroundColor: 'var(--ifm-background-color)',
-  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
-  tableLayout: 'auto'
-}}>
+<table className="network-details-table">
 <thead>
-<tr style={{ backgroundColor: 'var(--ifm-color-emphasis-100)' }}>
-<th style={{ 
-  padding: '1rem 1.5rem', 
-  textAlign: 'left',
-  fontWeight: '600',
-  color: 'var(--ifm-color-emphasis-800)',
-  borderBottom: '1px solid var(--ifm-color-emphasis-200)',
-  width: '20%'
-}}>Parameter</th>
-<th style={{ 
-  padding: '1rem 1.5rem', 
-  textAlign: 'left',
-  fontWeight: '600',
-  color: 'var(--ifm-color-emphasis-800)',
-  borderBottom: '1px solid var(--ifm-color-emphasis-200)',
-  width: '25%'
-}}>Value</th>
-<th style={{ 
-  padding: '1rem 1.5rem', 
-  textAlign: 'left',
-  fontWeight: '600',
-  color: 'var(--ifm-color-emphasis-800)',
-  borderBottom: '1px solid var(--ifm-color-emphasis-200)',
-  width: '55%'
-}}>Description</th>
+<tr>
+<th>Parameter</th>
+<th>Value</th>
+<th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style={{ 
-  padding: '1rem 1.5rem', 
-  fontWeight: '600',
-  borderBottom: '1px solid var(--ifm-color-emphasis-100)'
-}}>Network Name</td>
-<td style={{ 
-  padding: '1rem 1.5rem',
-  borderBottom: '1px solid var(--ifm-color-emphasis-100)'
-}}>Intuition Testnet</td>
-<td style={{ 
-  padding: '1rem 1.5rem',
-  borderBottom: '1px solid var(--ifm-color-emphasis-100)'
-}}>The official name of the Intuition testnet</td>
+<td><strong>Chain ID</strong></td>
+<td>13579</td>
+<td>Unique identifier for the Intuition testnet</td>
 </tr>
 <tr>
-<td style={{ 
-  padding: '1rem 1.5rem', 
-  fontWeight: '600',
-  borderBottom: '1px solid var(--ifm-color-emphasis-100)'
-}}>Chain ID</td>
-<td style={{ 
-  padding: '1rem 1.5rem',
-  borderBottom: '1px solid var(--ifm-color-emphasis-100)'
-}}>Check hub dashboard</td>
-<td style={{ 
-  padding: '1rem 1.5rem',
-  borderBottom: '1px solid var(--ifm-color-emphasis-100)'
-}}>Current chain ID available in the hub</td>
+<td><strong>Native Token</strong></td>
+<td>$TTRUST</td>
+<td>Native token for transactions and gas fees</td>
 </tr>
 <tr>
-<td style={{ 
-  padding: '1rem 1.5rem', 
-  fontWeight: '600',
-  borderBottom: '1px solid var(--ifm-color-emphasis-100)'
-}}>RPC URL</td>
-<td style={{ 
-  padding: '1rem 1.5rem',
-  borderBottom: '1px solid var(--ifm-color-emphasis-100)'
-}}>Available in hub</td>
-<td style={{ 
-  padding: '1rem 1.5rem',
-  borderBottom: '1px solid var(--ifm-color-emphasis-100)'
-}}>RPC endpoint provided in the dashboard</td>
+<td><strong>Settlement Layer</strong></td>
+<td>Base Sepolia</td>
+<td>Layer 1 settlement and data availability</td>
 </tr>
 <tr>
-<td style={{ 
-  padding: '1rem 1.5rem', 
-  fontWeight: '600',
-  borderBottom: '1px solid var(--ifm-color-emphasis-100)'
-}}>Block Explorer</td>
-<td style={{ 
-  padding: '1rem 1.5rem',
-  borderBottom: '1px solid var(--ifm-color-emphasis-100)'
-}}>Integrated explorer</td>
-<td style={{ 
-  padding: '1rem 1.5rem',
-  borderBottom: '1px solid var(--ifm-color-emphasis-100)'
-}}>Built-in blockchain explorer for transactions</td>
+<td><strong>Data Availability</strong></td>
+<td>Arbitrum AnyTrust</td>
+<td>Data availability and security layer</td>
 </tr>
 <tr>
-<td style={{ 
-  padding: '1rem 1.5rem', 
-  fontWeight: '600'
-}}>Faucet</td>
-<td style={{ 
-  padding: '1rem 1.5rem'
-}}>Built-in distribution</td>
-<td style={{ 
-  padding: '1rem 1.5rem'
-}}>Test token faucet for development</td>
+<td><strong>Rollup Stack</strong></td>
+<td>Arbitrum Nitro</td>
+<td>Optimistic rollup technology stack</td>
+</tr>
+<tr>
+<td><strong>RPC (HTTP)</strong></td>
+<td colspan="2"><code className="rpc-endpoint">https://testnet.rpc.intuition.systems/http</code></td>
+</tr>
+<tr>
+<td><strong>RPC (WebSocket)</strong></td>
+<td colspan="2"><code className="rpc-endpoint">wss://testnet.rpc.intuition.systems/ws</code></td>
 </tr>
 </tbody>
 </table>
@@ -476,43 +386,14 @@ Deploy your first smart contract or create your first atom
 
 ## Key Features
 
-<div style={{
-  display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-  gap: '2rem',
-  marginBottom: '3rem',
-  width: '100%'
-}}>
+<div className="key-features-grid">
 
-<div style={{
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '16px',
-  padding: '2rem',
-  backgroundColor: 'var(--ifm-background-color)',
-  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
-  height: '100%',
-  display: 'flex',
-  flexDirection: 'column'
-}}>
-<h3 style={{ 
-  marginTop: 0, 
-  marginBottom: '1.5rem', 
-  color: 'var(--ifm-color-primary)',
-  fontSize: '1.25rem',
-  fontWeight: '600'
-}}>
-Centralized Dashboard
-</h3>
-<p style={{ marginBottom: '1.5rem', lineHeight: '1.6', fontSize: '0.95rem' }}>
+<div className="key-feature-card">
+<h3 className="key-feature-title">Centralized Dashboard</h3>
+<p className="key-feature-description">
 All testnet services are accessible from a single, intuitive interface that provides:
 </p>
-<ul style={{ 
-  paddingLeft: '1.5rem', 
-  lineHeight: '1.8',
-  margin: 0,
-  flexGrow: 1,
-  fontSize: '0.95rem'
-}}>
+<ul className="green-checklist">
 <li>Service status monitoring</li>
 <li>Quick navigation to tools</li>
 <li>Real-time network metrics</li>
@@ -520,70 +401,24 @@ All testnet services are accessible from a single, intuitive interface that prov
 </ul>
 </div>
 
-<div style={{
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '16px',
-  padding: '2rem',
-  backgroundColor: 'var(--ifm-background-color)',
-  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
-  height: '100%',
-  display: 'flex',
-  flexDirection: 'column'
-}}>
-<h3 style={{ 
-  marginTop: 0, 
-  marginBottom: '1.5rem', 
-  color: 'var(--ifm-color-primary)',
-  fontSize: '1.25rem',
-  fontWeight: '600'
-}}>
-Seamless Integration
-</h3>
-<p style={{ marginBottom: '1.5rem', lineHeight: '1.6', fontSize: '0.95rem' }}>
+<div className="key-feature-card">
+<h3 className="key-feature-title">Seamless Integration</h3>
+<p className="key-feature-description">
 The hub integrates with all Intuition testnet services:
 </p>
-<ul style={{ 
-  paddingLeft: '1.5rem', 
-  lineHeight: '1.8',
-  margin: 0,
-  flexGrow: 1,
-  fontSize: '0.95rem'
-}}>
+<ul className="green-checklist">
 <li><a href="/guides/hub/bridge">Bridge</a> for cross-chain transfers</li>
 <li><a href="/guides/hub/explorer">Explorer</a> for blockchain exploration</li>
 <li><a href="/guides/resources/network-health">Network Status</a> for service monitoring</li>
 </ul>
 </div>
 
-<div style={{
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '16px',
-  padding: '2rem',
-  backgroundColor: 'var(--ifm-background-color)',
-  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
-  height: '100%',
-  display: 'flex',
-  flexDirection: 'column'
-}}>
-<h3 style={{ 
-  marginTop: 0, 
-  marginBottom: '1.5rem', 
-  color: 'var(--ifm-color-primary)',
-  fontSize: '1.25rem',
-  fontWeight: '600'
-}}>
-Developer-Friendly
-</h3>
-<p style={{ marginBottom: '1.5rem', lineHeight: '1.6', fontSize: '0.95rem' }}>
+<div className="key-feature-card">
+<h3 className="key-feature-title">Developer-Friendly</h3>
+<p className="key-feature-description">
 Built with developers in mind:
 </p>
-<ul style={{ 
-  paddingLeft: '1.5rem', 
-  lineHeight: '1.8',
-  margin: 0,
-  flexGrow: 1,
-  fontSize: '0.95rem'
-}}>
+<ul className="green-checklist">
 <li>Clear documentation links</li>
 <li>Code examples and snippets</li>
 <li>Testing best practices</li>
@@ -603,274 +438,60 @@ Built with developers in mind:
   marginBottom: '3rem' 
 }}>
 
-<a href="/guides/hub" style={{ 
-  textDecoration: 'none', 
-  color: 'inherit',
-  display: 'block',
-  transition: 'all 0.3s ease'
-}} className="hub-card">
-<div style={{ 
-  border: '1px solid var(--ifm-color-emphasis-200)', 
-  borderRadius: '16px', 
-  padding: '2rem', 
-  backgroundColor: 'var(--ifm-background-color)',
-  boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-  position: 'relative',
-  overflow: 'hidden',
-  display: 'flex',
-  alignItems: 'center',
-  gap: '2rem'
-}}>
-<div style={{ 
-  position: 'absolute',
-  top: '0',
-  left: '0',
-  right: '0',
-  height: '4px',
-  background: 'linear-gradient(90deg, #7C3AED, #A855F7)'
-}}></div>
-<div style={{ 
-  width: '80px', 
-  height: '80px', 
-  borderRadius: '20px', 
-  background: 'linear-gradient(135deg, #7C3AED, #A855F7)', 
-  display: 'flex', 
-  alignItems: 'center', 
-  justifyContent: 'center', 
-  flexShrink: 0,
-  boxShadow: '0 4px 12px rgba(124, 58, 237, 0.3)'
-}}>
+<a href="https://intuition-testnet.hub.caldera.xyz/" target="_blank" rel="noopener noreferrer" className="core-app-card clickable-card">
+<div className="core-app-icon">
 <svg width="32" height="32" viewBox="0 0 24 24" fill="white">
 <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/>
 </svg>
 </div>
-<div style={{ flex: 1 }}>
-<h3 style={{ 
-  margin: '0 0 1rem 0', 
-  fontSize: '1.5rem', 
-  fontWeight: '600',
-  color: 'var(--ifm-color-emphasis-800)'
-}}>Hub</h3>
-<p style={{ 
-  margin: '0 0 1rem 0', 
-  color: 'var(--ifm-color-emphasis-600)',
-  fontSize: '1rem',
-  lineHeight: '1.6'
-}}>
+<div className="core-app-content">
+<h3 className="core-app-title">Hub</h3>
+<p className="core-app-description">
 Development environment hub for the Intuition testnet. Access all testnet services, tools, and resources in one centralized location.
 </p>
-<div style={{ 
-  display: 'flex', 
-  gap: '0.5rem', 
-  flexWrap: 'wrap'
-}}>
-<span style={{ 
-  backgroundColor: 'rgba(124, 58, 237, 0.1)', 
-  color: '#7C3AED',
-  padding: '0.375rem 0.75rem', 
-  borderRadius: '20px', 
-  fontSize: '0.875rem',
-  fontWeight: '500'
-}}>Testnet</span>
-<span style={{ 
-  backgroundColor: 'rgba(124, 58, 237, 0.1)', 
-  color: '#7C3AED',
-  padding: '0.375rem 0.75rem', 
-  borderRadius: '20px', 
-  fontSize: '0.875rem',
-  fontWeight: '500'
-}}>Development</span>
-<span style={{ 
-  backgroundColor: 'rgba(124, 58, 237, 0.1)', 
-  color: '#7C3AED',
-  padding: '0.375rem 0.75rem', 
-  borderRadius: '20px', 
-  fontSize: '0.875rem',
-  fontWeight: '500'
-}}>Testing</span>
+<div className="core-app-tags">
+<span className="core-app-tag">Testnet</span>
+<span className="core-app-tag">Development</span>
+<span className="core-app-tag">Testing</span>
 </div>
-</div>
-
 </div>
 </a>
 
-<a href="/guides/hub/bridge" style={{ 
-  textDecoration: 'none', 
-  color: 'inherit',
-  display: 'block',
-  transition: 'all 0.3s ease'
-}} className="hub-card">
-<div style={{ 
-  border: '1px solid var(--ifm-color-emphasis-200)', 
-  borderRadius: '16px', 
-  padding: '2rem', 
-  backgroundColor: 'var(--ifm-background-color)',
-  boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-  height: '100%',
-  position: 'relative',
-  overflow: 'hidden'
-}}>
-<div style={{ 
-  position: 'absolute',
-  top: '0',
-  left: '0',
-  right: '0',
-  height: '4px',
-  background: 'linear-gradient(90deg, #F59E0B, #D97706)'
-}}></div>
-<div style={{ display: 'flex', alignItems: 'center', marginBottom: '1.5rem' }}>
-<div style={{ 
-  width: '60px', 
-  height: '60px', 
-  borderRadius: '16px', 
-  background: 'linear-gradient(135deg, #F59E0B, #D97706)', 
-  display: 'flex', 
-  alignItems: 'center', 
-  justifyContent: 'center', 
-  marginRight: '1rem',
-  boxShadow: '0 4px 12px rgba(245, 158, 11, 0.3)'
-}}>
-<svg width="28" height="28" viewBox="0 0 24 24" fill="white">
+<a href="/guides/hub/bridge" className="core-app-card clickable-card">
+<div className="core-app-icon">
+<svg width="32" height="32" viewBox="0 0 24 24" fill="white">
 <path d="M6 6v2h8.59L5 17.59 6.41 19 16 9.41V18h2V6z"/>
 </svg>
 </div>
-<h3 style={{ 
-  margin: 0, 
-  fontSize: '1.5rem', 
-  fontWeight: '600',
-  color: 'var(--ifm-color-emphasis-800)'
-}}>Bridge</h3>
-</div>
-<p style={{ 
-  marginBottom: '1.5rem', 
-  color: 'var(--ifm-color-emphasis-600)',
-  fontSize: '1rem',
-  lineHeight: '1.6'
-}}>
+<div className="core-app-content">
+<h3 className="core-app-title">Bridge</h3>
+<p className="core-app-description">
 Bridge assets between Ethereum testnets and Intuition testnet. Secure cross-chain transfers for testing and development purposes.
 </p>
-<div style={{ 
-  display: 'flex', 
-  gap: '0.5rem', 
-  flexWrap: 'wrap',
-  marginBottom: '1rem'
-}}>
-<span style={{ 
-  backgroundColor: 'rgba(245, 158, 11, 0.1)', 
-  color: '#F59E0B',
-  padding: '0.375rem 0.75rem', 
-  borderRadius: '20px', 
-  fontSize: '0.875rem',
-  fontWeight: '500'
-}}>Bridge</span>
-<span style={{ 
-  backgroundColor: 'rgba(245, 158, 11, 0.1)', 
-  color: '#F59E0B',
-  padding: '0.375rem 0.75rem', 
-  borderRadius: '20px', 
-  fontSize: '0.875rem',
-  fontWeight: '500'
-}}>Cross-chain</span>
-<span style={{ 
-  backgroundColor: 'rgba(245, 158, 11, 0.1)', 
-  color: '#F59E0B',
-  padding: '0.375rem 0.75rem', 
-  borderRadius: '20px', 
-  fontSize: '0.875rem',
-  fontWeight: '500'
-}}>Testing</span>
+<div className="core-app-tags">
+<span className="core-app-tag">Bridge</span>
+<span className="core-app-tag">Cross-chain</span>
+<span className="core-app-tag">Testing</span>
 </div>
-
 </div>
 </a>
 
-<a href="/guides/resources/network-health" style={{ 
-  textDecoration: 'none', 
-  color: 'inherit',
-  display: 'block',
-  transition: 'all 0.3s ease'
-}} className="hub-card">
-<div style={{ 
-  border: '1px solid var(--ifm-color-emphasis-200)', 
-  borderRadius: '16px', 
-  padding: '2rem', 
-  backgroundColor: 'var(--ifm-background-color)',
-  boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-  height: '100%',
-  position: 'relative',
-  overflow: 'hidden'
-}}>
-<div style={{ 
-  position: 'absolute',
-  top: '0',
-  left: '0',
-  right: '0',
-  height: '4px',
-  background: 'linear-gradient(90deg, #EF4444, #DC2626)'
-}}></div>
-<div style={{ display: 'flex', alignItems: 'center', marginBottom: '1.5rem' }}>
-<div style={{ 
-  width: '60px', 
-  height: '60px', 
-  borderRadius: '16px', 
-  background: 'linear-gradient(135deg, #EF4444, #DC2626)', 
-  display: 'flex', 
-  alignItems: 'center', 
-  justifyContent: 'center', 
-  marginRight: '1rem',
-  boxShadow: '0 4px 12px rgba(239, 68, 68, 0.3)'
-}}>
-<svg width="28" height="28" viewBox="0 0 24 24" fill="white">
+<a href="/guides/resources/network-health" className="core-app-card clickable-card">
+<div className="core-app-icon">
+<svg width="32" height="32" viewBox="0 0 24 24" fill="white">
 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
 </svg>
 </div>
-<h3 style={{ 
-  margin: 0, 
-  fontSize: '1.5rem', 
-  fontWeight: '600',
-  color: 'var(--ifm-color-emphasis-800)'
-}}>Testnet Status</h3>
-</div>
-<p style={{ 
-  marginBottom: '1.5rem', 
-  color: 'var(--ifm-color-emphasis-600)',
-  fontSize: '1rem',
-  lineHeight: '1.6'
-}}>
-Real-time status monitoring for the Intuition testnet. Check service availability, network health, and uptime statistics.
+<div className="core-app-content">
+<h3 className="core-app-title">Network Status</h3>
+<p className="core-app-description">
+Real-time status monitoring for the Intuition network. Check service availability, network health, and uptime statistics.
 </p>
-<div style={{ 
-  display: 'flex', 
-  gap: '0.5rem', 
-  flexWrap: 'wrap',
-  marginBottom: '1rem'
-}}>
-<span style={{ 
-  backgroundColor: 'rgba(239, 68, 68, 0.1)', 
-  color: '#EF4444',
-  padding: '0.375rem 0.75rem', 
-  borderRadius: '20px', 
-  fontSize: '0.875rem',
-  fontWeight: '500'
-}}>Status</span>
-<span style={{ 
-  backgroundColor: 'rgba(239, 68, 68, 0.1)', 
-  color: '#EF4444',
-  padding: '0.375rem 0.75rem', 
-  borderRadius: '20px', 
-  fontSize: '0.875rem',
-  fontWeight: '500'
-}}>Monitoring</span>
-<span style={{ 
-  backgroundColor: 'rgba(239, 68, 68, 0.1)', 
-  color: '#EF4444',
-  padding: '0.375rem 0.75rem', 
-  borderRadius: '20px', 
-  fontSize: '0.875rem',
-  fontWeight: '500'
-}}>Uptime</span>
+<div className="core-app-tags">
+<span className="core-app-tag">Status</span>
+<span className="core-app-tag">Monitoring</span>
+<span className="core-app-tag">Uptime</span>
 </div>
-
 </div>
 </a>
 
@@ -890,93 +511,22 @@ The main interface for creating identities, making claims, and staking on the In
 </div>
 </a>
 
-<a href="/guides/hub/explorer" style={{ 
-  textDecoration: 'none', 
-  color: 'inherit',
-  display: 'block',
-  transition: 'all 0.3s ease'
-}} className="hub-card">
-<div style={{ 
-  border: '1px solid var(--ifm-color-emphasis-200)', 
-  borderRadius: '16px', 
-  padding: '2rem', 
-  backgroundColor: 'var(--ifm-background-color)',
-  boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-  height: '100%',
-  position: 'relative',
-  overflow: 'hidden'
-}}>
-<div style={{ 
-  position: 'absolute',
-  top: '0',
-  left: '0',
-  right: '0',
-  height: '4px',
-  background: 'linear-gradient(90deg, #10B981, #047857)'
-}}></div>
-<div style={{ display: 'flex', alignItems: 'center', marginBottom: '1.5rem' }}>
-<div style={{ 
-  width: '60px', 
-  height: '60px', 
-  borderRadius: '16px', 
-  background: 'linear-gradient(135deg, #10B981, #047857)', 
-  display: 'flex', 
-  alignItems: 'center', 
-  justifyContent: 'center', 
-  marginRight: '1rem',
-  boxShadow: '0 4px 12px rgba(16, 185, 129, 0.3)'
-}}>
-<svg width="28" height="28" viewBox="0 0 24 24" fill="white">
+<a href="/guides/hub/explorer" className="core-app-card clickable-card">
+<div className="core-app-icon">
+<svg width="32" height="32" viewBox="0 0 24 24" fill="white">
 <path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/>
 </svg>
 </div>
-<h3 style={{ 
-  margin: 0, 
-  fontSize: '1.5rem', 
-  fontWeight: '600',
-  color: 'var(--ifm-color-emphasis-800)'
-}}>Explorer</h3>
-</div>
-<p style={{ 
-  marginBottom: '1.5rem', 
-  color: 'var(--ifm-color-emphasis-600)',
-  fontSize: '1rem',
-  lineHeight: '1.6'
-}}>
+<div className="core-app-content">
+<h3 className="core-app-title">Explorer</h3>
+<p className="core-app-description">
 Blockchain explorer for the Intuition testnet. View transactions, blocks, and network activity. Monitor testnet performance and verify test transactions.
 </p>
-<div style={{ 
-  display: 'flex', 
-  gap: '0.5rem', 
-  flexWrap: 'wrap',
-  marginBottom: '1rem'
-}}>
-<span style={{ 
-  backgroundColor: 'rgba(16, 185, 129, 0.1)', 
-  color: '#10B981',
-  padding: '0.375rem 0.75rem', 
-  borderRadius: '20px', 
-  fontSize: '0.875rem',
-  fontWeight: '500'
-}}>Explorer</span>
-<span style={{ 
-  backgroundColor: 'rgba(16, 185, 129, 0.1)', 
-  color: '#10B981',
-  padding: '0.375rem 0.75rem', 
-  borderRadius: '20px', 
-  fontSize: '0.875rem',
-  fontWeight: '500'
-}}>Transactions</span>
-<span style={{ 
-  backgroundColor: 'rgba(16, 185, 129, 0.1)', 
-  color: '#10B981',
-  padding: '0.375rem 0.75rem', 
-  borderRadius: '20px', 
-  fontSize: '0.875rem',
-  fontWeight: '500'
-}}>Analytics</span>
+<div className="core-app-tags">
+<span className="core-app-tag">Explorer</span>
+<span className="core-app-tag">Transactions</span>
+<span className="core-app-tag">Analytics</span>
 </div>
-
 </div>
 </a>
 

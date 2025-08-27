@@ -29,7 +29,7 @@ const defaultSettings = {
   remarkPlugins: [
     [require('@docusaurus/remark-plugin-npm2yarn'), { sync: true }],
   ],
-  sidebarPath: require.resolve('./sidebars-default.js'),
+  sidebarPath: require.resolve('./sidebars.js'),
 };
 
 /** @type {import('@docusaurus/plugin-content-docs').Options[]} */
@@ -40,7 +40,7 @@ const docs = [];
  * @param {import('@docusaurus/plugin-content-docs').Options} options
  */
 function create_doc_plugin({
-  sidebarPath = require.resolve('./sidebars-default.js'),
+  sidebarPath = require.resolve('./sidebars.js'),
   ...options
 }) {
   return [
@@ -152,19 +152,19 @@ const config = {
         hideOnScroll: false,
         items: [
           {
-            label: 'Guides',
+            label: 'Welcome',
             to: 'guides',
             className: 'guides-top-header',
             position: 'left',
           },
           {
-            label: 'Intuition Hub',
+            label: 'Hub',
             to: 'guides/hub',
             className: 'hub-top-header',
             position: 'left',
           },
           {
-            label: 'Developer Tools',
+            label: 'Build',
             to: 'guides/developer-tools',
             className: 'developer-tools-top-header',
             position: 'left',

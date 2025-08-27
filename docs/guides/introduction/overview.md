@@ -99,6 +99,89 @@ Intuition is an ecosystem of technologies composing a universal and permissionle
 
 Intuition's open social knowledge graph is built to harness collective wisdom in a **structured, permissionless, and fully decentralized** manner. The system's resulting state is open and accessible to everyone, enabling limitless use cases and expanding the information available about the countless entities we engage with daily—whether it's a pseudonym, a smart contract, an organization, or a piece of content.
 
+## Who Should Use This Documentation
+
+<div className="uniform-card-grid-small">
+
+<div className="uniform-card">
+<h4 className="uniform-card-title" style={{ fontSize: '1.1rem', marginBottom: '0.75rem' }}>New Users</h4>
+<p className="uniform-card-content" style={{ fontSize: '0.9rem' }}>
+Discover Intuition's Portal, create your first atoms and triples, and understand the knowledge graph ecosystem
+</p>
+</div>
+
+<div className="uniform-card">
+<h4 className="uniform-card-title" style={{ fontSize: '1.1rem', marginBottom: '0.75rem' }}>Developers</h4>
+<p className="uniform-card-content" style={{ fontSize: '0.9rem' }}>
+Build with our TypeScript SDK, GraphQL APIs, and smart contracts across multiple networks
+</p>
+</div>
+
+<div className="uniform-card">
+<h4 className="uniform-card-title" style={{ fontSize: '1.1rem', marginBottom: '0.75rem' }}>Partners</h4>
+<p className="uniform-card-content" style={{ fontSize: '0.9rem' }}>
+Integrate Intuition's decentralized knowledge graph into your applications and platforms
+</p>
+</div>
+
+<div className="uniform-card">
+<h4 className="uniform-card-title" style={{ fontSize: '1.1rem', marginBottom: '0.75rem' }}>Researchers</h4>
+<p className="uniform-card-content" style={{ fontSize: '0.9rem' }}>
+Access semantic data structures and explore the token-curated knowledge graph for analysis
+</p>
+</div>
+
+<div className="uniform-card">
+<h4 className="uniform-card-title" style={{ fontSize: '1.1rem', marginBottom: '0.75rem' }}>Content Creators</h4>
+<p className="uniform-card-content" style={{ fontSize: '0.9rem' }}>
+Contribute to the knowledge graph and build reputation through verifiable content creation
+</p>
+</div>
+
+<div className="uniform-card">
+<h4 className="uniform-card-title" style={{ fontSize: '1.1rem', marginBottom: '0.75rem' }}>Organizations</h4>
+<p className="uniform-card-content" style={{ fontSize: '0.9rem' }}>
+Implement trustless credential verification and reputation systems for your organization
+</p>
+</div>
+
+</div>
+
+## Quick Start Path
+
+Choose your path to get started with Intuition's decentralized knowledge graph:
+
+<div className="uniform-card-grid">
+
+<a href="/guides/quickstart/speed-run-intuition" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+<div className="uniform-card clickable-card">
+<h3 className="uniform-card-title">Speed Run Intuition</h3>
+<p className="uniform-card-content">
+Get up and running with Intuition quickly. A fast-paced guide to get you building with Intuition in minutes.
+</p>
+</div>
+</a>
+
+<a href="/guides/hub" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+<div className="uniform-card clickable-card">
+<h3 className="uniform-card-title">Intuition Hub</h3>
+<p className="uniform-card-content">
+Access Intuition's L3 network tools and services. Explore the development environment with comprehensive tools.
+</p>
+</div>
+</a>
+
+<a href="/guides/developer-tools" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+<div className="uniform-card clickable-card">
+<h3 className="uniform-card-title">Developer Tools</h3>
+<p className="uniform-card-content">
+Essential tools and resources for Intuition developers. Access SDKs, APIs, and development tools to build on Intuition.
+</p>
+</div>
+</a>
+
+</div>
+
 ### How It Works
 
 <div style={{ display: 'flex', flexDirection: 'row', gap: '1.5rem', marginBottom: '2rem', flexWrap: 'wrap' }}>

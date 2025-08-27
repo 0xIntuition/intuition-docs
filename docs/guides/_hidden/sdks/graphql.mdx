@@ -26,7 +26,7 @@ import { createClient } from '@intuition/graphql';
 const client = createClient({
   url: 'https://api.intuition.systems/graphql',
   headers: {
-    'Authorization': 'Bearer your-api-key'
+    'Authorization': 'Bearer your-wallet-token'
   }
 });
 
@@ -148,11 +148,11 @@ try {
 const client = createClient({
   url: 'https://api.intuition.systems/graphql',
   headers: {
-    'Authorization': 'Bearer your-api-key'
+    'Authorization': 'Bearer your-wallet-token'
   },
   // Optional: Refresh token handling
   onAuthError: async () => {
-    const newToken = await refreshToken();
+    const newToken = await refreshWalletToken();
     return { 'Authorization': `Bearer ${newToken}` };
   }
 });
