@@ -25,9 +25,7 @@ Because Intuition breaks data down into discrete, tokenized units, the system is
 
 To reward contributors of useful data, every interaction with the knowledge graph action in Intuition comes with a small fee, similar to gas fees in blockchain systems. Users pay a fee when interacting with or creating data. These fees go towards:
 
-<div className="uniform-card-grid">
-
-<div className="uniform-card">
+<div className="uniform-card" style={{ marginBottom: '1.5rem' }}>
 <h3 className="uniform-card-title">Purchasing Equity in the Data</h3>
 <p className="uniform-card-content">
 When paying fees to create data, a portion of the fee goes towards purchasing equity in the underlying data. Thus, as users contribute data to the Intuition Graph, they receive ownership over the data created.
@@ -38,7 +36,7 @@ When paying fees to create data, a portion of the fee goes towards purchasing eq
 </div>
 </div>
 
-<div className="uniform-card">
+<div className="uniform-card" style={{ marginBottom: '1.5rem' }}>
 <h3 className="uniform-card-title">Rewarding Prior Contributors</h3>
 <p className="uniform-card-content">
 When paying fees to create or read data, part of the fee is distributed to all existing shareholders (prior contributors). This encourages early, meaningful contributions, as users who add valuable data will continue to be rewarded over time.
@@ -49,7 +47,7 @@ When paying fees to create or read data, part of the fee is distributed to all e
 </div>
 </div>
 
-<div className="uniform-card">
+<div className="uniform-card" style={{ marginBottom: '1.5rem' }}>
 <h3 className="uniform-card-title">Protocol Fees</h3>
 <p className="uniform-card-content">
 A small portion of the fee goes to the Intuition protocol, for future platform improvements. Upon launch of the Intuition token, the protocol will be a community-owned DAO, governed by token holders.
@@ -58,8 +56,6 @@ A small portion of the fee goes to the Intuition protocol, for future platform i
 <span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>Development</span>
 <span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>DAO</span>
 </div>
-</div>
-
 </div>
 
 ## Reducing Fragmentation

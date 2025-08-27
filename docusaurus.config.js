@@ -152,7 +152,7 @@ const config = {
         hideOnScroll: false,
         items: [
           {
-            label: 'Guides',
+            label: 'Core',
             to: 'guides',
             className: 'guides-top-header',
             position: 'left',

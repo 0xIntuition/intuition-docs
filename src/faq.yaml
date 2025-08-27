@@ -10,7 +10,7 @@
        ```bash
        npm install @intuition/protocol
        ```
-    2. Create an account and get your API keys
+    2. Create an account
     3. Start building with our guides and documentation
   tags: [General, Getting Started, Development]
 
@@ -80,7 +80,7 @@
   answer: |
     Integration involves several steps:
     1. Install the appropriate SDK (React, Node.js, etc.)
-    2. Configure your API keys and endpoints
+    2. Configure your endpoints
     3. Implement data submission and querying
     4. Add staking and reward mechanisms
     5. Test thoroughly before deployment

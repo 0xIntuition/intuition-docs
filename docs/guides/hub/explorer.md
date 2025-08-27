@@ -10,7 +10,7 @@ The Intuition Explorer is a comprehensive blockchain explorer built on Blockscou
 
 ## Quick Access
 
-Access the Explorer directly at: [https://testnet.explorer.intuition.systems/](https://testnet.explorer.intuition.systems/)
+Access the Explorer directly at: [https://intuition-testnet.hub.caldera.xyz/](https://intuition-testnet.hub.caldera.xyz/)
 
 ## Overview
 

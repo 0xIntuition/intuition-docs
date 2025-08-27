@@ -42,7 +42,6 @@ export default function GraphQLSDK() {
           {`import { IntuitionGraphQLClient } from '@intuition/graphql-sdk';
 
 const client = new IntuitionGraphQLClient({
-  apiKey: 'your-api-key',
   endpoint: 'https://api.intuition.com/graphql'
 });`}
         </CodeBlock>
