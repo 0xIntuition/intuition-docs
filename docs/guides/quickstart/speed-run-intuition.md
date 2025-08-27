@@ -2,7 +2,7 @@
 sidebar_position: 2
 ---
 
-# Speed Run Intuition
+# Speed Run
 
 Get up and running with Intuition in under 5 minutes! This guide showcases the [Intuition SDK Showcase](https://github.com/robbiekruszynski/intuition_speedrun) project - a comprehensive demonstration of Intuition's SDK capabilities for creating atoms, triples, and exploring real-world use cases.
 

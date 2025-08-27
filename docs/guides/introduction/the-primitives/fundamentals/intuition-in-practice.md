@@ -6,7 +6,7 @@ sidebar_position: 6
 description: Understanding how Intuition primitives work together in real-world scenarios
 ---
 
-# Intuition in Practice
+# In Practice
 
 The introduction of Intuition's core primitives lays a robust foundation for constructing a system that fosters a trustful interaction layer for the decentralized web. These seemingly basic primitives enable a wide range of powerful functionalities, transforming how we manage identities, data, and trust online.
 

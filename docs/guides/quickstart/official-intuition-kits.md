@@ -2,7 +2,7 @@
 sidebar_position: 3
 ---
 
-# Official Intuition Kits
+# Official Kits
 
 Jump-start your development with our official Intuition starter kits and resources. These pre-configured templates and official tools provide everything you need to build Intuition-powered applications.
 
@@ -19,7 +19,7 @@ Jump-start your development with our official Intuition starter kits and resourc
 
 ## Available Kits
 
-### Speed Run Intuition Kit
+### Speed Run Kit
 A comprehensive SDK showcase demonstrating all major Intuition functions with a modern, user-friendly interface.
 
 ```bash

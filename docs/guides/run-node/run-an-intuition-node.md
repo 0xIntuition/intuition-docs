@@ -2,7 +2,7 @@
 sidebar_position: 1
 ---
 
-# Run an Intuition Node
+# Run a Node
 
 Learn how to set up and run your own Intuition node to participate in the network using the official Rust implementation.
 

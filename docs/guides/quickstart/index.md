@@ -70,7 +70,7 @@ sidebar_position: 1
   color: '#047857',
   fontSize: '1.5rem',
   fontWeight: '600'
-}}>Speed Run Intuition</h3>
+}}>Speed Run</h3>
 <p style={{
   fontSize: '1rem',
   lineHeight: '1.6',
@@ -120,7 +120,7 @@ Quick Setup • Fast Results • Pre-configured
   color: '#1D4ED8',
   fontSize: '1.25rem',
   fontWeight: '600'
-}}>Official Intuition Kits</h3>
+}}>Official Kits</h3>
 <p style={{
   fontSize: '0.95rem',
   lineHeight: '1.6',

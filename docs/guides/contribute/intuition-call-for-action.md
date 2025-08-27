@@ -2,9 +2,9 @@
 sidebar_position: 2
 ---
 
-# Intuition Call to Action
+# Call to Action
 
-Placeholder content for Intuition Call to Action.
+Placeholder content for Call to Action.
 
 ## Overview
 
