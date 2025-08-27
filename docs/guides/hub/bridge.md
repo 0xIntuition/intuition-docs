@@ -14,7 +14,7 @@ Secure cross-chain transfers between Ethereum testnets and the Intuition testnet
 <div className="bridge-access-content">
 <h3>Access Bridge</h3>
 <p>Start bridging assets between networks</p>
-<a href="https://testnet.bridge.intuition.systems/" target="_blank" rel="noopener noreferrer" className="bridge-access-button">
+<a href="https://intuition-testnet.hub.caldera.xyz/" target="_blank" rel="noopener noreferrer" className="bridge-access-button">
 Open Bridge →
 </a>
 </div>

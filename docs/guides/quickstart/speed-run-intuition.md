@@ -153,7 +153,7 @@ import { createAtomFromString } from '@0xintuition/sdk'
 const config = {
   walletClient,
   publicClient,
-  ethMultiVaultAddress
+  address: getEthMultiVaultAddressFromChainId(walletClient.chain.id)
 }
 
 const result = await createAtomFromString(config, 'Hello World')

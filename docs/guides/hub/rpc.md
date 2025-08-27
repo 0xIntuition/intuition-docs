@@ -38,7 +38,7 @@ RPC endpoints allow developers and applications to:
 
 RPC access requires authentication for production use:
 
-- **API Keys**: Secure access with API key authentication
+- **Wallet Authentication**: Secure access with wallet-based authentication
 - **Rate Limiting**: Fair usage policies
 - **WebSocket Support**: Real-time data streaming
 - **HTTPS Only**: Secure connections required

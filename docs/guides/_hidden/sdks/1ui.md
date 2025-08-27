@@ -24,7 +24,7 @@ import { IntuitionProvider, useAttestation, TrustScore } from '@intuition/1ui';
 
 function App() {
   return (
-    <IntuitionProvider apiKey="your-api-key">
+    <IntuitionProvider>
       <UserProfile userId="0x123..." />
     </IntuitionProvider>
   );

@@ -149,9 +149,9 @@ import {
   privateKeyToAccount,
   type Chain,
 } from 'viem'
-import { base } from 'viem/chains'
+import { base, baseSepolia, mainnet, sepolia, arbitrum, arbitrumSepolia } from 'viem/chains'
 
-// Public client for read operations
+// Public client for read operations (Base Mainnet)
 export const publicClient = createPublicClient({
   chain: base,
   transport: http(),
@@ -168,19 +168,44 @@ export const walletClient = createWalletClient({
 })
 ```
 
+## Supported Networks
+
+The Intuition SDK supports multiple networks:
+
+| Network | Chain ID | Type | Status |
+|---------|----------|------|--------|
+| Base Mainnet | 8453 | Mainnet | ✅ Production |
+| Base Sepolia | 84532 | Testnet | ✅ Development |
+| Ethereum Mainnet | 1 | Mainnet | ✅ Production |
+| Sepolia | 11155111 | Testnet | ✅ Development |
+| Arbitrum One | 42161 | Mainnet | ✅ Production |
+| Arbitrum Sepolia | 421614 | Testnet | ✅ Development |
+| Intuition L3 (Caldera) | TBD | L3 Rollup | 🚧 Development |
+
+The SDK automatically detects the network and uses the appropriate contract addresses via `getEthMultiVaultAddressFromChainId()`.
+
+**Note**: The Intuition L3 network (Caldera rollup) is currently in development. Access the [Intuition Hub](https://intuition-testnet.hub.caldera.xyz/) for L3 network development tools and testing.
+
 ## Reading Data
 
 ### Fetching Atoms and Triples
 
 ```typescript
-import { getAtom, getTriple } from '@0xintuition/sdk'
+import { getAtom, getTriple, pinThing } from '@0xintuition/sdk'
 
 // Get atom data by ID
 const atomData = await getAtom('124862')
 
 // Get triple data by ID
 const tripleData = await getTriple('54670')
-```
+
+// Pin a thing to IPFS
+const pinData = await pinThing({
+  url: 'https://www.intuition.systems/',
+  name: 'Intuition',
+  description: 'A decentralized trust protocol.',
+  image: 'https://example.com/image.png',
+})
 
 ## Creating Triples
 
@@ -219,9 +244,9 @@ const triple = await createTripleStatement(
 The simplest way to create an atom with a text label:
 
 ```typescript
-import { createAtomFromString, getEthMultiVaultAddress } from '@0xintuition/sdk'
+import { createAtomFromString, getEthMultiVaultAddressFromChainId } from '@0xintuition/sdk'
 
-const ethMultiVaultAddress = getEthMultiVaultAddress(walletClient.chain.id)
+const ethMultiVaultAddress = getEthMultiVaultAddressFromChainId(walletClient.chain.id)
 const data = await createAtomFromString(
   { walletClient, publicClient, address: ethMultiVaultAddress },
   'is great',
@@ -235,10 +260,10 @@ Create an atom that references content stored on IPFS:
 ```typescript
 import {
   createAtomFromIpfsUri,
-  getEthMultiVaultAddress,
+  getEthMultiVaultAddressFromChainId,
 } from '@0xintuition/sdk'
 
-const ethMultiVaultAddress = getEthMultiVaultAddress(walletClient.chain.id)
+const ethMultiVaultAddress = getEthMultiVaultAddressFromChainId(walletClient.chain.id)
 const data = await createAtomFromIpfsUri(
   { walletClient, publicClient, address: ethMultiVaultAddress },
   'ipfs://bafkreib7534cszxn2c6qwoviv43sqh244yfrxomjbealjdwntd6a7atq6u',
@@ -252,16 +277,16 @@ Upload metadata to IPFS and create an atom in one step:
 ```typescript
 import {
   createAtomFromIpfsUpload,
-  getEthMultiVaultAddress,
+  getEthMultiVaultAddressFromChainId,
 } from '@0xintuition/sdk'
 
-const ethMultiVaultAddress = getEthMultiVaultAddress(walletClient.chain.id)
+const ethMultiVaultAddress = getEthMultiVaultAddressFromChainId(walletClient.chain.id)
 const data = await createAtomFromIpfsUpload(
   {
     walletClient,
     publicClient,
     address: ethMultiVaultAddress,
-    pinataApiKey: 'your-pinata-api-key',
+    pinataApiJWT: 'your-pinata-api-jwt',
   },
   {
     url: 'https://www.intuition.systems/',
@@ -280,9 +305,9 @@ const data = await createAtomFromIpfsUpload(
 Create a "thing" atom with structured metadata:
 
 ```typescript
-import { createThing, getEthMultiVaultAddress } from '@0xintuition/sdk'
+import { createThing, getEthMultiVaultAddressFromChainId } from '@0xintuition/sdk'
 
-const ethMultiVaultAddress = getEthMultiVaultAddress(walletClient.chain.id)
+const ethMultiVaultAddress = getEthMultiVaultAddressFromChainId(walletClient.chain.id)
 const data = await createThing(
   { walletClient, publicClient, address: ethMultiVaultAddress },
   {
@@ -301,16 +326,140 @@ Create an atom representing an Ethereum account:
 ```typescript
 import {
   createEthereumAccount,
-  getEthMultiVaultAddress,
+  getEthMultiVaultAddressFromChainId,
 } from '@0xintuition/sdk'
 
-const ethMultiVaultAddress = getEthMultiVaultAddress(walletClient.chain.id)
+const ethMultiVaultAddress = getEthMultiVaultAddressFromChainId(walletClient.chain.id)
 const data = await createEthereumAccount(
   { walletClient, publicClient, address: ethMultiVaultAddress },
   {
     address: '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045',
     chainId: 1, // Mainnet
   },
+)
+```
+
+### Create a Smart Contract
+
+Create an atom representing a smart contract:
+
+```typescript
+import {
+  createAtomFromSmartContract,
+  getEthMultiVaultAddressFromChainId,
+} from '@0xintuition/sdk'
+
+const ethMultiVaultAddress = getEthMultiVaultAddressFromChainId(walletClient.chain.id)
+const data = await createAtomFromSmartContract(
+  { walletClient, publicClient, address: ethMultiVaultAddress },
+  {
+    address: '0xA0b86a33E6441b8c4C8C8C8C8C8C8C8C8C8C8C8C',
+    chainId: 1, // Mainnet
+  },
+)
+```
+
+### Batch Operations
+
+The SDK provides efficient batch operations for creating multiple atoms at once:
+
+#### Batch Create Atoms from IPFS URIs
+
+```typescript
+import {
+  batchCreateAtomsFromIpfsUris,
+  getEthMultiVaultAddressFromChainId,
+} from '@0xintuition/sdk'
+
+const ethMultiVaultAddress = getEthMultiVaultAddressFromChainId(walletClient.chain.id)
+const data = await batchCreateAtomsFromIpfsUris(
+  { walletClient, publicClient, address: ethMultiVaultAddress },
+  [
+    'ipfs://bafkreib7534cszxn2c6qwoviv43sqh244yfrxomjbealjdwntd6a7atq6u',
+    'ipfs://bafkreicq2d5q2d5q2d5q2d5q2d5q2d5q2d5q2d5q2d5q2d5q2d5q2d5q',
+  ],
+)
+```
+
+#### Batch Create Atoms from Smart Contracts
+
+```typescript
+import {
+  batchCreateAtomsFromSmartContracts,
+  getEthMultiVaultAddressFromChainId,
+} from '@0xintuition/sdk'
+
+const ethMultiVaultAddress = getEthMultiVaultAddressFromChainId(walletClient.chain.id)
+const data = await batchCreateAtomsFromSmartContracts(
+  { walletClient, publicClient, address: ethMultiVaultAddress },
+  [
+    '0xA0b86a33E6441b8c4C8C8C8C8C8C8C8C8C8C8C8C',
+    '0xB1c97a44E7551b9d5C8C8C8C8C8C8C8C8C8C8C8C8C',
+  ],
+)
+```
+
+#### Batch Create Atoms from Ethereum Accounts
+
+```typescript
+import {
+  batchCreateAtomsFromEthereumAccounts,
+  getEthMultiVaultAddressFromChainId,
+} from '@0xintuition/sdk'
+
+const ethMultiVaultAddress = getEthMultiVaultAddressFromChainId(walletClient.chain.id)
+const data = await batchCreateAtomsFromEthereumAccounts(
+  { walletClient, publicClient, address: ethMultiVaultAddress },
+  [
+    { address: '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045', chainId: 1 },
+    { address: '0x742d35Cc6634C0532925a3b8D4C9db96C4b4d8b6', chainId: 1 },
+  ],
+)
+```
+
+#### Batch Create Atoms from Things
+
+```typescript
+import {
+  batchCreateAtomsFromThings,
+  getEthMultiVaultAddressFromChainId,
+} from '@0xintuition/sdk'
+
+const ethMultiVaultAddress = getEthMultiVaultAddressFromChainId(walletClient.chain.id)
+const data = await batchCreateAtomsFromThings(
+  { walletClient, publicClient, address: ethMultiVaultAddress },
+  [
+    {
+      url: 'https://www.intuition.systems/',
+      name: 'Intuition',
+      description: 'A decentralized trust protocol.',
+      image: 'https://example.com/image.png',
+    },
+    {
+      url: 'https://example.com/',
+      name: 'Example',
+      description: 'An example thing.',
+      image: 'https://example.com/example.png',
+    },
+  ],
+)
+```
+
+#### Batch Create Triple Statements
+
+```typescript
+import {
+  batchCreateTripleStatements,
+  getEthMultiVaultAddressFromChainId,
+} from '@0xintuition/sdk'
+
+const ethMultiVaultAddress = getEthMultiVaultAddressFromChainId(walletClient.chain.id)
+const data = await batchCreateTripleStatements(
+  { walletClient, publicClient, address: ethMultiVaultAddress },
+  [
+    { args: [atom1.state.vaultId, atom2.state.vaultId, atom3.state.vaultId] },
+    { args: [atom4.state.vaultId, atom5.state.vaultId, atom6.state.vaultId] },
+  ],
 )
 ```
 
@@ -342,7 +491,7 @@ Here's a complete React component that creates a "thing" atom:
 
 ```tsx
 import * as React from 'react'
-import { createThing, getEthMultiVaultAddress } from '@0xintuition/sdk'
+import { createThing, getEthMultiVaultAddressFromChainId } from '@0xintuition/sdk'
 import { useChainId, usePublicClient, useWalletClient } from 'wagmi'
 
 type IntuitionButton = React.HTMLAttributes<HTMLElement>
@@ -353,7 +502,7 @@ const IntuitionButton = ({ children, className }: IntuitionButton) => {
   const { data: walletClient } = useWalletClient()
 
   const handleClick = async () => {
-    const ethMultiVaultAddress = getEthMultiVaultAddress(chainId)
+    const ethMultiVaultAddress = getEthMultiVaultAddressFromChainId(chainId)
     const data = await createThing(
       { walletClient, publicClient, address: ethMultiVaultAddress },
       {

@@ -53,8 +53,7 @@ const ContentSections = {
 
         <h3>Getting Started</h3>
         <p>
-          All GraphQL API requests must be authenticated using a valid API key. Include your API key in the 
-          request headers as: <code>Authorization: Bearer YOUR_API_KEY</code>
+          GraphQL API requests are authenticated using standard web3 methods. Connect your wallet to access the API.
         </p>
 
         <h3>Base URL</h3>

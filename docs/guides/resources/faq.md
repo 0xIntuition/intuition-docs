@@ -67,7 +67,7 @@ Intuition supports multiple programming languages through various SDKs:
 ### How do I connect to the Intuition testnet?
 
 **Step 1: Access the Hub**  
-Visit the [Intuition Hub](/guides/hub) at [intuition-testnet.hub.caldera.xyz](https://intuition-testnet.hub.caldera.xyz/) for centralized access to all testnet services.
+Visit the [Intuition Hub](/guides/hub) at [intuition-testnet.hub.caldera.xyz](https://intuition-testnet.hub.caldera.xyz/) for centralized access to all Intuition L3 network services.
 
 **Step 2: Configure Your Wallet**  
 Add the Intuition testnet to your wallet using the network details provided in the hub dashboard. The hub will display the current Chain ID and RPC URL.
@@ -196,7 +196,7 @@ Common causes of transaction failures:
 - **Insufficient Gas**: Ensure you have enough gas for the transaction
 - **Network Congestion**: Try again during less busy periods
 - **Incorrect Parameters**: Double-check all transaction parameters before signing
-- **Testnet Issues**: Check the network status for any ongoing testnet problems
+- **Network Issues**: Check the Hub for any ongoing L3 network problems
 
 ### How do I get help and support?
 

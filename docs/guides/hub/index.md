@@ -1,6 +1,5 @@
 ---
 id: hub
-title: Intuition Hub
 sidebar_label: Hub Overview
 sidebar_position: 1
 description: Essential tools and applications for interacting with the Intuition ecosystem
@@ -11,7 +10,7 @@ description: Essential tools and applications for interacting with the Intuition
     Intuition Hub
   </h1>
   <p className="hub-hero-description">
-    Essential tools and applications for interacting with the Intuition ecosystem. From exploring the knowledge graph to bridging assets across networks.
+    Essential tools and applications for interacting with the Intuition ecosystem on the L3 network. From exploring the knowledge graph to bridging assets across networks.
   </p>
   <div className="hub-hero-button">
     Access Hub
@@ -448,9 +447,9 @@ Bridge assets between Ethereum testnets and Intuition testnet. Secure cross-chai
 </svg>
 </div>
 <div className="core-app-content">
-<h3 className="core-app-title">Testnet Status</h3>
+<h3 className="core-app-title">Network Status</h3>
 <p className="core-app-description">
-Real-time status monitoring for the Intuition testnet. Check service availability, network health, and uptime statistics.
+Real-time status monitoring for the Intuition network. Check service availability, network health, and uptime statistics.
 </p>
 <div className="core-app-tags">
 <span className="core-app-tag">Status</span>

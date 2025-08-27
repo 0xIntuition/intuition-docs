@@ -834,48 +834,62 @@ a .clickable-card {
 
 /* Hub Hero Section */
 .hub-hero {
-  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
   border-radius: 16px;
   padding: 3rem 2rem;
   margin-bottom: 3rem;
-  color: white;
+  color: #1a1a1a;
   text-align: center;
-  border: 1px solid #404040;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  border: 1px solid #e5e5e5;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   text-decoration: none;
   display: block;
+  transition: all 0.3s ease;
 }
 
 .hub-hero-title {
   font-size: 3rem;
   font-weight: 700;
   margin-bottom: 1rem;
-  color: white;
+  color: #1a1a1a;
+  background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .hub-hero-description {
   font-size: 1.25rem;
-  opacity: 0.9;
+  opacity: 0.8;
   max-width: 600px;
-  margin: 0 auto 1.5rem auto;
+  margin: 0 auto 2rem auto;
   line-height: 1.6;
-  color: white;
+  color: #4a5568;
 }
 
 .hub-hero-button {
   display: inline-flex;
   align-items: center;
-  background-color: white;
-  color: #000000;
-  padding: 0.2rem 0.4rem;
-  border-radius: 3px;
+  justify-content: center;
+  background-color: var(--ifm-color-primary);
+  color: white !important;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
   font-weight: 500;
-  font-size: 0.65rem;
-  border: 1px solid #e5e5e5;
+  font-size: 1rem;
+  border: none;
   transition: all 0.2s ease;
+  text-decoration: none;
 }
 
-/* Hub Hero Hover Effects - No underline, glow effect like other cards */
+.hub-hero-button:hover {
+  background-color: var(--ifm-color-primary-darker);
+  transform: translateY(-1px);
+  text-decoration: none;
+  color: white !important;
+}
+
+/* Hub Hero Hover Effects */
 .hub-hero {
   text-decoration: none !important;
 }
@@ -883,11 +897,35 @@ a .clickable-card {
 .hub-hero:hover {
   text-decoration: none !important;
   transform: translateY(-4px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(37, 99, 235, 0.1);
+}
+
+.hub-hero:hover .hub-hero-button {
+  background-color: var(--ifm-color-primary-darker);
+}
+
+/* Dark theme overrides */
+html[data-theme='dark'] .hub-hero {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  color: white;
+  border: 1px solid #404040;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+html[data-theme='dark'] .hub-hero-title {
+  color: white;
+  background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+html[data-theme='dark'] .hub-hero-description {
+  color: #e2e8f0;
 }
 
 html[data-theme='dark'] .hub-hero:hover {
-  box-shadow: 0 8px 32px rgba(255, 255, 255, 0.1), 0 0 0 1px rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(96, 165, 250, 0.2);
 }
 
 /* Common Layout Classes */

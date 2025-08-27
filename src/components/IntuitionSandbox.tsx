@@ -585,7 +585,7 @@ console.log('Explorer:', atom.explorerUrl);`);
           };
         };
 
-        const mockGetEthMultiVaultAddress = () => '0x430BbF52503Bd4801E51182f4cB9f8F534225DE5'; // Real Base Sepolia address
+        const mockGetEthMultiVaultAddress = () => '0x1A6950807E33d5bC9975067e6D6b5Ea4cD661665'; // Current Base Sepolia address
 
         const mockWalletClient = { chain: { id: 84532 } }; // Base Sepolia
         const mockPublicClient = { chain: { id: 84532 } };

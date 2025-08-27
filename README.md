@@ -131,10 +131,10 @@ These primitives work together to create a structured, queryable, and economical
 
 The Intuition ecosystem includes:
 
-- **[Portal](https://portal.intuition.systems)** — Main interface for creating identities and making claims
-- **[Testnet Hub](https://intuition-testnet.hub.caldera.xyz/)** — Development environment and tools
-- **[Explorer](https://testnet.explorer.intuition.systems/)** — Blockchain explorer for the Intuition testnet
-- **[Bridge](https://testnet.bridge.intuition.systems/)** — Cross-chain asset transfers
+- **[Hub](https://intuition-testnet.hub.caldera.xyz/)** — L3 network development environment and tools
+- **[Portal](https://beta.portal.intuition.systems/)** — Main Intuition portal and explorer
+- **[Data Populator](https://data-populator.onrender.com/)** — Tool for populating test data
+- **[Chrome Extension](https://github.com/0xIntuition/intuition-chrome-extension)** — Browser integration
 - **Browser Extension** — Access the knowledge graph across the web
 
 ## 📖 Additional Resources
