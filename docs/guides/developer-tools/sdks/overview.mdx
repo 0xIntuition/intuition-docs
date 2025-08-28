@@ -300,16 +300,16 @@ const data = await createAtomFromIpfsUpload(
 )
 ```
 
-### Create a Thing
+### Create from structured metadata (upload to IPFS)
 
-Create a "thing" atom with structured metadata:
+Create an atom by uploading metadata to IPFS in one step:
 
 ```typescript
-import { createThing, getEthMultiVaultAddressFromChainId } from '@0xintuition/sdk'
+import { createAtomFromIpfsUpload, getEthMultiVaultAddressFromChainId } from '@0xintuition/sdk'
 
 const ethMultiVaultAddress = getEthMultiVaultAddressFromChainId(walletClient.chain.id)
-const data = await createThing(
-  { walletClient, publicClient, address: ethMultiVaultAddress },
+const data = await createAtomFromIpfsUpload(
+  { walletClient, publicClient, address: ethMultiVaultAddress, pinataApiJWT: 'your-pinata-api-jwt' },
   {
     url: 'https://www.intuition.systems/',
     name: 'Intuition',
@@ -319,25 +319,7 @@ const data = await createThing(
 )
 ```
 
-### Create an Ethereum Account
-
-Create an atom representing an Ethereum account:
-
-```typescript
-import {
-  createEthereumAccount,
-  getEthMultiVaultAddressFromChainId,
-} from '@0xintuition/sdk'
-
-const ethMultiVaultAddress = getEthMultiVaultAddressFromChainId(walletClient.chain.id)
-const data = await createEthereumAccount(
-  { walletClient, publicClient, address: ethMultiVaultAddress },
-  {
-    address: '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045',
-    chainId: 1, // Mainnet
-  },
-)
-```
+<!-- Removed: createEthereumAccount (not available in SDK). Use createAtomFromSmartContract for contract addresses. -->
 
 ### Create a Smart Contract
 
@@ -487,11 +469,11 @@ const data: {
 
 ## React Integration Example
 
-Here's a complete React component that creates a "thing" atom:
+Here's a complete React component that creates an atom from structured metadata:
 
 ```tsx
 import * as React from 'react'
-import { createThing, getEthMultiVaultAddressFromChainId } from '@0xintuition/sdk'
+import { createAtomFromIpfsUpload, getEthMultiVaultAddressFromChainId } from '@0xintuition/sdk'
 import { useChainId, usePublicClient, useWalletClient } from 'wagmi'
 
 type IntuitionButton = React.HTMLAttributes<HTMLElement>
@@ -503,8 +485,8 @@ const IntuitionButton = ({ children, className }: IntuitionButton) => {
 
   const handleClick = async () => {
     const ethMultiVaultAddress = getEthMultiVaultAddressFromChainId(chainId)
-    const data = await createThing(
-      { walletClient, publicClient, address: ethMultiVaultAddress },
+    const data = await createAtomFromIpfsUpload(
+      { walletClient, publicClient, address: ethMultiVaultAddress, pinataApiJWT: 'your-pinata-api-jwt' },
       {
         url: 'https://www.intuition.systems/',
         name: 'Intuition',

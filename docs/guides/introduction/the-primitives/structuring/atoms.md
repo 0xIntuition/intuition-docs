@@ -111,21 +111,32 @@ Represent characteristics or properties.
 
 ## Creating Atoms Programmatically
 
-### Using the Protocol SDK
+### Using the SDK (copy‑paste ready)
 
-```javascript
-import { createAtom } from '@intuition/protocol';
+```ts
+import {
+  createAtomFromString,
+  getEthMultiVaultAddressFromChainId,
+} from '@0xintuition/sdk'
+import { createPublicClient, createWalletClient, http } from 'viem'
+import { privateKeyToAccount } from 'viem/accounts'
+import { sepolia } from 'viem/chains'
 
-const atom = await createAtom({
-  content: "Machine Learning",
-  type: "concept",
-  description: "A subset of artificial intelligence",
-  tags: ["AI", "technology"],
-  metadata: {
-    creator: userDid,
-    timestamp: new Date().toISOString()
-  }
-});
+// 1) Configure viem clients (example uses Sepolia)
+const account = privateKeyToAccount(process.env.PRIVATE_KEY as `0x${string}`)
+const walletClient = createWalletClient({ account, chain: sepolia, transport: http() })
+const publicClient = createPublicClient({ chain: sepolia, transport: http() })
+
+// 2) Resolve MultiVault address for the current chain
+const multivaultAddress = getEthMultiVaultAddressFromChainId(sepolia.id)
+
+// 3) Create an Atom from a simple string label
+const result = await createAtomFromString(
+  { walletClient, publicClient, address: multivaultAddress },
+  'Machine Learning',
+)
+
+console.log('Created atom vaultId:', result.state.vaultId)
 ```
 
 ### Validation

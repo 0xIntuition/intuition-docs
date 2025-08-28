@@ -5,8 +5,9 @@ module.exports = {
       label: 'Welcome',
       items: [
         'index',
+        'introduction/overview',
         'introduction/why-intuition',
-        'introduction/the-economics/the-economics',
+        'introduction/the-economics',
         'introduction/the-primitives/index',
       ],
     },
