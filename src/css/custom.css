@@ -550,20 +550,12 @@ details summary::-webkit-details-marker {
 }
 
 details summary::before {
-  content: "▶";
-  color: var(--ifm-color-emphasis-600);
-  margin-right: 0.75rem;
-  transition: transform 0.3s ease;
-  display: inline-block;
-  font-size: 0.8rem;
-  line-height: 1;
-  vertical-align: middle;
-  position: relative;
-  top: -1px;
+  content: "";
+  display: none;
 }
 
 details[open] summary::before {
-  transform: rotate(90deg);
+  display: none;
 }
 
 details .content {
@@ -1873,6 +1865,13 @@ table td, table th {
   .navbar {
     padding: 0.25rem 0.75rem !important;
   }
+  
+  /* Ensure hamburger menu is always visible */
+  .navbar__toggle {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
 }
 
 /* Mobile Navbar Complete Overhaul */
@@ -1882,18 +1881,27 @@ table td, table th {
     display: flex !important;
   }
   
-  /* Hide most navbar items on mobile except essentials */
-  .navbar__items--left > .navbar__item {
+  /* Hide all navbar items on mobile except logo and hamburger */
+  .navbar__items--left > .navbar__item:not(.navbar__brand) {
     display: none !important;
   }
   
-  .navbar__items--right > .navbar__item:not([class*="search"]) {
+  .navbar__items--right > .navbar__item {
     display: none !important;
   }
   
-  /* Show search on mobile */
-  .navbar__items--right .navbar__item[class*="search"] {
-    display: flex !important;
+  /* Ensure proper spacing */
+  .navbar__inner {
+    justify-content: space-between !important;
+    width: 100% !important;
+  }
+  
+  .navbar__brand {
+    margin-right: 0 !important;
+  }
+  
+  .navbar__items {
+    gap: 0 !important;
   }
   
   /* Mobile navbar layout */
@@ -1961,6 +1969,12 @@ table td, table th {
     overflow-y: auto !important;
     -webkit-overflow-scrolling: touch !important;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15) !important;
+    transform: translateX(-100%) !important;
+    transition: transform 0.3s ease !important;
+  }
+  
+  .navbar-sidebar--show {
+    transform: translateX(0) !important;
   }
   
   .navbar-sidebar--show {
@@ -2033,6 +2047,11 @@ table td, table th {
     color: var(--ifm-color-emphasis-800) !important;
     transition: all 0.2s ease !important;
     text-decoration: none !important;
+    font-size: 1rem !important;
+    line-height: 1.4 !important;
+    white-space: normal !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
   }
   
   .navbar-sidebar__item .navbar__link:hover,
