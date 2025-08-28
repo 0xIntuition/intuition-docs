@@ -4,6 +4,7 @@ module.exports = {
       type: 'category',
       label: 'Welcome',
       items: [
+        'guides/introduction/overview',
         'guides/introduction/why-intuition',
         'guides/introduction/the-economics',
         'guides/introduction/the-primitives',

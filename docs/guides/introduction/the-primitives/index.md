@@ -117,25 +117,25 @@ The journey within Intuition starts with an Atom. Engaging with this concept mig
 
 ## Components of an Atom
 
-<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1rem', marginTop: '1rem' }}>
+<div className="uniform-card-grid-small">
 
-<div style={{ border: '1px solid #e5e7eb', borderRadius: '6px', padding: '1rem', backgroundColor: 'white' }}>
-<h4 style={{ marginTop: 0, marginBottom: '0.5rem', color: '#111827' }}>Atom Data</h4>
-<p style={{ margin: 0, fontSize: '0.9rem', color: '#6b7280', lineHeight: '1.5' }}>
+<div className="uniform-card">
+<h4 className="uniform-card-title">Atom Data</h4>
+<p className="uniform-card-content">
 Describes the concept or entity represented by an Atom, typically stored off-chain using decentralized storage solutions like IPFS or Arweave, with a URI pointing to this data stored on-chain.
 </p>
 </div>
 
-<div style={{ border: '1px solid #e5e7eb', borderRadius: '6px', padding: '1rem', backgroundColor: 'white' }}>
-<h4 style={{ marginTop: 0, marginBottom: '0.5rem', color: '#111827' }}>Atom Wallet</h4>
-<p style={{ margin: 0, fontSize: '0.9rem', color: '#6b7280', lineHeight: '1.5' }}>
+<div className="uniform-card">
+<h4 className="uniform-card-title">Atom Wallet</h4>
+<p className="uniform-card-content">
 A smart contract wallet associated with each Atom, granting it agency over its identity. This wallet is controlled by a specialized smart contract known as the Atom Warden.
 </p>
 </div>
 
-<div style={{ border: '1px solid #e5e7eb', borderRadius: '6px', padding: '1rem', backgroundColor: 'white' }}>
-<h4 style={{ marginTop: 0, marginBottom: '0.5rem', color: '#111827' }}>Atom Vault</h4>
-<p style={{ margin: 0, fontSize: '0.9rem', color: '#6b7280', lineHeight: '1.5' }}>
+<div className="uniform-card">
+<h4 className="uniform-card-title">Atom Vault</h4>
+<p className="uniform-card-content">
 A mechanism that allows users to deposit tokens into an Atom, signaling its relevance and support within the system. The Total Value Locked (TVL) in an Atom Vault indicates the Atom's acceptance and importance.
 </p>
 </div>
@@ -148,25 +148,25 @@ Triples are higher-order structures within Intuition, used to define relationshi
 
 ### Triple Structure
 
-<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginTop: '1rem' }}>
+<div className="uniform-card-grid-small" style={{ marginTop: '1rem' }}>
 
-<div style={{ border: '1px solid #e5e7eb', borderRadius: '6px', padding: '1rem', backgroundColor: 'white' }}>
-<h4 style={{ marginTop: 0, marginBottom: '0.5rem', color: '#111827' }}>Subject</h4>
-<p style={{ margin: 0, fontSize: '0.9rem', color: '#6b7280', lineHeight: '1.5' }}>
+<div className="uniform-card">
+<h4 className="uniform-card-title">Subject</h4>
+<p className="uniform-card-content">
 The entity or concept being described.
 </p>
 </div>
 
-<div style={{ border: '1px solid #e5e7eb', borderRadius: '6px', padding: '1rem', backgroundColor: 'white' }}>
-<h4 style={{ marginTop: 0, marginBottom: '0.5rem', color: '#111827' }}>Predicate</h4>
-<p style={{ margin: 0, fontSize: '0.9rem', color: '#6b7280', lineHeight: '1.5' }}>
+<div className="uniform-card">
+<h4 className="uniform-card-title">Predicate</h4>
+<p className="uniform-card-content">
 The relationship or attribute of the subject.
 </p>
 </div>
 
-<div style={{ border: '1px solid #e5e7eb', borderRadius: '6px', padding: '1rem', backgroundColor: 'white' }}>
-<h4 style={{ marginTop: 0, marginBottom: '0.5rem', color: '#111827' }}>Object</h4>
-<p style={{ margin: 0, fontSize: '0.9rem', color: '#6b7280', lineHeight: '1.5' }}>
+<div className="uniform-card">
+<h4 className="uniform-card-title">Object</h4>
+<p className="uniform-card-content">
 The value or characteristic attributed to the subject.
 </p>
 </div>
@@ -189,10 +189,9 @@ Signal in Intuition refers to any action that expresses intent, belief, or suppo
 
 Users hold positions on Atoms and Triples, signaling their stance by increasing their balance on the relevant entities. Signals contribute to the nuanced expression of trust and belief, allowing for a dynamic and tiered system of preferences within the decentralized ecosystem.
 
-<div style={{ backgroundColor: '#f9fafb', padding: '1rem', borderRadius: '8px', margin: '1rem 0', border: '1px solid #e5e7eb' }}>
-<p style={{ margin: '0 0 0.5rem 0', fontWeight: '600', color: '#111827' }}>Important Distinction</p>
-<p style={{ margin: 0, fontSize: '0.9rem', color: '#6b7280', lineHeight: '1.5' }}>
+<div className="uniform-card" style={{ margin: '1rem 0' }}>
+<p className="uniform-card-title" style={{ marginBottom: '0.5rem' }}>Important Distinction</p>
+<p className="uniform-card-content" style={{ margin: 0 }}>
 Creating an Atom or Triple is distinctly different from taking a position on them. While users have the option to both create and take a position on an Atom/Triple at the time of creation, this Initial Deposit is not required. A user who makes no Initial Deposit will only create an Atom or Triple, which does not constitute a Signal.
 </p>
 </div>
-

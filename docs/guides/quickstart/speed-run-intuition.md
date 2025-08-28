@@ -59,7 +59,7 @@ The [Intuition SDK Showcase](https://github.com/robbiekruszynski/intuition_speed
 <div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: 'var(--ifm-color-success)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
 <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"/></svg>
 </div>
-<span style={{ fontSize: '1rem', fontWeight: '500' }}><strong>Multi-Network Support</strong>: Works on Ethereum, Arbitrum, Base (mainnet and testnets)</span>
+<span style={{ fontSize: '1rem', fontWeight: '500' }}><strong>Multi-Network Support</strong>: Works on Base and Base Sepolia (per current SDK deployments)</span>
 </div>
 </div>
 
@@ -148,16 +148,16 @@ The showcase demonstrates multiple ways to create atoms using the Intuition SDK:
 #### String-based Atom Creation
 
 ```typescript
-import { createAtomFromString } from '@0xintuition/sdk'
+import { createAtomFromString, getEthMultiVaultAddressFromChainId } from '@0xintuition/sdk'
 
 const config = {
   walletClient,
   publicClient,
-  address: getEthMultiVaultAddressFromChainId(walletClient.chain.id)
+  address: getEthMultiVaultAddressFromChainId(walletClient.chain.id),
 }
 
 const result = await createAtomFromString(config, 'Hello World')
-console.log('Atom created:', result.state[0]?.vaultId)
+console.log('Atom created vaultId:', result.state.vaultId)
 ```
 
 #### Ethereum Account Atom Creation
@@ -174,11 +174,16 @@ const result = await batchCreateAtomsFromEthereumAccounts(config, addresses)
 ```typescript
 import { pinThing, uploadJsonToPinata } from '@0xintuition/sdk'
 
-const thing = { name: 'Test', description: 'A test thing' }
-const pinned = await pinThing(thing)
+// 1) GraphQL-based pin (returns uri)
+const pinned = await pinThing({ thing: { name: 'Test', description: 'A test thing' } })
+console.log(pinned) // { uri: 'ipfs://...' }
 
-const jsonData = { title: 'My Data', content: 'Some content' }
-const uploaded = await uploadJsonToPinata(jsonData)
+// 2) Direct Pinata upload (returns IpfsHash) — requires API token
+const uploaded = await uploadJsonToPinata(process.env.NEXT_PUBLIC_PINATA_API_TOKEN!, {
+  title: 'My Data',
+  content: 'Some content',
+})
+console.log(uploaded.IpfsHash)
 ```
 
 ### Triple Creation
@@ -186,22 +191,13 @@ const uploaded = await uploadJsonToPinata(jsonData)
 Create semantic relationships between atoms:
 
 ```typescript
-import { batchCreateTripleStatements } from '@0xintuition/sdk'
+import { createTripleStatement } from '@0xintuition/sdk'
 
-const triples = [
-  {
-    subject: 'Alice',
-    predicate: 'knows',
-    object: 'Bob'
-  },
-  {
-    subject: 'Ethereum',
-    predicate: 'is a',
-    object: 'blockchain'
-  }
-]
-
-const result = await batchCreateTripleStatements(config, triples)
+// After creating atoms a, b, c (see earlier), reference their vaultIds
+const triple = await createTripleStatement(
+  config,
+  { args: [a.state.vaultId, b.state.vaultId, c.state.vaultId] },
+)
 ```
 
 ### Data Retrieval
@@ -245,19 +241,10 @@ The application is organized into functional tabs:
 #### Configuration
 
 ```typescript
-// src/lib/intuition-config.ts
+// src/lib/intuition-config.ts (align with SDK deployments)
 export const supportedNetworks = [
-  {
-    id: 1,
-    name: 'Ethereum Mainnet',
-    rpcUrl: 'https://eth-mainnet.g.alchemy.com/v2/...'
-  },
-  {
-    id: 8453,
-    name: 'Base Mainnet', 
-    rpcUrl: 'https://mainnet.base.org'
-  },
-  // ... more networks
+  { id: 8453, name: 'Base Mainnet', rpcUrl: 'https://mainnet.base.org' },
+  { id: 84532, name: 'Base Sepolia', rpcUrl: 'https://sepolia.base.org' },
 ]
 ```
 
@@ -265,12 +252,8 @@ export const supportedNetworks = [
 
 The application supports multiple networks for maximum flexibility:
 
-- **Ethereum Mainnet** (Chain ID: 1)
 - **Base Mainnet** (Chain ID: 8453)
-- **Arbitrum One** (Chain ID: 42161)
-- **Sepolia Testnet** (Chain ID: 11155111)
 - **Base Sepolia Testnet** (Chain ID: 84532)
-- **Arbitrum Sepolia** (Chain ID: 421614)
 
 ## Walkthrough: Creating Your First Atom
 

@@ -117,95 +117,39 @@ const consensus = await calculateConsensusScore({
 
 ## Signal Collection Methods
 
-### 1. Event Tracking
+### 1. Event Tracking (Conceptual)
 
-```javascript
-import { trackSignal } from '@intuition/protocol';
+Event collection endpoints are not exposed as an SDK API. The signals you see in the UI are derived from on-chain deposits/redemptions and graph events. Use GraphQL to query signals data.
 
-// Track atom view
-await trackSignal({
-  type: 'atom_view',
-  atomId: "did:ethr:mainnet:0x...",
-  userId: userDid,
-  metadata: {
-    source: 'search',
-    duration: 30,
-    interaction: 'read'
-  }
-});
+### 2. Query Signals (GraphQL)
 
-// Track triple creation
-await trackSignal({
-  type: 'triple_creation',
-  tripleId: "did:ethr:mainnet:0x...",
-  userId: userDid,
-  metadata: {
-    confidence: 0.9,
-    evidence: ['research', 'expertise']
-  }
-});
-```
+```ts
+import { configureClient, createServerClient, API_URL_DEV, GetSignalsDocument } from '@0xintuition/graphql'
 
-### 2. Batch Processing
+configureClient({ apiUrl: API_URL_DEV })
+const client = createServerClient({})
 
-```javascript
-// Process multiple signals at once
-const signals = [
-  { type: 'atom_view', atomId: "did:ethr:mainnet:0x...", userId: userDid },
-  { type: 'atom_share', atomId: "did:ethr:mainnet:0x...", userId: userDid },
-  { type: 'triple_like', tripleId: "did:ethr:mainnet:0x...", userId: userDid }
-];
-
-await processSignals(signals);
+const data = await client.request(GetSignalsDocument, { limit: 10 })
+console.log('Signals returned:', data.signals.length)
 ```
 
 ### 3. Real-time Streaming
 
-```javascript
-// Subscribe to real-time signal updates
-const signalStream = subscribeToSignals({
-  atomId: "did:ethr:mainnet:0x...",
-  callback: (signal) => {
-    console.log('New signal:', signal);
-    updateAtomScore(signal);
-  }
-});
-```
+Real-time streams are not part of the public SDK; poll GraphQL or subscribe via your own infra.
 
 ## Signal Processing
 
 ### 1. Aggregation
 
-```javascript
-const aggregatedSignal = await aggregateSignals({
-  atomId: "did:ethr:mainnet:0x...",
-  timeframe: "24h",
-  metrics: ['views', 'likes', 'shares', 'references']
-});
-```
+Aggregation helpers shown below are conceptual. Use GraphQL aggregations where available.
 
 ### 2. Normalization
 
-```javascript
-const normalizedSignal = await normalizeSignal({
-  rawSignal: aggregatedSignal,
-  baseline: historicalBaseline,
-  factors: ['user_quality', 'time_decay', 'network_effect']
-});
-```
+Normalization is application-specific. No public SDK function currently exists.
 
 ### 3. Weighting
 
-```javascript
-const weightedSignal = await applySignalWeights({
-  signal: normalizedSignal,
-  weights: {
-    direct_interaction: 1.0,
-    indirect_reference: 0.7,
-    network_spread: 0.5
-  }
-});
-```
+Weighting strategies are left to the integrator.
 
 ## Signal Analytics
 
@@ -272,33 +216,15 @@ const qualityScore = await validateSignalQuality({
 
 ### 1. Real-time Dashboards
 
-```javascript
-const dashboard = await createSignalDashboard({
-  atomId: "did:ethr:mainnet:0x...",
-  metrics: ['usage', 'quality', 'growth'],
-  timeframe: 'realtime'
-});
-```
+Build dashboards using GraphQL queries and your preferred charting library.
 
 ### 2. Historical Analysis
 
-```javascript
-const history = await getSignalHistory({
-  atomId: "did:ethr:mainnet:0x...",
-  timeframe: "90d",
-  granularity: "hourly"
-});
-```
+Use GraphQL date filters and ordering to build historical views.
 
 ### 3. Network Mapping
 
-```javascript
-const networkMap = await createSignalNetworkMap({
-  atomId: "did:ethr:mainnet:0x...",
-  depth: 3,
-  metrics: ['influence', 'reach', 'quality']
-});
-```
+No public helper exists; derive network relationships via triples queries.
 
 ## Best Practices
 
@@ -326,41 +252,11 @@ const networkMap = await createSignalNetworkMap({
 
 ### Web Application
 
-```javascript
-// React component for signal tracking
-function AtomViewer({ atomId }) {
-  useEffect(() => {
-    trackSignal({
-      type: 'atom_view',
-      atomId,
-      userId: currentUser.did,
-      metadata: {
-        component: 'AtomViewer',
-        duration: 0
-      }
-    });
-  }, [atomId]);
-
-  // Component logic...
-}
-```
+Use the `useGetSignalsQuery` React hook from `@0xintuition/graphql` for UI displays.
 
 ### Mobile Application
 
-```javascript
-// React Native signal tracking
-const trackAtomInteraction = async (atomId, interactionType) => {
-  await trackSignal({
-    type: interactionType,
-    atomId,
-    userId: userDid,
-    metadata: {
-      platform: 'mobile',
-      appVersion: '1.2.0'
-    }
-  });
-};
-```
+Mobile integrations query the same GraphQL endpoints; no mobile-specific SDK is required.
 
 ## Next Steps
 

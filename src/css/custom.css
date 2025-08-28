@@ -51,6 +51,18 @@
 
 @layer base {
   :root {
+    /* Layout and typography */
+    --ifm-font-family-base: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, 'Apple Color Emoji', 'Segoe UI Emoji';
+    --ifm-font-family-monospace: 'Fira Code', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+    --ifm-heading-font-family: 'Plus Jakarta Sans', Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    --ifm-line-height-base: 1.7;
+    --ifm-heading-color: var(--ifm-color-emphasis-900);
+    --ifm-scroll-padding-top: calc(var(--ifm-navbar-height) + 16px);
+
+    /* Content width (keeps text readable on large monitors) */
+    --ifm-container-width: 1100px;
+    --ifm-container-width-xl: 1280px;
+
     --docs-color-primary-100: 48 89 107;
     --docs-color-primary-200: 48 89 107;
     --accent-color-teal: rgb(48, 89, 107);
@@ -62,8 +74,7 @@
     --docs-color-text-400: 71 71 71;
     --ifm-navbar-background-color: rgba(255, 255, 255, 0.95);
     --ifm-navbar-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    
-
+    /* Neutral first; pop used sparingly */
     --ifm-color-primary: rgb(64, 64, 64);
     --ifm-color-primary-dark: rgb(57, 57, 57);
     --ifm-color-primary-darker: rgb(54, 54, 54);
@@ -71,6 +82,10 @@
     --ifm-color-primary-light: rgb(71, 71, 71);
     --ifm-color-primary-lighter: rgb(76, 76, 76);
     --ifm-color-primary-lightest: rgb(89, 89, 89);
+
+    /* Bright accent for CTAs/explicit links */
+    --accent-pop: #4DA3FF;
+    --accent-pop-dark: #2B8AEF;
   }
   
   html[data-theme='dark'] {
@@ -81,8 +96,7 @@
     --docs-color-secondary-1000: 0 0 0;
     --ifm-navbar-background-color: rgba(0, 0, 0, 0.95);
     --ifm-navbar-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
-    
-
+    /* Muted neutrals in dark mode */
     --ifm-color-primary: rgb(200, 200, 200);
     --ifm-color-primary-dark: rgb(180, 180, 180);
     --ifm-color-primary-darker: rgb(170, 170, 170);
@@ -91,17 +105,24 @@
     --ifm-color-primary-lighter: rgb(230, 230, 230);
     --ifm-color-primary-lightest: rgb(245, 245, 245);
   }
-  
+
   body {
     @apply font-sans antialiased;
   }
-  
+
+  .container {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
 
   .navbar {
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     transition: all 0.2s ease;
+    --ifm-navbar-link-color: var(--ifm-color-emphasis-700);
+    --ifm-navbar-link-hover-color: var(--ifm-color-emphasis-900);
   }
   
   html[data-theme='dark'] .navbar {
@@ -110,11 +131,14 @@
   
   .navbar__item {
     font-weight: 500;
-    transition: color 0.2s ease;
+    transition: color 0.2s ease, background-color 0.2s ease;
+    border-radius: 8px;
+    padding: 2px 6px;
   }
   
   .navbar__item:hover {
-    color: var(--ifm-color-primary);
+    color: var(--ifm-navbar-link-hover-color);
+    background: rgba(0,0,0,0.04);
   }
   
   .navbar__brand {
@@ -132,11 +156,59 @@
   a {
     @apply cursor-pointer;
   }
-  
+
+  /* Default links stay neutral; use .link--accent for pop */
+  :where(.theme-doc-markdown) a {
+    color: var(--ifm-color-emphasis-900);
+    text-underline-offset: 3px;
+  }
+  :where(.theme-doc-markdown) a:hover {
+    text-decoration: underline;
+  }
+  .link--accent {
+    color: var(--accent-pop);
+  }
+  .link--accent:hover { color: var(--accent-pop-dark); }
+
   h1, h2, h3, h4, h5 {
     @apply font-jakarta;
   }
-  
+
+  .theme-doc-markdown h1 {
+    font-size: 2.125rem;
+    line-height: 1.25;
+    margin-top: 0.25rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .theme-doc-markdown h2 {
+    font-size: 1.5rem;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .theme-doc-markdown h3 {
+    font-size: 1.125rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .theme-doc-markdown p,
+  .theme-doc-markdown li {
+    line-height: 1.75;
+  }
+
+  /* Improve links and active states */
+  .menu__link--active,
+  .menu__list-item-collapsible--active .menu__link {
+    background: rgba(0, 0, 0, 0.04);
+    border-radius: 8px;
+  }
+  html[data-theme='dark'] .menu__link--active,
+  html[data-theme='dark'] .menu__list-item-collapsible--active .menu__link {
+    background: rgba(255, 255, 255, 0.06);
+  }
+
   .homepage section,
   .homepage section * {
     @apply box-border;
@@ -145,6 +217,77 @@
   .intuition-badge {
     @apply mb-2 inline-block rounded-sm text-text-400;
     @apply tracking-wider;
+  }
+}
+
+/* Code blocks: polish and copy button */
+.theme-code-block {
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+}
+.theme-code-block pre {
+  margin: 0;
+}
+.theme-code-block:hover {
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+}
+.theme-code-block button[class*='copyButton'] {
+  background: rgba(0,0,0,0.04);
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 6px;
+  transition: all .2s ease;
+}
+html[data-theme='dark'] .theme-code-block button[class*='copyButton'] {
+  background: rgba(255,255,255,0.06);
+}
+.theme-code-block button[class*='copyButton']:hover {
+  transform: translateY(-1px);
+}
+
+/* TOC: consistent width and sticky spacing */
+.table-of-contents {
+  width: 260px;
+}
+.theme-doc-toc-desktop {
+  top: calc(var(--ifm-navbar-height) + 16px);
+}
+
+/* Blockquotes and admonitions */
+blockquote {
+  border-left: 3px solid var(--ifm-color-primary);
+  background: rgba(0,0,0,0.02);
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+}
+html[data-theme='dark'] blockquote {
+  background: rgba(255,255,255,0.04);
+}
+
+/* Tables */
+.markdown table {
+  border-collapse: separate;
+  border-spacing: 0;
+  overflow: hidden;
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 8px;
+}
+.markdown th, .markdown td {
+  border-top: 1px solid var(--ifm-color-emphasis-200);
+}
+.markdown thead th {
+  border-top: 0;
+}
+
+/* Mobile adjustments */
+@media (max-width: 996px) {
+  .container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  .theme-code-block {
+    border-radius: 8px;
   }
 }
 
@@ -187,8 +330,8 @@
   }
   
   .button--primary {
-    background: linear-gradient(135deg, rgb(var(--docs-color-primary-100)), rgb(var(--docs-color-primary-200)));
-    border-color: rgb(var(--docs-color-primary-100));
+    background: linear-gradient(135deg, var(--accent-pop), var(--accent-pop-dark));
+    border-color: var(--accent-pop);
   }
   
   .button--primary:hover {
@@ -591,85 +734,53 @@ details * {
 
 /* Light/Dark Mode Contrast Improvements */
 
-/* Ensure primary text has proper contrast */
-:root {
-  --ifm-color-content: #000;
-  --ifm-color-content-secondary: #525860;
-}
-
-html[data-theme='dark'] {
-  --ifm-color-content: #fff;
-  --ifm-color-content-secondary: #b4b4b4;
-}
-
-/* Ensure buttons have proper contrast */
-.button--primary {
-  color: var(--ifm-color-primary-contrast) !important;
-}
-
-/* Fix any white-on-white or black-on-black issues */
-.uniform-card {
-  color: var(--ifm-color-content) !important;
-  background-color: var(--ifm-background-color) !important;
-}
-
-.uniform-card-title {
-  color: var(--ifm-color-emphasis-900) !important;
-}
-
-.uniform-card-content {
-  color: var(--ifm-color-emphasis-700) !important;
-}
-
-/* Ensure link colors have proper contrast */
-a {
-  color: var(--ifm-color-primary) !important;
-}
-
-a:hover {
-  color: var(--ifm-color-primary-dark) !important;
-}
-
-/* Fix hero section text contrast */
+/* Carefully scoped contrast helpers (avoid global !important text colors) */
+/* Improve hero-on-gradient text only where gradients used inline */
 [style*="backgroundImage: 'linear-gradient'"] h1,
 [style*="background: 'linear-gradient'"] h1 {
-  color: white !important;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.7) !important;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.7);
 }
 
 [style*="backgroundImage: 'linear-gradient'"] p,
 [style*="background: 'linear-gradient'"] p {
-  color: rgba(255, 255, 255, 0.9) !important;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.5) !important;
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
 }
 
-/* Ensure table text is readable */
-table {
-  color: var(--ifm-color-content) !important;
+/* Dark-mode fix: MDX inline light cards must flip text to dark or background to dark */
+html[data-theme='dark'] div[style*='background-color: white'],
+html[data-theme='dark'] div[style*='background: white'] {
+  background-color: var(--ifm-background-color) !important;
+  border-color: var(--ifm-color-emphasis-300) !important;
 }
-
-table th {
+/* Handle light gray informational blocks */
+html[data-theme='dark'] div[style*='background-color: #f9fafb'],
+html[data-theme='dark'] div[style*='background: #f9fafb'] {
+  background-color: var(--ifm-background-surface-color, #1e1e1e) !important;
+  border-color: var(--ifm-color-emphasis-300) !important;
+}
+html[data-theme='dark'] div[style*='background-color: white'] h1,
+html[data-theme='dark'] div[style*='background-color: white'] h2,
+html[data-theme='dark'] div[style*='background-color: white'] h3,
+html[data-theme='dark'] div[style*='background-color: white'] h4,
+html[data-theme='dark'] div[style*='background-color: white'] h5,
+html[data-theme='dark'] div[style*='background-color: white'] h6,
+html[data-theme='dark'] div[style*='background: white'] h1,
+html[data-theme='dark'] div[style*='background: white'] h2,
+html[data-theme='dark'] div[style*='background: white'] h3,
+html[data-theme='dark'] div[style*='background: white'] h4,
+html[data-theme='dark'] div[style*='background: white'] h5,
+html[data-theme='dark'] div[style*='background: white'] h6 {
   color: var(--ifm-color-emphasis-900) !important;
-  background-color: var(--ifm-color-emphasis-100) !important;
 }
-
-table td {
-  color: var(--ifm-color-emphasis-800) !important;
-}
-
-/* Fix code block contrast */
-code {
-  background-color: var(--ifm-color-emphasis-100) !important;
-  color: var(--ifm-color-emphasis-900) !important;
-}
-
-/* Ensure proper contrast for all text elements */
-h1, h2, h3, h4, h5, h6 {
-  color: var(--ifm-color-emphasis-900) !important;
-}
-
-p, li, span {
-  color: var(--ifm-color-emphasis-800) !important;
+html[data-theme='dark'] div[style*='background-color: white'] p,
+html[data-theme='dark'] div[style*='background-color: white'] li,
+html[data-theme='dark'] div[style*='background-color: white'] span,
+html[data-theme='dark'] div[style*='background: white'] p,
+html[data-theme='dark'] div[style*='background: white'] li,
+html[data-theme='dark'] div[style*='background: white'] span {
+  color: var(--ifm-color-emphasis-700) !important;
 }
 
 /* Dark mode specific fixes */
@@ -2139,4 +2250,3 @@ table td, table th {
     text-decoration: none !important;
   }
 }
-

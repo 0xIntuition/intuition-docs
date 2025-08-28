@@ -26,22 +26,19 @@ Before you begin, ensure you have:
 
 1. Install the MCP Server package:
 ```bash
-npm install @intuition/intuition-ai
+npm install @0xintuition/mcp-server
 ```
 
 2. Create a basic server configuration:
 ```javascript
-const { MCPServer } = require('@intuition/mcp-server');
-const { IntuitionAI } = require('@intuition/intuition-ai');
+import { MCPServer } from '@0xintuition/mcp-server'
 
 const server = new MCPServer({
   port: 3000,
-  auth: {
-    token: 'your-auth-token'
-  }
-});
+  auth: { token: process.env.AUTH_TOKEN! },
+})
 
-server.start();
+server.start()
 ```
 
 ## Configuration Options

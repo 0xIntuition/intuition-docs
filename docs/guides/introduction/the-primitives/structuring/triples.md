@@ -88,22 +88,35 @@ Establish hierarchical or categorical relationships.
 
 ## Creating Triples
 
-### Using the Protocol SDK
+### Using the SDK (copy‑paste ready)
 
-```javascript
-import { createTriple } from '@intuition/protocol';
+```ts
+import { createAtomFromString, createTripleStatement } from '@0xintuition/sdk'
+import { createPublicClient, createWalletClient, http } from 'viem'
+import { privateKeyToAccount } from 'viem/accounts'
+import { sepolia } from 'viem/chains'
+import { getEthMultiVaultAddressFromChainId } from '@0xintuition/sdk'
 
-const triple = await createTriple({
-  subject: "did:ethr:mainnet:0x...", // Ethereum
-  predicate: "did:ethr:mainnet:0x...", // is
-  object: "did:ethr:mainnet:0x...", // decentralized
-  type: "property",
-  metadata: {
-    creator: userDid,
-    timestamp: new Date().toISOString(),
-    confidence: 0.95
-  }
-});
+// 1) Configure viem clients (example uses Sepolia)
+const account = privateKeyToAccount(process.env.PRIVATE_KEY as `0x${string}`)
+const walletClient = createWalletClient({ account, chain: sepolia, transport: http() })
+const publicClient = createPublicClient({ chain: sepolia, transport: http() })
+
+// 2) MultiVault address for current chain
+const multivaultAddress = getEthMultiVaultAddressFromChainId(sepolia.id)
+
+// 3) Create three atoms
+const a = await createAtomFromString({ walletClient, publicClient, address: multivaultAddress }, 'Ethereum')
+const b = await createAtomFromString({ walletClient, publicClient, address: multivaultAddress }, 'is')
+const c = await createAtomFromString({ walletClient, publicClient, address: multivaultAddress }, 'decentralized')
+
+// 4) Create the triple (uses vaultIds from the created atoms)
+const triple = await createTripleStatement(
+  { walletClient, publicClient, address: multivaultAddress },
+  { args: [a.state.vaultId, b.state.vaultId, c.state.vaultId] },
+)
+
+console.log('Created triple vaultId:', triple.state[0].vaultId)
 ```
 
 ### Validation Rules
@@ -214,35 +227,43 @@ D ←→ E ←→ F
 
 ## Querying Triples
 
-### Basic Queries
+### Basic Queries (GraphQL)
 
-```javascript
-// Find all properties of Ethereum
-const properties = await queryTriples({
-  subject: "did:ethr:mainnet:0x...", // Ethereum
-});
+```ts
+import { configureClient, createServerClient, API_URL_DEV, GetTriplesDocument } from '@0xintuition/graphql'
 
-// Find all entities created by Vitalik
-const created = await queryTriples({
-  predicate: "did:ethr:mainnet:0x...", // created
-  object: "did:ethr:mainnet:0x...", // Vitalik Buterin
-});
+configureClient({ apiUrl: API_URL_DEV })
+const client = createServerClient({})
+
+// Find triples where object label contains "decentralized"
+const data = await client.request(GetTriplesDocument, {
+  limit: 10,
+  where: {
+    object: { label: { _ilike: '%decentralized%' } },
+  },
+})
+
+console.log(data.triples.length)
 ```
 
-### Complex Queries
+### Complex Queries (GraphQL)
 
-```javascript
-// Find all decentralized technologies
-const decentralized = await queryTriples({
-  predicate: "did:ethr:mainnet:0x...", // is
-  object: "did:ethr:mainnet:0x...", // decentralized
-});
+```ts
+import { configureClient, createServerClient, API_URL_DEV, GetTriplesDocument } from '@0xintuition/graphql'
 
-// Find all AI subsets
-const aiSubsets = await queryTriples({
-  predicate: "did:ethr:mainnet:0x...", // is a subset of
-  object: "did:ethr:mainnet:0x...", // AI
-});
+configureClient({ apiUrl: API_URL_DEV })
+const client = createServerClient({})
+
+// Find AI subsets
+const aiSubsets = await client.request(GetTriplesDocument, {
+  limit: 20,
+  where: {
+    predicate: { label: { _ilike: '%is a subset of%' } },
+    object: { label: { _ilike: '%AI%' } },
+  },
+})
+
+console.log(aiSubsets.triples.length)
 ```
 
 ## Triple Analytics
