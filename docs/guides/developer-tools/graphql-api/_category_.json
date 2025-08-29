@@ -1,6 +1,6 @@
 {
   "label": "GraphQL API",
-  "position": 2,
+  "position": 5,
   "link": {
     "type": "generated-index",
     "description": "Comprehensive guide to using the Intuition GraphQL API for data fetching and mutations."

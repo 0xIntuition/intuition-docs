@@ -158,13 +158,13 @@ const config = {
             position: 'left',
           },
           {
-            label: 'Intuition Hub',
+            label: 'Hub',
             to: 'guides/hub',
             className: 'hub-top-header',
             position: 'left',
           },
           {
-            label: 'Developer Tools',
+            label: 'Build',
             to: 'guides/developer-tools',
             className: 'developer-tools-top-header',
             position: 'left',
