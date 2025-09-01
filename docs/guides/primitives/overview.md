@@ -1,8 +1,9 @@
 ---
-sidebar_position: 4
+title: Overview
+sidebar_position: 1
 ---
 
-# Primitives
+# Primitives Overview
 
 The Intuition System is built on a set of novel primitives, which form the foundation of the ecosystem and enable the creation of a structured, semantic web of trust. 
 

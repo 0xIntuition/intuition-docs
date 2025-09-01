@@ -65,31 +65,56 @@ function Resource({
   title,
   description,
   duration,
-}: Resource) {
+  index = 0,
+}: Resource & { index?: number }) {
   return (
     <Link
-      className="group flex flex-col justify-between transition-all duration-300 hover:-translate-y-1"
+      className="resource-card group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-md backdrop-blur-sm transition-all duration-500 hover:-translate-y-2 hover:border-primary hover:shadow-2xl hover:no-underline dark:border-gray-800 dark:bg-[#1a1a1a] dark:shadow-xl dark:shadow-black/50"
       key={title}
       href={url}
+      style={{
+        animationDelay: `${index * 150}ms`,
+      }}
     >
       <div>
-        <div className="mb-4 overflow-hidden rounded-xl shadow-sm transition-shadow hover:shadow-md">
+        <div className="image-container relative mb-4 overflow-hidden rounded-xl bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700">
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
           <img
             src={image}
             alt={title}
             loading="lazy"
-            className="aspect-video h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            className="aspect-video h-full w-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:rotate-1"
           />
+          {type === 'video' && (
+            <div className="play-button absolute left-1/2 top-1/2 flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 shadow-lg backdrop-blur-sm transition-all duration-300 group-hover:scale-110 group-hover:bg-primary group-hover:text-white">
+              <svg className="h-8 w-8 translate-x-0.5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z" />
+              </svg>
+            </div>
+          )}
+          <div className="absolute bottom-2 right-2 rounded-full bg-black/50 px-2 py-1 text-xs font-medium text-white backdrop-blur-sm">
+            {duration}
+          </div>
         </div>
-        <h3 className="mb-2 font-semibold text-black transition-colors group-hover:text-primary dark:text-white dark:group-hover:text-primary-100 lg:text-xl">
-          {title}
-        </h3>
-        <p className="text-sm leading-relaxed text-gray-600 dark:text-gray-300">{description}</p>
+        <div className="px-4 pb-4">
+          <h3 className="mb-2 font-semibold text-gray-900 transition-colors duration-300 group-hover:text-primary dark:text-white lg:text-xl">
+            {title}
+          </h3>
+          <p className="text-sm leading-relaxed text-gray-600 dark:text-gray-400">{description}</p>
+        </div>
       </div>
-      <div className="mt-4 flex items-center justify-between">
-        <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
-          {`${duration} ${type === 'Video' ? 'watch' : 'read'}`}
+      <div className="mt-auto flex items-center justify-between border-t border-gray-100 px-4 py-3 dark:border-gray-800">
+        <div className="flex items-center gap-2">
+          <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-medium capitalize text-primary">
+            {type}
+          </span>
         </div>
+        <span className="flex items-center gap-1 text-xs font-medium text-gray-500 transition-colors group-hover:text-primary dark:text-gray-400">
+          {type === 'video' ? 'Watch' : 'Read'} 
+          <svg className="h-3 w-3 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
+        </span>
       </div>
     </Link>
   );
@@ -120,12 +145,14 @@ export default function ResourcesSection() {
   };
 
   return (
-    <section className="no-underline-links my-20 px-6">
-      <div className="mx-auto max-w-5xl">
-        <div className="mb-12 flex items-center justify-between">
+    <section className="resources-section noise-bg no-underline-links relative my-20 overflow-hidden px-6">
+      <div className="animated-gradient absolute inset-0 opacity-10" />
+      
+      <div className="relative mx-auto max-w-5xl">
+        <div className="resources-header mb-12 flex items-center justify-between">
           <div>
-            <span className="intuition-badge mb-4 inline-block">RESOURCES</span>
-            <h2 className="text-4xl font-bold">Would you like to know more?</h2>
+            <span className="intuition-badge mb-4 inline-block rounded-full bg-primary/10 px-4 py-1 text-xs font-semibold uppercase tracking-wider text-primary">RESOURCES</span>
+            <h2 className="bg-gradient-to-r from-gray-900 via-primary to-gray-900 bg-clip-text text-4xl font-bold text-transparent dark:from-white dark:via-primary-200 dark:to-white">Would you like to know more?</h2>
           </div>
           <Link
             to="https://intuition-systems.notion.site/108450d37d06808fbd43f863e3daca22?v=fff450d37d068106a163000c0a2bf4b4"
@@ -136,71 +163,86 @@ export default function ResourcesSection() {
           </Link>
         </div>
 
-        <div className="mb-8 flex gap-4 font-jakarta text-sm font-medium">
+        <div className="filter-buttons mb-8 flex gap-4 font-jakarta text-sm font-medium">
           <button
             className={clsx(
-              'rounded-full px-6 py-2 transition-all duration-300 ease-in-out hover:scale-105',
+              'filter-btn relative overflow-hidden rounded-full px-6 py-2 transition-all duration-300 ease-in-out hover:scale-105',
               activeType === 'all'
-                ? 'bg-primary text-white shadow-lg hover:bg-primary-600'
-                : 'text-gray-600 hover:bg-gray-100 hover:shadow-md dark:text-gray-300 dark:hover:bg-gray-800',
+                ? 'bg-gradient-to-r from-primary to-primary-600 text-white shadow-lg'
+                : 'border border-gray-200 bg-white/80 text-gray-600 backdrop-blur-sm hover:border-primary/50 hover:bg-gray-50 hover:shadow-md dark:border-gray-700 dark:bg-gray-800/80 dark:text-gray-300 dark:hover:bg-gray-700',
             )}
             onClick={() => setActiveType('all')}
           >
-            All
+            <span className="relative z-10">All</span>
           </button>
           <button
             className={clsx(
-              'rounded-full px-6 py-2 transition-all duration-300 ease-in-out hover:scale-105',
+              'filter-btn relative overflow-hidden rounded-full px-6 py-2 transition-all duration-300 ease-in-out hover:scale-105',
               activeType === 'blog'
-                ? 'bg-primary text-white shadow-lg hover:bg-primary-600'
-                : 'text-gray-600 hover:bg-gray-100 hover:shadow-md dark:text-gray-300 dark:hover:bg-gray-800',
+                ? 'bg-gradient-to-r from-primary to-primary-600 text-white shadow-lg'
+                : 'border border-gray-200 bg-white/80 text-gray-600 backdrop-blur-sm hover:border-primary/50 hover:bg-gray-50 hover:shadow-md dark:border-gray-700 dark:bg-gray-800/80 dark:text-gray-300 dark:hover:bg-gray-700',
             )}
             onClick={() => setActiveType('blog')}
           >
-            Blogs
+            <span className="relative z-10">Blogs</span>
           </button>
           <button
             className={clsx(
-              'rounded-full px-6 py-2 transition-all duration-300 ease-in-out hover:scale-105',
+              'filter-btn relative overflow-hidden rounded-full px-6 py-2 transition-all duration-300 ease-in-out hover:scale-105',
               activeType === 'video'
-                ? 'bg-primary text-white shadow-lg hover:bg-primary-600'
-                : 'text-gray-600 hover:bg-gray-100 hover:shadow-md dark:text-gray-300 dark:hover:bg-gray-800',
+                ? 'bg-gradient-to-r from-primary to-primary-600 text-white shadow-lg'
+                : 'border border-gray-200 bg-white/80 text-gray-600 backdrop-blur-sm hover:border-primary/50 hover:bg-gray-50 hover:shadow-md dark:border-gray-700 dark:bg-gray-800/80 dark:text-gray-300 dark:hover:bg-gray-700',
             )}
             onClick={() => setActiveType('video')}
           >
-            Videos
+            <span className="relative z-10">Videos</span>
           </button>
         </div>
 
         <div className="relative flex flex-col">
-          <div className="no-underline-links grid grid-cols-3 gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+          <div className="resources-grid no-underline-links grid grid-cols-3 gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             {currentResources.map((resource, idx) => (
-              <Resource {...resource} key={idx} />
+              <Resource {...resource} key={idx} index={idx} />
             ))}
           </div>
 
-          <div className="mt-12 flex items-center justify-center gap-4">
+          <div className="pagination mt-12 flex items-center justify-center gap-4">
             <button
               onClick={prevPage}
               disabled={page === 1}
               className={clsx(
-                'flex h-10 w-10 items-center justify-center rounded-full transition-all',
+                'pagination-btn flex h-12 w-12 items-center justify-center rounded-full border transition-all',
                 page === 1
-                  ? 'cursor-not-allowed opacity-50'
-                  : 'hover:bg-gray-100 dark:hover:bg-gray-800'
+                  ? 'cursor-not-allowed border-gray-200 opacity-50'
+                  : 'border-gray-200 bg-white hover:border-primary hover:bg-primary hover:text-white hover:shadow-lg dark:border-gray-700 dark:bg-gray-800'
               )}
             >
               <ChevronLeftRegular className="h-5 w-5" />
             </button>
 
+            <div className="flex items-center gap-2">
+              {Array.from({ length: pages }, (_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setPage(i + 1)}
+                  className={clsx(
+                    'h-2 w-2 rounded-full transition-all',
+                    page === i + 1
+                      ? 'w-8 bg-primary'
+                      : 'bg-gray-300 hover:bg-gray-400 dark:bg-gray-600'
+                  )}
+                />
+              ))}
+            </div>
+
             <button
               onClick={nextPage}
               disabled={page === pages}
               className={clsx(
-                'flex h-10 w-10 items-center justify-center rounded-full transition-all',
+                'pagination-btn flex h-12 w-12 items-center justify-center rounded-full border transition-all',
                 page === pages
-                  ? 'cursor-not-allowed opacity-50'
-                  : 'hover:bg-gray-100 dark:hover:bg-gray-800'
+                  ? 'cursor-not-allowed border-gray-200 opacity-50'
+                  : 'border-gray-200 bg-white hover:border-primary hover:bg-primary hover:text-white hover:shadow-lg dark:border-gray-700 dark:bg-gray-800'
               )}
             >
               <ChevronRightRegular className="h-5 w-5" />

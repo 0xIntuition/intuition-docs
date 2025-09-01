@@ -3,9 +3,9 @@
   "sitemap_urls": ["https://docs.intuition.systems/sitemap.xml"],
   "start_urls": [
     {
-      "url": "https://docs.intuition.systems/guides",
-      "tags": "guides",
-      "selectors_key": "guides"
+      "url": "https://docs.intuition.systems/docs",
+      "tags": "docs",
+      "selectors_key": "docs"
     },
     {
       "url": "https://docs.intuition.systems/graphql",
@@ -31,7 +31,7 @@
       "lvl6": "article h6",
       "text": "article p, article li, article td:last-child"
     },
-    "guides": {
+    "docs": {
       "lvl0": {
         "selector": "",
         "global": true,

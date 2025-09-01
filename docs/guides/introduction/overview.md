@@ -153,7 +153,7 @@ Choose your path to get started with Intuition's decentralized knowledge graph:
 
 <div className="uniform-card-grid">
 
-<a href="/guides/quickstart/speed-run-intuition" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+<a href="/docs/quickstart/speed-run-intuition" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
 <div className="uniform-card clickable-card">
 <h3 className="uniform-card-title">Speed Run Intuition</h3>
 <p className="uniform-card-content">
@@ -162,7 +162,7 @@ Get up and running with Intuition quickly. A fast-paced guide to get you buildin
 </div>
 </a>
 
-<a href="/guides/hub" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+<a href="/docs/hub" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
 <div className="uniform-card clickable-card">
 <h3 className="uniform-card-title">Intuition Hub</h3>
 <p className="uniform-card-content">
@@ -171,7 +171,7 @@ Access Intuition's L3 network tools and services. Explore the development enviro
 </div>
 </a>
 
-<a href="/guides/developer-tools" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+<a href="/docs/developer-tools" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
 <div className="uniform-card clickable-card">
 <h3 className="uniform-card-title">Developer Tools</h3>
 <p className="uniform-card-content">
@@ -538,7 +538,7 @@ Rewards for quality contributions and honest behavior
 
 <div className="uniform-card-grid">
 
-<a href="/guides/introduction/why-intuition" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+<a href="/docs/introduction/why-intuition" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
 <div className="uniform-card clickable-card">
 <h3 className="uniform-card-title">Why Intuition?</h3>
 <p className="uniform-card-content">
@@ -547,7 +547,7 @@ Learn about the challenges Intuition addresses and our unique approach to buildi
 </div>
 </a>
 
-<a href="/guides/introduction/the-economics" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+<a href="/docs/introduction/the-economics" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
 <div className="uniform-card clickable-card">
 <h3 className="uniform-card-title">The Economics</h3>
 <p className="uniform-card-content">
@@ -556,7 +556,7 @@ Understand Intuition's market-based system of fees and rewards, early adopter ad
 </div>
 </a>
 
-<a href="/guides/introduction/the-primitives" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+<a href="/docs/introduction/the-primitives" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
 <div className="uniform-card clickable-card">
 <h3 className="uniform-card-title">Primitives</h3>
 <p className="uniform-card-content">
@@ -565,7 +565,7 @@ Dive deep into the fundamental building blocks: Atoms, Triples, and Signal. Lear
 </div>
 </a>
 
-<a href="/guides/resources/key-terms" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+<a href="/docs/resources/key-terms" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
 <div className="uniform-card clickable-card">
 <h3 className="uniform-card-title">Key Terms</h3>
 <p className="uniform-card-content">
@@ -580,4 +580,4 @@ Master the essential terminology and concepts that form the foundation of the In
 
 Our mission pages will guide you through:
 
-- **[Why Intuition](/guides/introduction/why-intuition)** - How Intuition addresses these challenges and our unique approach 
+- **[Why Intuition](/docs/introduction/why-intuition)** - How Intuition addresses these challenges and our unique approach 

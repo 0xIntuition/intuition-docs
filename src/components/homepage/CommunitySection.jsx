@@ -1,84 +1,198 @@
 import React from 'react';
 import Link from '@docusaurus/Link';
+import { 
+  GitHub, 
+  MessageCircle, 
+  Twitter, 
+  Mail, 
+  BookOpen,
+  HelpCircle,
+  Video,
+  FileText,
+  Users,
+  Zap,
+  ExternalLink,
+  ArrowRight,
+  Send
+} from 'react-feather';
 
-const socialLinks = [
+const supportChannels = [
   {
-    name: 'Discord',
-    handle: '0xintuition',
-    icon: '🎮',
+    title: 'Discord Community',
+    description: 'Join our active community for real-time support and discussions',
+    icon: MessageCircle,
     link: 'https://discord.gg/RgBenkX4mx',
+    color: 'from-indigo-500 to-purple-600',
+    external: true
   },
   {
-    name: 'Telegram',
-    handle: 't.me/intuitionsystems',
-    icon: 'Travel',
-    link: 'https://t.me/intuitionsystems',
+    title: 'GitHub',
+    description: 'Report issues, contribute code, and explore our repositories',
+    icon: GitHub,
+    link: 'https://github.com/0xintuition',
+    color: 'from-gray-700 to-gray-900',
+    external: true
   },
   {
-    name: 'Twitter',
-    handle: '0xintuition',
-    icon: '🐦',
-    link: 'https://twitter.com/0xintuition',
+    title: 'X / Twitter',
+    description: 'Follow us for the latest updates and announcements',
+    icon: Twitter,
+    link: 'https://x.com/0xintuition',
+    color: 'from-blue-400 to-blue-600',
+    external: true
   },
   {
-    name: 'Medium',
-    handle: '0xintuition',
-    icon: 'Document',
-    link: 'https://medium.com/0xintuition',
+    title: 'FAQ',
+    description: 'Find answers to frequently asked questions',
+    icon: HelpCircle,
+    link: '/faq',
+    color: 'from-emerald-500 to-teal-600',
+    external: false
   },
   {
-    name: 'LinkedIn',
-    handle: '0xintuition',
-    icon: '💼',
-    link: 'https://linkedin.com/company/0xintuition',
+    title: 'Video Tutorials',
+    description: 'Learn through step-by-step video guides',
+    icon: Video,
+    link: 'https://youtube.com/@0xIntuition',
+    color: 'from-red-500 to-pink-600',
+    external: true
   },
   {
-    name: 'Guild',
-    handle: 'Intuition',
-    icon: '🏰',
-    link: 'https://guild.xyz/intuition',
-  },
-  {
-    name: 'Mirror',
-    handle: 'Intuition',
-    icon: '🪞',
-    link: 'https://mirror.xyz/intuition',
-  },
-  {
-    name: 'Warpcast',
-    handle: 'Intuition',
-    icon: 'W',
-    link: 'https://warpcast.com/intuition',
-  },
+    title: 'Forum',
+    description: 'Join discussions and get help from the community',
+    icon: Users,
+    link: 'https://atlas.discourse.group',
+    color: 'from-purple-500 to-indigo-600',
+    external: true
+  }
 ];
+
+const quickLinks = [
+  {
+    title: 'Getting Started',
+    description: 'Quick setup guide for new developers',
+    icon: Zap,
+    link: '/docs/quickstart'
+  },
+  {
+    title: 'FAQ',
+    description: 'Answers to common questions',
+    icon: HelpCircle,
+    link: '/faq'
+  },
+  {
+    title: 'Video Tutorials',
+    description: 'Learn through video walkthroughs',
+    icon: Video,
+    link: 'https://youtube.com/@0xIntuition'
+  },
+  {
+    title: 'API Reference',
+    description: 'Complete API documentation',
+    icon: FileText,
+    link: '/graphql'
+  }
+];
+
+function SupportCard({ title, description, icon: Icon, link, color, external }) {
+  const CardWrapper = external ? 'a' : Link;
+  const cardProps = external 
+    ? { href: link, target: '_blank', rel: 'noopener noreferrer' }
+    : { to: link };
+
+  return (
+    <CardWrapper
+      {...cardProps}
+      className="group relative overflow-hidden rounded-2xl border border-gray-200 bg-white p-6 shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl dark:border-gray-800 dark:bg-[#1a1a1a] dark:shadow-xl dark:shadow-black/50"
+    >
+      <div className={`absolute inset-0 bg-gradient-to-br ${color} opacity-0 transition-opacity duration-300 group-hover:opacity-5`} />
+      
+      <div className="relative z-10 flex items-start gap-4">
+        <div className={`flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br ${color} text-white shadow-lg transition-transform duration-300 group-hover:scale-110`}>
+          <Icon className="h-6 w-6" />
+        </div>
+        
+        <div className="flex-1">
+          <h3 className="mb-2 flex items-center gap-2 text-lg font-semibold text-gray-900 dark:text-white">
+            {title}
+            {external && (
+              <ExternalLink className="h-4 w-4 opacity-50 transition-opacity group-hover:opacity-100" />
+            )}
+          </h3>
+          <p className="text-sm text-gray-600 dark:text-gray-300">
+            {description}
+          </p>
+        </div>
+      </div>
+    </CardWrapper>
+  );
+}
+
+function QuickLinkCard({ title, description, icon: Icon, link }) {
+  const isExternal = link.startsWith('http');
+  const CardWrapper = isExternal ? 'a' : Link;
+  const cardProps = isExternal 
+    ? { href: link, target: '_blank', rel: 'noopener noreferrer' }
+    : { to: link };
+
+  return (
+    <CardWrapper
+      {...cardProps}
+      className="group flex items-center gap-4 rounded-lg border border-gray-200 bg-gray-50 p-4 shadow-sm transition-all duration-200 hover:border-primary hover:bg-white hover:shadow-lg dark:border-gray-800 dark:bg-[#1a1a1a] dark:shadow-lg dark:shadow-black/30 dark:hover:border-primary"
+    >
+      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-white">
+        <Icon className="h-5 w-5" />
+      </div>
+      <div className="flex-1">
+        <h4 className="font-medium text-gray-900 dark:text-white">{title}</h4>
+        <p className="text-xs text-gray-500 dark:text-gray-400">{description}</p>
+      </div>
+      <ArrowRight className="h-4 w-4 text-gray-400 transition-transform group-hover:translate-x-1 group-hover:text-primary" />
+    </CardWrapper>
+  );
+}
 
 export default function CommunitySection() {
   return (
-    <section className="no-underline-links">
-      <div className="mx-auto flex w-full flex-col items-center justify-center bg-gradient-to-b from-zinc-200/90 to-white px-4 py-16 pt-32 pb-32 text-zinc-700 dark:from-[#262626] dark:to-black dark:text-white">
-        <h2 className="text-3xl mb-10">
-          Join the <span className="text-primary-100">community</span>
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-7xl w-full">
-          {socialLinks.map((platform) => (
-            <Link
-              key={platform.name}
-              href={platform.link}
-              className="no-underline group"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <div className="flex items-start gap-4 rounded-lg border border-zinc-700/10 bg-zinc-900 px-4 pt-4 transition-colors hover:border-zinc-700/30 dark:border-zinc-700/50 dark:bg-zinc-800/50 dark:hover:border-zinc-700">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-zinc-700/20 text-2xl">
-                  {platform.icon}
-                </div>
-                <div>
-                  <h3 className="font-semibold text-white mb-1">{platform.name}</h3>
-                  <p className="text-sm text-zinc-400">{platform.handle}</p>
-                </div>
-              </div>
-            </Link>
+    <section className="noise-bg relative overflow-hidden py-20">
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent" />
+      
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="mb-12 text-center">
+          <span className="intuition-badge mb-4 inline-block">SUPPORT</span>
+          <h2 className="mb-4 text-4xl font-bold text-gray-900 dark:text-white">
+            We're Here to Help
+          </h2>
+          <p className="mx-auto max-w-2xl text-lg text-gray-600 dark:text-gray-300">
+            Get the support you need through our various channels. Our community and team are ready to assist you with any questions or challenges.
+          </p>
+        </div>
+
+        <div className="mb-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {supportChannels.map((channel) => (
+            <SupportCard key={channel.title} {...channel} />
           ))}
+        </div>
+
+        <div className="rounded-2xl border border-gray-200 bg-gradient-to-r from-gray-50 to-white p-8 shadow-md dark:border-gray-800 dark:bg-[#1a1a1a] dark:from-[#1a1a1a] dark:to-[#1a1a1a] dark:shadow-xl dark:shadow-black/50">
+          <div className="mb-6 flex items-center justify-between">
+            <h3 className="text-2xl font-semibold text-gray-900 dark:text-white">
+              Quick Resources
+            </h3>
+            <Link
+              to="/docs"
+              className="group flex items-center gap-2 text-sm font-medium text-primary transition-colors hover:text-primary-600"
+            >
+              View all guides
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Link>
+          </div>
+          
+          <div className="grid gap-4 sm:grid-cols-2">
+            {quickLinks.map((link) => (
+              <QuickLinkCard key={link.title} {...link} />
+            ))}
+          </div>
         </div>
       </div>
     </section>

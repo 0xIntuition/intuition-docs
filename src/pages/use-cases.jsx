@@ -522,10 +522,10 @@ await intuition.awardReputation(answer.id, {
             <h3>Development Resources</h3>
             
             <ul>
-              <li><strong><a href="/guides/quickstart">Quick Start Guide</a></strong>: Get up and running with Intuition</li>
-              <li><strong><a href="/guides/developer-tools">Developer Tools</a></strong>: Access the tools you need to build</li>
-              <li><strong><a href="/guides/introduction/the-primitives">Primitives Documentation</a></strong>: Master the building blocks</li>
-              <li><strong><a href="/guides/developer-tools/graphql-api">API Reference</a></strong>: Integrate with Intuition's APIs</li>
+              <li><strong><a href="/docs/quickstart">Quick Start Guide</a></strong>: Get up and running with Intuition</li>
+              <li><strong><a href="/docs/developer-tools">Developer Tools</a></strong>: Access the tools you need to build</li>
+              <li><strong><a href="/docs/introduction/the-primitives">Primitives Documentation</a></strong>: Master the building blocks</li>
+              <li><strong><a href="/docs/developer-tools/graphql-api">API Reference</a></strong>: Integrate with Intuition's APIs</li>
             </ul>
 
             <h3>Community Support</h3>
@@ -587,7 +587,7 @@ await intuition.awardReputation(answer.id, {
             
             <p>The possibilities with Intuition are endless. Whether you're building a simple reputation system or a complex prediction market, Intuition's primitives provide the foundation you need to create applications that fundamentally change how we think about trust online.</p>
             
-            <p>Start with our <a href="/guides/quickstart">Quick Start Guide</a> or explore the <a href="/guides/developer-tools">Developer Tools</a> to begin creating your own use case!</p>
+            <p>Start with our <a href="/docs/quickstart">Quick Start Guide</a> or explore the <a href="/docs/developer-tools">Developer Tools</a> to begin creating your own use case!</p>
           </div>
         </div>
       </main>

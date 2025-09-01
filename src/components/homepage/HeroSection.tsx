@@ -1,114 +1,141 @@
 import React from 'react';
 import Link from '@docusaurus/Link';
 import {
-  ChatMultipleRegular,
-  LiveRegular,
-  CurrencyDollarEuroFilled,
-  PersonStarburstRegular,
+  ArrowRightFilled,
+  AppsAddInRegular,
+  DocumentRegular,
+  DatabaseRegular,
+  CodeRegular,
+  ShareRegular,
+  ServerRegular,
+  DocumentTextRegular,
+  CubeRegular,
 } from '@fluentui/react-icons';
-import ThemedImage from '@theme/ThemedImage';
 import clsx from 'clsx';
 
-const PRODUCTS = [
+const MAIN_CARDS = [
   {
-    title: 'Build Personalized Experiences',
-    link: '/guides/overview/the-primitives',
-    icon: PersonStarburstRegular,
-    lightImage: '/img/hero1.png',
-    darkImage: '/img/hero1.png',
-    text: "Create truly adaptive products by tapping into Intuition's open knowledge graph. Query on-chain attestations, preferences, and reputations to let your app—or AI agent—respond to each user's context in real time, delivering uniquely personal flows and recommendations.",
+    title: 'Quick Start',
+    link: '/docs/quickstart',
+    icon: ArrowRightFilled,
+    text: "Get up and running with Intuition in minutes. Build your first app with our starter kits.",
   },
   {
-    title: 'Get Paid for Your Data',
-    link: '/guides/overview/the-economics',
-    icon: CurrencyDollarEuroFilled,
-    lightImage: '/img/hero2.png',
-    darkImage: '/img/hero2.png',
-    text: "Publish verifiable claims to Intuition, stake $TRUST, and earn protocol rewards whenever your data powers searches, AI answers, or downstream apps. Your contributions remain yours—now they generate ongoing yield.",
+    title: 'GraphQL API',
+    link: '/docs/graphql/quickstart',
+    icon: DatabaseRegular,
+    text: "Query the knowledge graph with our powerful GraphQL API.",
   },
   {
-    title: 'Find the Information You Need',
-    link: '/guides/graphql/quickstart',
-    icon: LiveRegular,
-    lightImage: '/img/hero3.png',
-    darkImage: '/img/hero3.png',
-    text: "Intuition weaves scattered facts into a cryptographically trusted Web of Trust, so humans and machines can instantly surface authoritative answers, complete with provenance trails and reputation scores for any subject.",
+    title: 'SDK',
+    link: '/docs/developer-tools',
+    icon: CodeRegular,
+    text: "TypeScript/JavaScript SDKs for seamless integration.",
   },
   {
-    title: 'Explore Bonding Curves',
-    link: '/guides/overview/the-economics/bonding-curves',
-    icon: CurrencyDollarEuroFilled,
-    lightImage: '/img/hero2.png',
-    darkImage: '/img/hero2.png',
-    text: "Discover how bonding curves create dynamic pricing mechanisms that automatically adjust based on supply and demand. Learn about automated market making and economic incentives.",
+    title: 'Intuition Network',
+    link: '/docs/overview',
+    icon: ShareRegular,
+    text: "Learn about the decentralized trust and reputation network.",
   },
 ];
 
-function HeroProduct({
+const TECH_CARDS = [
+  {
+    title: 'Rust Subnet',
+    link: 'https://deepwiki.com/0xIntuition/intuition-rs',
+    icon: ServerRegular,
+    text: "Dive into the Rust-based subnet infrastructure powering Intuition.",
+  },
+  {
+    title: 'TS Monorepo',
+    link: 'https://deepwiki.com/0xIntuition/intuition-ts',
+    icon: DocumentTextRegular,
+    text: "Explore our TypeScript monorepo architecture and packages.",
+  },
+  {
+    title: 'Smart Contracts',
+    link: 'https://deepwiki.com/0xIntuition/intuition-contracts-v2',
+    icon: CubeRegular,
+    text: "Deep dive into the Intuition smart contract architecture.",
+  },
+];
+
+function SimpleCard({
   link,
   title,
   icon: Icon,
   text,
-  lightImage,
-  darkImage,
-}: (typeof PRODUCTS)[0]) {
+}: {
+  link: string;
+  title: string;
+  icon: any;
+  text: string;
+}) {
+  const isExternal = link.startsWith('http');
+  const CardWrapper = isExternal ? 'a' : Link;
+  const cardProps = isExternal 
+    ? { href: link, target: '_blank', rel: 'noopener noreferrer' }
+    : { to: link };
+  
   return (
-    <Link
-      to={link}
-      style={{
-        borderWidth: '1px',
-        height: '100%',
-      }}
+    <CardWrapper
+      {...cardProps}
       className={clsx(
-        'group cursor-pointer overflow-clip rounded-3xl from-primary/30 via-transparent to-transparent text-black transition-all hover:bg-gradient-to-tr hover:text-primary hover:no-underline dark:text-white',
-        'w-full border-secondary-700 bg-secondary-900 hover:!border-primary dark:border-secondary-800',
+        'group relative block h-full w-full cursor-pointer overflow-hidden rounded-xl border border-gray-200 bg-white p-6 shadow-md transition-all duration-300 hover:-translate-y-1.5 hover:border-primary hover:shadow-2xl hover:no-underline',
+        'dark:border-gray-800 dark:bg-[#1a1a1a] dark:shadow-xl dark:shadow-black/50',
       )}
     >
-      <div className="p-6 !pb-0">
-        <h3 className="mb-3 flex items-center gap-3 font-jakarta text-lg font-semibold group-hover:text-primary">
-          <Icon className="h-6 w-6" />
-          <div>
-            {title}
-            {/* {beta && <span className="font-normal text-text-400"> (Beta)</span>} */}
-          </div>
-        </h3>
-        <p className="mb-0 text-sm leading-relaxed text-zinc-400">{text}</p>
+      {/* Subtle gradient overlay for depth */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/5 opacity-0 dark:opacity-100" />
+      <div className="mb-4 flex items-center justify-center">
+        <Icon className="h-10 w-10 text-primary transition-transform duration-200 group-hover:scale-110" />
       </div>
-      <div className="flex justify-end px-6 pt-6">
-        <ThemedImage
-          sources={{
-            light: lightImage,
-            dark: darkImage,
-          }}
-          alt={title}
-          className="w-1/2 transition-transform group-hover:scale-110"
-        />
-      </div>
-    </Link>
+      <h3 className="mb-2 text-center font-jakarta text-lg font-semibold text-gray-900 dark:text-gray-100 transition-colors duration-200 group-hover:text-primary">
+        {title}
+      </h3>
+      <p className="mb-0 text-center text-sm leading-relaxed text-gray-600 dark:text-gray-400">
+        {text}
+      </p>
+    </CardWrapper>
   );
 }
 
 export default function HeroSection() {
   return (
-    <div className="noise-bg w-full py-20 px-4">
+    <div className="w-full py-20 px-4 bg-white dark:bg-black">
       <div className="mx-auto max-w-7xl">
         {/* Hero Text Section */}
-        <div className="text-center mb-16">
-          <h2 className="mb-6 font-jakarta text-5xl lg:text-6xl font-bold">
-            Give your project <span className="italic">Intuition</span>.
+        <div className="mb-16 text-center">
+          <h2 className="mb-6 font-jakarta text-5xl font-bold text-gray-900 dark:text-white lg:text-6xl">
+            Give your project <span className="italic text-primary">Intuition</span>.
           </h2>
-          <p className="text-lg lg:text-xl text-text-400 max-w-4xl mx-auto">
+          <p className="mx-auto max-w-4xl text-lg text-gray-600 dark:text-gray-300 lg:text-xl">
             Gain plug‑and‑play verifiable data, decentralized identity, and reputation for your app: query or submit signed data in one call, skip building reputation layers, and earn token rewards whenever the data you publish is used.
           </p>
         </div>
 
-        {/* Product Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {PRODUCTS.map((product) => (
-            <div key={product.title} className="h-full">
-              <HeroProduct {...product} />
+        {/* Main Cards Grid - 4 cards */}
+        <div className="mb-16 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {MAIN_CARDS.map((card) => (
+            <div key={card.title} className="h-full">
+              <SimpleCard {...card} />
             </div>
           ))}
+        </div>
+
+        {/* Tech Deep Dive Section */}
+        <div className="mt-20">
+          <h3 className="mb-8 text-center font-jakarta text-3xl font-bold text-gray-900 dark:text-white lg:text-4xl">
+            Tech Deep Dive Docs
+          </h3>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+            {TECH_CARDS.map((card) => (
+              <div key={card.title} className="h-full">
+                <SimpleCard {...card} />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>

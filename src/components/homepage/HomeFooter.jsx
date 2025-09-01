@@ -7,8 +7,8 @@ import BrowserOnly from '@docusaurus/BrowserOnly';
 import ThemedImage from '@theme/ThemedImage';
 
 const overview = [
-  { name: 'Overview', href: '/guides/overview' },
-  { name: 'Why Intuition?', href: '/guides/overview/why-intuition' },
+  { name: 'Overview', href: '/docs/overview' },
+  { name: 'Why Intuition?', href: '/docs/overview/why-intuition' },
 ];
 
 const products = [
@@ -33,11 +33,11 @@ const products = [
 const developers = [
   {
     name: 'Guides',
-    href: '/guides',
+    href: '/docs',
   },
   {
     name: 'Create Intuition App',
-    href: '/guides/quickstart/create-intuition-app',
+    href: '/docs/quickstart/create-intuition-app',
   },
   {
     name: 'GraphQL Queries',
@@ -45,19 +45,19 @@ const developers = [
   },
   {
     name: 'Smart Contracts',
-    href: '/guides/smart-contracts/',
+    href: '/docs/smart-contracts/',
   },
   {
     name: 'AI Integration',
-    href: '/guides/intuition-ai/intro',
+    href: '/docs/intuition-ai/intro',
   },
   {
     name: 'Primitives',
-    href: '/guides/primitives/atoms',
+    href: '/docs/primitives/atoms',
   },
   {
     name: 'Architecture',
-    href: '/guides/smart-contracts/architecture',
+    href: '/docs/smart-contracts/architecture',
   },
 ];
 

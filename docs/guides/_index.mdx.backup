@@ -66,7 +66,7 @@ Welcome to Intuition's documentation. Whether you're building applications, expl
 
 <div className="uniform-card-grid">
 
-<a href="/guides/introduction/overview" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+<a href="/docs/introduction/overview" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
 <div className="uniform-card clickable-card">
 <h3 className="uniform-card-title">Overview</h3>
 <p className="uniform-card-content">
@@ -75,7 +75,7 @@ Understand the core vision and principles behind Intuition. Learn about the visi
 </div>
 </a>
 
-<a href="/guides/quickstart/speed-run-intuition" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+<a href="/docs/quickstart/speed-run-intuition" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
 <div className="uniform-card clickable-card">
 <h3 className="uniform-card-title">Speed Run Intuition</h3>
 <p className="uniform-card-content">
@@ -84,7 +84,7 @@ Get up and running with Intuition quickly. A fast-paced guide to get you buildin
 </div>
 </a>
 
-<a href="/guides/hub" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+<a href="/docs/hub" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
 <div className="uniform-card clickable-card">
 <h3 className="uniform-card-title">Intuition Hub</h3>
 <p className="uniform-card-content">
@@ -93,7 +93,7 @@ Access Intuition's network tools and services. Explore the Intuition network wit
 </div>
 </a>
 
-<a href="/guides/developer-tools" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+<a href="/docs/developer-tools" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
 <div className="uniform-card clickable-card">
 <h3 className="uniform-card-title">Developer Tools</h3>
 <p className="uniform-card-content">
