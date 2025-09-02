@@ -1,0 +1,8 @@
+{
+  "label": "ETHGas API",
+  "position": 4,
+  "link": {
+    "type": "generated-index",
+    "description": "Complete REST API documentation for ETHGas platform including authentication, user management, funding, markets, trading, builder, pricer, validator, and bundle submission endpoints."
+  }
+}
