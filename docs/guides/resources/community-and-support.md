@@ -172,7 +172,7 @@ Share your feedback, suggestions, and ideas to help improve Intuition.
 
 <div className="uniform-card-grid-small">
 
-<a href="/guides/resources/faq" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+<a href="/docs/resources/faq" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
 <div className="uniform-card clickable-card">
 <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
 <div style={{ width: '40px', height: '40px', borderRadius: '8px', backgroundColor: '#EF4444', display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: '1rem' }}>
@@ -188,7 +188,7 @@ Find answers to frequently asked questions about Intuition.
 </div>
 </a>
 
-<a href="/guides/quickstart" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+<a href="/docs/quickstart" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
 <div className="uniform-card clickable-card">
 <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
 <div style={{ width: '40px', height: '40px', borderRadius: '8px', backgroundColor: '#06B6D4', display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: '1rem' }}>

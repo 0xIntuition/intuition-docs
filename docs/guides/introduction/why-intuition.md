@@ -162,7 +162,7 @@ Intuition employs strong cryptographic standards to ensure data privacy, integri
 If you have questions or want to join our growing community of builders and thinkers, join us in Discord! Our team is actively helping partners, developers, and researchers build the next generation of decentralized trust infrastructure.
 </p>
 <p style={{ margin: '0 0 1rem 0', fontSize: '1rem', color: 'var(--ifm-color-emphasis-700)' }}>
-For more detailed information about our community resources and support channels, visit our <a href="/guides/resources/community-and-support" style={{ color: 'var(--ifm-color-primary)', textDecoration: 'none' }}>Community & Support</a> page.
+For more detailed information about our community resources and support channels, visit our <a href="/docs/resources/community-and-support" style={{ color: 'var(--ifm-color-primary)', textDecoration: 'none' }}>Community & Support</a> page.
 </p>
 <p style={{ margin: 0, fontSize: '1rem', color: 'var(--ifm-color-emphasis-700)', fontStyle: 'italic' }}>
 This is just the beginning. Intuition is a living protocol, and your contributions — through development, staking, and participation — shape its future.

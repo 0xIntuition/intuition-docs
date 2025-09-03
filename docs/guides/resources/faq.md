@@ -24,10 +24,10 @@ The protocol uses atomic primitives (atoms, triples, signals, and bonding curves
 ### How do I get started with Intuition?
 
 **Step 1: Read the Documentation**  
-Start with the [Introduction](/guides/introduction) and [Overview](/guides/introduction/overview) guides to understand the core concepts.
+Start with the [Introduction](/docs/introduction) and [Overview](/docs/introduction/overview) guides to understand the core concepts.
 
 **Step 2: Connect to Testnet**  
-Visit the [Intuition Hub](/guides/hub) to access the testnet and get your development environment set up.
+Visit the [Intuition Hub](/docs/hub) to access the testnet and get your development environment set up.
 
 **Step 3: Set up Development Environment**  
 Install the necessary SDKs and tools for your preferred programming language.
@@ -67,7 +67,7 @@ Intuition supports multiple programming languages through various SDKs:
 ### How do I connect to the Intuition testnet?
 
 **Step 1: Access the Hub**  
-Visit the [Intuition Hub](/guides/hub) at [intuition-testnet.hub.caldera.xyz](https://intuition-testnet.hub.caldera.xyz/) for centralized access to all Intuition L3 network services.
+Visit the [Intuition Hub](/docs/hub) at [intuition-testnet.hub.caldera.xyz](https://intuition-testnet.hub.caldera.xyz/) for centralized access to all Intuition L3 network services.
 
 **Step 2: Configure Your Wallet**  
 Add the Intuition testnet to your wallet using the network details provided in the hub dashboard. The hub will display the current Chain ID and RPC URL.
@@ -76,7 +76,7 @@ Add the Intuition testnet to your wallet using the network details provided in t
 Use the built-in faucet available in the hub to obtain test tokens for development and testing.
 
 **Step 4: Explore Services**  
-Access the [Bridge](/guides/hub/bridge) for cross-chain transfers, [Explorer](/guides/hub/explorer) for blockchain exploration, and monitor network status through the status page.
+Access the [Bridge](/docs/hub/bridge) for cross-chain transfers, [Explorer](/docs/hub/explorer) for blockchain exploration, and monitor network status through the status page.
 
 ### How do I integrate Intuition into my existing app?
 
@@ -84,7 +84,7 @@ Access the [Bridge](/guides/hub/bridge) for cross-chain transfers, [Explorer](/g
 Add the appropriate Intuition SDK to your project using your package manager.
 
 **Step 2: Configure Connection**  
-Set up connection to the Intuition testnet first using the network details from the [Hub](/guides/hub).
+Set up connection to the Intuition testnet first using the network details from the [Hub](/docs/hub).
 
 **Step 3: Implement Primitives**  
 Use atoms, triples, signals, and bonding curves in your application logic.
@@ -98,7 +98,7 @@ Thoroughly test your integration on testnet before production deployment.
 Build your application using Intuition primitives and follow best practices.
 
 **Step 2: Test on Testnet**  
-Use the [Intuition testnet](/guides/hub) to thoroughly test your application before mainnet deployment. Access all testnet services through the hub.
+Use the [Intuition testnet](/docs/hub) to thoroughly test your application before mainnet deployment. Access all testnet services through the hub.
 
 **Step 3: Deploy Contracts**  
 Deploy your smart contracts to the network using the appropriate deployment tools. Start with testnet deployment first.
@@ -110,9 +110,9 @@ Make your application available to users and monitor its performance using the n
 
 **Start Simple**: Begin with basic primitives before building complex systems to understand the fundamentals.
 
-**Test Extensively**: Use the [Intuition testnet](/guides/hub) for all development and testing to avoid costly mistakes. Access the full testing infrastructure through the hub.
+**Test Extensively**: Use the [Intuition testnet](/docs/hub) for all development and testing to avoid costly mistakes. Access the full testing infrastructure through the hub.
 
-**Follow Security Guidelines**: Implement proper security measures and follow established patterns. Review our [security audits](/guides/resources/audits) for best practices.
+**Follow Security Guidelines**: Implement proper security measures and follow established patterns. Review our [security audits](/docs/resources/audits) for best practices.
 
 **Document Your Code**: Maintain clear documentation for your applications to help other developers.
 
@@ -176,7 +176,7 @@ Bonding curves are mathematical functions that determine token pricing based on 
 If you're having trouble connecting to the Intuition testnet, try these troubleshooting steps:
 
 **Check Network Configuration**  
-Verify that your wallet is configured with the correct network details from the [Hub dashboard](/guides/hub). The Chain ID and RPC URL should match exactly.
+Verify that your wallet is configured with the correct network details from the [Hub dashboard](/docs/hub). The Chain ID and RPC URL should match exactly.
 
 **Check Network Status**  
 Visit the network status page to see if there are any ongoing issues with the testnet services.
@@ -202,7 +202,7 @@ Common causes of transaction failures:
 
 **Community Support**: Join our [Discord](https://discord.com/invite/0xintuition) for real-time help from the community.
 
-**Documentation**: Check our comprehensive [documentation](/guides) for detailed guides and tutorials.
+**Documentation**: Check our comprehensive [documentation](/docs) for detailed guides and tutorials.
 
 **GitHub**: Report issues and contribute to the project on [GitHub](https://github.com/0xintuition).
 
@@ -251,7 +251,7 @@ Common causes of transaction failures:
 We're here to help! Reach out to our community or support team for assistance.
 </p>
 <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-<a href="/guides/resources/community-and-support" style={{ 
+<a href="/docs/resources/community-and-support" style={{ 
   backgroundColor: 'transparent', 
   color: 'var(--ifm-color-primary)', 
   padding: '0.75rem 1.5rem', 

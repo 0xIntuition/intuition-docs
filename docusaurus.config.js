@@ -65,13 +65,19 @@ const plugins = [
   [
     '@docusaurus/plugin-client-redirects',
     {
+      redirects: [
+        {
+          from: '/docs',
+          to: '/docs/introduction/overview',
+        },
+      ],
       createRedirects: (path) => {
-        if (path.startsWith('/guides/capabilities/chat/export-chat-dump')) {
+        if (path.startsWith('/docs/capabilities/chat/export-chat-dump')) {
           return ['/capabilities/export-chat-dump'];
         }
 
-        if (path.startsWith('/guides/capabilities/misc/embed')) {
-          return ['/guides/capabilities/embed'];
+        if (path.startsWith('/docs/capabilities/misc/embed')) {
+          return ['/docs/capabilities/embed'];
         }
         return undefined; // Return a falsy value: no redirect created
       },
@@ -89,6 +95,7 @@ const config = {
   plugins,
   future: {
     experimental_faster: true,
+    v4: true,
   },
 
   trailingSlash: false,
@@ -108,7 +115,7 @@ const config = {
         docs: {
           path: 'docs/guides',
           id: 'guides',
-          routeBasePath: '/guides',
+          routeBasePath: '/docs',
           ...defaultSettings,
         },
         blog: false,
@@ -133,6 +140,8 @@ const config = {
     ({
       colorMode: {
         defaultMode: 'light',
+        disableSwitch: true,
+        respectPrefersColorScheme: false,
       },
       docs: {
         sidebar: {
@@ -142,7 +151,7 @@ const config = {
       },
       navbar: {
         logo: {
-          href: 'https://www.intuition.systems/',
+          href: '/',
           src: '/logo/light.svg',
           srcDark: '/logo/dark.svg',
           alt: 'Intuition Documentation',
@@ -152,22 +161,35 @@ const config = {
         hideOnScroll: false,
         items: [
           {
-            label: 'Welcome',
-            to: 'guides',
+            label: 'Docs',
+            to: 'docs/introduction/overview',
             className: 'guides-top-header',
             position: 'left',
           },
           {
-            label: 'Hub',
-            to: 'guides/hub',
-            className: 'hub-top-header',
-            position: 'left',
+            label: 'Protocol Explorer',
+            href: 'https://portal.intuition.systems',
+            position: 'right',
           },
           {
-            label: 'Build',
-            to: 'guides/developer-tools',
-            className: 'developer-tools-top-header',
-            position: 'left',
+            label: 'Network Hub',
+            href: 'https://testnet.hub.intuition.systems/',
+            position: 'right',
+          },
+          {
+            label: 'Website',
+            href: 'https://intuition.systems',
+            position: 'right',
+          },
+          {
+            label: 'GitHub',
+            href: 'https://github.com/0xIntuition',
+            position: 'right',
+          },
+          {
+            label: 'Forum',
+            href: 'https://atlas.discourse.group',
+            position: 'right',
           },
           {
             type: 'search',

@@ -1,8 +1,9 @@
 ---
+title: Get Started
 sidebar_position: 1
 ---
 
-<a href="/guides/quickstart/speed-run-intuition" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+<a href="/docs/quickstart/speed-run-intuition" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
 <div className="uniform-card clickable-card" style={{
   backgroundColor: 'var(--ifm-color-emphasis-50)',
   borderRadius: '16px',
@@ -39,7 +40,7 @@ sidebar_position: 1
   marginBottom: '3rem'
 }}>
 
-<a href="/guides/quickstart/speed-run-intuition" style={{ textDecoration: 'none', color: 'inherit' }}>
+<a href="/docs/quickstart/speed-run-intuition" style={{ textDecoration: 'none', color: 'inherit' }}>
 <div className="uniform-card clickable-card" style={{ 
   border: '2px solid #10B981',
   borderRadius: '16px',
@@ -91,7 +92,7 @@ Quick Setup • Fast Results • Pre-configured
   gap: '2rem'
 }}>
 
-<a href="/guides/quickstart/official-intuition-kits" style={{ textDecoration: 'none', color: 'inherit' }}>
+<a href="/docs/quickstart/official-intuition-kits" style={{ textDecoration: 'none', color: 'inherit' }}>
 <div className="uniform-card clickable-card" style={{ 
   borderRadius: '16px',
   padding: '2rem',
@@ -135,7 +136,7 @@ Production Ready • Best Practices • Full Featured
 </div>
 </a>
 
-<a href="/guides/quickstart/community-built-kits" style={{ textDecoration: 'none', color: 'inherit' }}>
+<a href="/docs/quickstart/community-built-kits" style={{ textDecoration: 'none', color: 'inherit' }}>
 <div className="uniform-card clickable-card" style={{ 
   borderRadius: '16px',
   padding: '2rem',
@@ -410,7 +411,7 @@ Ready to Build the Future of Trust?
 Choose your integration path above and start building something amazing with Intuition!
 </p>
 <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-<a href="/guides/quickstart/speed-run-intuition" style={{
+<a href="/docs/quickstart/speed-run-intuition" style={{
   backgroundColor: 'var(--ifm-color-primary)',
   color: 'white',
   padding: '0.75rem 1.5rem',
@@ -424,7 +425,7 @@ Choose your integration path above and start building something amazing with Int
 }}>
 Start Speed Run
 </a>
-<a href="/guides/hub" style={{
+<a href="/docs/hub" style={{
   backgroundColor: 'transparent',
   color: 'white',
   padding: '0.75rem 1.5rem',

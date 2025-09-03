@@ -36,7 +36,7 @@ Our developer tools provide comprehensive resources to help you build, deploy, a
 
 <div className="uniform-card-grid">
 
-<a href="/guides/developer-tools/deep-dive/architecture" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+<a href="/docs/developer-tools/deep-dive/architecture" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
 <div className="uniform-card clickable-card">
 <h3 className="uniform-card-title">Deep Dive</h3>
 <p className="uniform-card-content">
@@ -45,7 +45,7 @@ Advanced architectural concepts and implementation details. Understand the core 
 </div>
 </a>
 
-<a href="/guides/developer-tools/contracts/contract-architecture" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+<a href="/docs/developer-tools/contracts/contract-architecture" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
 <div className="uniform-card clickable-card">
 <h3 className="uniform-card-title">Smart Contracts</h3>
 <p className="uniform-card-content">
@@ -54,7 +54,7 @@ Comprehensive smart contract documentation including architecture, integration g
 </div>
 </a>
 
-<a href="/guides/developer-tools/graphql-api/overview" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+<a href="/docs/developer-tools/graphql-api/overview" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
 <div className="uniform-card clickable-card">
 <h3 className="uniform-card-title">GraphQL API</h3>
 <p className="uniform-card-content">
@@ -63,7 +63,7 @@ Query and mutate data through our powerful GraphQL interface. Complete API docum
 </div>
 </a>
 
-<a href="/guides/developer-tools/sdks/overview" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+<a href="/docs/developer-tools/sdks/overview" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
 <div className="uniform-card clickable-card">
 <h3 className="uniform-card-title">SDKs & Libraries</h3>
 <p className="uniform-card-content">
@@ -72,7 +72,7 @@ Official SDKs and libraries for multiple programming languages. Get started quic
 </div>
 </a>
 
-<a href="/guides/developer-tools/audit-reports" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+<a href="/docs/developer-tools/audit-reports" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
 <div className="uniform-card clickable-card">
 <h3 className="uniform-card-title">Security Audits</h3>
 <p className="uniform-card-content">
@@ -81,7 +81,7 @@ Security audits and best practices for building secure applications. Review audi
 </div>
 </a>
 
-<a href="/guides/hub/data-populator" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+<a href="/docs/hub/data-populator" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
 <div className="uniform-card clickable-card">
 <h3 className="uniform-card-title">Integration Tools</h3>
 <p className="uniform-card-content">

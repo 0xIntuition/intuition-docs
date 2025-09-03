@@ -49,10 +49,10 @@ const FAQ: React.FC = () => {
       <FAQItem question="How do I get started with Intuition?">
         <div>
           <h4>Step 1</h4>
-          <p>Read the Documentation: Start with the <a href="/guides/introduction">Introduction</a> and <a href="/guides/introduction/overview">Overview</a> guides to understand the core concepts.</p>
+          <p>Read the Documentation: Start with the <a href="/docs/introduction">Introduction</a> and <a href="/docs/introduction/overview">Overview</a> guides to understand the core concepts.</p>
           
           <h4>Step 2</h4>
-          <p>Connect to Intuition: Visit the <a href="/guides/hub">Intuition Hub</a> to access the L3 network development environment and get your development environment set up.</p>
+          <p>Connect to Intuition: Visit the <a href="/docs/hub">Intuition Hub</a> to access the L3 network development environment and get your development environment set up.</p>
           
           <h4>Step 3</h4>
           <p>Set up Development Environment: Install the necessary SDKs and tools for your preferred programming language.</p>
@@ -87,7 +87,7 @@ const FAQ: React.FC = () => {
       <FAQItem question="How do I connect to the Intuition testnet?">
         <div>
           <h4>Step 1: Access the Hub</h4>
-          <p>Visit the <a href="/guides/hub">Intuition Hub</a> at <a href="https://intuition-testnet.hub.caldera.xyz/" target="_blank" rel="noopener noreferrer">intuition-testnet.hub.caldera.xyz</a> for centralized access to all Intuition L3 network services.</p>
+          <p>Visit the <a href="/docs/hub">Intuition Hub</a> at <a href="https://intuition-testnet.hub.caldera.xyz/" target="_blank" rel="noopener noreferrer">intuition-testnet.hub.caldera.xyz</a> for centralized access to all Intuition L3 network services.</p>
           
           <h4>Step 2: Configure Your Wallet</h4>
           <p>Add the Intuition L3 network to your wallet using the network details provided in the hub dashboard. The hub will display the current Chain ID and RPC URL.</p>
@@ -96,7 +96,7 @@ const FAQ: React.FC = () => {
           <p>Use the built-in faucet available in the hub to obtain test tokens for development and testing.</p>
           
           <h4>Step 4: Explore Services</h4>
-          <p>Access the <a href="/guides/hub/bridge">Bridge</a> for cross-chain transfers, <a href="/guides/hub/explorer">Explorer</a> for blockchain exploration, and monitor network status through the <a href="/guides/hub">Hub</a>. For main network interactions, visit the <a href="https://beta.portal.intuition.systems/" target="_blank" rel="noopener noreferrer">Portal</a>.</p>
+          <p>Access the <a href="/docs/hub/bridge">Bridge</a> for cross-chain transfers, <a href="/docs/hub/explorer">Explorer</a> for blockchain exploration, and monitor network status through the <a href="/docs/hub">Hub</a>. For main network interactions, visit the <a href="https://beta.portal.intuition.systems/" target="_blank" rel="noopener noreferrer">Portal</a>.</p>
         </div>
       </FAQItem>
 
@@ -106,7 +106,7 @@ const FAQ: React.FC = () => {
           <p>Install SDK: Add the appropriate Intuition SDK to your project using your package manager.</p>
           
           <h4>Step 2</h4>
-          <p>Configure Connection: Set up connection to the Intuition L3 network first using the network details from the <a href="/guides/hub">Hub</a>.</p>
+          <p>Configure Connection: Set up connection to the Intuition L3 network first using the network details from the <a href="/docs/hub">Hub</a>.</p>
           
           <h4>Step 3</h4>
           <p>Implement Primitives: Use atoms, triples, signals, and bonding curves in your application logic.</p>
@@ -122,7 +122,7 @@ const FAQ: React.FC = () => {
           <p>Develop Your App: Build your application using Intuition primitives and follow best practices.</p>
           
           <h4>Step 2</h4>
-          <p>Test on Intuition: Use the <a href="/guides/hub">Intuition L3 network</a> to thoroughly test your application before mainnet deployment. Access all L3 services through the hub.</p>
+          <p>Test on Intuition: Use the <a href="/docs/hub">Intuition L3 network</a> to thoroughly test your application before mainnet deployment. Access all L3 services through the hub.</p>
           
           <h4>Step 3</h4>
           <p>Deploy Contracts: Deploy your smart contracts to the network using the appropriate deployment tools. Start with testnet deployment first.</p>
@@ -135,10 +135,10 @@ const FAQ: React.FC = () => {
       <FAQItem question="What are the best practices for building with Intuition?">
         <div>
           <p><strong>Start Simple</strong>: Begin with basic primitives before building complex systems to understand the fundamentals.</p>
-          <p><strong>Test Extensively</strong>: Use the <a href="/guides/hub">Intuition L3 network</a> for all development and testing to avoid costly mistakes. Access the full L3 infrastructure through the hub.</p>
-          <p><strong>Follow Security Guidelines</strong>: Implement proper security measures and follow established patterns. Review our <a href="/guides/resources/audits">security audits</a> for best practices.</p>
+          <p><strong>Test Extensively</strong>: Use the <a href="/docs/hub">Intuition L3 network</a> for all development and testing to avoid costly mistakes. Access the full L3 infrastructure through the hub.</p>
+          <p><strong>Follow Security Guidelines</strong>: Implement proper security measures and follow established patterns. Review our <a href="/docs/resources/audits">security audits</a> for best practices.</p>
           <p><strong>Document Your Code</strong>: Maintain clear documentation for your applications to help other developers.</p>
-          <p><strong>Monitor Applications</strong>: Use the <a href="/guides/hub">Hub's monitoring tools</a> to track your application's performance and catch issues early.</p>
+          <p><strong>Monitor Applications</strong>: Use the <a href="/docs/hub">Hub's monitoring tools</a> to track your application's performance and catch issues early.</p>
         </div>
       </FAQItem>
 
@@ -181,10 +181,10 @@ const FAQ: React.FC = () => {
         <div>
           <p>If you're having trouble connecting to the Intuition testnet, try these troubleshooting steps:</p>
           <h4>Check Network Configuration</h4>
-          <p>Verify that your wallet is configured with the correct network details from the <a href="/guides/hub">Hub dashboard</a>. The Chain ID and RPC URL should match exactly.</p>
+          <p>Verify that your wallet is configured with the correct network details from the <a href="/docs/hub">Hub dashboard</a>. The Chain ID and RPC URL should match exactly.</p>
           
           <h4>Check Network Status</h4>
-          <p>Visit the <a href="/guides/hub">Hub</a> to see if there are any ongoing issues with the L3 network services.</p>
+          <p>Visit the <a href="/docs/hub">Hub</a> to see if there are any ongoing issues with the L3 network services.</p>
           
           <h4>Clear Wallet Cache</h4>
           <p>Try clearing your wallet's cache or switching to a different RPC endpoint if multiple are available in the hub.</p>
@@ -201,14 +201,14 @@ const FAQ: React.FC = () => {
           <li><strong>Insufficient Gas</strong>: Ensure you have enough gas for the transaction</li>
           <li><strong>Network Congestion</strong>: Try again during less busy periods</li>
           <li><strong>Incorrect Parameters</strong>: Double-check all transaction parameters before signing</li>
-          <li><strong>Network Issues</strong>: Check the <a href="/guides/hub">network status</a> for any ongoing network problems</li>
+          <li><strong>Network Issues</strong>: Check the <a href="/docs/hub">network status</a> for any ongoing network problems</li>
         </ul>
       </FAQItem>
 
       <FAQItem question="How do I get help and support?">
         <div>
           <p><strong>Community Support</strong>: Join our <a href="https://discord.com/invite/0xintuition" target="_blank" rel="noopener noreferrer">Discord</a> for real-time help from the community.</p>
-          <p><strong>Documentation</strong>: Check our comprehensive <a href="/guides">documentation</a> for detailed guides and tutorials.</p>
+          <p><strong>Documentation</strong>: Check our comprehensive <a href="/docs/introduction/overview">documentation</a> for detailed guides and tutorials.</p>
           <p><strong>GitHub</strong>: Report issues and contribute to the project on <a href="https://github.com/0xintuition" target="_blank" rel="noopener noreferrer">GitHub</a>.</p>
           <p><strong>Email Support</strong>: Contact us directly at <a href="mailto:support@intuition.systems">support@intuition.systems</a> for technical assistance.</p>
         </div>
