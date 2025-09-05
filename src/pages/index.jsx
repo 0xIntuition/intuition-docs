@@ -15,7 +15,7 @@ export default function Homepage() {
   return (
     <Layout
       title="Intuition Documentation"
-      wrapperClassName="homepage flex flex-col bg-white dark:bg-black"
+      wrapperClassName="homepage flex flex-col bg-black dark:bg-black"
       noFooter
     >
       <Head>

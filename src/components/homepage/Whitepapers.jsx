@@ -6,7 +6,7 @@ import {
   DocumentTextRegular,
   DocumentBulletListRegular,
 } from '@fluentui/react-icons';
-import { Link } from 'react-router-dom';
+import Link from '@docusaurus/Link';
 import clsx from 'clsx';
 
 function WhitepaperCard({ title, icon: Icon, description, to, className, index }) {

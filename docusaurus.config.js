@@ -102,6 +102,8 @@ const config = {
   themes: ['@docusaurus/theme-live-codeblock', '@docusaurus/theme-mermaid'],
   clientModules: [
     require.resolve('./src/client/set-framework.js'),
+    require.resolve('./src/client/force-dark-mode.js'),
+    require.resolve('./src/client/force-styling.js'),
   ],
   scripts: [{ src: 'https://cdn.statuspage.io/se-v2.js', async: true }],
   markdown: {
@@ -139,8 +141,8 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       colorMode: {
-        defaultMode: 'light',
-        disableSwitch: true,
+        defaultMode: 'dark',
+        disableSwitch: false,
         respectPrefersColorScheme: false,
       },
       docs: {
