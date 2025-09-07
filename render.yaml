@@ -1,0 +1,32 @@
+services:
+  - type: web
+    name: intuition-docs
+    env: static
+    buildCommand: npm ci && npm run build
+    staticPublishPath: ./build
+    routes:
+      - type: rewrite
+        source: /docs/*
+        destination: /docs/*
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: NODE_VERSION
+        value: "18"
+    headers:
+      - path: /*
+        name: X-Frame-Options
+        value: DENY
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: Referrer-Policy
+        value: strict-origin-when-cross-origin
+      - path: /static/*
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      - path: /assets/*
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
