@@ -3,14 +3,143 @@ id: why-intuition
 title: Why Intuition?
 sidebar_label: Why Intuition?
 sidebar_position: 2
-description: Understanding the challenges Intuition addresses and our unique approach
+description: Understanding the trust crisis Intuition addresses and our mission to rebuild the internet's trust architecture
 ---
 
 # Why Intuition?
 
 <div style={{ backgroundColor: 'var(--ifm-color-emphasis-50)', padding: '2rem', borderRadius: '12px', marginBottom: '2rem' }}>
+<p style={{ fontSize: '1.3rem', lineHeight: '1.8', margin: '0 0 1rem 0', color: 'var(--ifm-color-emphasis-800)', fontWeight: 600 }}>
+Blockchains decentralized money. Intuition decentralizes information.
+</p>
 <p style={{ fontSize: '1.1rem', lineHeight: '1.7', margin: 0, color: 'var(--ifm-color-emphasis-700)' }}>
-Intuition gives developers the tools to build next-generation Web3 applications by offering:
+The internet lacks a native mechanism to verify information and the entities behind it. Intuition rebuilds trust architecture for the web by decentralizing information's trust, ownership, discoverability, and monetization—enabling humanity's collective intuition to flow freely into the world.
+</p>
+</div>
+
+## Information Finance: The Next Frontier
+
+Built by crypto industry veterans and decentralized identity pioneers—many of whom have worked together for nearly a decade—Intuition is the first blockchain and protocol purpose-built for **Information Finance (InfoFi)**: the revolutionary idea that information itself can be structured, verified, exchanged, and valued just like financial assets.
+
+More than a network or protocol, Intuition is the missing trust layer for the internet and AI—embedding human intuition into machine intelligence, and building an economy where:
+- **Ideas become assets**
+- **Reputation becomes capital**
+- **Knowledge flows freely**
+
+No longer controlled by Big Tech, but owned and monetized by everyone.
+
+## The $200 Trillion Problem
+
+The global knowledge economy—worth over **$200 trillion**—is the largest market on Earth, underpinning every financial transaction, market, and AI system.
+
+But its rails are broken:
+- **Fragmented, unverifiable, and monopolized**
+- **Deepfakes and AI hallucinations run rampant**
+- **90% of the world's data created in just the past two years**
+- **AI consumption doubling every 18-24 months**
+- **Fewer than 10 companies control 80%+ of global information flows**
+
+Most critically: individuals generate the vast majority of this knowledge, yet capture **less than 1% of its value**.
+
+Traditional Web2 platforms have turned us into digital sharecroppers on rented data silos. Your contributions—a review on Amazon, a profile on LinkedIn—can be deleted or monetized without your consent. You generate the value, but tech monopolies capture the profits.
+
+## Rebuilding the Rails of Knowledge
+
+To unlock the full potential of the world's data, the rails of the knowledge economy must be rebuilt—open, decentralized, and designed for everyone. Intuition provides this infrastructure.
+
+As the native chain for Information Finance, Intuition does for knowledge what Ethereum did for money—turning information into **programmable, composable, and tradable assets**. As the settlement and distribution layer for information, Intuition enables people and machines to get the information they need, when they need it, from the sources they trust.
+
+The result: a decentralized network where facts, claims, reputations, and attestations move as frictionlessly as token transfers, all denominated in the network's native token—**TRUST**.
+
+## Programmatic Monetization and Distribution
+
+Intuition creates **programmatic monetization and distribution rails for data**: a decentralized data liquidity layer that eliminates censorship, bias, and manipulation, ensuring no single gatekeeper controls the information you can or cannot see.
+
+This unlocks novel Web3 use cases—open, decentralized versions of:
+- **Search engines** (Google alternative)
+- **Knowledge bases** (Wikipedia alternative)
+- **AI training datasets**
+- **Information marketplaces**
+- **News and media platforms**
+
+Developers can rebuild the applications we rely on most as public, verifiable infrastructure.
+
+<div style={{ backgroundColor: 'var(--ifm-color-primary-lightest)', padding: '1.5rem', borderRadius: '8px', marginBottom: '2rem', borderLeft: '4px solid var(--ifm-color-primary)' }}>
+<h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary-darkest)' }}>From Information to Intuition</h4>
+<p style={{ margin: 0, fontSize: '1rem', color: 'var(--ifm-color-emphasis-800)' }}>
+The outcome isn't just more information, but better intuition—a higher-resolution understanding of the world that enables smarter AI, safer markets, and more confident collective decisions. When information has economic weight, truth rises to the top.
+</p>
+</div>
+
+## Reviving the Semantic Web Vision
+
+For decades, technologists like Tim Berners-Lee have proposed structuring data in a machine-readable way (e.g., RDF triples) so that software agents can understand and navigate knowledge logically. However, the Semantic Web failed because it lacked:
+
+- **Incentives** for people to contribute and maintain vast structured datasets
+- **Trust mechanisms** to establish data accuracy and reliability
+
+Intuition revives this vision in a Web3-native way by:
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.5rem', marginBottom: '2rem' }}>
+
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
+<h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>Tokenizing Knowledge</h4>
+<p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
+Identities and facts become ownable assets, giving contributors ownership and rewards
+</p>
+</div>
+
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
+<h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>Market-Driven Truth</h4>
+<p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
+Economic dynamics determine which data is reliable through staking and signaling
+</p>
+</div>
+
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
+<h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>Continuous Collateralization</h4>
+<p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
+Credibility is backed by stakes rather than determined after the fact
+</p>
+</div>
+
+<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
+<h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>Community Curation</h4>
+<p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
+Distributed consensus on information quality through collective intelligence
+</p>
+</div>
+
+</div>
+
+## How It Works: Skin in the Game
+
+Unlike social media where misinformation spreads without consequence, Intuition requires users to **collateralize their credibility**. Every attestation can be backed with economic stakes:
+
+- **Publish useful, verifiable information** → Earn reputation and rewards
+- **Spread misinformation** → Risk economic loss and damaged standing
+- **Signal confidence** → Stake more to show stronger conviction
+- **Build trust** → Accumulate reputation that becomes valuable capital
+
+This flips the internet's current incentive structure from rewarding sensationalism to rewarding truth.
+
+## Digital Sovereignty and Data Ownership
+
+Intuition empowers users with true ownership over their data and identity. Instead of your contributions living in siloed platforms that can delete or monetize them without consent, any attestations you make in Intuition are **portable and provably yours**.
+
+By weaving verifiable attribution and data ownership into a decentralized protocol, Intuition puts control back in the hands of the community, enabling a more transparent and collaborative knowledge economy where:
+- You own your data
+- You control access permissions
+- You capture the value you create
+- Your reputation travels with you
+
+## The Trust Layer for AI
+
+As AI systems become more powerful, they need reliable sources of truth. Intuition provides the missing trust layer—a shared "trust graph" that individuals, developers, and AI agents can query to determine not just what information exists, but **how much confidence to place in it and why**.
+
+<div style={{ backgroundColor: 'var(--ifm-color-emphasis-50)', padding: '1.5rem', borderRadius: '8px', marginBottom: '2rem' }}>
+<p style={{ margin: '0 0 1rem 0', fontSize: '1.1rem', color: 'var(--ifm-color-emphasis-700)', fontWeight: 500 }}>
+Intuition embeds human intuition into machine intelligence, creating a feedback loop where AI gets smarter and humans capture more value from the knowledge they create.
 </p>
 </div>
 
@@ -19,30 +148,30 @@ Intuition gives developers the tools to build next-generation Web3 applications 
 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.5rem', marginBottom: '2rem' }}>
 
 <div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
-<h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>Composability</h4>
+<h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>Global Decentralized Identifiers</h4>
 <p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
-Easily integrate with existing Web3 infrastructure
+Canonical, cross-platform IDs for any entity—people, organizations, concepts, or objects
 </p>
 </div>
 
 <div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
-<h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>Semantic Structure</h4>
+<h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>Semantic Attestations</h4>
 <p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
-Define meaningful relationships between entities
+Structured claims using subject-predicate-object logic that machines can understand
 </p>
 </div>
 
 <div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
-<h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>Programmable Incentives</h4>
+<h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>Economic Incentives</h4>
 <p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
-Earn rewards for creating and curating valuable information
+Stake ETH to signal conviction and earn rewards for valuable contributions
 </p>
 </div>
 
 <div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
-<h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>Privacy & Control</h4>
+<h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>Data Portability</h4>
 <p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
-Users manage their own identities and data access
+Your attestations and reputation travel with you across any dApp or chain
 </p>
 </div>
 
@@ -52,119 +181,33 @@ Users manage their own identities and data access
 
 <div style={{ backgroundColor: 'var(--ifm-color-emphasis-50)', padding: '1.5rem', borderRadius: '8px', marginBottom: '2rem' }}>
 <ul style={{ margin: 0, paddingLeft: '1.5rem' }}>
-<li style={{ marginBottom: '0.5rem' }}><strong>Verifiable identities and claims</strong></li>
-<li style={{ marginBottom: '0.5rem' }}><strong>Attestation-based trust systems</strong></li>
-<li style={{ marginBottom: '0.5rem' }}><strong>Social graphs and knowledge layers</strong></li>
-<li style={{ marginBottom: '0.5rem' }}><strong>Token-curated registries and information markets</strong></li>
+<li style={{ marginBottom: '0.5rem' }}><strong>Verifiable identity systems</strong> that users actually own</li>
+<li style={{ marginBottom: '0.5rem' }}><strong>Reputation networks</strong> backed by economic stakes</li>
+<li style={{ marginBottom: '0.5rem' }}><strong>Knowledge graphs</strong> that reward accurate information</li>
+<li style={{ marginBottom: '0.5rem' }}><strong>Trust layers</strong> for AI agents and decision systems</li>
+<li style={{ marginBottom: '0.5rem' }}><strong>Information markets</strong> where truth has tangible value</li>
+<li style={{ marginBottom: '0.5rem' }}><strong>Decentralized fact-checking</strong> with skin in the game</li>
 </ul>
 </div>
 
-## Key Differentiators
 
-<div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.5rem', marginBottom: '2rem' }}>
-
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
-<h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>Global Decentralized Identifiers (DIDs)</h4>
-<p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
-Canonical, cross-platform IDs for any entity — not just people
-</p>
-</div>
-
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
-<h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>Traversable Attestations</h4>
-<p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
-Semantic, many-to-one attestations that enhance discoverability
-</p>
-</div>
-
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
-<h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>Data Neutrality Framework</h4>
-<p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
-No gatekeepers; data can flow freely across the ecosystem
-</p>
-</div>
-
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
-<h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>Universal Knowledge Graph</h4>
-<p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
-Open, permissionless registry of meaningful information
-</p>
-</div>
-
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)', gridColumn: '1 / -1' }}>
-<h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>Information Markets</h4>
-<p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
-Incentives for creating and curating impactful, verifiable content
-</p>
-</div>
-
-</div>
-
-## What Makes Intuition Unique?
-
-### Not Just Another Identity Platform
+## Core Primitives
 
 <div style={{ backgroundColor: 'var(--ifm-color-emphasis-50)', padding: '1.5rem', borderRadius: '8px', marginBottom: '2rem' }}>
-<p style={{ margin: '0 0 1rem 0', fontSize: '1rem', color: 'var(--ifm-color-emphasis-700)' }}>
-Intuition is a peer-to-peer knowledge sharing protocol — not a closed system. Key features:
-</p>
-<ul style={{ margin: 0, paddingLeft: '1.5rem' }}>
-<li style={{ marginBottom: '0.5rem' }}><strong>Decentralized Identifiers (DIDs)</strong> for any entity</li>
-<li style={{ marginBottom: '0.5rem' }}><strong>Semantic Claims</strong> formed using subject–predicate–object logic (Triples)</li>
-<li style={{ marginBottom: '0.5rem' }}><strong>Permissionless staking and signaling</strong> for truth curation</li>
-<li style={{ marginBottom: '0.5rem' }}><strong>Portable, composable data</strong> across any dApp or chain</li>
-</ul>
-</div>
-
-## What Is the Portal?
-
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)', marginBottom: '1rem' }}>
-<p style={{ margin: '0 0 1rem 0', fontSize: '1rem', color: 'var(--ifm-color-emphasis-700)' }}>
-The Portal is Intuition's flagship application, providing a smooth interface for interacting with the protocol. Users can:
-</p>
-<ul style={{ margin: 0, paddingLeft: '1.5rem' }}>
-<li style={{ marginBottom: '0.5rem' }}><strong>Create and manage Identities (Atoms)</strong></li>
-<li style={{ marginBottom: '0.5rem' }}><strong>Make and explore Claims (Triples)</strong></li>
-<li style={{ marginBottom: '0.5rem' }}><strong>Stake ETH to signal conviction</strong></li>
-<li style={{ marginBottom: '0.5rem' }}><strong>View attestation histories and balances</strong></li>
-</ul>
-</div>
-
-:::tip
-This is where end users interact with the knowledge graph, while developers can build their own interfaces on top.
-:::
-
-## Core Concepts
-
-<div style={{ backgroundColor: 'var(--ifm-color-emphasis-50)', padding: '1.5rem', borderRadius: '8px', marginBottom: '2rem' }}>
-
-| Concept | Description |
-|---------|-------------|
-| **Identities (Atoms)** | Canonical representations of any entity — person, org, object, idea |
-| **Claims (Triples)** | Verifiable statements connecting three Atoms: Subject → Predicate → Object |
-| **Attestations** | Cryptographic signals of agreement or trust |
-| **Staking** | Users stake ETH to express belief in a Claim or Identity — and can earn rewards |
-
-</div>
-
-## Data Security & Privacy
-
-<div style={{ padding: '1.5rem', borderRadius: '8px', marginBottom: '2rem', backgroundColor: 'var(--ifm-background-color)' }}>
-<p style={{ margin: 0, fontSize: '1rem', color: 'var(--ifm-color-emphasis-700)', lineHeight: '1.6' }}>
-Intuition employs strong cryptographic standards to ensure data privacy, integrity, and transparency. Users own and control their data, and the system supports both public and permissioned usage models.
+<p style={{ margin: 0, fontSize: '1rem', color: 'var(--ifm-color-emphasis-700)' }}>
+Intuition is built on three fundamental primitives that create a structured knowledge graph. To learn more about how these work technically, see the <a href="/docs/introduction/overview">Overview</a> and <a href="/docs/introduction/the-primitives">Primitives Deep Dive</a> pages.
 </p>
 </div>
 
-## Community & Support
+## Join the Movement
 
-<div style={{ backgroundColor: 'var(--ifm-color-emphasis-50)', padding: '1.5rem', borderRadius: '8px', marginBottom: '2rem' }}>
-<p style={{ margin: '0 0 1rem 0', fontSize: '1rem', color: 'var(--ifm-color-emphasis-700)' }}>
-If you have questions or want to join our growing community of builders and thinkers, join us in Discord! Our team is actively helping partners, developers, and researchers build the next generation of decentralized trust infrastructure.
+<div style={{ backgroundColor: 'var(--ifm-color-primary-lightest)', padding: '1.5rem', borderRadius: '8px', marginBottom: '2rem', borderLeft: '4px solid var(--ifm-color-primary)' }}>
+<p style={{ margin: '0 0 1rem 0', fontSize: '1.1rem', color: 'var(--ifm-color-emphasis-800)', fontWeight: 500 }}>
+Intuition is more than a protocol—it's a movement to reclaim the internet as a space for verified truth and genuine human connection.
 </p>
-<p style={{ margin: '0 0 1rem 0', fontSize: '1rem', color: 'var(--ifm-color-emphasis-700)' }}>
-For more detailed information about our community resources and support channels, visit our <a href="/docs/resources/community-and-support" style={{ color: 'var(--ifm-color-primary)', textDecoration: 'none' }}>Community & Support</a> page.
-</p>
-<p style={{ margin: 0, fontSize: '1rem', color: 'var(--ifm-color-emphasis-700)', fontStyle: 'italic' }}>
-This is just the beginning. Intuition is a living protocol, and your contributions — through development, staking, and participation — shape its future.
+<p style={{ margin: 0, fontSize: '1rem', color: 'var(--ifm-color-emphasis-700)' }}>
+Whether you're a developer building the next generation of trust infrastructure, a community leader curating valuable knowledge, or a user seeking reliable information, your participation shapes the future of how we establish and scale trust online.
 </p>
 </div>
+
+For more information about our community and how to get involved, visit our [Community & Support](/docs/resources/community-and-support) page or join us in [Discord](https://discord.gg/intuition).
