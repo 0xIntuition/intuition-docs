@@ -36,6 +36,7 @@ module.exports = {
       items: [
         'developer-tools/sdks/overview',
         'developer-tools/sdks/boilerplate-project',
+        'developer-tools/sdks/migration-guide',
       ],
     },
     {
