@@ -5,15 +5,19 @@ sidebar_position: 2
 
 # Intuition MCP Server
 
-The Intuition MCP (Model Context Protocol) Server enables AI models to interact directly with the Intuition knowledge graph, providing structured access to decentralized data and enabling AI-powered applications.
+The Intuition MCP Server is an HTTP stream server designed to interact with the Intuition knowledge graph, enabling AI models and applications to query and manage data through powerful tools built on the Model Context Protocol.
 
 ## Overview
 
-The MCP Server acts as a bridge between AI models and the Intuition protocol, allowing for:
-- **Semantic Queries**: AI models can query the knowledge graph using natural language
-- **Data Creation**: Create Atoms and Triples programmatically through AI
-- **Signal Analysis**: Leverage AI for intelligent signal attestation
-- **Context Enhancement**: Enrich AI responses with verified on-chain data
+The Intuition MCP Server acts as a bridge between AI applications and the Intuition protocol, providing:
+
+- **Structured data extraction** from natural language using triple extraction
+- **Comprehensive search** for entities (atoms), accounts, and concepts
+- **Social graph exploration** with followers and following relationships
+- **Account information** retrieval with detailed connection data
+- **List management** for curated entity collections
+
+This server supports both modern Streamable HTTP and legacy Server-Sent Events (SSE) transports for maximum compatibility.
 
 ## GitHub Repository
 
@@ -28,11 +32,11 @@ The MCP Server acts as a bridge between AI models and the Intuition protocol, al
     Intuition MCP Server
   </h3>
   <p style={{ color: 'rgba(255,255,255,0.9)', marginBottom: '1.5rem' }}>
-    Open-source Model Context Protocol server for AI integration
+    Open-source Model Context Protocol server for knowledge graph interactions
   </p>
-  <a 
-    href="https://github.com/0xIntuition/intuition-mcp-server" 
-    target="_blank" 
+  <a
+    href="https://github.com/0xIntuition/intuition-mcp-server"
+    target="_blank"
     rel="noopener noreferrer"
     style={{
       display: 'inline-block',
@@ -52,348 +56,189 @@ The MCP Server acts as a bridge between AI models and the Intuition protocol, al
   </a>
 </div>
 
-## Key Features
-
-### 🤖 **AI-Native Integration**
-- Seamless connection between AI models and blockchain data
-- Natural language processing for query interpretation
-- Automatic context management for complex queries
-- Response formatting optimized for AI consumption
-
-### 🔗 **Protocol Operations**
-- Create and manage Atoms through AI commands
-- Form semantic Triples based on AI analysis
-- Generate Signals with AI-driven validation
-- Query existing knowledge graph data
-
-### 🛡️ **Security & Validation**
-- Secure key management for on-chain operations
-- Input validation and sanitization
-- Rate limiting and access control
-- Audit logging for all operations
-
-### 📊 **Analytics & Insights**
-- AI-powered pattern recognition
-- Trend analysis across the knowledge graph
-- Automated report generation
-- Predictive modeling capabilities
-
-## Installation
+## Getting Started
 
 ### Prerequisites
-- Node.js 18+ or Python 3.8+
-- Intuition API credentials
-- OpenAI API key (or compatible LLM)
+- Node.js 14+
+- pnpm (install globally with `npm install -g pnpm`)
 
-### Quick Start
+### Installation
 
+1. **Clone the repository**:
 ```bash
-# Clone the repository
 git clone https://github.com/0xIntuition/intuition-mcp-server
 cd intuition-mcp-server
-
-# Install dependencies
-npm install
-
-# Configure environment
-cp .env.example .env
-# Edit .env with your credentials
-
-# Start the server
-npm start
 ```
 
-## Configuration
-
-### Environment Variables
-```env
-# Intuition Configuration
-INTUITION_API_KEY=your_api_key
-INTUITION_NETWORK=mainnet|testnet
-
-# MCP Configuration
-MCP_PORT=3000
-MCP_HOST=localhost
-
-# AI Model Configuration
-OPENAI_API_KEY=your_openai_key
-MODEL_NAME=gpt-4
+2. **Install dependencies**:
+```bash
+pnpm install
 ```
 
-### Server Configuration
-```javascript
+3. **Start the server**:
+```bash
+pnpm run start:http
+```
+
+The server will be available at the configured host and port (e.g., http://localhost:3001).
+
+## Available Tools
+
+The MCP Server provides several powerful tools for interacting with the Intuition knowledge graph. All tools return responses sorted by relevance and include comprehensive information.
+
+### search_atoms
+Searches for entities (accounts, concepts, people) by name, description, URL, or ENS domain.
+
+**Input Schema**:
+```json
 {
-  "server": {
-    "port": 3000,
-    "host": "localhost",
-    "cors": {
-      "enabled": true,
-      "origins": ["http://localhost:*"]
-    }
-  },
-  "intuition": {
-    "network": "testnet",
-    "maxRetries": 3,
-    "timeout": 30000
-  },
-  "ai": {
-    "model": "gpt-4",
-    "temperature": 0.7,
-    "maxTokens": 2000
-  }
+  "queries": ["ethereum", "vitalik.eth", "defi protocols"]
 }
 ```
 
-## Usage Examples
+**Usage**: Find atoms related to your search terms with detailed information and connections.
 
-### Query Knowledge Graph
-```python
-# Python example
-from intuition_mcp import MCPClient
+### get_account_info
+Retrieves detailed information about an account using its address or identifier.
 
-client = MCPClient("http://localhost:3000")
-
-# Natural language query
-response = client.query(
-    "What are the most trusted DeFi protocols according to the knowledge graph?"
-)
-
-print(response.results)
+**Input Schema**:
+```json
+{
+  "identifier": "0x1234567890123456789012345678901234567890"
+}
 ```
 
-### Create Knowledge Entry
-```javascript
-// JavaScript example
-const { MCPClient } = require('intuition-mcp-client');
+**Usage**: Get comprehensive account details including connections and activity.
 
-const client = new MCPClient('http://localhost:3000');
+### search_lists
+Searches for curated lists of entities by name or description.
 
-// Create a new fact
-const result = await client.create({
-  type: 'triple',
-  subject: 'Ethereum',
-  predicate: 'has-feature',
-  object: 'Smart Contracts',
-  context: 'Ethereum supports programmable smart contracts'
-});
-
-console.log('Triple created:', result.id);
+**Input Schema**:
+```json
+{
+  "query": "top defi protocols"
+}
 ```
 
-### AI-Powered Analysis
+**Usage**: Find organized collections of related entities with ranking and metadata.
+
+### get_following
+Retrieves atoms that an account follows, optionally filtered by predicate.
+
+**Input Schema**:
+```json
+{
+  "account_id": "0x3e2178cf851a0e5cbf84c0ff53f820ad7ead703b",
+  "predicate": "recommend"
+}
+```
+
+**Usage**: Explore what entities an account follows or recommends.
+
+### get_followers
+Retrieves followers of an account, optionally filtered by predicate.
+
+**Input Schema**:
+```json
+{
+  "account_id": "0x3e2178cf851a0e5cbf84c0ff53f820ad7ead703b",
+  "predicate": "follow"
+}
+```
+
+**Usage**: See who follows or recommends a specific account.
+
+### search_account_ids
+Resolves identifiers (like ENS domains) to account addresses.
+
+**Input Schema**:
+```json
+{
+  "identifier": "vitalik.eth"
+}
+```
+
+**Usage**: Convert ENS names or other identifiers to blockchain addresses.
+
+## Client Integration
+
+### Using the MCP SDK
+
+The server uses the Model Context Protocol SDK for client interactions. Here's a basic client setup:
+
 ```typescript
-// TypeScript example
-import { MCPServer } from 'intuition-mcp-server';
+import { Client } from '@modelcontextprotocol/sdk/client/index.js';
+import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
 
-const server = new MCPServer();
+async function connectToMcpServer(url: string) {
+  const client = new Client({
+    name: 'intuition-client',
+    version: '1.0.0',
+  });
 
-// Analyze trends
-const analysis = await server.analyze({
-  topic: 'DeFi Protocols',
-  timeframe: '30d',
-  metrics: ['trust_score', 'usage_volume', 'signal_strength']
+  const transport = new StreamableHTTPClientTransport(new URL(url));
+  await client.connect(transport);
+
+  return client;
+}
+
+// Usage
+const client = await connectToMcpServer('http://localhost:3001');
+const response = await client.callTool('search_atoms', {
+  queries: ['ethereum']
 });
-
-console.log('Analysis:', analysis);
 ```
+
+### API Endpoints
+
+The server provides these endpoints:
+- `/mcp` - Streamable HTTP transport (recommended)
+- `/sse` - Server-Sent Events transport (legacy support)
 
 ## Architecture
 
-### System Components
-
-```mermaid
-graph LR
-    A[AI Application] --> B[MCP Server]
-    B --> C[Intuition Protocol]
-    B --> D[LLM Provider]
-    C --> E[Knowledge Graph]
-    D --> B
-    B --> A
-```
+The MCP Server operates as an HTTP stream server, leveraging the Model Context Protocol to handle streaming requests and responses. This makes it ideal for real-time applications and large-scale data queries.
 
 ### Request Flow
 
-1. **AI Request**: Application sends query/command to MCP Server
-2. **Processing**: Server interprets intent and validates parameters
-3. **Protocol Interaction**: Executes operations on Intuition network
-4. **AI Enhancement**: Optionally enhances response with LLM
-5. **Response**: Returns structured data to application
+1. **Client Request**: Application sends request to MCP endpoint
+2. **Tool Processing**: Server processes the request using appropriate tool
+3. **Knowledge Graph Query**: Server queries Intuition protocol
+4. **Response Streaming**: Results are streamed back to client
+5. **Client Processing**: Application handles streaming response data
 
-## API Reference
+## Deployment
 
-### Endpoints
+The repository includes deployment configuration:
 
-#### `POST /query`
-Query the knowledge graph
-```json
-{
-  "query": "string",
-  "filters": {},
-  "limit": 100
-}
-```
+- **Dockerfile**: Ready for deployment to services like Render or any Docker-compatible host
+- **render.yaml**: Configuration for Render deployment
+- **Environment setup**: Configurable for different deployment environments
 
-#### `POST /create`
-Create new knowledge entries
-```json
-{
-  "type": "atom|triple",
-  "data": {},
-  "metadata": {}
-}
-```
+### Environment Variables
 
-#### `POST /signal`
-Add signal attestation
-```json
-{
-  "target": "atom_or_triple_id",
-  "direction": "positive|negative",
-  "stake": 100
-}
-```
-
-#### `POST /analyze`
-AI-powered analysis
-```json
-{
-  "topic": "string",
-  "parameters": {},
-  "model": "gpt-4"
-}
-```
-
-## Advanced Features
-
-### Custom Plugins
-Extend functionality with plugins:
-```javascript
-class CustomPlugin {
-  constructor(server) {
-    this.server = server;
-  }
-
-  async process(request) {
-    // Custom logic here
-    return response;
-  }
-}
-
-server.registerPlugin(new CustomPlugin());
-```
-
-### Webhook Integration
-Configure webhooks for events:
-```javascript
-{
-  "webhooks": {
-    "onAtomCreated": "https://your-api.com/webhook",
-    "onSignalAdded": "https://your-api.com/webhook"
-  }
-}
-```
-
-### Batch Operations
-Process multiple operations efficiently:
-```javascript
-const batch = await client.batch([
-  { action: 'create', type: 'atom', data: {...} },
-  { action: 'create', type: 'triple', data: {...} },
-  { action: 'signal', target: 'id', stake: 100 }
-]);
-```
-
-## Security Considerations
-
-### Authentication
-- API key authentication required
-- JWT token support for session management
-- Role-based access control (RBAC)
-
-### Data Privacy
-- End-to-end encryption for sensitive data
-- Local key storage with hardware security module support
-- Zero-knowledge proof integration (coming soon)
-
-### Rate Limiting
-- Default: 100 requests per minute
-- Configurable per API key
-- Burst allowance for batch operations
-
-## Monitoring & Debugging
-
-### Logging
-```javascript
-// Configure logging
-{
-  "logging": {
-    "level": "info",
-    "output": ["console", "file"],
-    "file": "./logs/mcp-server.log"
-  }
-}
-```
-
-### Metrics
-- Request latency
-- Success/error rates
-- Protocol interaction times
-- AI model performance
-
-### Health Checks
-```bash
-# Check server health
-curl http://localhost:3000/health
-
-# Response
-{
-  "status": "healthy",
-  "uptime": 3600,
-  "connections": {
-    "intuition": "connected",
-    "ai": "connected"
-  }
-}
-```
-
-## Troubleshooting
-
-### Common Issues
-
-**Connection Errors**
-- Verify API credentials
-- Check network connectivity
-- Ensure correct network selection (mainnet/testnet)
-
-**AI Model Errors**
-- Validate API key
-- Check rate limits
-- Review model availability
-
-**Protocol Errors**
-- Confirm transaction signing
-- Verify account balance
-- Check gas settings
+Configure these environment variables for your deployment:
+- `PORT`: Server port (default: 3001)
+- `HOST`: Server host (default: localhost)
+- API credentials and other service-specific configurations
 
 ## Contributing
 
-We welcome contributions! Please see the [GitHub repository](https://github.com/0xIntuition/intuition-mcp-server) for:
-- Contribution guidelines
-- Development setup
-- Testing procedures
-- Code of conduct
+We welcome contributions to the Intuition MCP Server! To contribute:
 
-## Resources
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/your-feature`)
+3. Commit your changes (`git commit -m "Add your feature"`)
+4. Push to the branch (`git push origin feature/your-feature`)
+5. Open a pull request
 
-### Documentation
-- [MCP Protocol Specification](https://github.com/0xIntuition/intuition-mcp-server/docs)
-- [API Documentation](https://github.com/0xIntuition/intuition-mcp-server/api)
-- [Integration Examples](https://github.com/0xIntuition/intuition-mcp-server/examples)
+Please ensure your code follows the project's coding standards and includes tests.
 
-### Support
-- [GitHub Issues](https://github.com/0xIntuition/intuition-mcp-server/issues)
-- [Discord Community](https://discord.gg/0xintuition)
-- [Developer Forum](https://forum.intuition.systems)
+## Support and Resources
+
+- **[GitHub Repository](https://github.com/0xIntuition/intuition-mcp-server)**: Source code, issues, and contributions
+- **[Model Context Protocol](https://modelcontextprotocol.io)**: Learn more about the MCP specification
+- **[Intuition Protocol](https://docs.intuition.systems)**: Comprehensive protocol documentation
 
 ## License
 

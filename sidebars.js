@@ -101,18 +101,13 @@ module.exports = {
     {
       type: 'category',
       label: 'AI',
-      items: [
-        'intuition-ai/index',
-        'intuition-ai/mcp-server',
-      ],
+      items: ['intuition-ai/index', 'intuition-ai/mcp-server'],
     },
     {
       type: 'category',
       label: 'Resources',
       items: [
         'resources/index',
-        'resources/key-terms',
-        'resources/faq',
         'resources/community-and-support',
         'developer-tools/audit-reports',
         'partners/index',
@@ -121,4 +116,4 @@ module.exports = {
     },
     'use-cases/use-cases',
   ],
-}; 
+};
