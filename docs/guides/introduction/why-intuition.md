@@ -8,206 +8,155 @@ description: Understanding the trust crisis Intuition addresses and our mission 
 
 # Why Intuition?
 
-<div style={{ backgroundColor: 'var(--ifm-color-emphasis-50)', padding: '2rem', borderRadius: '12px', marginBottom: '2rem' }}>
-<p style={{ fontSize: '1.3rem', lineHeight: '1.8', margin: '0 0 1rem 0', color: 'var(--ifm-color-emphasis-800)', fontWeight: 600 }}>
-Blockchains decentralized money. Intuition decentralizes information.
-</p>
-<p style={{ fontSize: '1.1rem', lineHeight: '1.7', margin: 0, color: 'var(--ifm-color-emphasis-700)' }}>
-The internet lacks a native mechanism to verify information and the entities behind it. Intuition rebuilds trust architecture for the web by decentralizing information's trust, ownership, discoverability, and monetization—enabling humanity's collective intuition to flow freely into the world.
-</p>
-</div>
+> **Every interaction online is an attestation.**
+> A review or a purchase on Amazon, a comment on Reddit, the watching of a show on Netflix, a retweet, a LinkedIn endorsement, a 'follow', a bookmark, the ordering of an Uber, even a "like" — all are forms of attestations: claims made by things about things.
 
-## Information Finance: The Next Frontier
+But attestations today are fragmented, unverifiable, and platform-locked. They don't move with you. They don't carry weight. They aren't semantically structured and unambiguously consumable by machines.
 
-Built by crypto industry veterans and decentralized identity pioneers—many of whom have worked together for nearly a decade—Intuition is the first blockchain and protocol purpose-built for **Information Finance (InfoFi)**: the revolutionary idea that information itself can be structured, verified, exchanged, and valued just like financial assets.
+**Intuition changes that.** We've rebuilt attestations as first-class, tokenized primitives — structured, portable, and economically backed. _Attestations on steroids._
 
-More than a network or protocol, Intuition is the missing trust layer for the internet and AI—embedding human intuition into machine intelligence, and building an economy where:
-- **Ideas become assets**
-- **Reputation becomes capital**
-- **Knowledge flows freely**
+## Decentralizing Information with Attestations
 
-No longer controlled by Big Tech, but owned and monetized by everyone.
+**Blockchains decentralized money.
+Intuition decentralizes information — by offering next-generation attestation infrastructure.**
+
+An attestation in Intuition isn't just a line of text. It's:
+
+- **Verifiable** — signed and attributable
+- **Ownable** — belongs to the creator, not a platform
+- **Discoverable** — structured as a Triple (subject → predicate → object)
+- **Valuable** — backed by economic incentives through bonding curves
+
+This turns the messy stream of human expression into a global knowledge substrate that's actually useful to developers, communities, and AI agents.
+
+## Information Finance: Attestations as Assets
+
+Intuition pioneers **Information Finance (InfoFi)**: the idea that information can be valued and exchanged just like money.
+
+- **Ideas become assets** — an attestation isn't just data, it's collateralized
+- **Reputation becomes capital** — your attestations are your portfolio of credibility
+- **Knowledge flows freely** — attestations aren't siloed; they're cross-platform and composable
+
+Attestations are no longer passive byproducts of online activity — they're programmable building blocks for apps and agents.
 
 ## The $200 Trillion Problem
 
-The global knowledge economy—worth over **$200 trillion**—is the largest market on Earth, underpinning every financial transaction, market, and AI system.
+The global knowledge economy is worth over **$200 trillion**, yet:
 
-But its rails are broken:
-- **Fragmented, unverifiable, and monopolized**
-- **Deepfakes and AI hallucinations run rampant**
-- **90% of the world's data created in just the past two years**
-- **AI consumption doubling every 18-24 months**
-- **Fewer than 10 companies control 80%+ of global information flows**
+- Most of its value is created by individuals
+- Less than 1% of that value flows back to the creators
+- Instead, tech monopolies capture and silo it
 
-Most critically: individuals generate the vast majority of this knowledge, yet capture **less than 1% of its value**.
+**The result:** broken rails, misinformation, and AI systems consuming oceans of low-quality data without provenance.
 
-Traditional Web2 platforms have turned us into digital sharecroppers on rented data silos. Your contributions—a review on Amazon, a profile on LinkedIn—can be deleted or monetized without your consent. You generate the value, but tech monopolies capture the profits.
+Attestations are the missing rails. When data becomes signed, tokenized, and portable, it allows value to flow back to contributors and trust to flow into the systems that need it most.
 
 ## Rebuilding the Rails of Knowledge
 
-To unlock the full potential of the world's data, the rails of the knowledge economy must be rebuilt—open, decentralized, and designed for everyone. Intuition provides this infrastructure.
+Intuition makes attestations first-class protocol objects. That means:
 
-As the native chain for Information Finance, Intuition does for knowledge what Ethereum did for money—turning information into **programmable, composable, and tradable assets**. As the settlement and distribution layer for information, Intuition enables people and machines to get the information they need, when they need it, from the sources they trust.
+- **Facts, claims, and perspectives** are all structured as attestations
+- **Credibility is collateralized** — good attestations earn rewards; bad ones cost you stake
+- **Distribution is programmatic** — attestations move frictionlessly across apps, chains, and agents
 
-The result: a decentralized network where facts, claims, reputations, and attestations move as frictionlessly as token transfers, all denominated in the network's native token—**TRUST**.
+Think of it as the Ethereum moment for knowledge: where attestations flow as freely as tokens, powering new classes of decentralized infrastructure.
 
 ## Programmatic Monetization and Distribution
 
-Intuition creates **programmatic monetization and distribution rails for data**: a decentralized data liquidity layer that eliminates censorship, bias, and manipulation, ensuring no single gatekeeper controls the information you can or cannot see.
+Attestations aren't just portable — they're **monetizable**.
 
-This unlocks novel Web3 use cases—open, decentralized versions of:
-- **Search engines** (Google alternative)
-- **Knowledge bases** (Wikipedia alternative)
-- **AI training datasets**
-- **Information marketplaces**
-- **News and media platforms**
+With Intuition, every attestation can plug into programmatic distribution rails:
 
-Developers can rebuild the applications we rely on most as public, verifiable infrastructure.
+- Censorship-resistant search and discovery
+- Verifiable knowledge bases
+- Open data marketplaces
+- Training sets for AI agents
 
-<div style={{ backgroundColor: 'var(--ifm-color-primary-lightest)', padding: '1.5rem', borderRadius: '8px', marginBottom: '2rem', borderLeft: '4px solid var(--ifm-color-primary)' }}>
-<h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary-darkest)' }}>From Information to Intuition</h4>
-<p style={{ margin: 0, fontSize: '1rem', color: 'var(--ifm-color-emphasis-800)' }}>
-The outcome isn't just more information, but better intuition—a higher-resolution understanding of the world that enables smarter AI, safer markets, and more confident collective decisions. When information has economic weight, truth rises to the top.
-</p>
-</div>
+Each attestation carries weight, liquidity, and discoverability, ensuring no single platform can gate what's visible or valuable.
 
-## Reviving the Semantic Web Vision
+## From Information → Intuition
 
-For decades, technologists like Tim Berners-Lee have proposed structuring data in a machine-readable way (e.g., RDF triples) so that software agents can understand and navigate knowledge logically. However, the Semantic Web failed because it lacked:
+Why does this matter? Because **raw information without provenance is noise.**
 
-- **Incentives** for people to contribute and maintain vast structured datasets
-- **Trust mechanisms** to establish data accuracy and reliability
+Attestations, structured and economically backed, create a higher-resolution understanding of the world. They transform scattered data into collective intuition — fueling smarter AI, safer markets, and more confident human decision-making.
 
-Intuition revives this vision in a Web3-native way by:
+## Reviving the Semantic Web with Crypto-Economic Consensus
 
-<div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.5rem', marginBottom: '2rem' }}>
+The Semantic Web failed because it required global consensus on standards without incentives to achieve it. Different organizations created competing schemas, vocabularies fragmented, and there was no mechanism to converge on shared identifiers.
 
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
-<h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>Tokenizing Knowledge</h4>
-<p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
-Identities and facts become ownable assets, giving contributors ownership and rewards
-</p>
-</div>
+**Intuition solves this with crypto-economics** — the same force that achieves distributed consensus in blockchains now drives semantic standardization:
 
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
-<h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>Market-Driven Truth</h4>
-<p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
-Economic dynamics determine which data is reliable through staking and signaling
-</p>
-</div>
+- **Incentivized identifiers** — stake on canonical IDs for entities, creating economic pressure toward convergence
+- **Market-driven standards** — the most useful data structures attract the most stake and become de facto standards
+- **Emergent interoperability** — economic incentives naturally align participants toward compatible schemas
+- **Consensus through collateralization** — disagreements resolve through staking, not committees
 
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
-<h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>Continuous Collateralization</h4>
-<p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
-Credibility is backed by stakes rather than determined after the fact
-</p>
-</div>
-
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
-<h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>Community Curation</h4>
-<p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
-Distributed consensus on information quality through collective intelligence
-</p>
-</div>
-
-</div>
+Where the Semantic Web asked the world to voluntarily agree on standards, Intuition makes consensus profitable. Attestations become the economic glue that binds distributed actors to shared semantic structures.
 
 ## How It Works: Skin in the Game
 
-Unlike social media where misinformation spreads without consequence, Intuition requires users to **collateralize their credibility**. Every attestation can be backed with economic stakes:
+On Intuition, every attestation has consequences:
 
-- **Publish useful, verifiable information** → Earn reputation and rewards
-- **Spread misinformation** → Risk economic loss and damaged standing
-- **Signal confidence** → Stake more to show stronger conviction
-- **Build trust** → Accumulate reputation that becomes valuable capital
+- **Publish a useful attestation** → earn reputation and rewards
+- **Publish misinformation** → lose your stake and credibility
+- **Signal strong conviction** → stake more on your attestation
+- **Build trust** → accumulate a reputation that travels with you
+- **Use consensus identifiers** → earn more by aligning with the network
+- **Fork data structures** → lose money by fragmenting liquidity
 
-This flips the internet's current incentive structure from rewarding sensationalism to rewarding truth.
+This flips today's internet incentives: no longer "reward the loudest," but reward the most credible and interoperable attestations.
+
+### The Fork Choice Rule for Data
+
+Just like blockchains have fork choice rules that determine the canonical chain, Intuition creates economic pressure toward canonical identifiers and data structures. **When you use consensus identifiers, you tap into existing liquidity pools and network effects. When you create competing forks, you isolate yourself economically.**
+
+**Example:** Imagine two identifiers for "Ethereum":
+- **Identifier A**: Used by 10,000 attestations with $1M total stake
+- **Identifier B**: Used by 50 attestations with $5K total stake
+
+If you make an attestation about Ethereum:
+- Using **Identifier A** → Your attestation joins a liquid market, benefits from network effects, earns higher rewards
+- Using **Identifier B** → Your attestation is isolated, has minimal visibility, earns negligible rewards
+
+The economic incentive is clear: converge on consensus or pay the price. This same dynamic applies to data structures, schemas, and semantic relationships. The network naturally evolves toward maximum interoperability because **consensus literally pays.**
 
 ## Digital Sovereignty and Data Ownership
 
-Intuition empowers users with true ownership over their data and identity. Instead of your contributions living in siloed platforms that can delete or monetize them without consent, any attestations you make in Intuition are **portable and provably yours**.
+**Your attestations are yours.** Not Facebook's, not LinkedIn's, not OpenAI's.
 
-By weaving verifiable attribution and data ownership into a decentralized protocol, Intuition puts control back in the hands of the community, enabling a more transparent and collaborative knowledge economy where:
-- You own your data
-- You control access permissions
-- You capture the value you create
-- Your reputation travels with you
+- You **own** them
+- You **control** who can access them
+- You **capture** the value they generate
+- They **travel** with you across every app, chain, or agent
+
+Attestations become the backbone of digital sovereignty.
 
 ## The Trust Layer for AI
 
-As AI systems become more powerful, they need reliable sources of truth. Intuition provides the missing trust layer—a shared "trust graph" that individuals, developers, and AI agents can query to determine not just what information exists, but **how much confidence to place in it and why**.
+AI doesn't just need more data — it needs **verifiable attestations about data**:
 
-<div style={{ backgroundColor: 'var(--ifm-color-emphasis-50)', padding: '1.5rem', borderRadius: '8px', marginBottom: '2rem' }}>
-<p style={{ margin: '0 0 1rem 0', fontSize: '1.1rem', color: 'var(--ifm-color-emphasis-700)', fontWeight: 500 }}>
-Intuition embeds human intuition into machine intelligence, creating a feedback loop where AI gets smarter and humans capture more value from the knowledge they create.
-</p>
-</div>
+- Who said it
+- With what reputation
+- With what conviction
 
-## Core Capabilities
+Intuition provides the trust graph of attestations. AI systems can finally ground themselves in data with provenance, weights, and economic signals — not just raw text.
 
-<div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.5rem', marginBottom: '2rem' }}>
-
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
-<h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>Global Decentralized Identifiers</h4>
-<p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
-Canonical, cross-platform IDs for any entity—people, organizations, concepts, or objects
-</p>
-</div>
-
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
-<h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>Semantic Attestations</h4>
-<p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
-Structured claims using subject-predicate-object logic that machines can understand
-</p>
-</div>
-
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
-<h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>Economic Incentives</h4>
-<p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
-Stake ETH to signal conviction and earn rewards for valuable contributions
-</p>
-</div>
-
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
-<h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>Data Portability</h4>
-<p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
-Your attestations and reputation travel with you across any dApp or chain
-</p>
-</div>
-
-</div>
+This makes AI more reliable while ensuring humans share in the value of the knowledge they produce.
 
 ## What You Can Build
 
-<div style={{ backgroundColor: 'var(--ifm-color-emphasis-50)', padding: '1.5rem', borderRadius: '8px', marginBottom: '2rem' }}>
-<ul style={{ margin: 0, paddingLeft: '1.5rem' }}>
-<li style={{ marginBottom: '0.5rem' }}><strong>Verifiable identity systems</strong> that users actually own</li>
-<li style={{ marginBottom: '0.5rem' }}><strong>Reputation networks</strong> backed by economic stakes</li>
-<li style={{ marginBottom: '0.5rem' }}><strong>Knowledge graphs</strong> that reward accurate information</li>
-<li style={{ marginBottom: '0.5rem' }}><strong>Trust layers</strong> for AI agents and decision systems</li>
-<li style={{ marginBottom: '0.5rem' }}><strong>Information markets</strong> where truth has tangible value</li>
-<li style={{ marginBottom: '0.5rem' }}><strong>Decentralized fact-checking</strong> with skin in the game</li>
-</ul>
-</div>
+By treating attestations as programmable primitives, you can create:
 
-
-## Core Primitives
-
-<div style={{ backgroundColor: 'var(--ifm-color-emphasis-50)', padding: '1.5rem', borderRadius: '8px', marginBottom: '2rem' }}>
-<p style={{ margin: 0, fontSize: '1rem', color: 'var(--ifm-color-emphasis-700)' }}>
-Intuition is built on three fundamental primitives that create a structured knowledge graph. To learn more about how these work technically, see the <a href="/docs/introduction/overview">Overview</a> and <a href="/docs/introduction/the-primitives">Primitives Deep Dive</a> pages.
-</p>
-</div>
+- **Verifiable identity systems**
+- **Reputation networks** powered by attestations
+- **Decentralized fact-checking** with stakes
+- **AI agents** that reason over attestations as context
+- **Information markets** where attestations themselves are the assets
 
 ## Join the Movement
 
-<div style={{ backgroundColor: 'var(--ifm-color-primary-lightest)', padding: '1.5rem', borderRadius: '8px', marginBottom: '2rem', borderLeft: '4px solid var(--ifm-color-primary)' }}>
-<p style={{ margin: '0 0 1rem 0', fontSize: '1.1rem', color: 'var(--ifm-color-emphasis-800)', fontWeight: 500 }}>
-Intuition is more than a protocol—it's a movement to reclaim the internet as a space for verified truth and genuine human connection.
-</p>
-<p style={{ margin: 0, fontSize: '1rem', color: 'var(--ifm-color-emphasis-700)' }}>
-Whether you're a developer building the next generation of trust infrastructure, a community leader curating valuable knowledge, or a user seeking reliable information, your participation shapes the future of how we establish and scale trust online.
-</p>
-</div>
+Intuition is about reclaiming the internet by giving attestations real weight.
 
-For more information about our community and how to get involved, visit our [Community & Support](/docs/resources/community-and-support) page or join us in [Discord](https://discord.gg/intuition).
+Whether you're a developer, researcher, or community builder, your contributions aren't just ephemeral posts — they're portable, valuable attestations that strengthen the global knowledge graph.
+
+**Together, we can rebuild the web around truth, attribution, and trust.**
