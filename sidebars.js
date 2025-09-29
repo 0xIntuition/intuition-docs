@@ -77,15 +77,9 @@ module.exports = {
     },
     {
       type: 'category',
-      label: 'Rust Subnet',
+      label: 'Rust Backend',
       items: [
-        {
-          type: 'link',
-          label: 'Deep Dive',
-          href: 'https://deepwiki.com/0xIntuition/intuition-rs',
-        },
-        'rust-subnet/overview',
-        'rust-subnet/run-a-node',
+        'run-node/run-an-intuition-node',
       ],
     },
     {
