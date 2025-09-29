@@ -18,25 +18,68 @@ The Intuition GraphQL package provides a type-safe interface for interacting wit
 - Local-first schema with remote fallback
 - Portable package design
 
+## Installation
+
+Install the package using your preferred package manager:
+
+```bash
+pnpm add @0xintuition/graphql
+```
+
 ## Quick Start
 
-1. Install the package:
-`pnpm add @0xintuition/graphql` 
+### 1. Client Configuration (Optional)
 
-2. (Optional) Configure the client in your app's root (`root.tsx` or Next.js `layout.tsx`)
+Configure the GraphQL client in your app's root:
 
 ```tsx
-import { configureClient, API_URL_DEV } from '@0xintuition/graphql`
+import { configureClient, API_URL_DEV, API_URL_PROD, API_URL_LOCAL } from '@0xintuition/graphql'
 
-// Configure GraphQL client at module initialization using the URLs from the package. For now, we should use the local URL for development
-// This can be updated to use the same environment approach that we use in Portal in the future, or leave up to the template user to configure however makes sense for their use case
+// Configure GraphQL client with desired API URL
 configureClient({
-  apiUrl: API_URL_DEV,
+  apiUrl: API_URL_LOCAL, // For local development
 })
 ```
 
-- This step is entirely optional. If you omit it the GraphQL package queries and hooks will use the default API URL from the package, which is currently `API_URL_PROD` .
-- `API_URL_DEV` and `API_URL_LOCAL` are both exported from the GraphQL package. You can import these for use with `configureClient` as shown in the above example.
+**Available API URLs:**
+- `API_URL_PROD`: `https://testnet.intuition.sh/v1/graphql` (default)
+- `API_URL_DEV`: `https://testnet.intuition.sh/v1/graphql`
+- `API_URL_LOCAL`: `http://localhost:8080/v1/graphql`
+
+If you omit this configuration, the package defaults to `API_URL_PROD`.
+
+### 2. Server Client Usage
+
+For server-side operations:
+
+```typescript
+import { createServerClient } from '@0xintuition/graphql'
+
+// Basic usage (most common)
+const client = createServerClient({})
+
+// With optional authentication token (rarely needed)
+const clientWithAuth = createServerClient({
+  token: 'your-auth-token'
+})
+```
+
+### 3. Using Generated Hooks
+
+Import and use the generated React Query hooks:
+
+```typescript
+import { useGetStatsQuery } from '@0xintuition/graphql'
+
+function StatsComponent() {
+  const { data, isLoading, error } = useGetStatsQuery()
+
+  if (isLoading) return <div>Loading...</div>
+  if (error) return <div>Error: {error.message}</div>
+
+  return <div>{/* Render stats data */}</div>
+}
+```
 
 ## Schema Management
 

@@ -14,19 +14,26 @@ Our GraphQL API provides convenient mutations to help structure and publish Atom
 
 ## Current Schema Support
 
-Currently, our default schema is the **Thing schema**. This provides essential properties for describing any entity:
+Our GraphQL API provides mutations for uploading structured metadata following common schemas. The primary mutation is `pinThing` which uploads metadata to IPFS following the **Thing schema**.
+
+### pinThing Mutation
 
 ```graphql
-mutation UploadThing(
+mutation pinThing(
   $name: String!
-  $description: String!
-  $image: String!
-  $url: String!
+  $description: String
+  $image: String
+  $url: String
 ) {
-  uploadThing(
-    arg1: { name: $name, description: $description, image: $image, url: $url }
+  pinThing(
+    thing: {
+      name: $name,
+      description: $description,
+      image: $image,
+      url: $url
+    }
   ) {
-    cid
+    uri
   }
 }
 ```
@@ -36,17 +43,29 @@ mutation UploadThing(
 ```json
 {
   "name": "My First Thing",
-  "description": "This is an example description",
-  "image": "ipfs://Qm...", // IPFS URI for image
-  "url": "https://example.com" // Reference URL
+  "description": "This is an example description of a thing",
+  "image": "https://example.com/image.png",
+  "url": "https://example.com"
 }
 ```
 
-The mutation returns an IPFS CID that can be used when creating an Atom:
+### Variables Example
+
+```json
+{
+  "name": "Intuition Protocol",
+  "description": "A decentralized trust protocol for the internet",
+  "image": "https://intuition.systems/logo.png",
+  "url": "https://intuition.systems"
+}
+```
+
+The mutation returns an IPFS URI that can be used when creating an Atom:
 
 ```typescript
-const { cid } = await uploadThing(thingData)
-const atomId = await createAtom(cid)
+const { data } = await pinThing(thingVariables)
+// data.pinThing.uri contains the IPFS URI
+// Use this URI when creating atoms via the SDK
 ```
 
 ## Advanced Mutation Examples
