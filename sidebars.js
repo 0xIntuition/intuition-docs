@@ -53,15 +53,15 @@ module.exports = {
       type: 'category',
       label: 'Smart Contracts',
       items: [
+        'developer-tools/contracts/contract-architecture',
+        'developer-tools/contracts/multivault',
+        'developer-tools/contracts/trust-bonding',
+        'developer-tools/contracts/deployments',
         {
           type: 'link',
           label: 'Deep Dive',
           href: 'https://deepwiki.com/0xIntuition/intuition-contracts-v2/',
         },
-        'developer-tools/contracts/contract-architecture',
-        'developer-tools/contracts/ethmultivault',
-        'developer-tools/contracts/atomwallet',
-        'developer-tools/contracts/deployments',
       ],
     },
     {

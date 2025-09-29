@@ -27,7 +27,7 @@ Intuition’s open social knowledge graph is built to harness collective wisdom 
 ### Network Layer
 
 - **Decentralized Communication**: Handles data distribution and real-time synchronization
-- **Indexing Infrastructure**: Merges on-chain and off-chain data into a unified state
+- **Indexing Infrastructure**: Merges onchain and off-chain data into a unified state
 
 ### Application Layer
 
@@ -41,7 +41,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 <Tabs>
-<TabItem value="onchain" label="On-Chain">
+<TabItem value="onchain" label="OnChain">
 
 - **Atoms**: Point to any arbitrary URI; represent entities
 - **Triples**: Semantic statements made up of three Atoms (Subject, Predicate, Object)
@@ -76,23 +76,23 @@ It operates unopinionatedly — allowing anything to say anything about anything
 
 ### Indexing
 
-- **Merges on-chain and off-chain data** into a semantic graph
-- **Supports complex identity, DeFi, and governance use cases**
+- Merges onchain and off-chain data into a semantic graph
+- Supports complex identity, DeFi, and governance use cases
 
 ### Data Access / API
 
-- **Query real-time knowledge graph state**
-- **Supports streaming, subscriptions, and tagged metadata**
+- Query real-time knowledge graph state
+- Supports streaming, subscriptions, and tagged metadata
 
 ### SDK
 
-- **Attestations can be embedded** in existing UX (e.g., likes, follows)
-- **Data is portable, composable, and rewardable**
+- Attestations can be embedded in existing UX (e.g., likes, follows)
+- Data is portable, composable, and rewardable
 
 ### Templates & Modules
 
-- **UI libraries and components** (e.g., 1UI built on shadcn)
-- **In-house apps** to jumpstart exploration and integration
+- UI libraries and components (e.g., 1UI built on shadcn)
+- In-house apps to jump-start exploration and integration
 
 ## Core Components
 
@@ -112,13 +112,12 @@ It operates unopinionatedly — allowing anything to say anything about anything
 
 ### 🔗 **Solidity Smart Contracts**
 
-The foundation of the Intuition protocol, providing the economic and trust mechanisms:
+Foundation of the Intuition protocol:
 
-- **EthMultiVault**: Core economic engine for deposits, redemptions, and share distribution
-- **AtomWallet**: Primary interface for creating and managing atoms and triples
-- **Trust Bonding**: Handles trust relationships and bonding mechanisms
-- **Bonding Curves**: Dynamic pricing algorithms for asset valuation
-- **Registry Contracts**: System-wide registries and mappings
+- **MultiVault**: Manage creation of atoms/triples, deposits and redemptions.
+- **Trust Bonding**: Staking and reward distribution mechanisms
+- **Bonding Curves**: Pricing algorithms for atoms and triples.
+- **Curve Registry**: Register and manage bonding curve.
 
 </div>
 
@@ -131,11 +130,10 @@ The foundation of the Intuition protocol, providing the economic and trust mecha
 
 ### ⚡ **Rust Backend**
 
-High-performance backend services that power the knowledge graph:
+High-performance backend services:
 
-- **Data Indexing**: Efficient indexing of on-chain and off-chain data
+- **Data Indexing**: Efficient indexing of onchain and off-chain data
 - **Graph Processing**: Semantic graph traversal and relationship mapping
-- **API Services**: RESTful and GraphQL API endpoints
 - **Real-time Updates**: Live data synchronization and event processing
 - **Scalability**: Optimized for high-throughput operations
 
@@ -148,36 +146,17 @@ High-performance backend services that power the knowledge graph:
   padding: '1.5rem'
 }}>
 
-### 🛠️ **APIs/SDK**
+### 🛠️ **Typescript Packages**
 
-Developer-friendly interfaces for building applications:
+Developer-friendly modules for building:
 
-- **GraphQL API**: Flexible query interface for complex data retrieval
-- **REST API**: Standard HTTP endpoints for simple operations
-- **TypeScript SDK**: Comprehensive SDK for application development
-- **React Components**: Pre-built UI components for rapid development
+- **SDK**: Toolkit for application development
+- **Protocol**: Core protocol interactions (reads/writes)
+- **GraphQL**: Flexible query interface for complex data retrieval
 - **Documentation**: Extensive guides and examples
 
 </div>
 
-<div style={{ 
-  backgroundColor: 'var(--ifm-background-color)', 
-  border: '1px solid var(--ifm-color-emphasis-300)', 
-  borderRadius: '8px', 
-  padding: '1.5rem'
-}}>
-
-### 📦 **TypeScript Monorepo**
-
-Unified development environment and tooling:
-
-- **SDK Packages**: Core SDK and specialized packages
-- **Development Tools**: Testing, linting, and build tools
-- **Example Applications**: Reference implementations and demos
-- **Documentation**: Auto-generated API documentation
-- **CI/CD**: Automated testing and deployment pipelines
-
-</div>
 
 </div>
 
@@ -226,26 +205,6 @@ Intuition provides multiple integration options to suit different development ne
 
 </div>
 
-<div style={{ 
-  backgroundColor: 'var(--ifm-background-color)', 
-  border: '1px solid var(--ifm-color-emphasis-300)', 
-  borderRadius: '8px', 
-  padding: '1.5rem'
-}}>
-
-### **REST API**
-
-**Best for**: Simple operations and standard HTTP workflows
-
-- **Simple Integration**: Standard HTTP requests
-- **Wide Compatibility**: Works with any HTTP client
-- **Caching**: Standard HTTP caching mechanisms
-- **Documentation**: OpenAPI/Swagger documentation
-- **Rate Limiting**: Built-in rate limiting and quotas
-
-**[Explore REST API →](/guides/developer-tools/graphql-api)**
-
-</div>
 
 <div style={{ 
   backgroundColor: 'var(--ifm-background-color)', 
@@ -285,7 +244,7 @@ Intuition provides multiple integration options to suit different development ne
 1. **Application Layer**: User interfaces and applications
 2. **API Layer**: GraphQL and REST APIs
 3. **Service Layer**: Business logic and data processing
-4. **Blockchain Layer**: Smart contracts and on-chain state
+4. **Blockchain Layer**: Smart contracts and onchain state
 5. **Storage Layer**: Off-chain data and IPFS integration
 
 </div>
@@ -323,7 +282,7 @@ All Intuition components are open source and available on GitHub. Explore the co
 
 ### **Core Protocol**
 
-**[intuition-contracts](https://github.com/0xIntuition/intuition-contracts)** - Smart contracts and protocol implementation
+**[intuition-contracts-v2](https://github.com/0xIntuition/intuition-contracts-v2)** - Solidity smart contracts
 
 **[intuition-ts](https://github.com/0xIntuition/intuition-ts)** - TypeScript SDK and tools
 
@@ -355,13 +314,11 @@ All Intuition components are open source and available on GitHub. Explore the co
   padding: '1.5rem'
 }}>
 
-### **Development & Documentation**
+### **Documentation & Periphery**
 
 **[intuition-docs](https://github.com/0xIntuition/intuition-docs)** - Documentation and guides
 
 **[intuition-mcp-server](https://github.com/0xIntuition/intuition-mcp-server)** - MCP server implementation
-
-**[intuition-trust-token-contracts](https://github.com/0xIntuition/intuition-trust-token-contracts)** - Trust token contracts
 
 </div>
 
