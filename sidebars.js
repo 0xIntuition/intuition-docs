@@ -36,6 +36,7 @@ module.exports = {
       items: [
         'developer-tools/sdks/overview',
         'developer-tools/sdks/boilerplate-project',
+        'developer-tools/sdks/migration-guide',
       ],
     },
     {
@@ -76,15 +77,9 @@ module.exports = {
     },
     {
       type: 'category',
-      label: 'Rust Subnet',
+      label: 'Rust Backend',
       items: [
-        {
-          type: 'link',
-          label: 'Deep Dive',
-          href: 'https://deepwiki.com/0xIntuition/intuition-rs',
-        },
-        'rust-subnet/overview',
-        'rust-subnet/run-a-node',
+        'run-node/run-an-intuition-node',
       ],
     },
     {
@@ -100,18 +95,13 @@ module.exports = {
     {
       type: 'category',
       label: 'AI',
-      items: [
-        'intuition-ai/index',
-        'intuition-ai/mcp-server',
-      ],
+      items: ['intuition-ai/index', 'intuition-ai/mcp-server'],
     },
     {
       type: 'category',
       label: 'Resources',
       items: [
         'resources/index',
-        'resources/key-terms',
-        'resources/faq',
         'resources/community-and-support',
         'developer-tools/audit-reports',
         'partners/index',
@@ -120,4 +110,4 @@ module.exports = {
     },
     'use-cases/use-cases',
   ],
-}; 
+};

@@ -51,14 +51,15 @@ query GetAtoms(
   $orderBy: [atoms_order_by!]
   $where: atoms_bool_exp
 ) {
-  atoms_aggregate(where: $where) {
+  total: atoms_aggregate(where: $where) {
     aggregate {
       count
     }
   }
   atoms(limit: $limit, offset: $offset, order_by: $orderBy, where: $where) {
-    # AtomMetadata fields
-    id
+    # Basic metadata
+    term_id
+    data
     image
     label
     emoji
@@ -70,34 +71,63 @@ query GetAtoms(
       image
     }
 
-    # AtomTxn fields
+    # Transaction details
     block_number
-    block_timestamp
+    created_at
+    updated_at
     transaction_hash
     creator_id
 
-    # AtomVaultDetails fields
-    vault_id
-    wallet_id
-    vault {
-      position_count
-      total_shares
-      current_share_price
-      positions_aggregate {
-        aggregate {
-          count
-          sum {
-            shares
+    # Vault details
+    term {
+      vaults(where: { curve_id: { _eq: "1" } }, order_by: { curve_id: asc }) {
+        position_count
+        total_shares
+        current_share_price
+        market_cap
+        positions_aggregate {
+          aggregate {
+            count
+            sum {
+              shares
+            }
           }
         }
-      }
-      positions {
-        id
-        account {
-          label
+        positions {
           id
+          account {
+            label
+            id
+          }
+          shares
         }
-        shares
+      }
+    }
+
+    # Value metadata
+    value {
+      person {
+        name
+        image
+        description
+        url
+      }
+      thing {
+        name
+        image
+        description
+        url
+      }
+      organization {
+        name
+        image
+        description
+        url
+      }
+      account {
+        id
+        label
+        image
       }
     }
   }
@@ -121,14 +151,15 @@ query GetAtoms(
   $orderBy: [atoms_order_by!]
   $where: atoms_bool_exp
 ) {
-  atoms_aggregate(where: $where) {
+  total: atoms_aggregate(where: $where) {
     aggregate {
       count
     }
   }
   atoms(limit: $limit, offset: $offset, order_by: $orderBy, where: $where) {
-    # AtomMetadata fields
-    id
+    # Basic metadata
+    term_id
+    data
     image
     label
     emoji
@@ -140,34 +171,63 @@ query GetAtoms(
       image
     }
 
-    # AtomTxn fields
+    # Transaction details
     block_number
-    block_timestamp
+    created_at
+    updated_at
     transaction_hash
     creator_id
 
-    # AtomVaultDetails fields
-    vault_id
-    wallet_id
-    vault {
-      position_count
-      total_shares
-      current_share_price
-      positions_aggregate {
-        aggregate {
-          count
-          sum {
-            shares
+    # Vault details
+    term {
+      vaults(where: { curve_id: { _eq: "1" } }, order_by: { curve_id: asc }) {
+        position_count
+        total_shares
+        current_share_price
+        market_cap
+        positions_aggregate {
+          aggregate {
+            count
+            sum {
+              shares
+            }
           }
         }
-      }
-      positions {
-        id
-        account {
-          label
+        positions {
           id
+          account {
+            label
+            id
+          }
+          shares
         }
-        shares
+      }
+    }
+
+    # Value metadata
+    value {
+      person {
+        name
+        image
+        description
+        url
+      }
+      thing {
+        name
+        image
+        description
+        url
+      }
+      organization {
+        name
+        image
+        description
+        url
+      }
+      account {
+        id
+        label
+        image
       }
     }
   }
@@ -204,23 +264,86 @@ query GetAccounts($limit: Int, $offset: Int) {
 Fetch relationship triples between atoms.
 
 ```graphql
-query GetTriples($limit: Int, $offset: Int) {
-  triples(limit: $limit, offset: $offset) {
-    id
+query GetTriples(
+  $limit: Int
+  $offset: Int
+  $orderBy: [triples_order_by!]
+  $where: triples_bool_exp
+) {
+  total: triples_aggregate(where: $where) {
+    aggregate {
+      count
+    }
+  }
+  triples(limit: $limit, offset: $offset, order_by: $orderBy, where: $where) {
+    term_id
+    counter_term_id
+    created_at
     subject {
-      id
+      term_id
       label
       image
+      data
+      type
+      value {
+        thing {
+          description
+          url
+        }
+        person {
+          description
+          url
+        }
+        organization {
+          description
+          url
+        }
+      }
     }
-    predicate
+    predicate {
+      term_id
+      label
+      image
+      data
+      type
+    }
     object {
-      id
+      term_id
       label
       image
+      data
+      type
+      value {
+        thing {
+          description
+          url
+        }
+        person {
+          description
+          url
+        }
+        organization {
+          description
+          url
+        }
+      }
     }
-    metadata {
-      confidence
-      created_at
+    # Vault details for pro/counter positions
+    term {
+      vaults(where: { curve_id: { _eq: "2" } }) {
+        total_shares
+        current_share_price
+        market_cap
+        position_count
+      }
+    }
+    counter_term {
+      vaults(where: { curve_id: { _eq: "2" } }) {
+        total_shares
+        current_share_price
+        market_cap
+        position_count
+      }
     }
   }
 }
@@ -231,18 +354,73 @@ query GetTriples($limit: Int, $offset: Int) {
 Query user positions in atom vaults.
 
 ```graphql
-query GetPositions($accountId: String!) {
-  positions(where: { account_id: { _eq: $accountId } }) {
-    id
-    shares
-    vault {
-      id
-      atom {
-        label
-        image
+query GetPositions(
+  $limit: Int
+  $offset: Int
+  $orderBy: [positions_order_by!]
+  $where: positions_bool_exp
+) {
+  total: positions_aggregate(where: $where) {
+    aggregate {
+      count
+      sum {
+        shares
       }
-      current_share_price
-      total_shares
+    }
+  }
+  positions(limit: $limit, offset: $offset, order_by: $orderBy, where: $where) {
+    id
+    created_at
+    updated_at
+    shares
+    account {
+      id
+      label
+      image
+    }
+    vault {
+      created_at
+      updated_at
+      term {
+        atom {
+          term_id
+          label
+          image
+          term {
+            vaults(where: { curve_id: { _eq: "1" } }) {
+              term_id
+              total_shares
+              current_share_price
+              position_count
+            }
+          }
+        }
+        triple {
+          term_id
+          subject {
+            term_id
+            label
+            image
+          }
+          predicate {
+            term_id
+            label
+            image
+          }
+          object {
+            term_id
+            label
+            image
+          }
+          term {
+            vaults(where: { curve_id: { _eq: "2" } }) {
+              market_cap
+              current_share_price
+              position_count
+            }
+          }
+        }
+      }
     }
   }
 }
