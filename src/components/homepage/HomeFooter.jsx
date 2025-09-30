@@ -37,7 +37,7 @@ const developers = [
   },
   {
     name: 'Architecture',
-    href: 'docs/developer-tools/deep-dive/architecture',
+    href: '/docs/developer-tools/deep-dive/architecture',
   },
 ];
 

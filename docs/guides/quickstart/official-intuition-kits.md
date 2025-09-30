@@ -10,7 +10,7 @@ Jump-start your development with our official Intuition starter kits and resourc
 
 | Resource | Type | Purpose | Link |
 |----------|------|---------|------|
-| **Speed Run Intuition** | Showcase | Learn SDK & build reference apps | [View Details](#speed-run-intuition-kit) |
+| **Speed Run Intuition** | Showcase | Learn SDK & build reference apps | [View Details](#speed-run-kit) |
 | **TypeScript SDK** | Core Library | Main SDK for Intuition development | [GitHub](https://github.com/0xIntuition/intuition-ts) |
 | **Smart Contracts** | Protocol | Core protocol implementation | [GitHub](https://github.com/0xIntuition/intuition-contracts) |
 | **Browser Extension** | Tool | Browser integration | [GitHub](https://github.com/0xIntuition/intuition-chrome-extension) |
