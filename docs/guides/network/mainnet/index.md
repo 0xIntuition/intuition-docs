@@ -24,4 +24,4 @@ While you wait for mainnet, you can:
 
 1. **Build on Testnet** - Develop and test your applications on our [testnet environment](/guides/network/testnet)
 2. **Learn the Protocol** - Explore our [documentation](/guides) to understand the Intuition protocol
-3. **Join the Community** - Connect with other developers in our [Discord](https://discord.gg/RgBenkX4mx)
+3. **Join the Community** - Connect with other developers in our [Discord](https://discord.gg/0xintuition)

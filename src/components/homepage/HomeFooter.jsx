@@ -7,67 +7,47 @@ import BrowserOnly from '@docusaurus/BrowserOnly';
 import ThemedImage from '@theme/ThemedImage';
 
 const overview = [
-  { name: 'Overview', href: '/docs/overview' },
-  { name: 'Why Intuition?', href: '/docs/overview/why-intuition' },
+  { name: 'Overview', href: '/docs/introduction/overview' },
+  { name: 'Why Intuition?', href: '/docs/introduction/why-intuition' },
 ];
 
 const products = [
   {
-    name: 'Launchpad',
-    href: 'https://launchpad.intuition.systems/',
-  },
-  {
     name: 'Portal',
     href: 'https://portal.intuition.systems/',
-  },
-  {
-    name: 'Data Uploader',
-    href: 'https://upload.intuition.systems/',
-  },
-  {
-    name: 'Ecosystem Map',
-    href: 'https://ecosystems.intuition.systems/',
   },
 ];
 
 const developers = [
   {
-    name: 'Guides',
-    href: '/docs',
-  },
-  {
-    name: 'Create Intuition App',
-    href: '/docs/quickstart/create-intuition-app',
-  },
-  {
-    name: 'GraphQL Queries',
-    href: '/graphql',
+    name: 'GraphQL',
+    href: '/docs/developer-tools/graphql-api/overview',
   },
   {
     name: 'Smart Contracts',
-    href: '/docs/smart-contracts/',
+    href: '/docs/developer-tools/contracts/contract-architecture',
   },
   {
     name: 'AI Integration',
-    href: '/docs/intuition-ai/intro',
+    href: '/docs/intuition-ai'
   },
   {
     name: 'Primitives',
-    href: '/docs/primitives/atoms',
+    href: '/docs/primitives/overview',
   },
   {
     name: 'Architecture',
-    href: '/docs/smart-contracts/architecture',
+    href: 'docs/developer-tools/deep-dive/architecture',
   },
 ];
 
 const community = [
   { name: 'X / Twitter', href: 'https://x.com/0xintuition' },
   { name: 'Medium', href: 'https://medium.com/0xintuition' },
-  { name: 'Discord', href: 'https://discord.gg/RgBenkX4mx' },
+  { name: 'Discord', href: 'https://discord.gg/0xintuition' },
   { name: 'Telegram', href: 'https://t.me/intuitionsystems' },
   { name: 'LinkedIn', href: 'https://linkedin.com/company/0xintuition' },
-  { name: 'Farcaster', href: 'https://warpcast.com/intuition' },
+  { name: 'Farcaster', href: 'https://farcaster.xyz/intuition' },
 ];
 
 function Safety({ className }) {

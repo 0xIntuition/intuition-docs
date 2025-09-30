@@ -70,9 +70,6 @@ module.exports = {
       label: 'Economics',
       items: [
         'economics/overview',
-        'economics/bonding-curves',
-        'economics/write-monetization',
-        'economics/read-monetization',
       ],
     },
     {
@@ -104,7 +101,6 @@ module.exports = {
         'resources/index',
         'resources/community-and-support',
         'developer-tools/audit-reports',
-        'partners/index',
         'contribute/contribution-guidelines',
       ],
     },

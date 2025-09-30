@@ -18,46 +18,46 @@ const MAIN_CARDS = [
     title: 'Quick Start',
     link: '/docs/quickstart',
     icon: ArrowRightFilled,
-    text: "Get up and running with Intuition in minutes. Build your first app with our starter kits.",
+    text: 'Get up and running with Intuition in minutes. Build your first app with our starter kits.',
   },
   {
     title: 'GraphQL API',
-    link: '/docs/graphql/quickstart',
+    link: '/docs/developer-tools/graphql-api/overview',
     icon: DatabaseRegular,
-    text: "Query the knowledge graph with our powerful GraphQL API.",
+    text: 'Query the knowledge graph with our powerful GraphQL API.',
   },
   {
     title: 'SDK',
-    link: '/docs/developer-tools',
+    link: '/docs/developer-tools/sdks/overview',
     icon: CodeRegular,
-    text: "TypeScript/JavaScript SDKs for seamless integration.",
+    text: 'TypeScript/JavaScript SDKs for seamless integration.',
   },
   {
     title: 'Intuition Network',
-    link: '/docs/overview',
+    link: '/docs/network/overview',
     icon: ShareRegular,
-    text: "Learn about the decentralized trust and reputation network.",
+    text: 'Learn about the decentralized trust and reputation network.',
   },
 ];
 
 const TECH_CARDS = [
   {
     title: 'Rust Subnet',
-    link: 'https://deepwiki.com/0xIntuition/intuition-rs',
+    link: '/docs/run-node/run-an-intuition-node',
     icon: ServerRegular,
-    text: "Dive into the Rust-based subnet infrastructure powering Intuition.",
+    text: 'Dive into the Rust-based subnet infrastructure powering Intuition.',
   },
   {
     title: 'TS Monorepo',
     link: 'https://deepwiki.com/0xIntuition/intuition-ts',
     icon: DocumentTextRegular,
-    text: "Explore our TypeScript monorepo architecture and packages.",
+    text: 'Explore our TypeScript monorepo architecture and packages.',
   },
   {
     title: 'Smart Contracts',
     link: 'https://deepwiki.com/0xIntuition/intuition-contracts-v2',
     icon: CubeRegular,
-    text: "Deep dive into the Intuition smart contract architecture.",
+    text: 'Deep dive into the Intuition smart contract architecture.',
   },
 ];
 
@@ -74,10 +74,10 @@ function SimpleCard({
 }) {
   const isExternal = link.startsWith('http');
   const CardWrapper = isExternal ? 'a' : Link;
-  const cardProps = isExternal 
+  const cardProps = isExternal
     ? { href: link, target: '_blank', rel: 'noopener noreferrer' }
     : { to: link };
-  
+
   return (
     <CardWrapper
       {...cardProps}
@@ -108,10 +108,14 @@ export default function HeroSection() {
         {/* Hero Text Section */}
         <div className="mb-16 text-center">
           <h2 className="mb-6 font-jakarta text-5xl font-bold text-gray-900 dark:text-white lg:text-6xl">
-            Give your project <span className="italic text-primary">Intuition</span>.
+            Give your project{' '}
+            <span className="italic text-primary">Intuition</span>.
           </h2>
           <p className="mx-auto max-w-4xl text-lg text-gray-600 dark:text-gray-300 lg:text-xl">
-            Gain plug‑and‑play verifiable data, decentralized identity, and reputation for your app: query or submit signed data in one call, skip building reputation layers, and earn token rewards whenever the data you publish is used.
+            Gain plug‑and‑play verifiable data, decentralized identity, and
+            reputation for your app: query or submit signed data in one call,
+            skip building reputation layers, and earn token rewards whenever the
+            data you publish is used.
           </p>
         </div>
 
