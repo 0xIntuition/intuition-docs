@@ -1,36 +1,134 @@
 ---
 id: the-economics
 title: The Economics
-sidebar_label: Overview
+sidebar_label: The Economics
 sidebar_position: 1
 description: Understanding Intuition's economic model and incentives
 ---
 
 # The Economics
 
-Intuition uses a market-based system of fees and rewards to encourage valuable contributions and establish consensus around data structures. By offering economic incentives, the platform motivates users to adopt widely accepted identifiers and data formats.
+Intuition is built on the idea that information deserves its own decentralized distribution and financial rails. 
 
-:::note
-To foster engagement and promote the creation of high-quality, standardized data, rewards favor creation and contribution interactions with data that is:
+Just as blockchains turned money into programmable assets, Intuition turns information into tokenized, ownable, and composable units that anyone can create and monetize in.
 
-- **New or early**: First-mover advantages for valuable contributions
-- **Useful to the most people**: Network effects drive value
-- **Aligned with commonly accepted standards**: Convergence on best practices
-- **Likely to be used in the future**: Forward-looking value assessment
-:::
+At the core are Atoms (entities) and Triples (relationships). As users publish, curate, and stake on these objects, they generate a token-curated knowledge graph where ownership weights are represented by positions in $TRUST — the native token of the Intuition Network and Protocol.
+
+The goal is not to tokenize data just for the sake of a token. The economics of Intuition are designed to:
+
+<div className="uniform-card-grid">
+
+<div className="uniform-card">
+<h3 className="uniform-card-title">1. Incentivize Expression</h3>
+<ul style={{ margin: 0, paddingLeft: '1.2rem', fontSize: '0.95rem', lineHeight: '1.6' }}>
+<li>Users are rewarded for making useful, verifiable attestations</li>
+<li>First movers capture outsized rewards for creating identifiers or relationships that prove valuable</li>
+<li>The system pays people to contribute knowledge, not just consume it</li>
+</ul>
+</div>
+
+<div className="uniform-card">
+<h3 className="uniform-card-title">2. Incentivize Convergence on Canonical Identifiers</h3>
+<ul style={{ margin: 0, paddingLeft: '1.2rem', fontSize: '0.95rem', lineHeight: '1.6' }}>
+<li>Anyone can permissionlessly create a decentralized identifier (DID) for anything</li>
+<li>Instead of fragmenting into infinite duplicates, bonding curves and network effects encourage participants to converge on shared canonical identifiers</li>
+<li>This makes Intuition's knowledge graph globally referenceable and interoperable</li>
+</ul>
+</div>
+
+<div className="uniform-card">
+<h3 className="uniform-card-title">3. Incentivize Consensus on Standards and Structures</h3>
+<ul style={{ margin: 0, paddingLeft: '1.2rem', fontSize: '0.95rem', lineHeight: '1.6' }}>
+<li>Communities can propose schemas and data formats (e.g., predicates like <code>foundedBy</code>, <code>headquarteredIn</code>)</li>
+<li>Rewards flow toward attestations that align with commonly adopted standards</li>
+<li>Over time, the protocol nudges participants into consensus-driven data structures, so the web of knowledge doesn't just grow — it grows in a structured, interoperable way</li>
+</ul>
+</div>
+
+</div>
+
+---
+
+## Example Flow: How the Incentives Work
+
+<div style={{ backgroundColor: 'var(--ifm-color-emphasis-50)', padding: '1.5rem', borderRadius: '8px', margin: '1.5rem 0', border: '1px solid var(--ifm-color-emphasis-300)' }}>
+
+### 1. Expression
+**Alice creates a new Atom: a DID for Tesla, Inc.**
+- She publishes an attestation: `[Tesla] – [foundedBy] – [Elon Musk]`, staking $TRUST behind it
+- Because she was first, she captures the early-mover rewards
+
+### 2. Convergence
+**Bob considers creating his own identifier for Tesla**
+- But Alice's Atom already has traction, with value flowing into its bonding curve
+- The economics reward Bob for using the existing canonical DID instead of fragmenting the graph
+
+### 3. Consensus on Standards
+**Carol proposes that `foundedBy` and `headquarteredIn` should be standard predicates for corporate entities**
+- The network's incentive structure rewards attestations that align with these schemas
+- As more users adopt them, `foundedBy` becomes a consensus-backed data standard
+
+### 4. Ongoing Rewards
+**As developers and AI agents query Tesla-related data, fees flow back to the identifiers and attestations that power those queries**
+- Alice, Bob, and Carol all share in the economic upside of having built durable, widely used pieces of the graph
+
+</div>
+
+---
+
+## Reward Dynamics
+
+To maximize engagement and data quality, the system favors contributions that are:
+
+<div className="uniform-card-grid">
+
+<div className="uniform-card">
+<h3 className="uniform-card-title">New or Early</h3>
+<p className="uniform-card-content">
+First-mover advantages for valuable identifiers and attestations
+</p>
+</div>
+
+<div className="uniform-card">
+<h3 className="uniform-card-title">Widely Useful</h3>
+<p className="uniform-card-content">
+Network effects amplify rewards for commonly referenced knowledge
+</p>
+</div>
+
+<div className="uniform-card">
+<h3 className="uniform-card-title">Standards-Aligned</h3>
+<p className="uniform-card-content">
+Stronger incentives for adopting schemas and canonical identifiers
+</p>
+</div>
+
+<div className="uniform-card">
+<h3 className="uniform-card-title">Future-Facing</h3>
+<p className="uniform-card-content">
+Forward-looking value assessment ensures durable contributions
+</p>
+</div>
+
+</div>
 
 ## Fees & Rewards
 
-Because Intuition breaks data down into discrete, tokenized units, the system is aware of 'who owns what data' at any given point in time. Because of this, the system is able to programmatically flow value through data as it is interacted with.
+Every interaction with the knowledge graph involves two types of fees:
+- **Gas fees**: Network transaction fees paid to the maintaners of the Intuition Network for processing transactions
+- **Protocol fees**: Fees that flow through the Intuition protocol to reward data contributors and maintain the ecosystem
 
-To reward contributors of useful data, every interaction with the knowledge graph action in Intuition comes with a small fee, similar to gas fees in blockchain systems. Users pay a fee when interacting with or creating data. These fees go towards:
+Because Intuition breaks data down into discrete, tokenized units, the system is aware of 'who owns what data' at any given point in time. Because of this, the system is able to programmatically flow value — such as these Fees — through data as that data is interacted with.
+
+When users interact with or create data, these combined fees support both network operations and data contributor rewards through the following mechanisms:
 
 <div className="uniform-card" style={{ marginBottom: '1.5rem' }}>
 <h3 className="uniform-card-title">Purchasing Equity in the Data</h3>
 <p className="uniform-card-content">
-When paying fees to create data, a portion of the fee goes towards purchasing equity in the underlying data. Thus, as users contribute data to the Intuition Graph, they receive ownership over the data created.
+To purchase tokens of an Atom or Triple, users deposit $TRUST (the native token of the Intuition Network and Protocol) into the Vault of the respective Atom or Triple. You pay a protocol fee proportional to your deposit amount. In return, you receive tokens of that specific Atom or Triple, entitling you to rewards generated by that data point proportional to your ownership percentage.
 </p>
 <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '1rem' }}>
+<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>$TRUST</span>
 <span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>Ownership</span>
 <span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>Equity</span>
 </div>
@@ -39,7 +137,7 @@ When paying fees to create data, a portion of the fee goes towards purchasing eq
 <div className="uniform-card" style={{ marginBottom: '1.5rem' }}>
 <h3 className="uniform-card-title">Rewarding Prior Contributors</h3>
 <p className="uniform-card-content">
-When paying fees to create or read data, part of the fee is distributed to all existing shareholders (prior contributors). This encourages early, meaningful contributions, as users who add valuable data will continue to be rewarded over time.
+When interacting with data, part of the protocol fee is distributed to all existing shareholders (prior contributors). This encourages early, meaningful contributions, as users who add valuable data will continue to be rewarded over time through protocol fees, while gas fees go to network validators.
 </p>
 <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '1rem' }}>
 <span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>Distribution</span>
@@ -48,9 +146,9 @@ When paying fees to create or read data, part of the fee is distributed to all e
 </div>
 
 <div className="uniform-card" style={{ marginBottom: '1.5rem' }}>
-<h3 className="uniform-card-title">Protocol Fees</h3>
+<h3 className="uniform-card-title">Protocol Maintenance</h3>
 <p className="uniform-card-content">
-A small portion of the fee goes to the Intuition protocol, for future platform improvements. Upon launch of the Intuition token, the protocol will be a community-owned DAO, governed by token holders.
+A of the protocol fee is paid to the Intuition protocol for platform maintenance and development. This ensures Intuition can be self-sustaining and exist in perpetuity, without risk of shutting down.
 </p>
 <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '1rem' }}>
 <span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>Development</span>
@@ -61,6 +159,8 @@ A small portion of the fee goes to the Intuition protocol, for future platform i
 ## Reducing Fragmentation
 
 In many systems, user-generated tags and classifications, known as **folksonomies**, can lead to fragmented and disorganized data. Different people might use different labels for the same thing, making it hard to gather or analyze information effectively. Intuition solves this by encouraging users to converge on a common set of identifiers.
+
+Intuition acts as a consensus mechanism not just for identifiers, but also for data structures—it is essentially a consensus mechanism for the 'state of the state' of decentralized systems, where participants are economically incentivized to converge on consensus identifiers and data structures.
 
 Intuition uses a **market-driven consensus** model inspired by blockchain technology. In systems like Proof of Work (PoW) and Proof of Stake (PoS), participants are economically incentivized to act in ways that benefit the network. Users are motivated to use established and widely recognized identifiers because doing so increases their potential rewards from future interactions.
 
@@ -135,160 +235,6 @@ Pricing automatically reflects the value of underlying assets, ensuring market m
 <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '1rem' }}>
 <span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>Value</span>
 <span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>Alignment</span>
-</div>
-</div>
-
-</div>
-
-Learn more about [Bonding Curves](./bonding-curves) and how they power Intuition's economic model.
-
-## Token Economics
-
-The Intuition token (INT) serves multiple purposes within the ecosystem:
-
-<div className="uniform-card" style={{ marginBottom: '1.5rem' }}>
-<h3 className="uniform-card-title">Platform Governance</h3>
-<p className="uniform-card-content">
-Community-driven decision making through decentralized voting mechanisms, ensuring the protocol evolves according to stakeholder consensus.
-</p>
-<div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '1rem' }}>
-<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>Voting</span>
-<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>Consensus</span>
-</div>
-</div>
-
-<div className="uniform-card" style={{ marginBottom: '1.5rem' }}>
-<h3 className="uniform-card-title">Fee Payments</h3>
-<p className="uniform-card-content">
-Reduced fees for token holders, providing economic benefits and encouraging long-term participation in the ecosystem.
-</p>
-<div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '1rem' }}>
-<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>Discounts</span>
-<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>Utility</span>
-</div>
-</div>
-
-<div className="uniform-card" style={{ marginBottom: '1.5rem' }}>
-<h3 className="uniform-card-title">Staking & Security</h3>
-<p className="uniform-card-content">
-Network security through economic incentives, where token holders can stake their tokens to secure the network and earn rewards.
-</p>
-<div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '1rem' }}>
-<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>Security</span>
-<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>Staking</span>
-</div>
-</div>
-
-<div className="uniform-card" style={{ marginBottom: '1.5rem' }}>
-<h3 className="uniform-card-title">Developer Incentives</h3>
-<p className="uniform-card-content">
-Rewards for building valuable applications and contributing to the ecosystem, fostering innovation and growth.
-</p>
-<div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '1rem' }}>
-<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>Innovation</span>
-<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>Rewards</span>
-</div>
-</div>
-
-## Fee Structure
-
-Our comprehensive fee model ensures sustainable platform operation while rewarding participants:
-
-<div className="uniform-card-grid">
-
-<div className="uniform-card">
-<h3 className="uniform-card-title">Transaction Fees</h3>
-<p className="uniform-card-content">
-Small fees for data creation and interaction, similar to gas fees in blockchain systems, ensuring network sustainability.
-</p>
-<div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '1rem' }}>
-<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>Creation</span>
-<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>Interaction</span>
-</div>
-</div>
-
-<div className="uniform-card">
-<h3 className="uniform-card-title">Development Tools</h3>
-<p className="uniform-card-content">
-Premium tools and APIs for developers building advanced applications, providing enhanced functionality and support.
-</p>
-<div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '1rem' }}>
-<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>APIs</span>
-<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>Premium</span>
-</div>
-</div>
-
-<div className="uniform-card">
-<h3 className="uniform-card-title">Cross-Chain Operations</h3>
-<p className="uniform-card-content">
-Multi-network functionality fees for seamless operation across different blockchain networks and ecosystems.
-</p>
-<div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '1rem' }}>
-<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>Multi-chain</span>
-<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>Bridging</span>
-</div>
-</div>
-
-<div className="uniform-card">
-<h3 className="uniform-card-title">Premium Features</h3>
-<p className="uniform-card-content">
-Advanced features for power users, including enhanced analytics, priority support, and exclusive functionality.
-</p>
-<div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '1rem' }}>
-<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>Analytics</span>
-<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>Priority</span>
-</div>
-</div>
-
-</div>
-
-## Economic Security
-
-The platform's economic security is ensured through multiple safeguards and mechanisms:
-
-<div className="uniform-card-grid">
-
-<div className="uniform-card">
-<h3 className="uniform-card-title">Transparent Fee Allocation</h3>
-<p className="uniform-card-content">
-Clear distribution of collected fees with public accountability, ensuring all participants understand how value flows through the system.
-</p>
-<div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '1rem' }}>
-<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>Transparency</span>
-<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>Distribution</span>
-</div>
-</div>
-
-<div className="uniform-card">
-<h3 className="uniform-card-title">Controlled Token Emission</h3>
-<p className="uniform-card-content">
-Predictable and sustainable token supply mechanisms that prevent inflation while ensuring adequate liquidity for ecosystem growth.
-</p>
-<div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '1rem' }}>
-<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>Supply</span>
-<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>Predictable</span>
-</div>
-</div>
-
-<div className="uniform-card">
-<h3 className="uniform-card-title">Anti-Manipulation Measures</h3>
-<p className="uniform-card-content">
-Protection against gaming the system through sophisticated algorithms and monitoring that detect and prevent malicious behavior.
-</p>
-<div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '1rem' }}>
-<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>Protection</span>
-<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>Monitoring</span>
-</div>
-</div>
-
-<div className="uniform-card">
-<h3 className="uniform-card-title">Regular Economic Audits</h3>
-<p className="uniform-card-content">
-Ongoing assessment of economic health through independent audits and community review, ensuring long-term sustainability.
-</p>
-<div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '1rem' }}>
-<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>Audits</span>
-<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>Health</span>
 </div>
 </div>
 
