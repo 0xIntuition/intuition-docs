@@ -1,10 +1,10 @@
 import React from 'react';
 import Link from '@docusaurus/Link';
-import { 
-  GitHub, 
-  MessageCircle, 
-  Twitter, 
-  Mail, 
+import {
+  GitHub,
+  MessageCircle,
+  Twitter,
+  Mail,
   BookOpen,
   HelpCircle,
   Video,
@@ -21,7 +21,7 @@ const supportChannels = [
     title: 'Discord Community',
     description: 'Join our active community for real-time support and discussions',
     icon: MessageCircle,
-    link: 'https://discord.gg/RgBenkX4mx',
+    link: 'https://discord.gg/0xintuition',
     color: 'from-indigo-500 to-purple-600',
     external: true
   },
@@ -40,14 +40,6 @@ const supportChannels = [
     link: 'https://x.com/0xintuition',
     color: 'from-blue-400 to-blue-600',
     external: true
-  },
-  {
-    title: 'FAQ',
-    description: 'Find answers to frequently asked questions',
-    icon: HelpCircle,
-    link: '/faq',
-    color: 'from-emerald-500 to-teal-600',
-    external: false
   },
   {
     title: 'Video Tutorials',
@@ -87,16 +79,16 @@ const quickLinks = [
     link: 'https://youtube.com/@0xIntuition'
   },
   {
-    title: 'API Reference',
+    title: 'GraphQL API Reference',
     description: 'Complete API documentation',
     icon: FileText,
-    link: '/graphql'
+    link: '/docs/developer-tools/graphql-api/overview'
   }
 ];
 
 function SupportCard({ title, description, icon: Icon, link, color, external }) {
   const CardWrapper = external ? 'a' : Link;
-  const cardProps = external 
+  const cardProps = external
     ? { href: link, target: '_blank', rel: 'noopener noreferrer' }
     : { to: link };
 
@@ -106,12 +98,12 @@ function SupportCard({ title, description, icon: Icon, link, color, external }) 
       className="group relative overflow-hidden rounded-2xl border border-gray-200 bg-white p-6 shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl dark:border-gray-800 dark:bg-[#1a1a1a] dark:shadow-xl dark:shadow-black/50"
     >
       <div className={`absolute inset-0 bg-gradient-to-br ${color} opacity-0 transition-opacity duration-300 group-hover:opacity-5`} />
-      
+
       <div className="relative z-10 flex items-start gap-4">
         <div className={`flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br ${color} text-white shadow-lg transition-transform duration-300 group-hover:scale-110`}>
           <Icon className="h-6 w-6" />
         </div>
-        
+
         <div className="flex-1">
           <h3 className="mb-2 flex items-center gap-2 text-lg font-semibold text-gray-900 dark:text-white">
             {title}
@@ -131,7 +123,7 @@ function SupportCard({ title, description, icon: Icon, link, color, external }) 
 function QuickLinkCard({ title, description, icon: Icon, link }) {
   const isExternal = link.startsWith('http');
   const CardWrapper = isExternal ? 'a' : Link;
-  const cardProps = isExternal 
+  const cardProps = isExternal
     ? { href: link, target: '_blank', rel: 'noopener noreferrer' }
     : { to: link };
 
@@ -156,7 +148,7 @@ export default function CommunitySection() {
   return (
     <section className="noise-bg relative overflow-hidden py-20">
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent" />
-      
+
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-12 text-center">
           <span className="intuition-badge mb-4 inline-block">SUPPORT</span>
@@ -180,14 +172,14 @@ export default function CommunitySection() {
               Quick Resources
             </h3>
             <Link
-              to="/docs"
+              to="/docs/introduction/overview"
               className="group flex items-center gap-2 text-sm font-medium text-primary transition-colors hover:text-primary-600"
             >
-              View all guides
+              View all docs
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Link>
           </div>
-          
+
           <div className="grid gap-4 sm:grid-cols-2">
             {quickLinks.map((link) => (
               <QuickLinkCard key={link.title} {...link} />
