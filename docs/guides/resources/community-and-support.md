@@ -14,7 +14,8 @@ Connect with the Intuition community, get help, and stay updated with the latest
 
 <div className="uniform-card-grid">
 
-<a href="https://x.com/0xintuition" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+<a href="https://x.com/0xintuition" target="\_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+
 <div className="uniform-card clickable-card">
 <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.5rem' }}>
 <div style={{ width: '60px', height: '60px', borderRadius: '12px', backgroundColor: '#1DA1F2', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -29,7 +30,8 @@ Follow us on X for real-time updates, announcements, and community highlights.
 </div>
 </a>
 
-<a href="https://discord.com/invite/0xintuition" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+<a href="https://discord.com/invite/0xintuition" target="\_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+
 <div className="uniform-card clickable-card">
 <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.5rem' }}>
 <div style={{ width: '60px', height: '60px', borderRadius: '12px', backgroundColor: '#5865F2', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -44,7 +46,8 @@ Join our Discord community for discussions, support, and real-time collaboration
 </div>
 </a>
 
-<a href="https://www.youtube.com/@0xIntuition" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+<a href="https://www.youtube.com/@0xIntuition" target="\_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+
 <div className="uniform-card clickable-card">
 <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.5rem' }}>
 <div style={{ width: '60px', height: '60px', borderRadius: '12px', backgroundColor: '#FF0000', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -59,7 +62,8 @@ Watch video recordings, tutorials, and community content on our YouTube channel.
 </div>
 </a>
 
-<a href="https://medium.com/0xintuition" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+<a href="https://medium.com/0xintuition" target="\_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+
 <div className="uniform-card clickable-card">
 <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.5rem' }}>
 <div style={{ width: '60px', height: '60px', borderRadius: '12px', backgroundColor: '#00AB6C', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -81,6 +85,7 @@ Read our latest articles, insights, and technical deep-dives on Medium.
 <div className="uniform-card-grid-small">
 
 <a href="mailto:support@intuition.systems" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+
 <div className="uniform-card clickable-card">
 <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
 <div style={{ width: '40px', height: '40px', borderRadius: '8px', backgroundColor: '#6366F1', display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: '1rem' }}>
@@ -96,23 +101,8 @@ Get general support and assistance for questions about Intuition.
 </div>
 </a>
 
-<a href="mailto:devrel@intuition.systems" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
-<div className="uniform-card clickable-card">
-<div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
-<div style={{ width: '40px', height: '40px', borderRadius: '8px', backgroundColor: '#10B981', display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: '1rem' }}>
-<svg width="20" height="20" viewBox="0 0 24 24" fill="white">
-<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-</svg>
-</div>
-<h3 style={{ margin: 0 }}>Developer Relations</h3>
-</div>
-<p className="uniform-card-content">
-Contact our developer relations team for technical questions and integration support.
-</p>
-</div>
-</a>
+<a href="https://www.intuition.systems" target="\_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
 
-<a href="https://www.intuition.systems" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
 <div className="uniform-card clickable-card">
 <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
 <div style={{ width: '40px', height: '40px', borderRadius: '8px', backgroundColor: '#F59E0B', display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: '1rem' }}>
@@ -134,7 +124,8 @@ Visit our official website for the latest updates, information, and resources.
 
 <div className="uniform-card-grid-small">
 
-<a href="https://github.com/0xintuition" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+<a href="https://github.com/0xintuition" target="\_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+
 <div className="uniform-card clickable-card">
 <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
 <div style={{ width: '40px', height: '40px', borderRadius: '8px', backgroundColor: '#333', display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: '1rem' }}>
@@ -151,6 +142,7 @@ Contribute to our open-source projects, report issues, and suggest improvements.
 </a>
 
 <a href="mailto:feedback@intuition.systems" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+
 <div className="uniform-card clickable-card">
 <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
 <div style={{ width: '40px', height: '40px', borderRadius: '8px', backgroundColor: '#8B5CF6', display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: '1rem' }}>
@@ -167,41 +159,3 @@ Share your feedback, suggestions, and ideas to help improve Intuition.
 </a>
 
 </div>
-
-## Quick Links
-
-<div className="uniform-card-grid-small">
-
-<a href="/docs/resources/faq" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
-<div className="uniform-card clickable-card">
-<div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
-<div style={{ width: '40px', height: '40px', borderRadius: '8px', backgroundColor: '#EF4444', display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: '1rem' }}>
-<svg width="20" height="20" viewBox="0 0 24 24" fill="white">
-<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
-</svg>
-</div>
-<h3 style={{ margin: 0 }}>FAQ</h3>
-</div>
-<p className="uniform-card-content">
-Find answers to frequently asked questions about Intuition.
-</p>
-</div>
-</a>
-
-<a href="/docs/quickstart" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
-<div className="uniform-card clickable-card">
-<div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
-<div style={{ width: '40px', height: '40px', borderRadius: '8px', backgroundColor: '#06B6D4', display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: '1rem' }}>
-<svg width="20" height="20" viewBox="0 0 24 24" fill="white">
-<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-</svg>
-</div>
-<h3 style={{ margin: 0 }}>Getting Started</h3>
-</div>
-<p className="uniform-card-content">
-New to Intuition? Start here with our quickstart guide.
-</p>
-</div>
-</a>
-
-</div> 
