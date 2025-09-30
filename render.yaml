@@ -14,6 +14,8 @@ services:
     envVars:
       - key: NODE_VERSION
         value: "18"
+      - key: DOCUSAURUS_IGNORE_SSG_WARNINGS
+        value: "true"
     headers:
       - path: /*
         name: X-Frame-Options
