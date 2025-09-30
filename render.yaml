@@ -2,7 +2,7 @@ services:
   - type: web
     name: intuition-docs
     env: static
-    buildCommand: npm ci && npm run build
+    buildCommand: npm ci; npm run build
     staticPublishPath: ./build
     routes:
       - type: rewrite
@@ -13,7 +13,9 @@ services:
         destination: /index.html
     envVars:
       - key: NODE_VERSION
-        value: "18"
+        value: '18'
+      - key: DOCUSAURUS_IGNORE_SSG_WARNINGS
+        value: 'true'
     headers:
       - path: /*
         name: X-Frame-Options
