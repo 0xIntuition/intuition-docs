@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useHistory } from '@docusaurus/router';
 
-export default function Homepage() {
+export default function DocsRedirect() {
   const history = useHistory();
 
   useEffect(() => {
