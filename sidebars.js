@@ -69,10 +69,7 @@ module.exports = {
       type: 'category',
       label: 'Economics',
       items: [
-        'economics/overview',
-        'economics/bonding-curves',
-        'economics/write-monetization',
-        'economics/read-monetization',
+        'economics/index',
       ],
     },
     {
