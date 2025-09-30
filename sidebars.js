@@ -69,7 +69,7 @@ module.exports = {
       type: 'category',
       label: 'Economics',
       items: [
-        'economics/index',
+        'economics/overview',
       ],
     },
     {
@@ -101,7 +101,6 @@ module.exports = {
         'resources/index',
         'resources/community-and-support',
         'developer-tools/audit-reports',
-        'partners/index',
         'contribute/contribution-guidelines',
       ],
     },
