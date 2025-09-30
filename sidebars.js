@@ -24,10 +24,7 @@ module.exports = {
       type: 'category',
       label: 'Quick Start',
       items: [
-        'quickstart/index',
-        'quickstart/speed-run-intuition',
-        'quickstart/official-intuition-kits',
-        'quickstart/community-built-kits',
+        'quickstart/intuition-kits',
       ],
     },
     {
@@ -35,7 +32,6 @@ module.exports = {
       label: 'SDK',
       items: [
         'developer-tools/sdks/overview',
-        'developer-tools/sdks/boilerplate-project',
         'developer-tools/sdks/migration-guide',
       ],
     },
