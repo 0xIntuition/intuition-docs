@@ -67,7 +67,15 @@ const plugins = [
     {
       redirects: [
         {
+          from: '/',
+          to: '/docs/introduction/overview',
+        },
+        {
           from: '/docs',
+          to: '/docs/introduction/overview',
+        },
+        {
+          from: '/docs/',
           to: '/docs/introduction/overview',
         },
       ],
@@ -151,7 +159,7 @@ const config = {
       },
       navbar: {
         logo: {
-          href: '/',
+          href: '/docs/introduction/overview',
           src: '/logo/light.svg',
           srcDark: '/logo/dark.svg',
           alt: 'Intuition Documentation',
@@ -199,7 +207,7 @@ const config = {
       },
       footer: {
         logo: {
-          href: '/',
+          href: '/docs/introduction/overview',
           src: '/logo/light.svg',
           srcDark: '/logo/dark.svg',
           alt: 'Intuition Documentation',
