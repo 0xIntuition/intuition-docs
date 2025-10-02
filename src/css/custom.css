@@ -2369,7 +2369,3 @@ table td, table th {
   
 }
 
-/* Mobile Navigation */
-@media (max-width: 996px) {
-  /* Let Docusaurus handle the mobile navigation completely */
-}
