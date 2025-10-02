@@ -1,12 +1,38 @@
-import { useEffect } from 'react';
-import { useHistory } from '@docusaurus/router';
+import React, { useState } from 'react';
+import Layout from '@theme/Layout';
+
+import HeroSection from '../components/homepage/HeroSection';
+import CommunitySection from '../components/homepage/CommunitySection';
+import HomeFooter from '../components/homepage/HomeFooter';
+import ResourcesSection from '../components/homepage/ResourcesSection';
+import Head from '@docusaurus/Head';
+import GuidesAndSamples from '../components/homepage/GuidesAndSamples';
+import Link from '@docusaurus/Link';
+import PhHelloBar from '../components/homepage/PhHelloBar';
+import Whitepapers from '../components/homepage/Whitepapers';
 
 export default function Homepage() {
-  const history = useHistory();
+  return (
+    <Layout
+      title="Intuition Documentation"
+      wrapperClassName="homepage flex flex-col bg-white dark:bg-black"
+      noFooter
+    >
+      <Head>
+        <link rel="prefetch" href="/assets/css/elements.min.css" />
+      </Head>
 
-  useEffect(() => {
-    history.replace('/docs/introduction/overview');
-  }, [history]);
+      <HeroSection />
 
-  return null;
+      <Whitepapers />
+
+      <GuidesAndSamples />
+
+      <ResourcesSection />
+
+      <CommunitySection />
+
+      <HomeFooter />
+    </Layout>
+  );
 }

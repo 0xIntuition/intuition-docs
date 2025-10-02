@@ -8,9 +8,6 @@ services:
       - type: rewrite
         source: /docs/*
         destination: /docs/*
-      - type: redirect
-        source: /
-        destination: /docs/introduction/overview
       - type: rewrite
         source: /*
         destination: /index.html

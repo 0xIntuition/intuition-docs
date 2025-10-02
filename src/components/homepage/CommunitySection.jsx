@@ -13,8 +13,10 @@ import {
   Zap,
   ExternalLink,
   ArrowRight,
+  Code,
   Send
 } from 'react-feather';
+import { CodeRegular, DatabaseRegular } from '@fluentui/react-icons';
 
 const supportChannels = [
   {
@@ -62,15 +64,21 @@ const supportChannels = [
 const quickLinks = [
   {
     title: 'Getting Started',
-    description: 'Quick setup guide for new developers',
+    description: 'Kits and repos to get started building',
     icon: Zap,
-    link: '/docs/quickstart'
+    link: '/docs/quickstart/intuition-kits'
   },
   {
-    title: 'FAQ',
-    description: 'Answers to common questions',
-    icon: HelpCircle,
-    link: '/faq'
+    title: 'SDK',
+    description: 'Getting started with our SDK',
+    icon: CodeRegular,
+    link: '/docs/developer-tools/sdks/overview'
+  },
+  {
+    title: 'GraphQL API Reference',
+    description: 'GraphQL API documentation',
+    icon: DatabaseRegular,
+    link: '/docs/developer-tools/graphql-api/overview'
   },
   {
     title: 'Video Tutorials',
@@ -78,12 +86,6 @@ const quickLinks = [
     icon: Video,
     link: 'https://youtube.com/@0xIntuition'
   },
-  {
-    title: 'GraphQL API Reference',
-    description: 'Complete API documentation',
-    icon: FileText,
-    link: '/docs/developer-tools/graphql-api/overview'
-  }
 ];
 
 function SupportCard({ title, description, icon: Icon, link, color, external }) {

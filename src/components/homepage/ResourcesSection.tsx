@@ -23,8 +23,7 @@ const ALL_RESOURCES: Resource[] = [
     title: 'Intuition Introduction',
     description:
       'An introduction to the core concepts and motivations behind Intuition.',
-    image:
-      '/img/intuition-intro.png',
+    image: '/img/intuition-intro.png',
     duration: '15 min',
   },
   {
@@ -33,8 +32,7 @@ const ALL_RESOURCES: Resource[] = [
     title: 'Towards a Trustful Interaction Layer',
     description:
       'Learn more about how we are building a trustful interaction layer for the decentralizedinternet on top of Intuition.',
-    image:
-      '/img/trustful-interaction.png',
+    image: '/img/trustful-interaction.png',
     duration: '15 min',
   },
   {
@@ -51,9 +49,8 @@ const ALL_RESOURCES: Resource[] = [
     type: 'video',
     title: 'Community Roundtable: Intro to Intuition from THP',
     description:
-      "Community developer roundtable from The Hacking Project, a developer-led coding school building on Intuition.",
-    image:
-      '/img/thp-intro.png',
+      'Community developer roundtable from The Hacking Project, a developer-led coding school building on Intuition.',
+    image: '/img/thp-intro.png',
     duration: '40 min',
   },
 ];
@@ -87,7 +84,11 @@ function Resource({
           />
           {type === 'video' && (
             <div className="play-button absolute left-1/2 top-1/2 flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 shadow-lg backdrop-blur-sm transition-all duration-300 group-hover:scale-110 group-hover:bg-primary group-hover:text-white">
-              <svg className="h-8 w-8 translate-x-0.5" fill="currentColor" viewBox="0 0 24 24">
+              <svg
+                className="h-8 w-8 translate-x-0.5"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
                 <path d="M8 5v14l11-7z" />
               </svg>
             </div>
@@ -100,7 +101,9 @@ function Resource({
           <h3 className="mb-2 font-semibold text-gray-900 transition-colors duration-300 group-hover:text-primary dark:text-white lg:text-xl">
             {title}
           </h3>
-          <p className="text-sm leading-relaxed text-gray-600 dark:text-gray-400">{description}</p>
+          <p className="text-sm leading-relaxed text-gray-600 dark:text-gray-400">
+            {description}
+          </p>
         </div>
       </div>
       <div className="mt-auto flex items-center justify-between border-t border-gray-100 px-4 py-3 dark:border-gray-800">
@@ -110,9 +113,19 @@ function Resource({
           </span>
         </div>
         <span className="flex items-center gap-1 text-xs font-medium text-gray-500 transition-colors group-hover:text-primary dark:text-gray-400">
-          {type === 'video' ? 'Watch' : 'Read'} 
-          <svg className="h-3 w-3 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          {type === 'video' ? 'Watch' : 'Read'}
+          <svg
+            className="h-3 w-3 transition-transform group-hover:translate-x-1"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 5l7 7-7 7"
+            />
           </svg>
         </span>
       </div>
@@ -147,18 +160,22 @@ export default function ResourcesSection() {
   return (
     <section className="resources-section noise-bg no-underline-links relative my-20 overflow-hidden px-6">
       <div className="animated-gradient absolute inset-0 opacity-10" />
-      
+
       <div className="relative mx-auto max-w-5xl">
         <div className="resources-header mb-12 flex items-center justify-between">
           <div>
-            <span className="intuition-badge mb-4 inline-block rounded-full bg-primary/10 px-4 py-1 text-xs font-semibold uppercase tracking-wider text-primary">RESOURCES</span>
-            <h2 className="bg-gradient-to-r from-gray-900 via-primary to-gray-900 bg-clip-text text-4xl font-bold text-transparent dark:from-white dark:via-primary-200 dark:to-white">Would you like to know more?</h2>
+            <span className="intuition-badge mb-4 inline-block rounded-full bg-primary/10 px-4 py-1 text-xs font-semibold uppercase tracking-wider text-primary">
+              RESOURCES
+            </span>
+            <h2 className="bg-gradient-to-r from-gray-900 via-primary to-gray-900 bg-clip-text text-4xl font-bold text-transparent dark:from-white dark:via-primary-200 dark:to-white">
+              Would you like to know more?
+            </h2>
           </div>
           <Link
             to="https://intuition-systems.notion.site/108450d37d06808fbd43f863e3daca22?v=fff450d37d068106a163000c0a2bf4b4"
             className="group flex items-center font-jakarta text-sm font-semibold text-primary transition-colors hover:text-primary-600"
           >
-            All Media 
+            All Media
             <ArrowRightFilled className="ml-1 transition-transform group-hover:translate-x-1" />
           </Link>
         </div>
@@ -214,7 +231,7 @@ export default function ResourcesSection() {
                 'pagination-btn flex h-12 w-12 items-center justify-center rounded-full border transition-all',
                 page === 1
                   ? 'cursor-not-allowed border-gray-200 opacity-50'
-                  : 'border-gray-200 bg-white hover:border-primary hover:bg-primary hover:text-white hover:shadow-lg dark:border-gray-700 dark:bg-gray-800'
+                  : 'border-gray-200 bg-white hover:border-primary hover:bg-primary hover:text-white hover:shadow-lg dark:border-gray-700 dark:bg-gray-800',
               )}
             >
               <ChevronLeftRegular className="h-5 w-5" />
@@ -229,7 +246,7 @@ export default function ResourcesSection() {
                     'h-2 w-2 rounded-full transition-all',
                     page === i + 1
                       ? 'w-8 bg-primary'
-                      : 'bg-gray-300 hover:bg-gray-400 dark:bg-gray-600'
+                      : 'bg-gray-300 hover:bg-gray-400 dark:bg-gray-600',
                   )}
                 />
               ))}
@@ -242,7 +259,7 @@ export default function ResourcesSection() {
                 'pagination-btn flex h-12 w-12 items-center justify-center rounded-full border transition-all',
                 page === pages
                   ? 'cursor-not-allowed border-gray-200 opacity-50'
-                  : 'border-gray-200 bg-white hover:border-primary hover:bg-primary hover:text-white hover:shadow-lg dark:border-gray-700 dark:bg-gray-800'
+                  : 'border-gray-200 bg-white hover:border-primary hover:bg-primary hover:text-white hover:shadow-lg dark:border-gray-700 dark:bg-gray-800',
               )}
             >
               <ChevronRightRegular className="h-5 w-5" />
