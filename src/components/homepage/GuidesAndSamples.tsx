@@ -21,28 +21,28 @@ interface Guide {
 
 const guides: Guide[] = [
   {
-    title: 'Creating an Intuition-Powered Application',
+    title: 'Creating an Application',
     icon: RecordRegular,
-    text: 'Get started quickly building applications never before possible by using Intuition!',
-    link: '/docs/quickstart/official-intuition-kits',
+    text: 'Explore our repos and resource to get started building on Intuition.',
+    link: '/docs/quickstart/intuition-kits',
   },
   {
     title: 'Integrate Your Existing Application with Intuition',
-    icon: VideoRegular,
-    text: 'Learn how to quickly integrate your existing application with Intuition using GraphQL.',
-    link: '/docs/developer-tools/graphql-api',
+    icon: DocumentRegular,
+    text: 'Learn how to integrate your existing application with Intuition using GraphQL.',
+    link: '/docs/developer-tools/graphql-api/overview',
   },
   {
     title: 'Smart Contract Interactions',
     icon: AppsAddInRegular,
-    text: 'Learn how to directly interact with the Intuition smart contract suite.',
+    text: 'Learn how to directly interact with Intuition smart contracts.',
     link: '/docs/developer-tools/contracts/contract-architecture',
   },
   {
-    title: 'Understanding Bonding Curves',
+    title: 'Primitives Overview',
     icon: CurrencyDollarEuroFilled,
-    text: 'Learn about dynamic pricing mechanisms and automated market making with bonding curves.',
-    link: '/docs/introduction/the-economics/bonding-curves',
+    text: 'Learn about the core building blocks of Intuition: atoms, triples, and signals.',
+    link: '/docs/primitives/overview',
   },
 ];
 
@@ -56,29 +56,35 @@ interface Sample {
 
 const samples: Sample[] = [
   {
-    title: 'Remix Run Starter Kit',
-    platform: 'React',
+    title: 'Intuition TypeScript',
+    platform: 'TypeScript',
     source: 'https://github.com/0xIntuition/intuition-ts',
     blog: '',
     demo: '',
   },
   {
-    title: 'Next.js Starter Kit',
-    platform: 'React',
-    source: 'https://github.com/0xIntuition/next-1ui',
+    title: 'Intuition Rust',
+    platform: 'Rust',
+    source: 'https://github.com/0xIntuition/intuition-rs',
     blog: '',
     demo: '',
   },
   {
-    title: 'Chrome Extension',
-    platform: 'React',
-    source: 'https://github.com/0xIntuition/chrome-extension',
+    title: 'Smart Contracts',
+    platform: 'Solidity',
+    source: 'https://github.com/0xIntuition/intuition-contracts-v2',
     blog: '',
     demo: '',
   },
 ];
 
-function Guide({ title, text, icon: Icon, link, index = 0 }: (typeof guides)[0] & { index?: number }) {
+function Guide({
+  title,
+  text,
+  icon: Icon,
+  link,
+  index = 0,
+}: (typeof guides)[0] & { index?: number }) {
   return (
     <Link
       to={link}
@@ -87,14 +93,17 @@ function Guide({ title, text, icon: Icon, link, index = 0 }: (typeof guides)[0] 
         animationDelay: `${index * 100}ms`,
       }}
     >
-      
       <div className="icon-glow relative flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-primary/10 transition-all duration-300 group-hover:scale-110 group-hover:bg-primary/20">
         <Icon className="h-6 w-6 text-primary transition-transform duration-300 group-hover:scale-110" />
       </div>
 
       <div className="relative flex flex-1 flex-col">
-        <h4 className="mb-1 font-semibold text-gray-900 transition-colors duration-300 group-hover:text-primary dark:text-white">{title}</h4>
-        <p className="mb-0 text-sm leading-relaxed text-gray-600 dark:text-gray-400">{text}</p>
+        <h4 className="mb-1 font-semibold text-gray-900 transition-colors duration-300 group-hover:text-primary dark:text-white">
+          {title}
+        </h4>
+        <p className="mb-0 text-sm leading-relaxed text-gray-600 dark:text-gray-400">
+          {text}
+        </p>
       </div>
 
       <ChevronRight className="ml-auto h-5 w-5 self-center text-gray-400 transition-all duration-300 group-hover:translate-x-1 group-hover:text-primary" />
@@ -102,15 +111,21 @@ function Guide({ title, text, icon: Icon, link, index = 0 }: (typeof guides)[0] 
   );
 }
 
-function Sample({ title, platform, blog, source, demo, index = 0 }: Sample & { index?: number }) {
+function Sample({
+  title,
+  platform,
+  blog,
+  source,
+  demo,
+  index = 0,
+}: Sample & { index?: number }) {
   return (
-    <div 
+    <div
       className="sample-item group relative flex cursor-pointer items-center justify-between overflow-hidden rounded-xl border border-gray-200 bg-white p-4 shadow-md backdrop-blur-sm transition-all duration-300 hover:border-primary hover:shadow-2xl dark:border-gray-800 dark:bg-[#1a1a1a] dark:shadow-xl dark:shadow-black/50"
       style={{
         animationDelay: `${index * 100}ms`,
       }}
     >
-      
       <div className="relative flex flex-col">
         <h4 className="mb-1 font-semibold text-gray-900 transition-colors duration-300 group-hover:text-primary dark:text-white">
           {title}
@@ -124,13 +139,19 @@ function Sample({ title, platform, blog, source, demo, index = 0 }: Sample & { i
 
       <div className="relative flex items-center gap-2.5">
         {blog && (
-          <Link to={blog} className="rounded-lg p-2 text-gray-600 transition-all duration-300 hover:bg-gray-100 hover:text-primary dark:text-gray-400 dark:hover:bg-gray-800">
+          <Link
+            to={blog}
+            className="rounded-lg p-2 text-gray-600 transition-all duration-300 hover:bg-gray-100 hover:text-primary dark:text-gray-400 dark:hover:bg-gray-800"
+          >
             <DocumentRegular className="h-5 w-5" />
           </Link>
         )}
 
         {demo && (
-          <Link to={demo} className="rounded-lg p-2 text-gray-600 transition-all duration-300 hover:bg-gray-100 hover:text-primary dark:text-gray-400 dark:hover:bg-gray-800">
+          <Link
+            to={demo}
+            className="rounded-lg p-2 text-gray-600 transition-all duration-300 hover:bg-gray-100 hover:text-primary dark:text-gray-400 dark:hover:bg-gray-800"
+          >
             <OpenRegular className="h-5 w-5" />
           </Link>
         )}
@@ -153,20 +174,22 @@ export default function GuidesAndSamples() {
   return (
     <section className="guides-samples-section noise-bg no-underline-links relative overflow-hidden py-20">
       <div className="animated-gradient absolute inset-0 opacity-10" />
-      
+
       <div className="relative mx-auto w-full max-w-7xl px-4">
         <div className="flex flex-col gap-16 md:flex-row md:gap-20">
           <div className="guides-container flex-1">
             <div className="section-header mb-8 flex items-center justify-between">
-              <h3 className="m-0 bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-2xl font-bold text-transparent dark:from-white dark:to-gray-300">Popular how to guides</h3>
+              <h3 className="m-0 bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-2xl font-bold text-transparent dark:from-white dark:to-gray-300">
+                Popular how to guides
+              </h3>
 
-              <Link 
-                to="/docs" 
+              {/*<Link
+                to="/docs/introduction/overview"
                 className="group flex items-center gap-1 font-jakarta text-sm font-semibold text-primary transition-colors hover:text-primary-600"
               >
-                View more guides 
+                View more guides
                 <ArrowRightFilled className="ml-1 transition-transform group-hover:translate-x-1" />
-              </Link>
+              </Link>*/}
             </div>
 
             <div className="guides-list flex flex-col gap-4">
@@ -187,13 +210,15 @@ export default function GuidesAndSamples() {
 
           <div className="samples-container w-full md:max-w-sm">
             <div className="section-header mb-8 flex items-center justify-between">
-              <h3 className="m-0 bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-2xl font-bold text-transparent dark:from-white dark:to-gray-300">Popular sample apps</h3>
+              <h3 className="m-0 bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-2xl font-bold text-transparent dark:from-white dark:to-gray-300">
+                Intuition Repositories
+              </h3>
 
               <Link
                 to="https://github.com/0xIntuition"
                 className="group flex items-center gap-1 font-jakarta text-sm font-semibold text-primary transition-colors hover:text-primary-600"
               >
-                All apps
+                View all repos
                 <ArrowRightFilled className="ml-1 transition-transform group-hover:translate-x-1" />
               </Link>
             </div>

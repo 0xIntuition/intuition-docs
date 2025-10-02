@@ -1,5 +1,6 @@
 ---
 id: network
+title: Network Overview
 sidebar_label: Network Overview
 sidebar_position: 1
 description: Essential tools and applications for interacting with the Intuition Network
@@ -16,7 +17,6 @@ description: Essential tools and applications for interacting with the Intuition
     Enter
   </div>
 </a>
-
 
 ## What You'll Find Inside
 
@@ -49,16 +49,16 @@ Everything you need to build and test on Intuition's L3 network:
   fontSize: '1.25rem',
   fontWeight: 'bold'
 }}>🛠️</div>
-<h3 style={{ 
-  marginTop: 0, 
-  marginBottom: '1rem', 
+<h3 style={{
+  marginTop: 0,
+  marginBottom: '1rem',
   color: 'var(--ifm-color-emphasis-900)',
   fontSize: '1.3rem',
   fontWeight: '600'
 }}>
 Build & Deploy
 </h3>
-<p style={{ 
+<p style={{
   margin: 0,
   fontSize: '1rem',
   lineHeight: '1.6',
@@ -94,16 +94,16 @@ Deploy smart contracts, test transactions, and monitor your applications in a sa
   fontSize: '1.25rem',
   fontWeight: 'bold'
 }}>🔗</div>
-<h3 style={{ 
-  marginTop: 0, 
-  marginBottom: '1rem', 
+<h3 style={{
+  marginTop: 0,
+  marginBottom: '1rem',
   color: 'var(--ifm-color-emphasis-900)',
   fontSize: '1.3rem',
   fontWeight: '600'
 }}>
 Connect & Test
 </h3>
-<p style={{ 
+<p style={{
   margin: 0,
   fontSize: '1rem',
   lineHeight: '1.6',
@@ -139,16 +139,16 @@ Test APIs, validate SDK integrations, and explore the GraphQL playground with re
   fontSize: '1.25rem',
   fontWeight: 'bold'
 }}>⚡</div>
-<h3 style={{ 
-  marginTop: 0, 
-  marginBottom: '1rem', 
+<h3 style={{
+  marginTop: 0,
+  marginBottom: '1rem',
   color: 'var(--ifm-color-emphasis-900)',
   fontSize: '1.3rem',
   fontWeight: '600'
 }}>
 Monitor & Optimize
 </h3>
-<p style={{ 
+<p style={{
   margin: 0,
   fontSize: '1rem',
   lineHeight: '1.6',
@@ -167,12 +167,13 @@ Ready to start building on Intuition? Follow these steps:
 
 <div className="getting-started-grid">
 
-<a href="/docs/resources/faq#how-do-i-connect-to-the-intuition-testnet" style={{ 
-  textDecoration: 'none', 
+<a href="/docs/resources/faq#how-do-i-connect-to-the-intuition-testnet" style={{
+  textDecoration: 'none',
   color: 'inherit',
   display: 'block',
   transition: 'all 0.3s ease'
 }}>
+
 <div style={{
   padding: '2rem',
   border: '1px solid var(--ifm-color-emphasis-200)',
@@ -208,12 +209,13 @@ Use MetaMask or any Web3 wallet to connect to the testnet
 </div>
 </a>
 
-<a href="https://intuition-testnet.hub.caldera.xyz/" target="_blank" rel="noopener noreferrer" style={{ 
-  textDecoration: 'none', 
+<a href="https://intuition-testnet.hub.caldera.xyz/" target="\_blank" rel="noopener noreferrer" style={{
+  textDecoration: 'none',
   color: 'inherit',
   display: 'block',
   transition: 'all 0.3s ease'
 }}>
+
 <div style={{
   padding: '2rem',
   border: '1px solid var(--ifm-color-emphasis-200)',
@@ -249,12 +251,13 @@ Use the built-in faucet to obtain test tokens for transactions
 </div>
 </a>
 
-<a href="/docs/network/testnet/explorer" style={{ 
-  textDecoration: 'none', 
+<a href="/docs/network/testnet/explorer" style={{
+  textDecoration: 'none',
   color: 'inherit',
   display: 'block',
   transition: 'all 0.3s ease'
 }}>
+
 <div style={{
   padding: '2rem',
   border: '1px solid var(--ifm-color-emphasis-200)',
@@ -290,12 +293,13 @@ Access all testnet tools and services from the centralized dashboard
 </div>
 </a>
 
-<a href="/docs/developer-tools" style={{ 
-  textDecoration: 'none', 
+<a href="/docs/developer-tools" style={{
+  textDecoration: 'none',
   color: 'inherit',
   display: 'block',
   transition: 'all 0.3s ease'
 }}>
+
 <div style={{
   padding: '2rem',
   border: '1px solid var(--ifm-color-emphasis-200)',
@@ -430,12 +434,12 @@ Built with developers in mind:
 
 ## Core Applications
 
-<div style={{ 
-  display: 'flex', 
+<div style={{
+  display: 'flex',
   flexDirection: 'column',
-  gap: '1.5rem', 
-  marginTop: '2rem', 
-  marginBottom: '3rem' 
+  gap: '1.5rem',
+  marginTop: '2rem',
+  marginBottom: '3rem'
 }}>
 
 <a href="https://intuition-testnet.hub.caldera.xyz/" target="_blank" rel="noopener noreferrer" className="core-app-card clickable-card">
@@ -496,6 +500,7 @@ Real-time status monitoring for the Intuition network. Check service availabilit
 </a>
 
 <a href="/docs/network/testnet/portal" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+
 <div className="uniform-card clickable-card">
 <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
 <div style={{ width: '40px', height: '40px', borderRadius: '8px', backgroundColor: '#6366F1', display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: '1rem' }}>
@@ -531,6 +536,7 @@ Blockchain explorer for the Intuition testnet. View transactions, blocks, and ne
 </a>
 
 <a href="/docs/network/testnet/rpc" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+
 <div className="uniform-card clickable-card">
 <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
 <div style={{ width: '40px', height: '40px', borderRadius: '8px', backgroundColor: '#EF4444', display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: '1rem' }}>
@@ -546,9 +552,8 @@ Programmatic access to the Intuition network. Query blockchain data, submit tran
 </div>
 </a>
 
-
 </div>
 
 ## Support
 
-Need help with any of these tools? Check out our [Community & Support](/docs/resources/community-and-support) page or [FAQ](/docs/resources/faq) for answers to common questions. 
+Need help with any of these tools? Check out our [Community & Support](/docs/resources/community-and-support) page or [FAQ](/docs/resources/faq) for answers to common questions.

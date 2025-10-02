@@ -65,20 +65,7 @@ const plugins = [
   [
     '@docusaurus/plugin-client-redirects',
     {
-      redirects: [
-        {
-          from: '/',
-          to: '/docs/introduction/overview',
-        },
-        {
-          from: '/docs',
-          to: '/docs/introduction/overview',
-        },
-        {
-          from: '/docs/',
-          to: '/docs/introduction/overview',
-        },
-      ],
+      redirects: [],
       createRedirects: (path) => {
         if (path.startsWith('/docs/capabilities/chat/export-chat-dump')) {
           return ['/capabilities/export-chat-dump'];
@@ -159,7 +146,7 @@ const config = {
       },
       navbar: {
         logo: {
-          href: '/docs/introduction/overview',
+          href: '/',
           src: '/logo/light.svg',
           srcDark: '/logo/dark.svg',
           alt: 'Intuition Documentation',
@@ -207,7 +194,7 @@ const config = {
       },
       footer: {
         logo: {
-          href: '/docs/introduction/overview',
+          href: '/',
           src: '/logo/light.svg',
           srcDark: '/logo/dark.svg',
           alt: 'Intuition Documentation',

@@ -16,7 +16,7 @@ import clsx from 'clsx';
 const MAIN_CARDS = [
   {
     title: 'Quick Start',
-    link: '/docs/quickstart',
+    link: '/docs/quickstart/intuition-kits',
     icon: ArrowRightFilled,
     text: 'Get up and running with Intuition in minutes. Build your first app with our starter kits.',
   },
@@ -34,7 +34,7 @@ const MAIN_CARDS = [
   },
   {
     title: 'Intuition Network',
-    link: '/docs/network/overview',
+    link: '/docs/network',
     icon: ShareRegular,
     text: 'Learn about the decentralized trust and reputation network.',
   },
@@ -49,13 +49,13 @@ const TECH_CARDS = [
   },
   {
     title: 'TS Monorepo',
-    link: 'https://deepwiki.com/0xIntuition/intuition-ts',
+    link: 'https://github.com/0xIntuition/intuition-ts',
     icon: DocumentTextRegular,
     text: 'Explore our TypeScript monorepo architecture and packages.',
   },
   {
     title: 'Smart Contracts',
-    link: 'https://deepwiki.com/0xIntuition/intuition-contracts-v2',
+    link: '/docs/developer-tools/contracts/contract-architecture',
     icon: CubeRegular,
     text: 'Deep dive into the Intuition smart contract architecture.',
   },
