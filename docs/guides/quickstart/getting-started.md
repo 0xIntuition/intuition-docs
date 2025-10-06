@@ -164,6 +164,86 @@ const result = await createAtomFromEthereumAccount(
 )
 ```
 
+## Reading Data
+
+### Get Atom Details
+
+Retrieve detailed information about an atom using its ID:
+
+```typescript
+import { getAtomDetails } from '@0xintuition/sdk'
+
+const atomData = await getAtomDetails(
+  '0x57d94c116a33bb460428eced262b7ae2ec6f865e7aceef6357cec3d034e8ea21'
+)
+
+console.log('Atom data:', atomData)
+// Returns atom information including metadata, vault details, and more
+```
+
+### Get Triple Details
+
+Retrieve information about a triple relationship:
+
+```typescript
+import { getTripleDetails } from '@0xintuition/sdk'
+
+const tripleData = await getTripleDetails(
+  '0x4957d3f442acc301ad71e73f26efd6af78647f57dacf2b3a686d91fa773fe0b6'
+)
+
+console.log('Triple data:', tripleData)
+// Returns subject, predicate, object atoms and relationship metadata
+```
+
+### Search the Knowledge Graph
+
+Perform a global search across atoms, triples, accounts, and collections:
+
+```typescript
+import { globalSearch } from '@0xintuition/sdk'
+
+const results = await globalSearch('ethereum', {
+  atomsLimit: 10,
+  accountsLimit: 5,
+  triplesLimit: 10,
+  collectionsLimit: 5,
+})
+
+console.log('Search results:', results)
+```
+
+### Semantic Search
+
+Use AI-powered semantic search to find relevant atoms:
+
+```typescript
+import { semanticSearch } from '@0xintuition/sdk'
+
+const results = await semanticSearch(
+  'decentralized identity protocols',
+  { limit: 5 }
+)
+
+console.log('Semantic search results:', results)
+```
+
+### Read On-Chain Atom Data
+
+Read atom data directly from the smart contract:
+
+```typescript
+import { getAtom } from '@0xintuition/protocol'
+
+const atomOnChain = await getAtom(
+  { publicClient, address },
+  { args: [BigInt(atomId)] }
+)
+
+console.log('On-chain atom:', atomOnChain)
+// Returns [walletAddress, vaultId, atomData]
+```
+
 ## Creating Triples
 
 Triples create relationships between atoms in the form: **Subject → Predicate → Object**
@@ -249,24 +329,20 @@ const txHash = await redeem(
 console.log('Redeemed:', txHash)
 ```
 
-### Preview Deposit/Redeem Costs
+### Preview Redeem
+
+Preview how many assets you'll receive when redeeming shares:
 
 ```typescript
-import { previewDeposit, previewRedeem } from '@0xintuition/protocol'
-
-// Preview deposit to see shares received
-const shares = await previewDeposit({
-  publicClient,
-  address,
-  args: [BigInt(vaultId), BigInt(assets)]
-})
+import { previewRedeem } from '@0xintuition/protocol'
 
 // Preview redeem to see assets received
-const assets = await previewRedeem({
-  publicClient,
-  address,
-  args: [BigInt(vaultId), BigInt(shares)]
-})
+const assetsToReceive = await previewRedeem(
+  { walletClient, publicClient, address },
+  { args: [BigInt(vaultId), BigInt(sharesToRedeem)] }
+)
+
+console.log('Assets you will receive:', assetsToReceive)
 ```
 
 ## Complete Example Component
@@ -319,6 +395,96 @@ function IntuitionQuickstart() {
   )
 }
 ```
+
+## Advanced Concepts
+
+### Batch Create Atoms
+
+Create multiple atoms in a single transaction for efficiency and gas savings:
+
+```typescript
+import { batchCreateAtomsFromThings } from '@0xintuition/sdk'
+
+// Batch create multiple atoms at once
+const atomData = [
+  {
+    url: 'https://example.com/project1',
+    name: 'Project 1',
+    description: 'First amazing project',
+    image: 'https://example.com/project1.png',
+  },
+  {
+    url: 'https://example.com/project2',
+    name: 'Project 2',
+    description: 'Second amazing project',
+    image: 'https://example.com/project2.png',
+  },
+  {
+    url: 'https://example.com/project3',
+    name: 'Project 3',
+    description: 'Third amazing project',
+    image: 'https://example.com/project3.png',
+  },
+]
+
+const result = await batchCreateAtomsFromThings(
+  { walletClient, publicClient, address },
+  atomData,
+  1000000000000000000n // Optional: 1 ETH deposit per atom
+)
+
+console.log('Created atoms:', result.state)
+console.log('Transaction:', result.transactionHash)
+```
+
+### Batch Create Triples
+
+Create multiple triple relationships in a single transaction:
+
+```typescript
+import { batchCreateTripleStatements } from '@0xintuition/sdk'
+
+// Assuming you have atom IDs already created
+const tripleData = [
+  [subjectId1, predicateId1, objectId1], // Triple 1
+  [subjectId2, predicateId2, objectId2], // Triple 2
+  [subjectId3, predicateId3, objectId3], // Triple 3
+]
+
+const result = await batchCreateTripleStatements(
+  { walletClient, publicClient, address },
+  tripleData,
+  1000000000000000000n // Optional: 1 ETH deposit
+)
+
+console.log('Created triples:', result.state)
+```
+
+### Batch Deposit
+
+Deposit on multiple vaults (atoms or triples) in a single transaction:
+
+```typescript
+import { batchDepositStatement } from '@0xintuition/sdk'
+
+// Deposit on multiple vaults at once
+const depositData = [
+  [vaultId1, vaultId2, vaultId3], // Vault IDs
+  [amount1, amount2, amount3], // Amounts in wei
+  [receiverAddress, receiverAddress, receiverAddress], // Receiver addresses
+]
+
+const result = await batchDepositStatement(
+  { walletClient, publicClient, address },
+  depositData
+)
+
+console.log('Batch deposit completed:', result.transactionHash)
+```
+
+:::tip Gas Optimization
+Batch operations significantly reduce gas costs when working with multiple atoms or triples. Instead of paying gas fees for each individual transaction, you pay once for the entire batch.
+:::
 
 ## Use Cases
 
