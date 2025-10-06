@@ -24,7 +24,7 @@ const guides: Guide[] = [
     title: 'Creating an Application',
     icon: RecordRegular,
     text: 'Explore our repos and resource to get started building on Intuition.',
-    link: '/docs/quickstart/intuition-kits',
+    link: '/docs/quickstart/getting-started',
   },
   {
     title: 'Integrate Your Existing Application with Intuition',

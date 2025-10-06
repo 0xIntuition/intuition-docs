@@ -1,0 +1,341 @@
+---
+sidebar_position: 1
+sidebar_label: Getting Started
+title: Getting Started
+---
+
+# Getting Started
+
+Get started building with Intuition in minutes. This guide provides direct code snippets to create atoms, triples, and signal on them.
+
+:::info Version Compatibility
+This guide uses the v2 contract architecture and requires the following package versions:
+- [`@0xintuition/sdk@^2.0.0-alpha.2`](https://www.npmjs.com/package/@0xintuition/sdk)
+- [`@0xintuition/protocol@^2.0.0-alpha.2`](https://www.npmjs.com/package/@0xintuition/protocol)
+- [`@0xintuition/graphql@^2.0.0-alpha.2`](https://www.npmjs.com/package/@0xintuition/graphql)
+:::
+
+## Prerequisites
+
+- Node.js 18+ and npm/pnpm/bun
+- A Web3 wallet (MetaMask, Coinbase Wallet, etc.)
+- Basic knowledge of React and TypeScript
+
+## Network Configuration
+
+### Option 1: Using Wagmi + RainbowKit
+
+```bash
+npm install wagmi viem @rainbow-me/rainbowkit @0xintuition/protocol
+```
+
+```typescript
+import { createConfig, http } from 'wagmi'
+import { defineChain } from 'viem'
+import { mainnet, base } from 'viem/chains'
+
+// Define Intuition Testnet
+export const intuitionTestnet = defineChain({
+  id: 13579,
+  name: 'Intuition Testnet',
+  nativeCurrency: {
+    decimals: 18,
+    name: 'tTRUST',
+    symbol: 'tTRUST',
+  },
+  rpcUrls: {
+    default: {
+      http: ['https://testnet.rpc.intuition.systems/'],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: 'Intuition Explorer',
+      url: 'https://testnet.explorer.intuition.systems',
+    },
+  },
+})
+
+export const config = createConfig({
+  chains: [mainnet, base, intuitionTestnet],
+  transports: {
+    [mainnet.id]: http(),
+    [base.id]: http(),
+    [intuitionTestnet.id]: http(),
+  },
+})
+```
+
+### Option 2: Using Privy
+
+```bash
+npm install @privy-io/react-auth @privy-io/wagmi @0xintuition/protocol
+```
+
+```typescript
+import { PrivyProvider } from '@privy-io/react-auth'
+import { intuitionTestnet } from './wagmi-config'
+
+function App() {
+  return (
+    <PrivyProvider
+      appId="your-privy-app-id"
+      config={{
+        loginMethods: ['wallet'],
+        appearance: {
+          theme: 'dark',
+          showWalletLoginFirst: true,
+        },
+        defaultChain: intuitionTestnet,
+        supportedChains: [intuitionTestnet],
+      }}
+    >
+      {/* Your app */}
+    </PrivyProvider>
+  )
+}
+```
+
+## Install the Intuition SDK
+
+```bash
+npm install @0xintuition/sdk @0xintuition/protocol
+```
+
+## Creating Atoms
+
+Atoms are the fundamental building blocks of the Intuition knowledge graph. They represent identities, concepts, or any entity.
+
+### Create an Atom from a String
+
+```typescript
+import { createAtomFromString } from '@0xintuition/sdk'
+import { getMultiVaultAddressFromChainId } from '@0xintuition/protocol'
+import { useWalletClient, usePublicClient, useChainId } from 'wagmi'
+
+function CreateAtom() {
+  const chainId = useChainId()
+  const publicClient = usePublicClient()
+  const { data: walletClient } = useWalletClient()
+
+  const handleCreate = async () => {
+    const address = getMultiVaultAddressFromChainId(chainId)
+
+    const result = await createAtomFromString(
+      { walletClient, publicClient, address },
+      'My First Atom'
+    )
+
+    console.log('Atom created:', result.transactionHash)
+    console.log('Atom ID:', result.state.termId)
+  }
+
+  return <button onClick={handleCreate}>Create Atom</button>
+}
+```
+
+### Create an Atom from a Thing (with metadata)
+
+```typescript
+import { createAtomFromThing } from '@0xintuition/sdk'
+
+const result = await createAtomFromThing(
+  { walletClient, publicClient, address },
+  {
+    url: 'https://example.com',
+    name: 'Example Project',
+    description: 'A cool Web3 project',
+    image: 'https://example.com/image.png',
+  }
+)
+```
+
+### Create an Atom from Ethereum Account
+
+```typescript
+import { createAtomFromEthereumAccount } from '@0xintuition/sdk'
+
+const result = await createAtomFromEthereumAccount(
+  { walletClient, publicClient, address },
+  {
+    address: '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045',
+    chainId: 1, // Mainnet
+  }
+)
+```
+
+## Creating Triples
+
+Triples create relationships between atoms in the form: **Subject → Predicate → Object**
+
+```typescript
+import { createAtomFromString, createTripleStatement } from '@0xintuition/sdk'
+
+// First create three atoms
+const subject = await createAtomFromString(
+  { walletClient, publicClient, address },
+  'Alice'
+)
+
+const predicate = await createAtomFromString(
+  { walletClient, publicClient, address },
+  'knows'
+)
+
+const object = await createAtomFromString(
+  { walletClient, publicClient, address },
+  'Bob'
+)
+
+// Create the triple: "Alice knows Bob"
+const triple = await createTripleStatement(
+  { walletClient, publicClient, address },
+  {
+    args: [
+      subject.state.termId,
+      predicate.state.termId,
+      object.state.termId
+    ],
+    value: 1000000000000000000n, // 1 ETH deposit in wei
+  }
+)
+
+console.log('Triple created:', triple.transactionHash)
+```
+
+## Signaling (Staking on Atoms/Triples)
+
+Signal your support or opposition to atoms and triples by depositing or redeeming positions.
+
+### Deposit (Signal Support)
+
+```typescript
+import { deposit } from '@0xintuition/protocol'
+
+// Deposit on an atom or triple vault
+const txHash = await deposit(
+  { walletClient, publicClient, address },
+  {
+    args: [
+      BigInt(vaultId), // The vault ID (atom or triple)
+      BigInt(depositAmount), // Amount in wei
+      walletClient.account.address // Receiver address
+    ],
+    value: BigInt(depositAmount),
+  }
+)
+
+console.log('Deposited:', txHash)
+```
+
+### Redeem (Remove Signal)
+
+```typescript
+import { redeem } from '@0xintuition/protocol'
+
+// Redeem from a vault
+const txHash = await redeem(
+  { walletClient, publicClient, address },
+  {
+    args: [
+      BigInt(vaultId), // The vault ID
+      BigInt(sharesToRedeem), // Amount of shares to redeem
+      walletClient.account.address, // Receiver address
+      walletClient.account.address, // Owner address
+    ]
+  }
+)
+
+console.log('Redeemed:', txHash)
+```
+
+### Preview Deposit/Redeem Costs
+
+```typescript
+import { previewDeposit, previewRedeem } from '@0xintuition/protocol'
+
+// Preview deposit to see shares received
+const shares = await previewDeposit({
+  publicClient,
+  address,
+  args: [BigInt(vaultId), BigInt(assets)]
+})
+
+// Preview redeem to see assets received
+const assets = await previewRedeem({
+  publicClient,
+  address,
+  args: [BigInt(vaultId), BigInt(shares)]
+})
+```
+
+## Complete Example Component
+
+```typescript
+import { useState } from 'react'
+import { useWalletClient, usePublicClient, useChainId } from 'wagmi'
+import { createAtomFromString, createTripleStatement } from '@0xintuition/sdk'
+import { getMultiVaultAddressFromChainId, deposit } from '@0xintuition/protocol'
+
+function IntuitionQuickstart() {
+  const chainId = useChainId()
+  const publicClient = usePublicClient()
+  const { data: walletClient } = useWalletClient()
+  const [atomId, setAtomId] = useState<string>('')
+
+  const address = getMultiVaultAddressFromChainId(chainId)
+
+  const createAtom = async () => {
+    const result = await createAtomFromString(
+      { walletClient, publicClient, address },
+      'My Cool Idea'
+    )
+    setAtomId(result.state.termId)
+    console.log('Created atom:', result.state.termId)
+  }
+
+  const signalAtom = async () => {
+    if (!atomId) return
+
+    const depositAmount = 100000000000000000n // 0.1 ETH
+    await deposit(
+      { walletClient, publicClient, address },
+      {
+        args: [BigInt(atomId), depositAmount, walletClient.account.address],
+        value: depositAmount,
+      }
+    )
+    console.log('Signaled support!')
+  }
+
+  return (
+    <div>
+      <h1>Intuition Quickstart</h1>
+      <button onClick={createAtom}>Create Atom</button>
+      {atomId && (
+        <button onClick={signalAtom}>Signal Support</button>
+      )}
+    </div>
+  )
+}
+```
+
+## Use Cases
+
+Now that you know the basics, explore what you can build:
+
+- **[List Curation & Ranking](/docs/use-cases#list-curation--ranking-systems)** - Create curated lists and reputation systems
+- **[Verification & Fraud Protection](/docs/use-cases#verification-and-fraud-protection)** - Build trust and safety mechanisms
+- **[Social Platforms](/docs/use-cases#community-owned-social-platforms)** - Portable identities and attestations
+- **[Reputation Scores](/docs/use-cases#reputation-scores)** - Context-aware trust scoring
+- **[Q&A Platforms](/docs/use-cases#qa-platforms)** - Knowledge sharing with proof
+- **[Oracles](/docs/use-cases#oracles)** - Decentralized data feeds
+
+[View all use cases →](/docs/use-cases)
+
+## Next Steps
+
+- **[Explore the SDK](/docs/developer-tools/sdks/overview)** - Deep dive into SDK capabilities
+- **[Smart Contracts](/docs/developer-tools/contracts/contract-architecture)** - Contract architecture and ABIs
+- **[GraphQL API](/docs/developer-tools/graphql-api/overview)** - Query the knowledge graph
+- **[Join the Community](/docs/resources/community-and-support)** - Get help and share ideas
