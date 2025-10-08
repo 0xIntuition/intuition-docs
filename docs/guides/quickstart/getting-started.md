@@ -104,7 +104,9 @@ npm install @0xintuition/sdk @0xintuition/protocol
 
 ## Creating Atoms
 
-Atoms are the fundamental building blocks of the Intuition knowledge graph. They represent identities, concepts, or any entity.
+Atoms are the foundational building blocks of Intuition's knowledge graph – the words in our global dictionary. Think of Intuition as a vast, collaborative dictionary where anyone can create a new word, and each word has its own globally persistent, unique digital identifier that can be used to reference it across the entire internet!
+
+[Learn more about Atoms →](/docs/primitives/atoms)
 
 ### Create an Atom from a String
 
@@ -246,7 +248,9 @@ console.log('On-chain atom:', atomOnChain)
 
 ## Creating Triples
 
-Triples create relationships between atoms in the form: **Subject → Predicate → Object**
+If Atoms are the words in Intuition's global dictionary, Triples are the sentences we create from those words. A Triple connects three Atoms to assert a relationship or fact in the form **[Subject] – [Predicate] – [Object]**. You can string these sentences together to express any arbitrarily-complex concept, all while retaining a discrete, referenceable structure!
+
+[Learn more about Triples →](/docs/primitives/triples)
 
 ```typescript
 import { createAtomFromString, createTripleStatement } from '@0xintuition/sdk'
@@ -285,7 +289,9 @@ console.log('Triple created:', triple.transactionHash)
 
 ## Signaling (Staking on Atoms/Triples)
 
-Signal your support or opposition to atoms and triples by depositing or redeeming positions.
+Signals represent the trust, confidence, or relevance that the community assigns to Atoms and Triples in the Intuition knowledge graph. Think of the knowledge graph as a weighted graph where Signal is the weight on each node (Atom) or edge (Triple), indicating how strongly people believe in or care about this information.
+
+[Learn more about Signals →](/docs/primitives/signals)
 
 ### Deposit (Signal Support)
 
