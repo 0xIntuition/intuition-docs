@@ -24,6 +24,7 @@ module.exports = {
       type: 'category',
       label: 'Quick Start',
       items: [
+        'quickstart/getting-started',
         'quickstart/intuition-kits',
       ],
     },
