@@ -1,0 +1,183 @@
+---
+id: npm-package
+title: GraphQL NPM Package
+sidebar_label: GraphQL NPM Package
+sidebar_position: 2
+description: Complete guide to the Intuition GraphQL NPM package
+---
+
+# GraphQL NPM Package
+
+The Intuition GraphQL package provides a type-safe interface for interacting with the Intuition API. It serves as the core data fetching layer, offering generated types and React Query hooks for seamless integration with the semantic knowledge graph.
+
+## Installation
+
+Install the package using your preferred package manager:
+
+```bash
+pnpm add @0xintuition/graphql
+```
+
+## Quick Start
+
+### 1. Client Configuration (Optional)
+
+Configure the GraphQL client in your app's root:
+
+```tsx
+import { configureClient, API_URL_DEV, API_URL_PROD, API_URL_LOCAL } from '@0xintuition/graphql'
+
+// Configure GraphQL client with desired API URL
+configureClient({
+  apiUrl: API_URL_LOCAL, // For local development
+})
+```
+
+**Available API URLs:**
+- `API_URL_PROD`: `https://testnet.intuition.sh/v1/graphql` (default)
+- `API_URL_DEV`: `https://testnet.intuition.sh/v1/graphql`
+- `API_URL_LOCAL`: `http://localhost:8080/v1/graphql`
+
+If you omit this configuration, the package defaults to `API_URL_PROD`.
+
+### 2. Server Client Usage
+
+For server-side operations:
+
+```typescript
+import { createServerClient } from '@0xintuition/graphql'
+
+// Basic usage (most common)
+const client = createServerClient({})
+
+// With optional authentication token (rarely needed)
+const clientWithAuth = createServerClient({
+  token: 'your-auth-token'
+})
+```
+
+### 3. Using Generated Hooks
+
+Import and use the generated React Query hooks:
+
+```typescript
+import { useGetStatsQuery } from '@0xintuition/graphql'
+
+function StatsComponent() {
+  const { data, isLoading, error } = useGetStatsQuery()
+
+  if (isLoading) return <div>Loading...</div>
+  if (error) return <div>Error: {error.message}</div>
+
+  return <div>{/* Render stats data */}</div>
+}
+```
+
+## Schema Management
+
+The package uses a local-first approach for schema management:
+
+- Local `schema.graphql` as source of truth
+- Remote schema fallback for resilience
+- Automatic schema generation during builds
+- Version controlled schema for team consistency
+
+## Development Workflow
+
+1. **Code Generation**
+    - `pnpm codegen:build # Generate types`
+    - `pnpm codegen:watch # Watch mode for development`
+2. **Building**
+    - `pnpm build # Full build with codegen`
+    - `pnpm dev # Development mode with watch`
+3. **Testing**
+    - `pnpm test`
+
+## Package Structure
+
+```bash
+graphql/
+├── src/
+│ ├── client.ts # Client configuration
+│ ├── fragments/ # Reusable fragments
+│ ├── queries/ # GraphQL queries
+│ ├── mutations/ # GraphQL mutations
+│ └── generated/ # Generated types
+├── schema.graphql # Schema definition
+└── codegen.ts # Codegen config
+```
+
+## Package Approach
+
+1. **Schema Updates**
+    - Uses the local schema committed in the repository as the priority for the codegen and uses the remote URL as the fallback
+2. **Query Organization**
+    - Uses fragments for reusable fields
+    - Includes use-case specific queries as well as general purpose queries
+3. **Type Safety**
+    - Leverages generated types from our schema
+    - Generates React Query hooks as well as document queries that can be used in a server context (or used with another client such as Apollo)
+4. **Client Configuration**
+    - Default client configuration can be overridden in each consumer app
+    - Supports environment-specific API URLs
+
+## Source Code
+
+The GraphQL package source code is available on GitHub: [intuition-ts/packages/graphql](https://github.com/0xIntuition/intuition-ts/tree/main/packages/graphql)
+
+## Using React Query Hooks
+
+The GraphQL package also provides React Query hooks for easy integration:
+
+```tsx
+import { useAtomsQuery, useTriplesQuery, useUserPositionsQuery } from '@0xintuition/graphql'
+
+function MyComponent() {
+  // Query atoms
+  const { data: atoms, isLoading: atomsLoading } = useAtomsQuery({
+    variables: { first: 10 }
+  })
+
+  // Query triples
+  const { data: triples, isLoading: triplesLoading } = useTriplesQuery({
+    variables: { first: 10 }
+  })
+
+  // Query user positions
+  const { data: positions } = useUserPositionsQuery({
+    variables: { userAddress: '0x742d35Cc6634C0532925a3b8D4C9db96C4b4d8b6' }
+  })
+
+  if (atomsLoading || triplesLoading) {
+    return <div>Loading...</div>
+  }
+
+  return (
+    <div>
+      <h2>Atoms ({atoms?.atoms?.length || 0})</h2>
+      {atoms?.atoms?.map(atom => (
+        <div key={atom.id}>
+          <strong>{atom.uri}</strong> - {atom.totalShares} shares
+        </div>
+      ))}
+
+      <h2>Triples ({triples?.triples?.length || 0})</h2>
+      {triples?.triples?.map(triple => (
+        <div key={triple.id}>
+          {triple.subject.uri} - {triple.predicate.uri} - {triple.object.uri}
+        </div>
+      ))}
+    </div>
+  )
+}
+```
+
+Try these queries in the interactive playground in the [Reads](/guides/developer-tools/graphql-api/reads) section to explore the Intuition knowledge graph and see how the data is structured!
+
+## Related Resources
+
+- [GraphQL Code Generator](https://the-guild.dev/graphql/codegen)
+- [React Query Documentation](https://tanstack.com/query)
+- [Intuition GraphQL Package Source](https://github.com/0xIntuition/intuition-ts/tree/main/packages/graphql)
+
+The GraphQL API provides the foundation for building powerful applications on Intuition.

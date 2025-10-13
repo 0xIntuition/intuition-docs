@@ -41,6 +41,7 @@ module.exports = {
       label: 'GraphQL API',
       items: [
         'developer-tools/graphql-api/overview',
+        'developer-tools/graphql-api/npm-package',
         'developer-tools/graphql-api/custom-queries',
         'developer-tools/graphql-api/reads',
         'developer-tools/graphql-api/writes',
