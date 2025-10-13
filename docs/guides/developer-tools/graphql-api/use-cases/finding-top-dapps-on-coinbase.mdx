@@ -1,0 +1,155 @@
+---
+id: finding-top-dapps-on-coinbase
+title: Finding Top Dapps on Coinbase
+sidebar_label: Finding Top Dapps on Coinbase
+sidebar_position: 6
+description: Step-by-step guide to query and rank top decentralized applications on Coinbase
+---
+
+import GraphQLPlaygroundCustom from '@site/src/components/GraphQLPlaygroundCustom';
+
+export const progressiveQueries = [
+  {
+    id: 'step1-discover',
+    title: 'Step 1: Discover All Dapps (Organizations)',
+    query: `query DiscoverAllDapps($limit: Int = 10) {
+  atoms(
+    limit: $limit
+    where: { type: { _eq: "Thing" } }
+  ) {
+    term_id
+    label
+    image
+    emoji
+    type
+    created_at
+  }
+}`,
+    variables: {
+      limit: 10
+    }
+  },
+  {
+    id: 'step2-filter',
+    title: 'Step 2: Filter for Coinbase-Related Dapps',
+    query: `query FilterCoinbaseDapps($limit: Int = 10) {
+  atoms(
+    limit: $limit
+    where: {
+      type: { _eq: "Thing" }
+      _or: [
+        { label: { _ilike: "%coinbase%" } }
+        { data: { _ilike: "%coinbase%" } }
+      ]
+    }
+  ) {
+    term_id
+    label
+    image
+    emoji
+    type
+    data
+    created_at
+  }
+}`,
+    variables: {
+      limit: 10
+    }
+  },
+  {
+    id: 'step3-metrics',
+    title: 'Step 3: Add Performance Metrics (Market Cap, Shares)',
+    query: `query AddPerformanceMetrics($limit: Int = 10) {
+  atoms(
+    limit: $limit
+    where: {
+      type: { _eq: "Thing" }
+      _or: [
+        { label: { _ilike: "%coinbase%" } }
+        { data: { _ilike: "%coinbase%" } }
+      ]
+    }
+  ) {
+    term_id
+    label
+    image
+    emoji
+    type
+
+    term {
+      vaults(where: { curve_id: { _eq: "1" } }) {
+        total_shares
+        current_share_price
+        market_cap
+        position_count
+      }
+    }
+
+    creator {
+      id
+      label
+    }
+    created_at
+  }
+}`,
+    variables: {
+      limit: 10
+    }
+  },
+  {
+    id: 'step4-final',
+    title: 'Step 4: FINAL RESULT - Ranked by Market Cap',
+    query: `query GetTopDappsRanked($limit: Int = 10) {
+  atoms(
+    limit: $limit
+    order_by: [{ term: { vaults_aggregate: { max: { market_cap: desc } } } }]
+    where: {
+      type: { _eq: "Thing" }
+      _or: [
+        { label: { _ilike: "%coinbase%" } }
+        { data: { _ilike: "%coinbase%" } }
+      ]
+    }
+  ) {
+    term_id
+    label
+    image
+    emoji
+    type
+
+    term {
+      vaults(where: { curve_id: { _eq: "1" } }) {
+        total_shares
+        current_share_price
+        market_cap
+        position_count
+      }
+    }
+
+    creator {
+      id
+      label
+    }
+    created_at
+  }
+}`,
+    variables: {
+      limit: 10
+    }
+  }
+];
+
+# Finding Top Dapps on Coinbase
+
+This guide shows you how to progressively build queries to discover and rank the top decentralized applications (Dapps) on Coinbase by market cap.
+
+Follow these 4 queries step-by-step. Each one builds on the previous to reach the final result: **a ranked list of top Dapps on Coinbase**.
+
+## Understanding the Progression
+
+- **Step 1**: Basic query to see all organizations (Dapps) in the system
+- **Step 2**: Same query but filtered to only show Coinbase-related Dapps (notice how results narrow down)
+- **Step 3**: Add performance metrics from vaults (market cap, shares, positions) - data is now richer but not yet sorted
+- **Step 4**: Same as Step 3 but now **sorted by market cap** to show the top performing Dapps first!
+
+<GraphQLPlaygroundCustom queries={progressiveQueries} />

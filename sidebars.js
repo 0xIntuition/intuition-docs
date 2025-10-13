@@ -41,9 +41,20 @@ module.exports = {
       label: 'GraphQL API',
       items: [
         'developer-tools/graphql-api/overview',
+        'developer-tools/graphql-api/custom-queries',
         'developer-tools/graphql-api/reads',
         'developer-tools/graphql-api/writes',
-        'developer-tools/graphql-api/query-examples',
+        {
+          type: 'category',
+          label: 'Use Cases',
+          items: [
+            'developer-tools/graphql-api/use-cases/overview',
+            'developer-tools/graphql-api/use-cases/finding-top-dapps-on-coinbase',
+            'developer-tools/graphql-api/use-cases/discovering-most-trusted-accounts',
+            'developer-tools/graphql-api/use-cases/building-user-activity-feeds',
+            'developer-tools/graphql-api/use-cases/finding-related-claims',
+          ],
+        },
         'developer-tools/graphql-api/migration-guide',
       ],
     },
