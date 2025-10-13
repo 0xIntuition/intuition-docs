@@ -7,10 +7,16 @@ description: Introduction to the Intuition GraphQL API and its key features
 ---
 
 import GraphQLPlayground from '@site/src/components/GraphQLPlayground';
+import BrowserOnly from '@docusaurus/BrowserOnly';
+import ExcalidrawViewer from '@site/src/components/ExcalidrawViewer';
 
 # GraphQL API Overview
 
 The Intuition GraphQL package provides a type-safe interface for interacting with the Intuition API. It serves as the core data fetching layer, offering generated types and React Query hooks for seamless integration with the semantic knowledge graph.
+
+<BrowserOnly fallback={<p>Loading diagram...</p>}>
+  {() => <ExcalidrawViewer src="/excalidraw/architecture-diagram.excalidraw.json" />}
+</BrowserOnly>
 
 ## Key Features
 
