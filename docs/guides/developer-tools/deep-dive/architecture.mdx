@@ -98,14 +98,9 @@ Traditional L1s and even L2s are too expensive and slow for the granular operati
 
 ### Technical Specifications
 
-<div style={{
-  display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-  gap: '1rem',
-  margin: '1.5rem 0'
-}}>
+<div className="tech-specs-grid">
 
-<div style={{
+<div className="uniform-card" style={{
   backgroundColor: 'var(--ifm-background-color)',
   border: '1px solid var(--ifm-color-emphasis-300)',
   borderRadius: '8px',
@@ -120,7 +115,7 @@ Traditional L1s and even L2s are too expensive and slow for the granular operati
 
 </div>
 
-<div style={{
+<div className="uniform-card" style={{
   backgroundColor: 'var(--ifm-background-color)',
   border: '1px solid var(--ifm-color-emphasis-300)',
   borderRadius: '8px',
@@ -135,7 +130,7 @@ Traditional L1s and even L2s are too expensive and slow for the granular operati
 
 </div>
 
-<div style={{
+<div className="uniform-card" style={{
   backgroundColor: 'var(--ifm-background-color)',
   border: '1px solid var(--ifm-color-emphasis-300)',
   borderRadius: '8px',
@@ -255,14 +250,9 @@ contract AtomWallet {
 
 The Protocol implements sophisticated economic incentives:
 
-<div style={{
-  display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-  gap: '1rem',
-  margin: '1.5rem 0'
-}}>
+<div className="economic-grid">
 
-<div style={{
+<div className="uniform-card" style={{
   backgroundColor: 'var(--ifm-color-emphasis-50)',
   border: '1px solid var(--ifm-color-emphasis-200)',
   borderRadius: '6px',
@@ -277,7 +267,7 @@ The Protocol implements sophisticated economic incentives:
 
 </div>
 
-<div style={{
+<div className="uniform-card" style={{
   backgroundColor: 'var(--ifm-color-emphasis-50)',
   border: '1px solid var(--ifm-color-emphasis-200)',
   borderRadius: '6px',
@@ -292,7 +282,7 @@ The Protocol implements sophisticated economic incentives:
 
 </div>
 
-<div style={{
+<div className="uniform-card" style={{
   backgroundColor: 'var(--ifm-color-emphasis-50)',
   border: '1px solid var(--ifm-color-emphasis-200)',
   borderRadius: '6px',
@@ -345,24 +335,16 @@ interface OnChainState {
 
 The Rust Subnet is Intuition's high-performance off-chain infrastructure that indexes on-chain state, resolves off-chain data references, and serves the unified knowledge graph through APIs.
 
-<div style={{
-  backgroundColor: 'var(--ifm-color-emphasis-100)',
-  border: '1px solid var(--ifm-color-emphasis-300)',
-  borderRadius: '8px',
-  padding: '1.5rem',
-  margin: '1.5rem 0',
-  borderLeft: '4px solid var(--ifm-color-primary)'
-}}>
 
-**Why Rust?**
+:::tip **Why Rust?**
 
 The Subnet is built in Rust for maximum performance and reliability:
 - **Memory safety** without garbage collection
 - **Concurrent processing** for parallel indexing
 - **Zero-cost abstractions** for efficient data structures
 - **WebAssembly compatibility** for edge deployment
+:::
 
-</div>
 
 ### Core Components
 
@@ -555,14 +537,9 @@ graph LR
 
 The Subnet exposes multiple API interfaces:
 
-<div style={{
-  display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-  gap: '1rem',
-  margin: '1.5rem 0'
-}}>
+<div className="economic-grid">
 
-<div style={{
+<div className="uniform-card" style={{
   backgroundColor: 'var(--ifm-color-emphasis-50)',
   border: '1px solid var(--ifm-color-emphasis-200)',
   borderRadius: '6px',
@@ -589,7 +566,7 @@ query GetAtomWithTriples {
 
 </div>
 
-<div style={{
+<div className="uniform-card" style={{
   backgroundColor: 'var(--ifm-color-emphasis-50)',
   border: '1px solid var(--ifm-color-emphasis-200)',
   borderRadius: '6px',
@@ -606,7 +583,7 @@ WebSocket /ws/subscriptions
 
 </div>
 
-<div style={{
+<div className="uniform-card" style={{
   backgroundColor: 'var(--ifm-color-emphasis-50)',
   border: '1px solid var(--ifm-color-emphasis-200)',
   borderRadius: '6px',
@@ -634,7 +611,7 @@ subscription OnAtomUpdate {
 
 Understanding how data flows through the system is crucial for developers:
 
-<div style={{
+<div className="transaction-card" style={{
   backgroundColor: 'var(--ifm-background-surface-color)',
   border: '1px solid var(--ifm-color-emphasis-300)',
   borderRadius: '12px',
@@ -689,14 +666,9 @@ interface SyncStrategy {
 
 Multi-layer caching for optimal performance:
 
-<div style={{
-  display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-  gap: '1rem',
-  margin: '1.5rem 0'
-}}>
+<div className="economic-grid">
 
-<div style={{
+<div className="uniform-card" style={{
   backgroundColor: 'var(--ifm-color-emphasis-50)',
   border: '1px solid var(--ifm-color-emphasis-200)',
   borderRadius: '6px',
@@ -710,7 +682,7 @@ Multi-layer caching for optimal performance:
 
 </div>
 
-<div style={{
+<div className="uniform-card" style={{
   backgroundColor: 'var(--ifm-color-emphasis-50)',
   border: '1px solid var(--ifm-color-emphasis-200)',
   borderRadius: '6px',
@@ -724,7 +696,7 @@ Multi-layer caching for optimal performance:
 
 </div>
 
-<div style={{
+<div className="uniform-card" style={{
   backgroundColor: 'var(--ifm-color-emphasis-50)',
   border: '1px solid var(--ifm-color-emphasis-200)',
   borderRadius: '6px',
@@ -776,15 +748,8 @@ The Subnet employs sophisticated query optimization:
 
 ### Recommended Integration Flow
 
-<div style={{
-  backgroundColor: 'var(--ifm-color-emphasis-100)',
-  border: '1px solid var(--ifm-color-emphasis-300)',
-  borderRadius: '8px',
-  padding: '1.5rem',
-  margin: '2rem 0',
-  borderLeft: '4px solid var(--ifm-color-primary)'
-}}>
 
+:::tip
 For developers building on Intuition, we recommend:
 
 1. **Use the TypeScript SDK** for all contract interactions
@@ -792,8 +757,7 @@ For developers building on Intuition, we recommend:
 3. **Subscribe to WebSockets** for real-time updates
 4. **Cache aggressively** at the application layer
 5. **Batch operations** when possible to reduce costs
-
-</div>
+:::
 
 ### Example: Creating and Querying Atoms
 
@@ -831,14 +795,9 @@ const result = await client.query({
 
 ### Infrastructure Setup
 
-<div style={{
-  display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-  gap: '1rem',
-  margin: '1.5rem 0'
-}}>
+<div className="economic-grid">
 
-<div style={{
+<div className="uniform-card" style={{
   backgroundColor: 'var(--ifm-background-color)',
   border: '1px solid var(--ifm-color-emphasis-300)',
   borderRadius: '8px',
@@ -853,7 +812,7 @@ const result = await client.query({
 
 </div>
 
-<div style={{
+<div className="uniform-card" style={{
   backgroundColor: 'var(--ifm-background-color)',
   border: '1px solid var(--ifm-color-emphasis-300)',
   borderRadius: '8px',
@@ -868,7 +827,7 @@ const result = await client.query({
 
 </div>
 
-<div style={{
+<div className="uniform-card" style={{
   backgroundColor: 'var(--ifm-background-color)',
   border: '1px solid var(--ifm-color-emphasis-300)',
   borderRadius: '8px',
@@ -889,14 +848,9 @@ const result = await client.query({
 
 Ready to start building? Explore these resources:
 
-<div style={{
-  display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-  gap: '1rem',
-  marginTop: '2rem'
-}}>
+<div className="economic-grid">
 
-<div style={{
+<div className="uniform-card" style={{
   border: '1px solid var(--ifm-color-emphasis-300)',
   borderRadius: '6px',
   padding: '1rem',
@@ -907,7 +861,7 @@ Ready to start building? Explore these resources:
 
 </div>
 
-<div style={{
+<div className="uniform-card" style={{
   border: '1px solid var(--ifm-color-emphasis-300)',
   borderRadius: '6px',
   padding: '1rem',
@@ -918,7 +872,7 @@ Ready to start building? Explore these resources:
 
 </div>
 
-<div style={{
+<div className="uniform-card" style={{
   border: '1px solid var(--ifm-color-emphasis-300)',
   borderRadius: '6px',
   padding: '1rem',
@@ -929,7 +883,7 @@ Ready to start building? Explore these resources:
 
 </div>
 
-<div style={{
+<div className="uniform-card" style={{
   border: '1px solid var(--ifm-color-emphasis-300)',
   borderRadius: '6px',
   padding: '1rem',

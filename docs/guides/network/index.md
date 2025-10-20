@@ -22,7 +22,7 @@ description: Essential tools and applications for interacting with the Intuition
 
 Everything you need to build and test on Intuition's L3 network:
 
-<div className="grid-3-cols">
+<div className="grid-3-cols ">
 
 <div style={{
   border: '1px solid var(--ifm-color-emphasis-200)',
@@ -35,7 +35,7 @@ Everything you need to build and test on Intuition's L3 network:
   flexDirection: 'column',
   transition: 'all 0.3s ease'
 }}>
-<div style={{
+<div className="icon-box-hover" style={{
   width: '48px',
   height: '48px',
   borderRadius: '12px',
@@ -81,7 +81,7 @@ Deploy smart contracts, test transactions, and monitor your applications in a sa
   flexDirection: 'column',
   transition: 'all 0.3s ease'
 }}>
-<div style={{
+<div className="icon-box-hover" style={{
   width: '48px',
   height: '48px',
   borderRadius: '12px',
@@ -127,7 +127,7 @@ Test APIs, validate SDK integrations, and explore the GraphQL playground with re
   flexDirection: 'column',
   transition: 'all 0.3s ease'
 }}>
-<div style={{
+<div className="icon-box-hover" style={{
   width: '48px',
   height: '48px',
   borderRadius: '12px',

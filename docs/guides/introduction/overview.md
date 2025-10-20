@@ -79,7 +79,7 @@ The Subnet turns raw attestations into actionable intelligence, powering AI agen
 
 <div style={{ display: 'grid', gap: '1.5rem', marginBottom: '2rem' }}>
 
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '12px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
+<div className="uniform-card" style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '12px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h3 style={{ marginTop: 0, marginBottom: '1rem', color: 'var(--ifm-color-primary)' }}>Atoms — Identifiers for Entities</h3>
 <p style={{ fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-900)', marginBottom: '1rem', lineHeight: '1.6' }}>
 Unique, persistent identifiers for any concept or entity — person, object, idea, or anything else. Think of them as the "nodes" in the knowledge graph, or the 'words' of the Intuition dictionary.
@@ -91,7 +91,7 @@ Unique, persistent identifiers for any concept or entity — person, object, ide
 </ul>
 </div>
 
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '12px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
+<div className="uniform-card" style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '12px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h3 style={{ marginTop: 0, marginBottom: '1rem', color: 'var(--ifm-color-primary)' }}>Triples — Structured Attestations</h3>
 <p style={{ fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-900)', marginBottom: '1rem', lineHeight: '1.6' }}>
 Claims expressed in subject-predicate-object format, creating the relationships and semantic layer of the knowledge graph. The 'sentences' of the Intuition system, with words composed together into higher-order expressions.
@@ -105,7 +105,7 @@ Claims expressed in subject-predicate-object format, creating the relationships 
 </ul>
 </div>
 
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '12px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
+<div className="uniform-card" style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '12px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
 <h3 style={{ marginTop: 0, marginBottom: '1rem', color: 'var(--ifm-color-primary)' }}>Signals — Economic Confidence</h3>
 <p style={{ fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-900)', marginBottom: '1rem', lineHeight: '1.6' }}>
 Tokenized stakes that weight attestations with economic confidence, incentivizing the creation of many-to-one attestations that are better capable of accommodating subjective information.
@@ -147,56 +147,55 @@ Together, they form the rails of a programmable knowledge economy where:
 
 ## Why This Matters for Developers
 
-<div style={{ backgroundColor: 'var(--ifm-color-primary)', color: 'white', padding: '2rem', borderRadius: '12px', marginBottom: '2rem' }}>
-<p style={{ fontSize: '1.2rem', lineHeight: '1.7', marginBottom: '1.5rem', fontWeight: 'bold' }}>
+:::tip
 Building on Intuition means you don't have to reinvent trust, identity, or data models from scratch.
-</p>
-<p style={{ fontSize: '1.05rem', lineHeight: '1.7', marginBottom: '0' }}>
+:::
+
+
 Attestations and identifiers give you:
-</p>
-</div>
+
 
 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem', marginBottom: '2rem' }}>
 
-<div style={{ padding: '1.5rem', backgroundColor: 'var(--ifm-color-emphasis-50)', borderRadius: '8px', borderLeft: '4px solid var(--ifm-color-primary)' }}>
+<div className="uniform-card" style={{ padding: '1.5rem', backgroundColor: 'var(--ifm-color-emphasis-50)', borderRadius: '8px', borderLeft: '4px solid var(--ifm-color-primary)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>
-💾 Memory
+Memory
 </h4>
 <p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-900)', lineHeight: '1.6' }}>
 Agents and apps don't start from zero; they inherit context.
 </p>
 </div>
 
-<div style={{ padding: '1.5rem', backgroundColor: 'var(--ifm-color-emphasis-50)', borderRadius: '8px', borderLeft: '4px solid var(--ifm-color-primary)' }}>
+<div className="uniform-card" style={{ padding: '1.5rem', backgroundColor: 'var(--ifm-color-emphasis-50)', borderRadius: '8px', borderLeft: '4px solid var(--ifm-color-primary)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>
-🔐 Trust
+Trust
 </h4>
 <p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-900)', lineHeight: '1.6' }}>
 Every claim is signed, staked, and auditable.
 </p>
 </div>
 
-<div style={{ padding: '1.5rem', backgroundColor: 'var(--ifm-color-emphasis-50)', borderRadius: '8px', borderLeft: '4px solid var(--ifm-color-primary)' }}>
+<div className="uniform-card" style={{ padding: '1.5rem', backgroundColor: 'var(--ifm-color-emphasis-50)', borderRadius: '8px', borderLeft: '4px solid var(--ifm-color-primary)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>
-🎯 Alignment
+Alignment
 </h4>
 <p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-900)', lineHeight: '1.6' }}>
 Incentives built into the data layer itself.
 </p>
 </div>
 
-<div style={{ padding: '1.5rem', backgroundColor: 'var(--ifm-color-emphasis-50)', borderRadius: '8px', borderLeft: '4px solid var(--ifm-color-primary)' }}>
+<div className="uniform-card" style={{ padding: '1.5rem', backgroundColor: 'var(--ifm-color-emphasis-50)', borderRadius: '8px', borderLeft: '4px solid var(--ifm-color-primary)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>
-🌐 Portability
+Portability
 </h4>
 <p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-900)', lineHeight: '1.6' }}>
 Your users' context and reputation follow them across apps.
 </p>
 </div>
 
-<div style={{ padding: '1.5rem', backgroundColor: 'var(--ifm-color-emphasis-50)', borderRadius: '8px', borderLeft: '4px solid var(--ifm-color-primary)' }}>
+<div className="uniform-card" style={{ padding: '1.5rem', backgroundColor: 'var(--ifm-color-emphasis-50)', borderRadius: '8px', borderLeft: '4px solid var(--ifm-color-primary)' }}>
 <h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>
-🔌 Interoperability
+Interoperability
 </h4>
 <p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-900)', lineHeight: '1.6' }}>
 Shared identifiers and standards mean your app plugs into a larger ecosystem by default.

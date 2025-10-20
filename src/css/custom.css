@@ -2435,3 +2435,53 @@ table td, table th {
   }
 }
 
+/* Icon box hover effect - same as uniform-card */
+.icon-box-hover {
+  transition: all 0.3s ease;
+}
+
+.icon-box-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+html[data-theme='dark'] .icon-box-hover:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+}
+
+/* Single column grid for technical specs */
+.tech-specs-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+/* Two column grid for economic mechanics */
+.economic-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+@media (max-width: 768px) {
+  .economic-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Hover effect for transaction lifecycle card */
+.transaction-card {
+  transition: all 0.3s ease;
+}
+
+.transaction-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  border-color: var(--ifm-color-emphasis-300);
+}
+
+html[data-theme='dark'] .transaction-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+}

@@ -8,8 +8,9 @@ description: Understanding the trust crisis Intuition addresses and our mission 
 
 # Why Intuition?
 
-> **Every interaction online is an attestation.**
-> A review or a purchase on Amazon, a comment on Reddit, the watching of a show on Netflix, a retweet, a LinkedIn endorsement, a 'follow', a bookmark, the ordering of an Uber, even a "like" — all are forms of attestations: claims made by things about things.
+:::info **Every interaction online is an attestation.**
+A review or a purchase on Amazon, a comment on Reddit, the watching of a show on Netflix, a retweet, a LinkedIn endorsement, a 'follow', a bookmark, the ordering of an Uber, even a "like" — all are forms of attestations: claims made by things about things.
+:::
 
 But attestations today are fragmented, unverifiable, and platform-locked. They don't move with you. They don't carry weight. They aren't semantically structured and unambiguously consumable by machines.
 
@@ -49,7 +50,9 @@ The global knowledge economy is worth over **$200 trillion**, yet:
 
 **The result:** broken rails, misinformation, and AI systems consuming oceans of low-quality data without provenance.
 
+:::info 
 Attestations are the missing rails. When data becomes signed, tokenized, and portable, it allows value to flow back to contributors and trust to flow into the systems that need it most.
+:::
 
 ## Rebuilding the Rails of Knowledge
 
