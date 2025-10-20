@@ -74,11 +74,11 @@ This market-driven approach, combined with deterministic ID generation, ensures 
 
 ## Design Principles: Atomic Granularity
 
-### The Power of Flat Data
-
+:::tip The Power of Flat Data
 A crucial best practice is keeping information modular and atomic. You are economically incentivized to create "flatter" Atoms – each representing a single, minimal concept – rather than packing composite information into one Atom.
+:::
 
-#### Why Granularity Matters
+### Why Granularity Matters
 
 Consider representing the statement: **"Tiger Research was founded in 2021"**
 

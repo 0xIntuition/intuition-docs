@@ -24,33 +24,65 @@ The Explorer serves as your window into the Intuition testnet blockchain, offeri
 
 ## Key Features
 
-### **Transaction Monitoring**
-- View all network transactions in real-time
-- Search transactions by hash, address, or block
-- Monitor transaction status and confirmations
-- Analyze gas usage and fees
-- Track internal transactions and contract calls
+<div className="explorer-key-features-grid">
 
-### **Block Exploration**
-- Browse the latest blocks
-- View block details and included transactions
-- Monitor network utilization
-- Track block production times
-- Analyze block rewards and fees
+<div className="explorer-key-feature-card">
+<h3 className="explorer-key-feature-title">Transaction Monitoring</h3>
+<p className="explorer-key-feature-description">
+View and analyze all network transactions with comprehensive monitoring tools:
+</p>
+<ul className="explorer-green-checklist">
+<li>View all network transactions in real-time</li>
+<li>Search transactions by hash, address, or block</li>
+<li>Monitor transaction status and confirmations</li>
+<li>Analyze gas usage and fees</li>
+<li>Track internal transactions and contract calls</li>
+</ul>
+</div>
 
-### **Smart Contract Features**
-- Verify and publish smart contract source code
-- Read contract state and interact with functions
-- View contract creation and deployment history
-- Monitor contract events and logs
-- Track contract token transfers
+<div className="explorer-key-feature-card">
+<h3 className="explorer-key-feature-title">Block Exploration</h3>
+<p className="explorer-key-feature-description">
+Explore blockchain blocks with detailed information and metrics:
+</p>
+<ul className="explorer-green-checklist">
+<li>Browse the latest blocks</li>
+<li>View block details and included transactions</li>
+<li>Monitor network utilization</li>
+<li>Track block production times</li>
+<li>Analyze block rewards and fees</li>
+</ul>
+</div>
 
-### **Network Analytics**
-- Real-time network statistics
-- Gas price tracking and recommendations
-- Network utilization metrics
-- Transaction volume analysis
-- Active address monitoring
+<div className="explorer-key-feature-card">
+<h3 className="explorer-key-feature-title">Smart Contract Features</h3>
+<p className="explorer-key-feature-description">
+Comprehensive tools for smart contract verification and interaction:
+</p>
+<ul className="explorer-green-checklist">
+<li>Verify and publish smart contract source code</li>
+<li>Read contract state and interact with functions</li>
+<li>View contract creation and deployment history</li>
+<li>Monitor contract events and logs</li>
+<li>Track contract token transfers</li>
+</ul>
+</div>
+
+<div className="explorer-key-feature-card">
+<h3 className="explorer-key-feature-title">Network Analytics</h3>
+<p className="explorer-key-feature-description">
+Real-time analytics and insights into network performance:
+</p>
+<ul className="explorer-green-checklist">
+<li>Real-time network statistics</li>
+<li>Gas price tracking and recommendations</li>
+<li>Network utilization metrics</li>
+<li>Transaction volume analysis</li>
+<li>Active address monitoring</li>
+</ul>
+</div>
+
+</div>
 
 ## Navigation Guide
 

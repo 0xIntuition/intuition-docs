@@ -6,18 +6,43 @@ sidebar_position: 3
 
 # Bridge
 
-<div className="bridge-intro">
+:::info
 Secure cross-chain transfers between Ethereum testnets and the Intuition testnet. Built for testing and development, move assets safely between networks during the development process.
-</div>
+:::
 
-<div className="bridge-access-card">
-<div className="bridge-access-content">
-<h3>Access Bridge</h3>
-<p>Start bridging assets between networks</p>
-<a href="https://intuition-testnet.hub.caldera.xyz/" target="_blank" rel="noopener noreferrer" className="bridge-access-button">
-Open Bridge →
-</a>
-</div>
+<div style={{
+  padding: '2rem',
+  borderRadius: '12px',
+  background: 'linear-gradient(135deg, #6B73FF 0%, #000DFF 100%)',
+  textAlign: 'center',
+  margin: '2rem 0'
+}}>
+  <h3 style={{ color: 'white', marginBottom: '1rem' }}>
+    Access Bridge
+  </h3>
+  <p style={{ color: 'rgba(255,255,255,0.9)', marginBottom: '1.5rem' }}>
+    Start bridging assets between networks
+  </p>
+  <a
+    href="https://intuition-testnet.hub.caldera.xyz/"
+    target="_blank"
+    rel="noopener noreferrer"
+    style={{
+      display: 'inline-block',
+      padding: '12px 32px',
+      backgroundColor: 'white',
+      color: '#6B73FF',
+      borderRadius: '8px',
+      textDecoration: 'none',
+      fontWeight: 'bold',
+      fontSize: '1.1rem',
+      transition: 'transform 0.2s',
+    }}
+    onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
+    onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
+  >
+    Open Bridge →
+  </a>
 </div>
 
 ## Powered by Caldera's Metalayer

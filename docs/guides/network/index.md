@@ -33,22 +33,23 @@ Everything you need to build and test on Intuition's L3 network:
   height: '100%',
   display: 'flex',
   flexDirection: 'column',
-  transition: 'all 0.3s ease',
-  cursor: 'pointer'
+  transition: 'all 0.3s ease'
 }}>
 <div style={{
   width: '48px',
   height: '48px',
   borderRadius: '12px',
-  backgroundColor: 'var(--ifm-color-primary)',
+  backgroundColor: '#6366f1',
   color: 'white',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  marginBottom: '1.5rem',
-  fontSize: '1.25rem',
-  fontWeight: 'bold'
-}}>🛠️</div>
+  marginBottom: '1.5rem'
+}}>
+<svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+<path d="M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.7C.4 7.1.9 10.1 2.9 12.1c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.5-.4.5-1.1.1-1.4z"/>
+</svg>
+</div>
 <h3 style={{
   marginTop: 0,
   marginBottom: '1rem',
@@ -78,22 +79,23 @@ Deploy smart contracts, test transactions, and monitor your applications in a sa
   height: '100%',
   display: 'flex',
   flexDirection: 'column',
-  transition: 'all 0.3s ease',
-  cursor: 'pointer'
+  transition: 'all 0.3s ease'
 }}>
 <div style={{
   width: '48px',
   height: '48px',
   borderRadius: '12px',
-  backgroundColor: 'var(--ifm-color-primary)',
+  backgroundColor: '#6366f1',
   color: 'white',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  marginBottom: '1.5rem',
-  fontSize: '1.25rem',
-  fontWeight: 'bold'
-}}>🔗</div>
+  marginBottom: '1.5rem'
+}}>
+<svg width="28" height="28" viewBox="0 0 512 512" fill="white" xmlns="http://www.w3.org/2000/svg">
+<path d="m162.03 311.94-28.73 28.73 39.61 39.62 29.11-29.12c30.83 25.41 60.09 27.74 87.12 18.45L143.65 224.13c-9.12 26.74-6.66 55.93 18.38 87.81zm-31.46-150.11c-6.42-6.42-6.42-16.83 0-23.25 6.42-6.42 16.83-6.42 23.25 0l27.22 27.22c9.99-11.21 20.7-21.87 30.85-32.03l21.7 21.69 49.46-49.45c8.33-8.34 21.98-8.34 30.32 0 8.33 8.33 8.33 21.98 0 30.31l-49.47 49.47 63.1 63.09 49.46-49.46c8.34-8.34 21.98-8.34 30.32 0s8.33 21.98 0 30.31l-49.47 49.46 22.5 22.5c-10 10-20.74 20.7-32.14 30.74L375 359.76c6.42 6.41 6.42 16.83 0 23.25-6.42 6.41-16.84 6.41-23.25 0L130.57 161.83z"/>
+</svg>
+</div>
 <h3 style={{
   marginTop: 0,
   marginBottom: '1rem',
@@ -123,22 +125,23 @@ Test APIs, validate SDK integrations, and explore the GraphQL playground with re
   height: '100%',
   display: 'flex',
   flexDirection: 'column',
-  transition: 'all 0.3s ease',
-  cursor: 'pointer'
+  transition: 'all 0.3s ease'
 }}>
 <div style={{
   width: '48px',
   height: '48px',
   borderRadius: '12px',
-  backgroundColor: 'var(--ifm-color-primary)',
+  backgroundColor: '#6366f1',
   color: 'white',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  marginBottom: '1.5rem',
-  fontSize: '1.25rem',
-  fontWeight: 'bold'
-}}>⚡</div>
+  marginBottom: '1.5rem'
+}}>
+<svg width="24" height="24" viewBox="0 0 24 24" fill="white" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg">
+<path d="M3 13h2l2-7 4 14 4-14 2 7h4M5 21h14"/>
+</svg>
+</div>
 <h3 style={{
   marginTop: 0,
   marginBottom: '1rem',
@@ -191,8 +194,8 @@ Ready to start building on Intuition? Follow these steps:
   width: '60px',
   height: '60px',
   borderRadius: '50%',
-  backgroundColor: 'var(--ifm-color-emphasis-200)',
-  color: '#000000',
+  backgroundColor: '#85869b',
+  color: 'white',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -233,8 +236,8 @@ Use MetaMask or any Web3 wallet to connect to the testnet
   width: '60px',
   height: '60px',
   borderRadius: '50%',
-  backgroundColor: 'var(--ifm-color-emphasis-200)',
-  color: '#000000',
+  backgroundColor: '#7c7db1',
+  color: 'white',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -275,8 +278,8 @@ Use the built-in faucet to obtain test tokens for transactions
   width: '60px',
   height: '60px',
   borderRadius: '50%',
-  backgroundColor: 'var(--ifm-color-emphasis-200)',
-  color: '#000000',
+  backgroundColor: '#6b6cc3',
+  color: 'white',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -317,8 +320,8 @@ Access all testnet tools and services from the centralized dashboard
   width: '60px',
   height: '60px',
   borderRadius: '50%',
-  backgroundColor: 'var(--ifm-color-emphasis-200)',
-  color: '#000000',
+  backgroundColor: '#6366f1',
+  color: 'white',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -411,9 +414,9 @@ All testnet services are accessible from a single, intuitive interface that prov
 The hub integrates with all Intuition testnet services:
 </p>
 <ul className="green-checklist">
-<li><a href="/docs/network/testnet/bridge">Bridge</a> for cross-chain transfers</li>
-<li><a href="/docs/network/testnet/explorer">Explorer</a> for blockchain exploration</li>
-<li><a href="/docs/resources/network-health">Network Status</a> for service monitoring</li>
+<li>Bridge for cross-chain transfers</li>
+<li>Explorer for blockchain exploration</li>
+<li>Network Status for service monitoring</li>
 </ul>
 </div>
 
@@ -435,67 +438,61 @@ Built with developers in mind:
 ## Core Applications
 
 <div style={{
-  display: 'flex',
-  flexDirection: 'column',
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
   gap: '1.5rem',
   marginTop: '2rem',
   marginBottom: '3rem'
 }}>
 
-<a href="https://intuition-testnet.hub.caldera.xyz/" target="_blank" rel="noopener noreferrer" className="core-app-card clickable-card">
-<div className="core-app-icon">
-<svg width="32" height="32" viewBox="0 0 24 24" fill="white">
+<a href="https://intuition-testnet.hub.caldera.xyz/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+
+<div className="uniform-card clickable-card">
+<div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
+<div style={{ width: '40px', height: '40px', borderRadius: '8px', backgroundColor: '#c038cb', display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: '1rem' }}>
+<svg width="20" height="20" viewBox="0 0 24 24" fill="white">
 <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/>
 </svg>
 </div>
-<div className="core-app-content">
-<h3 className="core-app-title">Hub</h3>
-<p className="core-app-description">
+<h3 style={{ margin: 0 }}>Hub</h3>
+</div>
+<p className="uniform-card-content">
 Development environment hub for the Intuition testnet. Access all testnet services, tools, and resources in one centralized location.
 </p>
-<div className="core-app-tags">
-<span className="core-app-tag">Testnet</span>
-<span className="core-app-tag">Development</span>
-<span className="core-app-tag">Testing</span>
-</div>
 </div>
 </a>
 
-<a href="/docs/network/testnet/bridge" className="core-app-card clickable-card">
-<div className="core-app-icon">
-<svg width="32" height="32" viewBox="0 0 24 24" fill="white">
+<a href="/docs/network/testnet/bridge" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+
+<div className="uniform-card clickable-card">
+<div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
+<div style={{ width: '40px', height: '40px', borderRadius: '8px', backgroundColor: '#3B82F6', display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: '1rem' }}>
+<svg width="20" height="20" viewBox="0 0 24 24" fill="white">
 <path d="M6 6v2h8.59L5 17.59 6.41 19 16 9.41V18h2V6z"/>
 </svg>
 </div>
-<div className="core-app-content">
-<h3 className="core-app-title">Bridge</h3>
-<p className="core-app-description">
+<h3 style={{ margin: 0 }}>Bridge</h3>
+</div>
+<p className="uniform-card-content">
 Bridge assets between Ethereum testnets and Intuition testnet. Secure cross-chain transfers for testing and development purposes.
 </p>
-<div className="core-app-tags">
-<span className="core-app-tag">Bridge</span>
-<span className="core-app-tag">Cross-chain</span>
-<span className="core-app-tag">Testing</span>
-</div>
 </div>
 </a>
 
-<a href="/docs/resources/network-health" className="core-app-card clickable-card">
-<div className="core-app-icon">
-<svg width="32" height="32" viewBox="0 0 24 24" fill="white">
+<a href="/docs/resources/network-health" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+
+<div className="uniform-card clickable-card">
+<div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
+<div style={{ width: '40px', height: '40px', borderRadius: '8px', backgroundColor: '#10B981', display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: '1rem' }}>
+<svg width="20" height="20" viewBox="0 0 24 24" fill="white">
 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
 </svg>
 </div>
-<div className="core-app-content">
-<h3 className="core-app-title">Network Status</h3>
-<p className="core-app-description">
+<h3 style={{ margin: 0 }}>Network Status</h3>
+</div>
+<p className="uniform-card-content">
 Real-time status monitoring for the Intuition network. Check service availability, network health, and uptime statistics.
 </p>
-<div className="core-app-tags">
-<span className="core-app-tag">Status</span>
-<span className="core-app-tag">Monitoring</span>
-<span className="core-app-tag">Uptime</span>
-</div>
 </div>
 </a>
 
@@ -503,7 +500,7 @@ Real-time status monitoring for the Intuition network. Check service availabilit
 
 <div className="uniform-card clickable-card">
 <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
-<div style={{ width: '40px', height: '40px', borderRadius: '8px', backgroundColor: '#6366F1', display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: '1rem' }}>
+<div style={{ width: '40px', height: '40px', borderRadius: '8px', backgroundColor: '#8d892d', display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: '1rem' }}>
 <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
 <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
 </svg>
@@ -516,22 +513,20 @@ The main interface for creating identities, making claims, and staking on the In
 </div>
 </a>
 
-<a href="/docs/network/testnet/explorer" className="core-app-card clickable-card">
-<div className="core-app-icon">
-<svg width="32" height="32" viewBox="0 0 24 24" fill="white">
+<a href="/docs/network/testnet/explorer" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+
+<div className="uniform-card clickable-card">
+<div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
+<div style={{ width: '40px', height: '40px', borderRadius: '8px', backgroundColor: '#8B5CF6', display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: '1rem' }}>
+<svg width="20" height="20" viewBox="0 0 24 24" fill="white">
 <path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/>
 </svg>
 </div>
-<div className="core-app-content">
-<h3 className="core-app-title">Explorer</h3>
-<p className="core-app-description">
+<h3 style={{ margin: 0 }}>Explorer</h3>
+</div>
+<p className="uniform-card-content">
 Blockchain explorer for the Intuition testnet. View transactions, blocks, and network activity. Monitor testnet performance and verify test transactions.
 </p>
-<div className="core-app-tags">
-<span className="core-app-tag">Explorer</span>
-<span className="core-app-tag">Transactions</span>
-<span className="core-app-tag">Analytics</span>
-</div>
 </div>
 </a>
 

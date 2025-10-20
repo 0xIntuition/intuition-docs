@@ -11,7 +11,9 @@ Signals represent the trust, confidence, or relevance that the community assigns
 
 Signals transform static data into a dynamic, trusted intelligence layer. When someone stakes $TRUST tokens on an Atom or Triple, they emit a Signal expressing that they find that piece of information important or true. Conversely, staking on a Triple's negative side signals doubt. These individual signals aggregate to form an overall weighted state for each item in the knowledge graph.
 
+:::info
 In essence, Signals are the lifeblood of Intuition's trust layer. They turn subjective judgments into quantifiable, shareable data, creating an internet where information is contextualized with trust—allowing everyone to navigate knowledge supported by transparent evidence and collective wisdom.
+:::
 
 ## How Signals are Created
 
@@ -342,7 +344,9 @@ The economic incentives naturally drive system improvement:
 4. Irrelevant claims naturally receive less stake
 5. System quality improves through market dynamics
 
+:::warning
 Importantly, the protocol itself never determines what is "true" or "false." It simply rewards participation in frequently-used data. Higher-level applications can build resolution mechanisms, prediction markets, or truth determination systems on top of this neutral substrate.
+:::
 
 ### Network Effects
 

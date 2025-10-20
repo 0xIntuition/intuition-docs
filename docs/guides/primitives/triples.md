@@ -97,7 +97,9 @@ The network evaluates consensus by:
 - Considering the number of attestors
 - Calculating confidence scores that adjust over time
 
+:::warning
 Importantly, Intuition doesn't force a single authoritative truth—it records the spectrum of belief. Multiple "canonical" Triples can compete, and the TCR mechanism with staking tends to favor the most accurate representations.
+:::
 
 ## Best Practices for Structuring Triples
 

@@ -10,12 +10,9 @@ Learn how to set up and run your own Intuition node to participate in the networ
 
 The `intuition-rs` workspace is a comprehensive Rust workspace for blockchain data indexing and processing, featuring a modular architecture with multiple specialized services. This implementation provides high performance, memory safety, and reliability for running Intuition nodes and backend services.
 
-<div style={{ backgroundColor: 'var(--ifm-color-emphasis-50)', padding: '1.5rem', borderRadius: '8px', margin: '1.5rem 0', border: '1px solid var(--ifm-color-emphasis-300)' }}>
-<p style={{ margin: '0 0 0.5rem 0', fontWeight: '600', color: 'var(--ifm-color-emphasis-900)', fontSize: '1.1rem' }}>Node Requirements</p>
-<p style={{ margin: 0, fontSize: '1rem', color: 'var(--ifm-color-emphasis-800)', lineHeight: '1.6' }}>
+:::warning Node Requirements
 Running an Intuition node requires Docker, Rust toolchain, and proper environment configuration. This guide provides comprehensive setup instructions for local development and production deployments.
-</p>
-</div>
+:::
 
 ## Architecture
 

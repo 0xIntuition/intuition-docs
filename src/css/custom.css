@@ -1952,7 +1952,7 @@ html[data-theme='dark'] .network-details-table .rpc-endpoint {
 }
 
 .bridge-access-card {
-  background: linear-gradient(135deg, var(--ifm-color-primary), var(--ifm-color-primary-dark));
+  background: linear-gradient(135deg, rgb(107, 115, 255) 0%, rgb(0, 13, 255) 100%);
   border-radius: 16px;
   padding: 2rem;
   margin-bottom: 3rem;
@@ -1971,6 +1971,7 @@ html[data-theme='dark'] .network-details-table .rpc-endpoint {
   margin: 0 0 1.5rem 0;
   opacity: 0.9;
   font-size: 1rem;
+  color: #ffffff;
 }
 
 .bridge-access-button {
@@ -2319,27 +2320,27 @@ table td, table th {
     grid-template-columns: 1fr;
     gap: 1.5rem;
   }
-  
+
   .uniform-card {
     padding: 1.5rem;
   }
-  
+
   /* Improve details/summary for mobile */
   details summary {
     padding: 1rem;
     font-size: 0.9rem;
     line-height: 1.4;
   }
-  
+
   details summary::before {
     margin-right: 0.5rem;
     font-size: 0.7rem;
   }
-  
+
   details .content {
     padding: 1.5rem;
   }
-  
+
   /* Make tables scroll horizontally on mobile */
   .network-details-table {
     font-size: 0.85rem;
@@ -2352,20 +2353,85 @@ table td, table th {
     grid-template-columns: 1fr;
     gap: 1.5rem;
   }
-  
+
   .hub-layout-centered {
     max-width: 100%;
     margin: 0 0 3rem 0;
   }
-  
+
   /* Hero sections mobile optimization */
   h1[style*="fontSize: '3rem'"] {
     font-size: 2rem !important;
   }
-  
+
   h1[style*="fontSize: '2.5rem'"] {
     font-size: 1.8rem !important;
   }
-  
+
+}
+
+/* Explorer Key Features Section */
+.explorer-key-features-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  margin-bottom: 3rem;
+  width: 100%;
+}
+
+.explorer-key-feature-card {
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 16px;
+  padding: 2rem;
+  background-color: var(--ifm-background-color);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.explorer-key-feature-title {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  color: var(--ifm-color-primary);
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.explorer-key-feature-description {
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+.explorer-green-checklist {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+  flex-grow: 1;
+}
+
+.explorer-green-checklist li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.explorer-green-checklist li::before {
+  content: "✓";
+  color: #10B981;
+  font-weight: bold;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+@media (max-width: 996px) {
+  .explorer-key-features-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
