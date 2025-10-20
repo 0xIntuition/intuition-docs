@@ -3,6 +3,9 @@ title: Overview
 sidebar_position: 1
 ---
 
+import BrowserOnly from '@docusaurus/BrowserOnly';
+import ExcalidrawViewer from '@site/src/components/ExcalidrawViewer';
+
 # Primitives Overview
 
 Intuition's data model is built on three fundamental primitives that work together to create a rich, self-regulating knowledge graph:
@@ -36,7 +39,7 @@ The weight of trust or consensus behind each entity or claim, determined by comm
 
 ## The Three Primitives Explained
 
-### 🔷 Atoms: Universal Identifiers for Everything
+### Atoms: Universal Identifiers for Everything
 
 An **Atom** is a unique decentralized identifier that can reference literally anything – from people and organizations to concepts, data points, or even raw bytes of information. Each Atom acts as a globally referenceable identity in the Intuition system, with an on-chain ID that serves as its permanent, verifiable address.
 
@@ -89,7 +92,7 @@ Atoms are sometimes called "identities" in the protocol because they give any en
 
 ---
 
-### 🔗 Triples: Expressing Relationships as Claims
+### Triples: Expressing Relationships as Claims
 
 A **Triple** is a structured claim that follows the semantic format of **[Subject] – [Predicate] – [Object]**, where each component is itself an Atom. This creates a precise, machine-readable way to express facts, relationships, and assertions about the world.
 
@@ -97,25 +100,25 @@ A **Triple** is a structured claim that follows the semantic format of **[Subjec
 
 <div style={{ backgroundColor: 'var(--ifm-background-surface-color)', border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '12px', padding: '24px', margin: '24px 0' }}>
 
-**🤝 Social Relationship**
+**Social Relationship**
 <div style={{ backgroundColor: 'var(--ifm-code-background)', padding: '12px', borderRadius: '6px', marginBottom: '16px', marginTop: '8px' }}>
 <code style={{ fontSize: '14px' }}>[Alice] — [is friend of] — [Bob]</code>
 </div>
 <p style={{ marginBottom: '24px', fontSize: '14px', color: 'var(--ifm-color-content-secondary)' }}>Each component is an Atom with its own ID, creating a verifiable claim about friendship.</p>
 
-**🎓 Professional Credential**
+**Professional Credential**
 <div style={{ backgroundColor: 'var(--ifm-code-background)', padding: '12px', borderRadius: '6px', marginBottom: '16px', marginTop: '8px' }}>
 <code style={{ fontSize: '14px' }}>[Dr. Smith] — [has degree] — [Harvard Medical School]</code>
 </div>
 <p style={{ marginBottom: '24px', fontSize: '14px', color: 'var(--ifm-color-content-secondary)' }}>Expressing educational credentials as structured data.</p>
 
-**🔗 Smart Contract Deployment**
+**Smart Contract Deployment**
 <div style={{ backgroundColor: 'var(--ifm-code-background)', padding: '12px', borderRadius: '6px', marginBottom: '16px', marginTop: '8px' }}>
 <code style={{ fontSize: '14px' }}>[UniswapV3] — [was deployed on] — [2021-05-05]</code>
 </div>
 <p style={{ marginBottom: '24px', fontSize: '14px', color: 'var(--ifm-color-content-secondary)' }}>Recording blockchain events as semantic relationships.</p>
 
-**⭐ Product Rating**
+**Product Rating**
 <div style={{ backgroundColor: 'var(--ifm-code-background)', padding: '12px', borderRadius: '6px', marginBottom: '16px', marginTop: '8px' }}>
 <code style={{ fontSize: '14px' }}>[iPhone 15] — [has rating] — [4.5 stars]</code>
 </div>
@@ -135,7 +138,7 @@ In many contexts, Triples are also referred to as **Claims** or **Attestations**
 
 ---
 
-### 📊 Signals: Quantified Trust Through Staking
+### Signals: Quantified Trust Through Staking
 
 **Signal** represents the aggregated attestation state of an Atom or Triple – essentially, how much the community trusts or believes in that piece of information. Signal is generated through economic staking, where users deposit tokens (like $TRUST) into an entity's vault to express their conviction.
 
@@ -192,33 +195,33 @@ Unlike traditional systems where a single authority issues certificates or attes
 <div style={{ display: 'grid', gap: '16px' }}>
 
 <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
-<span style={{ fontSize: '20px', marginTop: '2px' }}>👥</span>
+<span style={{ fontSize: '20px', marginTop: '2px' }}></span>
 <div>
-<strong>Multiple Validators</strong>
+<strong>- Multiple Validators</strong>
 <p style={{ margin: '4px 0 0 0', fontSize: '14px', color: 'var(--ifm-color-content-secondary)' }}>Any number of users can signal their belief in an Atom or Triple</p>
 </div>
 </div>
 
 <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
-<span style={{ fontSize: '20px', marginTop: '2px' }}>⚖️</span>
+<span style={{ fontSize: '20px', marginTop: '2px' }}></span>
 <div>
-<strong>Weighted Consensus</strong>
+<strong>- Weighted Consensus</strong>
 <p style={{ margin: '4px 0 0 0', fontSize: '14px', color: 'var(--ifm-color-content-secondary)' }}>The aggregate Signal determines the community's confidence level</p>
 </div>
 </div>
 
 <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
-<span style={{ fontSize: '20px', marginTop: '2px' }}>🛡️</span>
+<span style={{ fontSize: '20px', marginTop: '2px' }}></span>
 <div>
-<strong>No Single Point of Failure</strong>
+<strong>- No Single Point of Failure</strong>
 <p style={{ margin: '4px 0 0 0', fontSize: '14px', color: 'var(--ifm-color-content-secondary)' }}>Truth emerges from collective validation, not central authority</p>
 </div>
 </div>
 
 <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
-<span style={{ fontSize: '20px', marginTop: '2px' }}>🔄</span>
+<span style={{ fontSize: '20px', marginTop: '2px' }}></span>
 <div>
-<strong>Dynamic Evolution</strong>
+<strong>- Dynamic Evolution</strong>
 <p style={{ margin: '4px 0 0 0', fontSize: '14px', color: 'var(--ifm-color-content-secondary)' }}>Attestations can change over time as new information emerges</p>
 </div>
 </div>
@@ -231,25 +234,9 @@ Unlike traditional systems where a single authority issues certificates or attes
 
 Consider how these primitives combine to create a decentralized reputation system:
 
-```mermaid
-graph LR
-    A1[Alice - Atom] -->|Subject| T1[Triple: Alice is developer]
-    P1[is - Atom] -->|Predicate| T1
-    O1[developer - Atom] -->|Object| T1
-
-    A1 -->|Subject| T2[Triple: Alice knows React]
-    P2[knows - Atom] -->|Predicate| T2
-    O2[React - Atom] -->|Object| T2
-
-    S1[Signal: 1000 TRUST] -.->|Staked on| T1
-    S2[Signal: 500 TRUST] -.->|Staked on| T2
-
-    style A1 fill:#e1f5fe
-    style T1 fill:#fff3e0
-    style T2 fill:#fff3e0
-    style S1 fill:#e8f5e9
-    style S2 fill:#e8f5e9
-```
+<BrowserOnly fallback={<p>Loading diagram...</p>}>
+  {() => <ExcalidrawViewer src="/excalidraw/reputation-diagram.excalidraw.json" zoom={0.4} scrollX={-200} scrollY={200} />}
+</BrowserOnly>
 
 In this example:
 - **Atoms** define the entities (Alice, developer, React)
@@ -263,28 +250,28 @@ In this example:
 <div className="uniform-card-grid">
 
 <div className="uniform-card">
-<h3 className="uniform-card-title">🌐 Universal Composability</h3>
+<h3 className="uniform-card-title">Universal Composability</h3>
 <p className="uniform-card-content">
 Any data type can become an Atom, and any relationship can be expressed as a Triple, creating infinite possibilities for knowledge representation.
 </p>
 </div>
 
 <div className="uniform-card">
-<h3 className="uniform-card-title">🔄 Self-Regulating Truth</h3>
+<h3 className="uniform-card-title">Self-Regulating Truth</h3>
 <p className="uniform-card-content">
 Economic incentives through Signal staking create a market for truth, where accurate information naturally accumulates more support.
 </p>
 </div>
 
 <div className="uniform-card">
-<h3 className="uniform-card-title">🤝 Interoperability</h3>
+<h3 className="uniform-card-title">Interoperability</h3>
 <p className="uniform-card-content">
 Standardized semantic structure enables different applications to understand and build upon the same knowledge graph.
 </p>
 </div>
 
 <div className="uniform-card">
-<h3 className="uniform-card-title">📈 Progressive Trust</h3>
+<h3 className="uniform-card-title">Progressive Trust</h3>
 <p className="uniform-card-content">
 Trust isn't binary – it's a spectrum measured by Signal strength, allowing for nuanced representation of confidence and belief.
 </p>
