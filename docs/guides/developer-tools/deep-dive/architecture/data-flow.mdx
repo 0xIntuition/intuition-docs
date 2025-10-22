@@ -1,0 +1,352 @@
+---
+id: data-flow
+title: Data Flow Architecture
+sidebar_label: Data Flow Architecture
+sidebar_position: 5
+description: Understanding how data flows through Intuition's three-layer system
+---
+
+# Data Flow Architecture
+
+## Overview
+
+Understanding how data flows through the system is crucial for developers building on Intuition. This page explains the complete lifecycle of data from user action to API response.
+
+## Transaction Lifecycle
+
+<div className="transaction-card" style={{
+  backgroundColor: 'var(--ifm-background-surface-color)',
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '12px',
+  padding: '2rem',
+  margin: '2rem 0'
+}}>
+
+1. **User Action** → SDK creates transaction
+2. **Network Processing** → L3 validates and includes in block
+3. **Protocol Execution** → Smart contracts update state
+4. **Event Emission** → Contracts emit events
+5. **Subnet Indexing** → Events processed and indexed
+6. **Data Resolution** → Off-chain data fetched and cached
+7. **API Response** → Unified data served to applications
+
+**Average End-to-End Latency: < 2 seconds**
+
+</div>
+
+## Data Flow Diagram
+
+import BrowserOnly from '@docusaurus/BrowserOnly';
+import ExcalidrawViewer from '@site/src/components/ExcalidrawViewer';
+
+<BrowserOnly fallback={<p>Loading diagram...</p>}>
+  {() => <ExcalidrawViewer src="/excalidraw/data-papeline.excalidraw.json" zoom={0.5} scrollX={-1250} scrollY={150} />}
+</BrowserOnly>
+
+## Detailed Flow Examples
+
+### Creating an Atom
+
+```typescript
+// Step 1: User creates atom via SDK
+const atom = await intuition.createAtom({
+  uri: 'ipfs://QmXoypizjW3WknFiJnKLwHCnL72vedxjQkDDP1mXWo6uco'
+});
+
+// Step 2: Transaction sent to L3 Network
+// - Sequencer receives transaction
+// - Transaction validated and included in block
+// - Block propagated to network
+
+// Step 3: Smart contract execution
+// - AtomWallet.createAtom() called
+// - Vault deployed via EthMultiVault
+// - AtomCreated event emitted
+
+// Step 4: Subnet indexing
+// - Raw event captured from blockchain
+// - Event decoded and validated
+// - IPFS content fetched and cached
+// - Data stored in PostgreSQL
+
+// Step 5: API availability
+// - Atom queryable via GraphQL
+// - Real-time subscriptions notified
+// - Cached for fast retrieval
+```
+
+### Querying Knowledge Graph
+
+```typescript
+// Step 1: Client sends GraphQL query
+const query = gql`
+  query GetAtom($id: ID!) {
+    atom(id: $id) {
+      uri
+      creator
+      vault {
+        totalStaked
+        holders
+      }
+      triplesAsSubject {
+        predicate { uri }
+        object { uri }
+        signal
+      }
+    }
+  }
+`;
+
+// Step 2: Hasura processes query
+// - Query parsed and validated
+// - Execution plan optimized
+// - Database queries executed
+
+// Step 3: Data retrieval
+// - Atom data fetched from PostgreSQL
+// - Related triples joined efficiently
+// - Vault data aggregated
+
+// Step 4: Response caching
+// - Result cached in Redis
+// - CDN edge cache updated
+// - Subsequent queries served faster
+
+// Step 5: Client receives response
+// - JSON response returned
+// - Client-side cache updated
+// - UI components rendered
+```
+
+## State Synchronization
+
+The system maintains consistency across all layers:
+
+```typescript
+interface SyncStrategy {
+  // Real-time sync for recent blocks
+  realtimeSync: {
+    blockLag: 2,
+    confirmations: 1,
+    retryPolicy: ExponentialBackoff
+  };
+
+  // Batch sync for historical data
+  batchSync: {
+    chunkSize: 1000,
+    parallelWorkers: 10,
+    checkpointInterval: 100
+  };
+
+  // Consistency checks
+  validation: {
+    stateRootVerification: true,
+    periodicReconciliation: '1h',
+    alertThreshold: 0.001 // 0.1% discrepancy
+  };
+}
+```
+
+## Event Processing Pipeline
+
+### Stage 1: Raw Event Capture
+
+```rust
+// Raw events captured from blockchain
+pub async fn capture_raw_events(
+    block_range: Range<u64>,
+    rpc_client: &RpcClient
+) -> Result<Vec<RawEvent>, EventError> {
+    let logs = rpc_client
+        .get_logs(block_range)
+        .await?;
+
+    // Store in database and queue for processing
+    for log in logs {
+        store_raw_event(&log).await?;
+        queue_for_decoding(&log).await?;
+    }
+
+    Ok(logs)
+}
+```
+
+### Stage 2: Event Decoding
+
+```rust
+// Decode events using contract ABIs
+pub async fn decode_event(
+    raw_event: RawEvent,
+    context: &DecodedConsumerContext
+) -> Result<DecodedEvent, DecodeError> {
+    match raw_event.topics[0] {
+        ATOM_CREATED_TOPIC => {
+            let atom = decode_atom_created(&raw_event)?;
+            store_atom(atom, context).await?;
+            queue_for_resolution(&atom).await?;
+        }
+        TRIPLE_CREATED_TOPIC => {
+            let triple = decode_triple_created(&raw_event)?;
+            store_triple(triple, context).await?;
+        }
+        // ... other events
+    }
+
+    Ok(decoded)
+}
+```
+
+### Stage 3: Data Resolution
+
+```rust
+// Resolve off-chain references
+pub async fn resolve_atom_data(
+    atom: &Atom,
+    context: &ResolverConsumerContext
+) -> Result<ResolvedAtom, ResolveError> {
+    let metadata = match &atom.uri {
+        uri if uri.starts_with("ipfs://") => {
+            context.ipfs_resolver.fetch(uri).await?
+        }
+        uri if uri.starts_with("http") => {
+            context.http_client.get(uri).send().await?.json().await?
+        }
+        addr if is_address(addr) => {
+            context.ens_resolver.resolve(addr).await?
+        }
+    };
+
+    // Validate and store resolved data
+    validate_metadata(&metadata)?;
+    store_resolved_data(atom.id, metadata).await?;
+
+    Ok(resolved)
+}
+```
+
+## Data Consistency Guarantees
+
+<div className="economic-grid">
+
+<div className="uniform-card" style={{
+  backgroundColor: 'var(--ifm-color-emphasis-50)',
+  border: '1px solid var(--ifm-color-emphasis-200)',
+  borderRadius: '6px',
+  padding: '1rem'
+}}>
+
+**On-Chain State**
+- Single source of truth
+- Immutable history
+- Cryptographic proofs
+- Consensus validated
+
+</div>
+
+<div className="uniform-card" style={{
+  backgroundColor: 'var(--ifm-color-emphasis-50)',
+  border: '1px solid var(--ifm-color-emphasis-200)',
+  borderRadius: '6px',
+  padding: '1rem'
+}}>
+
+**Off-Chain Index**
+- Eventually consistent
+- Reorg handling
+- Checkpoint recovery
+- Continuous validation
+
+</div>
+
+<div className="uniform-card" style={{
+  backgroundColor: 'var(--ifm-color-emphasis-50)',
+  border: '1px solid var(--ifm-color-emphasis-200)',
+  borderRadius: '6px',
+  padding: '1rem'
+}}>
+
+**API Layer**
+- Multi-level caching
+- Stale-while-revalidate
+- Real-time updates
+- Versioned responses
+
+</div>
+
+</div>
+
+## Handling Chain Reorganizations
+
+When the blockchain reorganizes (reorgs), the Subnet handles it gracefully:
+
+1. **Detection** - Monitor for block hash mismatches
+2. **Rollback** - Revert database to last confirmed state
+3. **Reprocess** - Re-index blocks from reorganization point
+4. **Validation** - Verify consistency with new chain state
+5. **Notification** - Alert subscribers of affected data
+
+## Real-Time Updates
+
+### WebSocket Subscriptions
+
+```typescript
+// Subscribe to real-time updates
+const subscription = await client.subscribe({
+  query: gql`
+    subscription OnAtomUpdate($id: ID!) {
+      atomUpdated(id: $id) {
+        signal
+        vault {
+          totalStaked
+          sharePrice
+        }
+        lastActivity
+      }
+    }
+  `,
+  variables: { id: atomId }
+});
+
+subscription.on('data', (data) => {
+  console.log('Atom updated:', data);
+  updateUI(data);
+});
+```
+
+## Performance Characteristics
+
+| Operation | Latency | Throughput |
+|-----------|---------|------------|
+| Transaction confirmation | ~250ms | 10,000+ TPS |
+| Event indexing | ~500ms | 20,000+ events/sec |
+| Data resolution | ~1s | 5,000+ items/sec |
+| GraphQL query | ~50ms | 10,000+ queries/sec |
+| WebSocket update | ~100ms | Real-time |
+
+## Next Steps
+
+<div className="economic-grid">
+
+<div className="uniform-card" style={{
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '6px',
+  padding: '1rem',
+  backgroundColor: 'var(--ifm-background-color)'
+}}>
+
+**[Performance Optimizations](./performance)** - Learn optimization strategies
+
+</div>
+
+<div className="uniform-card" style={{
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '6px',
+  padding: '1rem',
+  backgroundColor: 'var(--ifm-background-color)'
+}}>
+
+**[Development Patterns](./development-patterns)** - Best practices for building
+
+</div>
+
+</div>

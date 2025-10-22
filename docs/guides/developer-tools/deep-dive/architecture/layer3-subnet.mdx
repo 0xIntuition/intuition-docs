@@ -1,0 +1,349 @@
+---
+id: layer3-subnet
+title: Layer 3 - Rust Subnet
+sidebar_label: Layer 3 - Rust Subnet
+sidebar_position: 4
+description: Deep dive into Intuition's off-chain Rust infrastructure
+---
+
+# Layer 3: Rust Subnet (Off-Chain Infrastructure)
+
+## Overview
+
+The Rust Subnet is Intuition's high-performance off-chain infrastructure that indexes on-chain state, resolves off-chain data references, and serves the unified knowledge graph through APIs.
+
+:::tip **Why Rust?**
+
+The Subnet is built in Rust for maximum performance and reliability:
+- **Memory safety** without garbage collection
+- **Concurrent processing** for parallel indexing
+- **Zero-cost abstractions** for efficient data structures
+- **WebAssembly compatibility** for edge deployment
+:::
+
+## Core Components
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+  gap: '1.5rem',
+  margin: '2rem 0'
+}}>
+
+<div style={{
+  backgroundColor: 'var(--ifm-background-color)',
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '8px',
+  padding: '1.5rem'
+}}>
+
+### **Event Processing Pipeline**
+
+Processes blockchain events through multiple stages:
+
+```rust
+// Consumer modes for different processing stages
+pub enum ConsumerMode {
+    Raw(RawConsumerContext),           // Raw event ingestion
+    Decoded(DecodedConsumerContext),   // Event decoding
+    Resolver(ResolverConsumerContext), // Data resolution
+}
+
+impl ConsumerMode {
+    pub async fn process_message(&self, message: String) -> Result<(), ConsumerError> {
+        match self {
+            ConsumerMode::Raw(context) => {
+                self.raw_message_store_and_relay(message, context).await
+            }
+            ConsumerMode::Decoded(context) => {
+                self.handle_decoded_message(message, context).await
+            }
+            ConsumerMode::Resolver(context) => {
+                self.handle_resolved_message(message, context).await
+            }
+        }
+    }
+}
+```
+
+- Real-time event processing through SQS queues
+- Multi-stage pipeline (Raw → Decoded → Resolved)
+- Chain reorganization handling
+- Parallel processing across consumers
+
+</div>
+
+<div style={{
+  backgroundColor: 'var(--ifm-background-color)',
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '8px',
+  padding: '1.5rem'
+}}>
+
+### **Data Resolver**
+
+Resolves and enriches on-chain references with off-chain data:
+
+```rust
+pub struct ResolverConsumerContext {
+    pub client: Arc<dyn BasicConsumer>,
+    pub image_guard_url: String,
+    pub ipfs_resolver: IPFSResolver,
+    pub mainnet_client: Arc<ENSRegistryInstance<Http<Client>, RootProvider<Http<Client>>>>,
+    pub pg_pool: PgPool,
+    pub reqwest_client: reqwest::Client,
+}
+
+impl ResolverConsumerContext {
+    pub async fn resolve_atom_data(&self, atom_uri: &str) -> Result<ResolvedData, ConsumerError> {
+        match atom_uri {
+            uri if uri.starts_with("ipfs://") => {
+                self.ipfs_resolver.fetch_content(uri).await
+            }
+            uri if uri.starts_with("http") => {
+                self.reqwest_client.get(uri).send().await?.json().await
+            }
+            addr if is_ethereum_address(addr) => {
+                self.resolve_ens_name(addr).await
+            }
+        }
+    }
+}
+```
+
+- IPFS content resolution via Pinata
+- HTTP/HTTPS metadata fetching
+- ENS name resolution on mainnet
+- Image validation through image-guard service
+
+</div>
+
+<div style={{
+  backgroundColor: 'var(--ifm-background-color)',
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '8px',
+  padding: '1.5rem'
+}}>
+
+### **Database Integration**
+
+Processes and stores structured data for API consumption:
+
+```rust
+pub struct DecodedConsumerContext {
+    pub base_client: Arc<EthMultiVaultInstance<Http<Client>, RootProvider<Http<Client>>>>,
+    pub pg_pool: PgPool,
+    pub backend_schema: String,
+}
+
+impl DecodedConsumerContext {
+    pub async fn handle_decoded_message(&self, message: DecodedMessage) -> Result<(), ConsumerError> {
+        match &message.body {
+            EthMultiVaultEvents::AtomCreated(atom_data) => {
+                atom_data.handle_atom_creation(self, &message).await?;
+            }
+            EthMultiVaultEvents::TripleCreated(triple_data) => {
+                triple_data.handle_triple_creation(self, &message).await?;
+            }
+            EthMultiVaultEvents::Deposited(deposit_data) => {
+                deposit_data.handle_deposit_creation(self, &message).await?;
+            }
+        }
+        Ok(())
+    }
+}
+```
+
+- PostgreSQL with Hasura GraphQL layer
+- Real-time event storage and indexing
+- Complex relationship mapping
+- Optimized queries with database migrations
+
+</div>
+
+</div>
+
+## Data Pipeline
+
+The Subnet implements a sophisticated data pipeline:
+
+import BrowserOnly from '@docusaurus/BrowserOnly';
+import ExcalidrawViewer from '@site/src/components/ExcalidrawViewer';
+
+<BrowserOnly fallback={<p>Loading diagram...</p>}>
+  {() => <ExcalidrawViewer src="/excalidraw/data-papeline.excalidraw.json" zoom={0.5} scrollX={-1250} scrollY={150} />}
+</BrowserOnly>
+
+### Pipeline Stages
+
+1. **Raw Event Ingestion** - Events captured from blockchain
+2. **Event Decoding** - ABI decoding and validation
+3. **Data Resolution** - Fetching off-chain metadata
+4. **Database Storage** - Persisting to PostgreSQL
+5. **GraphQL Serving** - Exposing through Hasura
+
+## API Layer
+
+The Subnet exposes multiple API interfaces:
+
+<div className="economic-grid">
+
+<div className="uniform-card" style={{
+  backgroundColor: 'var(--ifm-color-emphasis-50)',
+  border: '1px solid var(--ifm-color-emphasis-200)',
+  borderRadius: '6px',
+  padding: '1rem'
+}}>
+
+**GraphQL API**
+```graphql
+query GetAtomWithTriples {
+  atom(id: "123") {
+    uri
+    vault {
+      totalStaked
+      sharePrice
+    }
+    triplesAsSubject {
+      predicate { uri }
+      object { uri }
+      signal
+    }
+  }
+}
+```
+
+</div>
+
+<div className="uniform-card" style={{
+  backgroundColor: 'var(--ifm-color-emphasis-50)',
+  border: '1px solid var(--ifm-color-emphasis-200)',
+  borderRadius: '6px',
+  padding: '1rem'
+}}>
+
+**REST API**
+```http
+GET /api/v1/atoms/123
+GET /api/v1/triples?subject=123
+POST /api/v1/search
+WebSocket /ws/subscriptions
+```
+
+</div>
+
+<div className="uniform-card" style={{
+  backgroundColor: 'var(--ifm-color-emphasis-50)',
+  border: '1px solid var(--ifm-color-emphasis-200)',
+  borderRadius: '6px',
+  padding: '1rem'
+}}>
+
+**Real-time Subscriptions**
+```typescript
+subscription OnAtomUpdate {
+  atomUpdated(id: "123") {
+    signal
+    lastActivity
+    vaultBalance
+  }
+}
+```
+
+</div>
+
+</div>
+
+## Infrastructure Components
+
+<div className="economic-grid">
+
+<div className="uniform-card" style={{
+  backgroundColor: 'var(--ifm-background-color)',
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '8px',
+  padding: '1rem'
+}}>
+
+**Event Queue**
+- AWS SQS for reliability
+- Dead letter queues
+- Retry mechanisms
+- Backpressure handling
+
+</div>
+
+<div className="uniform-card" style={{
+  backgroundColor: 'var(--ifm-background-color)',
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '8px',
+  padding: '1rem'
+}}>
+
+**Data Storage**
+- PostgreSQL for structured data
+- Redis for caching
+- IPFS for content
+- S3 for backups
+
+</div>
+
+<div className="uniform-card" style={{
+  backgroundColor: 'var(--ifm-background-color)',
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '8px',
+  padding: '1rem'
+}}>
+
+**API Gateway**
+- Hasura GraphQL engine
+- REST endpoints
+- WebSocket support
+- Authentication layer
+
+</div>
+
+</div>
+
+## Running a Subnet Node
+
+Want to run your own indexer node? See our guide:
+
+<div className="uniform-card" style={{
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '6px',
+  padding: '1rem',
+  backgroundColor: 'var(--ifm-background-color)'
+}}>
+
+**[Run an Intuition Node](/docs/run-node/run-an-intuition-node)** - Setup and configuration guide
+
+</div>
+
+## Next Steps
+
+<div className="economic-grid">
+
+<div className="uniform-card" style={{
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '6px',
+  padding: '1rem',
+  backgroundColor: 'var(--ifm-background-color)'
+}}>
+
+**[GraphQL API](/docs/developer-tools/graphql-api/overview)** - Query the knowledge graph
+
+</div>
+
+<div className="uniform-card" style={{
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '6px',
+  padding: '1rem',
+  backgroundColor: 'var(--ifm-background-color)'
+}}>
+
+**[Data Flow](./data-flow)** - Understand data flow through layers
+
+</div>
+
+</div>

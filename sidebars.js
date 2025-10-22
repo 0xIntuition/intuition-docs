@@ -7,7 +7,21 @@ module.exports = {
         'introduction/overview',
         'introduction/why-intuition',
         'introduction/the-economics/the-economics',
-        'developer-tools/deep-dive/architecture',
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Architecture',
+      items: [
+        'developer-tools/deep-dive/architecture/overview',
+        'developer-tools/deep-dive/architecture/layer1-network',
+        'developer-tools/deep-dive/architecture/layer2-protocol',
+        'developer-tools/deep-dive/architecture/layer3-subnet',
+        'developer-tools/deep-dive/architecture/data-flow',
+        'developer-tools/deep-dive/architecture/performance',
+        'developer-tools/deep-dive/architecture/security',
+        'developer-tools/deep-dive/architecture/development-patterns',
+        'developer-tools/deep-dive/architecture/deployment',
       ],
     },
     {

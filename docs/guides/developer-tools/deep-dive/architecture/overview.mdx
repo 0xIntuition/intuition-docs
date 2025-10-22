@@ -1,0 +1,176 @@
+---
+id: overview
+title: Architecture Overview
+sidebar_label: Overview
+sidebar_position: 1
+description: High-level overview of Intuition's three-layer architecture - Network, Protocol, and Subnet
+---
+
+# Architecture Overview
+
+Intuition's architecture consists of three tightly integrated layers that work together to create a high-performance, decentralized knowledge graph. This document provides an overview of each layer and how they interconnect.
+
+<div style={{
+  backgroundColor: 'var(--ifm-color-emphasis-100)',
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '8px',
+  padding: '1.5rem',
+  margin: '2rem 0',
+  borderLeft: '4px solid var(--ifm-color-primary)'
+}}>
+
+![Intuition System Overview](/img/intuition-intro.png)
+
+Intuition's architecture is designed for **speed**, **scale**, and **interoperability**. By separating concerns across three specialized layers, we achieve optimal performance while maintaining decentralization and cross-chain compatibility.
+
+</div>
+
+import BrowserOnly from '@docusaurus/BrowserOnly';
+import ExcalidrawViewer from '@site/src/components/ExcalidrawViewer';
+
+<BrowserOnly fallback={<p>Loading diagram...</p>}>
+  {() => <ExcalidrawViewer src="/excalidraw/architecture-overview.excalidraw.json" zoom={0.3} scrollX={-800} scrollY={200} />}
+</BrowserOnly>
+
+## The Three Layers
+
+### Layer 1: Intuition Network (Base L3)
+
+The Intuition Network is an **EVM-compatible Layer 3** built on Base using the Orbit stack. This provides the ultra-fast, low-cost transaction environment essential for high-frequency knowledge graph operations.
+
+**Key Features:**
+- Sub-cent transaction costs
+- Sub-second finality
+- Massive throughput (10,000+ TPS)
+- EVM compatibility
+
+[Learn more about Layer 1 →](./layer1-network)
+
+### Layer 2: Intuition Protocol (On-Chain Logic)
+
+The Intuition Protocol implements all on-chain logic for the knowledge graph through a suite of smart contracts. This is where atoms are created, triples are formed, and economic incentives are enforced.
+
+**Key Components:**
+- EthMultiVault for vault operations
+- AtomWallet for knowledge graph primitives
+- Bonding curves for price discovery
+- Fee distribution mechanics
+
+[Learn more about Layer 2 →](./layer2-protocol)
+
+### Layer 3: Rust Subnet (Off-Chain Infrastructure)
+
+The Rust Subnet is Intuition's high-performance off-chain infrastructure that indexes on-chain state, resolves off-chain data references, and serves the unified knowledge graph through APIs.
+
+**Key Components:**
+- Event processing pipeline
+- Data resolver
+- Database integration
+- GraphQL and REST APIs
+
+[Learn more about Layer 3 →](./layer3-subnet)
+
+## Why This Architecture?
+
+This three-layer design provides several critical advantages:
+
+<div className="economic-grid">
+
+<div className="uniform-card" style={{
+  backgroundColor: 'var(--ifm-color-emphasis-50)',
+  border: '1px solid var(--ifm-color-emphasis-200)',
+  borderRadius: '6px',
+  padding: '1rem'
+}}>
+
+**Performance**
+- Ultra-fast transactions
+- High throughput
+- Low latency
+- Efficient data access
+
+</div>
+
+<div className="uniform-card" style={{
+  backgroundColor: 'var(--ifm-color-emphasis-50)',
+  border: '1px solid var(--ifm-color-emphasis-200)',
+  borderRadius: '6px',
+  padding: '1rem'
+}}>
+
+**Scalability**
+- Horizontal scaling
+- Parallel processing
+- Efficient indexing
+- Multi-region deployment
+
+</div>
+
+<div className="uniform-card" style={{
+  backgroundColor: 'var(--ifm-color-emphasis-50)',
+  border: '1px solid var(--ifm-color-emphasis-200)',
+  borderRadius: '6px',
+  padding: '1rem'
+}}>
+
+**Decentralization**
+- On-chain state
+- Permissionless access
+- Cross-chain compatibility
+- Open protocols
+
+</div>
+
+</div>
+
+## Next Steps
+
+Explore each layer in detail:
+
+<div className="economic-grid">
+
+<div className="uniform-card" style={{
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '6px',
+  padding: '1rem',
+  backgroundColor: 'var(--ifm-background-color)'
+}}>
+
+**[Layer 1: Network](./layer1-network)** - Deep dive into the L3 infrastructure
+
+</div>
+
+<div className="uniform-card" style={{
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '6px',
+  padding: '1rem',
+  backgroundColor: 'var(--ifm-background-color)'
+}}>
+
+**[Layer 2: Protocol](./layer2-protocol)** - Explore smart contracts
+
+</div>
+
+<div className="uniform-card" style={{
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '6px',
+  padding: '1rem',
+  backgroundColor: 'var(--ifm-background-color)'
+}}>
+
+**[Layer 3: Subnet](./layer3-subnet)** - Understand off-chain infrastructure
+
+</div>
+
+<div className="uniform-card" style={{
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '6px',
+  padding: '1rem',
+  backgroundColor: 'var(--ifm-background-color)'
+}}>
+
+**[Data Flow](./data-flow)** - Learn how data flows through the system
+
+</div>
+
+</div>

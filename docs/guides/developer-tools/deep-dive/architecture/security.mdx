@@ -1,0 +1,480 @@
+---
+id: security
+title: Security Architecture
+sidebar_label: Security Architecture
+sidebar_position: 7
+description: Security measures and best practices across Intuition's architecture
+---
+
+# Security Architecture
+
+## Overview
+
+Security is paramount in Intuition's design. This page covers the security measures implemented across all three layers and best practices for developers building on the platform.
+
+## Smart Contract Security
+
+### Audited Contracts
+
+All core contracts have been audited by leading security firms:
+
+<div className="economic-grid">
+
+<div className="uniform-card" style={{
+  backgroundColor: 'var(--ifm-background-color)',
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '8px',
+  padding: '1rem'
+}}>
+
+**Security Audits**
+- Multiple independent audits
+- Continuous security reviews
+- Bug bounty program
+- Public audit reports
+
+</div>
+
+<div className="uniform-card" style={{
+  backgroundColor: 'var(--ifm-background-color)',
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '8px',
+  padding: '1rem'
+}}>
+
+**Testing Coverage**
+- 100% code coverage
+- Fuzzing tests
+- Integration tests
+- Formal verification
+
+</div>
+
+<div className="uniform-card" style={{
+  backgroundColor: 'var(--ifm-background-color)',
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '8px',
+  padding: '1rem'
+}}>
+
+**Monitoring**
+- Real-time alerts
+- Anomaly detection
+- Transaction monitoring
+- Security dashboards
+
+</div>
+
+</div>
+
+**[View Audit Reports](/docs/developer-tools/audit-reports)** - Access complete security audit documentation
+
+### Upgradeable Proxies
+
+Smart contracts use a secure upgrade pattern:
+
+```solidity
+// Proxy pattern with time-locked upgrades
+contract IntuitionProxy {
+    address public implementation;
+    address public admin;
+    uint256 public upgradeDelay = 2 days;
+
+    mapping(address => uint256) public pendingUpgrades;
+
+    function proposeUpgrade(address newImplementation) external onlyAdmin {
+        require(newImplementation != address(0), "Invalid address");
+        pendingUpgrades[newImplementation] = block.timestamp + upgradeDelay;
+        emit UpgradeProposed(newImplementation, block.timestamp + upgradeDelay);
+    }
+
+    function executeUpgrade(address newImplementation) external onlyAdmin {
+        require(
+            pendingUpgrades[newImplementation] != 0 &&
+            block.timestamp >= pendingUpgrades[newImplementation],
+            "Upgrade not ready"
+        );
+
+        implementation = newImplementation;
+        delete pendingUpgrades[newImplementation];
+        emit UpgradeExecuted(newImplementation);
+    }
+}
+```
+
+### Rate Limiting
+
+Protection against spam and DOS attacks:
+
+```solidity
+contract RateLimiter {
+    mapping(address => uint256) public lastAction;
+    uint256 public constant MIN_DELAY = 1 seconds;
+
+    modifier rateLimit() {
+        require(
+            block.timestamp >= lastAction[msg.sender] + MIN_DELAY,
+            "Rate limit exceeded"
+        );
+        lastAction[msg.sender] = block.timestamp;
+        _;
+    }
+
+    function createAtom(string memory uri) external rateLimit {
+        // ... atom creation logic
+    }
+}
+```
+
+### Emergency Pause
+
+Circuit breaker for critical situations:
+
+```solidity
+contract EmergencyPause {
+    bool public paused;
+    address public guardian;
+
+    modifier whenNotPaused() {
+        require(!paused, "Contract paused");
+        _;
+    }
+
+    function pause() external onlyGuardian {
+        paused = true;
+        emit Paused(msg.sender);
+    }
+
+    function unpause() external onlyGuardian {
+        paused = false;
+        emit Unpaused(msg.sender);
+    }
+}
+```
+
+## Network Security
+
+### Validator Security
+
+<div className="economic-grid">
+
+<div className="uniform-card" style={{
+  backgroundColor: 'var(--ifm-color-emphasis-50)',
+  border: '1px solid var(--ifm-color-emphasis-200)',
+  borderRadius: '6px',
+  padding: '1rem'
+}}>
+
+**Consensus Protection**
+- Fraud proof system
+- Challenge periods
+- Validator incentives
+- Slashing conditions
+
+</div>
+
+<div className="uniform-card" style={{
+  backgroundColor: 'var(--ifm-color-emphasis-50)',
+  border: '1px solid var(--ifm-color-emphasis-200)',
+  borderRadius: '6px',
+  padding: '1rem'
+}}>
+
+**Network Monitoring**
+- Block production tracking
+- Validator performance
+- Network health metrics
+- Alert systems
+
+</div>
+
+<div className="uniform-card" style={{
+  backgroundColor: 'var(--ifm-color-emphasis-50)',
+  border: '1px solid var(--ifm-color-emphasis-200)',
+  borderRadius: '6px',
+  padding: '1rem'
+}}>
+
+**Infrastructure Security**
+- DDoS protection
+- Rate limiting
+- Geographic distribution
+- Redundancy
+
+</div>
+
+</div>
+
+### Bridge Security
+
+Cross-chain bridge security measures:
+
+- **Time delays** on large transfers
+- **Multi-signature** validation
+- **Transfer limits** per transaction
+- **Monitoring** for anomalies
+- **Emergency shutdown** capability
+
+## API Security
+
+### Authentication
+
+```typescript
+// JWT-based authentication
+const authenticateRequest = async (req: Request) => {
+  const token = req.headers.authorization?.split(' ')[1];
+
+  if (!token) {
+    throw new Error('No token provided');
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    return decoded.userId;
+  } catch (error) {
+    throw new Error('Invalid token');
+  }
+};
+```
+
+### Rate Limiting
+
+API rate limits per tier:
+
+| Tier | Requests/minute | Burst |
+|------|----------------|-------|
+| Free | 60 | 10 |
+| Developer | 600 | 100 |
+| Business | 6000 | 1000 |
+| Enterprise | Custom | Custom |
+
+### Input Validation
+
+```typescript
+// Validate and sanitize inputs
+const validateAtomId = (id: string): number => {
+  const parsed = parseInt(id, 10);
+
+  if (isNaN(parsed) || parsed < 0) {
+    throw new Error('Invalid atom ID');
+  }
+
+  return parsed;
+};
+
+const sanitizeUri = (uri: string): string => {
+  // Validate URI format
+  if (!uri.match(/^(ipfs|https?):\/\/.+/)) {
+    throw new Error('Invalid URI format');
+  }
+
+  // Prevent injection attacks
+  return uri.replace(/[<>\"']/g, '');
+};
+```
+
+### DDoS Protection
+
+Multiple layers of DDoS protection:
+
+1. **CDN edge protection** - Cloudflare/AWS Shield
+2. **Rate limiting** - API gateway throttling
+3. **Connection limits** - Per-IP restrictions
+4. **Request validation** - Malformed request rejection
+5. **Geographic filtering** - Optional region restrictions
+
+## Data Integrity
+
+### Merkle Proofs
+
+On-chain data can be verified using Merkle proofs:
+
+```solidity
+function verifyAtomExists(
+    uint256 atomId,
+    bytes32[] calldata proof,
+    bytes32 root
+) public pure returns (bool) {
+    bytes32 leaf = keccak256(abi.encodePacked(atomId));
+    return MerkleProof.verify(proof, root, leaf);
+}
+```
+
+### IPFS Content Addressing
+
+Immutable content references:
+
+```typescript
+// IPFS CID ensures content integrity
+const storeOnIPFS = async (data: any) => {
+  const cid = await ipfs.add(JSON.stringify(data));
+  // CID is cryptographic hash of content
+  return `ipfs://${cid}`;
+};
+
+const verifyContent = async (uri: string, expectedData: any) => {
+  const content = await ipfs.cat(uri.replace('ipfs://', ''));
+  const data = JSON.parse(content);
+
+  // Content is verified by IPFS CID
+  return JSON.stringify(data) === JSON.stringify(expectedData);
+};
+```
+
+### Signature Verification
+
+Verify attestations and signatures:
+
+```typescript
+import { verifyMessage } from 'ethers';
+
+const verifyAttestation = (
+  atomId: number,
+  signature: string,
+  expectedSigner: string
+): boolean => {
+  const message = `Attesting to atom ${atomId}`;
+  const signer = verifyMessage(message, signature);
+
+  return signer.toLowerCase() === expectedSigner.toLowerCase();
+};
+```
+
+### Consensus Validation
+
+Subnet nodes validate data against blockchain:
+
+```rust
+pub async fn validate_indexed_state(
+    block_number: u64,
+    indexed_state: &IndexedState,
+    rpc_client: &RpcClient
+) -> Result<bool, ValidationError> {
+    // Fetch state root from blockchain
+    let state_root = rpc_client
+        .get_state_root(block_number)
+        .await?;
+
+    // Compute state root from indexed data
+    let computed_root = compute_state_root(indexed_state);
+
+    // Verify consistency
+    if state_root != computed_root {
+        return Err(ValidationError::StateRootMismatch);
+    }
+
+    Ok(true)
+}
+```
+
+## Privacy Considerations
+
+### Data Visibility
+
+- **On-chain data** is fully public
+- **IPFS content** is publicly accessible
+- **Private keys** never leave client
+- **API keys** are encrypted at rest
+
+### Best Practices for Developers
+
+:::warning **Privacy Guidelines**
+
+1. **Never store** sensitive data on-chain
+2. **Use encryption** for private content before IPFS
+3. **Rotate API keys** regularly
+4. **Implement** proper access controls
+5. **Audit** third-party dependencies
+6. **Monitor** for security updates
+:::
+
+## Incident Response
+
+### Security Monitoring
+
+Continuous monitoring for:
+
+- Unusual transaction patterns
+- Contract exploit attempts
+- API abuse
+- Infrastructure anomalies
+- Unauthorized access attempts
+
+### Emergency Procedures
+
+In case of security incident:
+
+1. **Detection** - Automated alerts and monitoring
+2. **Assessment** - Rapid threat evaluation
+3. **Containment** - Emergency pause if needed
+4. **Resolution** - Fix and deploy updates
+5. **Communication** - Transparent user notification
+6. **Post-mortem** - Incident analysis and improvements
+
+## Security Checklist for Developers
+
+:::tip **Development Security Checklist**
+
+**Smart Contracts:**
+- [ ] Test all edge cases
+- [ ] Implement access controls
+- [ ] Use latest compiler version
+- [ ] Follow checks-effects-interactions
+- [ ] Avoid delegatecall to untrusted contracts
+
+**Applications:**
+- [ ] Validate all user inputs
+- [ ] Sanitize data before display
+- [ ] Use secure dependencies
+- [ ] Implement rate limiting
+- [ ] Store API keys securely
+- [ ] Use HTTPS everywhere
+- [ ] Implement proper error handling
+- [ ] Log security events
+
+**Infrastructure:**
+- [ ] Keep systems updated
+- [ ] Use strong authentication
+- [ ] Enable monitoring and alerts
+- [ ] Implement backup procedures
+- [ ] Use firewalls and access controls
+:::
+
+## Reporting Security Issues
+
+Found a security vulnerability? Please report it responsibly:
+
+**[Report Security Issue](https://github.com/0xIntuition/intuition-ts/security/advisories/new)** - Submit security advisories
+
+- Do not disclose publicly until fixed
+- Provide detailed reproduction steps
+- Include potential impact assessment
+- Eligible for bug bounty rewards
+
+## Next Steps
+
+<div className="economic-grid">
+
+<div className="uniform-card" style={{
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '6px',
+  padding: '1rem',
+  backgroundColor: 'var(--ifm-background-color)'
+}}>
+
+**[Audit Reports](/docs/developer-tools/audit-reports)** - Review security audits
+
+</div>
+
+<div className="uniform-card" style={{
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '6px',
+  padding: '1rem',
+  backgroundColor: 'var(--ifm-background-color)'
+}}>
+
+**[Development Patterns](./development-patterns)** - Learn best practices
+
+</div>
+
+</div>

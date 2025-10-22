@@ -1,0 +1,211 @@
+---
+id: layer1-network
+title: Layer 1 - Intuition Network
+sidebar_label: Layer 1 - Intuition Network
+sidebar_position: 2
+description: Deep dive into Intuition's Layer 3 Network built on Base
+---
+
+# Layer 1: Intuition Network (Base L3)
+
+## Overview
+
+The Intuition Network is an **EVM-compatible Layer 3** built on Base using the Orbit stack. This provides the ultra-fast, low-cost transaction environment essential for high-frequency knowledge graph operations.
+
+:::info Why Layer 3?
+
+Traditional L1s and even L2s are too expensive and slow for the granular operations required by a knowledge graph. Every atom creation, triple attestation, and signal update needs to be economically viable. The L3 architecture provides:
+
+- **Sub-cent transaction costs** - Making micro-attestations economically feasible
+- **Sub-second finality** - Enabling real-time knowledge graph updates
+- **Massive throughput** - Supporting millions of daily knowledge operations
+- **EVM compatibility** - Leveraging existing tooling and developer knowledge
+:::
+
+## Technical Specifications
+
+<div className="tech-specs-grid">
+
+<div className="uniform-card" style={{
+  backgroundColor: 'var(--ifm-background-color)',
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '8px',
+  padding: '1rem'
+}}>
+
+**Performance**
+- Block time: ~250ms
+- Transaction throughput: 10,000+ TPS
+- Finality: < 1 second
+- Gas costs: < $0.001 per tx
+
+</div>
+
+<div className="uniform-card" style={{
+  backgroundColor: 'var(--ifm-background-color)',
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '8px',
+  padding: '1rem'
+}}>
+
+**Stack Components**
+- **Base Layer**: Orbit framework on Base
+- **Consensus**: Optimistic rollup with fraud proofs
+- **Execution**: EVM-compatible runtime
+- **Data Availability**: Base for settlement
+
+</div>
+
+<div className="uniform-card" style={{
+  backgroundColor: 'var(--ifm-background-color)',
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '8px',
+  padding: '1rem'
+}}>
+
+**Interoperability**
+- **Metalayer**: Cross-chain messaging protocol
+- **Metatoken**: Unified token standard
+- **Bridge**: Native Base ↔ L3 bridge
+- **Standards**: ERC-1155, ERC-4626, ERC-4337
+
+</div>
+
+</div>
+
+## Cross-Chain Interoperability
+
+The Network leverages **Caldera's Metalayer and Metatoken standards** for seamless cross-chain operations:
+
+```solidity
+// Example: Cross-chain atom reference
+interface IMetalayerBridge {
+    function attestCrossChain(
+        uint256 chainId,
+        uint256 atomId,
+        bytes calldata data
+    ) external returns (bytes32 messageId);
+
+    function resolveAtom(
+        uint256 chainId,
+        uint256 atomId
+    ) external view returns (string memory uri);
+}
+```
+
+This enables atoms and triples to reference data across any supported chain, creating a truly interoperable knowledge graph.
+
+## Network Architecture
+
+The Intuition Network is designed with redundancy and performance in mind:
+
+### Node Infrastructure
+
+- **Validator Nodes**: Distributed globally for decentralization
+- **RPC Nodes**: Multi-region endpoints for low latency
+- **Archive Nodes**: Full historical data for indexing
+- **Light Clients**: Verification without full node requirements
+
+### Consensus Mechanism
+
+The network uses an optimistic rollup model:
+
+1. **Transactions submitted** to the sequencer
+2. **Batch processing** for efficiency
+3. **State roots posted** to Base L2
+4. **Challenge period** for fraud proofs
+5. **Finalization** after challenge window
+
+## Network Characteristics
+
+<div className="economic-grid">
+
+<div className="uniform-card" style={{
+  backgroundColor: 'var(--ifm-color-emphasis-50)',
+  border: '1px solid var(--ifm-color-emphasis-200)',
+  borderRadius: '6px',
+  padding: '1rem'
+}}>
+
+**Economic Model**
+- Native gas token
+- Bridge from Base
+- Dynamic gas pricing
+- Fee burning mechanism
+
+</div>
+
+<div className="uniform-card" style={{
+  backgroundColor: 'var(--ifm-color-emphasis-50)',
+  border: '1px solid var(--ifm-color-emphasis-200)',
+  borderRadius: '6px',
+  padding: '1rem'
+}}>
+
+**Security Model**
+- Inherits Base security
+- Fraud proof system
+- Validator incentives
+- Slashing conditions
+
+</div>
+
+<div className="uniform-card" style={{
+  backgroundColor: 'var(--ifm-color-emphasis-50)',
+  border: '1px solid var(--ifm-color-emphasis-200)',
+  borderRadius: '6px',
+  padding: '1rem'
+}}>
+
+**Developer Tools**
+- Standard EVM tooling
+- Compatible with Web3.js
+- Ethers.js support
+- Hardhat & Foundry
+
+</div>
+
+</div>
+
+## Network Endpoints
+
+For information about connecting to the Intuition Network, see:
+
+<div className="uniform-card" style={{
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '6px',
+  padding: '1rem',
+  backgroundColor: 'var(--ifm-background-color)'
+}}>
+
+**[Network Information](/docs/network/network)** - RPC endpoints, chain IDs, and connection details
+
+</div>
+
+## Next Steps
+
+<div className="economic-grid">
+
+<div className="uniform-card" style={{
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '6px',
+  padding: '1rem',
+  backgroundColor: 'var(--ifm-background-color)'
+}}>
+
+**[Layer 2: Protocol](./layer2-protocol)** - Explore the smart contracts
+
+</div>
+
+<div className="uniform-card" style={{
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '6px',
+  padding: '1rem',
+  backgroundColor: 'var(--ifm-background-color)'
+}}>
+
+**[Deployment Info](/docs/developer-tools/contracts/deployments)** - Contract addresses
+
+</div>
+
+</div>

@@ -1,0 +1,621 @@
+---
+id: development-patterns
+title: Development Patterns
+sidebar_label: Development Patterns
+sidebar_position: 8
+description: Best practices and patterns for building on Intuition
+---
+
+# Development Patterns
+
+## Overview
+
+This page provides recommended patterns and best practices for developers building on Intuition. Following these patterns will help you create more efficient, maintainable, and reliable applications.
+
+## Recommended Integration Flow
+
+:::tip **Integration Best Practices**
+
+For developers building on Intuition, we recommend:
+
+1. **Use the TypeScript SDK** for all contract interactions
+2. **Query via GraphQL** for complex data needs
+3. **Subscribe to WebSockets** for real-time updates
+4. **Cache aggressively** at the application layer
+5. **Batch operations** when possible to reduce costs
+:::
+
+## Creating and Querying Atoms
+
+### Using the SDK
+
+```typescript
+import { IntuitionClient } from '@0xintuition/sdk';
+import { parseEther } from 'ethers';
+
+// Initialize the client
+const intuition = new IntuitionClient({
+  network: 'base-sepolia',
+  privateKey: process.env.PRIVATE_KEY
+});
+
+// Create an atom
+const atom = await intuition.createAtom({
+  uri: 'ipfs://QmXoypizjW3WknFiJnKLwHCnL72vedxjQkDDP1mXWo6uco'
+});
+
+console.log(`Atom created with ID: ${atom.id}`);
+
+// Stake on the atom
+const tx = await intuition.stake(atom.id, parseEther('100'));
+await tx.wait();
+
+console.log(`Staked on atom ${atom.id}`);
+```
+
+### Querying via GraphQL
+
+```typescript
+import { gql, GraphQLClient } from 'graphql-request';
+
+const client = new GraphQLClient('https://api.intuition.systems/graphql');
+
+// Query atom with related data
+const query = gql`
+  query GetAtom($id: ID!) {
+    atom(id: $id) {
+      id
+      uri
+      creator {
+        address
+        label
+      }
+      vault {
+        totalStaked
+        totalShares
+        sharePrice
+        holders
+      }
+      triplesAsSubject {
+        id
+        predicate { uri }
+        object { uri }
+        signal
+      }
+      signal
+      createdAt
+    }
+  }
+`;
+
+const data = await client.request(query, { id: atom.id });
+console.log(data);
+```
+
+## Working with Triples
+
+### Creating Relationships
+
+```typescript
+// Create a triple: "Alice" -> "knows" -> "Bob"
+const triple = await intuition.createTriple({
+  subjectId: aliceAtomId,
+  predicateId: knowsAtomId,
+  objectId: bobAtomId
+});
+
+// Signal positive conviction
+await intuition.depositTriple(
+  triple.id,
+  parseEther('50'),
+  true // positive signal
+);
+
+// Signal negative conviction
+await intuition.depositTriple(
+  triple.id,
+  parseEther('25'),
+  false // negative signal
+);
+```
+
+### Querying Related Knowledge
+
+```typescript
+// Find all triples where an atom is the subject
+const query = gql`
+  query GetRelatedTriples($subjectId: ID!) {
+    triples(
+      where: { subject_id: { _eq: $subjectId } }
+      order_by: { signal: desc }
+    ) {
+      id
+      predicate {
+        id
+        uri
+      }
+      object {
+        id
+        uri
+      }
+      vaultFor {
+        totalStaked
+      }
+      vaultAgainst {
+        totalStaked
+      }
+      signal
+    }
+  }
+`;
+```
+
+## Batch Operations
+
+### Creating Multiple Atoms
+
+```typescript
+// Bad: Sequential creation (expensive)
+for (const uri of uris) {
+  await intuition.createAtom({ uri });
+}
+
+// Good: Batch creation (single transaction)
+const batch = intuition.batch();
+uris.forEach(uri => batch.createAtom({ uri }));
+const results = await batch.execute();
+
+console.log(`Created ${results.length} atoms in one transaction`);
+```
+
+### Parallel Queries
+
+```typescript
+// Bad: Sequential queries
+const atom1 = await getAtom(id1);
+const atom2 = await getAtom(id2);
+const atom3 = await getAtom(id3);
+
+// Good: Parallel queries
+const [atom1, atom2, atom3] = await Promise.all([
+  getAtom(id1),
+  getAtom(id2),
+  getAtom(id3)
+]);
+```
+
+## Real-Time Updates
+
+### WebSocket Subscriptions
+
+```typescript
+import { createClient } from 'graphql-ws';
+
+const wsClient = createClient({
+  url: 'wss://api.intuition.systems/graphql'
+});
+
+// Subscribe to atom updates
+const subscription = gql`
+  subscription OnAtomUpdate($id: ID!) {
+    atomUpdated(id: $id) {
+      id
+      signal
+      vault {
+        totalStaked
+        sharePrice
+      }
+      lastActivity
+    }
+  }
+`;
+
+const unsubscribe = wsClient.subscribe(
+  {
+    query: subscription,
+    variables: { id: atomId }
+  },
+  {
+    next: (data) => {
+      console.log('Atom updated:', data);
+      updateUI(data);
+    },
+    error: (error) => {
+      console.error('Subscription error:', error);
+    },
+    complete: () => {
+      console.log('Subscription complete');
+    }
+  }
+);
+
+// Cleanup when done
+// unsubscribe();
+```
+
+## Caching Strategies
+
+### Application-Level Caching
+
+```typescript
+import { ApolloClient, InMemoryCache } from '@apollo/client';
+
+const cache = new InMemoryCache({
+  typePolicies: {
+    Atom: {
+      keyFields: ['id'],
+      fields: {
+        vault: {
+          merge(existing, incoming) {
+            return incoming;
+          }
+        }
+      }
+    },
+    Query: {
+      fields: {
+        atoms: {
+          // Cache for 5 minutes
+          read(existing, { args, toReference }) {
+            if (existing && Date.now() - existing.timestamp < 300000) {
+              return existing.data;
+            }
+          }
+        }
+      }
+    }
+  }
+});
+
+const client = new ApolloClient({
+  uri: 'https://api.intuition.systems/graphql',
+  cache
+});
+```
+
+### React Query Example
+
+```typescript
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+
+// Custom hook for atom data
+const useAtom = (atomId: string) => {
+  return useQuery({
+    queryKey: ['atom', atomId],
+    queryFn: () => fetchAtom(atomId),
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    cacheTime: 10 * 60 * 1000, // 10 minutes
+    refetchOnWindowFocus: true
+  });
+};
+
+// Prefetch related data
+const AtomDetail = ({ atomId }: { atomId: string }) => {
+  const queryClient = useQueryClient();
+  const { data: atom, isLoading } = useAtom(atomId);
+
+  // Prefetch triples when atom loads
+  useEffect(() => {
+    if (atom) {
+      queryClient.prefetchQuery({
+        queryKey: ['triples', atomId],
+        queryFn: () => fetchTriples(atomId)
+      });
+    }
+  }, [atom, atomId, queryClient]);
+
+  // ...
+};
+```
+
+## Error Handling
+
+### Transaction Error Handling
+
+```typescript
+import { ethers } from 'ethers';
+
+try {
+  const tx = await intuition.createAtom({ uri });
+  const receipt = await tx.wait();
+
+  if (receipt.status === 0) {
+    throw new Error('Transaction failed');
+  }
+
+  console.log('Atom created successfully');
+} catch (error) {
+  if (error.code === 'INSUFFICIENT_FUNDS') {
+    console.error('Insufficient balance for transaction');
+  } else if (error.code === 'UNPREDICTABLE_GAS_LIMIT') {
+    console.error('Transaction would fail - check parameters');
+  } else if (error.code === 'TRANSACTION_REPLACED') {
+    console.log('Transaction was replaced');
+    // Handle the replacement
+  } else {
+    console.error('Transaction error:', error.message);
+  }
+}
+```
+
+### API Error Handling
+
+```typescript
+const fetchAtomWithRetry = async (
+  atomId: string,
+  maxRetries = 3
+): Promise<Atom> => {
+  for (let i = 0; i < maxRetries; i++) {
+    try {
+      const data = await client.request(GET_ATOM_QUERY, { id: atomId });
+      return data.atom;
+    } catch (error) {
+      if (i === maxRetries - 1) throw error;
+
+      // Exponential backoff
+      const delay = Math.pow(2, i) * 1000;
+      await new Promise(resolve => setTimeout(resolve, delay));
+    }
+  }
+
+  throw new Error('Max retries exceeded');
+};
+```
+
+## Gas Optimization
+
+### Estimate Gas Before Sending
+
+```typescript
+// Estimate gas before transaction
+const gasEstimate = await intuition.estimateGas.createAtom({ uri });
+const gasPrice = await provider.getGasPrice();
+const estimatedCost = gasEstimate.mul(gasPrice);
+
+console.log(`Estimated cost: ${ethers.formatEther(estimatedCost)} ETH`);
+
+// Add buffer for safety
+const gasLimit = gasEstimate.mul(120).div(100); // 20% buffer
+
+const tx = await intuition.createAtom(
+  { uri },
+  { gasLimit }
+);
+```
+
+### Use Batch Operations
+
+```typescript
+// Creating multiple triples efficiently
+const batch = intuition.batch();
+
+relationships.forEach(({ subjectId, predicateId, objectId }) => {
+  batch.createTriple({ subjectId, predicateId, objectId });
+});
+
+// Single transaction for all triples
+const results = await batch.execute();
+console.log(`Created ${results.length} triples`);
+```
+
+## Testing Patterns
+
+### Unit Testing with Mocks
+
+```typescript
+import { jest } from '@jest/globals';
+
+describe('Atom Creation', () => {
+  it('should create atom and return ID', async () => {
+    const mockIntuition = {
+      createAtom: jest.fn().mockResolvedValue({
+        id: '123',
+        uri: 'ipfs://...'
+      })
+    };
+
+    const result = await mockIntuition.createAtom({
+      uri: 'ipfs://...'
+    });
+
+    expect(result.id).toBe('123');
+    expect(mockIntuition.createAtom).toHaveBeenCalledWith({
+      uri: 'ipfs://...'
+    });
+  });
+});
+```
+
+### Integration Testing
+
+```typescript
+import { IntuitionClient } from '@0xintuition/sdk';
+
+describe('Integration Tests', () => {
+  let intuition: IntuitionClient;
+
+  beforeAll(() => {
+    intuition = new IntuitionClient({
+      network: 'base-sepolia',
+      privateKey: process.env.TEST_PRIVATE_KEY
+    });
+  });
+
+  it('should create and query atom', async () => {
+    // Create atom
+    const atom = await intuition.createAtom({
+      uri: `ipfs://test-${Date.now()}`
+    });
+
+    expect(atom.id).toBeDefined();
+
+    // Query atom
+    const queried = await intuition.getAtom(atom.id);
+    expect(queried.id).toBe(atom.id);
+  });
+});
+```
+
+## Application Architecture
+
+### Recommended Structure
+
+```
+my-intuition-app/
+├── src/
+│   ├── components/         # React components
+│   ├── hooks/             # Custom hooks
+│   │   ├── useAtom.ts
+│   │   ├── useTriples.ts
+│   │   └── useIntuition.ts
+│   ├── lib/               # Utilities
+│   │   ├── intuition.ts   # SDK setup
+│   │   └── graphql.ts     # GraphQL client
+│   ├── queries/           # GraphQL queries
+│   │   ├── atoms.ts
+│   │   └── triples.ts
+│   ├── types/             # TypeScript types
+│   └── App.tsx
+├── .env                   # Environment variables
+└── package.json
+```
+
+### Custom Hooks Pattern
+
+```typescript
+// hooks/useAtom.ts
+import { useQuery } from '@tanstack/react-query';
+import { getAtom } from '../lib/intuition';
+
+export const useAtom = (atomId: string) => {
+  return useQuery({
+    queryKey: ['atom', atomId],
+    queryFn: () => getAtom(atomId),
+    enabled: !!atomId
+  });
+};
+
+// hooks/useCreateAtom.ts
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { intuition } from '../lib/intuition';
+
+export const useCreateAtom = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (uri: string) => intuition.createAtom({ uri }),
+    onSuccess: (atom) => {
+      // Invalidate and refetch
+      queryClient.invalidateQueries({ queryKey: ['atoms'] });
+      queryClient.setQueryData(['atom', atom.id], atom);
+    }
+  });
+};
+```
+
+## Common Patterns
+
+### Loading States
+
+```typescript
+const AtomDisplay = ({ atomId }: { atomId: string }) => {
+  const { data: atom, isLoading, error } = useAtom(atomId);
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+  if (!atom) return <div>Atom not found</div>;
+
+  return (
+    <div>
+      <h1>{atom.uri}</h1>
+      <p>Signal: {atom.signal}</p>
+    </div>
+  );
+};
+```
+
+### Optimistic Updates
+
+```typescript
+const useStakeOnAtom = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ atomId, amount }) =>
+      intuition.stake(atomId, amount),
+
+    onMutate: async ({ atomId, amount }) => {
+      // Cancel outgoing refetches
+      await queryClient.cancelQueries({ queryKey: ['atom', atomId] });
+
+      // Snapshot previous value
+      const previous = queryClient.getQueryData(['atom', atomId]);
+
+      // Optimistically update
+      queryClient.setQueryData(['atom', atomId], (old: any) => ({
+        ...old,
+        vault: {
+          ...old.vault,
+          totalStaked: old.vault.totalStaked + amount
+        }
+      }));
+
+      return { previous };
+    },
+
+    onError: (err, variables, context) => {
+      // Rollback on error
+      queryClient.setQueryData(
+        ['atom', variables.atomId],
+        context.previous
+      );
+    },
+
+    onSettled: (data, error, variables) => {
+      // Refetch after mutation
+      queryClient.invalidateQueries({
+        queryKey: ['atom', variables.atomId]
+      });
+    }
+  });
+};
+```
+
+## Next Steps
+
+<div className="economic-grid">
+
+<div className="uniform-card" style={{
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '6px',
+  padding: '1rem',
+  backgroundColor: 'var(--ifm-background-color)'
+}}>
+
+**[SDK Documentation](/docs/developer-tools/sdks/overview)** - Explore SDK features
+
+</div>
+
+<div className="uniform-card" style={{
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '6px',
+  padding: '1rem',
+  backgroundColor: 'var(--ifm-background-color)'
+}}>
+
+**[GraphQL API](/docs/developer-tools/graphql-api/overview)** - Master the API
+
+</div>
+
+<div className="uniform-card" style={{
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '6px',
+  padding: '1rem',
+  backgroundColor: 'var(--ifm-background-color)'
+}}>
+
+**[Quick Start](/docs/quickstart/getting-started)** - Build your first app
+
+</div>
+
+</div>

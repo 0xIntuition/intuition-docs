@@ -27,49 +27,12 @@ Intuition's architecture is designed for **speed**, **scale**, and **interoperab
 
 </div>
 
-```mermaid
-graph TB
-    subgraph "Application Layer"
-        SDK[TypeScript SDK]
-        API[GraphQL/REST APIs]
-        APPS[dApps & Integrations]
-    end
+import BrowserOnly from '@docusaurus/BrowserOnly';
+import ExcalidrawViewer from '@site/src/components/ExcalidrawViewer';
 
-    subgraph "Rust Subnet"
-        INDEX[Indexing Engine]
-        TRANSFORM[Data Transformer]
-        CACHE[Cache Layer]
-        QUERY[Query Engine]
-    end
-
-    subgraph "Intuition Protocol"
-        VAULT[EthMultiVault]
-        ATOM[AtomWallet]
-        CURVE[Bonding Curves]
-    end
-
-    subgraph "Intuition Network"
-        L3[Base L3 - Orbit Stack]
-        METALAYER[Metalayer Standards]
-        METATOKEN[Metatoken Bridge]
-    end
-
-    SDK --> API
-    API --> QUERY
-    QUERY --> CACHE
-    CACHE --> TRANSFORM
-    TRANSFORM --> INDEX
-    INDEX --> VAULT
-    VAULT --> L3
-    ATOM --> L3
-    CURVE --> L3
-    L3 --> METALAYER
-    L3 --> METATOKEN
-
-    style L3 fill:#e1f5fe
-    style VAULT fill:#fff3e0
-    style INDEX fill:#e8f5e9
-```
+<BrowserOnly fallback={<p>Loading diagram...</p>}>
+  {() => <ExcalidrawViewer src="/excalidraw/architecture-overview.excalidraw.json" zoom={0.3} scrollX={-800} scrollY={200} />}
+</BrowserOnly>
 
 ## Layer 1: Intuition Network (Base L3)
 
@@ -77,15 +40,9 @@ graph TB
 
 The Intuition Network is an **EVM-compatible Layer 3** built on Base using the Orbit stack. This provides the ultra-fast, low-cost transaction environment essential for high-frequency knowledge graph operations.
 
-<div style={{
-  backgroundColor: 'var(--ifm-color-emphasis-50)',
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '6px',
-  padding: '1rem',
-  margin: '1rem 0'
-}}>
 
-### Why Layer 3?
+
+:::info Why Layer 3?
 
 Traditional L1s and even L2s are too expensive and slow for the granular operations required by a knowledge graph. Every atom creation, triple attestation, and signal update needs to be economically viable. The L3 architecture provides:
 
@@ -93,8 +50,8 @@ Traditional L1s and even L2s are too expensive and slow for the granular operati
 - **Sub-second finality** - Enabling real-time knowledge graph updates
 - **Massive throughput** - Supporting millions of daily knowledge operations
 - **EVM compatibility** - Leveraging existing tooling and developer knowledge
+:::
 
-</div>
 
 ### Technical Specifications
 
@@ -492,46 +449,9 @@ impl DecodedConsumerContext {
 
 The Subnet implements a sophisticated data pipeline:
 
-```mermaid
-graph LR
-    subgraph "Input"
-        CHAIN[Chain Events]
-        IPFS[IPFS Data]
-        HTTP[HTTP Sources]
-    end
-
-    subgraph "Processing"
-        INDEX[Indexer]
-        VALIDATE[Validator]
-        TRANSFORM[Transformer]
-        ENRICH[Enricher]
-    end
-
-    subgraph "Storage"
-        GRAPH[Graph DB]
-        SEARCH[Search Index]
-        CACHE[Redis Cache]
-    end
-
-    subgraph "Output"
-        GQL[GraphQL API]
-        REST[REST API]
-        WS[WebSocket]
-    end
-
-    CHAIN --> INDEX
-    IPFS --> TRANSFORM
-    HTTP --> TRANSFORM
-    INDEX --> VALIDATE
-    VALIDATE --> TRANSFORM
-    TRANSFORM --> ENRICH
-    ENRICH --> GRAPH
-    ENRICH --> SEARCH
-    GRAPH --> CACHE
-    CACHE --> GQL
-    CACHE --> REST
-    CACHE --> WS
-```
+<BrowserOnly fallback={<p>Loading diagram...</p>}>
+  {() => <ExcalidrawViewer src="/excalidraw/data-papeline.excalidraw.json" zoom={0.5} scrollX={-1250} scrollY={150} />}
+</BrowserOnly>
 
 ### API Layer
 
