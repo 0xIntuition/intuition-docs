@@ -2,7 +2,7 @@ module.exports = {
   docs: [
     {
       type: 'category',
-      label: 'Welcome',
+      label: 'Introduction',
       items: [
         'introduction/overview',
         'introduction/why-intuition',
