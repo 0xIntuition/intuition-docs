@@ -12,9 +12,10 @@ type ExcalidrawViewerProps = {
   zoom?: number;
   scrollX?: number;
   scrollY?: number;
+  backgroundColor?: string;
 };
 
-export default function ExcalidrawViewer({ src, zoom = 0.6, scrollX = 0, scrollY = 0 }: ExcalidrawViewerProps) {
+export default function ExcalidrawViewer({ src, zoom = 0.6, scrollX = 0, scrollY = 0, backgroundColor }: ExcalidrawViewerProps) {
   const [ExcalidrawComponent, setExcalidrawComponent] = useState<any>(null);
   const [data, setData] = useState<ExcalidrawInitialData>();
   const [error, setError] = useState<string | null>(null);
@@ -49,7 +50,7 @@ export default function ExcalidrawViewer({ src, zoom = 0.6, scrollX = 0, scrollY
 
         // Set custom appState to control the view
         const customAppState = {
-          viewBackgroundColor: '#ffffff',
+          viewBackgroundColor: backgroundColor || json.appState?.viewBackgroundColor || '#ffffff',
           zoom: { value: zoom },
           scrollX: scrollX,
           scrollY: scrollY,
@@ -62,7 +63,7 @@ export default function ExcalidrawViewer({ src, zoom = 0.6, scrollX = 0, scrollY
       }
     };
     loadJSON();
-  }, [src, zoom, scrollX, scrollY]);
+  }, [src, zoom, scrollX, scrollY, backgroundColor]);
 
   if (error) return <p style={{ color: 'red' }}>{error}</p>;
   if (!ExcalidrawComponent) return <p>Loading Excalidraw component...</p>;

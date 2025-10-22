@@ -15,7 +15,7 @@ import ExcalidrawViewer from '@site/src/components/ExcalidrawViewer';
 The Intuition GraphQL package provides a type-safe interface for interacting with the Intuition API. It serves as the core data fetching layer, offering generated types and React Query hooks for seamless integration with the semantic knowledge graph.
 
 <BrowserOnly fallback={<p>Loading diagram...</p>}>
-  {() => <ExcalidrawViewer src="/excalidraw/architecture-diagram.excalidraw.json" />}
+  {() => <ExcalidrawViewer src="/excalidraw/architecture-diagram.excalidraw.json" backgroundColor="#1b1b1d" />}
 </BrowserOnly>
 
 ## Key Features
@@ -48,6 +48,78 @@ Install and use the NPM package with React Query hooks
 Write tailored GraphQL queries for your specific use case
 </p>
 </a>
+
+</div>
+
+## API Layer
+
+The Subnet exposes multiple API interfaces for interacting with the knowledge graph:
+
+<div className="economic-grid">
+
+<div className="uniform-card" style={{
+  backgroundColor: 'var(--ifm-color-emphasis-50)',
+  border: '1px solid var(--ifm-color-emphasis-200)',
+  borderRadius: '6px',
+  padding: '1rem'
+}}>
+
+**GraphQL API**
+```graphql
+query GetAtomWithTriples {
+  atom(id: "123") {
+    uri
+    vault {
+      totalStaked
+      sharePrice
+    }
+    triplesAsSubject {
+      predicate { uri }
+      object { uri }
+      signal
+    }
+  }
+}
+```
+
+</div>
+
+<div className="uniform-card" style={{
+  backgroundColor: 'var(--ifm-color-emphasis-50)',
+  border: '1px solid var(--ifm-color-emphasis-200)',
+  borderRadius: '6px',
+  padding: '1rem'
+}}>
+
+**REST API**
+```http
+GET /api/v1/atoms/123
+GET /api/v1/triples?subject=123
+POST /api/v1/search
+WebSocket /ws/subscriptions
+```
+
+</div>
+
+<div className="uniform-card" style={{
+  backgroundColor: 'var(--ifm-color-emphasis-50)',
+  border: '1px solid var(--ifm-color-emphasis-200)',
+  borderRadius: '6px',
+  padding: '1rem'
+}}>
+
+**Real-time Subscriptions**
+```typescript
+subscription OnAtomUpdate {
+  atomUpdated(id: "123") {
+    signal
+    lastActivity
+    vaultBalance
+  }
+}
+```
+
+</div>
 
 </div>
 

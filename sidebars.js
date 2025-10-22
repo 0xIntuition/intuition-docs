@@ -19,7 +19,6 @@ module.exports = {
         'developer-tools/deep-dive/architecture/layer3-subnet',
         'developer-tools/deep-dive/architecture/data-flow',
         'developer-tools/deep-dive/architecture/performance',
-        'developer-tools/deep-dive/architecture/security',
         'developer-tools/deep-dive/architecture/development-patterns',
         'developer-tools/deep-dive/architecture/deployment',
       ],
@@ -81,6 +80,7 @@ module.exports = {
         'developer-tools/contracts/multivault',
         'developer-tools/contracts/trust-bonding',
         'developer-tools/contracts/deployments',
+        'developer-tools/deep-dive/smart-contract/security',
         {
           type: 'link',
           label: 'Deep Dive',

@@ -6,6 +6,8 @@ sidebar_position: 4
 description: Guide to reading data using GraphQL queries in the Intuition API
 ---
 
+import GraphQLPlaygroundCustom from '@site/src/components/GraphQLPlaygroundCustom';
+
 # Reads
 
 ## GraphQL API
@@ -32,20 +34,13 @@ Hasura then provides a GraphQL API layer on top of Postgres, enabling flexible d
 
 The interactive Apollo Sandbox below lets you explore our GraphQL API in real-time. You can write and execute queries, inspect the schema, and see live responses from our API. We've set up this environment to help you get familiar with our data structure and available operations.
 
-Try starting with some basic queries like fetching atoms or exploring relationship triples. Here's a query to get you started:
+Try starting with some basic queries like fetching atoms or exploring relationship triples.
 
-import ExplorerEmbed from '@site/src/components/ExplorerEmbed';
-
-<ExplorerEmbed />
-
-<div style={{ backgroundColor: 'var(--ifm-color-emphasis-50)', padding: '1rem', borderRadius: '8px', marginBottom: '1rem', border: '1px solid var(--ifm-color-emphasis-200)' }}>
-<p style={{ margin: 0, fontSize: '0.9rem', color: 'var(--ifm-color-emphasis-700)' }}>
-<strong>💡 Tip:</strong> You can copy and paste the code snippet below into the sandbox above to view the results.
-</p>
-</div>
-
-```graphql
-query GetAtoms(
+export const readQueries = [
+  {
+    id: 'get-atoms',
+    title: 'Get Atoms',
+    query: `query GetAtoms(
   $limit: Int
   $offset: Int
   $orderBy: [atoms_order_by!]
@@ -131,12 +126,15 @@ query GetAtoms(
       }
     }
   }
-}
-```
+}`,
+    variables: {
+      limit: 10,
+      offset: 0
+    }
+  }
+];
 
-You can start with this initial `GetAtoms` query in the Apollo Sandbox or write your own. The schema Explorer (docs tab) on the left side of the sandbox shows all available queries, mutations, and types. As you type, you'll get real-time autocompletion and documentation hints to help you build your queries. You can then click the play button to see the response and then adjust your query as you explore our data.
-
-Need inspiration? Check out the example queries in the GraphQL API Example Queries page to get started, or jump right in and start exploring!
+<GraphQLPlaygroundCustom queries={readQueries} />
 
 ## Query Examples
 

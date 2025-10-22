@@ -12,6 +12,16 @@ description: Deep dive into Intuition's off-chain Rust infrastructure
 
 The Rust Subnet is Intuition's high-performance off-chain infrastructure that indexes on-chain state, resolves off-chain data references, and serves the unified knowledge graph through APIs.
 
+## Data Pipeline
+
+The Subnet implements a sophisticated data pipeline:
+
+import BrowserOnly from '@docusaurus/BrowserOnly';
+import ExcalidrawViewer from '@site/src/components/ExcalidrawViewer';
+
+<BrowserOnly fallback={<p>Loading diagram...</p>}>
+  {() => <ExcalidrawViewer src="/excalidraw/data-papeline.excalidraw.json" zoom={0.5} scrollX={-1100} scrollY={150} backgroundColor="#1b1b1d" />}
+</BrowserOnly>
 :::tip **Why Rust?**
 
 The Subnet is built in Rust for maximum performance and reliability:
@@ -24,8 +34,8 @@ The Subnet is built in Rust for maximum performance and reliability:
 ## Core Components
 
 <div style={{
-  display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+  display: 'flex',
+  flexDirection: 'column',
   gap: '1.5rem',
   margin: '2rem 0'
 }}>
@@ -163,16 +173,6 @@ impl DecodedConsumerContext {
 
 </div>
 
-## Data Pipeline
-
-The Subnet implements a sophisticated data pipeline:
-
-import BrowserOnly from '@docusaurus/BrowserOnly';
-import ExcalidrawViewer from '@site/src/components/ExcalidrawViewer';
-
-<BrowserOnly fallback={<p>Loading diagram...</p>}>
-  {() => <ExcalidrawViewer src="/excalidraw/data-papeline.excalidraw.json" zoom={0.5} scrollX={-1250} scrollY={150} />}
-</BrowserOnly>
 
 ### Pipeline Stages
 
@@ -184,75 +184,11 @@ import ExcalidrawViewer from '@site/src/components/ExcalidrawViewer';
 
 ## API Layer
 
-The Subnet exposes multiple API interfaces:
+The Subnet exposes multiple API interfaces including GraphQL, REST, and real-time subscriptions for interacting with the knowledge graph.
 
-<div className="economic-grid">
-
-<div className="uniform-card" style={{
-  backgroundColor: 'var(--ifm-color-emphasis-50)',
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '6px',
-  padding: '1rem'
-}}>
-
-**GraphQL API**
-```graphql
-query GetAtomWithTriples {
-  atom(id: "123") {
-    uri
-    vault {
-      totalStaked
-      sharePrice
-    }
-    triplesAsSubject {
-      predicate { uri }
-      object { uri }
-      signal
-    }
-  }
-}
-```
-
-</div>
-
-<div className="uniform-card" style={{
-  backgroundColor: 'var(--ifm-color-emphasis-50)',
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '6px',
-  padding: '1rem'
-}}>
-
-**REST API**
-```http
-GET /api/v1/atoms/123
-GET /api/v1/triples?subject=123
-POST /api/v1/search
-WebSocket /ws/subscriptions
-```
-
-</div>
-
-<div className="uniform-card" style={{
-  backgroundColor: 'var(--ifm-color-emphasis-50)',
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '6px',
-  padding: '1rem'
-}}>
-
-**Real-time Subscriptions**
-```typescript
-subscription OnAtomUpdate {
-  atomUpdated(id: "123") {
-    signal
-    lastActivity
-    vaultBalance
-  }
-}
-```
-
-</div>
-
-</div>
+:::note Get more details
+For detailed information about the available APIs, query examples, and interactive playgrounds, please see the **[GraphQL API Overview](/docs/developer-tools/graphql-api/overview)**.
+:::
 
 ## Infrastructure Components
 
