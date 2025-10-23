@@ -143,14 +143,18 @@ function DocSearch({ contextualSearch, externalUrlRegex, ...props }) {
   });
 
   const [selectedIndex, setSelectedIndex] = useState(() => {
-    return typeof localStorage !== 'undefined' &&
-      localStorage.getItem('search') === 'docsearch'
-      ? 1
-      : 0;
+    if (typeof window === 'undefined' ||
+        typeof localStorage === 'undefined' ||
+        typeof localStorage.getItem !== 'function') {
+      return 0;
+    }
+    return localStorage.getItem('search') === 'docsearch' ? 1 : 0;
   });
 
   useEffect(() => {
-    if (typeof localStorage !== 'undefined') {
+    if (typeof window !== 'undefined' &&
+        typeof localStorage !== 'undefined' &&
+        typeof localStorage.setItem === 'function') {
       localStorage.setItem('search', selectedIndex === 0 ? 'ai' : 'docsearch');
     }
   }, [selectedIndex]);
