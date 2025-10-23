@@ -32,7 +32,7 @@ sidebar_position: 5
 
 ## Network Details
 
-### Intuition Testnet Configuration
+### Intuition Mainnet Configuration
 - **Chain ID**: 1155
 - **RPC URL**: `https://rpc.intuition.systems`
 - **WebSocket**: `wss://rpc.intuition.systems`
