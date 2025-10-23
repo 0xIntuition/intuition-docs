@@ -15,7 +15,7 @@ services:
         destination: /index.html
     envVars:
       - key: NODE_VERSION
-        value: '18'
+        value: '24'
       - key: DOCUSAURUS_IGNORE_SSG_WARNINGS
         value: 'true'
     headers:
