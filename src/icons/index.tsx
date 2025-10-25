@@ -406,3 +406,42 @@ export function XIcon(props: ComponentProps<'svg'>) {
     </svg>
   );
 }
+
+export function BuildDeployIcon(props: ComponentProps<'svg'>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      {...props}
+    >
+      <path d="M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.7C.4 7.1.9 10.1 2.9 12.1c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.5-.4.5-1.1.1-1.4z"/>
+    </svg>
+  );
+}
+
+export function ConnectTestIcon(props: ComponentProps<'svg'>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 512 512"
+      fill="currentColor"
+      {...props}
+    >
+      <path d="m162.03 311.94-28.73 28.73 39.61 39.62 29.11-29.12c30.83 25.41 60.09 27.74 87.12 18.45L143.65 224.13c-9.12 26.74-6.66 55.93 18.38 87.81zm-31.46-150.11c-6.42-6.42-6.42-16.83 0-23.25 6.42-6.42 16.83-6.42 23.25 0l27.22 27.22c9.99-11.21 20.7-21.87 30.85-32.03l21.7 21.69 49.46-49.45c8.33-8.34 21.98-8.34 30.32 0 8.33 8.33 8.33 21.98 0 30.31l-49.47 49.47 63.1 63.09 49.46-49.46c8.34-8.34 21.98-8.34 30.32 0s8.33 21.98 0 30.31l-49.47 49.46 22.5 22.5c-10 10-20.74 20.7-32.14 30.74L375 359.76c6.42 6.41 6.42 16.83 0 23.25-6.42 6.41-16.84 6.41-23.25 0L130.57 161.83z"/>
+    </svg>
+  );
+}
+
+export function MonitorOptimizeIcon(props: ComponentProps<'svg'>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      {...props}
+    >
+      <path d="M3 13h2l2-7 4 14 4-14 2 7h4M5 21h14"/>
+    </svg>
+  );
+}

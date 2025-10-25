@@ -1,0 +1,290 @@
+---
+id: layer2-protocol
+title: Layer 2 - Intuition Protocol
+sidebar_label: Layer 2 - Intuition Protocol
+sidebar_position: 3
+description: Deep dive into Intuition's on-chain smart contract logic
+---
+
+# Layer 2: Intuition Protocol (On-Chain Logic)
+
+## Overview
+
+The Intuition Protocol implements all on-chain logic for the knowledge graph through a suite of smart contracts. This is where atoms are created, triples are formed, and economic incentives are enforced.
+
+## Core Contract Architecture
+
+<div style={{
+  backgroundColor: 'var(--ifm-background-surface-color)',
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '8px',
+  padding: '1.5rem',
+  margin: '1.5rem 0'
+}}>
+
+### **EthMultiVault**
+The economic engine managing all vault operations:
+
+```solidity
+contract EthMultiVault {
+    // Core vault operations
+    function deployVault(uint256 atomId) external returns (address vault);
+    function deposit(uint256 vaultId, uint256 amount) external;
+    function redeem(uint256 vaultId, uint256 shares) external;
+
+    // Bonding curve integration
+    function calculatePrice(uint256 supply) public view returns (uint256);
+    function calculateShares(uint256 deposit, uint256 totalSupply) external view;
+}
+```
+
+**Key Features:**
+- Automated vault deployment for atoms/triples
+- Dynamic pricing via bonding curves
+- Share-based ownership model
+- Fee distribution to stakers
+
+</div>
+
+<div style={{
+  backgroundColor: 'var(--ifm-background-surface-color)',
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '8px',
+  padding: '1.5rem',
+  margin: '1.5rem 0'
+}}>
+
+### **AtomWallet**
+Primary interface for creating and managing knowledge graph primitives:
+
+```solidity
+contract AtomWallet {
+    // Atom operations
+    function createAtom(string memory uri) external returns (uint256 atomId);
+
+    // Triple operations
+    function createTriple(
+        uint256 subjectId,
+        uint256 predicateId,
+        uint256 objectId
+    ) external returns (uint256 tripleId);
+
+    // Signal operations
+    function depositAtom(uint256 atomId, uint256 amount) external;
+    function depositTriple(uint256 tripleId, uint256 amount, bool isPositive) external;
+}
+```
+
+**Key Features:**
+- Gas-efficient batch operations
+- Account abstraction support (ERC-4337)
+- Multi-signature capabilities
+- Upgradeable proxy pattern
+
+</div>
+
+## Economic Mechanics
+
+The Protocol implements sophisticated economic incentives:
+
+<div className="economic-grid">
+
+<div className="uniform-card" style={{
+  backgroundColor: 'var(--ifm-color-emphasis-50)',
+  border: '1px solid var(--ifm-color-emphasis-200)',
+  borderRadius: '6px',
+  padding: '1rem'
+}}>
+
+**Bonding Curves**
+- Automated price discovery
+- Early adopter rewards
+- Exponential growth model
+- Anti-manipulation mechanics
+
+</div>
+
+<div className="uniform-card" style={{
+  backgroundColor: 'var(--ifm-color-emphasis-50)',
+  border: '1px solid var(--ifm-color-emphasis-200)',
+  borderRadius: '6px',
+  padding: '1rem'
+}}>
+
+**Fee Distribution**
+- Creator fees: 5% of deposits
+- Protocol fees: 2% of deposits
+- Staker rewards: Proportional shares
+- Compound interest mechanics
+
+</div>
+
+<div className="uniform-card" style={{
+  backgroundColor: 'var(--ifm-color-emphasis-50)',
+  border: '1px solid var(--ifm-color-emphasis-200)',
+  borderRadius: '6px',
+  padding: '1rem'
+}}>
+
+**Vault Mechanics**
+- Positive/negative signal vaults
+- Automatic liquidity provision
+- Rage quit protection
+- Time-weighted averaging
+
+</div>
+
+</div>
+
+## State Management
+
+The Protocol maintains the complete on-chain state of the knowledge graph:
+
+```typescript
+interface OnChainState {
+  atoms: Map<number, {
+    id: number;
+    uri: string;
+    vault: address;
+    creator: address;
+    timestamp: number;
+  }>;
+
+  triples: Map<number, {
+    id: number;
+    subjectId: number;
+    predicateId: number;
+    objectId: number;
+    vaultFor: address;
+    vaultAgainst: address;
+  }>;
+
+  signals: Map<address, Map<number, {
+    shares: bigint;
+    lastUpdate: number;
+  }>>;
+}
+```
+
+## Contract Interactions
+
+### Creating an Atom
+
+```typescript
+// Using the SDK
+const atom = await intuition.createAtom({
+  uri: 'ipfs://QmXoypizjW3WknFiJnKLwHCnL72vedxjQkDDP1mXWo6uco'
+});
+```
+
+### Creating a Triple
+
+```typescript
+// Create a subject-predicate-object relationship
+const triple = await intuition.createTriple({
+  subjectId: 1,
+  predicateId: 2,
+  objectId: 3
+});
+```
+
+### Signaling on Knowledge
+
+```typescript
+// Deposit on an atom
+await intuition.stake(atomId, parseEther('100'));
+
+// Signal for/against a triple
+await intuition.depositTriple(tripleId, parseEther('50'), true); // for
+await intuition.depositTriple(tripleId, parseEther('25'), false); // against
+```
+
+## Security Features
+
+<div className="economic-grid">
+
+<div className="uniform-card" style={{
+  backgroundColor: 'var(--ifm-background-color)',
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '8px',
+  padding: '1rem'
+}}>
+
+**Audited Contracts**
+- Multiple security audits
+- Bug bounty program
+- Formal verification
+- Continuous monitoring
+
+</div>
+
+<div className="uniform-card" style={{
+  backgroundColor: 'var(--ifm-background-color)',
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '8px',
+  padding: '1rem'
+}}>
+
+**Upgradeability**
+- Proxy pattern
+- Time-locked admin
+- Multi-sig governance
+- Emergency pause
+
+</div>
+
+<div className="uniform-card" style={{
+  backgroundColor: 'var(--ifm-background-color)',
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '8px',
+  padding: '1rem'
+}}>
+
+**Rate Limiting**
+- Anti-spam protection
+- DOS prevention
+- Gas optimization
+- Fair distribution
+
+</div>
+
+</div>
+
+## Next Steps
+
+<div className="economic-grid">
+
+<div className="uniform-card" style={{
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '6px',
+  padding: '1rem',
+  backgroundColor: 'var(--ifm-background-color)'
+}}>
+
+**[Smart Contracts](/docs/developer-tools/contracts/contract-architecture)** - Detailed contract documentation
+
+</div>
+
+<div className="uniform-card" style={{
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '6px',
+  padding: '1rem',
+  backgroundColor: 'var(--ifm-background-color)'
+}}>
+
+**[Trust Bonding](/docs/developer-tools/contracts/trust-bonding)** - Economics deep dive
+
+</div>
+
+<div className="uniform-card" style={{
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '6px',
+  padding: '1rem',
+  backgroundColor: 'var(--ifm-background-color)'
+}}>
+
+**[Layer 3: Subnet](./layer3-subnet)** - Off-chain infrastructure
+
+</div>
+
+</div>

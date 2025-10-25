@@ -58,9 +58,9 @@ sidebar_position: 5
 - **Explorer**: `https://basescan.org`
 - **Native Token**: ETH
 
-## Verified Contracts
-
+:::info Verified Contracts
 All deployed contracts are verified on their respective block explorers. You can view the source code and interact with the contracts directly through the explorer interfaces.
+:::
 
 ## Contract ABIs
 

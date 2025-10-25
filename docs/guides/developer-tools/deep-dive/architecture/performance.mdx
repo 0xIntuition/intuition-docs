@@ -1,0 +1,442 @@
+---
+id: performance
+title: Performance Optimizations
+sidebar_label: Performance Optimizations
+sidebar_position: 6
+description: Optimization strategies and performance tuning for Intuition applications
+---
+
+# Performance Optimizations
+
+## Overview
+
+Intuition is designed for high performance across all layers. This page covers the optimization strategies employed by the system and best practices for building performant applications.
+
+## Caching Strategy
+
+Multi-layer caching for optimal performance:
+
+<div className="economic-grid">
+
+<div className="uniform-card" style={{
+  backgroundColor: 'var(--ifm-color-emphasis-50)',
+  border: '1px solid var(--ifm-color-emphasis-200)',
+  borderRadius: '6px',
+  padding: '0.75rem'
+}}>
+
+**L1: CDN Edge Cache**
+- Static content
+- Popular queries
+- 5-minute TTL
+- Global distribution
+
+</div>
+
+<div className="uniform-card" style={{
+  backgroundColor: 'var(--ifm-color-emphasis-50)',
+  border: '1px solid var(--ifm-color-emphasis-200)',
+  borderRadius: '6px',
+  padding: '0.75rem'
+}}>
+
+**L2: Redis Cache**
+- Query results
+- Session data
+- 1-hour TTL
+- Cluster replication
+
+</div>
+
+<div className="uniform-card" style={{
+  backgroundColor: 'var(--ifm-color-emphasis-50)',
+  border: '1px solid var(--ifm-color-emphasis-200)',
+  borderRadius: '6px',
+  padding: '0.75rem'
+}}>
+
+**L3: Application Cache**
+- Computed values
+- Aggregate data
+- 24-hour TTL
+- In-memory storage
+
+</div>
+
+</div>
+
+## Query Optimization
+
+The Subnet employs sophisticated query optimization:
+
+### Query Planning
+
+```typescript
+// Hasura automatically optimizes queries
+query GetAtomWithTriples {
+  atom(id: "123") {
+    # Only fetch needed fields
+    uri
+    vault {
+      totalStaked
+      sharePrice
+    }
+    # Efficient join using indexes
+    triplesAsSubject(
+      limit: 10
+      order_by: { signal: desc }
+    ) {
+      predicate { uri }
+      object { uri }
+      signal
+    }
+  }
+}
+```
+
+### Database Indexes
+
+Key indexes for performance:
+
+```sql
+-- Atom lookups
+CREATE INDEX idx_atoms_id ON atoms(id);
+CREATE INDEX idx_atoms_creator ON atoms(creator_id);
+CREATE INDEX idx_atoms_vault ON atoms(vault_id);
+
+-- Triple queries
+CREATE INDEX idx_triples_subject ON triples(subject_id);
+CREATE INDEX idx_triples_predicate ON triples(predicate_id);
+CREATE INDEX idx_triples_object ON triples(object_id);
+CREATE INDEX idx_triples_signal ON triples(signal DESC);
+
+-- Composite indexes for common queries
+CREATE INDEX idx_triples_subject_signal ON triples(subject_id, signal DESC);
+```
+
+### Parallel Execution
+
+Break queries into independent subqueries:
+
+```typescript
+// Bad: Sequential queries
+const atom = await getAtom(id);
+const triples = await getTriples(atom.id);
+const signals = await getSignals(atom.id);
+
+// Good: Parallel queries
+const [atom, triples, signals] = await Promise.all([
+  getAtom(id),
+  getTriples(id),
+  getSignals(id)
+]);
+```
+
+### Result Streaming
+
+For large result sets, use streaming:
+
+```typescript
+// Stream large result sets
+const stream = await client.query({
+  query: gql`
+    query GetAllAtoms {
+      atoms(limit: 10000) {
+        id
+        uri
+      }
+    }
+  `,
+  fetchPolicy: 'network-only'
+});
+
+// Process results as they arrive
+for await (const batch of stream) {
+  processBatch(batch);
+}
+```
+
+## Smart Contract Optimizations
+
+### Gas Optimization
+
+```solidity
+// Bad: Multiple storage writes
+function createMultipleAtoms(string[] memory uris) external {
+    for (uint i = 0; i < uris.length; i++) {
+        createAtom(uris[i]); // Separate transactions
+    }
+}
+
+// Good: Batch operations
+function createAtomBatch(string[] memory uris) external returns (uint256[] memory) {
+    uint256[] memory atomIds = new uint256[](uris.length);
+    for (uint i = 0; i < uris.length; i++) {
+        atomIds[i] = _createAtomInternal(uris[i]); // Single transaction
+    }
+    return atomIds;
+}
+```
+
+### Event Emission Optimization
+
+```solidity
+// Emit events efficiently
+event AtomCreatedBatch(
+    uint256[] indexed atomIds,
+    address indexed creator,
+    uint256 timestamp
+);
+
+// Single event for multiple atoms
+function createAtomBatch(string[] memory uris) external {
+    uint256[] memory atomIds = new uint256[](uris.length);
+    // ... creation logic
+    emit AtomCreatedBatch(atomIds, msg.sender, block.timestamp);
+}
+```
+
+## Network Optimizations
+
+### Transaction Batching
+
+```typescript
+// Use SDK batch operations
+const batch = intuition.batch()
+  .createAtom({ uri: 'ipfs://...' })
+  .createAtom({ uri: 'ipfs://...' })
+  .createTriple({ subjectId: 1, predicateId: 2, objectId: 3 });
+
+// Execute all in one transaction
+const results = await batch.execute();
+```
+
+### Nonce Management
+
+```typescript
+// Parallel transaction submission with proper nonce management
+const provider = intuition.getProvider();
+const baseNonce = await provider.getTransactionCount(address);
+
+const txs = await Promise.all([
+  intuition.createAtom({ uri: 'uri1' }, { nonce: baseNonce }),
+  intuition.createAtom({ uri: 'uri2' }, { nonce: baseNonce + 1 }),
+  intuition.createAtom({ uri: 'uri3' }, { nonce: baseNonce + 2 })
+]);
+```
+
+## Application-Level Optimizations
+
+### Client-Side Caching
+
+```typescript
+import { ApolloClient, InMemoryCache } from '@apollo/client';
+
+const client = new ApolloClient({
+  uri: 'https://api.intuition.systems/graphql',
+  cache: new InMemoryCache({
+    typePolicies: {
+      Atom: {
+        keyFields: ['id'],
+        fields: {
+          // Cache for 5 minutes
+          vault: {
+            merge(existing, incoming) {
+              return incoming;
+            }
+          }
+        }
+      }
+    }
+  })
+});
+```
+
+### Prefetching
+
+```typescript
+// Prefetch data for better UX
+const AtomDetail = ({ atomId }) => {
+  const { data, loading } = useQuery(GET_ATOM, {
+    variables: { id: atomId }
+  });
+
+  // Prefetch related triples
+  useEffect(() => {
+    if (data?.atom) {
+      client.query({
+        query: GET_TRIPLES,
+        variables: { subjectId: atomId }
+      });
+    }
+  }, [data]);
+
+  // ...
+};
+```
+
+### Lazy Loading
+
+```typescript
+// Load data on demand
+const TriplesList = ({ atomId }) => {
+  const [loadMore, { data, loading, fetchMore }] = useLazyQuery(
+    GET_TRIPLES,
+    {
+      variables: { subjectId: atomId, limit: 20 }
+    }
+  );
+
+  const handleLoadMore = () => {
+    fetchMore({
+      variables: {
+        offset: data.triples.length
+      }
+    });
+  };
+
+  // ...
+};
+```
+
+## Infrastructure Optimizations
+
+### Load Balancing
+
+<div className="economic-grid">
+
+<div className="uniform-card" style={{
+  backgroundColor: 'var(--ifm-background-color)',
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '8px',
+  padding: '1rem'
+}}>
+
+**Geographic Distribution**
+- Multi-region deployment
+- Proximity-based routing
+- Failover capabilities
+- Health monitoring
+
+</div>
+
+<div className="uniform-card" style={{
+  backgroundColor: 'var(--ifm-background-color)',
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '8px',
+  padding: '1rem'
+}}>
+
+**Auto Scaling**
+- CPU-based scaling
+- Request queue depth
+- Custom metrics
+- Predictive scaling
+
+</div>
+
+<div className="uniform-card" style={{
+  backgroundColor: 'var(--ifm-background-color)',
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '8px',
+  padding: '1rem'
+}}>
+
+**Connection Pooling**
+- Database connections
+- RPC connections
+- Redis connections
+- HTTP keep-alive
+
+</div>
+
+</div>
+
+### Database Optimization
+
+```sql
+-- Partitioning for large tables
+CREATE TABLE events (
+    id BIGSERIAL,
+    block_number BIGINT,
+    event_type VARCHAR(50),
+    data JSONB,
+    created_at TIMESTAMP
+) PARTITION BY RANGE (block_number);
+
+-- Vacuum and analyze regularly
+VACUUM ANALYZE events;
+
+-- Monitor query performance
+CREATE EXTENSION IF NOT EXISTS pg_stat_statements;
+SELECT query, mean_exec_time, calls
+FROM pg_stat_statements
+ORDER BY mean_exec_time DESC
+LIMIT 10;
+```
+
+## Monitoring and Profiling
+
+### Performance Metrics
+
+Track key metrics:
+
+- **Transaction latency** - Time from submission to confirmation
+- **Indexing lag** - Delay between chain state and indexed state
+- **Query response time** - API response times
+- **Cache hit rate** - Efficiency of caching layers
+- **Error rate** - Failed requests and transactions
+
+### Performance Budget
+
+Recommended targets:
+
+| Metric | Target | Maximum |
+|--------|--------|---------|
+| Transaction confirmation | < 500ms | 2s |
+| Event indexing | < 1s | 5s |
+| GraphQL query | < 100ms | 500ms |
+| Page load | < 2s | 5s |
+| Time to interactive | < 3s | 7s |
+
+## Best Practices
+
+:::tip **Optimization Checklist**
+
+1. **Use batch operations** when possible
+2. **Cache aggressively** at multiple levels
+3. **Query only needed fields** in GraphQL
+4. **Prefetch predictable data** for better UX
+5. **Monitor performance** continuously
+6. **Optimize critical paths** first
+7. **Test with realistic data** volumes
+8. **Profile before optimizing** to find bottlenecks
+:::
+
+## Next Steps
+
+<div className="economic-grid">
+
+<div className="uniform-card" style={{
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '6px',
+  padding: '1rem',
+  backgroundColor: 'var(--ifm-background-color)'
+}}>
+
+**[Development Patterns](./development-patterns)** - Learn best practices
+
+</div>
+
+<div className="uniform-card" style={{
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '6px',
+  padding: '1rem',
+  backgroundColor: 'var(--ifm-background-color)'
+}}>
+
+**[Security Architecture](./security)** - Understand security measures
+
+</div>
+
+</div>

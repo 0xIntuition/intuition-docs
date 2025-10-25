@@ -1,0 +1,658 @@
+---
+id: deployment
+title: Deployment Architecture
+sidebar_label: Deployment Architecture
+sidebar_position: 9
+description: Infrastructure and deployment architecture for Intuition
+---
+
+# Deployment Architecture
+
+## Overview
+
+This page describes the infrastructure setup and deployment architecture for Intuition's production environment. Understanding this architecture helps developers plan their own deployments and understand system behavior.
+
+## Infrastructure Components
+
+<div className="economic-grid">
+
+<div className="uniform-card" style={{
+  backgroundColor: 'var(--ifm-background-color)',
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '8px',
+  padding: '1rem'
+}}>
+
+**Network Nodes**
+- Distributed globally
+- Auto-scaling groups
+- Multi-region failover
+- 99.99% uptime SLA
+
+</div>
+
+<div className="uniform-card" style={{
+  backgroundColor: 'var(--ifm-background-color)',
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '8px',
+  padding: '1rem'
+}}>
+
+**Subnet Infrastructure**
+- Kubernetes clusters
+- Horizontal pod autoscaling
+- Rolling deployments
+- Blue-green releases
+
+</div>
+
+<div className="uniform-card" style={{
+  backgroundColor: 'var(--ifm-background-color)',
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '8px',
+  padding: '1rem'
+}}>
+
+**Data Storage**
+- PostgreSQL with replication
+- Redis sentinel clusters
+- IPFS pinning services
+- S3-compatible object storage
+
+</div>
+
+</div>
+
+## Network Layer Deployment
+
+### Validator Nodes
+
+```yaml
+# Kubernetes deployment for validator nodes
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: intuition-validator
+spec:
+  serviceName: intuition-validator
+  replicas: 5
+  selector:
+    matchLabels:
+      app: intuition-validator
+  template:
+    metadata:
+      labels:
+        app: intuition-validator
+    spec:
+      containers:
+      - name: validator
+        image: intuition/validator:latest
+        resources:
+          requests:
+            memory: "8Gi"
+            cpu: "4"
+          limits:
+            memory: "16Gi"
+            cpu: "8"
+        volumeMounts:
+        - name: data
+          mountPath: /data
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 1Ti
+```
+
+### RPC Nodes
+
+Multi-region deployment for low latency:
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: intuition-rpc
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      app: intuition-rpc
+  template:
+    metadata:
+      labels:
+        app: intuition-rpc
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              topologyKey: topology.kubernetes.io/zone
+      containers:
+      - name: rpc
+        image: intuition/rpc:latest
+        resources:
+          requests:
+            memory: "4Gi"
+            cpu: "2"
+          limits:
+            memory: "8Gi"
+            cpu: "4"
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8545
+          initialDelaySeconds: 30
+          periodSeconds: 10
+```
+
+## Subnet Infrastructure
+
+### Event Consumers
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: event-consumer
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: event-consumer
+      mode: decoded
+  template:
+    metadata:
+      labels:
+        app: event-consumer
+        mode: decoded
+    spec:
+      containers:
+      - name: consumer
+        image: intuition/consumer:latest
+        env:
+        - name: CONSUMER_MODE
+          value: "decoded"
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: postgres-credentials
+              key: connection-string
+        - name: SQS_QUEUE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: sqs-config
+              key: decoded-queue-url
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "1"
+          limits:
+            memory: "4Gi"
+            cpu: "2"
+```
+
+### Database Layer
+
+```yaml
+# PostgreSQL with high availability
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: intuition-db
+spec:
+  instances: 3
+  primaryUpdateStrategy: unsupervised
+
+  postgresql:
+    parameters:
+      max_connections: "500"
+      shared_buffers: "8GB"
+      effective_cache_size: "24GB"
+      maintenance_work_mem: "2GB"
+      checkpoint_completion_target: "0.9"
+      wal_buffers: "16MB"
+      default_statistics_target: "100"
+      random_page_cost: "1.1"
+      effective_io_concurrency: "200"
+      work_mem: "10485kB"
+      min_wal_size: "1GB"
+      max_wal_size: "4GB"
+
+  storage:
+    size: 500Gi
+    storageClass: fast-ssd
+
+  backup:
+    barmanObjectStore:
+      destinationPath: s3://intuition-backups/postgres
+      s3Credentials:
+        accessKeyId:
+          name: s3-credentials
+          key: access-key-id
+        secretAccessKey:
+          name: s3-credentials
+          key: secret-access-key
+```
+
+### Redis Cluster
+
+```yaml
+apiVersion: redis.redis.opstreelabs.in/v1beta1
+kind: RedisCluster
+metadata:
+  name: intuition-cache
+spec:
+  clusterSize: 3
+  clusterVersion: v7
+  persistenceEnabled: true
+  redisExporter:
+    enabled: true
+  storage:
+    volumeClaimTemplate:
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 100Gi
+```
+
+### API Gateway
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hasura
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: hasura
+  template:
+    metadata:
+      labels:
+        app: hasura
+    spec:
+      containers:
+      - name: hasura
+        image: hasura/graphql-engine:latest
+        env:
+        - name: HASURA_GRAPHQL_DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: postgres-credentials
+              key: connection-string
+        - name: HASURA_GRAPHQL_ENABLE_CONSOLE
+          value: "false"
+        - name: HASURA_GRAPHQL_ADMIN_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: hasura-credentials
+              key: admin-secret
+        - name: HASURA_GRAPHQL_RATE_LIMIT_ENABLED
+          value: "true"
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "1"
+          limits:
+            memory: "4Gi"
+            cpu: "2"
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hasura
+spec:
+  selector:
+    app: hasura
+  ports:
+  - port: 8080
+    targetPort: 8080
+  type: LoadBalancer
+```
+
+## Monitoring and Observability
+
+### Prometheus Monitoring
+
+```yaml
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: intuition-monitoring
+spec:
+  selector:
+    matchLabels:
+      app: intuition
+  endpoints:
+  - port: metrics
+    interval: 30s
+```
+
+### Grafana Dashboards
+
+Key metrics monitored:
+
+- **Network Metrics**
+  - Block production rate
+  - Transaction throughput
+  - Gas usage
+  - Validator performance
+
+- **Subnet Metrics**
+  - Event processing lag
+  - Queue depth
+  - Database connections
+  - Query latency
+
+- **API Metrics**
+  - Request rate
+  - Response time
+  - Error rate
+  - Cache hit rate
+
+### Log Aggregation
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fluentd-config
+data:
+  fluent.conf: |
+    <source>
+      @type tail
+      path /var/log/containers/*.log
+      pos_file /var/log/fluentd-containers.log.pos
+      tag kubernetes.*
+      format json
+    </source>
+
+    <filter kubernetes.**>
+      @type kubernetes_metadata
+    </filter>
+
+    <match kubernetes.**>
+      @type elasticsearch
+      host elasticsearch.logging.svc
+      port 9200
+      logstash_format true
+    </match>
+```
+
+## Deployment Strategies
+
+### Rolling Updates
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: event-consumer
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  # ...
+```
+
+### Blue-Green Deployments
+
+```bash
+# Deploy new version (green)
+kubectl apply -f deployment-green.yaml
+
+# Wait for health checks
+kubectl wait --for=condition=available deployment/app-green
+
+# Switch traffic
+kubectl patch service app -p '{"spec":{"selector":{"version":"green"}}}'
+
+# Monitor and rollback if needed
+kubectl patch service app -p '{"spec":{"selector":{"version":"blue"}}}'
+```
+
+### Canary Releases
+
+```yaml
+apiVersion: flagger.app/v1beta1
+kind: Canary
+metadata:
+  name: intuition-api
+spec:
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: intuition-api
+  service:
+    port: 8080
+  analysis:
+    interval: 1m
+    threshold: 5
+    maxWeight: 50
+    stepWeight: 10
+    metrics:
+    - name: request-success-rate
+      thresholdRange:
+        min: 99
+    - name: request-duration
+      thresholdRange:
+        max: 500
+```
+
+## Disaster Recovery
+
+### Backup Strategy
+
+```bash
+# PostgreSQL backups
+# - Continuous WAL archiving
+# - Daily full backups
+# - 30-day retention
+
+# Backup script
+#!/bin/bash
+TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+pg_dump -h $DB_HOST -U $DB_USER $DB_NAME | \
+  gzip > /backups/intuition_${TIMESTAMP}.sql.gz
+
+# Upload to S3
+aws s3 cp /backups/intuition_${TIMESTAMP}.sql.gz \
+  s3://intuition-backups/postgres/
+```
+
+### Recovery Procedures
+
+1. **Network Recovery**
+   - Restore from latest snapshot
+   - Replay blocks from checkpoint
+   - Validate state consistency
+
+2. **Database Recovery**
+   - Restore from backup
+   - Apply WAL archives
+   - Verify data integrity
+
+3. **Service Recovery**
+   - Redeploy from last known good version
+   - Restore configurations
+   - Verify connectivity
+
+## Scaling Strategies
+
+### Horizontal Scaling
+
+```yaml
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: event-consumer-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: event-consumer
+  minReplicas: 3
+  maxReplicas: 20
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Pods
+    pods:
+      metric:
+        name: sqs_queue_depth
+      target:
+        type: AverageValue
+        averageValue: "1000"
+```
+
+### Database Scaling
+
+```sql
+-- Read replicas for query load
+CREATE SUBSCRIPTION intuition_replica
+    CONNECTION 'host=primary.db port=5432 dbname=intuition'
+    PUBLICATION intuition_pub;
+
+-- Partitioning for large tables
+CREATE TABLE events_y2024m01 PARTITION OF events
+    FOR VALUES FROM ('2024-01-01') TO ('2024-02-01');
+```
+
+## Security Hardening
+
+### Network Policies
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: intuition-network-policy
+spec:
+  podSelector:
+    matchLabels:
+      app: event-consumer
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: hasura
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          app: postgres
+    ports:
+    - protocol: TCP
+      port: 5432
+```
+
+### Secret Management
+
+```yaml
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: intuition-secrets
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    name: aws-secrets-manager
+    kind: SecretStore
+  target:
+    name: intuition-credentials
+  data:
+  - secretKey: database-url
+    remoteRef:
+      key: prod/intuition/database
+  - secretKey: private-key
+    remoteRef:
+      key: prod/intuition/private-key
+```
+
+## Performance Tuning
+
+### Resource Optimization
+
+```yaml
+resources:
+  requests:
+    memory: "2Gi"
+    cpu: "1000m"
+  limits:
+    memory: "4Gi"
+    cpu: "2000m"
+
+# Use guaranteed QoS class for critical services
+# requests == limits
+```
+
+### Connection Pooling
+
+```typescript
+// PgBouncer configuration
+const pool = new Pool({
+  host: 'pgbouncer.db.svc',
+  port: 6432,
+  database: 'intuition',
+  max: 20, // max connections per pod
+  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 2000
+});
+```
+
+## Next Steps
+
+<div className="economic-grid">
+
+<div className="uniform-card" style={{
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '6px',
+  padding: '1rem',
+  backgroundColor: 'var(--ifm-background-color)'
+}}>
+
+**[Run a Node](/docs/run-node/run-an-intuition-node)** - Set up your own infrastructure
+
+</div>
+
+<div className="uniform-card" style={{
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '6px',
+  padding: '1rem',
+  backgroundColor: 'var(--ifm-background-color)'
+}}>
+
+**[Performance](./performance)** - Optimization strategies
+
+</div>
+
+<div className="uniform-card" style={{
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '6px',
+  padding: '1rem',
+  backgroundColor: 'var(--ifm-background-color)'
+}}>
+
+**[Security](./security)** - Security best practices
+
+</div>
+
+</div>
