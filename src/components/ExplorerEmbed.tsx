@@ -10,7 +10,7 @@ export default function ExplorerEmbed() {
 
   return (
     <ApolloSandbox
-      initialEndpoint="https://prod.base.intuition-api.com/v1/graphql"
+      initialEndpoint="https://testnet.intuition.sh/v1/graphql"
       includeCookies={true}
       initialHeaders={{
         Authorization: `Bearer ${localStorage.token}`
