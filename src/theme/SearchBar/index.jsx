@@ -144,6 +144,7 @@ function DocSearch({ contextualSearch, externalUrlRegex, ...props }) {
   });
 
   const [selectedIndex, setSelectedIndex] = useState(() => {
+
     if (ExecutionEnvironment.canUseDOM &&
         typeof window !== 'undefined' &&
         window.localStorage &&
