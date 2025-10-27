@@ -10,21 +10,21 @@ Intuition's data model is built on three fundamental primitives that work togeth
 <div className="uniform-card-grid">
 
 <div className="uniform-card">
-<h2 className="uniform-card-title">🔷 Atoms</h2>
+<h2 className="uniform-card-title">Atoms</h2>
 <p className="uniform-card-content">
 The basic entities or identifiers - unique decentralized identifiers for everything in existence. Think of them as the <strong>nodes</strong> in the knowledge graph, or the <strong>words</strong> in the dictionary.
 </p>
 </div>
 
 <div className="uniform-card">
-<h2 className="uniform-card-title">🔗 Triples</h2>
+<h2 className="uniform-card-title">Triples</h2>
 <p className="uniform-card-content">
 Structured relationships or claims linking entities together in Subject-Predicate-Object format. These are the <strong>edges</strong> in the knowledge graph / the <strong>sentences</strong> in the language of Intuition.
 </p>
 </div>
 
 <div className="uniform-card">
-<h2 className="uniform-card-title">📊 Signals</h2>
+<h2 className="uniform-card-title">Signals</h2>
 <p className="uniform-card-content">
 The weight of trust or consensus behind each entity or claim, determined by community staking. These represent the <strong>edge weights</strong> in the graph, or 'who is saying what about what, with what level of conviction'.
 </p>
