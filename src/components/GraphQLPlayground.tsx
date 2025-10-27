@@ -282,20 +282,7 @@ const QUERY_EXAMPLES: QueryExample[] = [
       termId: '0xffb30efde2b49a7deadd920a7df684595ed4a291a582033c16b0795796965600',
     },
   },
-  {
-    id: 'curve-info',
-    title: 'Query Curve Information',
-    query: `query GetCurveInfo {
-  curves {
-    id
-    name
-    slope
-    offset
-    max_assets
-    max_shares
-  }
-}`,
-  },
+ 
   {
     id: 'user-activity',
     title: 'Query User Activity',
