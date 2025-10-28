@@ -8,7 +8,7 @@ description: Complete guide to the Intuition GraphQL Generator
 
 # GraphQL Generator
 
-The Intuition GraphQL package can be used as a GraphQL generator for your custom queries. It provides a type-safe interface for interacting with the Intuition API. It serves as the core data fetching layer, offering generated types and React Query hooks for seamless integration with the semantic knowledge graph.
+The Intuition GraphQL package can be used as a GraphQL generator for your custom queries. It provides a type-safe interface for interacting with the Intuition API. It functions as the core data fetching layer, supplying generated types and React Query hooks for easy integration with the semantic knowledge graph.
 
 ## Key Features
 
@@ -21,9 +21,8 @@ The Intuition GraphQL package can be used as a GraphQL generator for your custom
 
 ## Installation
 
-The source code for the GraphQL generator is available on GitHub: [intuition-ts/packages/graphql](https://github.com/0xIntuition/intuition-ts/tree/main/packages/graphql)
-Which you can copy and paste into your own project to use as a GraphQL generator.
 
+The source code for the GraphQL generator is available on GitHub, which you can copy and paste into your own project to use as a GraphQL generator: [`intuition-ts/packages/graphql`](https://github.com/0xIntuition/intuition-ts/tree/main/packages/graphql)
 
 
 ## Schema Management
@@ -51,7 +50,7 @@ graphql/
 └── codegen.ts # Codegen config
 ```
 
-Note that there is no subscriptions folder in this package, but because the GraphQL API supports subscriptions for real-time updates, you can easily add them to the generator.
+Although this package does not include a subscriptions folder, you can easily add one to the generator because the GraphQL API allows subscriptions for real-time updates.
 
 
 
@@ -71,8 +70,9 @@ Note that there is no subscriptions folder in this package, but because the Grap
 
 ## Craft your own custom queries
 
-We recommend using a GraphQL explorer to browse the Intuition GraphQL API schema and to draft and test your queries, mutations, and subscriptions before implementing them in code.
-You can use [Apollo Explorer](https://studio.apollographql.com/sandbox/explorer) for this and enter the Intuition testnet GraphQL API URL: `https://testnet.intuition.sh/v1/graphql`
+We advise drafting and testing your queries, mutations, and subscriptions before implementing them into code. You should also use a GraphQL explorer to explore the Intuition GraphQL API schema.
+
+For this, you can use [Apollo Explorer](https://studio.apollographql.com/sandbox/explorer) and input the URL of the Intuition testnet GraphQL API: `https://testnet.intuition.sh/v1/graphql`.
 
 
 ## Development Workflow
@@ -115,6 +115,7 @@ function MyComponent() {
 }
 ```
 
+The GraphQL API provides the foundation for building powerful applications on Intuition.
 
 ## Related Resources
 
@@ -122,4 +123,3 @@ function MyComponent() {
 - [React Query Documentation](https://tanstack.com/query)
 - [Intuition GraphQL Package Source](https://github.com/0xIntuition/intuition-ts/tree/main/packages/graphql)
 
-The GraphQL API provides the foundation for building powerful applications on Intuition.

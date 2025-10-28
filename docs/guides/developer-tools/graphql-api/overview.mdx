@@ -3,7 +3,7 @@ id: overview
 title: Overview
 sidebar_label: Overview
 sidebar_position: 1
-description: Introduction to the Intuition GraphQL API and its key features
+description: Introduction to the Intuition GraphQL API and its main features
 ---
 
 import GraphQLPlayground from '@site/src/components/GraphQLPlayground';
@@ -12,14 +12,13 @@ import ExcalidrawViewer from '@site/src/components/ExcalidrawViewer';
 
 # GraphQL API Overview
 
-Intuition provides a GraphQL API as an easy and flexible way to query its knowledge graph.
+Intuition provides a GraphQL API for querying its knowledge graph in a convenient and versatile way.
 
-If this is your first time encountering GraphQL, you can read more at [graphql.org](https://graphql.org/).
+If this is your first time using GraphQL, you can learn more at [graphql.org](https://graphql.org/).
 
-Until mainnet launch, the Intuition team hosts an open GraphQL API powered by Hasura that you can query at [https://testnet.intuition.sh/v1/graphql](https://testnet.intuition.sh/v1/graphql).
-If you want to learn more or run the backend yourself, see [Run an Intuition node](/docs/run-node/run-an-intuition-node).
+Until mainnet launch, the Intuition team hosts an open GraphQL API powered by Hasura, which may be accessed at [https://testnet.intuition.sh/v1/graphql](https://testnet.intuition.sh/v1/graphql). For more information about running the backend yourself, visit [Run an Intuition node](/docs/run-node/run-an-intuition-node).
 
-To leverage this GraphQL API, there are a few ways to get started depending on the level of abstraction and customizability you are looking for:
+There are a few ways to get started with this GraphQL API, depending on the level of abstraction and customization you require:
 
 <BrowserOnly fallback={<p>Loading diagram...</p>}>
   {() => (
@@ -29,59 +28,59 @@ To leverage this GraphQL API, there are a few ways to get started depending on t
 
 <div className="uniform-card-grid">
 
-<a
-  href="/docs/developer-tools/sdks/overview"
-  className="uniform-card"
-  style={{ textDecoration: 'none', color: 'inherit' }}
->
-  <h3 className="uniform-card-title">SDK</h3>
-  <p className="uniform-card-content">
-    Integrate with Intuition smart contracts using our TypeScript SDK
-  </p>
-</a>
+  <a
+    href="/docs/developer-tools/sdks/overview"
+    className="uniform-card"
+    style={{ textDecoration: 'none', color: 'inherit' }}
+  >
+    <h3 className="uniform-card-title">SDK</h3>
+    <p className="uniform-card-content">
+      Integrate with Intuition smart contracts using our TypeScript SDK.
+    </p>
+  </a>
 
-<a
-  href="/docs/developer-tools/graphql-api/custom-queries"
-  className="uniform-card"
-  style={{ textDecoration: 'none', color: 'inherit' }}
->
-  <h3 className="uniform-card-title">Custom Queries</h3>
-  <p className="uniform-card-content">
-    Write tailored GraphQL queries for your specific use case
-  </p>
-</a>
+  <a
+    href="/docs/developer-tools/graphql-api/custom-queries"
+    className="uniform-card"
+    style={{ textDecoration: 'none', color: 'inherit' }}
+  >
+    <h3 className="uniform-card-title">Custom Queries</h3>
+    <p className="uniform-card-content">
+      Create bespoke GraphQL queries for your specific use case.
+    </p>
+  </a>
 
-<div  className="uniform-card" style={{ gridColumn: '1 / -1' }}>
-<h3 className="uniform-card-title">GraphQL Package</h3>
-<div className="uniform-card-grid-small">
-<a
-  href="/docs/developer-tools/graphql-api/npm-package"
-  className="uniform-card"
-  style={{ textDecoration: 'none', color: 'inherit' }}
->
-  <h3 className="uniform-card-title">Install it with NPM</h3>
-  <p className="uniform-card-content">
-    Install and use the NPM package with ready-made React Query hooks
-  </p>
-</a>
+  <div  className="uniform-card" style={{ gridColumn: '1 / -1' }}>
+    <h3 className="uniform-card-title">GraphQL Package</h3>
 
-<a
-  href="/docs/developer-tools/graphql-api/npm-package"
-  className="uniform-card"
-  style={{ textDecoration: 'none', color: 'inherit' }}
->
-  <h3 className="uniform-card-title">use it as a GraphQL Generator</h3>
-  <p className="uniform-card-content">
-    Use the GraphQL package as a GraphQL generator to create your own queries and mutations
-  </p>
-</a>
+    <div className="uniform-card-grid-small">
+      <a
+        href="/docs/developer-tools/graphql-api/npm-package"
+        className="uniform-card"
+        style={{ textDecoration: 'none', color: 'inherit' }}
+      >
+        <h3 className="uniform-card-title">Install it with NPM</h3>
+        <p className="uniform-card-content">
+          Install and use the NPM package with ready-made React Query hooks.
+        </p>
+      </a>
+
+      <a
+        href="/docs/developer-tools/graphql-api/npm-package"
+        className="uniform-card"
+        style={{ textDecoration: 'none', color: 'inherit' }}
+      >
+        <h3 className="uniform-card-title">Use it as a GraphQL Generator</h3>
+        <p className="uniform-card-content">
+          Use the GraphQL package to generate your own queries and mutations.
+        </p>
+      </a>
+    </div>
+  </div>
 </div>
-
-    </div>
-    </div>
 
 ## Interactive Playground
 
-Try out the Intuition GraphQL API directly in your browser! The playground below connects to the live testnet endpoint and lets you explore the knowledge graph in real-time.
+Try the Intuition GraphQL API straight from your browser!  The playground below connects to the live testnet endpoint and allows you to explore the knowledge graph in real time.
 
 <GraphQLPlayground />
