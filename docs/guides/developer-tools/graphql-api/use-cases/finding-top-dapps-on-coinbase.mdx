@@ -3,10 +3,23 @@ id: finding-top-dapps-on-coinbase
 title: Finding Top Dapps on Coinbase
 sidebar_label: Finding Top Dapps on Coinbase
 sidebar_position: 6
-description: Step-by-step guide to query and rank top decentralized applications on Coinbase
+description: Step-by-step guide for querying and ranking top decentralized applications on Coinbase
 ---
 
 import GraphQLPlaygroundCustom from '@site/src/components/GraphQLPlaygroundCustom';
+
+# Finding the Top dApps on Coinbase
+
+This guide shows you how to progressively build queries to discover and rank the top decentralized applications (Dapps) on Coinbase by market capitalization.
+
+Follow these 4 queries step-by-step. Each one builds on the previous to achieve the final result: **a ranked list of top dApps on Coinbase**.
+
+## Understanding the Progression
+
+- **Step 1**: Run a basic query to view all dApps (organizations) in the system.
+- **Step 2**: Repeate the query, but filtered for Coinbase-related Dapps (note how the results narrow down).
+- **Step 3**: Add performance metrics from vaults (market cap, shares, and positions) - data is now richer but not yet sorted.
+- **Step 4**: Repeate the query from Step 3, but this time sort by market cap to show the top performing dApps first.
 
 export const progressiveQueries = [
   {
@@ -138,18 +151,5 @@ export const progressiveQueries = [
     }
   }
 ];
-
-# Finding Top Dapps on Coinbase
-
-This guide shows you how to progressively build queries to discover and rank the top decentralized applications (Dapps) on Coinbase by market cap.
-
-Follow these 4 queries step-by-step. Each one builds on the previous to reach the final result: **a ranked list of top Dapps on Coinbase**.
-
-## Understanding the Progression
-
-- **Step 1**: Basic query to see all organizations (Dapps) in the system
-- **Step 2**: Same query but filtered to only show Coinbase-related Dapps (notice how results narrow down)
-- **Step 3**: Add performance metrics from vaults (market cap, shares, positions) - data is now richer but not yet sorted
-- **Step 4**: Same as Step 3 but now **sorted by market cap** to show the top performing Dapps first!
 
 <GraphQLPlaygroundCustom queries={progressiveQueries} />
