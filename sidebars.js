@@ -30,15 +30,49 @@ module.exports = {
           type: 'category',
           label: 'Triples',
           items: [
-            'primitives/triples/overview',
-            'primitives/triples/nested-triples',
-            'primitives/triples/positive-negative-claims',
-            'primitives/triples/best-practices',
-            'primitives/triples/core-benefits',
-            'primitives/triples/practical-implementation',
-            'primitives/triples/use-cases',
+            {
+              type: 'category',
+              label: 'Overview',
+              link: {
+                type: 'doc',
+                id: 'primitives/triples/overview',
+              },
+              items: [
+                'primitives/triples/core-benefits',
+                'primitives/triples/use-cases',
+              ],
+            },
             'primitives/triples/querying-triples',
-            'primitives/triples/integration',
+            {
+              type: 'category',
+              label: 'Create Triples',
+              items: [
+                {
+                  type: 'category',
+                  label: 'How to create',
+                  link: {
+                    type: 'doc',
+                    id: 'primitives/triples/how-to-create',
+                  },
+                  items: [
+                    'primitives/triples/best-practices-structuring',
+                    'primitives/triples/create-triples-practical-implementation',
+                  ],
+                },
+              ],
+            },
+            'primitives/triples/positive-negative-claims',
+            {
+              type: 'category',
+              label: 'Nested Triples',
+              link: {
+                type: 'doc',
+                id: 'primitives/triples/nested-triples',
+              },
+              items: [
+                'primitives/triples/nested-triples-practical-implementation',
+              ],
+            },
           ],
         },
         'primitives/signals',

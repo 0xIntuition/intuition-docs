@@ -2,6 +2,19 @@
 title: Core Benefits
 sidebar_position: 5
 ---
+## Why Triples Matter
+
+### Semantic Clarity
+By expressing data in Triple format, Intuition ensures relationships are explicit and standardized. Instead of loose text statements like "Alice lives in Paris" (which computers struggle to parse), we have typed links that machines understand: `Alice —livesIn→ Paris`.
+
+### Reconciliation & Interoperability
+The clarity of Triples means different data sources referencing the same predicate can be merged or compared easily. This semantic structure makes data immediately useful to other systems—knowledge graphs and AI systems can ingest these subject-predicate-object triples without guessing their meaning.
+
+### Extensibility
+Triples are infinitely extensible. New information can be attached in graph form without altering the original nodes. If we later learn "Alice lives in Paris since 2015", we can introduce new Atoms and predicates to capture this additional context through supplementary Triples.
+
+### Composability
+The data model is open-ended—you can always extend the graph by adding another Triple rather than modifying existing ones. This is analogous to how one can keep adding facts to Wikipedia.
 
 # Core Benefits
 
