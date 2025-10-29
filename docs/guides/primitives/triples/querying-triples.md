@@ -1,5 +1,5 @@
 ---
-title: Querying Triples
+title: Query Triples
 sidebar_position: 8
 ---
 
