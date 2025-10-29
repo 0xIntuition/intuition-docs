@@ -1,12 +1,12 @@
 ---
-id: layer1-network
-title: Layer 1 - Intuition Network
-sidebar_label: Layer 1 - Intuition Network
+id: network
+title: Intuition Network
+sidebar_label: Intuition Network
 sidebar_position: 2
-description: Deep dive into Intuition's Layer 3 Network built on Base
+description: Deep dive into Intuition's Network built on Base
 ---
 
-# Layer 1: Intuition Network (Base L3)
+# Intuition Network (Base L3)
 
 ## Overview
 
@@ -95,92 +95,6 @@ interface IMetalayerBridge {
 
 This enables atoms and triples to reference data across any supported chain, creating a truly interoperable knowledge graph.
 
-## Network Architecture
-
-The Intuition Network is designed with redundancy and performance in mind:
-
-### Node Infrastructure
-
-- **Validator Nodes**: Distributed globally for decentralization
-- **RPC Nodes**: Multi-region endpoints for low latency
-- **Archive Nodes**: Full historical data for indexing
-- **Light Clients**: Verification without full node requirements
-
-### Consensus Mechanism
-
-The network uses an optimistic rollup model:
-
-1. **Transactions submitted** to the sequencer
-2. **Batch processing** for efficiency
-3. **State roots posted** to Base L2
-4. **Challenge period** for fraud proofs
-5. **Finalization** after challenge window
-
-## Network Characteristics
-
-<div className="economic-grid">
-
-<div className="uniform-card" style={{
-  backgroundColor: 'var(--ifm-color-emphasis-50)',
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '6px',
-  padding: '1rem'
-}}>
-
-**Economic Model**
-- Native gas token
-- Bridge from Base
-- Dynamic gas pricing
-- Fee burning mechanism
-
-</div>
-
-<div className="uniform-card" style={{
-  backgroundColor: 'var(--ifm-color-emphasis-50)',
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '6px',
-  padding: '1rem'
-}}>
-
-**Security Model**
-- Inherits Base security
-- Fraud proof system
-- Validator incentives
-- Slashing conditions
-
-</div>
-
-<div className="uniform-card" style={{
-  backgroundColor: 'var(--ifm-color-emphasis-50)',
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '6px',
-  padding: '1rem'
-}}>
-
-**Developer Tools**
-- Standard EVM tooling
-- Compatible with Web3.js
-- Ethers.js support
-- Hardhat & Foundry
-
-</div>
-
-</div>
-
-## Network Endpoints
-
-For information about connecting to the Intuition Network, see:
-
-<div className="uniform-card" style={{
-  border: '1px solid var(--ifm-color-emphasis-300)',
-  borderRadius: '6px',
-  padding: '1rem',
-  backgroundColor: 'var(--ifm-background-color)'
-}}>
-
-**[Network Information](/docs/network/network)** - RPC endpoints, chain IDs, and connection details
-
-</div>
 
 ## Next Steps
 
@@ -193,7 +107,7 @@ For information about connecting to the Intuition Network, see:
   backgroundColor: 'var(--ifm-background-color)'
 }}>
 
-**[Layer 2: Protocol](./layer2-protocol)** - Explore the smart contracts
+**[Intuition Protocol](./protocol)** - Explore the smart contracts
 
 </div>
 

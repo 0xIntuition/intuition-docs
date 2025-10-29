@@ -1,12 +1,12 @@
 ---
-id: layer3-subnet
-title: Layer 3 - Rust Subnet
-sidebar_label: Layer 3 - Rust Subnet
+id: subnet
+title: Rust Subnet
+sidebar_label: Rust Subnet
 sidebar_position: 4
 description: Deep dive into Intuition's off-chain Rust infrastructure
 ---
 
-# Layer 3: Rust Subnet (Off-Chain Infrastructure)
+# Rust Subnet (Off-Chain Infrastructure)
 
 ## Overview
 
@@ -173,15 +173,6 @@ impl DecodedConsumerContext {
 
 </div>
 
-
-### Pipeline Stages
-
-1. **Raw Event Ingestion** - Events captured from blockchain
-2. **Event Decoding** - ABI decoding and validation
-3. **Data Resolution** - Fetching off-chain metadata
-4. **Database Storage** - Persisting to PostgreSQL
-5. **GraphQL Serving** - Exposing through Hasura
-
 ## API Layer
 
 The Subnet exposes multiple API interfaces including GraphQL, REST, and real-time subscriptions for interacting with the knowledge graph.
@@ -189,57 +180,6 @@ The Subnet exposes multiple API interfaces including GraphQL, REST, and real-tim
 :::note Get more details
 For detailed information about the available APIs, query examples, and interactive playgrounds, please see the **[GraphQL API Overview](/docs/developer-tools/graphql-api/overview)**.
 :::
-
-## Infrastructure Components
-
-<div className="economic-grid">
-
-<div className="uniform-card" style={{
-  backgroundColor: 'var(--ifm-background-color)',
-  border: '1px solid var(--ifm-color-emphasis-300)',
-  borderRadius: '8px',
-  padding: '1rem'
-}}>
-
-**Event Queue**
-- AWS SQS for reliability
-- Dead letter queues
-- Retry mechanisms
-- Backpressure handling
-
-</div>
-
-<div className="uniform-card" style={{
-  backgroundColor: 'var(--ifm-background-color)',
-  border: '1px solid var(--ifm-color-emphasis-300)',
-  borderRadius: '8px',
-  padding: '1rem'
-}}>
-
-**Data Storage**
-- PostgreSQL for structured data
-- Redis for caching
-- IPFS for content
-- S3 for backups
-
-</div>
-
-<div className="uniform-card" style={{
-  backgroundColor: 'var(--ifm-background-color)',
-  border: '1px solid var(--ifm-color-emphasis-300)',
-  borderRadius: '8px',
-  padding: '1rem'
-}}>
-
-**API Gateway**
-- Hasura GraphQL engine
-- REST endpoints
-- WebSocket support
-- Authentication layer
-
-</div>
-
-</div>
 
 ## Running a Subnet Node
 

@@ -1,12 +1,12 @@
 ---
-id: layer2-protocol
-title: Layer 2 - Intuition Protocol
-sidebar_label: Layer 2 - Intuition Protocol
+id: protocol
+title: Intuition Protocol
+sidebar_label: Intuition Protocol
 sidebar_position: 3
 description: Deep dive into Intuition's on-chain smart contract logic
 ---
 
-# Layer 2: Intuition Protocol (On-Chain Logic)
+# Intuition Protocol (On-Chain Logic)
 
 ## Overview
 
@@ -166,90 +166,6 @@ interface OnChainState {
 }
 ```
 
-## Contract Interactions
-
-### Creating an Atom
-
-```typescript
-// Using the SDK
-const atom = await intuition.createAtom({
-  uri: 'ipfs://QmXoypizjW3WknFiJnKLwHCnL72vedxjQkDDP1mXWo6uco'
-});
-```
-
-### Creating a Triple
-
-```typescript
-// Create a subject-predicate-object relationship
-const triple = await intuition.createTriple({
-  subjectId: 1,
-  predicateId: 2,
-  objectId: 3
-});
-```
-
-### Signaling on Knowledge
-
-```typescript
-// Deposit on an atom
-await intuition.stake(atomId, parseEther('100'));
-
-// Signal for/against a triple
-await intuition.depositTriple(tripleId, parseEther('50'), true); // for
-await intuition.depositTriple(tripleId, parseEther('25'), false); // against
-```
-
-## Security Features
-
-<div className="economic-grid">
-
-<div className="uniform-card" style={{
-  backgroundColor: 'var(--ifm-background-color)',
-  border: '1px solid var(--ifm-color-emphasis-300)',
-  borderRadius: '8px',
-  padding: '1rem'
-}}>
-
-**Audited Contracts**
-- Multiple security audits
-- Bug bounty program
-- Formal verification
-- Continuous monitoring
-
-</div>
-
-<div className="uniform-card" style={{
-  backgroundColor: 'var(--ifm-background-color)',
-  border: '1px solid var(--ifm-color-emphasis-300)',
-  borderRadius: '8px',
-  padding: '1rem'
-}}>
-
-**Upgradeability**
-- Proxy pattern
-- Time-locked admin
-- Multi-sig governance
-- Emergency pause
-
-</div>
-
-<div className="uniform-card" style={{
-  backgroundColor: 'var(--ifm-background-color)',
-  border: '1px solid var(--ifm-color-emphasis-300)',
-  borderRadius: '8px',
-  padding: '1rem'
-}}>
-
-**Rate Limiting**
-- Anti-spam protection
-- DOS prevention
-- Gas optimization
-- Fair distribution
-
-</div>
-
-</div>
-
 ## Next Steps
 
 <div className="economic-grid">
@@ -283,7 +199,7 @@ await intuition.depositTriple(tripleId, parseEther('25'), false); // against
   backgroundColor: 'var(--ifm-background-color)'
 }}>
 
-**[Layer 3: Subnet](./layer3-subnet)** - Off-chain infrastructure
+**[Rust Subnet](./subnet)** - Off-chain infrastructure
 
 </div>
 
