@@ -66,7 +66,7 @@ The Predicate Atom is crucial for clarity. Guidelines:
 
 The Intuition community and token mechanics organically push toward standard predicates through signal accumulation.
 
-For a curated list of recommended predicates, visit the [**Recommended Predicates List**](https://portal.intuition.systems/explore/list/0x49487b1d5bf2734d497d6d9cfcd72cdfbaefb4d4f03ddc310398b24639173c9d-0x6bb9e11ee289fed0c12c340e063ca0f0b21ed538dc671348730caa8cb4fe68aa) on the Intuition Portal.
+For a curated list of recommended predicates, visit the [**Recommended Predicates List**](https://portal.intuition.systems/explore/list/0x7ec36d201c842dc787b45cb5bb753bea4cf849be3908fb1b0a7d067c3c3cc1f5-0x9e610f7662673a0432999db5ce51e0ffc3d0d7fbf1455c2f10a7d0bf036b8cf2) on the Intuition Portal.
 
 ### One Fact Per Triple
 
