@@ -1,0 +1,96 @@
+---
+id: performance
+title: Performance Optimizations
+sidebar_label: Performance Optimizations
+sidebar_position: 6
+description: Optimization strategies and performance tuning for Intuition applications
+---
+
+## Performance Optimizations
+
+### Caching Strategy
+
+Multi-layer caching for optimal performance:
+
+<div className="economic-grid">
+
+<div className="uniform-card" style={{
+  backgroundColor: 'var(--ifm-color-emphasis-50)',
+  border: '1px solid var(--ifm-color-emphasis-200)',
+  borderRadius: '6px',
+  padding: '0.75rem'
+}}>
+
+**L1: CDN Edge Cache**
+- Static content
+- Popular queries
+- 5-minute TTL
+
+</div>
+
+<div className="uniform-card" style={{
+  backgroundColor: 'var(--ifm-color-emphasis-50)',
+  border: '1px solid var(--ifm-color-emphasis-200)',
+  borderRadius: '6px',
+  padding: '0.75rem'
+}}>
+
+**L2: Redis Cache**
+- Query results
+- Session data
+- 1-hour TTL
+
+</div>
+
+<div className="uniform-card" style={{
+  backgroundColor: 'var(--ifm-color-emphasis-50)',
+  border: '1px solid var(--ifm-color-emphasis-200)',
+  borderRadius: '6px',
+  padding: '0.75rem'
+}}>
+
+**L3: Application Cache**
+- Computed values
+- Aggregate data
+- 24-hour TTL
+
+</div>
+
+</div>
+
+### Query Optimization
+
+The Subnet employs sophisticated query optimization:
+
+- **Query planning** - Analyzes queries to determine optimal execution path
+- **Parallel execution** - Breaks queries into independent subqueries
+- **Index utilization** - Maintains specialized indexes for common patterns
+- **Result streaming** - Streams large results instead of loading all at once
+
+## Next Steps
+
+<div className="economic-grid">
+
+<div className="uniform-card" style={{
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '6px',
+  padding: '1rem',
+  backgroundColor: 'var(--ifm-background-color)'
+}}>
+
+**[Development Patterns](./development-patterns)** - Learn best practices
+
+</div>
+
+<div className="uniform-card" style={{
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '6px',
+  padding: '1rem',
+  backgroundColor: 'var(--ifm-background-color)'
+}}>
+
+**[Security Architecture](./security)** - Understand security measures
+
+</div>
+
+</div>

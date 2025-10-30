@@ -1,0 +1,93 @@
+---
+id: development-patterns
+title: Development Patterns
+sidebar_label: Development Patterns
+sidebar_position: 8
+description: Best practices and patterns for building on Intuition
+---
+
+## Development Patterns
+
+### Recommended Integration Flow
+
+
+:::tip
+For developers building on Intuition, we recommend:
+
+1. **Use the TypeScript SDK** for all contract interactions
+2. **Query via GraphQL** for complex data needs
+3. **Subscribe to WebSockets** for real-time updates
+4. **Cache aggressively** at the application layer
+5. **Batch operations** when possible to reduce costs
+:::
+
+### Example: Creating and Querying Atoms
+
+```typescript
+// Using the SDK to create an atom
+const atom = await intuition.createAtom({
+  uri: 'ipfs://QmXoypizjW3WknFiJnKLwHCnL72vedxjQkDDP1mXWo6uco'
+});
+
+// Staking on the atom
+await intuition.stake(atom.id, parseEther('100'));
+
+// Querying via GraphQL
+const query = gql`
+  query GetAtom($id: ID!) {
+    atom(id: $id) {
+      uri
+      creator
+      vault {
+        totalStaked
+        holders
+      }
+      signal
+    }
+  }
+`;
+
+const result = await client.query({
+  query,
+  variables: { id: atom.id }
+});
+```
+
+## Next Steps
+
+<div className="economic-grid">
+
+<div className="uniform-card" style={{
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '6px',
+  padding: '1rem',
+  backgroundColor: 'var(--ifm-background-color)'
+}}>
+
+**[SDK Documentation](/docs/developer-tools/sdks/overview)** - Explore SDK features
+
+</div>
+
+<div className="uniform-card" style={{
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '6px',
+  padding: '1rem',
+  backgroundColor: 'var(--ifm-background-color)'
+}}>
+
+**[GraphQL API](/docs/developer-tools/graphql-api/overview)** - Master the API
+
+</div>
+
+<div className="uniform-card" style={{
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '6px',
+  padding: '1rem',
+  backgroundColor: 'var(--ifm-background-color)'
+}}>
+
+**[Quick Start](/docs/quickstart/getting-started)** - Build your first app
+
+</div>
+
+</div>

@@ -1,0 +1,88 @@
+---
+id: data-flow
+title: Data Flow Architecture
+sidebar_label: Data Flow Architecture
+sidebar_position: 5
+description: Understanding how data flows through Intuition's three-layer system
+---
+
+### Transaction Lifecycle
+
+Understanding how data flows through the system is crucial for developers:
+
+<div className="transaction-card" style={{
+  backgroundColor: 'var(--ifm-background-surface-color)',
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '12px',
+  padding: '2rem',
+  margin: '2rem 0'
+}}>
+
+1. **User Action** → SDK creates transaction
+2. **Network Processing** → L3 validates and includes in block
+3. **Protocol Execution** → Smart contracts update state
+4. **Event Emission** → Contracts emit events
+5. **Subnet Indexing** → Events processed and indexed
+6. **Data Resolution** → Off-chain data fetched and cached
+7. **API Response** → Unified data served to applications
+
+**Average End-to-End Latency: < 2 seconds**
+
+</div>
+
+### State Synchronization
+
+The system maintains consistency across all layers:
+
+```typescript
+interface SyncStrategy {
+  // Real-time sync for recent blocks
+  realtimeSync: {
+    blockLag: 2,
+    confirmations: 1,
+    retryPolicy: ExponentialBackoff
+  };
+
+  // Batch sync for historical data
+  batchSync: {
+    chunkSize: 1000,
+    parallelWorkers: 10,
+    checkpointInterval: 100
+  };
+
+  // Consistency checks
+  validation: {
+    stateRootVerification: true,
+    periodicReconciliation: '1h',
+    alertThreshold: 0.001 // 0.1% discrepancy
+  };
+}
+```
+
+## Next Steps
+
+<div className="economic-grid">
+
+<div className="uniform-card" style={{
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '6px',
+  padding: '1rem',
+  backgroundColor: 'var(--ifm-background-color)'
+}}>
+
+**[Performance Optimizations](./performance)** - Learn optimization strategies
+
+</div>
+
+<div className="uniform-card" style={{
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '6px',
+  padding: '1rem',
+  backgroundColor: 'var(--ifm-background-color)'
+}}>
+
+**[Development Patterns](./development-patterns)** - Best practices for building
+
+</div>
+
+</div>

@@ -1,0 +1,105 @@
+---
+id: deployment
+title: Deployment Architecture
+sidebar_label: Deployment Architecture
+sidebar_position: 9
+description: Infrastructure and deployment architecture for Intuition
+---
+
+# Deployment Architecture
+
+## Overview
+
+This page describes the infrastructure setup and deployment architecture for Intuition's production environment. Understanding this architecture helps developers plan their own deployments and understand system behavior.
+
+## Deployment Architecture
+
+### Infrastructure Setup
+
+<div className="economic-grid">
+
+<div className="uniform-card" style={{
+  backgroundColor: 'var(--ifm-background-color)',
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '8px',
+  padding: '1rem'
+}}>
+
+**Network Nodes**
+- Distributed globally
+- Auto-scaling groups
+- Multi-region failover
+- 99.99% uptime SLA
+
+</div>
+
+<div className="uniform-card" style={{
+  backgroundColor: 'var(--ifm-background-color)',
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '8px',
+  padding: '1rem'
+}}>
+
+**Subnet Infrastructure**
+- Kubernetes clusters
+- Horizontal pod autoscaling
+- Rolling deployments
+- Blue-green releases
+
+</div>
+
+<div className="uniform-card" style={{
+  backgroundColor: 'var(--ifm-background-color)',
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '8px',
+  padding: '1rem'
+}}>
+
+**Data Storage**
+- PostgreSQL with replication
+- Redis sentinel clusters
+- IPFS pinning services
+- S3-compatible object storage
+
+</div>
+
+</div>
+
+## Next Steps
+
+<div className="economic-grid">
+
+<div className="uniform-card" style={{
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '6px',
+  padding: '1rem',
+  backgroundColor: 'var(--ifm-background-color)'
+}}>
+
+**[Run a Node](/docs/run-node/run-an-intuition-node)** - Set up your own infrastructure
+
+</div>
+
+<div className="uniform-card" style={{
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '6px',
+  padding: '1rem',
+  backgroundColor: 'var(--ifm-background-color)'
+}}>
+
+**[Performance](./performance)** - Optimization strategies
+
+</div>
+
+<div className="uniform-card" style={{
+  border: '1px solid var(--ifm-color-emphasis-300)',
+  borderRadius: '6px',
+  padding: '1rem',
+  backgroundColor: 'var(--ifm-background-color)'
+}}>
+
+**[Security](./security)** - Security best practices
+
+</div>
+
+</div>
