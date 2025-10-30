@@ -43,18 +43,8 @@ module.exports = {
           type: 'category',
           label: 'Triples',
           items: [
-            {
-              type: 'category',
-              label: 'Overview',
-              link: {
-                type: 'doc',
-                id: 'primitives/triples/overview',
-              },
-              items: [
-                'primitives/triples/core-benefits',
-                'primitives/triples/use-cases',
-              ],
-            },
+            'primitives/triples/overview',
+            'primitives/triples/core-benefits',
             'primitives/triples/querying-triples',
             {
               type: 'category',
@@ -64,14 +54,20 @@ module.exports = {
               ],
             },
             'primitives/triples/positive-negative-claims',
+            'primitives/triples/use-cases',
             {
               type: 'category',
               label: 'Nested Triples',
-              link: {
-                type: 'doc',
-                id: 'primitives/triples/nested-triples',
-              },
               items: [
+                {
+                  type: 'category',
+                  label: 'Overview',
+                  link: {
+                    type: 'doc',
+                    id: 'primitives/triples/nested-triples',
+                  },
+                  items: [],
+                },
                 'primitives/triples/nested-triples-practical-implementation',
               ],
             },
