@@ -71,9 +71,13 @@ module.exports = {
     },
     {
       type: 'category',
-      label: 'Rust Backend',
+      label: 'Intuition node',
       items: [
-        'run-node/run-an-intuition-node',
+        'intuition-node/overview',
+        'intuition-node/rust-backend',
+        'intuition-node/run-an-intuition-node',
+        'intuition-node/local-development-setup',
+        'intuition-node/kubernetes-deployment',
       ],
     },
     {
