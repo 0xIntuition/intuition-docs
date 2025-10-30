@@ -38,7 +38,7 @@ Triples come with a native way to handle conflicting views through the two-vault
 
 Knowledge in Intuition is not static. When statements become outdated or need context, you don't replace old data—you supplement it. For example, if Alice moves from Paris to London:
 1. Mark the Paris Triple as no longer current (stake against it or add an "endDate" context triple)
-2. Add `[Alice] -- [livesIn] --> [London]` as a new Triple with current timestamp
+2. Add `[Alice] -- [lives In] --> [London]` as a new Triple with current timestamp
 
 The history is preserved, and queries can be time-scoped or context-aware thanks to the graph structure.
 
