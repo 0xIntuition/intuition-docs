@@ -60,18 +60,7 @@ module.exports = {
               type: 'category',
               label: 'Create Triples',
               items: [
-                {
-                  type: 'category',
-                  label: 'How to create',
-                  link: {
-                    type: 'doc',
-                    id: 'primitives/triples/how-to-create',
-                  },
-                  items: [
-                    'primitives/triples/best-practices-structuring',
-                    'primitives/triples/create-triples-practical-implementation',
-                  ],
-                },
+                'primitives/triples/how-to-create',
               ],
             },
             'primitives/triples/positive-negative-claims',
@@ -88,7 +77,15 @@ module.exports = {
             },
           ],
         },
-        'primitives/signals',
+        {
+          type: 'category',
+          label: 'Signals',
+          items: [
+            'primitives/signals/overview',
+            'primitives/signals/strategies-best-practices',
+            'primitives/signals/practical-implementation',
+          ],
+        },
       ],
     },
     {
