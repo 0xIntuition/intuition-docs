@@ -42,9 +42,9 @@ export default function ExcalidrawViewer({ src }: { src: string }) {
 
         // Set custom appState to control the view
         const customAppState = {
-          viewBackgroundColor: '#ffffff',
-          zoom: { value: 0.6 },
-          scrollX: 0,
+          viewBackgroundColor: '#131417',
+          zoom: { value: .5 },
+          scrollX: 450,
           scrollY: 0,
         };
 
@@ -62,7 +62,15 @@ export default function ExcalidrawViewer({ src }: { src: string }) {
   if (!data) return <p>Loading diagram...</p>;
 
   return (
-    <div style={{ height: 600, border: '1px solid #333', borderRadius: 12, marginBottom: '2rem' }}>
+    <div
+      style={{
+        height: 600,
+        border: '1px solid rgba(255,255,255,0.1)',
+        borderRadius: 20,
+        marginBottom: '2rem',
+        overflow: 'hidden'
+      }}
+    >
       <ExcalidrawComponent initialData={data} viewModeEnabled />
     </div>
   );
