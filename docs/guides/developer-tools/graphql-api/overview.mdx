@@ -12,25 +12,23 @@ import ExcalidrawViewer from '@site/src/components/ExcalidrawViewer';
 
 # GraphQL API Overview
 
-Intuition provides a GraphQL API for querying its knowledge graph in a convenient and versatile way.
-
-If this is your first time using GraphQL, you can learn more at [graphql.org](https://graphql.org/).
-
-Until mainnet launch, the Intuition team hosts an open GraphQL API powered by Hasura, which may be accessed at [https://testnet.intuition.sh/v1/graphql](https://testnet.intuition.sh/v1/graphql). For more information about running the backend yourself, visit [Run an Intuition node](/docs/run-node/run-an-intuition-node).
-
-There are a few ways to get started with this GraphQL API, depending on the level of abstraction and customization you require:
-
 <BrowserOnly fallback={<p>Loading diagram...</p>}>
   {() => (
     <ExcalidrawViewer src="/excalidraw/architecture-diagram.excalidraw.json" />
   )}
 </BrowserOnly>
 
+Intuition provides a GraphQL API for querying its knowledge graph in a convenient and versatile way. There are a few ways to get started with this GraphQL API, depending on the level of abstraction and customization you require.
+
+If this is your first time using GraphQL, you can learn more at [graphql.org](https://graphql.org/).
+
+Until mainnet launch, the Intuition team hosts an open GraphQL API powered by Hasura, which may be accessed at [https://testnet.intuition.sh/v1/graphql](https://testnet.intuition.sh/v1/graphql). For more information about running the backend yourself, visit [Run an Intuition node](/docs/run-node/run-an-intuition-node).
+
 <div className="uniform-card-grid">
 
   <a
     href="/docs/developer-tools/sdks/overview"
-    className="uniform-card"
+    className="clickable-card uniform-card vision-card"
     style={{ textDecoration: 'none', color: 'inherit' }}
   >
     <h3 className="uniform-card-title">SDK</h3>
@@ -41,7 +39,7 @@ There are a few ways to get started with this GraphQL API, depending on the leve
 
   <a
     href="/docs/developer-tools/graphql-api/custom-queries"
-    className="uniform-card"
+    className="clickable-card uniform-card vision-card"
     style={{ textDecoration: 'none', color: 'inherit' }}
   >
     <h3 className="uniform-card-title">Custom Queries</h3>
@@ -50,13 +48,14 @@ There are a few ways to get started with this GraphQL API, depending on the leve
     </p>
   </a>
 
-  <div  className="uniform-card" style={{ gridColumn: '1 / -1' }}>
-    <h3 className="uniform-card-title">GraphQL Package</h3>
+</div>
+
+    ### GraphQL Package
 
     <div className="uniform-card-grid-small">
       <a
         href="/docs/developer-tools/graphql-api/npm-package"
-        className="uniform-card"
+        className="clickable-card uniform-card vision-card"
         style={{ textDecoration: 'none', color: 'inherit' }}
       >
         <h3 className="uniform-card-title">Install it with NPM</h3>
@@ -67,7 +66,7 @@ There are a few ways to get started with this GraphQL API, depending on the leve
 
       <a
         href="/docs/developer-tools/graphql-api/npm-package"
-        className="uniform-card"
+        className="clickable-card uniform-card vision-card"
         style={{ textDecoration: 'none', color: 'inherit' }}
       >
         <h3 className="uniform-card-title">Use it as a GraphQL Generator</h3>
@@ -76,8 +75,6 @@ There are a few ways to get started with this GraphQL API, depending on the leve
         </p>
       </a>
     </div>
-  </div>
-</div>
 
 ## Interactive Playground
 
