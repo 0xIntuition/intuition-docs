@@ -17,7 +17,7 @@ Running an Intuition node requires Docker, Rust toolchain, and proper environmen
 ### Supported Contract Versions
 - Multivault v2.0
 
-## Why Running a Node?
+## Why Run a Node?
 
 Running your own Intuition node provides several key benefits:
 
