@@ -2,8 +2,6 @@
 sidebar_position: 4
 ---
 
-# Local Development Setup
-
 ## Local Development Setup
 
 Set up your local environment for developing and testing Intuition node services.
