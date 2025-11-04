@@ -1,0 +1,390 @@
+---
+id: npm-package
+title: GraphQL NPM Package
+sidebar_label: GraphQL NPM Package
+sidebar_position: 2
+description: Comprehensive guide to use the Intuition GraphQL NPM package
+---
+
+# GraphQL NPM Package
+
+The Intuition GraphQL package provides a type-safe interface for interacting with the Intuition API. It functions as the core data fetching layer, supplying generated types and React Query hooks for easy integration with the semantic knowledge graph.
+
+
+## Key Features
+
+- React Query hooks for data fetching
+- Type-safe data fetching
+- Error handling
+- Loading state
+- Pagination
+- Sorting
+- Filtering
+
+
+## Installation
+
+Install the package using your preferred package manager:
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Tabs>
+<TabItem value="npm" label="npm" default>
+
+```bash
+npm install @0xintuition/graphql
+```
+
+</TabItem>
+<TabItem value="pnpm" label="pnpm">
+
+```bash
+pnpm install @0xintuition/graphql
+```
+
+</TabItem>
+<TabItem value="yarn" label="yarn">
+
+```bash
+yarn add @0xintuition/graphql
+```
+
+</TabItem>
+<TabItem value="bun" label="bun">
+
+```bash
+bun install @0xintuition/graphql
+```
+
+</TabItem>
+</Tabs>
+
+## Quick Start
+
+### 1. Client Configuration (Optional)
+
+Configure the GraphQL client at the root of your application:
+
+```tsx
+import { configureClient, API_URL_DEV, API_URL_PROD, API_URL_LOCAL } from '@0xintuition/graphql'
+
+// Configure the GraphQL client with desired API URL
+configureClient({
+  apiUrl: API_URL_LOCAL, // For local development
+})
+```
+
+**Available API URLs:**
+- `API_URL_PROD`: `https://testnet.intuition.sh/v1/graphql` (default)
+- `API_URL_DEV`: `https://testnet.intuition.sh/v1/graphql`
+- `API_URL_LOCAL`: `http://localhost:8080/v1/graphql`
+
+If you omit this configuration, the package defaults to `API_URL_PROD`.
+
+### 2. Server Client Usage
+
+For server-side operations:
+
+```typescript
+import { createServerClient } from '@0xintuition/graphql'
+
+// Basic usage (most common)
+const client = createServerClient({})
+
+// With optional authentication token (rarely needed)
+const clientWithAuth = createServerClient({
+  token: 'your-auth-token'
+})
+```
+
+### 3. Using Generated Hooks
+
+Import and use the generated React Query hooks:
+
+```typescript
+import { useGetStatsQuery } from '@0xintuition/graphql'
+
+function StatsComponent() {
+  const { data, isLoading, error } = useGetStatsQuery()
+
+  if (isLoading) return <div>Loading...</div>
+  if (error) return <div>Error: {error.message}</div>
+
+  return <div>{/* Render stats data */}</div>
+}
+```
+
+
+```tsx
+import { useAtomsQuery, useTriplesQuery, useUserPositionsQuery } from '@0xintuition/graphql'
+
+function MyComponent() {
+  // Query atoms
+  const { data: atoms, isLoading: atomsLoading } = useAtomsQuery({
+    variables: { first: 10 }
+  })
+
+  // Query triples
+  const { data: triples, isLoading: triplesLoading } = useTriplesQuery({
+    variables: { first: 10 }
+  })
+
+  // Query user positions
+  const { data: positions } = useUserPositionsQuery({
+    variables: { userAddress: '0x742d35Cc6634C0532925a3b8D4C9db96C4b4d8b6' }
+  })
+
+  if (atomsLoading || triplesLoading) {
+    return <div>Loading...</div>
+  }
+
+  return (
+    <div>
+      <h2>Atoms ({atoms?.atoms?.length || 0})</h2>
+      {atoms?.atoms?.map(atom => (
+        <div key={atom.id}>
+          <strong>{atom.uri}</strong> - {atom.totalShares} shares
+        </div>
+      ))}
+
+      <h2>Triples ({triples?.triples?.length || 0})</h2>
+      {triples?.triples?.map(triple => (
+        <div key={triple.id}>
+          {triple.subject.uri} - {triple.predicate.uri} - {triple.object.uri}
+        </div>
+      ))}
+    </div>
+  )
+}
+```
+
+
+## Available React Hooks
+The following groups correspond to the query documents in the `src/queries` subdirectory of the package. Hook names are generated from each document and follow the `use<Name>Query` convention. The complete and canonical list may be found in the directory: [`packages/graphql/src/queries`](https://github.com/0xIntuition/intuition-ts/tree/main/packages/graphql/src/queries)
+
+### Accounts
+<div className="uniform-card-grid-small">
+  <div className="uniform-card">
+    <h4 className="uniform-card-title">Get by ID</h4>
+    <ul className="uniform-card-list">
+      <li><code>useAccountByIdQuery</code></li>
+    </ul>
+  </div>
+  <div className="uniform-card">
+    <h4 className="uniform-card-title">Search &amp; Filter</h4>
+    <ul className="uniform-card-list">
+      <li><code>useAccountsQuery</code></li>
+    </ul>
+  </div>
+</div>
+
+### Atoms
+<div className="uniform-card-grid-small">
+  <div className="uniform-card">
+    <h4 className="uniform-card-title">Get by ID</h4>
+    <ul className="uniform-card-list">
+      <li><code>useAtomByIdQuery</code></li>
+      <li><code>useGetAtomQuery</code></li>
+    </ul>
+  </div>
+  <div className="uniform-card">
+    <h4 className="uniform-card-title">Search &amp; Filter</h4>
+    <ul className="uniform-card-list">
+      <li><code>useAtomsQuery</code></li>
+      <li><code>useGetAtomsQuery</code></li>
+    </ul>
+  </div>
+</div>
+
+### Claims
+<div className="uniform-card-grid-small">
+  <div className="uniform-card">
+    <h4 className="uniform-card-title">Get by ID</h4>
+    <ul className="uniform-card-list">
+      <li><code>useClaimByIdQuery</code></li>
+    </ul>
+  </div>
+  <div className="uniform-card">
+    <h4 className="uniform-card-title">Search &amp; Filter</h4>
+    <ul className="uniform-card-list">
+      <li><code>useClaimsQuery</code></li>
+    </ul>
+  </div>
+</div>
+
+### Events
+<div className="uniform-card-grid-small">
+  <div className="uniform-card">
+    <h4 className="uniform-card-title">Get by ID</h4>
+    <ul className="uniform-card-list">
+      <li><code>useEventByIdQuery</code></li>
+    </ul>
+  </div>
+  <div className="uniform-card">
+    <h4 className="uniform-card-title">Search &amp; Filter</h4>
+    <ul className="uniform-card-list">
+      <li><code>useEventsQuery</code></li>
+    </ul>
+  </div>
+</div>
+
+### Follows
+<div className="uniform-card-grid-small">
+  <div className="uniform-card">
+    <h4 className="uniform-card-title">Get by ID</h4>
+    <ul className="uniform-card-list">
+      <li><code>useFollowByIdQuery</code></li>
+    </ul>
+  </div>
+  <div className="uniform-card">
+    <h4 className="uniform-card-title">Search &amp; Filter</h4>
+    <ul className="uniform-card-list">
+      <li><code>useFollowsQuery</code></li>
+    </ul>
+  </div>
+</div>
+
+### Lists
+<div className="uniform-card-grid-small">
+  <div className="uniform-card">
+    <h4 className="uniform-card-title">Get by ID</h4>
+    <ul className="uniform-card-list">
+      <li><code>useListByIdQuery</code></li>
+    </ul>
+  </div>
+  <div className="uniform-card">
+    <h4 className="uniform-card-title">Search &amp; Filter</h4>
+    <ul className="uniform-card-list">
+      <li><code>useListsQuery</code></li>
+    </ul>
+  </div>
+</div>
+
+### Points
+<div className="uniform-card-grid-small">
+  <div className="uniform-card">
+    <h4 className="uniform-card-title">Get by ID</h4>
+    <ul className="uniform-card-list">
+      <li><code>usePointByIdQuery</code></li>
+    </ul>
+  </div>
+  <div className="uniform-card">
+    <h4 className="uniform-card-title">Search &amp; Filter</h4>
+    <ul className="uniform-card-list">
+      <li><code>usePointsQuery</code></li>
+    </ul>
+  </div>
+</div>
+
+### Positions
+<div className="uniform-card-grid-small">
+  <div className="uniform-card">
+    <h4 className="uniform-card-title">Get by ID</h4>
+    <ul className="uniform-card-list">
+      <li><code>usePositionByIdQuery</code></li>
+    </ul>
+  </div>
+  <div className="uniform-card">
+    <h4 className="uniform-card-title">Search &amp; Filter</h4>
+    <ul className="uniform-card-list">
+      <li><code>usePositionsQuery</code></li>
+      <li><code>useUserPositionsQuery</code></li>
+    </ul>
+  </div>
+</div>
+
+### Signals
+<div className="uniform-card-grid-small">
+  <div className="uniform-card">
+    <h4 className="uniform-card-title">Get by ID</h4>
+    <ul className="uniform-card-list">
+      <li><code>useSignalByIdQuery</code></li>
+    </ul>
+  </div>
+  <div className="uniform-card">
+    <h4 className="uniform-card-title">Search &amp; Filter</h4>
+    <ul className="uniform-card-list">
+      <li><code>useSignalsQuery</code></li>
+      <li><code>useGetSignalsQuery</code></li>
+    </ul>
+  </div>
+</div>
+
+### Stats
+<div className="uniform-card-grid-small">
+  <div className="uniform-card">
+    <h4 className="uniform-card-title">Get</h4>
+    <ul className="uniform-card-list">
+      <li><code>useGetStatsQuery</code></li>
+    </ul>
+  </div>
+  <div className="uniform-card">
+    <h4 className="uniform-card-title">Search &amp; Filter</h4>
+    <ul className="uniform-card-list">
+      <li><code>useStatsQuery</code></li>
+    </ul>
+  </div>
+</div>
+
+### Tags
+<div className="uniform-card-grid-small">
+  <div className="uniform-card">
+    <h4 className="uniform-card-title">Get by ID</h4>
+    <ul className="uniform-card-list">
+      <li><code>useTagByIdQuery</code></li>
+    </ul>
+  </div>
+  <div className="uniform-card">
+    <h4 className="uniform-card-title">Search &amp; Filter</h4>
+    <ul className="uniform-card-list">
+      <li><code>useTagsQuery</code></li>
+    </ul>
+  </div>
+</div>
+
+### Triples
+<div className="uniform-card-grid-small">
+  <div className="uniform-card">
+    <h4 className="uniform-card-title">Get by ID</h4>
+    <ul className="uniform-card-list">
+      <li><code>useTripleByIdQuery</code></li>
+    </ul>
+  </div>
+  <div className="uniform-card">
+    <h4 className="uniform-card-title">Search &amp; Filter</h4>
+    <ul className="uniform-card-list">
+      <li><code>useTriplesQuery</code></li>
+    </ul>
+  </div>
+</div>
+
+### Vaults
+<div className="uniform-card-grid-small">
+  <div className="uniform-card">
+    <h4 className="uniform-card-title">Get by ID</h4>
+    <ul className="uniform-card-list">
+      <li><code>useVaultByIdQuery</code></li>
+    </ul>
+  </div>
+  <div className="uniform-card">
+    <h4 className="uniform-card-title">Search &amp; Filter</h4>
+    <ul className="uniform-card-list">
+      <li><code>useVaultsQuery</code></li>
+    </ul>
+  </div>
+</div>
+
+These hooks are generated via GraphQL Code Generator and may expand over time as new documents are added. See the package source below for the current and authoritative list.
+
+
+## Source Code
+
+The GraphQL package source code is available on GitHub: [`intuition-ts/packages/graphql`](https://github.com/0xIntuition/intuition-ts/tree/main/packages/graphql)
+
+
+## Related Resources
+
+- [GraphQL Code Generator](https://the-guild.dev/graphql/codegen)
+- [React Query Documentation](https://tanstack.com/query)
+

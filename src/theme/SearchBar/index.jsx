@@ -6,6 +6,7 @@ import React, {
   useState,
 } from 'react';
 import { DocSearchButton, useDocSearchKeyboardEvents } from '@docsearch/react';
+import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
 import Head from '@docusaurus/Head';
 import Link from '@docusaurus/Link';
 import { useHistory } from '@docusaurus/router';
@@ -143,19 +144,22 @@ function DocSearch({ contextualSearch, externalUrlRegex, ...props }) {
   });
 
   const [selectedIndex, setSelectedIndex] = useState(() => {
-    if (typeof window === 'undefined' ||
-        typeof localStorage === 'undefined' ||
-        typeof localStorage.getItem !== 'function') {
-      return 0;
+
+    if (ExecutionEnvironment.canUseDOM &&
+        typeof window !== 'undefined' &&
+        window.localStorage &&
+        typeof window.localStorage.getItem === 'function') {
+      return window.localStorage.getItem('search') === 'docsearch' ? 1 : 0;
     }
-    return localStorage.getItem('search') === 'docsearch' ? 1 : 0;
+    return 0;
   });
 
   useEffect(() => {
-    if (typeof window !== 'undefined' &&
-        typeof localStorage !== 'undefined' &&
-        typeof localStorage.setItem === 'function') {
-      localStorage.setItem('search', selectedIndex === 0 ? 'ai' : 'docsearch');
+    if (ExecutionEnvironment.canUseDOM &&
+        typeof window !== 'undefined' &&
+        window.localStorage &&
+        typeof window.localStorage.setItem === 'function') {
+      window.localStorage.setItem('search', selectedIndex === 0 ? 'ai' : 'docsearch');
     }
   }, [selectedIndex]);
 

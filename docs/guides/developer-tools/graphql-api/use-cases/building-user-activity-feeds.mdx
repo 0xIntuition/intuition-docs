@@ -1,0 +1,157 @@
+---
+id: building-user-activity-feeds
+title: Building User Activity Feeds
+sidebar_label: Building User Activity Feeds
+sidebar_position: 9
+description: Step-by-step guide to create user-specific activity streams
+---
+
+import GraphQLPlaygroundCustom from '@site/src/components/GraphQLPlaygroundCustom';
+
+# Building User Activity Feeds
+
+Learn how to create personalized, real-time activity feeds that track user interactions across the Intuition ecosystem using the GraphQL API.
+
+## Understanding the Progression
+
+1. **Get the whole user activity feed**, including atoms made and positions taken, along with vault details.
+2. **Get recent claims** produced by the user, both atoms (max 10) and triples (max 10) with detailed metadata.
+3. **Get active user positions** ordered by share amount - shows current stakes with vault performance metrics.
+
+export const activityQueries = [
+  {
+    id: 'user-activity',
+    title: 'Step 1: Get User Activity',
+    query: `query GetUserActivity($userAddress: String!, $limit: Int = 20) {
+  atoms(
+    where: { creator_id: { _eq: $userAddress } }
+    order_by: [{ created_at: desc }]
+    limit: $limit
+  ) {
+    term_id
+    label
+    image
+    type
+    created_at
+    transaction_hash
+  }
+
+  positions(
+    where: { account_id: { _eq: $userAddress } }
+    order_by: [{ created_at: desc }]
+    limit: $limit
+  ) {
+    id
+    shares
+    created_at
+    vault {
+      term_id
+      current_share_price
+      market_cap
+      term {
+        atom {
+          term_id
+          label
+          image
+        }
+      }
+    }
+  }
+}`,
+    variables: {
+      userAddress: '0x4Ff2D2D253827897210bf1f29713f8389f55C68E',
+      limit: 20
+    }
+  },
+  {
+    id: 'recent-claims',
+    title: 'Step 2: User Recent Claims',
+    query: `query GetUserClaims($userAddress: String!, $limit: Int = 10) {
+  atoms(
+    where: { creator_id: { _eq: $userAddress } }
+    order_by: [{ created_at: desc }]
+    limit: $limit
+  ) {
+    term_id
+    label
+    image
+    emoji
+    type
+    data
+    created_at
+    block_number
+  }
+
+  triples(
+    where: { creator_id: { _eq: $userAddress } }
+    order_by: [{ created_at: desc }]
+    limit: $limit
+  ) {
+    term_id
+    created_at
+    subject {
+      term_id
+      label
+      image
+    }
+    predicate {
+      term_id
+      label
+    }
+    object {
+      term_id
+      label
+      image
+    }
+  }
+}`,
+    variables: {
+      userAddress: '0x4Ff2D2D253827897210bf1f29713f8389f55C68E',
+      limit: 10
+    }
+  },
+  {
+    id: 'user-positions',
+    title: 'Step 3: Active User Positions',
+    query: `query GetUserPositions($userAddress: String!, $limit: Int = 20) {
+  positions(
+    where: {
+      account_id: { _eq: $userAddress }
+      shares: { _gt: "0" }
+    }
+    order_by: [{ shares: desc }]
+    limit: $limit
+  ) {
+    id
+    shares
+    created_at
+    updated_at
+    vault {
+      term_id
+      current_share_price
+      market_cap
+      term {
+        atom {
+          term_id
+          label
+          image
+          emoji
+        }
+        triple {
+          term_id
+          subject { label image }
+          predicate { label }
+          object { label image }
+        }
+      }
+    }
+  }
+}`,
+    variables: {
+      userAddress: '0x4Ff2D2D253827897210bf1f29713f8389f55C68E',
+      limit: 20
+    }
+  }
+];
+
+<GraphQLPlaygroundCustom queries={activityQueries} />
