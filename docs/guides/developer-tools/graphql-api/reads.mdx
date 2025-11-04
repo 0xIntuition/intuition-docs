@@ -6,6 +6,8 @@ sidebar_position: 4
 description: Guide to read data using GraphQL queries in the Intuition API
 ---
 
+import ExplorerEmbed from '@site/src/components/ExplorerEmbed';
+
 # Reads
 
 ## GraphQL API
@@ -22,6 +24,15 @@ We maintain a GraphQL SDK for our API that includes these queries with additiona
 Our SDK utilizes GraphQL Codegen and Fragments, but for the sake of clarity and simplicity the query examples in the playgrounds won't utilize Fragments.
 :::
 
+## Best Practices
+
+1. **Use the SDK**: Leverage our GraphQL SDK for type-safe queries
+2. **Optimize Queries**: Only request the fields you need
+3. **Handle Loading States**: Always show loading indicators
+4. **Implement Error Boundaries**: Catch and handle errors gracefully
+5. **Use Pagination**: Implement proper pagination for large datasets
+6. **Cache Strategically**: Use React Query's caching capabilities
+
 ## Backend Architecture Overview
 
 This architecture diagram illustrates the data flow and integration stack for the Intuition backend. We ingest data from two primary RPC sources: our EthMultiVault contract and a ChainLinkOracle contract. This blockchain data is processed in a Docker environment indexed through Substreams, parsing and structuring the data into a PostgreSQL database.
@@ -34,15 +45,13 @@ The interactive Apollo Sandbox below lets you explore our GraphQL API in real-ti
 
 Try starting with some basic queries like fetching atoms or exploring relationship triples. Here's a query to get you started:
 
-import ExplorerEmbed from '@site/src/components/ExplorerEmbed';
-
-<ExplorerEmbed />
-
-<div style={{ backgroundColor: 'var(--ifm-color-emphasis-50)', padding: '1rem', borderRadius: '8px', marginBottom: '1rem', border: '1px solid var(--ifm-color-emphasis-200)' }}>
-<p style={{ margin: 0, fontSize: '0.9rem', color: 'var(--ifm-color-emphasis-700)' }}>
-<strong>💡 Tip:</strong> You can copy and paste the code snippet below into the sandbox above to view the results.
-</p>
+<div className="mb-4">
+  <ExplorerEmbed />
 </div>
+
+:::tip
+You can copy and paste the code snippet below into the sandbox above to view the results.
+:::
 
 ```graphql
 query GetAtoms(
@@ -528,15 +537,6 @@ function AtomList() {
   )
 }
 ```
-
-## Best Practices
-
-1. **Use the SDK**: Leverage our GraphQL SDK for type-safe queries
-2. **Optimize Queries**: Only request the fields you need
-3. **Handle Loading States**: Always show loading indicators
-4. **Implement Error Boundaries**: Catch and handle errors gracefully
-5. **Use Pagination**: Implement proper pagination for large datasets
-6. **Cache Strategically**: Use React Query's caching capabilities
 
 ---
 
