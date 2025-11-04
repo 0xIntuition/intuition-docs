@@ -350,7 +350,7 @@ This project deploys a complete blockchain indexing platform on Google Cloud Pla
 - **GraphQL Engine**: Hasura GraphQL API for data access
 - **IPFS Node**: InterPlanetary File System for decentralized storage
 - **Safe Content Service**: Content validation and processing
-- **Timescale Vectorizer Worker**: Vector processing for AI/ML workloads
+- **TimescaleDB Vectorizer Worker**: Vector processing for AI/ML workloads
 - **Histocrawler**: Historical data crawling and indexing service
 - **Image Guard**: Image validation and security service
 - **RPC Proxy**: Blockchain RPC request routing and caching
