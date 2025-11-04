@@ -9,6 +9,7 @@ description: Introduction to the Intuition GraphQL API and its main features
 import GraphQLPlayground from '@site/src/components/GraphQLPlayground';
 import BrowserOnly from '@docusaurus/BrowserOnly';
 import ExcalidrawViewer from '@site/src/components/ExcalidrawViewer';
+import { SdkIcon } from '@site/src/icons';
 
 # GraphQL API Overview
 
@@ -28,10 +29,14 @@ Until mainnet launch, the Intuition team hosts an open GraphQL API powered by Ha
 
   <a
     href="/docs/developer-tools/sdks/overview"
-    className="clickable-card uniform-card vision-card"
-    style={{ textDecoration: 'none', color: 'inherit' }}
+    className="clickable-card uniform-card vision-card items-center justify-center text-center"
   >
-    <h3 className="uniform-card-title">SDK</h3>
+    <span className="mb-4 relative flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-primary/10 to-primary/5">
+      <SdkIcon className="text-primary" />
+    </span>
+    <h3 className="uniform-card-title">
+      SDK
+    </h3>
     <p className="uniform-card-content">
       Integrate with Intuition smart contracts using our TypeScript SDK.
     </p>
@@ -39,10 +44,14 @@ Until mainnet launch, the Intuition team hosts an open GraphQL API powered by Ha
 
   <a
     href="/docs/developer-tools/graphql-api/custom-queries"
-    className="clickable-card uniform-card vision-card"
-    style={{ textDecoration: 'none', color: 'inherit' }}
+    className="clickable-card uniform-card vision-card items-center justify-center text-center"
   >
-    <h3 className="uniform-card-title">Custom Queries</h3>
+    <span className="mb-4 relative flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-primary/10 to-primary/5">
+      <QueriesIcon className="text-primary" />
+    </span>
+    <h3 className="uniform-card-title">
+      Custom Queries
+    </h3>
     <p className="uniform-card-content">
       Create bespoke GraphQL queries for your specific use case.
     </p>
@@ -50,31 +59,39 @@ Until mainnet launch, the Intuition team hosts an open GraphQL API powered by Ha
 
 </div>
 
-    ### GraphQL Package
+### GraphQL Package
 
-    <div className="uniform-card-grid-small">
-      <a
-        href="/docs/developer-tools/graphql-api/npm-package"
-        className="clickable-card uniform-card vision-card"
-        style={{ textDecoration: 'none', color: 'inherit' }}
-      >
-        <h3 className="uniform-card-title">Install it with NPM</h3>
-        <p className="uniform-card-content">
-          Install and use the NPM package with ready-made React Query hooks.
-        </p>
-      </a>
+<div className="uniform-card-grid-small">
+  <a
+    href="/docs/developer-tools/graphql-api/npm-package"
+    className="clickable-card uniform-card vision-card items-center justify-center text-center"
+  >
+    <span className="mb-4 relative flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-primary/10 to-primary/5">
+      <NpmIcon className="text-primary" />
+    </span>
+    <h3 className="uniform-card-title">
+      Install it with NPM
+    </h3>
+    <p className="uniform-card-content">
+      Install and use the NPM package with ready-made React Query hooks.
+    </p>
+  </a>
 
-      <a
-        href="/docs/developer-tools/graphql-api/npm-package"
-        className="clickable-card uniform-card vision-card"
-        style={{ textDecoration: 'none', color: 'inherit' }}
-      >
-        <h3 className="uniform-card-title">Use it as a GraphQL Generator</h3>
-        <p className="uniform-card-content">
-          Use the GraphQL package to generate your own queries and mutations.
-        </p>
-      </a>
-    </div>
+  <a
+    href="/docs/developer-tools/graphql-api/npm-package"
+    className="clickable-card uniform-card vision-card items-center justify-center text-center"
+  >
+    <span className="mb-4 relative flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-primary/10 to-primary/5">
+      <GraphQlGeneratorIcon className="text-primary" />
+    </span>
+    <h3 className="uniform-card-title">
+      Use it as a GraphQL Generator
+    </h3>
+    <p className="uniform-card-content">
+      Use the GraphQL package to generate your own queries and mutations.
+    </p>
+  </a>
+</div>
 
 ## Interactive Playground
 
