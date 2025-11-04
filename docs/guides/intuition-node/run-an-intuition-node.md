@@ -1,8 +1,9 @@
 ---
+title: Get Started
 sidebar_position: 3
 ---
 
-# Run a Node
+# Get Started
 
 **Note**: All scripts are located in the `scripts/` directory and should be run from the project root.
 

@@ -1,8 +1,9 @@
 ---
+title: Run on Kubernetes Cluster
 sidebar_position: 5
 ---
 
-# How to Run Intuition in a Kubernetes Cluster
+# Run on Kubernetes Cluster
 
 A comprehensive Kubernetes-based deployment infrastructure for blockchain indexing and data services, managed with ArgoCD and Terraform.
 
