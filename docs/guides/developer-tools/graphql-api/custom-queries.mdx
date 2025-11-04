@@ -8,9 +8,21 @@ description: Common GraphQL query examples and patterns for the Intuition API
 
 # Custom Queries
 
-This section provides practical examples of common GraphQL queries for the Intuition API.
+This page provides practical examples of common GraphQL queries for the Intuition API.
+
+## Best Practices
+
+1. **Use Fragments**: Create reusable fragments for common fields
+2. **Optimize Queries**: Only request the fields you need
+3. **Handle Errors**: Always implement proper error handling
+4. **Cache Strategically**: Use React Query's caching capabilities
+5. **Type Safety**: Leverage generated types for better development experience
 
 ## Basic Queries
+
+:::note
+This page will be expanded with more query examples, advanced patterns, and real-world use cases.
+:::
 
 ### Fetching Atoms
 
@@ -148,15 +160,3 @@ function useCustomAtomQuery(atomId: string) {
   })
 }
 ```
-
-## Best Practices
-
-1. **Use Fragments**: Create reusable fragments for common fields
-2. **Optimize Queries**: Only request the fields you need
-3. **Handle Errors**: Always implement proper error handling
-4. **Cache Strategically**: Use React Query's caching capabilities
-5. **Type Safety**: Leverage generated types for better development experience
-
----
-
-*This page will be expanded with more query examples, advanced patterns, and real-world use cases.* 

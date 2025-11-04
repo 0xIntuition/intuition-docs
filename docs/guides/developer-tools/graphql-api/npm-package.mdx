@@ -3,24 +3,23 @@ id: npm-package
 title: GraphQL NPM Package
 sidebar_label: GraphQL NPM Package
 sidebar_position: 2
-description: Complete guide to the Intuition GraphQL NPM package
+description: Comprehensive guide to use the Intuition GraphQL NPM package
 ---
 
 # GraphQL NPM Package
 
-The Intuition GraphQL package provides a type-safe interface for interacting with the Intuition API. It serves as the core data fetching layer, offering generated types and React Query hooks for seamless integration with the semantic knowledge graph.
+The Intuition GraphQL package provides a type-safe interface for interacting with the Intuition API. It functions as the core data fetching layer, supplying generated types and React Query hooks for easy integration with the semantic knowledge graph.
+
 
 ## Key Features
 
 - React Query hooks for data fetching
-  - Type-safe data fetching
-  - Error handling
-  - Loading state
-  - Pagination
-  - Sorting
-  - Filtering
-
-  
+- Type-safe data fetching
+- Error handling
+- Loading state
+- Pagination
+- Sorting
+- Filtering
 
 
 ## Installation
@@ -65,12 +64,12 @@ bun install @0xintuition/graphql
 
 ### 1. Client Configuration (Optional)
 
-Configure the GraphQL client in your app's root:
+Configure the GraphQL client at the root of your application:
 
 ```tsx
 import { configureClient, API_URL_DEV, API_URL_PROD, API_URL_LOCAL } from '@0xintuition/graphql'
 
-// Configure GraphQL client with desired API URL
+// Configure the GraphQL client with desired API URL
 configureClient({
   apiUrl: API_URL_LOCAL, // For local development
 })
@@ -161,11 +160,8 @@ function MyComponent() {
 ```
 
 
-
-
-
 ## Available React Hooks
-The following groups reflect the query documents in the package’s `src/queries` folder. Hook names are generated from each document and follow the `use<Name>Query` convention. See the directory for the full, canonical list: [`packages/graphql/src/queries`](https://github.com/0xIntuition/intuition-ts/tree/main/packages/graphql/src/queries).
+The following groups correspond to the query documents in the `src/queries` subdirectory of the package. Hook names are generated from each document and follow the `use<Name>Query` convention. The complete and canonical list may be found in the directory: [`packages/graphql/src/queries`](https://github.com/0xIntuition/intuition-ts/tree/main/packages/graphql/src/queries)
 
 ### Accounts
 <div className="uniform-card-grid-small">
@@ -379,12 +375,12 @@ The following groups reflect the query documents in the package’s `src/queries
   </div>
 </div>
 
-These hooks are generated via GraphQL Code Generator and may expand over time as new documents are added. For the authoritative, up‑to‑date list, see the package source below.
+These hooks are generated via GraphQL Code Generator and may expand over time as new documents are added. See the package source below for the current and authoritative list.
 
 
 ## Source Code
 
-The GraphQL package source code is available on GitHub: [intuition-ts/packages/graphql](https://github.com/0xIntuition/intuition-ts/tree/main/packages/graphql)
+The GraphQL package source code is available on GitHub: [`intuition-ts/packages/graphql`](https://github.com/0xIntuition/intuition-ts/tree/main/packages/graphql)
 
 
 ## Related Resources
