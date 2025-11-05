@@ -11,20 +11,6 @@ module.exports = {
     },
     {
       type: 'category',
-      label: 'Architecture',
-      items: [
-        'developer-tools/deep-dive/architecture/overview',
-        'developer-tools/deep-dive/architecture/network',
-        'developer-tools/deep-dive/architecture/protocol',
-        'developer-tools/deep-dive/architecture/subnet',
-        'developer-tools/deep-dive/architecture/data-flow',
-        'developer-tools/deep-dive/architecture/performance',
-        'developer-tools/deep-dive/architecture/development-patterns',
-        'developer-tools/deep-dive/architecture/deployment',
-      ],
-    },
-    {
-      type: 'category',
       label: 'Primitives',
       items: [
         'primitives/overview',
