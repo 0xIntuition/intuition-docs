@@ -74,6 +74,7 @@ module.exports = {
       type: 'category',
       label: 'Quick Start',
       items: [
+        'quickstart/getting-started',
         'quickstart/intuition-kits',
       ],
     },
@@ -90,9 +91,22 @@ module.exports = {
       label: 'GraphQL API',
       items: [
         'developer-tools/graphql-api/overview',
+        'developer-tools/graphql-api/npm-package',
+        'developer-tools/graphql-api/graphql-generator',
+        'developer-tools/graphql-api/custom-queries',
         'developer-tools/graphql-api/reads',
         'developer-tools/graphql-api/writes',
-        'developer-tools/graphql-api/query-examples',
+        {
+          type: 'category',
+          label: 'Use Cases',
+          items: [
+            'developer-tools/graphql-api/use-cases/overview',
+            'developer-tools/graphql-api/use-cases/finding-top-dapps-on-coinbase',
+            'developer-tools/graphql-api/use-cases/discovering-most-trusted-accounts',
+            'developer-tools/graphql-api/use-cases/building-user-activity-feeds',
+            'developer-tools/graphql-api/use-cases/finding-related-claims',
+          ],
+        },
         'developer-tools/graphql-api/migration-guide',
       ],
     },
@@ -101,6 +115,7 @@ module.exports = {
       label: 'Smart Contracts',
       items: [
         'developer-tools/contracts/contract-architecture',
+        'developer-tools/contracts/contract-migration',
         'developer-tools/contracts/multivault',
         'developer-tools/contracts/trust-bonding',
         'developer-tools/contracts/deployments',
@@ -120,9 +135,13 @@ module.exports = {
     },
     {
       type: 'category',
-      label: 'Rust Backend',
+      label: 'Intuition node',
       items: [
-        'run-node/run-an-intuition-node',
+        'intuition-node/overview',
+        'intuition-node/rust-backend',
+        'intuition-node/run-an-intuition-node',
+        'intuition-node/local-development-setup',
+        'intuition-node/kubernetes-deployment',
       ],
     },
     {

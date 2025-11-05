@@ -80,7 +80,7 @@ The Subnet turns raw attestations into actionable intelligence, powering AI agen
 <div style={{ display: 'grid', gap: '1.5rem', marginBottom: '2rem' }}>
 
 <div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '12px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
-<h3 style={{ marginTop: 0, marginBottom: '1rem', color: 'var(--ifm-color-primary)' }}>⚛️ Atoms — Identifiers for Entities</h3>
+<h3 style={{ marginTop: 0, marginBottom: '1rem', color: 'var(--ifm-color-primary)' }}>Atoms — Identifiers for Entities</h3>
 <p style={{ fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-900)', marginBottom: '1rem', lineHeight: '1.6' }}>
 Unique, persistent identifiers for any concept or entity — person, object, idea, or anything else. Think of them as the "nodes" in the knowledge graph, or the 'words' of the Intuition dictionary.
 </p>
@@ -92,7 +92,7 @@ Unique, persistent identifiers for any concept or entity — person, object, ide
 </div>
 
 <div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '12px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
-<h3 style={{ marginTop: 0, marginBottom: '1rem', color: 'var(--ifm-color-primary)' }}>🔗 Triples — Structured Attestations</h3>
+<h3 style={{ marginTop: 0, marginBottom: '1rem', color: 'var(--ifm-color-primary)' }}>Triples — Structured Attestations</h3>
 <p style={{ fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-900)', marginBottom: '1rem', lineHeight: '1.6' }}>
 Claims expressed in subject-predicate-object format, creating the relationships and semantic layer of the knowledge graph. The 'sentences' of the Intuition system, with words composed together into higher-order expressions.
 </p>
@@ -106,7 +106,7 @@ Claims expressed in subject-predicate-object format, creating the relationships 
 </div>
 
 <div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '12px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
-<h3 style={{ marginTop: 0, marginBottom: '1rem', color: 'var(--ifm-color-primary)' }}>📊 Signals — Economic Confidence</h3>
+<h3 style={{ marginTop: 0, marginBottom: '1rem', color: 'var(--ifm-color-primary)' }}>Signals — Economic Confidence</h3>
 <p style={{ fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-900)', marginBottom: '1rem', lineHeight: '1.6' }}>
 Tokenized stakes that weight attestations with economic confidence, incentivizing the creation of many-to-one attestations that are better capable of accommodating subjective information.
 </p>

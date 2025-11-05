@@ -1,0 +1,125 @@
+---
+id: graphql-generator
+title: GraphQL Generator
+sidebar_label: GraphQL Generator
+sidebar_position: 2
+description: Comprehensive guide to the Intuition GraphQL Generator
+---
+
+# GraphQL Generator
+
+The Intuition GraphQL package can be used as a GraphQL generator for your custom queries. It provides a type-safe interface for interacting with the Intuition API. It functions as the core data fetching layer, supplying generated types and React Query hooks for easy integration with the semantic knowledge graph.
+
+## Key Features
+
+- Type-safe GraphQL operations leveraging code gen
+- React Query hooks for data fetching
+- Reusable GraphQL fragments
+- Easy to customize to your specific needs
+- Supports real-time updates from the Intuition GraphQL API through GraphQL subscriptions
+
+
+## Installation
+
+
+The source code for the GraphQL generator is available on GitHub, which you can copy and paste into your own project to use as a GraphQL generator: [`intuition-ts/packages/graphql`](https://github.com/0xIntuition/intuition-ts/tree/main/packages/graphql)
+
+
+## Schema Management
+
+The package uses a local-first approach for schema management:
+
+- Local `schema.graphql` as source of truth
+- Remote schema fallback for resilience
+- Automatic schema generation during builds
+- Version controlled schema for team consistency
+
+
+
+## Package Structure
+
+```bash
+graphql/
+├── src/
+│ ├── client.ts # Client configuration
+│ ├── fragments/ # Reusable fragments
+│ ├── queries/ # GraphQL queries
+│ ├── mutations/ # GraphQL mutations
+│ └── generated/ # Generated types
+├── schema.graphql # Schema definition
+└── codegen.ts # Codegen config
+```
+
+Although this package does not include a subscriptions folder, you can easily add one to the generator because the GraphQL API allows subscriptions for real-time updates.
+
+
+
+## Package Approach
+
+1. **Schema Updates**
+    - Uses the local schema committed in the repository as the source for codegen and uses the remote URL as a fallback
+2. **Query Organization**
+    - Uses fragments for reusable fields
+    - Includes use-case specific queries as well as general purpose queries
+3. **Type Safety**
+    - Leverages generated types from our schema
+    - Generates React Query hooks as well as document queries that can be used in a server context (or with another client such as Apollo)
+4. **Client Configuration**
+    - Default client configuration can be overridden in each consumer app
+    - Supports environment-specific API URLs
+
+## Craft your own custom queries
+
+We advise drafting and testing your queries, mutations, and subscriptions before implementing them into code. You should also use a GraphQL explorer to explore the Intuition GraphQL API schema.
+
+For this, you can use [Apollo Explorer](https://studio.apollographql.com/sandbox/explorer) and input the URL of the Intuition testnet GraphQL API: `https://testnet.intuition.sh/v1/graphql`.
+
+
+## Development Workflow
+
+1. **Code Generation**
+    - `pnpm codegen:build # Generate types`
+    - `pnpm codegen:watch # Watch mode for development`
+2. **Building**
+    - `pnpm build # Full build with codegen`
+    - `pnpm dev # Development mode with watch`
+3. **Testing**
+    - `pnpm test`
+
+
+## Use your custom React Query hooks
+
+Once you have run the codegen, you can use your custom React Query Hooks in your own components.
+
+```tsx
+import { useCustomTriplesQuery } from 'graphql/generated/hooks'
+
+function MyComponent() {
+  // Query triples based on your custom needs
+  const { data: triples, isLoading: triplesLoading } = useCustomTriplesQuery({
+    query: 'query CustomQuery { ... }'
+  })
+
+  return (
+    <div>
+
+
+      <h2>Triples ({triples?.triples?.length || 0})</h2>
+      {triples?.triples?.map(triple => (
+        <div key={triple.id}>
+          {triple.subject.uri} - {triple.predicate.uri} - {triple.object.uri}
+        </div>
+      ))}
+    </div>
+  )
+}
+```
+
+The GraphQL API provides the foundation for building powerful applications on Intuition.
+
+## Related Resources
+
+- [GraphQL Code Generator](https://the-guild.dev/graphql/codegen)
+- [React Query Documentation](https://tanstack.com/query)
+- [Intuition GraphQL Package Source](https://github.com/0xIntuition/intuition-ts/tree/main/packages/graphql)
+

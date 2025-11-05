@@ -1,0 +1,194 @@
+---
+id: finding-related-claims
+title: Finding Related Claims
+sidebar_label: Finding Related Claims
+sidebar_position: 10
+description: A step-by-step guide to discover related triples and relationship patterns
+---
+
+import GraphQLPlaygroundCustom from '@site/src/components/GraphQLPlaygroundCustom';
+
+# Finding Related Claims
+
+Learn how to find and navigate related claims in the Intuition knowledge graph by exploring triples, their relationships, and semantic connections.
+
+## Understanding the Progression
+
+1. **Find all triples** where a specific atom appears as subject or object and discover direct relationships.
+2. **Find similar claims** by predicate pattern and subject type, then discover relationship patterns across the graph.
+3. **Get detailed information** about a specific triple, including vault metrics and top positions.
+
+export const relationshipQueries = [
+  {
+    id: 'related-claims',
+    title: 'Step 1: Find Related Claims',
+    query: `query GetRelatedClaims($atomId: String!, $limit: Int = 20) {
+  as_subject: triples(
+    where: { subject_id: { _eq: $atomId } }
+    order_by: [{ term: { vaults_aggregate: { max: { market_cap: desc } } } }]
+    limit: $limit
+  ) {
+    term_id
+    created_at
+    predicate {
+      term_id
+      label
+      image
+    }
+    object {
+      term_id
+      label
+      image
+      type
+    }
+    term {
+      vaults(where: { curve_id: { _eq: "2" } }) {
+        market_cap
+        position_count
+      }
+    }
+  }
+
+  as_object: triples(
+    where: { object_id: { _eq: $atomId } }
+    order_by: [{ term: { vaults_aggregate: { max: { market_cap: desc } } } }]
+    limit: $limit
+  ) {
+    term_id
+    created_at
+    subject {
+      term_id
+      label
+      image
+      type
+    }
+    predicate {
+      term_id
+      label
+      image
+    }
+    term {
+      vaults(where: { curve_id: { _eq: "2" } }) {
+        market_cap
+        position_count
+      }
+    }
+  }
+
+  atom: atoms(where: { term_id: { _eq: $atomId } }, limit: 1) {
+    term_id
+    label
+    image
+    type
+  }
+}`,
+    variables: {
+      atomId: '0xf12dba36ffebb8e05ae49d3f9220b1994295662ccdc573f44aff7b51f8ad8fd6',
+      limit: 20
+    }
+  },
+  {
+    id: 'similar-claims',
+    title: 'Step 2: Find Similar Claims',
+    query: `query FindSimilarClaims($predicateLabel: String!, $subjectType: atom_type, $limit: Int = 20) {
+  triples(
+    where: {
+      predicate: { label: { _ilike: $predicateLabel } }
+      _and: [
+        { subject: { type: { _eq: $subjectType } } }
+      ]
+    }
+    order_by: [{ term: { vaults_aggregate: { max: { market_cap: desc } } } }]
+    limit: $limit
+  ) {
+    term_id
+    created_at
+    subject {
+      term_id
+      label
+      image
+      type
+    }
+    predicate {
+      term_id
+      label
+    }
+    object {
+      term_id
+      label
+      image
+      type
+    }
+    term {
+      vaults(where: { curve_id: { _eq: "2" } }) {
+        total_shares
+        market_cap
+        position_count
+      }
+    }
+  }
+}`,
+    variables: {
+      predicateLabel: '%is a%',
+      subjectType: 'Thing',
+      limit: 20
+    }
+  },
+  {
+    id: 'triple-details',
+    title: 'Step 3: Get Triple Details',
+    query: `query GetTripleDetails($termId: String!) {
+  triples(where: { term_id: { _eq: $termId } }) {
+    term_id
+    counter_term_id
+    created_at
+    subject {
+      term_id
+      label
+      image
+      type
+    }
+    predicate {
+      term_id
+      label
+      image
+    }
+    object {
+      term_id
+      label
+      image
+      type
+    }
+    term {
+      vaults(where: { curve_id: { _eq: "2" } }) {
+        term_id
+        total_shares
+        current_share_price
+        market_cap
+        position_count
+        positions(limit: 5, order_by: { shares: desc }) {
+          account {
+            label
+          }
+          shares
+        }
+      }
+    }
+    counter_term {
+      vaults(where: { curve_id: { _eq: "2" } }) {
+        term_id
+        total_shares
+        current_share_price
+        market_cap
+        position_count
+      }
+    }
+  }
+}`,
+    variables: {
+      termId: '0xffb30efde2b49a7deadd920a7df684595ed4a291a582033c16b0795796965600'
+    }
+  }
+];
+
+<GraphQLPlaygroundCustom queries={relationshipQueries} />

@@ -1,53 +1,78 @@
 import React, { useEffect, useState } from 'react';
 import Link from '@docusaurus/Link';
 import clsx from 'clsx';
-import { Linkedin, Youtube, Github } from '@styled-icons/boxicons-logos';
-import { XIcon } from '@site/src/icons';
 import BrowserOnly from '@docusaurus/BrowserOnly';
 import ThemedImage from '@theme/ThemedImage';
+import {
+  XIcon,
+  DiscordIcon,
+  GithubIcon,
+  LinkedinIcon,
+  YoutubeIcon,
+  FarcasterIcon,
+  MediumIcon,
+  TelegramIcon
+} from '@site/src/icons';
 
-const overview = [
-  { name: 'Overview', href: '/docs/introduction/overview' },
-  { name: 'Why Intuition?', href: '/docs/introduction/why-intuition' },
+const learn = [
+  {
+    name: 'Ecosystem',
+    href: 'https://intuition.systems/ecosystem'
+  },
+  {
+    name: 'Docs',
+    href: 'https://docs.intuition.systems'
+  },
+  {
+    name: 'Roadmap',
+    href: 'https://roadmap.intuition.systems'
+  },
 ];
 
-const products = [
+const tools = [
   {
-    name: 'Portal',
+    name: 'Block Explorer',
+    href: 'https://explorer.intuition.systems',
+  },
+  {
+    name: 'Protocol Explorer',
     href: 'https://portal.intuition.systems/',
+  },
+  {
+    name: 'Testnet Faucet',
+    href: 'https://testnet.hub.intuition.systems/',
+  },
+  {
+    name: 'Bridge',
+    href: 'https://bridge.intuition.systems',
   },
 ];
 
 const developers = [
   {
-    name: 'GraphQL',
-    href: '/docs/developer-tools/graphql-api/overview',
-  },
-  {
-    name: 'Smart Contracts',
-    href: '/docs/developer-tools/contracts/contract-architecture',
-  },
-  {
-    name: 'AI Integration',
-    href: '/docs/intuition-ai'
+    name: 'Architecture',
+    href: '/docs/developer-tools/deep-dive/architecture',
   },
   {
     name: 'Primitives',
     href: '/docs/primitives/overview',
   },
   {
-    name: 'Architecture',
-    href: '/docs/developer-tools/deep-dive/architecture',
+    name: 'Smart Contracts',
+    href: '/docs/developer-tools/contracts/contract-architecture',
   },
-];
-
-const community = [
-  { name: 'X / Twitter', href: 'https://x.com/0xintuition' },
-  { name: 'Medium', href: 'https://medium.com/0xintuition' },
-  { name: 'Discord', href: 'https://discord.gg/0xintuition' },
-  { name: 'Telegram', href: 'https://t.me/intuitionsystems' },
-  { name: 'LinkedIn', href: 'https://linkedin.com/company/0xintuition' },
-  { name: 'Farcaster', href: 'https://farcaster.xyz/intuition' },
+  {
+    name: 'GraphQL',
+    href: '/docs/developer-tools/graphql-api/overview',
+  },
+  {
+    name: 'SDK',
+    href: '/docs/developer-tools/sdks/overview'
+  },
+  {
+    name: 'AI Integration',
+    href: '/docs/intuition-ai'
+  },
 ];
 
 function Safety({ className }) {
@@ -88,7 +113,7 @@ function Links({ name, links, isAccordion }) {
 
   return (
     <div>
-      <h3 className="font-jakarta text-base font-semibold uppercase text-gray-400 dark:text-[#fff]">
+      <h3 className="font-jakarta text-base font-semibold uppercase text-gray-400 dark:text-[#999]">
         {name}
       </h3>
       <div className="flex flex-col gap-3">
@@ -124,25 +149,24 @@ export default function Footer() {
   return (
     <footer className="bg-[#F4F7FF] dark:bg-[#191919]">
       <div className="mx-auto flex w-full max-w-[1080px] flex-col px-6 py-12">
-        <div className="mb-12 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-          <ThemedImage
-            alt="Intuition"
-            className="h-9 w-fit lg:h-12"
-            sources={{
-              light: '/logo/intuition_dark_logo.svg',
-              dark: '/logo/intuition.svg',
-            }}
-          />
-        </div>
-
         <div className="grid grid-cols-2 gap-6 gap-y-12 md:justify-between lg:flex lg:flex-wrap">
-          <Links name="Overview" links={overview} />
-          <Links name="Products" links={products} />
+          <div className="mb-12 flex flex-col gap-4 lg:flex-row ">
+            <ThemedImage
+              alt="Intuition logo"
+              className="h-9 w-fit lg:h-12"
+              sources={{
+                light: '/logo/light.svg',
+                dark: '/logo/dark.svg',
+              }}
+            />
+          </div>
+          
+          <Links name="Learn" links={learn} />
+          <Links name="Tools" links={tools} />
           <Links name="Developers" links={developers} />
-          <Links name="Community" links={community} />
         </div>
 
-        <hr className="my-12 !bg-gray-300 dark:!bg-[#999]" />
+        <hr className="my-12 !bg-gray-300 dark:!bg-[#999] opacity-30" />
 
         <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between lg:gap-0">
           <div className="flex flex-wrap gap-2 text-sm text-gray-500">
@@ -153,25 +177,52 @@ export default function Footer() {
 
           <div className="flex items-center gap-4">
             <Link
-              href="https://github.com/0xintuition"
-              aria-label="Intuition's GitHub Organization"
+              href="https://twitter.com/0xintuition"
+              aria-label="Intuition's Twitter Profile"
             >
-              <Github className="h-7 w-7 text-zinc-400 hover:text-primary" />
-            </Link>
-            <Link
-              href="https://linkedin.com/company/0xintuition"
-              aria-label="LinkedIn"
-            >
-              <Linkedin className="h-7 w-7 text-zinc-400 hover:text-primary" />
-            </Link>
-            <Link href="https://twitter.com/0xintuition" aria-label="Twitter">
               <XIcon className="h-7 w-7 text-zinc-400 hover:text-primary" />
             </Link>
             <Link
-              href="https://youtube.com/@0xIntuition"
-              aria-label="Intuition YouTube Channel"
+              href="https://github.com/0xintuition"
+              aria-label="Intuition's GitHub Organization"
             >
-              <Youtube className="h-7 w-7 text-zinc-400 hover:text-primary" />
+              <GithubIcon className="h-7 w-7 text-zinc-400 hover:text-primary" />
+            </Link>
+            <Link
+              href="https://discord.gg/0xintuition"
+              aria-label="Intuition's Discord Community"
+            >
+              <DiscordIcon className="h-7 w-7 text-zinc-400 hover:text-primary" />
+            </Link>
+            <Link
+              href="https://t.me/intuitionsystems"
+              aria-label="Intuition's Telegram Channel"
+            >
+              <TelegramIcon className="h-7 w-7 text-zinc-400 hover:text-primary" />
+            </Link>
+            <Link
+              href="https://medium.com/0xintuition"
+              aria-label="Intuition's Medium Blog"
+            >
+              <MediumIcon className="h-7 w-7 text-zinc-400 hover:text-primary" />
+            </Link>
+            <Link
+              href="https://linkedin.com/company/0xintuition"
+              aria-label="Intuition's LinkedIn Profile"
+            >
+              <LinkedinIcon className="h-7 w-7 text-zinc-400 hover:text-primary" />
+            </Link>
+            <Link
+              href="https://youtube.com/@0xIntuition"
+              aria-label="Intuition's YouTube Channel"
+            >
+              <YoutubeIcon className="h-7 w-7 text-zinc-400 hover:text-primary" />
+            </Link>
+            <Link
+              href="https://farcaster.xyz/intuition"
+              aria-label="Intuition's Farcaster Profile"
+            >
+              <FarcasterIcon className="h-7 w-7 text-zinc-400 hover:text-primary" />
             </Link>
           </div>
         </div>

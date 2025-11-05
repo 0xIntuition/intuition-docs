@@ -16,7 +16,7 @@ import clsx from 'clsx';
 const MAIN_CARDS = [
   {
     title: 'Quick Start',
-    link: '/docs/quickstart/intuition-kits',
+    link: '/docs/quickstart/getting-started',
     icon: ArrowRightFilled,
     text: 'Get up and running with Intuition in minutes. Build your first app with our starter kits.',
   },
