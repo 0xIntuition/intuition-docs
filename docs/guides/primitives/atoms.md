@@ -3,6 +3,9 @@ title: Atoms
 sidebar_position: 2
 ---
 
+import BrowserOnly from '@docusaurus/BrowserOnly';
+import ExcalidrawViewer from '@site/src/components/ExcalidrawViewer';
+
 # Atoms
 
 Atoms are the foundational building blocks of Intuition's knowledge graph – the words in our global dictionary. Think of Intuition as a vast, collaborative dictionary where anyone can create a new word, and each word has its own globally persistent, unique digital identifier that can be used to reference it across the entire internet!
@@ -47,7 +50,14 @@ Each Atom has one or more Vaults attached to it for staking. These vaults operat
 
 This mechanism incentivizes early discovery of important Atoms and creates a form of priority signaling – the community collectively "bids up" the Atoms deemed valuable or relevant by risking capital in their vaults.
 
+### Atom Creation Process
+
+<BrowserOnly fallback={<p>Loading diagram...</p>}>
+  {() => <ExcalidrawViewer src="/excalidraw/atom-creation-diagram.excalidraw.json" zoom={0.3} scrollX={-150} scrollY={650} />}
+</BrowserOnly>
+
 ## The Problem Atoms Solve
+
 
 ### Universal Reference Standardization
 

@@ -2,12 +2,11 @@ module.exports = {
   docs: [
     {
       type: 'category',
-      label: 'Welcome',
+      label: 'Introduction',
       items: [
         'introduction/overview',
         'introduction/why-intuition',
         'introduction/the-economics/the-economics',
-        'developer-tools/deep-dive/architecture',
       ],
     },
     {
@@ -15,9 +14,60 @@ module.exports = {
       label: 'Primitives',
       items: [
         'primitives/overview',
-        'primitives/atoms',
-        'primitives/triples',
-        'primitives/signals',
+        {
+          type: 'category',
+          label: 'Atoms',
+          items: [
+            'primitives/atoms/overview',
+            'primitives/atoms/problem-atoms-solve',
+            'primitives/atoms/design-principles',
+            'primitives/atoms/best-practices',
+            'primitives/atoms/practical-examples',
+          ],
+        },
+        {
+          type: 'category',
+          label: 'Triples',
+          items: [
+            'primitives/triples/overview',
+            'primitives/triples/core-benefits',
+            'primitives/triples/querying-triples',
+            {
+              type: 'category',
+              label: 'Create Triples',
+              items: [
+                'primitives/triples/how-to-create',
+              ],
+            },
+            'primitives/triples/positive-negative-claims',
+            'primitives/triples/use-cases',
+            {
+              type: 'category',
+              label: 'Nested Triples',
+              items: [
+                {
+                  type: 'category',
+                  label: 'Overview',
+                  link: {
+                    type: 'doc',
+                    id: 'primitives/triples/nested-triples',
+                  },
+                  items: [],
+                },
+                'primitives/triples/nested-triples-practical-implementation',
+              ],
+            },
+          ],
+        },
+        {
+          type: 'category',
+          label: 'Signals',
+          items: [
+            'primitives/signals/overview',
+            'primitives/signals/strategies-best-practices',
+            'primitives/signals/practical-implementation',
+          ],
+        },
       ],
     },
     {

@@ -7,7 +7,15 @@ type ExcalidrawInitialData = {
   files?: Record<string, any>;
 };
 
-export default function ExcalidrawViewer({ src }: { src: string }) {
+type ExcalidrawViewerProps = {
+  src: string;
+  zoom?: number;
+  scrollX?: number;
+  scrollY?: number;
+  backgroundColor?: string;
+};
+
+export default function ExcalidrawViewer({ src, zoom = 0.6, scrollX = 0, scrollY = 0, backgroundColor }: ExcalidrawViewerProps) {
   const [ExcalidrawComponent, setExcalidrawComponent] = useState<any>(null);
   const [data, setData] = useState<ExcalidrawInitialData>();
   const [error, setError] = useState<string | null>(null);
@@ -42,10 +50,10 @@ export default function ExcalidrawViewer({ src }: { src: string }) {
 
         // Set custom appState to control the view
         const customAppState = {
-          viewBackgroundColor: '#131417',
-          zoom: { value: .5 },
-          scrollX: 450,
-          scrollY: 0,
+          viewBackgroundColor: backgroundColor || json.appState?.viewBackgroundColor || '#ffffff',
+          zoom: { value: zoom },
+          scrollX: scrollX,
+          scrollY: scrollY,
         };
 
         setData({ elements, appState: customAppState, files });
@@ -55,22 +63,14 @@ export default function ExcalidrawViewer({ src }: { src: string }) {
       }
     };
     loadJSON();
-  }, [src]);
+  }, [src, zoom, scrollX, scrollY, backgroundColor]);
 
   if (error) return <p style={{ color: 'red' }}>{error}</p>;
   if (!ExcalidrawComponent) return <p>Loading Excalidraw component...</p>;
   if (!data) return <p>Loading diagram...</p>;
 
   return (
-    <div
-      style={{
-        height: 600,
-        border: '1px solid rgba(255,255,255,0.1)',
-        borderRadius: 20,
-        marginBottom: '2rem',
-        overflow: 'hidden'
-      }}
-    >
+    <div style={{ height: 600, border: '1px solid #333', borderRadius: 12, marginBottom: '2rem' }}>
       <ExcalidrawComponent initialData={data} viewModeEnabled />
     </div>
   );

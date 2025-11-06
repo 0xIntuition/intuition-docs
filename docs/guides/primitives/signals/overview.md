@@ -1,9 +1,9 @@
 ---
-title: Signals
-sidebar_position: 4
+title: Overview
+sidebar_position: 0
 ---
 
-# Signals
+# Overview
 
 Signals represent the trust, confidence, or relevance that the community assigns to Atoms and Triples in the Intuition knowledge graph. Think of the knowledge graph as a weighted graph where Signal is the weight on each node (Atom) or edge (Triple), indicating how strongly people believe in or care about this information.
 
@@ -12,6 +12,10 @@ Signals represent the trust, confidence, or relevance that the community assigns
 Signals transform static data into a dynamic, trusted intelligence layer. When someone stakes $TRUST tokens on an Atom or Triple, they emit a Signal expressing that they find that piece of information important or true. Conversely, staking on a Triple's negative side signals doubt. These individual signals aggregate to form an overall weighted state for each item in the knowledge graph.
 
 In essence, Signals are the lifeblood of Intuition's trust layer. They turn subjective judgments into quantifiable, shareable data, creating an internet where information is contextualized with trust—allowing everyone to navigate knowledge supported by transparent evidence and collective wisdom.
+
+### The Vision
+
+Intuition aims to create an internet where every piece of information carries its trust signature—where we navigate knowledge with an intuition of what to believe, supported by transparent evidence and collective wisdom rather than blind faith in centralized authorities.
 
 ## How Signals are Created
 
@@ -25,7 +29,7 @@ The core mechanism for creating signals is through **staking** (also called atte
 
 For example:
 - Staking 100 TRUST on the Atom `[Ethereum]` gives you a fraction of total Atom Shares for `[Ethereum]`
-- Staking 50 TRUST on `[Alice] isFriendOf [Bob]` in the affirmative vault gives you Triple Shares supporting that friendship claim
+- Staking 50 TRUST on `[Alice] is Friend Of [Bob]` in the affirmative vault gives you Triple Shares supporting that friendship claim
 
 ### Bonding Curves
 
@@ -116,7 +120,7 @@ Consider these scenarios:
 - Early stakers earn fees from every interaction
 - Acts like owning "shares" in a highly-trafficked data highway
 
-**Valuable Triple**: "[CompanyX] [acquired] [CompanyY]"
+**Valuable Triple**: "[Company X] [acquired] [Company Y]"
 - News services query it
 - Financial models reference it
 - Trading bots check it
@@ -196,7 +200,7 @@ When querying the knowledge graph, you can set minimum trust thresholds. For exa
 ```javascript
 // Find DAO treasuries with strong community backing
 const trustedDAOs = await query({
-  pattern: "[Address] [isDAOTreasury] [True]",
+  pattern: "[Address] [is DAO Treasury] [True]",
   minSignal: {
     tvl: 10000,        // At least 10,000 TRUST staked
     consensus: 0.8     // At least 80% positive consensus
@@ -218,8 +222,8 @@ Consider an HR application that needs to verify employment. Instead of trusting 
 ```javascript
 // Get employee data that's been verified by the employer
 const employees = await query({
-  pattern: "[Person] [employeeOf] [CompanyY]",
-  requireSignalFrom: "CompanyY"  // Company must have attested
+  pattern: "[Person] [employee Of] [Company Y]",
+  requireSignalFrom: "Company Y"  // Company must have attested
 });
 ```
 
@@ -299,30 +303,6 @@ This means:
 
 The protocol's unopinionated nature ensures that Intuition remains a neutral substrate for trust, allowing diverse ecosystems of interpretation to flourish on top of the same underlying signal data.
 
-## Signal Strategies and Best Practices
-
-### Optimal Signaling Strategy
-
-The game-theoretic optimal strategy is to:
-1. Identify accurate, useful information early
-2. Stake before widespread recognition
-3. Earn from value flow as data gets utilized
-4. Build reputation through consistent accuracy
-
-### Risk Considerations
-
-- **No Absolute Truth Guarantee**: Signals represent consensus and confidence, not absolute truth
-- **Early Stage Risks**: Fewer participants can mean less reliable signals
-- **Potential for Manipulation**: Large stakes can temporarily skew consensus
-- **Opportunity Cost**: Staking on irrelevant or unused claims means missing better opportunities
-
-### Defensive Strategies
-
-- Always examine the trust trail behind strong signals
-- Drill down into attestor profiles and motivations
-- Consider contrarian positions when consensus seems wrong
-- Diversify across multiple claims and domains
-
 ## Economic Dynamics and Network Effects
 
 ### Value Flow Distribution
@@ -353,59 +333,6 @@ As more users participate:
 - Information quality improves
 - Collective wisdom emerges
 
-## Practical Implementation Examples
-
-### Creating and Querying Signals
-
-```javascript
-// Stake on an Atom
-const atomSignal = await stake({
-  vaultId: ethereumAtom.vaultId,
-  amount: 100 // 100 TRUST tokens
-});
-
-// Stake on a Triple (positive)
-const tripleSignal = await stake({
-  vaultId: friendshipTriple.positiveVaultId,
-  amount: 50
-});
-
-// Counter-stake (negative)
-const disputeSignal = await stake({
-  vaultId: claimTriple.negativeVaultId,
-  amount: 75
-});
-
-// Query with confidence threshold
-const trustedClaims = await query({
-  minConsensus: 0.7,
-  minTVL: 1000
-});
-```
-
-### Building Trust-Aware Applications
-
-```javascript
-// Create a trust-filtered API
-class TrustAPI {
-  async getVerifiedFacts(topic, minTrust = 0.8) {
-    const results = await intuition.query({
-      pattern: `[*] [relatesTo] [${topic}]`,
-      filters: {
-        consensus: { gte: minTrust },
-        attestors: { gte: 10 }
-      }
-    });
-
-    return results.map(r => ({
-      fact: r.triple,
-      trust: r.consensus,
-      evidence: r.signals
-    }));
-  }
-}
-```
-
 ## Key Takeaways
 
 ### The Signal Trinity
@@ -428,9 +355,7 @@ Signals transform the internet's information layer:
 - **From misinformation** → To economically-backed truth
 - **From static data** → To dynamic, living knowledge
 
-### The Vision
 
-Intuition aims to create an internet where every piece of information carries its trust signature—where we navigate knowledge with an intuition of what to believe, supported by transparent evidence and collective wisdom rather than blind faith in centralized authorities.
 
 ## Next Steps
 
