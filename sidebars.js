@@ -114,16 +114,17 @@ module.exports = {
       type: 'category',
       label: 'Smart Contracts',
       items: [
-        'developer-tools/contracts/contract-architecture',
-        'developer-tools/contracts/contract-migration',
-        'developer-tools/contracts/multivault',
-        'developer-tools/contracts/trust-bonding',
-        'developer-tools/contracts/deployments',
+        'developer-tools/contracts/overview',
         {
           type: 'link',
           label: 'Deep Dive',
           href: 'https://deepwiki.com/0xIntuition/intuition-contracts-v2/',
         },
+        'developer-tools/contracts/deployments',
+        'developer-tools/contracts/configuration',
+        'developer-tools/contracts/multivault',
+        'developer-tools/contracts/trust-bonding',
+        'developer-tools/contracts/contract-migration',
       ],
     },
     {
