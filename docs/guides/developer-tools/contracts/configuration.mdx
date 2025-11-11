@@ -5,9 +5,11 @@ sidebar_position: 2
 
 # Configurations & Fees
 
-The Intuition Smart Contracts utilize a configuration system that allows for dynamic adjustment of various parameters to optimize performance and security. This pages provides an overview of the configuration settings and fee structures used in the Intuition protocol on the **mainnet** deployment.
+The Intuition protocol smart contracts utilize a configuration system that allows for dynamic adjustment of various parameters effecting the behavior of the protocol. This document outlines the key configuration parameters and fees associated with the **mainnet Intuition protocol** deployment.
 
-## MultiVault Configuration
+The smart contract configurations and parameters can be adjusted by governance through onchain proposals, allowing for flexibility and adaptability as the protocol evolves.
+
+## MultiVault
 
 ### Atom & Triple Creation Fees
 
@@ -49,7 +51,7 @@ The Intuition Smart Contracts also include several low-level configuration param
 - **Fee Denominator:** 10000
 
 
-## TrustBonding & Emissions Controller Configuration
+## TrustBonding & EmissionsController
 
 The TrustBonding and Emissions Controller contracts manage the bonding of TRUST tokens and the emission schedule for new tokens.
 
@@ -60,11 +62,11 @@ The TrustBonding and Emissions Controller contracts manage the bonding of TRUST 
 
 The TrustBonding, BaseEmissionsController and SatelliteEmissionsController all share the same configuration parameters for emissions. This allows for a consistent emission schedule across the protocol, even though new TRUST tokens are minted on the Base (8453) network and released on the Intuition (1155) network.
 
-## Offset Progressive Curve
+## OffsetProgressiveCurve
 
 The Offset Progressive Curve is used to calculate the amount of shares minted when a user deposits. The curve is defined by the following parameters:
 
-- **Offset:** 1e17;
-- **Slope:** 3e19;
+- **Offset:** 1e17
+- **Slope:** 3e19 
 
-These parameters are fixed and cannot be changed by governance.
+The OffsetProgressiveCurve parameters are fixed and cannot be changed by governance.
