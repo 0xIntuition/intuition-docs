@@ -114,11 +114,11 @@ module.exports = {
       type: 'category',
       label: 'Smart Contracts',
       items: [
+        'developer-tools/contracts/deployments',
         'developer-tools/contracts/contract-architecture',
-        'developer-tools/contracts/contract-migration',
         'developer-tools/contracts/multivault',
         'developer-tools/contracts/trust-bonding',
-        'developer-tools/contracts/deployments',
+        'developer-tools/contracts/contract-migration',
         {
           type: 'link',
           label: 'Deep Dive',
