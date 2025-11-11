@@ -2373,6 +2373,7 @@ table td, table th {
   
 }
 
+@media (min-width: 768px) {
 article thead, 
 article tbody {
   display: flex !important;
@@ -2392,3 +2393,4 @@ article tbody tr td {
   flex: 1 !important;
   width: auto !important;
 } 
+}
