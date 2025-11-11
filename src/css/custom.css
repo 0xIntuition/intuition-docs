@@ -2374,23 +2374,23 @@ table td, table th {
 }
 
 @media (min-width: 768px) {
-article thead, 
-article tbody {
-  display: flex !important;
-  flex-direction: column !important;
-  width: 100% !important;
-}
+  article thead, 
+  article tbody {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+  }
 
-article thead tr,
-article tbody tr {
-  width: 100% !important;
-  display: flex !important;
-  flex-direction: row !important;
-}
+  article thead tr,
+  article tbody tr {
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: row !important;
+  }
 
-article thead tr th,
-article tbody tr td {
-  flex: 1 !important;
-  width: auto !important;
-} 
+  article thead tr th,
+  article tbody tr td {
+    flex: 1 !important;
+    width: auto !important;
+  } 
 }
