@@ -170,16 +170,9 @@ This page contains security audit reports for Intuition smart contracts. All con
 
 **Audit Scope**: The smart contracts audited can be found on the main branch in the repository: `intuition-tob-audit`
 
-{/* **Audit File**: [Intuition Smart Contracts Summary Report.pdf](Intuition-_Smart_Contracts-_Summary_Report.pdf) */}
-
 ## Summary of Findings and Fixes
 
-
-
 **No high severity issues found** ✅
-
-
-
 
 | Issue | Status | Fix |
 |-------|--------|-----|
@@ -189,9 +182,6 @@ This page contains security audit reports for Intuition smart contracts. All con
 | Distributing atom equity should not include protocol fees | ✅ Fixed | commit#028748d |
 | Asset accounting should not be reduced by minShare | ✅ Fixed | PR#36 |
 
-
-
-
 | Issue | Status | Fix |
 |-------|--------|-----|
 | createAtomCompressed allows creating duplicate atoms with the same URI | ✅ Fixed | commit#4d0b2ba from PR#30 |
@@ -200,9 +190,6 @@ This page contains security audit reports for Intuition smart contracts. All con
 | EthMultiVault should not receive ether donations | ✅ Fixed | PR#24 |
 | Atom wallets can be created before the atom is created | ✅ Fixed | PR#29 |
 | Atom URI data is unbounded | ✅ Fixed | PR#32 |
-
-
-
 
 | Issue | Status | Fix |
 |-------|--------|-----|
@@ -219,8 +206,6 @@ This page contains security audit reports for Intuition smart contracts. All con
 | Code Quality | ✅ Fixed | PR#40 and PR#41 |
 | [Weak Maturity] Decentralization | ✅ Fixed | PR#42 and PR#45 |
 | [Weak Maturity] Arithmetic | 📝 Addressed in comments | - |
-
-
 
 
 ---
@@ -242,15 +227,11 @@ The smart contract configurations and parameters can be adjusted by governance t
 
 The following fixed fees are applied when creating atoms and triples within the MultiVault:
 
-
 ### Deposit & Withdrawal Fees & Minimums
 
 When depositing into an atom or triple, a minimum amount of TRUST is required:   
 
-
 The percentage-based fees are applied to the total TRUST being deposited/withdrawn after accounting for fixed costs:
-
-
 
 **The percentage fees are calculated using a denominator of 10,000.**
 
@@ -268,12 +249,9 @@ The Intuition Smart Contracts also include several low-level configuration param
 - **Fee Denominator:** 10000
 - **Atom Data Max Length:** 1000
 
-
 ## TrustBonding & EmissionsController
 
 The TrustBonding, BaseEmissionsController and SatelliteEmissionsController all share the same configuration parameters for emissions. This allows for a consistent emission schedule across the protocol, even though new TRUST tokens are minted on the Base (8453) network and released on the Intuition (1155) network.
-
-
 
 ## OffsetProgressiveCurve
 
@@ -303,7 +281,6 @@ The `lastActiveEpoch` mapping in the `MultiVault` contract has been replaced wit
 ```solidity
 mapping(address => uint256) public lastActiveEpoch;
 ```
-
 
 **Current:**
 ```solidity
@@ -519,7 +496,6 @@ The MultiVault contract is the core economic engine of the Intuition protocol, m
 
 The MultiVault is the primary interface for users to interact with the economic aspects of atoms and triples:
 
-
 ### Atom IDs
 Atom IDs are generated using a hash function that hashes the Atom's data.
 
@@ -566,7 +542,6 @@ The function accepts an array of Atom data and an array of asset amounts, allowi
 
 Creating an Atom requires a fee payment, which is paid in the native blockchain currency (e.g., TRUST on the Intuition Network). In addition to the fee, users can also deposit TRUST tokens when creating an Atom. This deposit acts as a signal, ensuring that users have a vested interest in the integrity of the Atom they are creating.
 
-
 ### Creating Triples
 A Triple represents a claim or statement. A triple is structured using a **subject-predicate-object** relationship. For example, in the triple "Alice is a friend of Bob", "Alice" is the subject, "is a friend of" is the predicate, and "Bob" is the object.
 
@@ -576,7 +551,6 @@ function createTriples(
     bytes32[] calldata predicateIds,
     bytes32[] calldata objectIds,
     uint256[] calldata assets
-)
     external
     payable
     whenNotPaused
@@ -600,7 +574,6 @@ function deposit(
     bytes32 termId,
     uint256 curveId,
     uint256 minShares
-)
     external
     payable
     whenNotPaused
@@ -623,7 +596,6 @@ function depositBatch(
     uint256[] calldata curveIds,
     uint256[] calldata assets,
     uint256[] calldata minShares
-)
     external
     payable
     whenNotPaused
@@ -645,7 +617,6 @@ function redeem(
     uint256 curveId,
     uint256 shares,
     uint256 minAssets
-)
     external
     whenNotPaused
     nonReentrant
@@ -666,7 +637,6 @@ function redeemBatch(
     uint256[] calldata curveIds,
     uint256[] calldata shares,
     uint256[] calldata minAssets
-)
     external
     whenNotPaused
     nonReentrant
@@ -705,7 +675,6 @@ function previewAtomCreate(
     bytes32 termId,
     uint256 curveId,
     uint256 assets
-)
     external
     view
     returns (uint256 shares, uint256 assetsAfterFixedFees, uint256 assetsAfterFees)
@@ -722,7 +691,6 @@ function previewTripleCreate(
     bytes32 termId,
     uint256 curveId,
     uint256 assets
-)
     external
     view
     returns (uint256 shares, uint256 assetsAfterFixedFees, uint256 assetsAfterFees)
@@ -739,7 +707,6 @@ function previewDeposit(
     bytes32 termId,
     uint256 curveId,
     uint256 assets
-)
     public
     view
     returns (uint256 shares, uint256 assetsAfterFees)
@@ -756,7 +723,6 @@ function previewRedeem(
     bytes32 termId,
     uint256 curveId,
     uint256 shares
-)
     public
     view
     returns (uint256 assetsAfterFees, uint256 sharesUsed)
@@ -876,7 +842,6 @@ The Wrapped Trust contract is an ERC-20 compliant token that lives on the Intuit
 
 **Wrapped Trust tokens can be used for staking in the Trust Bonding contract.**
 
-
 # Trust Bonding
 The Trust Bonding contract is a smart contract introduced in V2. Inheriting from the Curve VotingEscrow contract, it enables staking of Wrapped Trust to earn rewards and participate in governance. Key features include:
 
@@ -919,7 +884,6 @@ The TrustBonding contract is the primary smart contract for bonding/staking of T
 
 ### Wrapped Trust (wTRUST)
 The TrustBonding contract requires users to wrap their TRUST tokens into Wrapped TRUST (wTRUST) before locking them in the voting escrow. This wrapping process is handled by the `WrappedTrust` contract, which allows users to deposit TRUST tokens and receive an equivalent amount of wTRUST tokens.
-
 
 ### Voting Escrow (veTRUST)
 The TrustBonding contract inherits from the popular Voting Escrow mechanism, allowing users to lock their TRUST tokens for a specified period in exchange for veTRUST tokens. These veTRUST tokens represent voting power and can be used to influence governance decisions within the Intuition protocol.
@@ -1039,18 +1003,9 @@ Intuition's architecture consists of three tightly integrated layers that work t
 
 ## Architecture Overview
 
-  backgroundColor: 'var(--ifm-color-emphasis-100)',
-  border: '1px solid var(--ifm-color-emphasis-300)',
-  borderRadius: '8px',
-  padding: '1.5rem',
-  margin: '2rem 0',
-  borderLeft: '4px solid var(--ifm-color-primary)'
-}}>
-
 ![Intuition System Overview](/img/intuition-intro.png)
 
 Intuition's architecture is designed for **speed**, **scale**, and **interoperability**. By separating concerns across three specialized layers, we achieve optimal performance while maintaining decentralization and cross-chain compatibility.
-
 
 ```mermaid
 graph TB
@@ -1102,13 +1057,6 @@ graph TB
 
 The Intuition Network is an **EVM-compatible Layer 3** built on Base using the Orbit stack. This provides the ultra-fast, low-cost transaction environment essential for high-frequency knowledge graph operations.
 
-  backgroundColor: 'var(--ifm-color-emphasis-50)',
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '6px',
-  padding: '1rem',
-  margin: '1rem 0'
-}}>
-
 ### Why Layer 3?
 
 Traditional L1s and even L2s are too expensive and slow for the granular operations required by a knowledge graph. Every atom creation, triple attestation, and signal update needs to be economically viable. The L3 architecture provides:
@@ -1118,20 +1066,7 @@ Traditional L1s and even L2s are too expensive and slow for the granular operati
 - **Massive throughput** - Supporting millions of daily knowledge operations
 - **EVM compatibility** - Leveraging existing tooling and developer knowledge
 
-
 ### Technical Specifications
-
-  display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-  gap: '1rem',
-  margin: '1.5rem 0'
-}}>
-
-  backgroundColor: 'var(--ifm-background-color)',
-  border: '1px solid var(--ifm-color-emphasis-300)',
-  borderRadius: '8px',
-  padding: '1rem'
-}}>
 
 **Performance**
 - Block time: ~250ms
@@ -1139,33 +1074,17 @@ Traditional L1s and even L2s are too expensive and slow for the granular operati
 - Finality: < 1 second
 - Gas costs: < $0.001 per tx
 
-
-  backgroundColor: 'var(--ifm-background-color)',
-  border: '1px solid var(--ifm-color-emphasis-300)',
-  borderRadius: '8px',
-  padding: '1rem'
-}}>
-
 **Stack Components**
 - **Base Layer**: Orbit framework on Base
 - **Consensus**: Optimistic rollup with fraud proofs
 - **Execution**: EVM-compatible runtime
 - **Data Availability**: Base for settlement
 
-
-  backgroundColor: 'var(--ifm-background-color)',
-  border: '1px solid var(--ifm-color-emphasis-300)',
-  borderRadius: '8px',
-  padding: '1rem'
-}}>
-
 **Interoperability**
 - **Metalayer**: Cross-chain messaging protocol
 - **Metatoken**: Unified token standard
 - **Bridge**: Native Base ↔ L3 bridge
 - **Standards**: ERC-1155, ERC-4626, ERC-4337
-
-
 
 ### Cross-Chain Interoperability
 
@@ -1197,13 +1116,6 @@ The Intuition Protocol implements all on-chain logic for the knowledge graph thr
 
 ### Core Contract Architecture
 
-  backgroundColor: 'var(--ifm-background-surface-color)',
-  border: '1px solid var(--ifm-color-emphasis-300)',
-  borderRadius: '8px',
-  padding: '1.5rem',
-  margin: '1.5rem 0'
-}}>
-
 #### **EthMultiVault**
 The economic engine managing all vault operations:
 
@@ -1225,14 +1137,6 @@ contract EthMultiVault {
 - Dynamic pricing via bonding curves
 - Share-based ownership model
 - Fee distribution to stakers
-
-
-  backgroundColor: 'var(--ifm-background-surface-color)',
-  border: '1px solid var(--ifm-color-emphasis-300)',
-  borderRadius: '8px',
-  padding: '1.5rem',
-  margin: '1.5rem 0'
-}}>
 
 #### **AtomWallet**
 Primary interface for creating and managing knowledge graph primitives:
@@ -1261,22 +1165,9 @@ contract AtomWallet {
 - Multi-signature capabilities
 - Upgradeable proxy pattern
 
-
 ### Economic Mechanics
 
 The Protocol implements sophisticated economic incentives:
-
-  display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-  gap: '1rem',
-  margin: '1.5rem 0'
-}}>
-
-  backgroundColor: 'var(--ifm-color-emphasis-50)',
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '6px',
-  padding: '1rem'
-}}>
 
 **Bonding Curves**
 - Automated price discovery
@@ -1284,33 +1175,17 @@ The Protocol implements sophisticated economic incentives:
 - Exponential growth model
 - Anti-manipulation mechanics
 
-
-  backgroundColor: 'var(--ifm-color-emphasis-50)',
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '6px',
-  padding: '1rem'
-}}>
-
 **Fee Distribution**
 - Creator fees: 5% of deposits
 - Protocol fees: 2% of deposits
 - Staker rewards: Proportional shares
 - Compound interest mechanics
 
-
-  backgroundColor: 'var(--ifm-color-emphasis-50)',
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '6px',
-  padding: '1rem'
-}}>
-
 **Vault Mechanics**
 - Positive/negative signal vaults
 - Automatic liquidity provision
 - Rage quit protection
 - Time-weighted averaging
-
-
 
 ### State Management
 
@@ -1348,14 +1223,6 @@ interface OnChainState {
 
 The Rust Subnet is Intuition's high-performance off-chain infrastructure that indexes on-chain state, resolves off-chain data references, and serves the unified knowledge graph through APIs.
 
-  backgroundColor: 'var(--ifm-color-emphasis-100)',
-  border: '1px solid var(--ifm-color-emphasis-300)',
-  borderRadius: '8px',
-  padding: '1.5rem',
-  margin: '1.5rem 0',
-  borderLeft: '4px solid var(--ifm-color-primary)'
-}}>
-
 **Why Rust?**
 
 The Subnet is built in Rust for maximum performance and reliability:
@@ -1364,20 +1231,7 @@ The Subnet is built in Rust for maximum performance and reliability:
 - **Zero-cost abstractions** for efficient data structures
 - **WebAssembly compatibility** for edge deployment
 
-
 ### Core Components
-
-  display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-  gap: '1.5rem',
-  margin: '2rem 0'
-}}>
-
-  backgroundColor: 'var(--ifm-background-color)',
-  border: '1px solid var(--ifm-color-emphasis-300)',
-  borderRadius: '8px',
-  padding: '1.5rem'
-}}>
 
 #### **Event Processing Pipeline**
 
@@ -1412,13 +1266,6 @@ impl ConsumerMode {
 - Multi-stage pipeline (Raw → Decoded → Resolved)
 - Chain reorganization handling
 - Parallel processing across consumers
-
-
-  backgroundColor: 'var(--ifm-background-color)',
-  border: '1px solid var(--ifm-color-emphasis-300)',
-  borderRadius: '8px',
-  padding: '1.5rem'
-}}>
 
 #### **Data Resolver**
 
@@ -1456,13 +1303,6 @@ impl ResolverConsumerContext {
 - ENS name resolution on mainnet
 - Image validation through image-guard service
 
-
-  backgroundColor: 'var(--ifm-background-color)',
-  border: '1px solid var(--ifm-color-emphasis-300)',
-  borderRadius: '8px',
-  padding: '1.5rem'
-}}>
-
 #### **Database Integration**
 
 Processes and stores structured data for API consumption:
@@ -1496,8 +1336,6 @@ impl DecodedConsumerContext {
 - Real-time event storage and indexing
 - Complex relationship mapping
 - Optimized queries with database migrations
-
-
 
 ### Data Pipeline
 
@@ -1548,18 +1386,6 @@ graph LR
 
 The Subnet exposes multiple API interfaces:
 
-  display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-  gap: '1rem',
-  margin: '1.5rem 0'
-}}>
-
-  backgroundColor: 'var(--ifm-color-emphasis-50)',
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '6px',
-  padding: '1rem'
-}}>
-
 **GraphQL API**
 ```graphql
 query GetAtomWithTriples {
@@ -1578,13 +1404,6 @@ query GetAtomWithTriples {
 }
 ```
 
-
-  backgroundColor: 'var(--ifm-color-emphasis-50)',
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '6px',
-  padding: '1rem'
-}}>
-
 **REST API**
 ```http
 GET /api/v1/atoms/123
@@ -1592,13 +1411,6 @@ GET /api/v1/triples?subject=123
 POST /api/v1/search
 WebSocket /ws/subscriptions
 ```
-
-
-  backgroundColor: 'var(--ifm-color-emphasis-50)',
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '6px',
-  padding: '1rem'
-}}>
 
 **Real-time Subscriptions**
 ```typescript
@@ -1611,20 +1423,11 @@ subscription OnAtomUpdate {
 }
 ```
 
-
-
 ## Data Flow Architecture
 
 ### Transaction Lifecycle
 
 Understanding how data flows through the system is crucial for developers:
-
-  backgroundColor: 'var(--ifm-background-surface-color)',
-  border: '1px solid var(--ifm-color-emphasis-300)',
-  borderRadius: '12px',
-  padding: '2rem',
-  margin: '2rem 0'
-}}>
 
 1. **User Action** → SDK creates transaction
 2. **Network Processing** → L3 validates and includes in block
@@ -1635,7 +1438,6 @@ Understanding how data flows through the system is crucial for developers:
 7. **API Response** → Unified data served to applications
 
 **Average End-to-End Latency: < 2 seconds**
-
 
 ### State Synchronization
 
@@ -1672,48 +1474,20 @@ interface SyncStrategy {
 
 Multi-layer caching for optimal performance:
 
-  display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-  gap: '1rem',
-  margin: '1.5rem 0'
-}}>
-
-  backgroundColor: 'var(--ifm-color-emphasis-50)',
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '6px',
-  padding: '0.75rem'
-}}>
-
 **L1: CDN Edge Cache**
 - Static content
 - Popular queries
 - 5-minute TTL
-
-
-  backgroundColor: 'var(--ifm-color-emphasis-50)',
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '6px',
-  padding: '0.75rem'
-}}>
 
 **L2: Redis Cache**
 - Query results
 - Session data
 - 1-hour TTL
 
-
-  backgroundColor: 'var(--ifm-color-emphasis-50)',
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '6px',
-  padding: '0.75rem'
-}}>
-
 **L3: Application Cache**
 - Computed values
 - Aggregate data
 - 24-hour TTL
-
-
 
 ### Query Optimization
 
@@ -1751,14 +1525,6 @@ The Subnet employs sophisticated query optimization:
 
 ### Recommended Integration Flow
 
-  backgroundColor: 'var(--ifm-color-emphasis-100)',
-  border: '1px solid var(--ifm-color-emphasis-300)',
-  borderRadius: '8px',
-  padding: '1.5rem',
-  margin: '2rem 0',
-  borderLeft: '4px solid var(--ifm-color-primary)'
-}}>
-
 For developers building on Intuition, we recommend:
 
 1. **Use the TypeScript SDK** for all contract interactions
@@ -1766,7 +1532,6 @@ For developers building on Intuition, we recommend:
 3. **Subscribe to WebSockets** for real-time updates
 4. **Cache aggressively** at the application layer
 5. **Batch operations** when possible to reduce costs
-
 
 ### Example: Creating and Querying Atoms
 
@@ -1804,30 +1569,11 @@ const result = await client.query({
 
 ### Infrastructure Setup
 
-  display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-  gap: '1rem',
-  margin: '1.5rem 0'
-}}>
-
-  backgroundColor: 'var(--ifm-background-color)',
-  border: '1px solid var(--ifm-color-emphasis-300)',
-  borderRadius: '8px',
-  padding: '1rem'
-}}>
-
 **Network Nodes**
 - Distributed globally
 - Auto-scaling groups
 - Multi-region failover
 - 99.99% uptime SLA
-
-
-  backgroundColor: 'var(--ifm-background-color)',
-  border: '1px solid var(--ifm-color-emphasis-300)',
-  borderRadius: '8px',
-  padding: '1rem'
-}}>
 
 **Subnet Infrastructure**
 - Kubernetes clusters
@@ -1835,66 +1581,23 @@ const result = await client.query({
 - Rolling deployments
 - Blue-green releases
 
-
-  backgroundColor: 'var(--ifm-background-color)',
-  border: '1px solid var(--ifm-color-emphasis-300)',
-  borderRadius: '8px',
-  padding: '1rem'
-}}>
-
 **Data Storage**
 - PostgreSQL with replication
 - Redis sentinel clusters
 - IPFS pinning services
 - S3-compatible object storage
 
-
-
 ## Next Steps
 
 Ready to start building? Explore these resources:
 
-  display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-  gap: '1rem',
-  marginTop: '2rem'
-}}>
-
-  border: '1px solid var(--ifm-color-emphasis-300)',
-  borderRadius: '6px',
-  padding: '1rem',
-  backgroundColor: 'var(--ifm-background-color)'
-}}>
-
 **[Smart Contracts](/docs/developer-tools/contracts)** - Deep dive into Protocol contracts
-
-
-  border: '1px solid var(--ifm-color-emphasis-300)',
-  borderRadius: '6px',
-  padding: '1rem',
-  backgroundColor: 'var(--ifm-background-color)'
-}}>
 
 **[GraphQL API](/docs/developer-tools/graphql-api)** - Learn the query interface
 
-
-  border: '1px solid var(--ifm-color-emphasis-300)',
-  borderRadius: '6px',
-  padding: '1rem',
-  backgroundColor: 'var(--ifm-background-color)'
-}}>
-
 **[SDK Guide](/docs/developer-tools/sdks)** - Start building applications
 
-
-  border: '1px solid var(--ifm-color-emphasis-300)',
-  borderRadius: '6px',
-  padding: '1rem',
-  backgroundColor: 'var(--ifm-background-color)'
-}}>
-
 **[Deployments](/docs/developer-tools/contracts/deployments)** - Contract addresses
-
 
 
 ---
@@ -2031,7 +1734,6 @@ function AtomViewer({ atomId }: { atomId: string }) {
     variables: { id: atomId }
   })
 
-
   return (
       {data?.atom?.metadata?.title}
   )
@@ -2070,12 +1772,9 @@ The Intuition GraphQL package can be used as a GraphQL generator for your custom
 - Easy to customize to your specific needs
 - Supports real-time updates from the Intuition GraphQL API through GraphQL subscriptions
 
-
 ## Installation
 
-
 The source code for the GraphQL generator is available on GitHub, which you can copy and paste into your own project to use as a GraphQL generator: [`intuition-ts/packages/graphql`](https://github.com/0xIntuition/intuition-ts/tree/main/packages/graphql)
-
 
 ## Schema Management
 
@@ -2085,8 +1784,6 @@ The package uses a local-first approach for schema management:
 - Remote schema fallback for resilience
 - Automatic schema generation during builds
 - Version controlled schema for team consistency
-
-
 
 ## Package Structure
 
@@ -2103,8 +1800,6 @@ graphql/
 ```
 
 Although this package does not include a subscriptions folder, you can easily add one to the generator because the GraphQL API allows subscriptions for real-time updates.
-
-
 
 ## Package Approach
 
@@ -2126,7 +1821,6 @@ We advise drafting and testing your queries, mutations, and subscriptions before
 
 For this, you can use [Apollo Explorer](https://studio.apollographql.com/sandbox/explorer) and input the URL of the Intuition testnet GraphQL API: `https://testnet.intuition.sh/v1/graphql`.
 
-
 ## Development Workflow
 
 1. **Code Generation**
@@ -2137,7 +1831,6 @@ For this, you can use [Apollo Explorer](https://studio.apollographql.com/sandbox
     - `pnpm dev # Development mode with watch`
 3. **Testing**
     - `pnpm test`
-
 
 ## Use your custom React Query hooks
 
@@ -2152,7 +1845,6 @@ function MyComponent() {
   })
 
   return (
-
 
       Triples ({triples?.triples?.length || 0})
       {triples?.triples?.map(triple => (
@@ -2185,7 +1877,6 @@ Source: https://docs.intuition.systems/guides/developer-tools/graphql-api/migrat
 | Environment | Endpoint |
 |-------------|----------|
 | **Intuition Testnet** | `https://testnet.intuition.sh/v1/graphql` |
-
 
 ## ⚠️ Breaking Changes
 
@@ -2307,7 +1998,6 @@ Source: https://docs.intuition.systems/guides/developer-tools/graphql-api/npm-pa
 
 The Intuition GraphQL package provides a type-safe interface for interacting with the Intuition API. It functions as the core data fetching layer, supplying generated types and React Query hooks for easy integration with the semantic knowledge graph.
 
-
 ## Key Features
 
 - React Query hooks for data fetching
@@ -2318,37 +2008,25 @@ The Intuition GraphQL package provides a type-safe interface for interacting wit
 - Sorting
 - Filtering
 
-
 ## Installation
 
 Install the package using your preferred package manager:
-
-
 
 ```bash
 npm install @0xintuition/graphql
 ```
 
-
-
 ```bash
 pnpm install @0xintuition/graphql
 ```
-
-
 
 ```bash
 yarn add @0xintuition/graphql
 ```
 
-
-
 ```bash
 bun install @0xintuition/graphql
 ```
-
-
-
 
 ## Quick Start
 
@@ -2395,10 +2073,8 @@ Import and use the generated React Query hooks:
 function StatsComponent() {
   const { data, isLoading, error } = useGetStatsQuery()
 
-
 }
 ```
-
 
 ```tsx
 
@@ -2435,7 +2111,6 @@ function MyComponent() {
 }
 ```
 
-
 ## Available React Hooks
 The following groups correspond to the query documents in the `src/queries` subdirectory of the package. Hook names are generated from each document and follow the `useQuery` convention. The complete and canonical list may be found in the directory: [`packages/graphql/src/queries`](https://github.com/0xIntuition/intuition-ts/tree/main/packages/graphql/src/queries)
 
@@ -2444,7 +2119,6 @@ The following groups correspond to the query documents in the `src/queries` subd
     
       useAccountsQuery
     
-
 ### Atoms
       useAtomByIdQuery
       useGetAtomQuery
@@ -2452,82 +2126,68 @@ The following groups correspond to the query documents in the `src/queries` subd
       useAtomsQuery
       useGetAtomsQuery
     
-
 ### Claims
       useClaimByIdQuery
     
       useClaimsQuery
     
-
 ### Events
       useEventByIdQuery
     
       useEventsQuery
     
-
 ### Follows
       useFollowByIdQuery
     
       useFollowsQuery
     
-
 ### Lists
       useListByIdQuery
     
       useListsQuery
     
-
 ### Points
       usePointByIdQuery
     
       usePointsQuery
     
-
 ### Positions
       usePositionByIdQuery
     
       usePositionsQuery
       useUserPositionsQuery
     
-
 ### Signals
       useSignalByIdQuery
     
       useSignalsQuery
       useGetSignalsQuery
     
-
 ### Stats
       useGetStatsQuery
     
       useStatsQuery
     
-
 ### Tags
       useTagByIdQuery
     
       useTagsQuery
     
-
 ### Triples
       useTripleByIdQuery
     
       useTriplesQuery
     
-
 ### Vaults
       useVaultByIdQuery
     
       useVaultsQuery
     
-
 These hooks are generated via GraphQL Code Generator and may expand over time as new documents are added. See the package source below for the current and authoritative list.
-
 
 ## Source Code
 
 The GraphQL package source code is available on GitHub: [`intuition-ts/packages/graphql`](https://github.com/0xIntuition/intuition-ts/tree/main/packages/graphql)
-
 
 ## Related Resources
 
@@ -2542,20 +2202,17 @@ The GraphQL package source code is available on GitHub: [`intuition-ts/packages/
 Source: https://docs.intuition.systems/guides/developer-tools/graphql-api/overview
 
 
-
 # GraphQL API Overview
 
   {() => (
     
   )}
 
-
 Intuition provides a GraphQL API for querying its knowledge graph in a convenient and versatile way. There are a few ways to get started with this GraphQL API, depending on the level of abstraction and customization you require.
 
 If this is your first time using GraphQL, you can learn more at [graphql.org](https://graphql.org/).
 
 Until mainnet launch, the Intuition team hosts an open GraphQL API powered by Hasura, which may be accessed at [https://testnet.intuition.sh/v1/graphql](https://testnet.intuition.sh/v1/graphql). For more information about running the backend yourself, visit [Run an Intuition node](/docs/run-node/run-an-intuition-node).
-
 
   <a
     href="/docs/developer-tools/sdks/overview"
@@ -2564,7 +2221,6 @@ Until mainnet launch, the Intuition team hosts an open GraphQL API powered by Ha
     
       Integrate with Intuition smart contracts using our TypeScript SDK.
   
-
   <a
     href="/docs/developer-tools/graphql-api/custom-queries"
   >
@@ -2572,8 +2228,6 @@ Until mainnet launch, the Intuition team hosts an open GraphQL API powered by Ha
     
       Create bespoke GraphQL queries for your specific use case.
   
-
-
 ### GraphQL Package
 
   <a
@@ -2583,7 +2237,6 @@ Until mainnet launch, the Intuition team hosts an open GraphQL API powered by Ha
     
       Install and use the NPM package with ready-made React Query hooks.
   
-
   <a
     href="/docs/developer-tools/graphql-api/npm-package"
   >
@@ -2591,7 +2244,6 @@ Until mainnet launch, the Intuition team hosts an open GraphQL API powered by Ha
     
       Use the GraphQL package to generate your own queries and mutations.
   
-
 ## Interactive Playground
 
 Try the Intuition GraphQL API straight from your browser!  The playground below connects to the live testnet endpoint and allows you to explore the knowledge graph in real time.
@@ -2602,7 +2254,6 @@ Try the Intuition GraphQL API straight from your browser!  The playground below 
 # Reads
 
 Source: https://docs.intuition.systems/guides/developer-tools/graphql-api/reads
-
 
 
 # Reads
@@ -2641,8 +2292,6 @@ Hasura then provides a GraphQL API layer on top of Postgres, enabling flexible d
 The interactive Apollo Sandbox below lets you explore our GraphQL API in real-time. You can write and execute queries, inspect the schema, and see live responses from our API. We've set up this environment to help you get familiar with our data structure and available operations.
 
 Try starting with some basic queries like fetching atoms or exploring relationship triples. Here's a query to get you started:
-
-  
 
 :::tip
 You can copy and paste the code snippet below into the sandbox above to view the results.
@@ -3115,7 +2764,6 @@ function AtomList() {
     }
   })
 
-
   return (
       {data?.atoms.map(atom => (
           {atom.label}
@@ -3134,7 +2782,6 @@ function AtomList() {
 # Building User Activity Feeds
 
 Source: https://docs.intuition.systems/guides/developer-tools/graphql-api/use-cases/building-user-activity-feeds
-
 
 
 # Building User Activity Feeds
@@ -3288,7 +2935,6 @@ Learn how to create personalized, real-time activity feeds that track user inter
 # Discovering the Most Trusted Accounts
 
 Source: https://docs.intuition.systems/guides/developer-tools/graphql-api/use-cases/discovering-most-trusted-accounts
-
 
 
 # Discovering the Most Trusted Accounts
@@ -3456,7 +3102,6 @@ Learn how to leverage the Intuition GraphQL API to find and rank the ecosystem's
 # Finding Related Claims
 
 Source: https://docs.intuition.systems/guides/developer-tools/graphql-api/use-cases/finding-related-claims
-
 
 
 # Finding Related Claims
@@ -3649,7 +3294,6 @@ Learn how to find and navigate related claims in the Intuition knowledge graph b
 Source: https://docs.intuition.systems/guides/developer-tools/graphql-api/use-cases/finding-top-dapps-on-coinbase
 
 
-
 # Finding the Top dApps on Coinbase
 
 This guide shows you how to progressively build queries to discover and rank the top decentralized applications (Dapps) on Coinbase by market capitalization.
@@ -3816,7 +3460,6 @@ Select a use case above to see detailed step-by-step implementation guides.
     
       Query and rank decentralized applications based on market data.
   
-
   <a
     href="/discovering-most-trusted-accounts"
   >
@@ -3824,7 +3467,6 @@ Select a use case above to see detailed step-by-step implementation guides.
     
       Find highly trusted accounts based on stake and activity.
   
-
   <a
     href="/building-user-activity-feeds"
   >
@@ -3832,7 +3474,6 @@ Select a use case above to see detailed step-by-step implementation guides.
     
       Create personalized activity streams for users.
   
-
   <a
     href="/finding-related-claims"
   >
@@ -4200,18 +3841,14 @@ function CreateAtomComponent() {
   }
 
   return (
-    <button 
-      onClick={() => handleCreateAtom(thingData)}
       disabled={uploading || creating}
     >
       {uploading || creating ? 'Creating...' : 'Create Atom'}
-    
   )
 }
 ```
 
 We are actively finalizing patterns to properly externalize this package, which will be released shortly. This guide will be updated to provide example implementations once the package is released.
-
 
 ## Related Resources
 
@@ -4250,7 +3887,6 @@ const hash = await walletClient.writeContract(createAtomConfig)
 
 // Wait for confirmation
 const receipt = await publicClient.waitForTransactionReceipt({ hash })`}
-
 
 ## Complete Example
 
@@ -4306,18 +3942,15 @@ Here is a full example of the atom creation pattern used in the `createAtom` fun
   }
 }`}
 
-
 ## Key Functions
 
 We use this pattern to create atoms and manage their lifecycle:
-
 
 Creates a new atom with optional initial deposit and returns atom/vault IDs.
 
 Validates atom data format and ensures it meets protocol requirements.
 
 Estimates the cost of creating an atom including fees and gas costs.
-
 
 ## Usage Example
 
@@ -4331,7 +3964,6 @@ const result = await createAtom(
   initialDeposit,
   walletClient,
   publicClient
-)
 
 if (result.success) {
   console.log({
@@ -4342,7 +3974,6 @@ if (result.success) {
 } else {
   console.error('Atom creation failed:', result.error)
 }`}
-
 
 ## Error Handling
 
@@ -4397,18 +4028,15 @@ const createTripleConfig = {
 // Execute transaction
 const hash = await walletClient.writeContract(createTripleConfig)`}
 
-
 ## Key Functions
 
 We use this pattern to create triples and manage their lifecycle:
-
 
 Creates a new triple with optional initial deposit and returns triple/vault IDs.
 
 Validates that subject, predicate, and object atoms exist and are valid.
 
 Estimates the cost of creating a triple including fees and gas costs.
-
 
 ## Usage Example
 
@@ -4428,16 +4056,13 @@ const result = await createTriple(
   publicClient
 )`}
 
-
 ## Vault Management
 
 Each triple creates two vaults:
 
-
 For users who believe the triple is true. Deposits here signal agreement.
 
 For users who believe the triple is false. Deposits here signal disagreement.
-
 
 ## Best Practices
 
@@ -4485,18 +4110,15 @@ const depositConfig = {
 // Execute transaction
 const hash = await walletClient.writeContract(depositConfig)`}
 
-
 ## Key Functions
 
 We use these patterns to manage vault deposits and withdrawals:
-
 
 Deposit tokens into a vault and receive shares based on current share price.
 
 Withdraw tokens from a vault by burning shares at current share price.
 
 Estimate the number of shares received for a given deposit amount.
-
 
 ## Usage Examples
 
@@ -4512,7 +4134,6 @@ const result = await deposit(
   publicClient
 )`}
 
-
 {`// Withdraw from vault
 const vaultId = 123n
 const shares = parseEther("10")
@@ -4524,7 +4145,6 @@ const result = await withdraw(
   walletClient,
   publicClient
 )`}
-
 
 ## Fee Structure
 
@@ -4570,13 +4190,11 @@ The Intuition protocol's smart contracts manage complex state involving Atoms, T
 
 ## Key Concepts
 
-
 Batch multiple read-only contract calls into a single request to reduce RPC calls and improve performance.
 
 Retrieve comprehensive vault information including assets, share prices, and user positions.
 
 Access global protocol configuration including fee structures and minimum deposits.
-
 
 ## Implementation Approach
 
@@ -4602,9 +4220,7 @@ const resp: MulticallResponse[] = await publicClient.multicall({
   contracts: coreContractConfigs,
 })`}
 
-
 ## Available Interactions
-
 
 Learn how to create new atoms and manage their associated vaults.
 
@@ -4613,7 +4229,6 @@ Understand how to create triples and manage their relationships.
 Manage deposits and withdrawals from vaults with proper fee handling.
 
 Get comprehensive vault information including assets, prices, and positions.
-
 
 ## Prerequisites
 
@@ -4676,7 +4291,6 @@ const coreContractConfigs = [
 const resp: MulticallResponse[] = await publicClient.multicall({
   contracts: coreContractConfigs,
 })`}
-
 
 ## Complete Example
 
@@ -4748,16 +4362,13 @@ Here is a full example of the multicall pattern used in the `getMultivaultConfig
   } as MultivaultConfig
 }`}
 
-
 ## Key Functions
 
 We use this multicall pattern to retrieve configuration that we're able to use throughout the app:
 
-
 Retrieves comprehensive vault information including total assets, conviction, current share price, fee configurations, user-specific positions, and counter-vault details.
 
 Retrieves global protocol configuration including fee structures, minimum deposits, and protocol admin addresses.
-
 
 ## Usage Example
 
@@ -4769,14 +4380,12 @@ const vaultDetails = await getVaultDetails(
   vaultId,
   userWallet,
   counterVaultId
-)
 
 // Access formatted values such as atom_cost and triple_cost
 console.log({
   atomCost: vaultDetails.atom_cost,
   tripleCost: vaultDetails.triple_cost,
 })`}
-
 
 ## Reference Implementation
 
@@ -4991,7 +4600,6 @@ function convertToAssets(bytes32 termId, uint256 curveId, uint256 shares) view r
 const userUtilization = await multiVault.getUserUtilizationForEpoch(
   userAddress,
   epoch,
-)
 const totalUtilization = await multiVault.getTotalUtilizationForEpoch(epoch)
 ```
 
@@ -5112,7 +4720,6 @@ const encodedData = createTriplesEncode(
   [predicateId1, predicateId2],
   [objectId1, objectId2],
   [assets1, assets2],
-)
 
 const cost = await getTripleCost(config)
 ```
@@ -5216,7 +4823,6 @@ const result = await ethMultiVault.createAtom('hello')
   MultiVaultAbi,
 } from '@0xintuition/protocol'
 
-
 const multiVault = getContract({
   abi: MultiVaultAbi,
   address: getMultiVaultAddressFromChainId(intuitionTestnet.id),
@@ -5299,10 +4905,8 @@ const tripleData = await getTriple('54670')
 
 const atomData = await getAtomDetails(
   '0x57d94c116a33bb460428eced262b7ae2ec6f865e7aceef6357cec3d034e8ea21',
-)
 const tripleData = await getTripleDetails(
   '0x4957d3f442acc301ad71e73f26efd6af78647f57dacf2b3a686d91fa773fe0b6',
-)
 ```
 
 ### Triple Creation Parameter Changes
@@ -5451,31 +5055,21 @@ The Intuition SDK simplifies development with the Intuition backend systems, pro
 
 Install the SDK using your preferred package manager:
 
-
-
 ```bash
 npm install @0xintuition/sdk
 ```
-
-
 
 ```bash
 pnpm install @0xintuition/sdk
 ```
 
-
-
 ```bash
 bun install @0xintuition/sdk
 ```
 
-
-
-
 ### Local Development
 
 For local development or testing with a custom build:
-
 
 ```bash
 # Clone the repository
@@ -5495,8 +5089,6 @@ npm link
 npm link @0xintuition/sdk
 ```
 
-
-
 ```bash
 # Clone the repository
 git clone https://github.com/0xIntuition/intuition-ts.git
@@ -5515,8 +5107,6 @@ pnpm link --global
 pnpm link --global @0xintuition/sdk
 ```
 
-
-
 ```bash
 # Clone the repository
 git clone https://github.com/0xIntuition/intuition-ts.git
@@ -5534,9 +5124,6 @@ bun link
 # In your project
 bun link @0xintuition/sdk
 ```
-
-
-
 
 ## Prerequisites
 
@@ -5563,14 +5150,12 @@ Set up your viem clients for interacting with the Intuition protocol:
   privateKeyToAccount,
 } from 'viem'
 
-
   chain: intuitionTestnet,
   transport: http(),
 })
 
 const account = privateKeyToAccount(
   '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80',
-)
   chain: intuitionTestnet,
   transport: http(),
   account: account,
@@ -5605,12 +5190,10 @@ The SDK automatically detects the network and uses the appropriate contract addr
 // Get atom data by ID
 const atomData = await getAtomDetails(
   '0x57d94c116a33bb460428eced262b7ae2ec6f865e7aceef6357cec3d034e8ea21',
-)
 
 // Get triple data by ID
 const tripleData = await getTripleDetails(
   '0x4957d3f442acc301ad71e73f26efd6af78647f57dacf2b3a686d91fa773fe0b6',
-)
 
 ## Creating Triples
 
@@ -5622,15 +5205,12 @@ Triples connect three atoms in a subject-predicate-object relationship:
 const atom1 = await createAtomFromString(
   { walletClient, publicClient, address },
   'atom1',
-)
 const atom2 = await createAtomFromString(
   { walletClient, publicClient, address },
   'atom2',
-)
 const atom3 = await createAtomFromString(
   { walletClient, publicClient, address },
   'atom3',
-)
 
 // Create a triple statement connecting the three atoms
 const triple = await createTripleStatement(
@@ -5639,7 +5219,6 @@ const triple = await createTripleStatement(
     args: [atom1.state.termId, atom2.state.termId, atom3.state.termId],
     value: 1000000000000000000n, // 1 ETH in wei for deposit
   },
-)
 ```
 
 ## Creating Atoms
@@ -5653,7 +5232,6 @@ The simplest way to create an atom with a text label:
 const data = await createAtomFromString(
   { walletClient, publicClient, address },
   'is great',
-)
 ```
 
 ### Create Atom from IPFS Upload
@@ -5678,7 +5256,6 @@ const data = await createAtomFromIpfsUpload(
     twitter: 'https://twitter.com/intuition_systems',
     github: 'github.com/intuition-systems',
   },
-)
 ```
 
 ### Create a Thing
@@ -5695,7 +5272,6 @@ const data = await createAtomFromThing(
     description: 'A decentralized trust protocol',
     image: 'https://example.com/image.png',
   },
-)
 ```
 
 ### Create an Ethereum Account
@@ -5710,7 +5286,6 @@ const data = await createAtomFromEthereumAccount(
     address: '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045',
     chainId: 1, // Mainnet
   },
-)
 ```
 
 ### Batch Operations
@@ -5731,7 +5306,6 @@ const data = await batchCreateAtomsFromIpfsUris(
     'ipfs://bafkreib7534cszxn2c6qwoviv43sqh244yfrxomjbealjdwntd6a7atq6u',
     'ipfs://bafkreicq2d5q2d5q2d5q2d5q2d5q2d5q2d5q2d5q2d5q2d5q2d5q2d5q',
   ],
-)
 ```
 
 #### Batch Create Atoms from Smart Contracts
@@ -5748,7 +5322,6 @@ const data = await batchCreateAtomsFromSmartContracts(
     '0xA0b86a33E6441b8c4C8C8C8C8C8C8C8C8C8C8C8C',
     '0xB1c97a44E7551b9d5C8C8C8C8C8C8C8C8C8C8C8C8C',
   ],
-)
 ```
 
 #### Batch Create Atoms from Ethereum Accounts
@@ -5765,7 +5338,6 @@ const data = await batchCreateAtomsFromEthereumAccounts(
     { address: '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045', chainId: 1 },
     { address: '0x742d35Cc6634C0532925a3b8D4C9db96C4b4d8b6', chainId: 1 },
   ],
-)
 ```
 
 #### Batch Create Atoms from Things
@@ -5792,7 +5364,6 @@ const data = await batchCreateAtomsFromThings(
       image: 'https://example.com/example.png',
     },
   ],
-)
 ```
 
 #### Batch Create Triple Statements
@@ -5809,7 +5380,6 @@ const data = await batchCreateTripleStatements(
     { args: [atom1.state.vaultId, atom2.state.vaultId, atom3.state.vaultId] },
     { args: [atom4.state.vaultId, atom5.state.vaultId, atom6.state.vaultId] },
   ],
-)
 ```
 
 ## Response Data Structure
@@ -5839,7 +5409,6 @@ Here's a complete React component that creates an atom from structured metadata:
   getMultiVaultAddressFromChainId,
 } from '@0xintuition/sdk'
 
-
 type IntuitionButton = React.HTMLAttributes
 
 const IntuitionButton = ({ children, className }: IntuitionButton) => {
@@ -5860,7 +5429,6 @@ const IntuitionButton = ({ children, className }: IntuitionButton) => {
     )
   }
 
-  return Create Thing
 }
 
 ```
@@ -5869,49 +5437,31 @@ const IntuitionButton = ({ children, className }: IntuitionButton) => {
 
 ### Building the SDK
 
-
 ```bash
 npm run build
 ```
-
-
 
 ```bash
 pnpm build
 ```
 
-
-
 ```bash
 bun run build
 ```
 
-
-
-
 ### Running Tests
-
 
 ```bash
 npm test
 ```
 
-
-
 ```bash
 pnpm test
 ```
 
-
-
 ```bash
 bun test
 ```
-
-
-
-
-
 
 ## Resources
 
@@ -5958,124 +5508,21 @@ Learn about the $TRUST token economics, distribution, and utility in our detaile
 Source: https://docs.intuition.systems/guides/introduction
 
 
-  backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.75), rgba(64, 64, 64, 0.85)), url(/img/Intro_int.png)',
-  backgroundSize: 'cover',
-  backgroundPosition: 'center',
-  backgroundBlendMode: 'overlay',
-  borderRadius: '16px',
-  padding: '4rem 2rem',
-  marginBottom: '3rem',
-  color: 'white',
-  textAlign: 'center',
-  cursor: 'pointer',
-  transition: 'all 0.3s ease'
-}}>
-    fontSize: '3rem',
-    fontWeight: '700',
-    marginBottom: '1rem',
-    textShadow: '0 2px 4px rgba(0,0,0,0.5)'
-  }}>
     The Trust Protocol
   
-    fontSize: '1.25rem',
-    opacity: '0.95',
-    maxWidth: '800px',
-    margin: '0 auto',
-    lineHeight: '1.6',
-    textShadow: '0 1px 2px rgba(0,0,0,0.3)'
-  }}>
     Building the world's first open and semantic knowledge graph. A universal data layer that enables trustful interactions at scale.
-
 
 ## The Vision
 
-  backgroundColor: 'var(--ifm-color-emphasis-50)',
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '16px',
-  padding: '2rem',
-  marginBottom: '3rem'
-}}>
-
 Intuition is building the world's first **open and semantic token-curated knowledge graph**, decoupling identities, data, and algorithms from the application layer. This universal and permissionless data lake opens the door to a new pillar of the decentralized web - a **trustful interaction layer**.
-
-  display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-  gap: '2rem',
-  marginTop: '2rem'
-}}>
-
-  textAlign: 'center',
-  padding: '2rem 1.5rem',
-  backgroundColor: 'var(--ifm-background-color)',
-  borderRadius: '12px',
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  transition: 'all 0.3s ease'
-}}>
-  width: '80px',
-  height: '80px',
-  borderRadius: '20px',
-  background: 'var(--ifm-color-emphasis-800)',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  margin: '0 auto 1.5rem auto',
-  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
-}}>
 
 Decoupled from applications, accessible everywhere
 
-  textAlign: 'center',
-  padding: '2rem 1.5rem',
-  backgroundColor: 'var(--ifm-background-color)',
-  borderRadius: '12px',
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  transition: 'all 0.3s ease'
-}}>
-  width: '80px',
-  height: '80px',
-  borderRadius: '20px',
-  background: 'var(--ifm-color-emphasis-800)',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  margin: '0 auto 1.5rem auto',
-  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
-}}>
-
 Verifiable facts and subjective opinions coexist
-
-  textAlign: 'center',
-  padding: '2rem 1.5rem',
-  backgroundColor: 'var(--ifm-background-color)',
-  borderRadius: '12px',
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  transition: 'all 0.3s ease'
-}}>
-  width: '80px',
-  height: '80px',
-  borderRadius: '20px',
-  background: 'var(--ifm-color-emphasis-800)',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  margin: '0 auto 1.5rem auto',
-  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
-}}>
 
 Rich, queryable knowledge graph with meaning
 
-
-
-
-
 ## Where Trustful Interaction Meets Trustless Code
-
-  display: 'grid',
-  gridTemplateColumns: '1fr 1fr',
-  gap: '3rem',
-  alignItems: 'center',
-  marginBottom: '3rem'
-}}>
 
 At its core, Intuition is building a **knowledge and social graph** that integrates incentive-driven mechanisms, decentralized identifiers, and semantic data structures to lay the foundation for a trustworthy internet.
 
@@ -6083,285 +5530,41 @@ With the introduction of a few novel primitives, Intuition unlocks the ability t
 
 The system provides applications and their users easy access to a **semantically rich dataset** about everything and anything, where both objective facts and subjective opinions can coexist and be validated.
 
-  width: '100%', 
-  maxWidth: '500px',
-  borderRadius: '16px',
-  boxShadow: '0 8px 24px rgba(0, 0, 0, 0.12)'
-}} />
-
-
-  backgroundColor: 'var(--ifm-color-primary-lightest)',
-  border: '1px solid var(--ifm-color-primary-light)',
-  borderRadius: '16px',
-  padding: '2rem',
-  textAlign: 'center',
-  marginBottom: '3rem'
-}}>
 A Semantic Web of Trust
 
 We believe in a future where **information** is not just stored but made **verifiable**, wrapped in a semantic embrace, mapped by a directed graph of state changes captured on an immutable ledger.
 
 ## Current Information System Challenges
 
-  backgroundColor: 'var(--ifm-color-emphasis-50)',
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '16px',
-  padding: '2rem',
-  marginBottom: '3rem'
-}}>
-
 Intuition offers a new model for trust and identity to address the limitations of the current paradigm:
 
-  display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-  gap: '2rem',
-  marginTop: '2rem'
-}}>
-
-  backgroundColor: 'var(--ifm-background-color)',
-  padding: '1.5rem',
-  borderRadius: '12px',
-  border: '1px solid var(--ifm-color-emphasis-200)'
-}}>
-  marginTop: 0, 
-  marginBottom: '1rem', 
-  color: '#EF4444'
-}}>
 Verification & Provenance
 
-
-
-  backgroundColor: 'var(--ifm-background-color)',
-  padding: '1.5rem',
-  borderRadius: '12px',
-  border: '1px solid var(--ifm-color-emphasis-200)'
-}}>
-  marginTop: 0, 
-  marginBottom: '1rem', 
-  color: '#F59E0B'
-}}>
 Bias & Inequality
 
-
-
-  backgroundColor: 'var(--ifm-background-color)',
-  padding: '1.5rem',
-  borderRadius: '12px',
-  border: '1px solid var(--ifm-color-emphasis-200)'
-}}>
-  marginTop: 0, 
-  marginBottom: '1rem', 
-  color: '#8B5CF6'
-}}>
 Accountability
 
-
-
-  backgroundColor: 'var(--ifm-background-color)',
-  padding: '1.5rem',
-  borderRadius: '12px',
-  border: '1px solid var(--ifm-color-emphasis-200)'
-}}>
-  marginTop: 0, 
-  marginBottom: '1rem', 
-  color: '#DC2626'
-}}>
 Privacy & Security
 
-
-
-  backgroundColor: 'var(--ifm-background-color)',
-  padding: '1.5rem',
-  borderRadius: '12px',
-  border: '1px solid var(--ifm-color-emphasis-200)'
-}}>
-  marginTop: 0, 
-  marginBottom: '1rem', 
-  color: '#059669'
-}}>
 Misaligned Incentives
 
-
-
-  backgroundColor: 'var(--ifm-background-color)',
-  padding: '1.5rem',
-  borderRadius: '12px',
-  border: '1px solid var(--ifm-color-emphasis-200)'
-}}>
-  marginTop: 0, 
-  marginBottom: '1rem', 
-  color: '#1D4ED8'
-}}>
 Fragmentation
 
-
-
-
-  backgroundColor: 'var(--ifm-color-success-lightest)',
-  border: '1px solid var(--ifm-color-success-light)',
-  borderRadius: '12px',
-  padding: '1.5rem',
-  marginTop: '2rem',
-  textAlign: 'center'
-}}>
 Intuition leverages **game theoretic cryptoeconomics** to solve these problems at scale, fostering a truly interoperable web - one more akin to Tim Berners-Lee's vision for the **Semantic Web**.
-
 
 ## Explore Introduction
 
-  display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-  gap: '2rem',
-  marginBottom: '3rem'
-}}>
-
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '16px',
-  padding: '2rem',
-  backgroundColor: 'var(--ifm-background-color)',
-  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
-  height: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-  transition: 'all 0.3s ease',
-  cursor: 'pointer'
-}}>
-  width: '60px',
-  height: '60px',
-  borderRadius: '16px',
-  background: 'linear-gradient(135deg, #3B82F6, #1D4ED8)',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  marginBottom: '1.5rem',
-  boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)'
-}}>
-
-  marginTop: 0,
-  marginBottom: '1.5rem',
-  color: 'var(--ifm-color-primary)',
-  fontSize: '1.25rem',
-  fontWeight: '600'
-}}>Overview
-  fontSize: '0.95rem',
-  lineHeight: '1.6',
-  flexGrow: 1,
-  marginBottom: '1.5rem'
-}}>
 Learn about Intuition's core concepts, architecture, and economic model. Understand how the system works and what makes it unique.
 Architecture • Economics • Vision
 
-
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '16px',
-  padding: '2rem',
-  backgroundColor: 'var(--ifm-background-color)',
-  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
-  height: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-  transition: 'all 0.3s ease',
-  cursor: 'pointer'
-}}>
-  width: '60px',
-  height: '60px',
-  borderRadius: '16px',
-  background: 'linear-gradient(135deg, #10B981, #047857)',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  marginBottom: '1.5rem',
-  boxShadow: '0 4px 12px rgba(16, 185, 129, 0.3)'
-}}>
-
-  marginTop: 0,
-  marginBottom: '1.5rem',
-  color: 'var(--ifm-color-primary)',
-  fontSize: '1.25rem',
-  fontWeight: '600'
-}}>Why Intuition?
-  fontSize: '0.95rem',
-  lineHeight: '1.6',
-  flexGrow: 1,
-  marginBottom: '1.5rem'
-}}>
 Learn about the challenges Intuition addresses and our unique approach to building a decentralized knowledge graph.
 Problems • Solutions • Vision
 
-
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '16px',
-  padding: '2rem',
-  backgroundColor: 'var(--ifm-background-color)',
-  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
-  height: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-  transition: 'all 0.3s ease',
-  cursor: 'pointer'
-}}>
-  width: '60px',
-  height: '60px',
-  borderRadius: '16px',
-  background: 'linear-gradient(135deg, #7C3AED, #A855F7)',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  marginBottom: '1.5rem',
-  boxShadow: '0 4px 12px rgba(124, 58, 237, 0.3)'
-}}>
-
-  marginTop: 0,
-  marginBottom: '1.5rem',
-  color: 'var(--ifm-color-primary)',
-  fontSize: '1.25rem',
-  fontWeight: '600'
-}}>Primitives
-  fontSize: '0.95rem',
-  lineHeight: '1.6',
-  flexGrow: 1,
-  marginBottom: '1.5rem'
-}}>
 Dive deep into the fundamental building blocks: Atoms, Triples, and Signal. Learn how these primitives work together to create structured, semantic data.
 Atoms • Triples • Signals
 
-
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '16px',
-  padding: '2rem',
-  backgroundColor: 'var(--ifm-background-color)',
-  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
-  height: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-  transition: 'all 0.3s ease',
-  cursor: 'pointer'
-}}>
-  width: '60px',
-  height: '60px',
-  borderRadius: '16px',
-  background: 'linear-gradient(135deg, #F59E0B, #D97706)',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  marginBottom: '1.5rem',
-  boxShadow: '0 4px 12px rgba(245, 158, 11, 0.3)'
-}}>
-
-  marginTop: 0,
-  marginBottom: '1.5rem',
-  color: 'var(--ifm-color-primary)',
-  fontSize: '1.25rem',
-  fontWeight: '600'
-}}>Key Terms
-  fontSize: '0.95rem',
-  lineHeight: '1.6',
-  flexGrow: 1,
-  marginBottom: '1.5rem'
-}}>
 Master the essential terminology and concepts that form the foundation of the Intuition ecosystem and knowledge graph.
 Glossary • Concepts • Definitions
-
 
 
 ---
@@ -6385,43 +5588,29 @@ Instead of information living as unstructured, siloed, minimally-attributable da
 
 ## The Three Pillars of Intuition
 
-
-
-
   Decentralized Identifiers (DIDs): Anyone can create a new decentralized identifier — for a person, concept, object, or anything else — permissionlessly.
   Economics Drive Convergence: While identifiers can be created freely, bonding curves and token incentives encourage communities to converge on shared canonical Atoms, so that concepts can be referenced consistently and universally across the internet.
   Consensus on Standards: Intuition leverages cryptoeconomic consensus mechanisms for the "state of the state" of its ledger — incentivizing convergence on consensus data schemas, structures, and relationships. This ensures that as the knowledge graph grows, it becomes more interoperable, not less.
 
 The Protocol is the grammar of programmable attestations — a universal language for expressing who said what, about what, at what time, and with what conviction.
 
-
 The Subnet turns raw attestations into actionable intelligence, powering AI agents, decentralized apps, and enterprise systems.
-
 
 ---
 
 ## Core Primitives
 
-
 Unique, persistent identifiers for any concept or entity — person, object, idea, or anything else. Think of them as the "nodes" in the knowledge graph, or the 'words' of the Intuition dictionary.
-
 
 Claims expressed in subject-predicate-object format, creating the relationships and semantic layer of the knowledge graph. The 'sentences' of the Intuition system, with words composed together into higher-order expressions.
 
-
 Tokenized stakes that weight attestations with economic confidence, incentivizing the creation of many-to-one attestations that are better capable of accommodating subjective information.
-
-
 
 ---
 
 ## How It Fits Together
 
-
-
 Together, they form the rails of a programmable knowledge economy where:
-
-
 
 ---
 
@@ -6429,7 +5618,6 @@ Together, they form the rails of a programmable knowledge economy where:
 
 Building on Intuition means you don't have to reinvent trust, identity, or data models from scratch.
 Attestations and identifiers give you:
-
 
 💾 Memory
 
@@ -6450,7 +5638,6 @@ Your users' context and reputation follow them across apps.
 🔌 Interoperability
 
 Shared identifiers and standards mean your app plugs into a larger ecosystem by default.
-
 
 Intuition provides the foundation. You build the apps, agents, and experiences that bring it to life.
 
@@ -6565,8 +5752,6 @@ Ideal for data markets and staking derivatives — you can reward early supporte
 
 Try out different bonding curve types and see how they affect pricing:
 
-
-
 ## Code Examples
 
 ### Deposit Using a Curve
@@ -6657,18 +5842,9 @@ At the core are Atoms (entities) and Triples (relationships). As users publish, 
 
 The goal is not to tokenize data just for the sake of a token. The economics of Intuition are designed to:
 
-
-
-
-
-
-
-
-
 ---
 
 ## Example Flow: How the Incentives Work
-
 
 ### 1. Expression
 **Alice creates a new Atom: a DID for Tesla, Inc.**
@@ -6689,13 +5865,11 @@ The goal is not to tokenize data just for the sake of a token. The economics of 
 **As developers and AI agents query Tesla-related data, fees flow back to the identifiers and attestations that power those queries**
 - Alice, Bob, and Carol all share in the economic upside of having built durable, widely used pieces of the graph
 
-
 ---
 
 ## Reward Dynamics
 
 To maximize engagement and data quality, the system favors contributions that are:
-
 
 First-mover advantages for valuable identifiers and attestations
 
@@ -6704,7 +5878,6 @@ Network effects amplify rewards for commonly referenced knowledge
 Stronger incentives for adopting schemas and canonical identifiers
 
 Forward-looking value assessment ensures durable contributions
-
 
 ## Fees & Rewards
 
@@ -6748,7 +5921,6 @@ The earlier you participate, the more rewards you can earn over time as others u
 
 Intuition uses bonding curves to create dynamic pricing mechanisms that automatically adjust based on supply and demand. This sophisticated approach provides multiple benefits:
 
-
 Liquidity is provided automatically through mathematical curves, eliminating the need for traditional order books or manual market makers.
 
 Early participants get better prices, encouraging adoption and rewarding pioneers who identify valuable data structures before they become widely recognized.
@@ -6756,7 +5928,6 @@ Early participants get better prices, encouraging adoption and rewarding pioneer
 Prices increase as more tokens are minted, preventing inflation while ensuring scarcity creates value for established data structures.
 
 Pricing automatically reflects the value of underlying assets, ensuring market mechanisms accurately represent the true worth of data and relationships.
-
 
 ## Summary
 
@@ -6774,13 +5945,11 @@ Source: https://docs.intuition.systems/guides/introduction/the-primitives/fundam
 
 A system facilitating the arrival at social consensus around globally persistent canonical identifiers for all things demands that these identifiers possess a few key attributes.
 
-
 These identifiers should be decentralized identifiers, providing unique, secure, and verifiable identification without any reliance on a central authority.
 
 These identifiers should have a sufficient amount of associated data to ensure precise referencing of specific entities, concepts, or pieces of information.
 
 These identifiers must have some agent-centric state that is capable of tracking the usage of the identifier across contexts.
-
 
 ## The Atom Solution
 
@@ -6822,7 +5991,6 @@ did:ethr:mainnet:0x3b0bc51ab9de1e5b7b6e34e5b960285805c41736
         "https://w3id.org/security/v3-unstable"
     ]
 }`}
-
 
 ## Data Requirements
 
@@ -6967,169 +6135,17 @@ Master the core concepts that form the foundation of the Intuition system. These
 
 ## Explore Fundamentals
 
-  display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-  gap: '2rem',
-  marginTop: '3rem',
-  marginBottom: '3rem'
-}}>
-
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '16px',
-  padding: '2rem',
-  backgroundColor: 'var(--ifm-background-color)',
-  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
-  height: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-  transition: 'all 0.3s ease',
-  cursor: 'pointer'
-}}>
-  marginTop: 0,
-  marginBottom: '1.5rem',
-  color: 'var(--ifm-color-primary)',
-  fontSize: '1.25rem',
-  fontWeight: '600'
-}}>Atoms
-  fontSize: '0.95rem',
-  lineHeight: '1.6',
-  flexGrow: 1,
-  marginBottom: '1.5rem',
-  color: 'var(--ifm-color-emphasis-700)'
-}}>
 Learn about the atomic units of knowledge in Intuition - unique, persistent identifiers for all things in the digital universe.
 
-
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '16px',
-  padding: '2rem',
-  backgroundColor: 'var(--ifm-background-color)',
-  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
-  height: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-  transition: 'all 0.3s ease',
-  cursor: 'pointer'
-}}>
-  marginTop: 0,
-  marginBottom: '1.5rem',
-  color: 'var(--ifm-color-primary)',
-  fontSize: '1.25rem',
-  fontWeight: '600'
-}}>Triples
-  fontSize: '0.95rem',
-  lineHeight: '1.6',
-  flexGrow: 1,
-  marginBottom: '1.5rem',
-  color: 'var(--ifm-color-emphasis-700)'
-}}>
 Discover how Triples create relationships between Atoms, forming the semantic structure of the knowledge graph.
 
-
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '16px',
-  padding: '2rem',
-  backgroundColor: 'var(--ifm-background-color)',
-  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
-  height: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-  transition: 'all 0.3s ease',
-  cursor: 'pointer'
-}}>
-  marginTop: 0,
-  marginBottom: '1.5rem',
-  color: 'var(--ifm-color-primary)',
-  fontSize: '1.25rem',
-  fontWeight: '600'
-}}>Signal
-  fontSize: '0.95rem',
-  lineHeight: '1.6',
-  flexGrow: 1,
-  marginBottom: '1.5rem',
-  color: 'var(--ifm-color-emphasis-700)'
-}}>
 Understand how Signal expresses intent, belief, and support within the Intuition ecosystem.
 
-
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '16px',
-  padding: '2rem',
-  backgroundColor: 'var(--ifm-background-color)',
-  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
-  height: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-  transition: 'all 0.3s ease',
-  cursor: 'pointer'
-}}>
-  marginTop: 0,
-  marginBottom: '1.5rem',
-  color: 'var(--ifm-color-primary)',
-  fontSize: '1.25rem',
-  fontWeight: '600'
-}}>Fees & Rewards
-  fontSize: '0.95rem',
-  lineHeight: '1.6',
-  flexGrow: 1,
-  marginBottom: '1.5rem',
-  color: 'var(--ifm-color-emphasis-700)'
-}}>
 Explore the economic mechanisms that incentivize quality contributions and maintain system integrity.
 
-
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '16px',
-  padding: '2rem',
-  backgroundColor: 'var(--ifm-background-color)',
-  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
-  height: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-  transition: 'all 0.3s ease',
-  cursor: 'pointer'
-}}>
-  marginTop: 0,
-  marginBottom: '1.5rem',
-  color: 'var(--ifm-color-primary)',
-  fontSize: '1.25rem',
-  fontWeight: '600'
-}}>State Interpretations
-  fontSize: '0.95rem',
-  lineHeight: '1.6',
-  flexGrow: 1,
-  marginBottom: '1.5rem',
-  color: 'var(--ifm-color-emphasis-700)'
-}}>
 Discover how Intuition's state can be interpreted in countless ways, avoiding "truth lock-in" while enabling flexible analysis.
 
-
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '16px',
-  padding: '2rem',
-  backgroundColor: 'var(--ifm-background-color)',
-  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
-  height: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-  transition: 'all 0.3s ease',
-  cursor: 'pointer'
-}}>
-  marginTop: 0,
-  marginBottom: '1.5rem',
-  color: 'var(--ifm-color-primary)',
-  fontSize: '1.25rem',
-  fontWeight: '600'
-}}>Intuition in Practice
-  fontSize: '0.95rem',
-  lineHeight: '1.6',
-  flexGrow: 1,
-  marginBottom: '1.5rem',
-  color: 'var(--ifm-color-emphasis-700)'
-}}>
 See how Intuition primitives work together in real-world scenarios with practical examples and use cases.
-
-
 
 ## Recommended Reading Order
 
@@ -7256,13 +6272,11 @@ Signal, in the context of Intuition, refers to any action or indication that exp
 
 ## Types of Signal
 
-
 A clear, intentional action taken by a user to express support, belief, or intent. These actions are directly observable and often involve a formal mechanism within the system.
 
 Indirect or inferred indications of support, belief, or intent. This signal is not always directly observable and are often deduced from user behavior or patterns.
 
 Trust or belief that is passed along through a network of relationships. This type of signal leverages the idea that trust can be extended through connections.
-
 
 ## Signal in Intuition
 
@@ -7270,13 +6284,11 @@ Though all systems naturally generate implicit signal, explicit signal in Intuit
 
 In Intuition, these semantic statements do not have a single 'issuer' - instead, anyone/anything can signal support or rejection of any existing statement/attestation at any point in time. This decoupling of information from 'who is presently expressing/supporting that information' introduces the ability to accommodate many-to-one attestations, making the data significantly more usable - especially for more complex use cases that involve the concept of transitive signal, such as reputation.
 
-
 To accomplish this, the Intuition system enables users to maintain positions on Atoms and Triples, interpreting these positions as explicit signal from the user. This mechanism can be implemented using tokens or other accounting systems that have the ability to track user balances over time across an arbitrarily large number of entities.
 
 ## Atom Signal
 
 Within the Intuition framework, users signal their belief in the relevance of an Atom by adjusting their balance on that Atom. This balance can be increased or decreased arbitrarily.
-
 
 Implies no signal, indicating neutral stance on the Atom's relevance.
 Indicates a degree of belief in the Atom's relevance, with higher balances showing stronger belief.
@@ -7295,7 +6307,6 @@ Signals rejection of the Triple, indicating it is considered false and relevant.
 ### Example: Trustworthiness Triple
 
 For example, with a Triple asserting "[Vitalik][is] [trustworthy]," users would express their belief in its truthfulness, and the relevancy of this truthfulness, by increasing their balance on the affirmative side of the Triple, or signal disbelief by decreasing their balance into the negative. This mechanism allows for nuanced expressions of trust and belief within the decentralized ecosystem.
-
 
 This mechanism allows for nuanced expressions of trust and belief within the decentralized ecosystem.
 
@@ -7335,13 +6346,11 @@ While the system does not enforce specific interpretations, understanding variou
 
 ## Types of Interpretations
 
-
 Structured, explicit expressions of the state that form the foundation for higher-order applications by defining clear and consistent frameworks for data usage.
 
 Tools for filtering and interpreting data, providing flexibility beyond deterministic logic. Essential for extracting meaningful signal from noise in a permissionless environment.
 
 Modular combinations of literal interpretations, algorithms, and other components that provide tailored perspectives on data.
-
 
 ## Literal Interpretations
 
@@ -7375,7 +6384,6 @@ This algorithm provides a nuanced interpretation of data based on proximity, all
 The modular nature of Intuition's data interpretation mechanisms enables the creation of "Reality Tunnels." A Reality Tunnel combines literal interpretations, algorithms, and other relevant components to provide a tailored perspective on data.
 
 [Subject] [in trust graph] [Vitalik's Web3 Trust Graph]
-
 
 This integrated perspective becomes a Reality Tunnel, offering a customized lens through which users can view and interpret data.
 
@@ -7420,13 +6428,11 @@ This structure is essential for achieving consensus on arbitrarily sophisticated
 
 Triples consist of three elements: Subject, Predicate, and Object, with each element represented as an Atom. This Subject-Predicate-Object format allows users to clearly and explicitly define relationships between Atoms.
 
-
 The entity or concept being described in the relationship.
 
 The relationship or attribute that connects the subject to the object.
 
 The value or characteristic attributed to the subject through the predicate.
-
 
 These connections can be visualized as a graph where each node and edge is an Atom.
 
@@ -7483,23 +6489,17 @@ Intuition introduces three new primitives:
 
 ## Explore Primitives
 
-
 Learn the core concepts of Atoms, Triples, Signal, Fees & Rewards, and State Interpretations. Master the building blocks of the Intuition system.
-
 
 Discover advanced techniques for structuring data with Atoms and Triples, capturing signal, and calculating rewards in the Intuition ecosystem.
 
-
-
 ## Core Primitives Overview
-
 
 The most basic units of knowledge within Intuition, functioning as unique, globally persistent, decentralized identifiers for all things—people, concepts, products, and more.
 
 Higher-order structures used to define relationships between Atoms. Each Triple consists of three components: a Subject, Predicate, and Object.
 
 Actions that express intent, belief, or support within the system. Signals can be explicit or implicit, contributing to trust and belief expression.
-
 
 ## Understanding Atoms
 
@@ -7509,13 +6509,11 @@ Atoms are categorized into three primary roles within semantic structures: **Sub
 
 ### Example Triple Structure
 
-
 * **Alice** is the **Subject**
 * **hasAccessTo** is the **Predicate**
 * **Intuition** is the **Object**
 
 Further illustrating the flexibility of Atoms, **Intuition** can also act as a **Subject:**
-
 
 This claim demonstrates Intuition's role and essence in a semantic, structured format.
 
@@ -7527,13 +6525,11 @@ The journey within Intuition starts with an Atom. Engaging with this concept mig
 
 ## Components of an Atom
 
-
 Describes the concept or entity represented by an Atom, typically stored off-chain using decentralized storage solutions like IPFS or Arweave, with a URI pointing to this data stored on-chain.
 
 A smart contract wallet associated with each Atom, granting it agency over its identity. This wallet is controlled by a specialized smart contract known as the Atom Warden.
 
 A mechanism that allows users to deposit tokens into an Atom, signaling its relevance and support within the system. The Total Value Locked (TVL) in an Atom Vault indicates the Atom's acceptance and importance.
-
 
 ## Triples
 
@@ -7541,13 +6537,11 @@ Triples are higher-order structures within Intuition, used to define relationshi
 
 ### Triple Structure
 
-
 The entity or concept being described.
 
 The relationship or attribute of the subject.
 
 The value or characteristic attributed to the subject.
-
 
 In this example, each component—Subject, Predicate, and Object—is an Atom, and the Triple expresses a specific relationship between these Atoms.
 
@@ -7698,7 +6692,6 @@ const multivaultAddress = getEthMultiVaultAddressFromChainId(sepolia.id)
 const result = await createAtomFromString(
   { walletClient, publicClient, address: multivaultAddress },
   'Machine Learning',
-)
 
 console.log('Created atom vaultId:', result.state.vaultId)
 ```
@@ -8156,9 +7149,7 @@ function RewardTracker({ userId }) {
 
   return (
       Your Rewards
-       claimRewards(userId)}>
         Claim Rewards
-      
   );
 }
 ```
@@ -8467,23 +7458,17 @@ Learn advanced techniques for working with Atoms and Triples in real-world appli
 
 ## Explore Structuring Techniques
 
-
 Advanced techniques for creating and managing Atoms, including best practices for identifier design and data organization.
 Learn about Atom Structuring →
-
 
 Discover how to effectively structure relationships using Triples, including complex nested structures and semantic modeling.
 Learn about Triple Structuring →
 
-
 Learn how to effectively capture and structure signal data, including user interactions, preferences, and behavioral patterns.
 Learn about Signal Capture →
 
-
 Understand the mathematical and economic principles behind reward calculation in the Intuition ecosystem.
 Learn about Reward Calculation →
-
-
 
 ## Structuring Principles
 
@@ -8492,8 +7477,6 @@ Ensure your data structures can grow and evolve without breaking existing relati
 Create structures that work seamlessly with other systems and data sources.
 
 ## Learning Path
-
-
 
 ## Prerequisites
 
@@ -8617,7 +7600,6 @@ const c = await createAtomFromString({ walletClient, publicClient, address: mult
 const triple = await createTripleStatement(
   { walletClient, publicClient, address: multivaultAddress },
   { args: [a.state.vaultId, b.state.vaultId, c.state.vaultId] },
-)
 
 console.log('Created triple vaultId:', triple.state[0].vaultId)
 ```
@@ -9030,12 +8012,6 @@ This server supports both modern Streamable HTTP and legacy Server-Sent Events (
 
 ## GitHub Repository
 
-  padding: '2rem',
-  borderRadius: '12px',
-  background: 'linear-gradient(135deg, #6B73FF 0%, #000DFF 100%)',
-  textAlign: 'center',
-  margin: '2rem 0'
-}}>
     Intuition MCP Server
   
     Open-source Model Context Protocol server for knowledge graph interactions
@@ -9043,22 +8019,12 @@ This server supports both modern Streamable HTTP and legacy Server-Sent Events (
     href="https://github.com/0xIntuition/intuition-mcp-server"
     target="_blank"
     rel="noopener noreferrer"
-      display: 'inline-block',
-      padding: '12px 32px',
-      backgroundColor: 'white',
-      color: '#6B73FF',
-      borderRadius: '8px',
-      textDecoration: 'none',
-      fontWeight: 'bold',
-      fontSize: '1.1rem',
-      transition: 'transform 0.2s',
-    }}
+    
     onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
     onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
   >
     View on GitHub →
   
-
 ## Getting Started
 
 ### Prerequisites
@@ -9266,15 +8232,9 @@ Running an Intuition node requires Docker, Rust toolchain, and proper environmen
 
 This workspace contains the following core services:
 
-
-
-
-
-
 ## Prerequisites
 
 ### Required Tools
-
 
 ### Environment Configuration
 
@@ -10068,11 +9028,6 @@ Running your own Intuition node provides several key benefits:
 
 This workspace contains the following core services:
 
-
-
-
-
-
 ### Event Processing Pipeline
 
 The system processes blockchain events through multiple stages:
@@ -10085,7 +9040,6 @@ The system processes blockchain events through multiple stages:
 ## Prerequisites
 
 ### Required Tools
-
 
 ### Environment Configuration
 
@@ -10284,12 +9238,6 @@ Source: https://docs.intuition.systems/guides/intuition-node/rust-backend
 
 The Intuition backend is built with Rust, a systems programming language that offers unique advantages for blockchain infrastructure:
 
-
-
-
-
-
-
 ## The Intuition Rust Monorepo
 
 The `intuition-rs` repository is organized as a Rust workspace, which provides several key benefits:
@@ -10365,28 +9313,19 @@ intuition-rs/
 
 ### Core Applications
 
-
 Terminal UI client for interacting with the Intuition system
-
 
 Event processing pipeline using Redis Streams
 
-
 Historical data crawler for blockchain indexing
-
 
 Image processing and validation service
 
-
 RPC call proxy with intelligent caching
-
 
 Domain models and data structures
 
-
 Common utilities used across services
-
-
 
 ### Infrastructure Components
 
@@ -10421,333 +9360,57 @@ Source: https://docs.intuition.systems/guides/network
     Essential tools and applications for interacting with the Intuition ecosystem on the L3 network. From exploring the knowledge graph to bridging assets across networks.
     Enter
 
-
 ## What You'll Find Inside
 
 Everything you need to build and test on Intuition's L3 network:
 
-
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '20px',
-  padding: '2.5rem',
-  backgroundColor: 'var(--ifm-background-color)',
-  boxShadow: '0 4px 16px rgba(0, 0, 0, 0.08)',
-  height: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-  transition: 'all 0.3s ease',
-  cursor: 'pointer'
-}}>
-  width: '48px',
-  height: '48px',
-  borderRadius: '12px',
-  backgroundColor: 'var(--ifm-color-primary)',
-  color: 'white',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  marginBottom: '1.5rem',
-  fontSize: '1.25rem',
-  fontWeight: 'bold'
-  marginTop: 0,
-  marginBottom: '1rem',
-  color: 'var(--ifm-color-emphasis-900)',
-  fontSize: '1.3rem',
-  fontWeight: '600'
-}}>
 Build & Deploy
 
-  margin: 0,
-  fontSize: '1rem',
-  lineHeight: '1.6',
-  color: 'var(--ifm-color-emphasis-700)',
-  flexGrow: 1
-}}>
 Deploy smart contracts, test transactions, and monitor your applications in a safe environment.
 
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '20px',
-  padding: '2.5rem',
-  backgroundColor: 'var(--ifm-background-color)',
-  boxShadow: '0 4px 16px rgba(0, 0, 0, 0.08)',
-  height: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-  transition: 'all 0.3s ease',
-  cursor: 'pointer'
-}}>
-  width: '48px',
-  height: '48px',
-  borderRadius: '12px',
-  backgroundColor: 'var(--ifm-color-primary)',
-  color: 'white',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  marginBottom: '1.5rem',
-  fontSize: '1.25rem',
-  fontWeight: 'bold'
-  marginTop: 0,
-  marginBottom: '1rem',
-  color: 'var(--ifm-color-emphasis-900)',
-  fontSize: '1.3rem',
-  fontWeight: '600'
-}}>
 Connect & Test
 
-  margin: 0,
-  fontSize: '1rem',
-  lineHeight: '1.6',
-  color: 'var(--ifm-color-emphasis-700)',
-  flexGrow: 1
-}}>
 Test APIs, validate SDK integrations, and explore the GraphQL playground with real data.
 
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '20px',
-  padding: '2.5rem',
-  backgroundColor: 'var(--ifm-background-color)',
-  boxShadow: '0 4px 16px rgba(0, 0, 0, 0.08)',
-  height: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-  transition: 'all 0.3s ease',
-  cursor: 'pointer'
-}}>
-  width: '48px',
-  height: '48px',
-  borderRadius: '12px',
-  backgroundColor: 'var(--ifm-color-primary)',
-  color: 'white',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  marginBottom: '1.5rem',
-  fontSize: '1.25rem',
-  fontWeight: 'bold'
-  marginTop: 0,
-  marginBottom: '1rem',
-  color: 'var(--ifm-color-emphasis-900)',
-  fontSize: '1.3rem',
-  fontWeight: '600'
-}}>
 Monitor & Optimize
 
-  margin: 0,
-  fontSize: '1rem',
-  lineHeight: '1.6',
-  color: 'var(--ifm-color-emphasis-700)',
-  flexGrow: 1
-}}>
 Track performance, monitor network health, and get test tokens to fuel your development.
-
 
 ## Getting Started
 
 Ready to start building on Intuition? Follow these steps:
 
-
-  textDecoration: 'none',
-  color: 'inherit',
-  display: 'block',
-  transition: 'all 0.3s ease'
-}}>
-
-  padding: '2rem',
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '16px',
-  textAlign: 'center',
-  backgroundColor: 'var(--ifm-background-color)',
-  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
-  height: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'flex-start',
-  cursor: 'pointer'
-}}>
-  width: '60px',
-  height: '60px',
-  borderRadius: '50%',
-  backgroundColor: 'var(--ifm-color-emphasis-200)',
-  color: '#000000',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  margin: '0 auto 1.5rem auto',
-  fontSize: '1.5rem',
-  fontWeight: 'bold',
-  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)'
 Use MetaMask or any Web3 wallet to connect to the testnet
 
-
-
-  textDecoration: 'none',
-  color: 'inherit',
-  display: 'block',
-  transition: 'all 0.3s ease'
-}}>
-
-  padding: '2rem',
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '16px',
-  textAlign: 'center',
-  backgroundColor: 'var(--ifm-background-color)',
-  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
-  height: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'flex-start',
-  cursor: 'pointer'
-}}>
-  width: '60px',
-  height: '60px',
-  borderRadius: '50%',
-  backgroundColor: 'var(--ifm-color-emphasis-200)',
-  color: '#000000',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  margin: '0 auto 1.5rem auto',
-  fontSize: '1.5rem',
-  fontWeight: 'bold',
-  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)'
 Use the built-in faucet to obtain test tokens for transactions
 
-
-
-  textDecoration: 'none',
-  color: 'inherit',
-  display: 'block',
-  transition: 'all 0.3s ease'
-}}>
-
-  padding: '2rem',
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '16px',
-  textAlign: 'center',
-  backgroundColor: 'var(--ifm-background-color)',
-  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
-  height: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'flex-start',
-  cursor: 'pointer'
-}}>
-  width: '60px',
-  height: '60px',
-  borderRadius: '50%',
-  backgroundColor: 'var(--ifm-color-emphasis-200)',
-  color: '#000000',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  margin: '0 auto 1.5rem auto',
-  fontSize: '1.5rem',
-  fontWeight: 'bold',
-  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)'
 Access all testnet tools and services from the centralized dashboard
 
-
-
-  textDecoration: 'none',
-  color: 'inherit',
-  display: 'block',
-  transition: 'all 0.3s ease'
-}}>
-
-  padding: '2rem',
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '16px',
-  textAlign: 'center',
-  backgroundColor: 'var(--ifm-background-color)',
-  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
-  height: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'flex-start',
-  cursor: 'pointer'
-}}>
-  width: '60px',
-  height: '60px',
-  borderRadius: '50%',
-  backgroundColor: 'var(--ifm-color-emphasis-200)',
-  color: '#000000',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  margin: '0 auto 1.5rem auto',
-  fontSize: '1.5rem',
-  fontWeight: 'bold',
-  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)'
 Deploy your first smart contract or create your first atom
-
-
-
 
 ## Network Details
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ## Key Features
-
 
 All testnet services are accessible from a single, intuitive interface that provides:
 
-
 The hub integrates with all Intuition testnet services:
-
 
 Built with developers in mind:
 
-
-
 ## Core Applications
-
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '1.5rem',
-  marginTop: '2rem',
-  marginBottom: '3rem'
-}}>
-
 
 Development environment hub for the Intuition testnet. Access all testnet services, tools, and resources in one centralized location.
 
-
-
 Bridge assets between Ethereum testnets and Intuition testnet. Secure cross-chain transfers for testing and development purposes.
-
-
 
 Real-time status monitoring for the Intuition network. Check service availability, network health, and uptime statistics.
 
-
-
-
 The main interface for creating identities, making claims, and staking on the Intuition knowledge graph. Your gateway to the decentralized social network. Perfect for new users - start here to create your first identity and make claims.
-
-
 
 Blockchain explorer for the Intuition testnet. View transactions, blocks, and network activity. Monitor testnet performance and verify test transactions.
 
-
-
-
 Programmatic access to the Intuition network. Query blockchain data, submit transactions, and interact with smart contracts. Ideal for developers - use for programmatic access to the network.
-
-
 
 ## Support
 
@@ -10794,7 +9457,6 @@ Source: https://docs.intuition.systems/guides/network/testnet/bridge
 Secure cross-chain transfers between Ethereum testnets and the Intuition testnet. Built for testing and development, move assets safely between networks during the development process.
 
 Open Bridge →
-
 
 ## Powered by Caldera's Metalayer
 
@@ -10863,14 +9525,6 @@ You can use the Data Populator to load CSV files which contain long lists of ato
 
 ## Where you can access it
 
-  backgroundColor: 'var(--ifm-color-emphasis-100)', 
-  border: '1px solid var(--ifm-color-emphasis-300)', 
-  borderRadius: '8px', 
-  padding: '1.5rem', 
-  margin: '2rem 0',
-  borderLeft: '4px solid var(--ifm-color-primary)'
-}}>
-
 There are two deployments for the Data Populator - one for testing, which runs on Base Sepolia, and one for production which runs on Base.
 
 - **Testnet Data Populator**: [https://data-populator-dev.onrender.com](https://data-populator-dev.onrender.com)
@@ -10878,16 +9532,7 @@ There are two deployments for the Data Populator - one for testing, which runs o
 
 It's strongly recommended, especially for first time users, to start off with the **Testnet** version to verify everything looks good with your data before spending real Base Ethereum on populating it.
 
-
 ## Overview
-
-  backgroundColor: 'var(--ifm-color-emphasis-100)', 
-  border: '1px solid var(--ifm-color-emphasis-300)', 
-  borderRadius: '8px', 
-  padding: '1.5rem', 
-  margin: '2rem 0',
-  borderLeft: '4px solid var(--ifm-color-primary)'
-}}>
 
 The Data Populator serves as a bridge between traditional data sources and the Intuition ecosystem, enabling users to:
 
@@ -10896,20 +9541,7 @@ The Data Populator serves as a bridge between traditional data sources and the I
 - **Establish relationships** - Create meaningful connections between imported entities
 - **Maintain data integrity** - Preserve the semantic structure and provenance of imported information
 
-
 ## Key Features
-
-  display: 'grid', 
-  gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', 
-  gap: '1.5rem', 
-  margin: '2rem 0'
-}}>
-
-  backgroundColor: 'var(--ifm-background-color)', 
-  border: '1px solid var(--ifm-color-emphasis-300)', 
-  borderRadius: '8px', 
-  padding: '1.5rem'
-}}>
 
 ### 🔄 **Bulk Data Import**
 - Import large datasets in various formats (CSV, JSON, XML)
@@ -10917,25 +9549,11 @@ The Data Populator serves as a bridge between traditional data sources and the I
 - Batch processing for efficient handling of large datasets
 - Progress tracking and error reporting
 
-
-  backgroundColor: 'var(--ifm-background-color)', 
-  border: '1px solid var(--ifm-color-emphasis-300)', 
-  borderRadius: '8px', 
-  padding: '1.5rem'
-}}>
-
 ### ✅ **Data Validation**
 - Automatic validation of data structure and format
 - Quality checks for imported atoms and triples
 - Duplicate detection and resolution
 - Semantic consistency verification
-
-
-  backgroundColor: 'var(--ifm-background-color)', 
-  border: '1px solid var(--ifm-color-emphasis-300)', 
-  borderRadius: '8px', 
-  padding: '1.5rem'
-}}>
 
 ### 🔗 **Relationship Mapping**
 - Automatic creation of triples based on imported relationships
@@ -10943,34 +9561,13 @@ The Data Populator serves as a bridge between traditional data sources and the I
 - Mapping of traditional data schemas to Intuition's semantic model
 - Preservation of data provenance and metadata
 
-
-  backgroundColor: 'var(--ifm-background-color)', 
-  border: '1px solid var(--ifm-color-emphasis-300)', 
-  borderRadius: '8px', 
-  padding: '1.5rem'
-}}>
-
 ### 🎯 **Quality Assurance**
 - Data quality scoring and reporting
 - Conflict resolution for conflicting claims
 - Automated tagging and categorization
 - Integration with Intuition's trust mechanisms
 
-
-
 ## Use Cases
-
-  display: 'grid', 
-  gridTemplateColumns: 'repeat(3, 1fr)', 
-  gap: '1.5rem', 
-  margin: '2rem 0'
-}}>
-
-  backgroundColor: 'var(--ifm-background-color)', 
-  border: '1px solid var(--ifm-color-emphasis-300)', 
-  borderRadius: '8px', 
-  padding: '1.5rem'
-}}>
 
 ### 🎓 **Academic Research**
 - Import research datasets and establish connections between findings
@@ -10978,33 +9575,17 @@ The Data Populator serves as a bridge between traditional data sources and the I
 - Build knowledge graphs for specific research domains
 - Enable collaborative research through shared knowledge structures
 
-
-  backgroundColor: 'var(--ifm-background-color)', 
-  border: '1px solid var(--ifm-color-emphasis-300)', 
-  borderRadius: '8px', 
-  padding: '1.5rem'
-}}>
-
 ### 💼 **Business Intelligence**
 - Import organizational data and establish entity relationships
 - Create comprehensive knowledge graphs for business domains
 - Enable data-driven decision making through structured insights
 - Facilitate cross-organizational knowledge sharing
 
-
-  backgroundColor: 'var(--ifm-background-color)', 
-  border: '1px solid var(--ifm-color-emphasis-300)', 
-  borderRadius: '8px', 
-  padding: '1.5rem'
-}}>
-
 ### 📚 **Content Curation**
 - Import content from various sources and establish semantic relationships
 - Create comprehensive knowledge graphs for specific domains
 - Enable content discovery and recommendation systems
 - Build curated collections of related information
-
-
 
 ## Instruction Guide
 
@@ -11021,13 +9602,6 @@ After logging in, you'll see the main interface with:
 - **Four main tabs**: Select Atom Type, Load CSV, Publish Atoms, and Tag Atoms
 
 ### Select Atom Type
-
-  backgroundColor: 'var(--ifm-background-color)', 
-  border: '1px solid var(--ifm-color-emphasis-300)', 
-  borderRadius: '8px', 
-  padding: '1.5rem', 
-  margin: '1.5rem 0'
-}}>
 
 As of right now, you have 3 options here. Most users can stick with the default value of **Schema.org &lt;Thing&gt;** to create and tag basic metadata atoms. If you want to populate **CAIP-10** atoms or **Raw URI** atoms, you can select either option from the drop-down before pressing **Continue**.
 
@@ -11068,15 +9642,7 @@ You can read more about the `CAIP-10` standard here: [https://chainagnostic.org/
 
 The `Intuition System` also uses `Raw URI`s. These cannot be proofread, and are for advanced users only. One example use case for these is the [https://schema.org/keywords](https://schema.org/keywords) `Raw URI`. The `Intuition Portal` uses this as a `Predicate` in `Semantic Triples` in order to denote that something has a `Tag Keyword`.
 
-
 ### Load CSV
-
-  backgroundColor: 'var(--ifm-background-color)', 
-  border: '1px solid var(--ifm-color-emphasis-300)', 
-  borderRadius: '8px', 
-  padding: '1.5rem', 
-  margin: '1.5rem 0'
-}}>
 
 The `Load CSV` box allows you to load a `.csv` file from your PC which contains numerous `Atom`s. 
 
@@ -11102,15 +9668,7 @@ eip155:1:0x1234567890aBcdeF1234567890AbcDef12345672
 - If there's anything weird going on with your `.csv` file, the Data Populator will show you a `Proofreading` window which flags any unusual characters or errors
 - The application will attempt to fix any errors on its own, and can automatically checksum Ethereum addresses
 
-
 ### Publish Atoms
-
-  backgroundColor: 'var(--ifm-background-color)', 
-  border: '1px solid var(--ifm-color-emphasis-300)', 
-  borderRadius: '8px', 
-  padding: '1.5rem', 
-  margin: '1.5rem 0'
-}}>
 
 The `Publish Atoms` tab shows you some basic information about the `Atoms` you have loaded. Once you've reviewed them, you can select them and `publish` them using the `Publish Selected Atoms` button.
 
@@ -11121,15 +9679,7 @@ The `Publish Atoms` tab shows you some basic information about the `Atoms` you h
 4. Approve the EVM transaction in your wallet
 5. Wait for confirmation and see green "Atom Already Exists" icons
 
-
 ### Atoms View
-
-  backgroundColor: 'var(--ifm-background-color)', 
-  border: '1px solid var(--ifm-color-emphasis-300)', 
-  borderRadius: '8px', 
-  padding: '1.5rem', 
-  margin: '1.5rem 0'
-}}>
 
 The `Atoms View` appears below all four tabs in the application, and displays the `Atoms` you currently have loaded. It has several features:
 
@@ -11140,15 +9690,7 @@ The `Atoms View` appears below all four tabs in the application, and displays th
 - **Save CSV**: Save a new copy to your PC after making edits
 - **Add New Row**: Manually enter atom data directly into the Data Populator
 
-
 ### Tag Atoms
-
-  backgroundColor: 'var(--ifm-background-color)', 
-  border: '1px solid var(--ifm-color-emphasis-300)', 
-  borderRadius: '8px', 
-  padding: '1.5rem', 
-  margin: '1.5rem 0'
-}}>
 
 If you want to add your newly published `Atoms` to a `List`, you can use the `Tag Atoms` feature:
 
@@ -11158,15 +9700,7 @@ If you want to add your newly published `Atoms` to a `List`, you can use the `Ta
 
 **Important**: Be precise while entering metadata. Each `Atom's` uniqueness is determined by the exact contents of its data.
 
-
 ### History Window
-
-  backgroundColor: 'var(--ifm-background-color)', 
-  border: '1px solid var(--ifm-color-emphasis-300)', 
-  borderRadius: '8px', 
-  padding: '1.5rem', 
-  margin: '1.5rem 0'
-}}>
 
 If you press the `View Your History` button near the top-right corner of the screen, a new window will appear showing:
 
@@ -11174,16 +9708,7 @@ If you press the `View Your History` button near the top-right corner of the scr
 - Ability to `Save` `.csv` files that you've previously submitted
 - Helpful when working on multiple machines or collaborating with others
 
-
 ## Getting Started
-
-  backgroundColor: 'var(--ifm-color-emphasis-100)', 
-  border: '1px solid var(--ifm-color-emphasis-300)', 
-  borderRadius: '8px', 
-  padding: '1.5rem', 
-  margin: '2rem 0',
-  borderLeft: '4px solid var(--ifm-color-primary)'
-}}>
 
 ### **Prerequisites**
 - Access to the Intuition network
@@ -11194,15 +9719,7 @@ If you press the `View Your History` button near the top-right corner of the scr
 ### **Installation**
 The Data Populator is available as a web application and can be accessed through the Intuition ecosystem.
 
-
 ### **Basic Workflow**
-
-  backgroundColor: 'var(--ifm-color-emphasis-50)', 
-  border: '1px solid var(--ifm-color-emphasis-200)', 
-  borderRadius: '6px', 
-  padding: '1rem', 
-  margin: '1rem 0'
-}}>
 
 1. **Prepare your data** - Ensure your data is in a supported format and properly structured
 2. **Validate data** - Use the built-in validation tools to check data quality
@@ -11211,20 +9728,7 @@ The Data Populator is available as a web application and can be accessed through
 5. **Review results** - Check the imported atoms and triples for accuracy
 6. **Iterate** - Refine your import process based on results
 
-
 ## Data Formats
-
-  display: 'grid', 
-  gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', 
-  gap: '1.5rem', 
-  margin: '2rem 0'
-}}>
-
-  backgroundColor: 'var(--ifm-background-color)', 
-  border: '1px solid var(--ifm-color-emphasis-300)', 
-  borderRadius: '8px', 
-  padding: '1.5rem'
-}}>
 
 ### 📄 **Supported Formats**
 - **CSV** - Comma-separated values with headers
@@ -11232,20 +9736,11 @@ The Data Populator is available as a web application and can be accessed through
 - **XML** - Extensible Markup Language documents
 - **Excel** - Microsoft Excel spreadsheets
 
-
-  backgroundColor: 'var(--ifm-background-color)', 
-  border: '1px solid var(--ifm-color-emphasis-300)', 
-  borderRadius: '8px', 
-  padding: '1.5rem'
-}}>
-
 ### 📋 **Data Structure Requirements**
 - Clear entity identification
 - Relationship definitions
 - Metadata and provenance information
 - Quality indicators and confidence scores
-
-
 
 ## Best Practices
 
@@ -11321,85 +9816,21 @@ For support with the Data Populator:
 
 ## Getting Started
 
-  backgroundColor: 'var(--ifm-color-primary-lightest)', 
-  border: '1px solid var(--ifm-color-primary-light)', 
-  borderRadius: '8px', 
-  padding: '1.5rem', 
-  margin: '2rem 0',
-  textAlign: 'center'
-}}>
-
 ### 🚀 **Ready to populate your data?**
-
-  display: 'grid', 
-  gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', 
-  gap: '1rem', 
-  marginTop: '1rem'
-}}>
-
-  border: '1px solid var(--ifm-color-primary-light)', 
-  borderRadius: '6px', 
-  padding: '1rem', 
-  backgroundColor: 'var(--ifm-background-color)'
-}}>
 
 **[Testnet Data Populator](https://data-populator-dev.onrender.com)** - Start here for testing
 
-
-  border: '1px solid var(--ifm-color-primary-light)', 
-  borderRadius: '6px', 
-  padding: '1rem', 
-  backgroundColor: 'var(--ifm-background-color)'
-}}>
-
 **[Mainnet Data Populator](https://upload.intuition.systems)** - Production environment
-
-
-
 
 ## Related Resources
 
-  display: 'grid', 
-  gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', 
-  gap: '1rem', 
-  marginTop: '2rem'
-}}>
-
-  border: '1px solid var(--ifm-color-emphasis-300)', 
-  borderRadius: '6px', 
-  padding: '1rem', 
-  backgroundColor: 'var(--ifm-background-color)'
-}}>
-
 **[Portal](/guides/network/testnet/portal)** - Main interface for interacting with the knowledge graph
-
-
-  border: '1px solid var(--ifm-color-emphasis-300)', 
-  borderRadius: '6px', 
-  padding: '1rem', 
-  backgroundColor: 'var(--ifm-background-color)'
-}}>
 
 **[Explorer](/guides/network/testnet/explorer)** - Network exploration and transaction monitoring
 
-
-  border: '1px solid var(--ifm-color-emphasis-300)', 
-  borderRadius: '6px', 
-  padding: '1rem', 
-  backgroundColor: 'var(--ifm-background-color)'
-}}>
-
 **[Developer Tools](/guides/developer-tools)** - Programmatic access and integration
 
-
-  border: '1px solid var(--ifm-color-emphasis-300)', 
-  borderRadius: '6px', 
-  padding: '1rem', 
-  backgroundColor: 'var(--ifm-background-color)'
-}}>
-
 **[API Documentation](/guides/developer-tools/graphql-api)** - Technical integration guides
-
 
 
 ---
@@ -11773,19 +10204,10 @@ Frames are built using standard web technologies:
 
 ```html
 
-  
     Intuition Identity Creation
-  
   
       Create Your Identity
       
-        
-        
-        Create Identity
-      
-    
-  
-
 ```
 
 ### SDK Integration
@@ -12003,14 +10425,6 @@ The **Intuition MetaMask Snap** extends MetaMask's functionality to seamlessly i
 
 ## Overview
 
-  backgroundColor: 'var(--ifm-color-emphasis-100)',
-  border: '1px solid var(--ifm-color-emphasis-300)',
-  borderRadius: '8px',
-  padding: '1.5rem',
-  margin: '2rem 0',
-  borderLeft: '4px solid var(--ifm-color-primary)'
-}}>
-
 The MetaMask Snap serves as a bridge between traditional Web3 wallet functionality and Intuition's knowledge graph, enabling users to:
 
 - **Manage identities** - Create and manage Intuition atoms directly from MetaMask
@@ -12019,20 +10433,7 @@ The MetaMask Snap serves as a bridge between traditional Web3 wallet functionali
 - **Access trust networks** - View and interact with reputation and trust data
 - **Cross-platform integration** - Use Intuition features across any dApp that supports MetaMask
 
-
 ## Key Features
-
-  display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-  gap: '1.5rem',
-  margin: '2rem 0'
-}}>
-
-  backgroundColor: 'var(--ifm-background-color)',
-  border: '1px solid var(--ifm-color-emphasis-300)',
-  borderRadius: '8px',
-  padding: '1.5rem'
-}}>
 
 ### 🆔 **Identity Management**
 
@@ -12041,26 +10442,12 @@ The MetaMask Snap serves as a bridge between traditional Web3 wallet functionali
 - Manage atom metadata and relationships
 - Export and backup identity data
 
-
-  backgroundColor: 'var(--ifm-background-color)',
-  border: '1px solid var(--ifm-color-emphasis-300)',
-  borderRadius: '8px',
-  padding: '1.5rem'
-}}>
-
 ### 📝 **Claim Creation**
 
 - Create triples (claims) using the Subject-Predicate-Object structure
 - Stake on existing claims to express agreement or disagreement
 - View claim details and associated vault information
 - Manage your claim portfolio and staking positions
-
-
-  backgroundColor: 'var(--ifm-background-color)',
-  border: '1px solid var(--ifm-color-emphasis-300)',
-  borderRadius: '8px',
-  padding: '1.5rem'
-}}>
 
 ### 💰 **Staking Operations**
 
@@ -12069,13 +10456,6 @@ The MetaMask Snap serves as a bridge between traditional Web3 wallet functionali
 - View staking history and performance metrics
 - Monitor vault share prices and market dynamics
 
-
-  backgroundColor: 'var(--ifm-background-color)',
-  border: '1px solid var(--ifm-color-emphasis-300)',
-  borderRadius: '8px',
-  padding: '1.5rem'
-}}>
-
 ### 🤝 **Trust Network Integration**
 
 - View reputation scores and trust relationships
@@ -12083,17 +10463,7 @@ The MetaMask Snap serves as a bridge between traditional Web3 wallet functionali
 - Access personalized recommendations based on your network
 - Verify claims and identities through the trust network
 
-
-
 ## Installation
-
-  backgroundColor: 'var(--ifm-color-emphasis-100)',
-  border: '1px solid var(--ifm-color-emphasis-300)',
-  borderRadius: '8px',
-  padding: '1.5rem',
-  margin: '2rem 0',
-  borderLeft: '4px solid var(--ifm-color-primary)'
-}}>
 
 ### **Prerequisites**
 
@@ -12101,15 +10471,7 @@ The MetaMask Snap serves as a bridge between traditional Web3 wallet functionali
 - Access to the Intuition network
 - Understanding of basic Intuition concepts (atoms, triples, vaults)
 
-
 ### **Installation Steps**
-
-  backgroundColor: 'var(--ifm-color-emphasis-50)',
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '6px',
-  padding: '1rem',
-  margin: '1rem 0'
-}}>
 
 1. **Open MetaMask** - Ensure you have MetaMask installed and unlocked
 2. **Navigate to Snaps** - Go to the MetaMask Snaps directory or use the direct installation link
@@ -12117,7 +10479,6 @@ The MetaMask Snap serves as a bridge between traditional Web3 wallet functionali
 4. **Grant Permissions** - Approve the necessary permissions for the Snap to function
 5. **Connect to Intuition** - Link your MetaMask wallet to the Intuition network
 6. **Start Using** - Begin creating identities, making claims, and staking on content
-
 
 ## Getting Started
 
@@ -12281,14 +10642,6 @@ The Portal is Intuition's first Explorer (akin to a block explorer), which provi
 
 While most explorers are only meant for exploring, The Portal also provides a user interface for easily interacting with the Intuition Graph in its entirety.
 
-  backgroundColor: 'var(--ifm-color-emphasis-100)', 
-  border: '1px solid var(--ifm-color-emphasis-300)', 
-  borderRadius: '8px', 
-  padding: '1.5rem', 
-  margin: '2rem 0',
-  borderLeft: '4px solid var(--ifm-color-primary)'
-}}>
-
 ### 📋 **Covered in this guide:**
 
 This guide provides step-by-step instructions for The Portal's core features:
@@ -12300,113 +10653,49 @@ This guide provides step-by-step instructions for The Portal's core features:
 - **Organizing Lists** - Create curated collections
 - **Following Users** - Build your social network
 
-
 ## 1. Creating and Managing Identities (Atoms)
-
-  backgroundColor: 'var(--ifm-background-color)', 
-  border: '1px solid var(--ifm-color-emphasis-300)', 
-  borderRadius: '8px', 
-  padding: '1.5rem', 
-  margin: '1.5rem 0'
-}}>
 
 Identities, also known as **Atoms**, are the fundamental building blocks in the Intuition system. Each Atom represents a concept, such as a person, organization, or product, and comes with a unique decentralized identifier, structured data, and an associated Vault for signaling its relevancy.
 
 ### **How to Create an Identity**
-
-  backgroundColor: 'var(--ifm-color-emphasis-50)', 
-  border: '1px solid var(--ifm-color-emphasis-200)', 
-  borderRadius: '6px', 
-  padding: '1rem', 
-  margin: '1rem 0'
-}}>
 
 1. **Click the "Create" action button** in the bottom left section of the menu panel
 2. **Select "Create Identity"** from the dropdown menu
 3. **Input data** to describe the Identity you are creating
 4. **Optionally deposit ETH** to stake on your newly created Identity
 
-
 ### **What Happens After Creation?**
 
 When you create an Identity, the data is uploaded to IPFS, generating an IPFS CID that is used to create an Atom in the Intuition contracts. This Atom can now be referenced universally across the web.
 
-
 ## 2. Making Claims (Triples)
-
-  backgroundColor: 'var(--ifm-background-color)', 
-  border: '1px solid var(--ifm-color-emphasis-300)', 
-  borderRadius: '8px', 
-  padding: '1.5rem', 
-  margin: '1.5rem 0'
-}}>
 
 **What are Claims?** Claims, or **Triples**, allow you to assert statements about anything using a **[Subject][Predicate][Object]** structure. For example, **[Alice][is][trustworthy]**. Creating a Claim does not automatically express agreement with the claim; you must stake on the Claim to do so.
 
 ### **How to Create a Claim:**
 
-  backgroundColor: 'var(--ifm-color-emphasis-50)', 
-  border: '1px solid var(--ifm-color-emphasis-200)', 
-  borderRadius: '6px', 
-  padding: '1rem', 
-  margin: '1rem 0'
-}}>
-
 1. **Click the "Create" action button** in the bottom left section of the menu panel
 2. **Select "Create Claim"** from the dropdown menu
 3. **Choose three Atoms/Identities** to form your Claim
 
-
 ### **Helpful Tips:**
-
-  backgroundColor: 'var(--ifm-color-emphasis-50)', 
-  border: '1px solid var(--ifm-color-emphasis-200)', 
-  borderRadius: '6px', 
-  padding: '1rem', 
-  margin: '1rem 0'
-}}>
 
 - **Existing Claims**: If a claim already exists, simply stake on the existing claim to express your agreement with it
 - **Prerequisites**: To create a claim, Atoms must already exist for the subject, predicate and object. If any one of the 3 required Atoms does not exist, you will first need to follow step 1 above to create the necessary identities before composing your claim
 
-
-
 ## 3. Staking (Signal Conviction)
-
-  backgroundColor: 'var(--ifm-background-color)', 
-  border: '1px solid var(--ifm-color-emphasis-300)', 
-  borderRadius: '8px', 
-  padding: '1.5rem', 
-  margin: '1.5rem 0'
-}}>
 
 **What is Staking?** Staking in Intuition allows you to signal what is important or what you believe to be true by staking ETH on Identities (Atoms) or Claims (Triples). This process contributes to a **Token Curated Registry (TCR)**, where the most relevant information rises to the top.
 
 ### **Staking on an Identity:**
 
-  backgroundColor: 'var(--ifm-color-emphasis-50)', 
-  border: '1px solid var(--ifm-color-emphasis-200)', 
-  borderRadius: '6px', 
-  padding: '1rem', 
-  margin: '1rem 0'
-}}>
-
 - **Signals the relevancy** of the Identity
 - **Grants you shares** in the Identity, earning fees from future stakes
 
-
 ### **Staking on a Claim:**
-
-  backgroundColor: 'var(--ifm-color-emphasis-50)', 
-  border: '1px solid var(--ifm-color-emphasis-200)', 
-  borderRadius: '6px', 
-  padding: '1rem', 
-  margin: '1rem 0'
-}}>
 
 - Claims have a **Positive Vault** (for supporting the Claim) and a **Negative Vault** (for opposing the Claim)
 - Staking on a Claim also stakes on the Claim's underlying Identities
-
 
 ### **Unstaking:**
 
@@ -12416,146 +10705,53 @@ You can unstake your ETH at any time to retrieve your deposit (minus fees).
 
 Staking grants you shares that provide a proportionate amount of fee revenue accumulated by the Identity or Claim, incentivizing you to stake on high-traction items.
 
-
 ## 4. Using Tags
-
-  backgroundColor: 'var(--ifm-background-color)', 
-  border: '1px solid var(--ifm-color-emphasis-300)', 
-  borderRadius: '8px', 
-  padding: '1.5rem', 
-  margin: '1.5rem 0'
-}}>
 
 **What are Tags?** Tags are shortcuts to organizing and finding relevant information. Tagging is achieved by creating a Claim using the **[has tag]** Atom as the Predicate. The ability to create tags is one of the first features to leverage "special predicates" and demonstrates how functionality can be built around specific types of claims. In this case, tags are the foundation on which users can create and manage Lists.
 
 ### **Creating and Using Tags:**
-
-  backgroundColor: 'var(--ifm-color-emphasis-50)', 
-  border: '1px solid var(--ifm-color-emphasis-200)', 
-  borderRadius: '6px', 
-  padding: '1rem', 
-  margin: '1rem 0'
-}}>
 
 - **New Tag Creation**: To create a new Tag, you must create a new Identity for the tag you want to use if it doesn't already exist. Just like any other claim, Identities (Atoms) must exist for the Subject, Predicate, and Object of your **[has tag]** claim. When adding a new tag, we know the Subject and Predicate exist, so users only need to ensure an Object Atom exists (which represents the tag to be added)
 
 - **Tagging Process**: Tag something by searching through "Existing Tags" or creating a new one
 - **Benefits**: Tagging enhances discoverability and adds items to relevant Lists
 
-
-
 ## 5. Organizing with Lists
-
-  backgroundColor: 'var(--ifm-background-color)', 
-  border: '1px solid var(--ifm-color-emphasis-300)', 
-  borderRadius: '8px', 
-  padding: '1.5rem', 
-  margin: '1.5rem 0'
-}}>
 
 **What are Lists?** Lists allow you to group related items or data in a way that makes sense to you, helping others discover, save, and provide feedback. Lists are constructed through deterministic queries, making it easy to organize and navigate complex data.
 
 ### **Creating a List:**
 
-  backgroundColor: 'var(--ifm-color-emphasis-50)', 
-  border: '1px solid var(--ifm-color-emphasis-200)', 
-  borderRadius: '6px', 
-  padding: '1rem', 
-  margin: '1rem 0'
-}}>
-
 - Lists are formed by Claims with the **[has tag]** Predicate
 - Tag an Identity to include it in a specific List
 
-
 ### **Adding to and Managing Lists:**
-
-  backgroundColor: 'var(--ifm-color-emphasis-50)', 
-  border: '1px solid var(--ifm-color-emphasis-200)', 
-  borderRadius: '6px', 
-  padding: '1rem', 
-  margin: '1rem 0'
-}}>
 
 - Use the **"Add to list"** and **"Save list"** buttons to manage your Lists
 - Lists are **Token Curated Registries (TCR)**, where you can stake ETH to order entries within a List
 
-
-
 ## 6. Following Users
-
-  backgroundColor: 'var(--ifm-background-color)', 
-  border: '1px solid var(--ifm-color-emphasis-300)', 
-  borderRadius: '8px', 
-  padding: '1.5rem', 
-  margin: '1.5rem 0'
-}}>
 
 **What is Following?** Following in Intuition is a contextual statement made by staking on the Claim **[I][am following][User]**. This staking process reflects the strength of your connection and is part of the open data available for developers to use in building a social graph.
 
 ### **How to Follow/Unfollow:**
 
-  backgroundColor: 'var(--ifm-color-emphasis-50)', 
-  border: '1px solid var(--ifm-color-emphasis-200)', 
-  borderRadius: '6px', 
-  padding: '1rem', 
-  margin: '1rem 0'
-}}>
-
 - **To follow**: Click on a user's profile and select "Follow," then optionally stake ETH
 - **To unfollow**: Click "Following" on the user's profile and select "Unfollow." Unfollowing also redeems your staked ETH
 
-
-
 ## Getting Started
-
-  backgroundColor: 'var(--ifm-color-primary-lightest)', 
-  border: '1px solid var(--ifm-color-primary-light)', 
-  borderRadius: '8px', 
-  padding: '1.5rem', 
-  margin: '2rem 0',
-  textAlign: 'center'
-}}>
 
 ### 🚀 **Ready to begin your journey?**
 
 Visit **[portal.intuition.systems](https://portal.intuition.systems)** to start creating identities, making claims, and building your presence in the Intuition knowledge graph.
 
-
 ## Related Resources
-
-  display: 'grid', 
-  gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', 
-  gap: '1rem', 
-  marginTop: '2rem'
-}}>
-
-  border: '1px solid var(--ifm-color-emphasis-300)', 
-  borderRadius: '6px', 
-  padding: '1rem', 
-  backgroundColor: 'var(--ifm-background-color)'
-}}>
 
 **[Explorer](/guides/network/testnet/explorer)** - Network exploration tools
 
-
-  border: '1px solid var(--ifm-color-emphasis-300)', 
-  borderRadius: '6px', 
-  padding: '1rem', 
-  backgroundColor: 'var(--ifm-background-color)'
-}}>
-
 **[Bridge](/guides/network/testnet/bridge)** - Cross-chain functionality
 
-
-  border: '1px solid var(--ifm-color-emphasis-300)', 
-  borderRadius: '6px', 
-  padding: '1rem', 
-  backgroundColor: 'var(--ifm-background-color)'
-}}>
-
 **[RPC](/guides/network/testnet/rpc)** - Network connectivity options
-
 
 
 ---
@@ -12569,13 +10765,6 @@ Source: https://docs.intuition.systems/guides/network/testnet/rpc
 
 The Intuition RPC (Remote Procedure Call) service provides programmatic access to the Intuition network.
 
-  backgroundColor: 'var(--ifm-color-emphasis-50)',
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '12px',
-  padding: '1.5rem',
-  marginBottom: '2rem'
-}}>
-
 ## Overview
 
 RPC endpoints allow developers and applications to:
@@ -12586,20 +10775,7 @@ RPC endpoints allow developers and applications to:
 - Access historical data
 - Interact with smart contracts
 
-
 ## Available Endpoints
-
-  display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-  gap: '1.5rem',
-  marginBottom: '2rem'
-}}>
-
-  backgroundColor: 'var(--ifm-color-emphasis-50)',
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '12px',
-  padding: '1.5rem'
-}}>
 
 ### Core RPC Methods
 
@@ -12610,13 +10786,6 @@ RPC endpoints allow developers and applications to:
 - **eth_call**: Execute contract calls
 - **eth_getLogs**: Retrieve event logs
 
-
-  backgroundColor: 'var(--ifm-color-emphasis-50)',
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '12px',
-  padding: '1.5rem'
-}}>
-
 ### Intuition-Specific Methods
 
 - **intuition_getAtoms**: Query atom data
@@ -12624,95 +10793,11 @@ RPC endpoints allow developers and applications to:
 - **intuition_getSignals**: Access signal data
 - **intuition_getBondingCurves**: Get bonding curve data
 
-
-
 ## Authentication
-
-  backgroundColor: 'var(--ifm-color-emphasis-50)',
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '12px',
-  padding: '1.5rem',
-  marginBottom: '2rem'
-}}>
 
 RPC access requires authentication for production use:
 
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '1rem',
-  marginTop: '1rem'
-}}>
-
-  display: 'flex',
-  alignItems: 'center',
-  gap: '0.75rem'
-}}>
-  width: '24px',
-  height: '24px',
-  borderRadius: '50%',
-  backgroundColor: 'var(--ifm-color-success)',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  flexShrink: 0
-}}>
-
-
-  display: 'flex',
-  alignItems: 'center',
-  gap: '0.75rem'
-}}>
-  width: '24px',
-  height: '24px',
-  borderRadius: '50%',
-  backgroundColor: 'var(--ifm-color-success)',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  flexShrink: 0
-}}>
-
-
-  display: 'flex',
-  alignItems: 'center',
-  gap: '0.75rem'
-}}>
-  width: '24px',
-  height: '24px',
-  borderRadius: '50%',
-  backgroundColor: 'var(--ifm-color-success)',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  flexShrink: 0
-}}>
-
-
-  display: 'flex',
-  alignItems: 'center',
-  gap: '0.75rem'
-}}>
-  width: '24px',
-  height: '24px',
-  borderRadius: '50%',
-  backgroundColor: 'var(--ifm-color-success)',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  flexShrink: 0
-}}>
-
-
-
-
 ## Usage Examples
-
-  backgroundColor: 'var(--ifm-color-emphasis-50)',
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '12px',
-  padding: '1.5rem',
-  marginBottom: '2rem'
-}}>
 
 ```javascript
 // Connect to Intuition RPC
@@ -12727,45 +10812,12 @@ const balance = await provider.getBalance(address);
 const block = await provider.getBlock('latest');
 ```
 
-
-  background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)',
-  border: '1px solid #404040',
-  borderRadius: '16px',
-  padding: '2rem',
-  textAlign: 'center',
-  color: 'white',
-  marginTop: '2rem'
-}}>
 Ready to Connect?
 
 Start building with the Intuition RPC service and integrate blockchain functionality into your applications.
-  backgroundColor: 'var(--ifm-color-primary)',
-  color: 'white',
-  padding: '0.75rem 1.5rem',
-  borderRadius: '8px',
-  textDecoration: 'none',
-  fontWeight: '500',
-  display: 'inline-flex',
-  alignItems: 'center',
-  gap: '0.5rem',
-  transition: 'all 0.2s ease'
-}}>
 Get Started
 
-  backgroundColor: 'transparent',
-  color: 'white',
-  padding: '0.75rem 1.5rem',
-  borderRadius: '8px',
-  textDecoration: 'none',
-  fontWeight: '500',
-  border: '1px solid rgba(255, 255, 255, 0.3)',
-  display: 'inline-flex',
-  alignItems: 'center',
-  gap: '0.5rem',
-  transition: 'all 0.2s ease'
-}}>
 GraphQL API
-
 
 *[Placeholder content - to be expanded with actual RPC documentation and examples]* 
 
@@ -12774,7 +10826,6 @@ GraphQL API
 # Atoms
 
 Source: https://docs.intuition.systems/guides/primitives/atoms
-
 
 
 # Atoms
@@ -12825,9 +10876,7 @@ This mechanism incentivizes early discovery of important Atoms and creates a for
 
   {() => }
 
-
 ## The Problem Atoms Solve
-
 
 ### Universal Reference Standardization
 
@@ -13107,7 +11156,6 @@ Regardless of what an Atom represents, the principles remain consistent:
 Source: https://docs.intuition.systems/guides/primitives/atoms/overview
 
 
-
 # Atoms
 
 Atoms are the foundational building blocks of Intuition's knowledge graph – the words in our global dictionary. Think of Intuition as a vast, collaborative dictionary where anyone can create a new word, and each word has its own globally persistent, unique digital identifier that can be used to reference it across the entire internet!
@@ -13155,7 +11203,6 @@ This mechanism incentivizes early discovery of important Atoms and creates a for
 ### Atom Creation Process
 
   {() => }
-
 
 ## Explore More
 
@@ -13267,18 +11314,15 @@ This market-driven approach, combined with deterministic ID generation, ensures 
 Source: https://docs.intuition.systems/guides/primitives/overview
 
 
-
 # Primitives Overview
 
 Intuition's data model is built on three fundamental primitives that work together to create a rich, self-regulating knowledge graph:
-
 
 The basic entities or identifiers - unique decentralized identifiers for everything in existence. Think of them as the nodes in the knowledge graph, or the words in the dictionary.
 
 Structured relationships or claims linking entities together in Subject-Predicate-Object format. These are the edges in the knowledge graph / the sentences in the language of Intuition.
 
 The weight of trust or consensus behind each entity or claim, determined by community staking. These represent the edge weights in the graph, or 'who is saying what about what, with what level of conviction'.
-
 
 ---
 
@@ -13298,7 +11342,6 @@ Unlike traditional identifiers that are limited to URIs or specific data formats
 :::
 
 #### Real-World Atom Examples
-
 
 **Person Atom**
 ```
@@ -13330,7 +11373,6 @@ Atom ID: 0xdef...
 Data: 0x742d35...8930 (Ethereum contract address)
 ```
 
-
 Atoms are sometimes called "identities" in the protocol because they give any entity – whether tangible or abstract – a persistent, verifiable digital identity that can be referenced and validated by anyone in the network.
 
 ---
@@ -13341,7 +11383,6 @@ A **Triple** is a structured claim that follows the semantic format of **[Subjec
 
 #### Example Triple Structures
 
-
 **Social Relationship**
 
 **Professional Credential**
@@ -13349,7 +11390,6 @@ A **Triple** is a structured claim that follows the semantic format of **[Subjec
 **Smart Contract Deployment**
 
 **Product Rating**
-
 
 :::tip Compositional Power
 Triples can reference other Triples as Atoms, enabling arbitrarily complex statements. For example:
@@ -13367,13 +11407,11 @@ In many contexts, Triples are also referred to as **Claims** or **Attestations**
 
 **Signal** represents the aggregated attestation state of an Atom or Triple – essentially, how much the community trusts or believes in that piece of information. Signal is generated through economic staking, where users deposit tokens (like $TRUST) into an entity's vault to express their conviction.
 
-
 Users stake tokens to support an Atom or Triple, indicating they believe it's true, valuable, or important.
 
 Users can stake against claims they disagree with, creating a market for truth discovery.
 
 Signal changes in real-time as users stake, withdraw, or shift their positions, creating a living consensus.
-
 
 #### How Signal Works
 
@@ -13394,22 +11432,13 @@ The true power of Intuition emerges when these three primitives interact:
 
 ### Many-to-One Attestations
 
-
 Unlike traditional systems where a single authority issues certificates or attestations, Intuition enables many-to-one non-deterministic attestations:
-
-
-
-
-
-
-
 
 ### Example: Building a Reputation Graph
 
 Consider how these primitives combine to create a decentralized reputation system:
 
   {() => }
-
 
 In this example:
 - **Atoms** define the entities (Alice, developer, React)
@@ -13420,7 +11449,6 @@ In this example:
 
 ## Key Benefits of This Architecture
 
-
 Any data type can become an Atom, and any relationship can be expressed as a Triple, creating infinite possibilities for knowledge representation.
 
 Economic incentives through Signal staking create a market for truth, where accurate information naturally accumulates more support.
@@ -13428,7 +11456,6 @@ Economic incentives through Signal staking create a market for truth, where accu
 Standardized semantic structure enables different applications to understand and build upon the same knowledge graph.
 
 Trust isn't binary – it's a spectrum measured by Signal strength, allowing for nuanced representation of confidence and belief.
-
 
 ---
 
@@ -13818,8 +11845,6 @@ Signals transform the internet's information layer:
 - **From centralized sources** → To decentralized consensus
 - **From misinformation** → To economically-backed truth
 - **From static data** → To dynamic, living knowledge
-
-
 
 ## Next Steps
 
@@ -14287,11 +12312,9 @@ There are multiple ways to create Triples on the Intuition platform. Choose the 
 
 ## Development Options
 
-
 Use the Intuition SDK for a streamlined development experience with TypeScript support and built-in helpers.
 
 Interact directly with Intuition smart contracts for maximum control and customization.
-
 
 ---
 
@@ -14538,7 +12561,6 @@ This graph structure enables powerful capabilities:
 - Traversal of relationships to discover indirect connections
 - Pattern matching across the knowledge graph
 
-
 ## Summary
 
 Triples allow Intuition to form a living, searchable web of knowledge. When adding Triples, the goal is to make each claim as clear and verifiable as possible, selecting the right words (Atoms) from the global dictionary, and then letting the network of users and their Signals determine validity.
@@ -14770,8 +12792,7 @@ function App() {
         supportedChains: [intuitionTestnet],
       }}
     >
-      {/* Your app */}
-    
+      
   )
 }
 ```
@@ -14809,7 +12830,6 @@ function CreateAtom() {
     console.log('Atom ID:', result.state.termId)
   }
 
-  return Create Atom
 }
 ```
 
@@ -14825,7 +12845,6 @@ const result = await createAtomFromThing(
     description: 'A cool Web3 project',
     image: 'https://example.com/image.png',
   }
-)
 ```
 
 ### Create an Atom from Ethereum Account
@@ -14838,7 +12857,6 @@ const result = await createAtomFromEthereumAccount(
     address: '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045',
     chainId: 1, // Mainnet
   }
-)
 ```
 
 ## Reading Data
@@ -14851,7 +12869,6 @@ Retrieve detailed information about an atom using its ID:
 
 const atomData = await getAtomDetails(
   '0x57d94c116a33bb460428eced262b7ae2ec6f865e7aceef6357cec3d034e8ea21'
-)
 
 console.log('Atom data:', atomData)
 // Returns atom information including metadata, vault details, and more
@@ -14865,7 +12882,6 @@ Retrieve information about a triple relationship:
 
 const tripleData = await getTripleDetails(
   '0x4957d3f442acc301ad71e73f26efd6af78647f57dacf2b3a686d91fa773fe0b6'
-)
 
 console.log('Triple data:', tripleData)
 // Returns subject, predicate, object atoms and relationship metadata
@@ -14896,7 +12912,6 @@ Use AI-powered semantic search to find relevant atoms:
 const results = await semanticSearch(
   'decentralized identity protocols',
   { limit: 5 }
-)
 
 console.log('Semantic search results:', results)
 ```
@@ -14910,7 +12925,6 @@ Read atom data directly from the smart contract:
 const atomOnChain = await getAtom(
   { publicClient, address },
   { args: [BigInt(atomId)] }
-)
 
 console.log('On-chain atom:', atomOnChain)
 // Returns [walletAddress, vaultId, atomData]
@@ -14928,17 +12942,14 @@ If Atoms are the words in Intuition's global dictionary, Triples are the sentenc
 const subject = await createAtomFromString(
   { walletClient, publicClient, address },
   'Alice'
-)
 
 const predicate = await createAtomFromString(
   { walletClient, publicClient, address },
   'knows'
-)
 
 const object = await createAtomFromString(
   { walletClient, publicClient, address },
   'Bob'
-)
 
 // Create the triple: "Alice knows Bob"
 const triple = await createTripleStatement(
@@ -14951,7 +12962,6 @@ const triple = await createTripleStatement(
     ],
     value: 1000000000000000000n, // 1 ETH deposit in wei
   }
-)
 
 console.log('Triple created:', triple.transactionHash)
 ```
@@ -14977,7 +12987,6 @@ const txHash = await deposit(
     ],
     value: BigInt(depositAmount),
   }
-)
 
 console.log('Deposited:', txHash)
 ```
@@ -14997,7 +13006,6 @@ const txHash = await redeem(
       walletClient.account.address, // Owner address
     ]
   }
-)
 
 console.log('Redeemed:', txHash)
 ```
@@ -15012,7 +13020,6 @@ Preview how many assets you'll receive when redeeming shares:
 const assetsToReceive = await previewRedeem(
   { walletClient, publicClient, address },
   { args: [BigInt(vaultId), BigInt(sharesToRedeem)] }
-)
 
 console.log('Assets you will receive:', assetsToReceive)
 ```
@@ -15054,9 +13061,7 @@ function IntuitionQuickstart() {
 
   return (
       Intuition Quickstart
-      Create Atom
       {atomId && (
-        Signal Support
       )}
   )
 }
@@ -15096,7 +13101,6 @@ const result = await batchCreateAtomsFromThings(
   { walletClient, publicClient, address },
   atomData,
   1000000000000000000n // Optional: 1 ETH deposit per atom
-)
 
 console.log('Created atoms:', result.state)
 console.log('Transaction:', result.transactionHash)
@@ -15119,7 +13123,6 @@ const result = await batchCreateTripleStatements(
   { walletClient, publicClient, address },
   tripleData,
   1000000000000000000n // Optional: 1 ETH deposit
-)
 
 console.log('Created triples:', result.state)
 ```
@@ -15140,7 +13143,6 @@ const depositData = [
 const result = await batchDepositStatement(
   { walletClient, publicClient, address },
   depositData
-)
 
 console.log('Batch deposit completed:', result.transactionHash)
 ```
@@ -15237,7 +13239,6 @@ npm install
 npm run compile
 ```
 
-
 ## Community Kits
 
 ### Coming Soon
@@ -15278,54 +13279,25 @@ Connect with the Intuition community, get help, and stay updated with the latest
 
 ## Official Channels
 
-
-
-
 Follow us on X for real-time updates, announcements, and community highlights.
-
-
-
 
 Join our Discord community for discussions, support, and real-time collaboration.
 
-
-
-
 Watch video recordings, tutorials, and community content on our YouTube channel.
-
-
-
 
 Read our latest articles, insights, and technical deep-dives on Medium.
 
-
-
 ## Support Channels
-
-
-
 
 Get general support and assistance for questions about Intuition.
 
-
-
-
 Visit our official website for the latest updates, information, and resources.
-
-
 
 ## Feedback & Improvement
 
-
-
-
 Contribute to our open-source projects, report issues, and suggest improvements.
 
-
-
-
 Share your feedback, suggestions, and ideas to help improve Intuition.
-
 
 
 ---
@@ -15338,7 +13310,6 @@ Source: https://docs.intuition.systems/guides/resources/faq
 # FAQ
 
 This page is organized into expandable sections for easy navigation. Click on any section below to explore the questions within that category.
-
 
 ## Getting Started
 
@@ -15374,9 +13345,6 @@ Connect with other developers and get support through our community channels.
 **Signals**: Mechanisms for updating trust relationships - actions that express intent, belief, or support
 
 **Bonding Curves**: Economic models for token pricing and liquidity - automated market making for application tokens
-
-
-
 
 ## Development & Integration
 
@@ -15443,9 +13411,6 @@ Make your application available to users and monitor its performance using the n
 
 **Monitor Applications**: Use the network monitoring tools to track your application's performance and catch issues early.
 
-
-
-
 ## Economics & Rewards
 
 ### How does the token economics work?
@@ -15476,9 +13441,6 @@ Bonding curves are mathematical functions that determine token pricing based on 
 - **Dynamic Pricing**: Token prices that automatically adjust based on supply and demand
 - **Efficient Distribution**: Fair token distribution through mathematical models
 - **Liquidity Provision**: Built-in liquidity for application tokens
-
-
-
 
 ## Troubleshooting & Support
 
@@ -15529,9 +13491,6 @@ Common causes of transaction failures:
 
 **Email Support**: Contact us directly at [support@intuition.systems](mailto:support@intuition.systems) for technical assistance.
 
-
-
-
 ## Use Cases & Contributing
 
 ### What are the main use cases for Intuition?
@@ -15560,35 +13519,11 @@ Common causes of transaction failures:
 
 **Community Building**: Help grow the community by answering questions and mentoring new developers.
 
-
-
 ## Need More Help?
 
 We're here to help! Reach out to our community or support team for assistance.
-  backgroundColor: 'transparent', 
-  color: 'var(--ifm-color-primary)', 
-  padding: '0.75rem 1.5rem', 
-  borderRadius: '6px', 
-  textDecoration: 'none', 
-  fontWeight: '500',
-  border: '1px solid var(--ifm-color-primary)',
-  display: 'inline-flex',
-  alignItems: 'center',
-  transition: 'all 0.2s ease'
-}}>
 Join Community
 
-  backgroundColor: 'transparent', 
-  color: 'var(--ifm-color-primary)', 
-  padding: '0.75rem 1.5rem', 
-  borderRadius: '6px', 
-  textDecoration: 'none', 
-  fontWeight: '500',
-  border: '1px solid var(--ifm-color-primary)',
-  display: 'inline-flex',
-  alignItems: 'center',
-  transition: 'all 0.2s ease'
-}}>
 Contact Support
 
 
@@ -15607,24 +13542,17 @@ Essential resources for working with Intuition, including key terminology, frequ
 
 Our resources provide comprehensive support for developers and users working with Intuition:
 
-
 Master the essential terminology and concepts that form the foundation of the Intuition ecosystem. Understanding these terms is crucial for working effectively with Intuition.
-
 
 Find answers to frequently asked questions about Intuition. From basic concepts to advanced implementation details, get quick answers to common questions.
 
-
 Monitor real-time network status, uptime statistics, and service availability. Stay informed about maintenance windows and incident notifications.
-
 
 Connect with the Intuition community and get help when you need it. Join discussions, get support, and collaborate with other developers.
 
-
 Useful tools and utilities for working with Intuition. Discover helpful resources, tools, and scripts to enhance your development workflow.
 
-
 Security audits and best practices for Intuition. Review audit reports and learn about security considerations for building on Intuition.
-
 
 
 ---
@@ -15641,31 +13569,6 @@ This page defines the essential terminology and concepts you need to understand 
 ## Quick Navigation
 
 This page is organized into expandable sections for easy navigation. Click on any section below to explore the terms within that category.
-
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '1rem'
-}}>
-
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '8px',
-  overflow: 'hidden'
-}}>
-  padding: '1rem',
-  cursor: 'pointer',
-  display: 'flex',
-  alignItems: 'center',
-  gap: '0.75rem',
-  backgroundColor: 'var(--ifm-color-emphasis-50)',
-  border: 'none',
-  outline: 'none',
-  fontSize: '1rem',
-  fontWeight: '600',
-  color: 'var(--ifm-color-emphasis-900)'
-}}>
-
-
-
 
 ## Core Primitives
 
@@ -15722,28 +13625,6 @@ This creates the statement: "Alice works for Intuition Systems"
 - **Negative Signals**: Disagreements or refutations
 - **Neutral Signals**: Acknowledgment without taking a position
 
-
-
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '8px',
-  overflow: 'hidden'
-}}>
-  padding: '1rem',
-  cursor: 'pointer',
-  display: 'flex',
-  alignItems: 'center',
-  gap: '0.75rem',
-  backgroundColor: 'var(--ifm-color-emphasis-50)',
-  border: 'none',
-  outline: 'none',
-  fontSize: '1rem',
-  fontWeight: '600',
-  color: 'var(--ifm-color-emphasis-900)'
-}}>
-
-
-
-
 ## Economic Components
 
 ### **Bonding Curves**
@@ -15786,28 +13667,6 @@ This creates the statement: "Alice works for Intuition Systems"
 - **Market Cap Aggregation**: Combines value across all associated vaults
 - **Universal Reference**: Provides a stable identifier for the concept
 
-
-
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '8px',
-  overflow: 'hidden'
-}}>
-  padding: '1rem',
-  cursor: 'pointer',
-  display: 'flex',
-  alignItems: 'center',
-  gap: '0.75rem',
-  backgroundColor: 'var(--ifm-color-emphasis-50)',
-  border: 'none',
-  outline: 'none',
-  fontSize: '1rem',
-  fontWeight: '600',
-  color: 'var(--ifm-color-emphasis-900)'
-}}>
-
-
-
-
 ## Network Components
 
 ### **Trust Protocol**
@@ -15839,28 +13698,6 @@ The **Knowledge Graph** is the collective network of atoms, triples, and signals
 - **Opinions**: Subjective beliefs and preferences
 - **Endorsements**: Support for existing information
 - **Refutations**: Disagreements with existing information
-
-
-
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '8px',
-  overflow: 'hidden'
-}}>
-  padding: '1rem',
-  cursor: 'pointer',
-  display: 'flex',
-  alignItems: 'center',
-  gap: '0.75rem',
-  backgroundColor: 'var(--ifm-color-emphasis-50)',
-  border: 'none',
-  outline: 'none',
-  fontSize: '1rem',
-  fontWeight: '600',
-  color: 'var(--ifm-color-emphasis-900)'
-}}>
-
-
-
 
 ## Technical Components
 
@@ -15894,28 +13731,6 @@ The **GraphQL API** provides a unified interface for querying and interacting wi
 - **BondingCurveRegistry**: Manages different curve implementations
 - **TrustBonding**: Implements trust-based economic mechanisms
 
-
-
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '8px',
-  overflow: 'hidden'
-}}>
-  padding: '1rem',
-  cursor: 'pointer',
-  display: 'flex',
-  alignItems: 'center',
-  gap: '0.75rem',
-  backgroundColor: 'var(--ifm-color-emphasis-50)',
-  border: 'none',
-  outline: 'none',
-  fontSize: '1rem',
-  fontWeight: '600',
-  color: 'var(--ifm-color-emphasis-900)'
-}}>
-
-
-
-
 ## User Roles
 
 ### **Attestors**
@@ -15947,28 +13762,6 @@ The **GraphQL API** provides a unified interface for querying and interacting wi
 - **Data Analytics**: Tools for analyzing knowledge graph data
 - **Integration Services**: APIs and services that connect to Intuition
 - **Mobile Applications**: Native mobile experiences
-
-
-
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '8px',
-  overflow: 'hidden'
-}}>
-  padding: '1rem',
-  cursor: 'pointer',
-  display: 'flex',
-  alignItems: 'center',
-  gap: '0.75rem',
-  backgroundColor: 'var(--ifm-color-emphasis-50)',
-  border: 'none',
-  outline: 'none',
-  fontSize: '1rem',
-  fontWeight: '600',
-  color: 'var(--ifm-color-emphasis-900)'
-}}>
-
-
-
 
 ## Economic Terms
 
@@ -16007,28 +13800,6 @@ Market Cap = Total Shares × Current Share Price
 - **Price Stability**: How much price changes with large trades
 - **Accessibility**: How easy it is for users to participate
 
-
-
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '8px',
-  overflow: 'hidden'
-}}>
-  padding: '1rem',
-  cursor: 'pointer',
-  display: 'flex',
-  alignItems: 'center',
-  gap: '0.75rem',
-  backgroundColor: 'var(--ifm-color-emphasis-50)',
-  border: 'none',
-  outline: 'none',
-  fontSize: '1rem',
-  fontWeight: '600',
-  color: 'var(--ifm-color-emphasis-900)'
-}}>
-
-
-
-
 ## Governance Terms
 
 ### **Proposals**
@@ -16050,9 +13821,6 @@ Market Cap = Total Shares × Current Share Price
 - **Time Locked**: Some proposals require time delays
 - **Multi-Sig**: Critical decisions require multiple approvals
 - **Emergency Powers**: Special procedures for urgent situations
-
-
-
 
 ---
 

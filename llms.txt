@@ -18,17 +18,48 @@
 
 - [Quickstart Guide](https://docs.intuition.systems/guides/quickstart): Get up and running with Intuition
 
+## Economics
+
+- [Economic Primitives](https://docs.intuition.systems/guides/economics): Understanding the protocol's economic mechanisms
+- [Bonding Curves](https://docs.intuition.systems/guides/economics/bonding-curves): How dynamic pricing works in Intuition
+- [Fees & Rewards](https://docs.intuition.systems/guides/economics/fees-rewards): Protocol fee structure and reward distribution
+
 ## Developer Tools
 
 - [SDK Overview](https://docs.intuition.systems/guides/developer-tools/sdks/overview): TypeScript/JavaScript SDKs for protocol interaction
 - [GraphQL API](https://docs.intuition.systems/guides/developer-tools/graphql-api/overview): Query the Intuition knowledge graph
+- [Smart Contracts](https://docs.intuition.systems/guides/developer-tools/contracts/overview): Core protocol contracts and architecture
+- [Contract Deployments](https://docs.intuition.systems/guides/developer-tools/contracts/deployments): Contract addresses across networks
+- [Audit Reports](https://docs.intuition.systems/guides/developer-tools/audit-reports): Security audit reports for smart contracts
 
-## Smart Contracts
+## Network & Infrastructure
 
-- [Contracts Overview](https://docs.intuition.systems/guides/smart-contracts/overview): Core protocol contracts and architecture
-- [Deployment Addresses](https://docs.intuition.systems/guides/smart-contracts/deployments): Contract addresses across networks
+- [Testnet Overview](https://docs.intuition.systems/guides/network/testnet): Getting started with the Intuition testnet
+- [RPC Endpoints](https://docs.intuition.systems/guides/network/testnet/rpc): Connect to Intuition network
+- [Explorer](https://docs.intuition.systems/guides/network/testnet/explorer): Browse on-chain data and transactions
+- [Bridge](https://docs.intuition.systems/guides/network/testnet/bridge): Transfer assets to Intuition network
+
+## Intuition AI
+
+- [AI Overview](https://docs.intuition.systems/guides/intuition-ai): AI-powered features and integrations
+- [MCP Server](https://docs.intuition.systems/guides/intuition-ai/mcp-server): Model Context Protocol integration
+
+## Intuition Node
+
+- [Node Overview](https://docs.intuition.systems/guides/intuition-node): Run your own Intuition node
+- [Setup Guide](https://docs.intuition.systems/guides/intuition-node/setup): Installation and configuration
+
+## Use Cases
+
+- [Example Applications](https://docs.intuition.systems/guides/use-cases): Real-world applications built with Intuition
+- [Build a Portal](https://docs.intuition.systems/guides/use-cases/build-a-portal): Create custom Intuition portals
 
 ## Resources
 
-- [Example Applications](https://docs.intuition.systems/guides/resources): Sample apps and use cases
-- [API Reference](https://docs.intuition.systems/api): Complete API documentation
+- [FAQ](https://docs.intuition.systems/guides/resources/faq): Frequently asked questions
+- [Key Terms](https://docs.intuition.systems/guides/resources/key-terms): Essential terminology and concepts
+- [Community & Support](https://docs.intuition.systems/guides/resources/community-and-support): Get help and connect with the community
+
+## Contributing
+
+- [Contribution Guidelines](https://docs.intuition.systems/guides/contribute/contribution-guidelines): How to contribute to Intuition
