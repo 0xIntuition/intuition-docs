@@ -52,20 +52,51 @@ jobs:
 
           - [Quickstart Guide](https://docs.intuition.systems/guides/quickstart): Get up and running with Intuition
 
+          ## Economics
+
+          - [Economic Primitives](https://docs.intuition.systems/guides/economics): Understanding the protocol's economic mechanisms
+          - [Bonding Curves](https://docs.intuition.systems/guides/economics/bonding-curves): How dynamic pricing works in Intuition
+          - [Fees & Rewards](https://docs.intuition.systems/guides/economics/fees-rewards): Protocol fee structure and reward distribution
+
           ## Developer Tools
 
           - [SDK Overview](https://docs.intuition.systems/guides/developer-tools/sdks/overview): TypeScript/JavaScript SDKs for protocol interaction
           - [GraphQL API](https://docs.intuition.systems/guides/developer-tools/graphql-api/overview): Query the Intuition knowledge graph
+          - [Smart Contracts](https://docs.intuition.systems/guides/developer-tools/contracts/overview): Core protocol contracts and architecture
+          - [Contract Deployments](https://docs.intuition.systems/guides/developer-tools/contracts/deployments): Contract addresses across networks
+          - [Audit Reports](https://docs.intuition.systems/guides/developer-tools/audit-reports): Security audit reports for smart contracts
 
-          ## Smart Contracts
+          ## Network & Infrastructure
 
-          - [Contracts Overview](https://docs.intuition.systems/guides/smart-contracts/overview): Core protocol contracts and architecture
-          - [Deployment Addresses](https://docs.intuition.systems/guides/smart-contracts/deployments): Contract addresses across networks
+          - [Testnet Overview](https://docs.intuition.systems/guides/network/testnet): Getting started with the Intuition testnet
+          - [RPC Endpoints](https://docs.intuition.systems/guides/network/testnet/rpc): Connect to Intuition network
+          - [Explorer](https://docs.intuition.systems/guides/network/testnet/explorer): Browse on-chain data and transactions
+          - [Bridge](https://docs.intuition.systems/guides/network/testnet/bridge): Transfer assets to Intuition network
+
+          ## Intuition AI
+
+          - [AI Overview](https://docs.intuition.systems/guides/intuition-ai): AI-powered features and integrations
+          - [MCP Server](https://docs.intuition.systems/guides/intuition-ai/mcp-server): Model Context Protocol integration
+
+          ## Intuition Node
+
+          - [Node Overview](https://docs.intuition.systems/guides/intuition-node): Run your own Intuition node
+          - [Setup Guide](https://docs.intuition.systems/guides/intuition-node/setup): Installation and configuration
+
+          ## Use Cases
+
+          - [Example Applications](https://docs.intuition.systems/guides/use-cases): Real-world applications built with Intuition
+          - [Build a Portal](https://docs.intuition.systems/guides/use-cases/build-a-portal): Create custom Intuition portals
 
           ## Resources
 
-          - [Example Applications](https://docs.intuition.systems/guides/resources): Sample apps and use cases
-          - [API Reference](https://docs.intuition.systems/api): Complete API documentation
+          - [FAQ](https://docs.intuition.systems/guides/resources/faq): Frequently asked questions
+          - [Key Terms](https://docs.intuition.systems/guides/resources/key-terms): Essential terminology and concepts
+          - [Community & Support](https://docs.intuition.systems/guides/resources/community-and-support): Get help and connect with the community
+
+          ## Contributing
+
+          - [Contribution Guidelines](https://docs.intuition.systems/guides/contribute/contribution-guidelines): How to contribute to Intuition
           EOF
 
       - name: Generate llms-full.txt (comprehensive docs)
@@ -108,9 +139,23 @@ jobs:
           # Function to strip front matter and clean content
           clean_content() {
             local file="$1"
-            # Remove YAML front matter, then remove JSX/HTML tags and import statements
+            # Two-pass approach: first remove JSX blocks, then clean line-by-line
+
+            # Pass 1: Remove JSX comment blocks and style objects
+            perl -0777 -pe '
+              # Remove JSX comments {/* ... */}
+              s/\{\s*\/\*.*?\*\/\s*\}//gs;
+
+              # Remove multi-line style={{ ... }} blocks
+              s/style=\{\{[^}]*?\}\}//gs;
+
+              # Remove standalone style blocks (just the object)
+              s/\{\s*\n\s*[a-zA-Z]+:\s*[^}]+\}\}>//gs;
+            ' "$file" | \
+
+            # Pass 2: Line-by-line cleaning with AWK
             awk '
-            BEGIN { in_frontmatter=0; past_frontmatter=0 }
+            BEGIN { in_frontmatter=0; past_frontmatter=0; in_jsx_block=0; brace_count=0 }
 
             # Handle front matter
             /^---$/ && NR==1 { in_frontmatter=1; next }
@@ -121,16 +166,44 @@ jobs:
               # Skip import/export statements
               if (/^(import|export) /) next
 
-              # Skip lines that are clearly JSX (contain style={{, className=, or are JSX tags)
-              if (/style=\{\{/ || /className=/ || /^<[A-Za-z]/) next
-              if (/<div|<\/div|<p[> ]|<\/p>|<span|<\/span/) next
+              # Skip JSX comments
+              if (/\{\/\*/ || /\*\/\}/) next
 
-              # Remove any inline HTML tags that might remain
+              # Detect start of JSX style blocks or fragments
+              if (/^\s*(style=\{\{|[a-zA-Z]+:\s*["\x27]|backgroundColor:|padding:|margin:|border:|fontSize:|fontWeight:|display:|alignItems:|justifyContent:|flexDirection:|gap:|cursor:|overflow:|borderRadius:)/) {
+                in_jsx_block=1
+                next
+              }
+
+              # Track closing of JSX blocks
+              if (in_jsx_block) {
+                if (/\}\}>/ || /^\s*\}\}$/ || /^\s*\)$/) {
+                  in_jsx_block=0
+                  next
+                }
+                next
+              }
+
+              # Skip lines with Docusaurus CSS variables
+              if (/var\(--ifm/) next
+
+              # Skip lines that are clearly JSX
+              if (/className=/ || /^<[A-Za-z]/ || /onClick=/ || /onChange=/) next
+              if (/<div|<\/div|<p[> ]|<\/p>|<span|<\/span|<button|<\/button/) next
+
+              # Skip closing JSX fragments
+              if (/^\s*\}\}>?\s*$/ || /^\s*\)\s*$/) next
+
+              # Remove any remaining inline HTML tags
               gsub(/<[^>]+>/, "")
+
+              # Skip lines that became empty after cleanup
+              if (/^[[:space:]]*$/ && prev_empty) next
+              prev_empty = /^[[:space:]]*$/
 
               print
             }
-            ' "$file"
+            '
           }
 
           # Process all documentation files
