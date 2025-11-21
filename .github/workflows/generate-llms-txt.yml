@@ -1,0 +1,182 @@
+name: Generate LLMs.txt Files
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'docs/**/*.md'
+      - 'docs/**/*.mdx'
+      - 'src/**/*.mdx'
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  generate-llms-txt:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate llms.txt (essential docs)
+        run: |
+          cat > llms.txt << 'EOF'
+          # Intuition
+
+          > Intuition is a permissionless protocol for creating verifiable, tokenized attestations. It enables developers to build context-aware applications using semantic triples (subject-predicate-object relationships) backed by economic incentives through bonding curves.
+
+          ## Introduction
+
+          - [Overview](https://docs.intuition.systems/guides/introduction/overview): Intuition at a glance and core value proposition
+          - [Why Intuition](https://docs.intuition.systems/guides/introduction/why-intuition): The problem Intuition solves and Information Finance
+
+          ## Primitives
+
+          - [Primitives Overview](https://docs.intuition.systems/guides/primitives/overview): Understanding Intuition's core building blocks
+          - [Atoms](https://docs.intuition.systems/guides/primitives/atoms): Individual claims and pieces of information stored on-chain
+          - [Triples](https://docs.intuition.systems/guides/primitives/triples): Subject-predicate-object relationships connecting atoms
+          - [Signals](https://docs.intuition.systems/guides/primitives/signals): Economic mechanisms for agreement and disagreement
+
+          ## Getting Started
+
+          - [Quickstart Guide](https://docs.intuition.systems/guides/quickstart): Get up and running with Intuition
+
+          ## Developer Tools
+
+          - [SDK Overview](https://docs.intuition.systems/guides/developer-tools/sdks/overview): TypeScript/JavaScript SDKs for protocol interaction
+          - [GraphQL API](https://docs.intuition.systems/guides/developer-tools/graphql-api/overview): Query the Intuition knowledge graph
+
+          ## Smart Contracts
+
+          - [Contracts Overview](https://docs.intuition.systems/guides/smart-contracts/overview): Core protocol contracts and architecture
+          - [Deployment Addresses](https://docs.intuition.systems/guides/smart-contracts/deployments): Contract addresses across networks
+
+          ## Resources
+
+          - [Example Applications](https://docs.intuition.systems/guides/resources): Sample apps and use cases
+          - [API Reference](https://docs.intuition.systems/api): Complete API documentation
+          EOF
+
+      - name: Generate llms-full.txt (comprehensive docs)
+        run: |
+          cat > llms-full.txt << 'EOF'
+          # Intuition Protocol - Complete Documentation
+
+          > This file contains comprehensive documentation for the Intuition protocol, including all guides, API references, and technical documentation.
+
+          Intuition is a permissionless protocol that enables users to create attestations (atoms), make connections between concepts (triples), and signal agreement or disagreement through economic mechanisms. It creates a decentralized knowledge graph of validated information.
+
+          EOF
+
+          echo "" >> llms-full.txt
+
+          # Function to convert file path to URL
+          file_to_url() {
+            local file="$1"
+            # Remove docs/ prefix and file extension
+            local path="${file#docs/}"
+            path="${path%.md}"
+            path="${path%.mdx}"
+            # Remove index from path
+            path="${path%/index}"
+            echo "https://docs.intuition.systems/$path"
+          }
+
+          # Function to extract title from front matter or filename
+          get_title() {
+            local file="$1"
+            # Try to extract title from front matter
+            local title=$(awk '/^---$/,/^---$/{if($1=="title:"){$1="";print;exit}}' "$file" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+            # If no title found, use filename
+            if [ -z "$title" ]; then
+              title=$(basename "$file" .md .mdx | sed 's/-/ /g;s/\bindex\b//g' | awk '{for(i=1;i<=NF;i++) $i=toupper(substr($i,1,1)) tolower(substr($i,2));}1')
+            fi
+            echo "$title"
+          }
+
+          # Function to strip front matter and clean content
+          clean_content() {
+            local file="$1"
+            # Remove YAML front matter, then remove JSX/HTML tags and import statements
+            awk '
+            BEGIN { in_frontmatter=0; past_frontmatter=0 }
+
+            # Handle front matter
+            /^---$/ && NR==1 { in_frontmatter=1; next }
+            /^---$/ && in_frontmatter { in_frontmatter=0; past_frontmatter=1; next }
+            in_frontmatter { next }
+
+            past_frontmatter || NR>1 {
+              # Skip import/export statements
+              if (/^(import|export) /) next
+
+              # Skip lines that are clearly JSX (contain style={{, className=, or are JSX tags)
+              if (/style=\{\{/ || /className=/ || /^<[A-Za-z]/) next
+              if (/<div|<\/div|<p[> ]|<\/p>|<span|<\/span/) next
+
+              # Remove any inline HTML tags that might remain
+              gsub(/<[^>]+>/, "")
+
+              print
+            }
+            ' "$file"
+          }
+
+          # Process all documentation files
+          find docs -type f \( -name "*.md" -o -name "*.mdx" \) | sort | while read file; do
+            # Skip hidden files, partials, and files starting with underscore
+            if [[ "$file" == *"/_hidden/"* ]] || [[ "$file" == *"/partials/"* ]] || [[ "$(basename "$file")" == _* ]]; then
+              continue
+            fi
+
+            # Check if file has actual content (not just front matter)
+            content_lines=$(clean_content "$file" | grep -v '^[[:space:]]*$' | wc -l)
+            if [ "$content_lines" -lt 3 ]; then
+              continue
+            fi
+
+            title=$(get_title "$file")
+            url=$(file_to_url "$file")
+
+            echo "# $title" >> llms-full.txt
+            echo "" >> llms-full.txt
+            echo "Source: $url" >> llms-full.txt
+            echo "" >> llms-full.txt
+            clean_content "$file" >> llms-full.txt
+            echo "" >> llms-full.txt
+            echo "---" >> llms-full.txt
+            echo "" >> llms-full.txt
+          done
+
+      - name: Check for changes
+        id: check-changes
+        run: |
+          git add llms.txt llms-full.txt
+          if git diff --staged --quiet; then
+            echo "changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit and push if changed
+        if: steps.check-changes.outputs.changes == 'true'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git commit -m "🤖 Auto-update llms.txt files
+
+          Generated from documentation changes in commit ${{ github.sha }}
+
+          Co-authored-by: GitHub Actions <action@github.com>"
+          git push
