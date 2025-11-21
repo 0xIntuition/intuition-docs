@@ -11,7 +11,7 @@ Intuition is a permissionless protocol that enables users to create claims (atom
 ### Atoms
 Atoms are the fundamental building blocks - individual claims or pieces of information stored on-chain. They can represent anything: identities, statements, data, or concepts.
 
-### Triples  
+### Triples
 Triples connect atoms in subject-predicate-object relationships, creating meaningful connections between concepts. For example: "Alice - works at - Company" where each element is an atom.
 
 ### Signal
@@ -20,1515 +20,723 @@ Users can signal agreement (staking) or disagreement with atoms and triples, cre
 
 ## Essential Documentation
 
-### Overview
+### Overview.md
+.md
+.mdx
 
----
-id: overview
-title: Overview
-sidebar_label: Overview
-sidebar_position: 1
-description: Learn about Intuition's core concepts, architecture, and economic model
----
 
 # Overview
 
+## Intuition at a Glance
+
 <div style={{ backgroundColor: 'var(--ifm-color-emphasis-50)', padding: '2rem', borderRadius: '12px', marginBottom: '2rem' }}>
-<p style={{ fontSize: '1.1rem', lineHeight: '1.7', margin: 0, color: 'var(--ifm-color-emphasis-700)' }}>
-Welcome to the Intuition documentation — your gateway to building with the world's first open, semantic, and decentralized knowledge graph. Whether you're a developer, researcher, or curious user, this guide will help you understand Intuition's core concepts, how to interact with its data structures, and why it matters for the future of trust online.
+<p style={{ fontSize: '1.25rem', lineHeight: '1.8', margin: '0 0 1rem 0', color: 'var(--ifm-color-emphasis-800)', fontWeight: '500' }}>
+Intuition is a decentralized system that makes attestations viable as a meta for digital expression. 
+
+A universal language for signed data.
+
+Instead of information living as unstructured, siloed, minimally-attributable data in Web2 platforms, Intuition turns information into verifiable, tokenized, and portable objects that can flow across apps, chains, and agents.
+</p>
+<p style={{ fontSize: '1.1rem', lineHeight: '1.7', margin: 0, color: 'var(--ifm-color-emphasis-900)' }}>
+<strong>The result is a Semantic Web of Trust, powered the world's first token-curated knowledge graph</strong> — a network where information isn't just stored, but structured, incentivized, and made usable for developers and AI systems alike — all while maintaining verifiable provenance and attribution.
 </p>
 </div>
 
-## The Vision
 
-Intuition's vision is to create a future where trust online is programmable, portable, and permissionless. We believe in a new digital infrastructure where:
+### Why Intuition.md
+.md
+.mdx
 
-<div style={{ display: 'flex', flexDirection: 'row', gap: '1.5rem', marginBottom: '2rem', flexWrap: 'wrap' }}>
-
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)', flex: '1', minWidth: '300px' }}>
-<h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>Cross-Platform Knowledge</h4>
-<p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
-People and organizations can prove and discover knowledge across apps and ecosystems
-</p>
-</div>
-
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)', flex: '1', minWidth: '300px' }}>
-<h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>Verifiable Claims</h4>
-<p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
-Social and factual claims are verifiable and incentive-aligned
-</p>
-</div>
-
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)', flex: '1', minWidth: '300px' }}>
-<h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>Developer Empowerment</h4>
-<p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
-Developers have the tools to build collaborative, data-rich applications
-</p>
-</div>
-
-</div>
-
-By refining, expressing, and managing identity and data, Intuition gives every entity better "intuition" in their digital interactions — ultimately enhancing the trustworthiness of the entire ecosystem.
-
-## What is Intuition Building?
-
-<div style={{ backgroundColor: 'var(--ifm-color-emphasis-50)', padding: '1.5rem', borderRadius: '8px', marginBottom: '2rem' }}>
-<p style={{ margin: 0, fontSize: '1rem', color: 'var(--ifm-color-emphasis-700)', lineHeight: '1.6' }}>
-Intuition is building a powerful and versatile ecosystem of applications and developer tools on top of an open and semantic social + knowledge graph. This graph makes it easy to capture, curate, and share verifiable social wisdom — free from the limitations of application-specific silos.
-</p>
-</div>
-
-### Core Capabilities
-
-<div style={{ display: 'flex', flexDirection: 'row', gap: '1.5rem', marginBottom: '2rem', flexWrap: 'wrap' }}>
-
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)', flex: '1', minWidth: '300px' }}>
-<h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>Universal Knowledge Graph</h4>
-<ul style={{ margin: 0, paddingLeft: '1.5rem', fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
-<li style={{ marginBottom: '0.5rem' }}><strong>Decentralized Data Storage</strong>: Store and retrieve data across multiple chains and storage solutions</li>
-<li style={{ marginBottom: '0.5rem' }}><strong>Semantic Relationships</strong>: Create meaningful connections between any entities or concepts</li>
-<li style={{ marginBottom: '0.5rem' }}><strong>Permissionless Access</strong>: Open access to all data while maintaining privacy controls</li>
-<li style={{ marginBottom: '0.5rem' }}><strong>Cross-Platform Integration</strong>: Seamlessly work across different applications and ecosystems</li>
-</ul>
-</div>
-
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)', flex: '1', minWidth: '300px' }}>
-<h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>Trust Infrastructure</h4>
-<ul style={{ margin: 0, paddingLeft: '1.5rem', fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
-<li style={{ marginBottom: '0.5rem' }}><strong>Verifiable Claims</strong>: Create and verify attestations about any subject</li>
-<li style={{ marginBottom: '0.5rem' }}><strong>Reputation Systems</strong>: Build trust scores based on community consensus</li>
-<li style={{ marginBottom: '0.5rem' }}><strong>Identity Management</strong>: Manage decentralized identities with full user control</li>
-<li style={{ marginBottom: '0.5rem' }}><strong>Fraud Prevention</strong>: Detect and prevent malicious activities through collective intelligence</li>
-</ul>
-</div>
-
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)', flex: '1', minWidth: '300px' }}>
-<h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>Economic Incentives</h4>
-<ul style={{ margin: 0, paddingLeft: '1.5rem', fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
-<li style={{ marginBottom: '0.5rem' }}><strong>Tokenized Data Ownership</strong>: Own and monetize your contributions to the knowledge graph</li>
-<li style={{ marginBottom: '0.5rem' }}><strong>Early Adopter Rewards</strong>: Benefit from being first to contribute valuable information</li>
-<li style={{ marginBottom: '0.5rem' }}><strong>Community Governance</strong>: Participate in protocol decisions and improvements</li>
-<li style={{ marginBottom: '0.5rem' }}><strong>Sustainable Ecosystem</strong>: Long-term economic model that benefits all participants</li>
-</ul>
-</div>
-
-</div>
-
-## The Intuition System
-
-<div style={{ backgroundColor: 'var(--ifm-color-emphasis-50)', padding: '1.5rem', borderRadius: '8px', marginBottom: '2rem' }}>
-<p style={{ margin: 0, fontSize: '1rem', color: 'var(--ifm-color-emphasis-700)', lineHeight: '1.6' }}>
-Intuition is an ecosystem of technologies composing a universal and permissionless knowledge graph, capable of handling both objective facts and subjective opinions. Intuition's vertically integrated knowledge stack offers a comprehensive suite of developer tooling to streamline the development of the next generation of technologies powered by humanity's collective intuition.
-</p>
-</div>
-
-Intuition's open social knowledge graph is built to harness collective wisdom in a **structured, permissionless, and fully decentralized** manner. The system's resulting state is open and accessible to everyone, enabling limitless use cases and expanding the information available about the countless entities we engage with daily—whether it's a pseudonym, a smart contract, an organization, or a piece of content.
-
-## Who Should Use This Documentation
-
-<div className="uniform-card-grid-small">
-
-<div className="uniform-card">
-<h4 className="uniform-card-title" style={{ fontSize: '1.1rem', marginBottom: '0.75rem' }}>New Users</h4>
-<p className="uniform-card-content" style={{ fontSize: '0.9rem' }}>
-Discover Intuition's Portal, create your first atoms and triples, and understand the knowledge graph ecosystem
-</p>
-</div>
-
-<div className="uniform-card">
-<h4 className="uniform-card-title" style={{ fontSize: '1.1rem', marginBottom: '0.75rem' }}>Developers</h4>
-<p className="uniform-card-content" style={{ fontSize: '0.9rem' }}>
-Build with our TypeScript SDK, GraphQL APIs, and smart contracts across multiple networks
-</p>
-</div>
-
-<div className="uniform-card">
-<h4 className="uniform-card-title" style={{ fontSize: '1.1rem', marginBottom: '0.75rem' }}>Partners</h4>
-<p className="uniform-card-content" style={{ fontSize: '0.9rem' }}>
-Integrate Intuition's decentralized knowledge graph into your applications and platforms
-</p>
-</div>
-
-<div className="uniform-card">
-<h4 className="uniform-card-title" style={{ fontSize: '1.1rem', marginBottom: '0.75rem' }}>Researchers</h4>
-<p className="uniform-card-content" style={{ fontSize: '0.9rem' }}>
-Access semantic data structures and explore the token-curated knowledge graph for analysis
-</p>
-</div>
-
-<div className="uniform-card">
-<h4 className="uniform-card-title" style={{ fontSize: '1.1rem', marginBottom: '0.75rem' }}>Content Creators</h4>
-<p className="uniform-card-content" style={{ fontSize: '0.9rem' }}>
-Contribute to the knowledge graph and build reputation through verifiable content creation
-</p>
-</div>
-
-<div className="uniform-card">
-<h4 className="uniform-card-title" style={{ fontSize: '1.1rem', marginBottom: '0.75rem' }}>Organizations</h4>
-<p className="uniform-card-content" style={{ fontSize: '0.9rem' }}>
-Implement trustless credential verification and reputation systems for your organization
-</p>
-</div>
-
-</div>
-
-## Quick Start Path
-
-Choose your path to get started with Intuition's decentralized knowledge graph:
-
-<div className="uniform-card-grid">
-
-<a href="/docs/quickstart/speed-run-intuition" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
-<div className="uniform-card clickable-card">
-<h3 className="uniform-card-title">Speed Run Intuition</h3>
-<p className="uniform-card-content">
-Get up and running with Intuition quickly. A fast-paced guide to get you building with Intuition in minutes.
-</p>
-</div>
-</a>
-
-<a href="/docs/hub" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
-<div className="uniform-card clickable-card">
-<h3 className="uniform-card-title">Intuition Hub</h3>
-<p className="uniform-card-content">
-Access Intuition's L3 network tools and services. Explore the development environment with comprehensive tools.
-</p>
-</div>
-</a>
-
-<a href="/docs/developer-tools" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
-<div className="uniform-card clickable-card">
-<h3 className="uniform-card-title">Developer Tools</h3>
-<p className="uniform-card-content">
-Essential tools and resources for Intuition developers. Access SDKs, APIs, and development tools to build on Intuition.
-</p>
-</div>
-</a>
-
-</div>
-
-### How It Works
-
-<div style={{ display: 'flex', flexDirection: 'row', gap: '1.5rem', marginBottom: '2rem', flexWrap: 'wrap' }}>
-
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)', flex: '1', minWidth: '300px' }}>
-<h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>Data Creation & Storage</h4>
-<ol style={{ margin: 0, paddingLeft: '1.5rem', fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
-<li style={{ marginBottom: '0.5rem' }}><strong>Atoms</strong>: Create unique identifiers for any entity (people, concepts, products)</li>
-<li style={{ marginBottom: '0.5rem' }}><strong>Triples</strong>: Build relationships between atoms to express complex statements</li>
-<li style={{ marginBottom: '0.5rem' }}><strong>Signals</strong>: Add weight and credibility through community attestations</li>
-<li style={{ marginBottom: '0.5rem' }}><strong>Vaults</strong>: Store economic value tied to data ownership and contributions</li>
-</ol>
-</div>
-
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)', flex: '1', minWidth: '300px' }}>
-<h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>Knowledge Discovery</h4>
-<ol style={{ margin: 0, paddingLeft: '1.5rem', fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
-<li style={{ marginBottom: '0.5rem' }}><strong>Semantic Search</strong>: Find information based on meaning, not just keywords</li>
-<li style={{ marginBottom: '0.5rem' }}><strong>Relationship Mapping</strong>: Discover connections between entities and concepts</li>
-<li style={{ marginBottom: '0.5rem' }}><strong>Trust Filtering</strong>: Filter results based on community consensus and reputation</li>
-<li style={{ marginBottom: '0.5rem' }}><strong>Cross-Platform Aggregation</strong>: Combine data from multiple sources seamlessly</li>
-</ol>
-</div>
-
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)', flex: '1', minWidth: '300px' }}>
-<h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>Economic Participation</h4>
-<ol style={{ margin: 0, paddingLeft: '1.5rem', fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
-<li style={{ marginBottom: '0.5rem' }}><strong>Contribute Data</strong>: Earn rewards for adding valuable information</li>
-<li style={{ marginBottom: '0.5rem' }}><strong>Curate Content</strong>: Get paid for helping organize and validate information</li>
-<li style={{ marginBottom: '0.5rem' }}><strong>Build Applications</strong>: Create tools that leverage the knowledge graph</li>
-<li style={{ marginBottom: '0.5rem' }}><strong>Govern Protocol</strong>: Participate in decisions about system improvements</li>
-</ol>
-</div>
-
-</div>
-
-### State of the Graph
-
-<div style={{ backgroundColor: 'var(--ifm-color-emphasis-50)', padding: '1.5rem', borderRadius: '8px', marginBottom: '2rem' }}>
-<p style={{ margin: 0, fontSize: '1rem', color: 'var(--ifm-color-emphasis-700)', lineHeight: '1.6' }}>
-The Intuition system leverages a combination of on and off chain interactions to create, store, and manage data within the Intuition knowledge graph:
-</p>
-</div>
-
-<div style={{ marginBottom: '2rem' }}>
-  
-  {/* Tab Navigation */}
-  <div style={{
-    display: 'flex',
-    borderBottom: '1px solid var(--ifm-color-emphasis-200)',
-    marginBottom: '1.5rem'
-  }}>
-    <button 
-      id="onchain-tab"
-      className="state-tab active"
-      style={{
-        padding: '0.75rem 1.5rem',
-        border: 'none',
-        backgroundColor: 'transparent',
-        cursor: 'pointer',
-        fontSize: '1rem',
-        fontWeight: '600',
-        color: 'var(--ifm-color-primary)',
-        borderBottom: '2px solid var(--ifm-color-primary)',
-        marginRight: '2rem'
-      }}
-      onClick={() => {
-        document.getElementById('onchain-content').style.display = 'block';
-        document.getElementById('offchain-content').style.display = 'none';
-        document.getElementById('onchain-tab').style.color = 'var(--ifm-color-primary)';
-        document.getElementById('onchain-tab').style.borderBottom = '2px solid var(--ifm-color-primary)';
-        document.getElementById('offchain-tab').style.color = 'var(--ifm-color-emphasis-600)';
-        document.getElementById('offchain-tab').style.borderBottom = '2px solid transparent';
-      }}
-    >
-      On-Chain State
-    </button>
-    <button 
-      id="offchain-tab"
-      className="state-tab"
-      style={{
-        padding: '0.75rem 1.5rem',
-        border: 'none',
-        backgroundColor: 'transparent',
-        cursor: 'pointer',
-        fontSize: '1rem',
-        fontWeight: '600',
-        color: 'var(--ifm-color-emphasis-600)',
-        borderBottom: '2px solid transparent'
-      }}
-      onClick={() => {
-        document.getElementById('offchain-content').style.display = 'block';
-        document.getElementById('onchain-content').style.display = 'none';
-        document.getElementById('offchain-tab').style.color = 'var(--ifm-color-primary)';
-        document.getElementById('offchain-tab').style.borderBottom = '2px solid var(--ifm-color-primary)';
-        document.getElementById('onchain-tab').style.color = 'var(--ifm-color-emphasis-600)';
-        document.getElementById('onchain-tab').style.borderBottom = '2px solid transparent';
-      }}
-    >
-      Off-Chain State
-    </button>
-  </div>
-
-  {/* On-Chain Content */}
-  <div id="onchain-content" style={{ display: 'block' }}>
-    <div style={{ 
-      border: '1px solid var(--ifm-color-emphasis-200)', 
-      borderRadius: '12px', 
-      padding: '2rem', 
-      backgroundColor: 'var(--ifm-background-color)' 
-    }}>
-      <h4 style={{ marginTop: 0, marginBottom: '1rem', color: 'var(--ifm-color-primary)', fontSize: '1.25rem' }}>
-        On-Chain State Components
-      </h4>
-      <p style={{ margin: '0 0 1.5rem 0', fontSize: '1rem', color: 'var(--ifm-color-emphasis-700)', lineHeight: '1.6' }}>
-        The on-chain state of Intuition is composed of the nodes, edges, and weights of the Intuition Graph:
-      </p>
-      <div style={{ display: 'grid', gap: '1rem' }}>
-        <div style={{ padding: '1rem', backgroundColor: 'var(--ifm-color-emphasis-50)', borderRadius: '8px', border: '1px solid var(--ifm-color-emphasis-200)' }}>
-          <h5 style={{ margin: '0 0 0.5rem 0', color: 'var(--ifm-color-primary)', fontSize: '1rem' }}>Atoms</h5>
-          <p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
-            Point to any arbitrary URI, their associated Smart Contract Wallets, and their respective Vaults
-          </p>
-        </div>
-        <div style={{ padding: '1rem', backgroundColor: 'var(--ifm-color-emphasis-50)', borderRadius: '8px', border: '1px solid var(--ifm-color-emphasis-200)' }}>
-          <h5 style={{ margin: '0 0 0.5rem 0', color: 'var(--ifm-color-primary)', fontSize: '1rem' }}>Triples</h5>
-          <p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
-            Composed of 3 Atoms with positive and negative Vaults for attestations For and Against
-          </p>
-        </div>
-        <div style={{ padding: '1rem', backgroundColor: 'var(--ifm-color-emphasis-50)', borderRadius: '8px', border: '1px solid var(--ifm-color-emphasis-200)' }}>
-          <h5 style={{ margin: '0 0 0.5rem 0', color: 'var(--ifm-color-primary)', fontSize: '1rem' }}>Signals</h5>
-          <p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
-            Representative of 'who is attesting to what' through vault balances
-          </p>
-        </div>
-        <div style={{ padding: '1rem', backgroundColor: 'var(--ifm-color-emphasis-50)', borderRadius: '8px', border: '1px solid var(--ifm-color-emphasis-200)' }}>
-          <h5 style={{ margin: '0 0 0.5rem 0', color: 'var(--ifm-color-primary)', fontSize: '1rem' }}>Unified System State</h5>
-          <p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
-            The nodes, edges, and weights of the knowledge graph
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  {/* Off-Chain Content */}
-  <div id="offchain-content" style={{ display: 'none' }}>
-    <div style={{ 
-      border: '1px solid var(--ifm-color-emphasis-200)', 
-      borderRadius: '12px', 
-      padding: '2rem', 
-      backgroundColor: 'var(--ifm-background-color)' 
-    }}>
-      <h4 style={{ marginTop: 0, marginBottom: '1rem', color: 'var(--ifm-color-primary)', fontSize: '1.25rem' }}>
-        Off-Chain State Integration
-      </h4>
-      <div style={{ marginBottom: '1.5rem' }}>
-        <p style={{ margin: '0 0 1rem 0', fontSize: '1rem', color: 'var(--ifm-color-emphasis-700)', lineHeight: '1.6' }}>
-          All Atoms point to some arbitrary URI, meaning the on-chain state can represent any on-chain or off-chain data. This means Intuition can reference anything across the web—a Medium publication, a Spotify song, an IPFS CID, a Ceramic Stream, an ETH address—anything with an associated URI can be mapped on Intuition.
-        </p>
-      </div>
-      
-      <div style={{ backgroundColor: 'var(--ifm-color-emphasis-50)', padding: '1.5rem', borderRadius: '8px', border: '1px solid var(--ifm-color-emphasis-200)', marginBottom: '1.5rem' }}>
-        <h5 style={{ margin: '0 0 1rem 0', color: 'var(--ifm-color-primary)', fontSize: '1.1rem' }}>
-          Intuition Backend
-        </h5>
-        <p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)', lineHeight: '1.6' }}>
-          The Intuition Backend indexes both on-chain and off-chain state, unifying them into a singular, traversable knowledge graph that can be easily queried and replicated locally.
-        </p>
-      </div>
-
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1rem' }}>
-        <div style={{ padding: '1rem', backgroundColor: 'var(--ifm-color-emphasis-50)', borderRadius: '8px', border: '1px solid var(--ifm-color-emphasis-200)' }}>
-          <h6 style={{ margin: '0 0 0.5rem 0', color: 'var(--ifm-color-primary)', fontSize: '0.95rem' }}>Web Content</h6>
-          <p style={{ margin: 0, fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>
-            Medium articles, websites, social media posts
-          </p>
-        </div>
-        <div style={{ padding: '1rem', backgroundColor: 'var(--ifm-color-emphasis-50)', borderRadius: '8px', border: '1px solid var(--ifm-color-emphasis-200)' }}>
-          <h6 style={{ margin: '0 0 0.5rem 0', color: 'var(--ifm-color-primary)', fontSize: '0.95rem' }}>Media Files</h6>
-          <p style={{ margin: 0, fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>
-            Spotify tracks, videos, images, documents
-          </p>
-        </div>
-        <div style={{ padding: '1rem', backgroundColor: 'var(--ifm-color-emphasis-50)', borderRadius: '8px', border: '1px solid var(--ifm-color-emphasis-200)' }}>
-          <h6 style={{ margin: '0 0 0.5rem 0', color: 'var(--ifm-color-primary)', fontSize: '0.95rem' }}>Decentralized Storage</h6>
-          <p style={{ margin: 0, fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>
-            IPFS CIDs, Ceramic Streams, Arweave links
-          </p>
-        </div>
-        <div style={{ padding: '1rem', backgroundColor: 'var(--ifm-color-emphasis-50)', borderRadius: '8px', border: '1px solid var(--ifm-color-emphasis-200)' }}>
-          <h6 style={{ margin: '0 0 0.5rem 0', color: 'var(--ifm-color-primary)', fontSize: '0.95rem' }}>Blockchain Addresses</h6>
-          <p style={{ margin: 0, fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>
-            Ethereum addresses, smart contracts, ENS names
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-</div>
-
-### The Trust Protocol
-
-<div style={{ backgroundColor: 'var(--ifm-color-emphasis-50)', padding: '1.5rem', borderRadius: '8px', marginBottom: '2rem' }}>
-<p style={{ margin: 0, fontSize: '1rem', color: 'var(--ifm-color-emphasis-700)', lineHeight: '1.6' }}>
-The Intuition protocol provides the infrastructure for a new information economy, using cryptoeconomic incentives to promote the expression, structuring, and curation of high-quality, semantic data. The protocol is designed to promote:
-</p>
-</div>
-
-<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem', marginBottom: '2rem' }}>
-
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
-<h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>1. Useful Data Creation</h4>
-<p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
-Incentivize the creation of high-quality, valuable information that benefits the entire ecosystem.
-</p>
-</div>
-
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
-<h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>2. Universal Identifiers</h4>
-<p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
-Convergence on universal canonical identifiers for all things across the knowledge graph.
-</p>
-</div>
-
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
-<h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>3. Data Standards</h4>
-<p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
-Convergence on data standards, schemas, and formats for interoperability.
-</p>
-</div>
-
-</div>
-
-Intuition can be thought of as a consensus mechanism for the 'state of the state' of decentralized systems, allowing distributed consensus on the language spoken on top of the system—pursuing the realization of the Semantic Web.
-
-## Key Benefits for Users
-
-<div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.5rem', marginBottom: '2rem' }}>
-
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
-<h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>For Developers</h4>
-<ul style={{ margin: 0, paddingLeft: '1.5rem', fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
-<li style={{ marginBottom: '0.5rem' }}><strong>Rich Data APIs</strong>: Access comprehensive, structured data about any entity</li>
-<li style={{ marginBottom: '0.5rem' }}><strong>Semantic Search</strong>: Build applications that understand context and relationships</li>
-<li style={{ marginBottom: '0.5rem' }}><strong>Trust Integration</strong>: Add reputation and verification features to your apps</li>
-<li style={{ marginBottom: '0.5rem' }}><strong>Economic Incentives</strong>: Earn rewards for building valuable applications</li>
-<li style={{ marginBottom: '0.5rem' }}><strong>Cross-Platform Data</strong>: Seamlessly integrate data from multiple sources</li>
-</ul>
-</div>
-
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
-<h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>For Content Creators</h4>
-<ul style={{ margin: 0, paddingLeft: '1.5rem', fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
-<li style={{ marginBottom: '0.5rem' }}><strong>Own Your Data</strong>: Maintain control over your contributions and earn from them</li>
-<li style={{ marginBottom: '0.5rem' }}><strong>Build Reputation</strong>: Establish credibility through community attestations</li>
-<li style={{ marginBottom: '0.5rem' }}><strong>Monetize Knowledge</strong>: Get paid for sharing valuable information</li>
-<li style={{ marginBottom: '0.5rem' }}><strong>Cross-Platform Presence</strong>: Your reputation follows you across applications</li>
-</ul>
-</div>
-
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
-<h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>For Organizations</h4>
-<ul style={{ margin: 0, paddingLeft: '1.5rem', fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
-<li style={{ marginBottom: '0.5rem' }}><strong>Verifiable Credentials</strong>: Issue and verify credentials with cryptographic proof</li>
-<li style={{ marginBottom: '0.5rem' }}><strong>Reputation Management</strong>: Build and maintain trust through community consensus</li>
-<li style={{ marginBottom: '0.5rem' }}><strong>Data Integration</strong>: Connect information across different platforms and systems</li>
-<li style={{ marginBottom: '0.5rem' }}><strong>Fraud Prevention</strong>: Leverage collective intelligence to detect and prevent fraud</li>
-</ul>
-</div>
-
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
-<h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>For Researchers</h4>
-<ul style={{ margin: 0, paddingLeft: '1.5rem', fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
-<li style={{ marginBottom: '0.5rem' }}><strong>Rich Data Sets</strong>: Access comprehensive, structured data for analysis</li>
-<li style={{ marginBottom: '0.5rem' }}><strong>Relationship Discovery</strong>: Find connections and patterns across vast datasets</li>
-<li style={{ marginBottom: '0.5rem' }}><strong>Verifiable Sources</strong>: Trust data backed by community consensus</li>
-<li style={{ marginBottom: '0.5rem' }}><strong>Collaborative Research</strong>: Share findings and build on others' work</li>
-</ul>
-</div>
-
-</div>
-
-## What is Intuition Building?
-
-<div style={{ backgroundColor: 'var(--ifm-color-emphasis-50)', padding: '1.5rem', borderRadius: '8px', marginBottom: '2rem' }}>
-<p style={{ margin: 0, fontSize: '1rem', color: 'var(--ifm-color-emphasis-700)', lineHeight: '1.6' }}>
-Intuition is building a powerful and versatile ecosystem of applications and developer tools on top of an open and semantic social + knowledge graph. This graph makes it easy to capture, curate, and share verifiable social wisdom — free from the limitations of application-specific silos. The platform is designed to:
-</p>
-</div>
-
-<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem', marginBottom: '2rem' }}>
-
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
-<h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>Enhanced Trust</h4>
-<p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
-Enhance the trustworthiness of digital interactions through verifiable claims and reputation systems.
-</p>
-</div>
-
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
-<h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>Data Ownership</h4>
-<p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
-Empower individuals to own and manage their data with full control and monetization rights.
-</p>
-</div>
-
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
-<h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>Aligned Incentives</h4>
-<p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
-Align incentives between users, developers, and platforms for sustainable ecosystem growth.
-</p>
-</div>
-
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
-<h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>Programmable Identity</h4>
-<p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
-Enable programmable economic structures for decentralized identity and reputation.
-</p>
-</div>
-
-</div>
-
-At its core, Intuition enables a world where data is:
-
-<div style={{ display: 'flex', flexDirection: 'row', gap: '1.5rem', marginBottom: '2rem', flexWrap: 'wrap' }}>
-
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)', flex: '1', minWidth: '200px' }}>
-<h4 style={{ marginTop: 0, marginBottom: '0.5rem', color: 'var(--ifm-color-primary)', textAlign: 'center' }}>Verifiable</h4>
-<p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)', textAlign: 'center' }}>
-Cryptographically proven and community-validated
-</p>
-</div>
-
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)', flex: '1', minWidth: '200px' }}>
-<h4 style={{ marginTop: 0, marginBottom: '0.5rem', color: 'var(--ifm-color-primary)', textAlign: 'center' }}>Interoperable</h4>
-<p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)', textAlign: 'center' }}>
-Works seamlessly across platforms and applications
-</p>
-</div>
-
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)', flex: '1', minWidth: '200px' }}>
-<h4 style={{ marginTop: 0, marginBottom: '0.5rem', color: 'var(--ifm-color-primary)', textAlign: 'center' }}>Economically Incentivized</h4>
-<p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)', textAlign: 'center' }}>
-Rewards for quality contributions and honest behavior
-</p>
-</div>
-
-</div>
-
-## Explore the Overview
-
-<div className="uniform-card-grid">
-
-<a href="/docs/introduction/why-intuition" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
-<div className="uniform-card clickable-card">
-<h3 className="uniform-card-title">Why Intuition?</h3>
-<p className="uniform-card-content">
-Learn about the challenges Intuition addresses and our unique approach to building a decentralized knowledge graph.
-</p>
-</div>
-</a>
-
-<a href="/docs/introduction/the-economics" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
-<div className="uniform-card clickable-card">
-<h3 className="uniform-card-title">The Economics</h3>
-<p className="uniform-card-content">
-Understand Intuition's market-based system of fees and rewards, early adopter advantages, and how economic incentives drive consensus on data structures.
-</p>
-</div>
-</a>
-
-<a href="/docs/introduction/the-primitives" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
-<div className="uniform-card clickable-card">
-<h3 className="uniform-card-title">Primitives</h3>
-<p className="uniform-card-content">
-Dive deep into the fundamental building blocks: Atoms, Triples, and Signal. Learn how these primitives work together to create structured, semantic data.
-</p>
-</div>
-</a>
-
-<a href="/docs/resources/key-terms" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
-<div className="uniform-card clickable-card">
-<h3 className="uniform-card-title">Key Terms</h3>
-<p className="uniform-card-content">
-Master the essential terminology and concepts that form the foundation of the Intuition ecosystem and knowledge graph.
-</p>
-</div>
-</a>
-
-</div>
-
-## Mission Pages
-
-Our mission pages will guide you through:
-
-- **[Why Intuition](/docs/introduction/why-intuition)** - How Intuition addresses these challenges and our unique approach 
-### Why Intuition
-
----
-id: why-intuition
-title: Why Intuition?
-sidebar_label: Why Intuition?
-sidebar_position: 2
-description: Understanding the challenges Intuition addresses and our unique approach
----
 
 # Why Intuition?
 
-<div style={{ backgroundColor: 'var(--ifm-color-emphasis-50)', padding: '2rem', borderRadius: '12px', marginBottom: '2rem' }}>
-<p style={{ fontSize: '1.1rem', lineHeight: '1.7', margin: 0, color: 'var(--ifm-color-emphasis-700)' }}>
-Intuition gives developers the tools to build next-generation Web3 applications by offering:
-</p>
-</div>
+> **Every interaction online is an attestation.**
+> A review or a purchase on Amazon, a comment on Reddit, the watching of a show on Netflix, a retweet, a LinkedIn endorsement, a 'follow', a bookmark, the ordering of an Uber, even a "like" — all are forms of attestations: claims made by things about things.
 
-## Core Capabilities
+But attestations today are fragmented, unverifiable, and platform-locked. They don't move with you. They don't carry weight. They aren't semantically structured and unambiguously consumable by machines.
 
-<div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.5rem', marginBottom: '2rem' }}>
+**Intuition changes that.** We've rebuilt attestations as first-class, tokenized primitives — structured, portable, and economically backed. _Attestations on steroids._
 
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
-<h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>Composability</h4>
-<p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
-Easily integrate with existing Web3 infrastructure
-</p>
-</div>
+## Decentralizing Information with Attestations
 
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
-<h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>Semantic Structure</h4>
-<p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
-Define meaningful relationships between entities
-</p>
-</div>
+**Blockchains decentralized money.
+Intuition decentralizes information — by offering next-generation attestation infrastructure.**
 
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
-<h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>Programmable Incentives</h4>
-<p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
-Earn rewards for creating and curating valuable information
-</p>
-</div>
+An attestation in Intuition isn't just a line of text. It's:
 
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
-<h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>Privacy & Control</h4>
-<p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
-Users manage their own identities and data access
-</p>
-</div>
+- **Verifiable** — signed and attributable
+- **Ownable** — belongs to the creator, not a platform
+- **Discoverable** — structured as a Triple (subject → predicate → object)
+- **Valuable** — backed by economic incentives through bonding curves
 
-</div>
+This turns the messy stream of human expression into a global knowledge substrate that's actually useful to developers, communities, and AI agents.
+
+## Information Finance: Attestations as Assets
+
+Intuition pioneers **Information Finance (InfoFi)**: the idea that information can be valued and exchanged just like money.
+
+- **Ideas become assets** — an attestation isn't just data, it's collateralized
+- **Reputation becomes capital** — your attestations are your portfolio of credibility
+- **Knowledge flows freely** — attestations aren't siloed; they're cross-platform and composable
+
+Attestations are no longer passive byproducts of online activity — they're programmable building blocks for apps and agents.
+
+## The $200 Trillion Problem
+
+The global knowledge economy is worth over **$200 trillion**, yet:
+
+- Most of its value is created by individuals
+- Less than 1% of that value flows back to the creators
+- Instead, tech monopolies capture and silo it
+
+**The result:** broken rails, misinformation, and AI systems consuming oceans of low-quality data without provenance.
+
+Attestations are the missing rails. When data becomes signed, tokenized, and portable, it allows value to flow back to contributors and trust to flow into the systems that need it most.
+
+## Rebuilding the Rails of Knowledge
+
+Intuition makes attestations first-class protocol objects. That means:
+
+- **Facts, claims, and perspectives** are all structured as attestations
+- **Credibility is collateralized** — good attestations earn rewards; bad ones cost you stake
+- **Distribution is programmatic** — attestations move frictionlessly across apps, chains, and agents
+
+Think of it as the Ethereum moment for knowledge: where attestations flow as freely as tokens, powering new classes of decentralized infrastructure.
+
+## Programmatic Monetization and Distribution
+
+Attestations aren't just portable — they're **monetizable**.
+
+With Intuition, every attestation can plug into programmatic distribution rails:
+
+- Censorship-resistant search and discovery
+- Verifiable knowledge bases
+- Open data marketplaces
+- Training sets for AI agents
+
+Each attestation carries weight, liquidity, and discoverability, ensuring no single platform can gate what's visible or valuable.
+
+## From Information → Intuition
+
+Why does this matter? Because **raw information without provenance is noise.**
+
+Attestations, structured and economically backed, create a higher-resolution understanding of the world. They transform scattered data into collective intuition — fueling smarter AI, safer markets, and more confident human decision-making.
+
+## Reviving the Semantic Web with Crypto-Economic Consensus
+
+The Semantic Web failed because it required global consensus on standards without incentives to achieve it. Different organizations created competing schemas, vocabularies fragmented, and there was no mechanism to converge on shared identifiers.
+
+**Intuition solves this with crypto-economics** — the same force that achieves distributed consensus in blockchains now drives semantic standardization:
+
+- **Incentivized identifiers** — stake on canonical IDs for entities, creating economic pressure toward convergence
+- **Market-driven standards** — the most useful data structures attract the most stake and become de facto standards
+- **Emergent interoperability** — economic incentives naturally align participants toward compatible schemas
+- **Consensus through collateralization** — disagreements resolve through staking, not committees
+
+Where the Semantic Web asked the world to voluntarily agree on standards, Intuition makes consensus profitable. Attestations become the economic glue that binds distributed actors to shared semantic structures.
+
+## How It Works: Skin in the Game
+
+On Intuition, every attestation has consequences:
+
+- **Publish a useful attestation** → earn reputation and rewards
+- **Publish misinformation** → lose your stake and credibility
+- **Signal strong conviction** → stake more on your attestation
+- **Build trust** → accumulate a reputation that travels with you
+- **Use consensus identifiers** → earn more by aligning with the network
+- **Fork data structures** → lose money by fragmenting liquidity
+
+This flips today's internet incentives: no longer "reward the loudest," but reward the most credible and interoperable attestations.
+
+### The Fork Choice Rule for Data
+
+Just like blockchains have fork choice rules that determine the canonical chain, Intuition creates economic pressure toward canonical identifiers and data structures. **When you use consensus identifiers, you tap into existing liquidity pools and network effects. When you create competing forks, you isolate yourself economically.**
+
+**Example:** Imagine two identifiers for "Ethereum":
+- **Identifier A**: Used by 10,000 attestations with $1M total stake
+- **Identifier B**: Used by 50 attestations with $5K total stake
+
+If you make an attestation about Ethereum:
+- Using **Identifier A** → Your attestation joins a liquid market, benefits from network effects, earns higher rewards
+- Using **Identifier B** → Your attestation is isolated, has minimal visibility, earns negligible rewards
+
+The economic incentive is clear: converge on consensus or pay the price. This same dynamic applies to data structures, schemas, and semantic relationships. The network naturally evolves toward maximum interoperability because **consensus literally pays.**
+
+## Digital Sovereignty and Data Ownership
+
+**Your attestations are yours.** Not Facebook's, not LinkedIn's, not OpenAI's.
+
+- You **own** them
+- You **control** who can access them
+- You **capture** the value they generate
+- They **travel** with you across every app, chain, or agent
+
+Attestations become the backbone of digital sovereignty.
+
+## The Trust Layer for AI
+
+AI doesn't just need more data — it needs **verifiable attestations about data**:
+
+- Who said it
+- With what reputation
+- With what conviction
+
+Intuition provides the trust graph of attestations. AI systems can finally ground themselves in data with provenance, weights, and economic signals — not just raw text.
+
+This makes AI more reliable while ensuring humans share in the value of the knowledge they produce.
 
 ## What You Can Build
 
-<div style={{ backgroundColor: 'var(--ifm-color-emphasis-50)', padding: '1.5rem', borderRadius: '8px', marginBottom: '2rem' }}>
-<ul style={{ margin: 0, paddingLeft: '1.5rem' }}>
-<li style={{ marginBottom: '0.5rem' }}><strong>Verifiable identities and claims</strong></li>
-<li style={{ marginBottom: '0.5rem' }}><strong>Attestation-based trust systems</strong></li>
-<li style={{ marginBottom: '0.5rem' }}><strong>Social graphs and knowledge layers</strong></li>
-<li style={{ marginBottom: '0.5rem' }}><strong>Token-curated registries and information markets</strong></li>
-</ul>
-</div>
+By treating attestations as programmable primitives, you can create:
 
-## Key Differentiators
+- **Verifiable identity systems**
+- **Reputation networks** powered by attestations
+- **Decentralized fact-checking** with stakes
+- **AI agents** that reason over attestations as context
+- **Information markets** where attestations themselves are the assets
 
-<div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.5rem', marginBottom: '2rem' }}>
+## Join the Movement
 
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
-<h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>Global Decentralized Identifiers (DIDs)</h4>
-<p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
-Canonical, cross-platform IDs for any entity — not just people
-</p>
-</div>
+Intuition is about reclaiming the internet by giving attestations real weight.
 
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
-<h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>Traversable Attestations</h4>
-<p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
-Semantic, many-to-one attestations that enhance discoverability
-</p>
-</div>
+Whether you're a developer, researcher, or community builder, your contributions aren't just ephemeral posts — they're portable, valuable attestations that strengthen the global knowledge graph.
 
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
-<h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>Data Neutrality Framework</h4>
-<p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
-No gatekeepers; data can flow freely across the ecosystem
-</p>
-</div>
+**Together, we can rebuild the web around truth, attribution, and trust.**
 
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)' }}>
-<h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>Universal Knowledge Graph</h4>
-<p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
-Open, permissionless registry of meaningful information
-</p>
-</div>
+### Overview.md
+.md
+.mdx
 
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)', gridColumn: '1 / -1' }}>
-<h4 style={{ marginTop: 0, marginBottom: '0.75rem', color: 'var(--ifm-color-primary)' }}>Information Markets</h4>
-<p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-700)' }}>
-Incentives for creating and curating impactful, verifiable content
-</p>
-</div>
 
-</div>
-
-## What Makes Intuition Unique?
-
-### Not Just Another Identity Platform
-
-<div style={{ backgroundColor: 'var(--ifm-color-emphasis-50)', padding: '1.5rem', borderRadius: '8px', marginBottom: '2rem' }}>
-<p style={{ margin: '0 0 1rem 0', fontSize: '1rem', color: 'var(--ifm-color-emphasis-700)' }}>
-Intuition is a peer-to-peer knowledge sharing protocol — not a closed system. Key features:
-</p>
-<ul style={{ margin: 0, paddingLeft: '1.5rem' }}>
-<li style={{ marginBottom: '0.5rem' }}><strong>Decentralized Identifiers (DIDs)</strong> for any entity</li>
-<li style={{ marginBottom: '0.5rem' }}><strong>Semantic Claims</strong> formed using subject–predicate–object logic (Triples)</li>
-<li style={{ marginBottom: '0.5rem' }}><strong>Permissionless staking and signaling</strong> for truth curation</li>
-<li style={{ marginBottom: '0.5rem' }}><strong>Portable, composable data</strong> across any dApp or chain</li>
-</ul>
-</div>
-
-## What Is the Portal?
-
-<div style={{ border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '8px', padding: '1.5rem', backgroundColor: 'var(--ifm-background-color)', marginBottom: '1rem' }}>
-<p style={{ margin: '0 0 1rem 0', fontSize: '1rem', color: 'var(--ifm-color-emphasis-700)' }}>
-The Portal is Intuition's flagship application, providing a smooth interface for interacting with the protocol. Users can:
-</p>
-<ul style={{ margin: 0, paddingLeft: '1.5rem' }}>
-<li style={{ marginBottom: '0.5rem' }}><strong>Create and manage Identities (Atoms)</strong></li>
-<li style={{ marginBottom: '0.5rem' }}><strong>Make and explore Claims (Triples)</strong></li>
-<li style={{ marginBottom: '0.5rem' }}><strong>Stake ETH to signal conviction</strong></li>
-<li style={{ marginBottom: '0.5rem' }}><strong>View attestation histories and balances</strong></li>
-</ul>
-</div>
-
-:::tip
-This is where end users interact with the knowledge graph, while developers can build their own interfaces on top.
-:::
-
-## Core Concepts
-
-<div style={{ backgroundColor: 'var(--ifm-color-emphasis-50)', padding: '1.5rem', borderRadius: '8px', marginBottom: '2rem' }}>
-
-| Concept | Description |
-|---------|-------------|
-| **Identities (Atoms)** | Canonical representations of any entity — person, org, object, idea |
-| **Claims (Triples)** | Verifiable statements connecting three Atoms: Subject → Predicate → Object |
-| **Attestations** | Cryptographic signals of agreement or trust |
-| **Staking** | Users stake ETH to express belief in a Claim or Identity — and can earn rewards |
-
-</div>
-
-## Data Security & Privacy
-
-<div style={{ padding: '1.5rem', borderRadius: '8px', marginBottom: '2rem', backgroundColor: 'var(--ifm-background-color)' }}>
-<p style={{ margin: 0, fontSize: '1rem', color: 'var(--ifm-color-emphasis-700)', lineHeight: '1.6' }}>
-Intuition employs strong cryptographic standards to ensure data privacy, integrity, and transparency. Users own and control their data, and the system supports both public and permissioned usage models.
-</p>
-</div>
-
-## Community & Support
-
-<div style={{ backgroundColor: 'var(--ifm-color-emphasis-50)', padding: '1.5rem', borderRadius: '8px', marginBottom: '2rem' }}>
-<p style={{ margin: '0 0 1rem 0', fontSize: '1rem', color: 'var(--ifm-color-emphasis-700)' }}>
-If you have questions or want to join our growing community of builders and thinkers, join us in Discord! Our team is actively helping partners, developers, and researchers build the next generation of decentralized trust infrastructure.
-</p>
-<p style={{ margin: '0 0 1rem 0', fontSize: '1rem', color: 'var(--ifm-color-emphasis-700)' }}>
-For more detailed information about our community resources and support channels, visit our <a href="/docs/resources/community-and-support" style={{ color: 'var(--ifm-color-primary)', textDecoration: 'none' }}>Community & Support</a> page.
-</p>
-<p style={{ margin: 0, fontSize: '1rem', color: 'var(--ifm-color-emphasis-700)', fontStyle: 'italic' }}>
-This is just the beginning. Intuition is a living protocol, and your contributions — through development, staking, and participation — shape its future.
-</p>
-</div>
-### Overview
-
----
-title: Overview
-sidebar_position: 1
----
+import BrowserOnly from '@docusaurus/BrowserOnly';
+import ExcalidrawViewer from '@site/src/components/ExcalidrawViewer';
 
 # Primitives Overview
 
-The Intuition System is built on a set of novel primitives, which form the foundation of the ecosystem and enable the creation of a structured, semantic web of trust. 
-
-:::note
-Intuition introduces three new primitives: 
-
-1. **Atoms**: Intuition's atomic unit of knowledge, enabling unique, persistent, canonical identifiers for all things - not just people.
-2. **Triples:** A composition of Atoms - defined as Semantic Triples which represent the relationships between Atoms
-3. **Signal:** The weight of Atoms and Triples, derived from the total amount of ETH deposited in Atom and Triple Vaults
-:::
-
-## Explore Primitives
+Intuition's data model is built on three fundamental primitives that work together to create a rich, self-regulating knowledge graph:
 
 <div className="uniform-card-grid">
 
-<a href="/docs/introduction/the-primitives/fundamentals" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
-<div className="uniform-card clickable-card">
-<h3 className="uniform-card-title">Fundamentals</h3>
-<p className="uniform-card-content">
-Learn the core concepts of Atoms, Triples, Signal, Fees & Rewards, and State Interpretations. Master the building blocks of the Intuition system.
-</p>
-</div>
-</a>
-
-<a href="/docs/introduction/the-primitives/structuring" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
-<div className="uniform-card clickable-card">
-<h3 className="uniform-card-title">Structuring</h3>
-<p className="uniform-card-content">
-Discover advanced techniques for structuring data with Atoms and Triples, capturing signal, and calculating rewards in the Intuition ecosystem.
-</p>
-</div>
-</a>
-
-</div>
-
-## Core Primitives Overview
-
-<div className="uniform-card-grid-small">
-
 <div className="uniform-card">
-<h3 className="uniform-card-title">Atoms</h3>
+<h2 className="uniform-card-title">Atoms</h2>
 <p className="uniform-card-content">
-The most basic units of knowledge within Intuition, functioning as unique, globally persistent, decentralized identifiers for all things—people, concepts, products, and more.
-</p>
-<div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '1rem' }}>
-<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>Subjects</span>
-<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>Predicates</span>
-<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>Objects</span>
-</div>
-</div>
-
-<div className="uniform-card">
-<h3 className="uniform-card-title">Triples</h3>
-<p className="uniform-card-content">
-Higher-order structures used to define relationships between Atoms. Each Triple consists of three components: a Subject, Predicate, and Object.
-</p>
-<div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '1rem' }}>
-<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>Relationships</span>
-<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>Semantic</span>
-<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>Machine-readable</span>
-</div>
-</div>
-
-<div className="uniform-card">
-<h3 className="uniform-card-title">Signal</h3>
-<p className="uniform-card-content">
-Actions that express intent, belief, or support within the system. Signals can be explicit or implicit, contributing to trust and belief expression.
-</p>
-<div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '1rem' }}>
-<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>Trust</span>
-<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>Belief</span>
-<span style={{ backgroundColor: 'var(--ifm-color-emphasis-100)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)' }}>Support</span>
-</div>
-</div>
-
-</div>
-
-## Understanding Atoms
-
-The digital universe is vast, where everything from tangible objects to abstract concepts can be endowed with a digital identity. Atoms confer unique recognition and definition to persons, places, ideas, or even memes, ensuring each entity's distinct presence. Within Intuition, every Atom is secured by a unique DID (Decentralized Identifier) and an Ethereum wallet address, establishing a verifiable foundation.
-
-Atoms are categorized into three primary roles within semantic structures: **Subjects**, **Predicates**, and **Objects**. This structure facilitates the creation of **Triples** that articulate specific assertions or facts about the world.
-
-### Example Triple Structure
-
-<div style={{ backgroundColor: 'var(--ifm-color-emphasis-50)', padding: '1rem', borderRadius: '8px', margin: '1rem 0', border: '1px solid var(--ifm-color-emphasis-300)' }}>
-<p style={{ margin: '0 0 0.5rem 0', fontWeight: '600', color: 'var(--ifm-color-emphasis-900)' }}>Subject - Predicate - Object</p>
-<p style={{ margin: '0', fontFamily: 'monospace', fontSize: '0.9rem', color: 'var(--ifm-color-emphasis-700)' }}>
-<strong>Alice</strong> <span style={{ color: 'var(--ifm-color-emphasis-600)' }}>[Subject]</span> <strong>- hasAccessTo</strong> <span style={{ color: 'var(--ifm-color-emphasis-600)' }}>[Predicate]</span> <strong>- Intuition</strong> <span style={{ color: 'var(--ifm-color-emphasis-600)' }}>[Object]</span>
-</p>
-</div>
-
-* **Alice** is the **Subject**
-* **hasAccessTo** is the **Predicate**
-* **Intuition** is the **Object**
-
-Further illustrating the flexibility of Atoms, **Intuition** can also act as a **Subject:**
-
-<div style={{ backgroundColor: 'var(--ifm-color-emphasis-50)', padding: '1rem', borderRadius: '8px', margin: '1rem 0', border: '1px solid var(--ifm-color-emphasis-300)' }}>
-<p style={{ margin: '0', fontFamily: 'monospace', fontSize: '0.9rem', color: 'var(--ifm-color-emphasis-700)' }}>
-<strong>Intuition</strong> <span style={{ color: 'var(--ifm-color-emphasis-600)' }}>[Subject]</span> <strong>- is a</strong> <span style={{ color: 'var(--ifm-color-emphasis-600)' }}>[Predicate]</span> <strong>- Ethereum-based attestation protocol</strong> <span style={{ color: 'var(--ifm-color-emphasis-600)' }}>[Object]</span>
-</p>
-</div>
-
-This claim demonstrates Intuition's role and essence in a semantic, structured format.
-
-## Composition of Knowledge
-
-Acknowledging the potential for any entity, concept, or piece of data to hold a digital identity opens the door to collaboratively crafting an expansive knowledge graph. By arranging Atoms into Triples, we co-create a graph mapping out entities' interrelations and factual, verifiable assertions about the world.
-
-The journey within Intuition starts with an Atom. Engaging with this concept might begin by identifying entities within your realm of knowledge that fit neatly into the categories of Subjects, Predicates, or Objects. This process is a first step toward contributing to our collective mission: building a collaborative knowledge graph demonstrating the connections and relationships among all entities.
-
-## Components of an Atom
-
-<div className="uniform-card-grid-small">
-
-<div className="uniform-card">
-<h4 className="uniform-card-title">Atom Data</h4>
-<p className="uniform-card-content">
-Describes the concept or entity represented by an Atom, typically stored off-chain using decentralized storage solutions like IPFS or Arweave, with a URI pointing to this data stored on-chain.
+The basic entities or identifiers - unique decentralized identifiers for everything in existence. Think of them as the <strong>nodes</strong> in the knowledge graph, or the <strong>words</strong> in the dictionary.
 </p>
 </div>
 
 <div className="uniform-card">
-<h4 className="uniform-card-title">Atom Wallet</h4>
+<h2 className="uniform-card-title">Triples</h2>
 <p className="uniform-card-content">
-A smart contract wallet associated with each Atom, granting it agency over its identity. This wallet is controlled by a specialized smart contract known as the Atom Warden.
+Structured relationships or claims linking entities together in Subject-Predicate-Object format. These are the <strong>edges</strong> in the knowledge graph / the <strong>sentences</strong> in the language of Intuition.
 </p>
 </div>
 
 <div className="uniform-card">
-<h4 className="uniform-card-title">Atom Vault</h4>
+<h2 className="uniform-card-title">Signals</h2>
 <p className="uniform-card-content">
-A mechanism that allows users to deposit tokens into an Atom, signaling its relevance and support within the system. The Total Value Locked (TVL) in an Atom Vault indicates the Atom's acceptance and importance.
+The weight of trust or consensus behind each entity or claim, determined by community staking. These represent the <strong>edge weights</strong> in the graph, or 'who is saying what about what, with what level of conviction'.
 </p>
 </div>
 
 </div>
 
-## Triples
 
-Triples are higher-order structures within Intuition, used to define relationships between Atoms. Each Triple consists of three components: a Subject, Predicate, and Object, all of which are Atoms. This structure enables precise, machine-readable representations of data, facilitating complex and interconnected attestations.
+### Atoms.md
+.md
+.mdx
 
-### Triple Structure
 
-<div className="uniform-card-grid-small" style={{ marginTop: '1rem' }}>
-
-<div className="uniform-card">
-<h4 className="uniform-card-title">Subject</h4>
-<p className="uniform-card-content">
-The entity or concept being described.
-</p>
-</div>
-
-<div className="uniform-card">
-<h4 className="uniform-card-title">Predicate</h4>
-<p className="uniform-card-content">
-The relationship or attribute of the subject.
-</p>
-</div>
-
-<div className="uniform-card">
-<h4 className="uniform-card-title">Object</h4>
-<p className="uniform-card-content">
-The value or characteristic attributed to the subject.
-</p>
-</div>
-
-</div>
-
-In this example, each component—Subject, Predicate, and Object—is an Atom, and the Triple expresses a specific relationship between these Atoms.
-
-Triples form the relationships between Atoms, allowing for arbitrarily-linked data across the web.
-
-:::tip
-Triples can be used as Atoms in other Triples, allowing for the expression of arbitrarily complex statements in a standardized format.
-:::
-
-## Signal
-
-Signal in Intuition refers to any action that expresses intent, belief, or support within the system. Signals can be explicit, such as voting mechanisms or signed attestations, or implicit, inferred from user behavior.
-
-### Signal Mechanisms
-
-Users hold positions on Atoms and Triples, signaling their stance by increasing their balance on the relevant entities. Signals contribute to the nuanced expression of trust and belief, allowing for a dynamic and tiered system of preferences within the decentralized ecosystem.
-
-<div className="uniform-card" style={{ margin: '1rem 0' }}>
-<p className="uniform-card-title" style={{ marginBottom: '0.5rem' }}>Important Distinction</p>
-<p className="uniform-card-content" style={{ margin: 0 }}>
-Creating an Atom or Triple is distinctly different from taking a position on them. While users have the option to both create and take a position on an Atom/Triple at the time of creation, this Initial Deposit is not required. A user who makes no Initial Deposit will only create an Atom or Triple, which does not constitute a Signal.
-</p>
-</div>
-
-### Atoms
-
----
-title: Atoms
-sidebar_position: 2
----
+import BrowserOnly from '@docusaurus/BrowserOnly';
+import ExcalidrawViewer from '@site/src/components/ExcalidrawViewer';
 
 # Atoms
 
-Atoms are the fundamental building blocks of the Intuition knowledge graph - universal identifiers that can represent any entity, concept, or piece of information.
+Atoms are the foundational building blocks of Intuition's knowledge graph – the words in our global dictionary. Think of Intuition as a vast, collaborative dictionary where anyone can create a new word, and each word has its own globally persistent, unique digital identifier that can be used to reference it across the entire internet!
 
-## What are Atoms?
+## Understanding Atoms
 
-An Atom is a unique, immutable identifier that represents a single entity or concept within the Intuition ecosystem. Think of Atoms as the "nouns" of our semantic system - they can represent:
+In the spirit of the Semantic Web and linked data, an Atom can correspond to virtually anything:
 
-- **People**: Individual identities, profiles, or accounts
-- **Organizations**: Companies, DAOs, institutions
-- **Concepts**: Ideas, topics, categories
-- **Objects**: Products, assets, documents
-- **Properties**: Attributes, characteristics, qualities
-- **Actions**: Verbs, events, processes
+- **People**: User identities, profiles, public figures
+- **Organizations**: Companies, DAOs, institutions, projects
+- **Addresses**: Cryptocurrency wallets, smart contracts, validators
+- **Documents**: Files, articles, research papers, certificates
+- **Temporal markers**: Dates, timestamps, time periods
+- **Categories**: Tags, classifications, taxonomies
+- **Concepts**: Ideas, words, phrases, abstract notions
 
-## Key Characteristics
+Each Atom's unique ID is deterministically generated based on its `atomData` field – meaning the same data will always produce the same Atom ID. This ensures that duplicate Atoms cannot be created for identical data, and anyone can independently verify an Atom's ID by hashing its data. This design makes Atoms act as a bridge between on-chain identifiers and the rich context of off-chain data – similar to how an NFT token ID might reference metadata stored elsewhere.
 
-### Universal Identity
-Every Atom has a unique identifier that remains consistent across the entire network. This universality enables:
-- Cross-application data portability
-- Consistent referencing across platforms
-- Decentralized identity management
+## Technical Architecture
 
-### Immutability
-Once created, an Atom's core identity cannot be changed. This ensures:
-- Permanent, reliable references
-- Historical consistency
-- Trust in data integrity
+### Core Structure
 
-### Composability
-Atoms can be combined to form more complex structures:
-- Used as subjects, predicates, or objects in Triples
-- Referenced across multiple relationships
-- Building blocks for semantic networks
+Under the hood, creating a new Atom mints a tokenized record using the ERC-1155 multi-token standard that includes:
 
-## Creating Atoms
+1. **Unique Atom ID**: A permanent, immutable identifier deterministically derived from the atomData
+2. **Atom Data**: Can contain any arbitrary data (URIs, text, JSON, references to external resources)
+3. **Associated Smart Contract Wallet**: Enabling the Atom itself to own assets and interact with contracts
 
-### Basic Creation
+Every Atom carries `atomData` which can contain any arbitrary information relevant to that entity. For example:
+- An Atom for "Solar Energy" might contain a link to a Wikipedia page about solar power
+- An Atom for a user's identity might contain a DID document reference or profile JSON
+- An Atom for a document might contain an IPFS content hash
+- An Atom for a concept might contain a simple text string or structured JSON data
+
+### Staking Vaults and Bonding Curves
+
+Each Atom has one or more Vaults attached to it for staking. These vaults operate on a bonding curve, meaning:
+
+- The cost to acquire a stake (or "share") in an Atom increases as more is already staked
+- Early stakers get a larger stake for their investment
+- Latecomers pay a premium for popular Atoms
+
+This mechanism incentivizes early discovery of important Atoms and creates a form of priority signaling – the community collectively "bids up" the Atoms deemed valuable or relevant by risking capital in their vaults.
+
+### Atom Creation Process
+
+<BrowserOnly fallback={<p>Loading diagram...</p>}>
+  {() => <ExcalidrawViewer src="/excalidraw/atom-creation-diagram.excalidraw.json" zoom={0.3} scrollX={-150} scrollY={650} />}
+</BrowserOnly>
+
+## The Problem Atoms Solve
+
+
+### Universal Reference Standardization
+
+Today's web is siloed – the same entity might be referred to in dozens of different ways across different platforms. Consider how many separate user accounts or content IDs one person might have across various sites.
+
+Intuition's Atoms provide:
+- A single, canonical identifier for each real-world thing
+- Universal reusability across any application or user
+- Easy reconciliation and trust of data from disparate sources
+- Automatic deduplication through deterministic ID generation
+
+By converging on a universal set of Atoms, every piece of data about Alice can point to the same Atom `[Alice]`, rather than being scattered across unlinked profiles. Since Atom IDs are deterministically generated from their data, if two users try to create an Atom with identical data, they'll generate the same ID – preventing duplicates at the protocol level.
+
+### Market-Driven Ontology Management
+
+While deterministic IDs prevent exact duplicates, similar concepts might still be represented with slightly different data (e.g., "DeFi" vs "Decentralized Finance"). The protocol employs Token Curated Registry (TCR) logic for these cases:
+
+1. **Competition**: Users tend to stake on the Atom that others find more useful or legitimate
+2. **Signal Accumulation**: One variant accrues more Signal and usage over time
+3. **Natural Selection**: The preferred Atom wins out as the standard
+4. **Economic Incentives**: Early backers of the "winning" Atom are rewarded through vault fees and token emissions
+
+This market-driven approach, combined with deterministic ID generation, ensures the knowledge base converges on canonical representations while preventing exact duplicates.
+
+## Design Principles: Atomic Granularity
+
+### The Power of Flat Data
+
+A crucial best practice is keeping information modular and atomic. You are economically incentivized to create "flatter" Atoms – each representing a single, minimal concept – rather than packing composite information into one Atom.
+
+#### Why Granularity Matters
+
+Consider representing the statement: **"Tiger Research was founded in 2021"**
+
+**❌ Monolithic Approach** (Not Recommended):
 ```javascript
-// Creating a simple Atom
-const atom = await createAtom({
-  data: "Ethereum",
-  type: "concept"
-});
+// One Atom containing all information
+const statementAtom = {
+  data: "Tiger Research was founded in 2021"
+}
 ```
 
-### Structured Data
-Atoms can contain structured metadata:
+Problems with this approach:
+- Hard to verify which part might be incorrect if disputed
+- Cannot reuse individual components
+- Difficult to update or correct specific elements
+- Less composable with other data
+
+**✅ Atomic Approach** (Best Practice):
 ```javascript
-const personAtom = await createAtom({
-  data: {
-    name: "Alice",
-    type: "person",
-    attributes: {
-      role: "developer",
-      expertise: ["smart contracts", "DeFi"]
-    }
-  }
-});
+// Three separate Atoms
+const tigerResearchAtom = { data: "Tiger Research" }
+const foundedInAtom = { data: "founded in" }
+const year2021Atom = { data: "2021" }
+
+// Connected via a Triple
+const foundingTriple = {
+  subject: tigerResearchAtom,
+  predicate: foundedInAtom,
+  object: year2021Atom
+}
 ```
 
-## Atom Economics
+Benefits of this approach:
+- Each piece can be independently verified and traced
+- Individual components are reusable (the `[2021]` Atom can be used in countless other triples)
+- Corrections can be made to specific elements without discarding everything
+- Trust accrued by each Atom benefits all its usages
 
-### Creation Cost
-Creating an Atom requires:
-- **Staking**: Lock a minimum amount of tokens
-- **Fees**: Network transaction fees
-- **Storage**: Cost for permanent data storage
+### Economic Incentives for Granularity
 
-### Value Accrual
-Atoms gain value through:
-- **Usage**: Frequency of references in Triples
-- **Signals**: Attestations from users
-- **Network Effects**: Increased utility as more applications use them
+Intuition's economic model naturally guides users toward optimal granularity:
 
-## Atom Types
+- **Reusable Atoms** accumulate more Signal as they're referenced in multiple Triples
+- **High-Signal Atoms** attract more $TRUST stakes, increasing their network gravity
+- **Composite Atoms** with embedded data are less likely to be reused or staked
+- **Modular Design** maximizes potential for community adoption and value accrual
 
-### Identity Atoms
-Represent individual entities:
-- User profiles
-- Wallet addresses
-- Digital identities
+## Flexibility and Scope
 
-### Concept Atoms
-Abstract ideas and categories:
-- Topics
-- Tags
-- Classifications
+Atoms are not limited to static concepts. They can represent:
 
-### Property Atoms
-Attributes and characteristics:
-- Colors
-- Sizes
-- Qualities
+- **Dynamic entities**: User-generated content, evolving documents
+- **Abstract concepts**: Tags, categories, classifications
+- **Data structures**: JSON schemas, configuration templates
+- **Content chunks**: Text snippets, code fragments (via IPFS CID)
 
-### Action Atoms
-Verbs and processes:
-- "owns"
-- "created"
-- "verified"
+Regardless of what an Atom represents, the principles remain consistent:
+1. Give it a clear, unique identity
+2. Include relevant data in the atomData field
+3. Keep its scope narrow for maximum verifiability and reusability
 
 ## Best Practices
 
-### Naming Conventions
-- Use clear, descriptive identifiers
-- Follow consistent formatting
-- Consider internationalization
+### Creating Effective Atoms
 
-### Reusability
-- Check for existing Atoms before creating duplicates
-- Use canonical forms for common concepts
-- Leverage community-created Atoms
+1. **Leverage Deterministic IDs**: Remember that identical atomData will always produce the same Atom ID
+2. **Check for Similar Atoms**: Search for canonical Atoms before creating variations
+3. **Use Clear Data**: Choose descriptive, unambiguous data values
+4. **Maintain Single Purpose**: Each Atom should represent one thing
+5. **Consider Reusability**: Design Atoms others will want to reference
 
-### Metadata Standards
-- Include relevant context
-- Use standardized schemas
-- Provide clear descriptions
+### Atom Design Patterns
 
-## Atom Discovery
+Think of Atoms as **words in the Intuition dictionary**:
+- They are the lego-like pieces that snap into many contexts
+- Community Signal concentrates on the words that matter most
+- Triples form the "sentences" that connect these dictionary words together
 
-### Searching
-Find existing Atoms through:
-- GraphQL queries
-- Semantic search
-- Registry browsing
+### Integration with Triples
 
-### Registry
-The Atom Registry maintains:
-- Global Atom directory
-- Metadata indexes
-- Usage statistics
+Atoms gain their true power when connected via Triples:
+- **Subject Atoms**: The entity being described
+- **Predicate Atoms**: The relationship or property
+- **Object Atoms**: The value or target of the relationship
 
-## Integration
+This separation allows each component to be independently verified, updated, and trusted.
 
-### Smart Contracts
-Atoms are managed on-chain through:
-- Registry contracts
-- Factory patterns
-- Access controls
+## Practical Examples
 
-### APIs
-Access Atoms via:
-- GraphQL endpoints
-- REST APIs
-- SDK methods
-
-### SDKs
-Work with Atoms using:
-- JavaScript/TypeScript SDK
-- Python SDK
-- Direct contract interaction
-
-## Advanced Concepts
-
-### Atom Hierarchies
-Create structured relationships:
-- Parent-child relationships
-- Categorical organizations
-- Taxonomies
-
-### Atom Versioning
-While Atoms are immutable, you can:
-- Create new versions as separate Atoms
-- Link versions through Triples
-- Maintain version history
-
-### Atom Governance
-Community mechanisms for:
-- Dispute resolution
-- Quality standards
-- Naming conflicts
-
-## Use Cases
-
-### Identity Management
-- Decentralized profiles
-- Reputation systems
-- Access control
-
-### Knowledge Organization
-- Tagging systems
-- Content categorization
-- Semantic search
-
-### Asset Representation
-- NFT metadata
-- Token identities
-- Digital certificates
-
-## Example Implementations
-
-### Creating a User Profile
+### Identity Atom
 ```javascript
-// Create user Atom
-const userAtom = await createAtom({
-  data: "user:alice",
-  metadata: {
-    displayName: "Alice",
-    avatar: "ipfs://..."
-  }
-});
-
-// Create skill Atoms
-const skillAtom = await createAtom({
-  data: "skill:solidity"
-});
-
-// Link with Triples
-const hasSkill = await createTriple({
-  subject: userAtom.id,
-  predicate: "has-skill",
-  object: skillAtom.id
-});
+const aliceAtom = {
+  atomData: "https://alice.id/profile.json",
+  id: "atom_0x123...", // Deterministically generated from atomData
+  vault: "0xabc...",
+  signal: 1500
+}
 ```
 
-### Building a Taxonomy
+### Concept Atom
 ```javascript
-// Create category Atoms
-const techAtom = await createAtom({ data: "category:technology" });
-const blockchainAtom = await createAtom({ data: "category:blockchain" });
+const defiAtom = {
+  atomData: {
+    name: "DeFi",
+    definition: "Decentralized Finance",
+    reference: "ipfs://QmX.../defi-definition.json"
+  },
+  id: "atom_0x456...", // Deterministically generated from atomData
+  vault: "0xdef...",
+  signal: 8500
+}
+```
 
-// Create hierarchy
-const isSubcategory = await createTriple({
-  subject: blockchainAtom.id,
-  predicate: "subcategory-of",
-  object: techAtom.id
-});
+### Relationship Atom (Predicate)
+```javascript
+const expertInAtom = {
+  atomData: "expertIn",
+  id: "atom_0x789...", // Deterministically generated from "expertIn"
+  vault: "0xghi...",
+  signal: 3200
+}
 ```
 
 ## Next Steps
 
-- Learn about [Triples](./triples) to create relationships between Atoms
-- Explore [Signals](./signals) to add attestations to Atoms
-- Review the [SDK Documentation](/docs/developer-tools/sdks/overview) for implementation details
-- Check [Smart Contracts](/docs/developer-tools/contracts/contract-architecture) for on-chain interactions
-### Triples
+With Atoms as your foundation, you can:
+- Learn about [Triples](./triples) to create meaningful relationships between Atoms
+- Explore [Signals](./signals) to understand attestation and trust mechanics
+- Review [Vaults](./vaults) for staking and economic participation
+- Check the [SDK Documentation](/docs/developer-tools/sdks/overview) for implementation details
 
----
-title: Triples
-sidebar_position: 3
----
+### Triples.md
+.md
+.mdx
+
 
 # Triples
 
-Triples are the semantic relationships that connect Atoms, forming the structured knowledge graph that powers Intuition's decentralized intelligence layer.
+If Atoms are the words in Intuition's global dictionary, Triples are the sentences we create from those words. A Triple connects three Atoms to assert a relationship or fact in the form **[Subject] – [Predicate] – [Object]**. You can string these sentences together to express any arbitrarily-complex concept, all while retaining a discrete, referenceable structure!
 
-## What are Triples?
+## Understanding Triples
 
-A Triple is a three-part statement that expresses a relationship between Atoms, following the Subject-Predicate-Object (SPO) pattern. This fundamental structure, borrowed from semantic web standards like RDF, enables:
+A Triple is a fundamental data structure that expresses relationships between Atoms, following the classic RDF triple format used in semantic web technologies. This makes Intuition's data inherently machine-readable and structured.
 
-- **Semantic Relationships**: Express any type of connection between entities
-- **Queryable Knowledge**: Create structured, searchable information
-- **Composable Claims**: Build complex knowledge from simple statements
+Every Triple represents a claim—it asserts that a Subject has some relationship (Predicate) to an Object. For example:
 
-## Triple Structure
-
-Every Triple consists of three components:
-
-### Subject
-The entity that the statement is about
-- Must be an existing Atom
-- Represents the "who" or "what"
-- The focus of the statement
-
-### Predicate  
-The relationship or property being expressed
-- Can be an Atom or a string
-- Represents the "verb" or "property"
-- Defines the type of connection
-
-### Object
-The target or value of the relationship
-- Must be an existing Atom
-- Represents the complement of the subject
-- Completes the statement
-
-### Example
 ```
-[Alice] -- [knows] --> [Bob]
-Subject    Predicate    Object
+[Alice] -- [livesIn] --> [Paris]
 ```
 
-## Creating Triples
+This Triple asserts a fact about Alice's location, where:
+- **Alice** is the subject Atom
+- **livesIn** is the predicate Atom (describing the type of relationship)
+- **Paris** is the object Atom
 
-### Basic Triple Creation
+Each component of a Triple is an Atom ID under the hood. The system doesn't store free-form text "Alice" or "Paris" but rather pointers to those Atom records, which might contain rich data, alternate labels, and additional metadata.
+
+## The Graph Structure
+
+Triples naturally form a graph of nodes and links. You can visualize:
+- **Atoms as nodes** in the graph
+- **Triples as directed edges** from subject to object, labeled by the predicate
+
+This graph structure enables powerful capabilities:
+- Deterministic queries like "find all objects that Alice is connected to via livesIn"
+- Traversal of relationships to discover indirect connections
+- Pattern matching across the knowledge graph
+
+## Why Triples Matter
+
+### Semantic Clarity
+By expressing data in Triple format, Intuition ensures relationships are explicit and standardized. Instead of loose text statements like "Alice lives in Paris" (which computers struggle to parse), we have typed links that machines understand: `Alice —livesIn→ Paris`.
+
+### Reconciliation & Interoperability
+The clarity of Triples means different data sources referencing the same predicate can be merged or compared easily. This semantic structure makes data immediately useful to other systems—knowledge graphs and AI systems can ingest these subject-predicate-object triples without guessing their meaning.
+
+### Extensibility
+Triples are infinitely extensible. New information can be attached in graph form without altering the original nodes. If we later learn "Alice lives in Paris since 2015", we can introduce new Atoms and predicates to capture this additional context through supplementary Triples.
+
+### Composability
+The data model is open-ended—you can always extend the graph by adding another Triple rather than modifying existing ones. This is analogous to how one can keep adding facts to Wikipedia.
+
+## Nested Triples: Meta-Claims & Context
+
+One of Intuition's most powerful features is that Triples can reference other Triples, effectively nesting statements to provide context or provenance. Intuition supports using a Triple itself as a Subject or Object in another Triple.
+
+### Example: Disputing a Claim
+Consider an initial Triple:
+```
+[Bob] -- [isFriendOf] --> [Alice]
+```
+
+If Alice disagrees with this claim, we can create a nested Triple:
+```
+[Alice] -- [disproves] --> (Bob isFriendOf Alice)
+```
+
+Here, the Object of the second Triple is not an Atom but a reference to the first Triple (identified by its Triple ID). Alice is essentially asserting that the friendship claim is false.
+
+### Adding Evidence & Sources
+You can link Triples to evidence or citations:
+```
+[Triple X] -- [basedOn] --> [Document Y]
+```
+
+This ability to compose Triples into higher-order statements gives the graph a fractal quality—small facts build into bigger facts, and complex relationships can be broken down into simpler ones.
+
+## Positive and Negative Claims
+
+Unlike traditional databases that store only "the one truth," Intuition allows multiple competing Triples and uses Signals (stakes) to gauge their validity.
+
+### Two-Sided Staking Vaults
+Every Triple has two logical versions:
+- **YES vault**: Supporting the claim (affirmative)
+- **NO vault**: Denying the claim (negative)
+
+Users can stake on either side, effectively casting weighted votes about the truth of that Triple. This design means a Triple object encapsulates both the claim and its counter-claim within one structure.
+
+### Example: Contested Relationships
+For the Triple `[Bob] -- [isFriendOf] --> [Alice]`:
+- The affirmative vault contains stakes from those who agree Bob and Alice are friends
+- The negative vault contains stakes from those who disagree (potentially including Alice herself!)
+
+### Consensus Evaluation
+The network evaluates consensus by:
+- Comparing signals on both sides
+- Factoring in attestor reputation
+- Considering the number of attestors
+- Calculating confidence scores that adjust over time
+
+Importantly, Intuition doesn't force a single authoritative truth—it records the spectrum of belief. Multiple "canonical" Triples can compete, and the TCR mechanism with staking tends to favor the most accurate representations.
+
+## Best Practices for Structuring Triples
+
+### Use Precise Predicates
+The Predicate Atom is crucial for clarity. Guidelines:
+- **Search first**: Check if a canonical predicate already exists
+- **Reuse standards**: Don't create `[worksFor]` if `[employeeOf]` is widely used
+- **Converge on conventions**: Using common predicates helps data link up instead of fragmenting
+
+The Intuition community and token mechanics organically push toward standard predicates through signal accumulation.
+
+### One Fact Per Triple
+Each Triple should capture a single discrete claim:
+- ❌ "Alice isFriendOf Bob and coworker at CompanyX"
+- ✅ Two separate Triples: one for friendship, another for workplace
+
+Keeping to one relation makes staking and validation straightforward—people can agree with one link and not the other.
+
+### Leverage Nesting for Context
+When statements need qualification:
+- Create auxiliary Triples rather than complicating the original
+- Attach timeframes or sources through supporting Triples
+- Use nested Triples for meta-information
+
+Example: Time-bound relationships
+```
+Main Triple: [Alice] -- [isFriendOf] --> [Bob]
+Context Triple: [Triple ID] -- [validSince] --> [2023]
+```
+
+### Handle Counter-Claims Wisely
+Generally, you don't need to manually create "not X" Triples—the negative staking vault handles disagreement. However, sometimes a negation has specific meaning that deserves its own predicate (e.g., `[isNotFriendOf]` as a distinct relation type).
+
+The "Counter Triple" concept is more about how the UI and indexing organize the negative vault signal than about separate data objects.
+
+## Core Benefits
+
+### Semantic Clarity and Interoperability
+Each Triple makes a small, clear statement that can be understood in isolation or as part of larger datasets. This semantic structure means data from Intuition is immediately useful to other systems—knowledge graphs and AI can ingest these triples without guessing their meaning.
+
+### Flexibility & Composability
+Triples can represent simple facts or be combined into complex graphs. You can always extend the graph by adding another Triple rather than modifying existing ones. Because Triples can reference other Triples, you get composability in assertions—building evidence chains, tracking consensus over time, and more.
+
+### Built-In Conflict Resolution
+Triples come with a native way to handle conflicting views through the two-vault mechanism. This keeps contradictory information tethered to the original claim, improving data organization. Rather than disjointed claims floating around, everything is anchored—a false claim isn't simply deleted but gets counter-staked and remains in the graph with a low trust score.
+
+### Context and Evolution
+Knowledge in Intuition is not static. When statements become outdated or need context, you don't replace old data—you supplement it. For example, if Alice moves from Paris to London:
+1. Mark the Paris Triple as no longer current (stake against it or add an "endDate" context triple)
+2. Add `[Alice] -- [livesIn] --> [London]` as a new Triple with current timestamp
+
+The history is preserved, and queries can be time-scoped or context-aware thanks to the graph structure.
+
+## Practical Implementation
+
+### Creating Triples
 ```javascript
+// Basic Triple creation
 const triple = await createTriple({
   subjectId: aliceAtom.id,
-  predicateId: knowsAtom.id,
-  objectId: bobAtom.id
+  predicateId: livesInAtom.id,
+  objectId: parisAtom.id
 });
-```
 
-### With Metadata
-```javascript
-const triple = await createTriple({
-  subjectId: companyAtom.id,
-  predicateId: "employs",
-  objectId: developerAtom.id,
+// With temporal context
+const employmentTriple = await createTriple({
+  subjectId: person.id,
+  predicateId: "employed-by",
+  objectId: company.id,
   metadata: {
     startDate: "2024-01-01",
-    role: "Senior Developer",
     department: "Engineering"
   }
 });
 ```
 
-## Types of Triples
+### Nested Triple Example
+```javascript
+// Create the base claim
+const friendshipClaim = await createTriple({
+  subjectId: bob.id,
+  predicateId: isFriendOf.id,
+  objectId: alice.id
+});
 
-### Identity Triples
-Express identity relationships:
-- `[User] -- [is] --> [Developer]`
-- `[Wallet] -- [owns] --> [NFT]`
-- `[Entity] -- [controls] --> [Account]`
+// Alice disputes the claim
+const dispute = await createTriple({
+  subjectId: alice.id,
+  predicateId: disproves.id,
+  objectId: friendshipClaim.id  // Reference to the Triple itself
+});
+```
 
-### Property Triples
-Define characteristics:
-- `[Product] -- [has-color] --> [Blue]`
-- `[Document] -- [has-status] --> [Verified]`
-- `[Token] -- [has-supply] --> [1000000]`
+### Building Evidence Chains
+```javascript
+// Create a research finding
+const researchClaim = await createTriple({
+  subjectId: study.id,
+  predicateId: concludes.id,
+  objectId: result.id
+});
 
-### Action Triples
-Represent activities:
-- `[User] -- [created] --> [Content]`
-- `[Contract] -- [deployed-by] --> [Developer]`
-- `[Validator] -- [verified] --> [Transaction]`
+// Link to supporting document
+const evidence = await createTriple({
+  subjectId: researchClaim.id,  // Triple as subject
+  predicateId: basedOn.id,
+  objectId: peerReviewedPaper.id
+});
+```
 
-### Relationship Triples
-Connect entities:
-- `[Company] -- [partner-of] --> [Organization]`
-- `[Project] -- [funded-by] --> [Investor]`
-- `[Document] -- [references] --> [Source]`
+## Use Cases
 
-## Triple Economics
+### Knowledge Graphs
+Build comprehensive knowledge networks for:
+- Academic citations and research connections
+- Information hierarchies and taxonomies
+- Cross-referenced documentation systems
 
-### Creation Costs
-Creating a Triple requires:
-- **Base Fee**: Network transaction cost
-- **Storage Fee**: For permanent data storage
-- **Stake Amount**: Optional stake for higher weight
+### Identity & Reputation
+Create verifiable identity systems with:
+- Professional credentials and certifications
+- Social connections and endorsements
+- Achievement records and skill attestations
 
-### Value Mechanisms
-Triples gain value through:
-- **Signal Accumulation**: More attestations increase value
-- **Network Usage**: Frequently queried Triples
-- **Semantic Importance**: Critical relationships in the graph
+### Supply Chain
+Track product journeys through:
+- Origin verification and authenticity
+- Ownership transfers and custody chains
+- Quality attestations and compliance records
+
+### DeFi & Finance
+Express financial relationships including:
+- Asset ownership and portfolio composition
+- Lending positions and collateralization
+- Liquidity provisions and yield farming positions
 
 ## Querying Triples
 
-### By Subject
-Find all Triples about a specific entity:
+### Basic Queries
 ```graphql
+# Find all facts about Alice
 query {
-  triples(where: { subjectId: "atom_123" }) {
+  triples(where: { subjectId: "alice_atom_id" }) {
     predicate
     object {
       data
     }
   }
 }
-```
 
-### By Relationship
-Find all instances of a relationship:
-```graphql
+# Find all friendship relationships
 query {
-  triples(where: { predicate: "owns" }) {
-    subject {
-      data
-    }
-    object {
-      data
-    }
+  triples(where: { predicate: "isFriendOf" }) {
+    subject { data }
+    object { data }
   }
 }
 ```
 
-### Complex Queries
-Chain multiple Triple queries:
+### Traversing the Graph
 ```graphql
+# Find where Alice's friends live
 query {
-  triples(where: { 
-    subjectId: "user_456",
-    predicate: "member-of"
+  triples(where: {
+    subjectId: "alice_atom_id",
+    predicate: "isFriendOf"
   }) {
     object {
-      triples(where: { predicate: "located-in" }) {
-        object {
-          data
-        }
+      triples(where: { predicate: "livesIn" }) {
+        object { data }
       }
     }
   }
 }
-```
-
-## Triple Validation
-
-### Semantic Validation
-Ensure Triples make semantic sense:
-- Valid subject-predicate combinations
-- Appropriate object types
-- Logical consistency
-
-### Community Validation
-Triples gain credibility through:
-- Signal attestations
-- Peer review
-- Usage patterns
-
-### Programmatic Validation
-Smart contracts can enforce:
-- Type constraints
-- Permission requirements
-- Business logic rules
-
-## Advanced Concepts
-
-### Triple Chains
-Create sequences of related Triples:
-```
-[Document] -- [created-by] --> [Author]
-[Author] -- [affiliated-with] --> [Institution]
-[Institution] -- [located-in] --> [Country]
-```
-
-### Bidirectional Relationships
-Express inverse relationships:
-```
-[Alice] -- [follows] --> [Bob]
-[Bob] -- [followed-by] --> [Alice]
-```
-
-### Temporal Triples
-Include time-based context:
-```javascript
-const employment = await createTriple({
-  subjectId: person.id,
-  predicateId: "employed-by",
-  objectId: company.id,
-  metadata: {
-    validFrom: "2023-01-01",
-    validUntil: "2024-12-31"
-  }
-});
-```
-
-## Best Practices
-
-### Predicate Standards
-- Use consistent predicate naming
-- Follow community conventions
-- Document custom predicates
-
-### Triple Reusability
-- Avoid duplicate Triples
-- Reference existing relationships
-- Build on established patterns
-
-### Semantic Clarity
-- Make relationships explicit
-- Avoid ambiguous predicates
-- Provide context through metadata
-
-## Use Cases
-
-### Knowledge Graphs
-Build comprehensive knowledge networks:
-- Academic citations
-- Research connections
-- Information hierarchies
-
-### Identity & Reputation
-Create verifiable identity systems:
-- Professional credentials
-- Social connections
-- Achievement records
-
-### Supply Chain
-Track product journeys:
-- Origin verification
-- Ownership transfers
-- Quality attestations
-
-### DeFi & Finance
-Express financial relationships:
-- Asset ownership
-- Lending positions
-- Liquidity provisions
-
-## Example Implementations
-
-### Building a Social Graph
-```javascript
-// Create user Atoms
-const alice = await createAtom({ data: "user:alice" });
-const bob = await createAtom({ data: "user:bob" });
-const charlie = await createAtom({ data: "user:charlie" });
-
-// Create relationship Triples
-await createTriple({
-  subjectId: alice.id,
-  predicateId: "follows",
-  objectId: bob.id
-});
-
-await createTriple({
-  subjectId: bob.id,
-  predicateId: "follows",
-  objectId: charlie.id
-});
-
-await createTriple({
-  subjectId: alice.id,
-  predicateId: "friend-of",
-  objectId: charlie.id
-});
-```
-
-### Creating a Credential System
-```javascript
-// Create credential components
-const university = await createAtom({ data: "MIT" });
-const degree = await createAtom({ data: "Computer Science Degree" });
-const student = await createAtom({ data: "student:john" });
-
-// Create credential Triple
-const credential = await createTriple({
-  subjectId: student.id,
-  predicateId: "earned-degree",
-  objectId: degree.id,
-  metadata: {
-    institution: university.id,
-    year: 2023,
-    honors: "Summa Cum Laude"
-  }
-});
-
-// Add verification
-await createSignal({
-  tripleId: credential.id,
-  attestation: "verified",
-  stake: 1000
-});
 ```
 
 ## Integration with Other Primitives
@@ -1536,829 +744,27 @@ await createSignal({
 ### With Atoms
 - Triples connect Atoms into meaningful relationships
 - Atoms gain context through Triple connections
-- Triple predicates can themselves be Atoms
+- Triple predicates can themselves be Atoms for maximum flexibility
 
 ### With Signals
-- Signals add weight to Triple claims
-- Community validates Triples through Signals
-- Signal strength affects Triple credibility
+- Signals add weight to Triple claims through staking
+- Community validates Triples through Signal attestations
+- Signal strength directly affects Triple credibility and consensus
 
-## Next Steps
+## Summary
 
-- Learn about [Signals](./signals) to add attestations to Triples
-- Review [Atoms](./atoms) to understand Triple components
-- Explore the [GraphQL API](/docs/developer-tools/graphql-api/overview) for querying
-- Check [Smart Contracts](/docs/developer-tools/contracts/contract-architecture) for on-chain implementation
-### Signals
+Triples allow Intuition to form a living, searchable web of knowledge. When adding Triples, the goal is to make each claim as clear and verifiable as possible, selecting the right words (Atoms) from the global dictionary, and then letting the network of users and their Signals determine validity.
 
----
-title: Signals
-sidebar_position: 4
----
+With Atoms as the words in our global dictionary and Triples as the sentences we construct from them, we can express any arbitrarily-complex concept while maintaining discrete, referenceable structure. Here's where it becomes powerful: each Triple receives its own unique ID, effectively becoming a new "word" in the system that encapsulates an entire concept. This ID can then be referenced by other Triples, allowing you to build increasingly sophisticated expressions.
 
-# Signals
+Think of it as linguistic compression—instead of repeatedly expressing complex relationships, you create them once and reference them by ID. A Triple about "Alice's employment at a specific company with particular conditions" becomes a single referenceable unit. That unit can then be used in higher-order statements about employment trends, verification claims, or temporal changes. This creates a hierarchy of meaning where complex ideas are built from simpler ones, yet each level remains independently addressable and verifiable.
 
-Signals are the attestation mechanism that brings community validation and economic weight to claims in the Intuition knowledge graph, transforming static data into dynamic, trusted intelligence.
+The result is an extraordinarily efficient knowledge transmission system. Rather than sending verbose descriptions, systems can exchange compact Triple IDs that expand into rich, contextual information. Each ID carries with it not just data, but the entire graph of relationships, evidence, and community consensus that supports it. The addition of Signals completes the picture by measuring which sentences (facts) are trusted by the community.
 
-## What are Signals?
+### Overview.mdx
+.md
+.mdx
 
-A Signal is an economic attestation that users can add to Atoms or Triples to express support, disagreement, or validation. By staking tokens behind their attestations, users create a web of economically-backed trust that helps separate truth from fiction.
-
-## How Signals Work
-
-### Economic Attestations
-Unlike simple votes or likes, Signals require users to stake tokens, creating:
-- **Skin in the Game**: Real economic commitment to claims
-- **Quality Filtering**: Higher stakes indicate stronger conviction
-- **Sybil Resistance**: Economic cost prevents spam and manipulation
-
-### Signal Direction
-Signals can be:
-- **Positive**: Supporting or validating a claim
-- **Negative**: Disputing or disagreeing with a claim
-- **Neutral**: Acknowledging without judgment
-
-### Signal Weight
-The strength of a Signal depends on:
-- **Stake Amount**: More tokens = stronger signal
-- **Staker Reputation**: Signals from verified users carry more weight
-- **Time Factor**: Earlier signals may have more impact
-
-## Creating Signals
-
-### Basic Signal
-```javascript
-const signal = await createSignal({
-  targetId: atomOrTripleId,
-  direction: "positive",
-  stake: 100 // Amount of tokens to stake
-});
-```
-
-### Signal with Context
-```javascript
-const signal = await createSignal({
-  targetId: tripleId,
-  direction: "positive",
-  stake: 500,
-  metadata: {
-    reason: "Verified through primary sources",
-    evidence: "ipfs://...",
-    confidence: 0.95
-  }
-});
-```
-
-## Signal Economics
-
-### Staking Mechanism
-When creating a Signal:
-1. **Lock Tokens**: Stake amount is locked in the contract
-2. **Bonding Curve**: Price increases with more signals
-3. **Reward Distribution**: Stakers can earn from future signals
-
-### Fee Structure
-Signal creation involves:
-- **Network Fee**: Basic transaction cost
-- **Protocol Fee**: Small percentage for protocol sustainability
-- **Stake Amount**: User-defined commitment
-
-### Value Accrual
-Signals create value through:
-- **Early Staking Rewards**: First movers get better rates
-- **Consensus Rewards**: Aligning with community consensus
-- **Curation Rewards**: Identifying valuable information early
-
-## Types of Signals
-
-### Validation Signals
-Confirm the accuracy of information:
-- Fact-checking claims
-- Verifying credentials
-- Authenticating sources
-
-### Reputation Signals
-Build trust networks:
-- Endorsing individuals
-- Vouching for organizations
-- Supporting quality content
-
-### Preference Signals
-Express subjective opinions:
-- Quality ratings
-- Relevance scoring
-- Personal recommendations
-
-### Dispute Signals
-Challenge incorrect information:
-- Flagging misinformation
-- Correcting errors
-- Raising concerns
-
-## Signal Aggregation
-
-### Consensus Mechanisms
-Signals aggregate to form consensus:
-```javascript
-// Query aggregate signal data
-const consensus = await getSignalConsensus({
-  targetId: tripleId,
-  metric: "weighted_average"
-});
-
-console.log(consensus);
-// {
-//   positive: 1500, // Total positive stake
-//   negative: 200,  // Total negative stake
-//   consensus: 0.88, // Consensus score
-//   confidence: "high"
-// }
-```
-
-### Weighting Algorithms
-Different methods for calculating signal strength:
-- **Linear**: Direct sum of stakes
-- **Logarithmic**: Diminishing returns on large stakes
-- **Reputation-Weighted**: Factor in staker credibility
-- **Time-Weighted**: Recent signals count more
-
-## Querying Signals
-
-### Get Signals for Target
-```graphql
-query {
-  signals(where: { targetId: "atom_or_triple_id" }) {
-    id
-    direction
-    stake
-    creator {
-      address
-      reputation
-    }
-    timestamp
-  }
-}
-```
-
-### Aggregate Signal Data
-```graphql
-query {
-  signalStats(targetId: "triple_123") {
-    totalPositive
-    totalNegative
-    uniqueSignalers
-    consensusScore
-    topSignalers {
-      address
-      totalStake
-    }
-  }
-}
-```
-
-## Signal Strategies
-
-### Early Signaling
-Benefits of signaling early:
-- Better bonding curve position
-- Higher potential returns
-- Influence on consensus formation
-
-### Contrarian Signaling
-Strategic counter-signaling:
-- Identify overvalued claims
-- Profit from corrections
-- Provide market balance
-
-### Portfolio Signaling
-Diversified signal strategies:
-- Spread risk across multiple claims
-- Build domain expertise
-- Create signal portfolios
-
-## Advanced Concepts
-
-### Signal Cascades
-How signals influence each other:
-```
-Initial Signal → Attracts Attention → 
-More Signals → Consensus Forms → 
-Network Effects → Value Accrual
-```
-
-### Signal Decay
-Time-based signal relevance:
-- Recent signals may have more weight
-- Historical signals provide context
-- Decay rates vary by use case
-
-### Signal Delegation
-Allowing others to signal on your behalf:
-```javascript
-const delegation = await delegateSignaling({
-  delegate: expertAddress,
-  amount: 1000,
-  duration: 30 * 24 * 60 * 60, // 30 days
-  constraints: {
-    topics: ["DeFi", "Security"],
-    maxPerSignal: 100
-  }
-});
-```
-
-## Use Cases
-
-### Fact Checking
-Community-driven verification:
-- News validation
-- Claim verification
-- Source authentication
-
-### Reputation Systems
-Building trust networks:
-- Professional endorsements
-- Skill validations
-- Identity verification
-
-### Content Curation
-Quality filtering:
-- Research paper validation
-- Code review attestations
-- Educational content rating
-
-### Prediction Markets
-Signaling future outcomes:
-- Event predictions
-- Trend forecasting
-- Risk assessment
-
-## Risk Management
-
-### Signal Risks
-Understanding potential downsides:
-- **Stake Loss**: Wrong consensus can mean losses
-- **Opportunity Cost**: Locked tokens can't be used elsewhere
-- **Market Manipulation**: Whale influence on small markets
-
-### Mitigation Strategies
-Protecting your stakes:
-- Diversify signal portfolio
-- Research before signaling
-- Start with small stakes
-- Monitor consensus shifts
-
-## Example Implementations
-
-### Building a Fact-Checking System
-```javascript
-// Create a claim Triple
-const claim = await createTriple({
-  subjectId: newsArticle.id,
-  predicateId: "claims",
-  objectId: statement.id
-});
-
-// Community signals on claim validity
-const proSignal = await createSignal({
-  targetId: claim.id,
-  direction: "positive",
-  stake: 250,
-  metadata: {
-    sources: ["source1", "source2"],
-    verifiedBy: "fact-checker-dao"
-  }
-});
-
-const contraSignal = await createSignal({
-  targetId: claim.id,
-  direction: "negative",
-  stake: 100,
-  metadata: {
-    reason: "Conflicting evidence",
-    evidence: "ipfs://..."
-  }
-});
-
-// Query consensus
-const verdict = await getConsensus(claim.id);
-```
-
-### Reputation Staking
-```javascript
-// Create reputation Triple
-const endorsement = await createTriple({
-  subjectId: user.id,
-  predicateId: "has-skill",
-  objectId: skill.id
-});
-
-// Multiple users signal to validate
-for (const endorser of endorsers) {
-  await createSignal({
-    targetId: endorsement.id,
-    direction: "positive",
-    stake: endorser.confidence * 100,
-    metadata: {
-      relationship: endorser.relationship,
-      yearsKnown: endorser.years
-    }
-  });
-}
-```
-
-## Integration with Other Primitives
-
-### With Atoms
-- Signals validate Atom existence and relevance
-- Atom value increases with positive signals
-- Signal consensus affects Atom visibility
-
-### With Triples
-- Signals verify Triple accuracy
-- Triple credibility depends on signal consensus
-- Disputed Triples have mixed signals
-
-## Best Practices
-
-### Signal Hygiene
-- Research before signaling
-- Document signal reasoning
-- Monitor signal performance
-- Adjust strategy based on results
-
-### Portfolio Management
-- Diversify across topics
-- Balance risk levels
-- Track signal ROI
-- Rebalance periodically
-
-### Community Engagement
-- Follow signal leaders
-- Share signal insights
-- Participate in governance
-- Contribute to standards
-
-## Next Steps
-
-- Review [Atoms](./atoms) and [Triples](./triples) to understand signal targets
-- Explore the [GraphQL API](/docs/developer-tools/graphql-api/overview) for signal queries
-- Learn about [Smart Contracts](/docs/developer-tools/contracts/contract-architecture) for on-chain signaling
-- Check the [Economics](/docs/introduction/the-economics/the-economics) page for detailed tokenomics
-### Index
-
----
-title: Get Started
-sidebar_position: 1
----
-
-<a href="/docs/quickstart/speed-run-intuition" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
-<div className="uniform-card clickable-card" style={{
-  backgroundColor: 'var(--ifm-color-emphasis-50)',
-  borderRadius: '16px',
-  padding: '2rem',
-  marginBottom: '3rem',
-  textAlign: 'center'
-}}>
-  <h1 style={{
-    fontSize: '2.5rem',
-    fontWeight: '700',
-    marginBottom: '1rem',
-    color: 'var(--ifm-color-emphasis-900)'
-  }}>
-    QuickStart
-  </h1>
-  <p style={{
-    fontSize: '1.1rem',
-    maxWidth: '600px',
-    margin: '0 auto',
-    lineHeight: '1.6',
-    color: 'var(--ifm-color-emphasis-700)'
-  }}>
-    Get up and running with Intuition in minutes. Choose your integration path and start building the future of trust online.
-  </p>
-</div>
-</a>
-
-## Choose Your Integration Path
-
-<div style={{
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '2rem',
-  marginBottom: '3rem'
-}}>
-
-<a href="/docs/quickstart/speed-run-intuition" style={{ textDecoration: 'none', color: 'inherit' }}>
-<div className="uniform-card clickable-card" style={{ 
-  border: '2px solid #10B981',
-  borderRadius: '16px',
-  padding: '2rem',
-  display: 'flex',
-  alignItems: 'center',
-  gap: '2rem'
-}}>
-<div style={{
-  width: '80px',
-  height: '80px',
-  borderRadius: '20px',
-  background: 'linear-gradient(135deg, #10B981, #047857)',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  flexShrink: 0,
-  boxShadow: '0 4px 12px rgba(16, 185, 129, 0.3)'
-}}>
-<svg width="32" height="32" viewBox="0 0 24 24" fill="white">
-<path d="M13,20H11V8L5.5,13.5L4.08,12.08L12,4.16L19.92,12.08L18.5,13.5L13,8V20Z"/>
-</svg>
-</div>
-<div style={{ flex: 1 }}>
-<h3 style={{ 
-  marginTop: 0,
-  marginBottom: '1rem',
-  color: '#047857',
-  fontSize: '1.5rem',
-  fontWeight: '600'
-}}>Speed Run</h3>
-<p style={{
-  fontSize: '1rem',
-  lineHeight: '1.6',
-  marginBottom: '1rem'
-}}>
-Get up and running in under 5 minutes with our fastest onboarding experience. Perfect for developers who want to see results immediately.
-</p>
-<div style={{ fontSize: '0.9rem', color: '#10B981', fontWeight: '500' }}>
-Quick Setup • Fast Results • Pre-configured
-</div>
-</div>
-</div>
-</a>
-
-<div style={{
-  display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-  gap: '2rem'
-}}>
-
-<a href="/docs/quickstart/official-intuition-kits" style={{ textDecoration: 'none', color: 'inherit' }}>
-<div className="uniform-card clickable-card" style={{ 
-  borderRadius: '16px',
-  padding: '2rem',
-  height: '100%',
-  display: 'flex',
-  flexDirection: 'column'
-}}>
-<div style={{
-  width: '60px',
-  height: '60px',
-  borderRadius: '16px',
-  background: 'linear-gradient(135deg, #3B82F6, #1D4ED8)',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  marginBottom: '1.5rem',
-  boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)'
-}}>
-<svg width="28" height="28" viewBox="0 0 24 24" fill="white">
-<path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18A6,6 0 0,0 18,12A6,6 0 0,0 12,6M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8Z"/>
-</svg>
-</div>
-<h3 style={{ 
-  marginTop: 0,
-  marginBottom: '1rem',
-  color: '#1D4ED8',
-  fontSize: '1.25rem',
-  fontWeight: '600'
-}}>Official Kits</h3>
-<p style={{
-  fontSize: '0.95rem',
-  lineHeight: '1.6',
-  marginBottom: '1.5rem',
-  flexGrow: 1
-}}>
-Use our carefully crafted starter kits with best practices built-in. Ideal for production-ready applications with solid foundations.
-</p>
-<div style={{ fontSize: '0.9rem', color: '#3B82F6', fontWeight: '500' }}>
-Production Ready • Best Practices • Full Featured
-</div>
-</div>
-</a>
-
-<a href="/docs/quickstart/community-built-kits" style={{ textDecoration: 'none', color: 'inherit' }}>
-<div className="uniform-card clickable-card" style={{ 
-  borderRadius: '16px',
-  padding: '2rem',
-  height: '100%',
-  display: 'flex',
-  flexDirection: 'column'
-}}>
-<div style={{
-  width: '60px',
-  height: '60px',
-  borderRadius: '16px',
-  background: 'linear-gradient(135deg, #7C3AED, #A855F7)',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  marginBottom: '1.5rem',
-  boxShadow: '0 4px 12px rgba(124, 58, 237, 0.3)'
-}}>
-<svg width="28" height="28" viewBox="0 0 24 24" fill="white">
-<path d="M12,5.5A3.5,3.5 0 0,1 15.5,9A3.5,3.5 0 0,1 12,12.5A3.5,3.5 0 0,1 8.5,9A3.5,3.5 0 0,1 12,5.5M5,8C5.56,8 6.08,8.15 6.53,8.42C6.38,9.85 6.8,11.27 7.66,12.38C7.16,13.34 6.16,14 5,14A3,3 0 0,1 2,11A3,3 0 0,1 5,8M19,8A3,3 0 0,1 22,11A3,3 0 0,1 19,14C17.84,14 16.84,13.34 16.34,12.38C17.2,11.27 17.62,9.85 17.47,8.42C17.92,8.15 18.44,8 19,8M5.5,18.25C5.5,16.18 8.41,14.5 12,14.5C15.59,14.5 18.5,16.18 18.5,18.25V20H5.5V18.25Z"/>
-</svg>
-</div>
-<h3 style={{ 
-  marginTop: 0,
-  marginBottom: '1rem',
-  color: '#A855F7',
-  fontSize: '1.25rem',
-  fontWeight: '600'
-}}>Community-Built Kits</h3>
-<p style={{
-  fontSize: '0.95rem',
-  lineHeight: '1.6',
-  marginBottom: '1.5rem',
-  flexGrow: 1
-}}>
-Explore innovative templates created by the community. Discover unique approaches and creative implementations from fellow developers.
-</p>
-<div style={{ fontSize: '0.9rem', color: '#7C3AED', fontWeight: '500' }}>
-Community Driven • Creative Solutions • Diverse Options
-</div>
-</div>
-</a>
-
-</div>
-
-</div>
-
-## What You'll Learn
-
-<div style={{
-  display: 'flex',
-  flexDirection: 'row',
-  gap: '2rem',
-  marginBottom: '3rem',
-  flexWrap: 'wrap'
-}}>
-
-<div style={{
-  flex: '1',
-  minWidth: '250px',
-  padding: '1.5rem',
-  backgroundColor: 'var(--ifm-color-emphasis-50)',
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '12px'
-}}>
-<h4 style={{ 
-  marginTop: 0, 
-  marginBottom: '1rem', 
-  color: 'var(--ifm-color-primary)',
-  fontSize: '1.1rem',
-  fontWeight: '600'
-}}>
-Development Setup
-</h4>
-<p style={{ margin: 0, fontSize: '0.95rem', lineHeight: '1.6', color: 'var(--ifm-color-emphasis-700)' }}>
-Configure your development environment with all necessary tools and dependencies for building with Intuition.
-</p>
-</div>
-
-<div style={{
-  flex: '1',
-  minWidth: '250px',
-  padding: '1.5rem',
-  backgroundColor: 'var(--ifm-color-emphasis-50)',
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '12px'
-}}>
-<h4 style={{ 
-  marginTop: 0, 
-  marginBottom: '1rem', 
-  color: 'var(--ifm-color-primary)',
-  fontSize: '1.1rem',
-  fontWeight: '600'
-}}>
-First Application
-</h4>
-<p style={{ margin: 0, fontSize: '0.95rem', lineHeight: '1.6', color: 'var(--ifm-color-emphasis-700)' }}>
-Create your first Intuition application using atoms, triples, and signals to build trustful interactions.
-</p>
-</div>
-
-<div style={{
-  flex: '1',
-  minWidth: '250px',
-  padding: '1.5rem',
-  backgroundColor: 'var(--ifm-color-emphasis-50)',
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '12px'
-}}>
-<h4 style={{ 
-  marginTop: 0, 
-  marginBottom: '1rem', 
-  color: 'var(--ifm-color-primary)',
-  fontSize: '1.1rem',
-  fontWeight: '600'
-}}>
-API Integration
-</h4>
-<p style={{ margin: 0, fontSize: '0.95rem', lineHeight: '1.6', color: 'var(--ifm-color-emphasis-700)' }}>
-Integrate with the Intuition GraphQL API to query and mutate data in the knowledge graph.
-</p>
-</div>
-
-<div style={{
-  flex: '1',
-  minWidth: '250px',
-  padding: '1.5rem',
-  backgroundColor: 'var(--ifm-color-emphasis-50)',
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '12px'
-}}>
-<h4 style={{ 
-  marginTop: 0, 
-  marginBottom: '1rem', 
-  color: 'var(--ifm-color-primary)',
-  fontSize: '1.1rem',
-  fontWeight: '600'
-}}>
-Network Connection
-</h4>
-<p style={{ margin: 0, fontSize: '0.95rem', lineHeight: '1.6', color: 'var(--ifm-color-emphasis-700)' }}>
-Connect to the Intuition testnet and understand how to deploy and test your applications.
-</p>
-</div>
-
-</div>
-
-## Prerequisites
-
-<div style={{
-  backgroundColor: 'var(--ifm-color-emphasis-50)',
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '16px',
-  padding: '2rem',
-  marginBottom: '3rem'
-}}>
-
-<p style={{ marginTop: 0, marginBottom: '1.5rem', fontSize: '1rem', color: 'var(--ifm-color-emphasis-700)' }}>
-Before you begin, make sure you have:
-</p>
-
-<div style={{
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '1rem'
-}}>
-
-<div style={{
-  display: 'flex',
-  alignItems: 'center',
-  gap: '0.75rem'
-}}>
-<div style={{
-  width: '24px',
-  height: '24px',
-  borderRadius: '50%',
-  backgroundColor: 'var(--ifm-color-success)',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  flexShrink: 0
-}}>
-<svg width="14" height="14" viewBox="0 0 24 24" fill="white">
-<path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"/>
-</svg>
-</div>
-<span style={{ fontSize: '1rem', fontWeight: '500' }}>Node.js (version 18 or higher)</span>
-</div>
-
-<div style={{
-  display: 'flex',
-  alignItems: 'center',
-  gap: '0.75rem'
-}}>
-<div style={{
-  width: '24px',
-  height: '24px',
-  borderRadius: '50%',
-  backgroundColor: 'var(--ifm-color-success)',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  flexShrink: 0
-}}>
-<svg width="14" height="14" viewBox="0 0 24 24" fill="white">
-<path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"/>
-</svg>
-</div>
-<span style={{ fontSize: '1rem', fontWeight: '500' }}>A code editor (VS Code recommended)</span>
-</div>
-
-<div style={{
-  display: 'flex',
-  alignItems: 'center',
-  gap: '0.75rem'
-}}>
-<div style={{
-  width: '24px',
-  height: '24px',
-  borderRadius: '50%',
-  backgroundColor: 'var(--ifm-color-success)',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  flexShrink: 0
-}}>
-<svg width="14" height="14" viewBox="0 0 24 24" fill="white">
-<path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"/>
-</svg>
-</div>
-<span style={{ fontSize: '1rem', fontWeight: '500' }}>Basic knowledge of JavaScript/TypeScript</span>
-</div>
-
-<div style={{
-  display: 'flex',
-  alignItems: 'center',
-  gap: '0.75rem'
-}}>
-<div style={{
-  width: '24px',
-  height: '24px',
-  borderRadius: '50%',
-  backgroundColor: 'var(--ifm-color-success)',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  flexShrink: 0
-}}>
-<svg width="14" height="14" viewBox="0 0 24 24" fill="white">
-<path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"/>
-</svg>
-</div>
-<span style={{ fontSize: '1rem', fontWeight: '500' }}>Git installed on your system</span>
-</div>
-
-</div>
-
-</div>
-
-<div style={{
-  background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)',
-  border: '1px solid #404040',
-  borderRadius: '16px',
-  padding: '2rem',
-  textAlign: 'center',
-  color: 'white'
-}}>
-<h3 style={{ marginTop: 0, marginBottom: '1rem', color: 'white' }}>
-Ready to Build the Future of Trust?
-</h3>
-<p style={{ margin: '0 0 1.5rem 0', color: 'rgba(255, 255, 255, 0.9)', fontSize: '1.1rem' }}>
-Choose your integration path above and start building something amazing with Intuition!
-</p>
-<div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-<a href="/docs/quickstart/speed-run-intuition" style={{
-  backgroundColor: 'var(--ifm-color-primary)',
-  color: 'white',
-  padding: '0.75rem 1.5rem',
-  borderRadius: '8px',
-  textDecoration: 'none',
-  fontWeight: '500',
-  display: 'inline-flex',
-  alignItems: 'center',
-  gap: '0.5rem',
-  transition: 'all 0.2s ease'
-}}>
-Start Speed Run
-</a>
-<a href="/docs/hub" style={{
-  backgroundColor: 'transparent',
-  color: 'white',
-  padding: '0.75rem 1.5rem',
-  borderRadius: '8px',
-  textDecoration: 'none',
-  fontWeight: '500',
-  border: '1px solid rgba(255, 255, 255, 0.3)',
-  display: 'inline-flex',
-  alignItems: 'center',
-  gap: '0.5rem',
-  transition: 'all 0.2s ease'
-}}>
-Explore Testnet
-</a>
-</div>
-</div> 
-### Overview.Mdx
-
----
-id: overview
-title: SDK Guide
-sidebar_label: SDK Guide
-sidebar_position: 1
-description: Complete guide to using the Intuition SDK for development
----
 
 # Intuition SDK Guide
 
@@ -2530,13 +936,14 @@ The Intuition SDK supports multiple networks:
 
 | Network | Chain ID | Type | Status |
 |---------|----------|------|--------|
+| Intuition Network | 1155 | Mainnet | ✅ Production |
+| Intuition Network Testnet | 13579 | Testnet | ✅ Development |
 | Base Mainnet | 8453 | Mainnet | ✅ Production |
 | Base Sepolia | 84532 | Testnet | ✅ Development |
 | Ethereum Mainnet | 1 | Mainnet | ✅ Production |
 | Sepolia | 11155111 | Testnet | ✅ Development |
 | Arbitrum One | 42161 | Mainnet | ✅ Production |
 | Arbitrum Sepolia | 421614 | Testnet | ✅ Development |
-| Intuition L3 (Caldera) | TBD | L3 Rollup | 🚧 Development |
 
 The SDK automatically detects the network and uses the appropriate contract addresses via `getEthMultiVaultAddressFromChainId()`.
 
@@ -2892,511 +1299,100 @@ bun test
 
 Contributions are welcome! Please see the main repository for more information on how to contribute.
 
-### Overview.Mdx
+### Overview.mdx
+.md
+.mdx
 
----
-id: overview
-title: Overview
-sidebar_label: Overview
-sidebar_position: 1
-description: Introduction to the Intuition GraphQL API and its key features
----
+
+import GraphQLPlayground from '@site/src/components/GraphQLPlayground';
+import BrowserOnly from '@docusaurus/BrowserOnly';
+import ExcalidrawViewer from '@site/src/components/ExcalidrawViewer';
 
 # GraphQL API Overview
 
-The Intuition GraphQL package provides a type-safe interface for interacting with the Intuition API. It serves as the core data fetching layer, offering generated types and React Query hooks for seamless integration with the semantic knowledge graph.
+<BrowserOnly fallback={<p>Loading diagram...</p>}>
+  {() => (
+    <ExcalidrawViewer src="/excalidraw/architecture-diagram.excalidraw.json" />
+  )}
+</BrowserOnly>
+
+Intuition provides a GraphQL API for querying its knowledge graph in a convenient and versatile way. There are a few ways to get started with this GraphQL API, depending on the level of abstraction and customization you require.
+
+If this is your first time using GraphQL, you can learn more at [graphql.org](https://graphql.org/).
+
+Until mainnet launch, the Intuition team hosts an open GraphQL API powered by Hasura, which may be accessed at [https://testnet.intuition.sh/v1/graphql](https://testnet.intuition.sh/v1/graphql). For more information about running the backend yourself, visit [Run an Intuition node](/docs/run-node/run-an-intuition-node).
+
+<div className="uniform-card-grid">
+
+  <a
+    href="/docs/developer-tools/sdks/overview"
+    className="clickable-card uniform-card vision-card items-center justify-center text-center"
+  >
+    <span className="mb-4 relative flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-primary/10 to-primary/5">
+      <SdkIcon className="text-primary" />
+    </span>
+    <h3 className="uniform-card-title">
+      SDK
+    </h3>
+    <p className="uniform-card-content">
+      Integrate with Intuition smart contracts using our TypeScript SDK.
+    </p>
+  </a>
+
+  <a
+    href="/docs/developer-tools/graphql-api/custom-queries"
+    className="clickable-card uniform-card vision-card items-center justify-center text-center"
+  >
+    <span className="mb-4 relative flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-primary/10 to-primary/5">
+      <QueriesIcon className="text-primary" />
+    </span>
+    <h3 className="uniform-card-title">
+      Custom Queries
+    </h3>
+    <p className="uniform-card-content">
+      Create bespoke GraphQL queries for your specific use case.
+    </p>
+  </a>
+
+</div>
+
+### GraphQL Package
+
+<div className="uniform-card-grid-small">
+  <a
+    href="/docs/developer-tools/graphql-api/npm-package"
+    className="clickable-card uniform-card vision-card items-center justify-center text-center"
+  >
+    <span className="mb-4 relative flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-primary/10 to-primary/5">
+      <NpmIcon className="text-primary" />
+    </span>
+    <h3 className="uniform-card-title">
+      Install it with NPM
+    </h3>
+    <p className="uniform-card-content">
+      Install and use the NPM package with ready-made React Query hooks.
+    </p>
+  </a>
+
+  <a
+    href="/docs/developer-tools/graphql-api/npm-package"
+    className="clickable-card uniform-card vision-card items-center justify-center text-center"
+  >
+    <span className="mb-4 relative flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-primary/10 to-primary/5">
+      <GraphQlGeneratorIcon className="text-primary" />
+    </span>
+    <h3 className="uniform-card-title">
+      Use it as a GraphQL Generator
+    </h3>
+    <p className="uniform-card-content">
+      Use the GraphQL package to generate your own queries and mutations.
+    </p>
+  </a>
+</div>
+
+## Interactive Playground
+
+Try the Intuition GraphQL API straight from your browser!  The playground below connects to the live testnet endpoint and allows you to explore the knowledge graph in real time.
+
+<GraphQLPlayground />
 
-## Key Features
-
-- Type-safe GraphQL operations leveraging code gen
-- React Query hooks for data fetching
-- Reusable GraphQL fragments
-- Local-first schema with remote fallback
-- Portable package design
-
-## Installation
-
-Install the package using your preferred package manager:
-
-```bash
-pnpm add @0xintuition/graphql
-```
-
-## Quick Start
-
-### 1. Client Configuration (Optional)
-
-Configure the GraphQL client in your app's root:
-
-```tsx
-import { configureClient, API_URL_DEV, API_URL_PROD, API_URL_LOCAL } from '@0xintuition/graphql'
-
-// Configure GraphQL client with desired API URL
-configureClient({
-  apiUrl: API_URL_LOCAL, // For local development
-})
-```
-
-**Available API URLs:**
-- `API_URL_PROD`: `https://testnet.intuition.sh/v1/graphql` (default)
-- `API_URL_DEV`: `https://testnet.intuition.sh/v1/graphql`
-- `API_URL_LOCAL`: `http://localhost:8080/v1/graphql`
-
-If you omit this configuration, the package defaults to `API_URL_PROD`.
-
-### 2. Server Client Usage
-
-For server-side operations:
-
-```typescript
-import { createServerClient } from '@0xintuition/graphql'
-
-// Basic usage (most common)
-const client = createServerClient({})
-
-// With optional authentication token (rarely needed)
-const clientWithAuth = createServerClient({
-  token: 'your-auth-token'
-})
-```
-
-### 3. Using Generated Hooks
-
-Import and use the generated React Query hooks:
-
-```typescript
-import { useGetStatsQuery } from '@0xintuition/graphql'
-
-function StatsComponent() {
-  const { data, isLoading, error } = useGetStatsQuery()
-
-  if (isLoading) return <div>Loading...</div>
-  if (error) return <div>Error: {error.message}</div>
-
-  return <div>{/* Render stats data */}</div>
-}
-```
-
-## Schema Management
-
-The package uses a local-first approach for schema management:
-
-- Local `schema.graphql` as source of truth
-- Remote schema fallback for resilience
-- Automatic schema generation during builds
-- Version controlled schema for team consistency
-
-## Development Workflow
-
-1. **Code Generation**
-    - `pnpm codegen:build # Generate types`
-    - `pnpm codegen:watch # Watch mode for development`
-2. **Building**
-    - `pnpm build # Full build with codegen`
-    - `pnpm dev # Development mode with watch`
-3. **Testing**
-    - ****`pnpm test`
-
-## Package Structure
-
-```bash
-graphql/
-├── src/
-│ ├── client.ts # Client configuration
-│ ├── fragments/ # Reusable fragments
-│ ├── queries/ # GraphQL queries
-│ ├── mutations/ # GraphQL mutations
-│ └── generated/ # Generated types
-├── schema.graphql # Schema definition
-└── codegen.ts # Codegen config
-```
-
-## Package Approach
-
-1. **Schema Updates**
-    - Uses the local schema committed in the repository as the priority for the codegen and uses the remote URL as the fallback
-2. **Query Organization**
-    - Uses fragments for reusable fields
-    - Includes use-case specific queries as well as general purpose queries
-3. **Type Safety**
-    - Leverages generated types from our schema
-    - Generates React Query hooks as well as document queries that can be used in a server context (or used with another client such as Apollo)
-4. **Client Configuration**
-    - Default client configuration can be overridden in each consumer app
-    - Supports environment-specific API URLs
-
-## Source Code
-
-The GraphQL package source code is available on GitHub: [intuition-ts/packages/graphql](https://github.com/0xIntuition/intuition-ts/tree/main/packages/graphql)
-
-## Playground
-
-Explore Intuition's GraphQL API with these example queries. You can copy and paste these into the interactive playground in the [Reads](/guides/developer-tools/graphql-api/reads) section to see real data from the Intuition knowledge graph.
-
-### Query Atoms
-
-```graphql
-query GetAtoms {
-  atoms(first: 10, orderBy: createdAt, orderDirection: desc) {
-    id
-    uri
-    createdAt
-    totalShares
-    totalAssets
-    vault {
-      id
-      curveId
-      isActive
-    }
-  }
-}
-```
-
-### Query Triples
-
-```graphql
-query GetTriples {
-  triples(first: 10, orderBy: createdAt, orderDirection: desc) {
-    id
-    subject {
-      id
-      uri
-    }
-    predicate {
-      id
-      uri
-    }
-    object {
-      id
-      uri
-    }
-    createdAt
-    positiveVault {
-      id
-      totalShares
-      totalAssets
-    }
-    negativeVault {
-      id
-      totalShares
-      totalAssets
-    }
-  }
-}
-```
-
-### Query User Positions
-
-```graphql
-query GetUserPositions($userAddress: String!) {
-  userPositions(where: { user: $userAddress }) {
-    id
-    user
-    atom {
-      id
-      uri
-    }
-    triple {
-      id
-      subject {
-        uri
-      }
-      predicate {
-        uri
-      }
-      object {
-        uri
-      }
-    }
-    shares
-    assets
-    vault {
-      id
-      curveId
-    }
-  }
-}
-```
-
-### Query Atom by ID
-
-```graphql
-query GetAtomById($atomId: String!) {
-  atom(id: $atomId) {
-    id
-    uri
-    createdAt
-    totalShares
-    totalAssets
-    vault {
-      id
-      curveId
-      isActive
-    }
-    positions {
-      id
-      user
-      shares
-      assets
-    }
-  }
-}
-```
-
-### Query Triple by ID
-
-```graphql
-query GetTripleById($tripleId: String!) {
-  triple(id: $tripleId) {
-    id
-    subject {
-      id
-      uri
-    }
-    predicate {
-      id
-      uri
-    }
-    object {
-      id
-      uri
-    }
-    createdAt
-    positiveVault {
-      id
-      totalShares
-      totalAssets
-    }
-    negativeVault {
-      id
-      totalShares
-      totalAssets
-    }
-    positions {
-      id
-      user
-      shares
-      assets
-      isPositive
-    }
-  }
-}
-```
-
-### Search Atoms by URI
-
-```graphql
-query SearchAtoms($searchTerm: String!) {
-  atoms(where: { uri_contains: $searchTerm }, first: 20) {
-    id
-    uri
-    createdAt
-    totalShares
-    totalAssets
-  }
-}
-```
-
-### Get Vault Statistics
-
-```graphql
-query GetVaultStats {
-  vaults(first: 10, orderBy: totalAssets, orderDirection: desc) {
-    id
-    atom {
-      id
-      uri
-    }
-    triple {
-      id
-      subject {
-        uri
-      }
-      predicate {
-        uri
-      }
-      object {
-        uri
-      }
-    }
-    totalShares
-    totalAssets
-    curveId
-    isActive
-  }
-}
-```
-
-### Query with Fragments
-
-```graphql
-fragment AtomFields on Atom {
-  id
-  uri
-  createdAt
-  totalShares
-  totalAssets
-}
-
-fragment VaultFields on Vault {
-  id
-  curveId
-  isActive
-  totalShares
-  totalAssets
-}
-
-query GetAtomsWithFragments {
-  atoms(first: 5) {
-    ...AtomFields
-    vault {
-      ...VaultFields
-    }
-  }
-}
-```
-
-### Query Curve Information
-
-```graphql
-query GetCurveInfo {
-  curves(first: 10) {
-    id
-    name
-    slope
-    offset
-    maxShares
-    maxAssets
-  }
-}
-```
-
-### Query User Activity
-
-```graphql
-query GetUserActivity($userAddress: String!) {
-  userPositions(where: { user: $userAddress }, first: 20, orderBy: createdAt, orderDirection: desc) {
-    id
-    createdAt
-    shares
-    assets
-    atom {
-      id
-      uri
-      totalShares
-      totalAssets
-    }
-    triple {
-      id
-      subject {
-        uri
-      }
-      predicate {
-        uri
-      }
-      object {
-        uri
-      }
-    }
-    vault {
-      id
-      curveId
-    }
-  }
-}
-```
-
-### Variables for Testing
-
-Use these variables in the playground to test the queries:
-
-```json
-{
-  "userAddress": "0x742d35Cc6634C0532925a3b8D4C9db96C4b4d8b6",
-  "atomId": "0x1234567890abcdef1234567890abcdef12345678",
-  "tripleId": "0xabcdef1234567890abcdef1234567890abcdef12",
-  "searchTerm": "intuition"
-}
-```
-
-### Example Response Structure
-
-When you run these queries, you'll get responses like:
-
-```json
-{
-  "data": {
-    "atoms": [
-      {
-        "id": "0x1234567890abcdef1234567890abcdef12345678",
-        "uri": "https://example.com/atom1",
-        "createdAt": "2024-01-15T10:30:00Z",
-        "totalShares": "1000000000000000000",
-        "totalAssets": "500000000000000000",
-        "vault": {
-          "id": "0xabcdef1234567890abcdef1234567890abcdef12",
-          "curveId": 1,
-          "isActive": true
-        }
-      }
-    ]
-  }
-}
-```
-
-### Using React Query Hooks
-
-The GraphQL package also provides React Query hooks for easy integration:
-
-```tsx
-import { useAtomsQuery, useTriplesQuery, useUserPositionsQuery } from '@0xintuition/graphql'
-
-function MyComponent() {
-  // Query atoms
-  const { data: atoms, isLoading: atomsLoading } = useAtomsQuery({
-    variables: { first: 10 }
-  })
-
-  // Query triples
-  const { data: triples, isLoading: triplesLoading } = useTriplesQuery({
-    variables: { first: 10 }
-  })
-
-  // Query user positions
-  const { data: positions } = useUserPositionsQuery({
-    variables: { userAddress: '0x742d35Cc6634C0532925a3b8D4C9db96C4b4d8b6' }
-  })
-
-  if (atomsLoading || triplesLoading) {
-    return <div>Loading...</div>
-  }
-
-  return (
-    <div>
-      <h2>Atoms ({atoms?.atoms?.length || 0})</h2>
-      {atoms?.atoms?.map(atom => (
-        <div key={atom.id}>
-          <strong>{atom.uri}</strong> - {atom.totalShares} shares
-        </div>
-      ))}
-      
-      <h2>Triples ({triples?.triples?.length || 0})</h2>
-      {triples?.triples?.map(triple => (
-        <div key={triple.id}>
-          {triple.subject.uri} - {triple.predicate.uri} - {triple.object.uri}
-        </div>
-      ))}
-    </div>
-  )
-}
-```
-
-Try these queries in the interactive playground in the [Reads](/guides/developer-tools/graphql-api/reads) section to explore the Intuition knowledge graph and see how the data is structured!
-
-## Related Resources
-
-- [GraphQL Code Generator](https://the-guild.dev/graphql/codegen)
-- [React Query Documentation](https://tanstack.com/query)
-- [Intuition GraphQL Package Source](https://github.com/0xIntuition/intuition-ts/tree/main/packages/graphql)
-
-The GraphQL API provides the foundation for building powerful applications on Intuition. 
