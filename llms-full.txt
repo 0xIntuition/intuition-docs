@@ -5,7 +5,7 @@
 Intuition is a permissionless protocol that enables users to create attestations (atoms), make connections between concepts (triples), and signal agreement or disagreement through economic mechanisms. It creates a decentralized knowledge graph of validated information.
 
 
-# Contribution Guidelines
+# 
 
 Source: https://docs.intuition.systems/guides/contribute/contribution-guidelines
 
@@ -153,7 +153,7 @@ Thank you for contributing to the future of decentralized trust! 🚀
 
 ---
 
-# Audit Reports
+# 
 
 Source: https://docs.intuition.systems/guides/developer-tools/audit-reports
 
@@ -210,7 +210,7 @@ This page contains security audit reports for Intuition smart contracts. All con
 
 ---
 
-# Configurations & Fees
+# 
 
 Source: https://docs.intuition.systems/guides/developer-tools/contracts/configuration
 
@@ -264,7 +264,7 @@ The OffsetProgressiveCurve parameters are fixed and cannot be changed by governa
 
 ---
 
-# Migrating from 2.0 to 2.1 Smart Contracts
+# 
 
 Source: https://docs.intuition.systems/guides/developer-tools/contracts/contract-migration
 
@@ -378,7 +378,7 @@ SLOPE=2e18;
 
 ---
 
-# Contract Deployments
+# 
 
 Source: https://docs.intuition.systems/guides/developer-tools/contracts/deployments
 
@@ -485,7 +485,7 @@ Contract ABIs can be found in the following locations:
 
 ---
 
-# MultiVault.sol
+# 
 
 Source: https://docs.intuition.systems/guides/developer-tools/contracts/multivault
 
@@ -530,7 +530,6 @@ Any user can create an Atom by calling the `createAtoms` function on the MultiVa
 function createAtoms(
         bytes[] calldata data,
         uint256[] calldata assets
-    )
         external
         payable
         returns (bytes32[] memory)
@@ -808,7 +807,7 @@ For more detailed information on the MultiVault contract and its functions, plea
 
 ---
 
-# Contract Architecture Overview
+# 
 
 Source: https://docs.intuition.systems/guides/developer-tools/contracts/overview
 
@@ -873,7 +872,7 @@ The SatelliteEmissionsController contract is responsible for managing the emissi
 
 ---
 
-# TrustBonding.sol
+# 
 
 Source: https://docs.intuition.systems/guides/developer-tools/contracts/trust-bonding
 
@@ -992,7 +991,7 @@ For more detailed information on the MultiVault contract and its functions, plea
 
 ---
 
-# Technical Architecture
+# 
 
 Source: https://docs.intuition.systems/guides/developer-tools/deep-dive/architecture
 
@@ -1462,147 +1461,10 @@ interface SyncStrategy {
   // Consistency checks
   validation: {
     stateRootVerification: true,
-    periodicReconciliation: '1h',
-    alertThreshold: 0.001 // 0.1% discrepancy
-  };
-}
-```
-
-## Performance Optimizations
-
-### Caching Strategy
-
-Multi-layer caching for optimal performance:
-
-**L1: CDN Edge Cache**
-- Static content
-- Popular queries
-- 5-minute TTL
-
-**L2: Redis Cache**
-- Query results
-- Session data
-- 1-hour TTL
-
-**L3: Application Cache**
-- Computed values
-- Aggregate data
-- 24-hour TTL
-
-### Query Optimization
-
-The Subnet employs sophisticated query optimization:
-
-- **Query planning** - Analyzes queries to determine optimal execution path
-- **Parallel execution** - Breaks queries into independent subqueries
-- **Index utilization** - Maintains specialized indexes for common patterns
-- **Result streaming** - Streams large results instead of loading all at once
-
-## Security Architecture
-
-### Smart Contract Security
-
-- **Audited contracts** by leading security firms
-- **Upgradeable proxies** with time-locked admin functions
-- **Rate limiting** on sensitive operations
-- **Emergency pause** functionality
-
-### API Security
-
-- **JWT authentication** for protected endpoints
-- **Rate limiting** per API key
-- **DDoS protection** at edge layer
-- **Input validation** and sanitization
-
-### Data Integrity
-
-- **Merkle proofs** for on-chain data
-- **IPFS content addressing** for immutable references
-- **Signature verification** for attestations
-- **Consensus validation** across indexer nodes
-
-## Development Patterns
-
-### Recommended Integration Flow
-
-For developers building on Intuition, we recommend:
-
-1. **Use the TypeScript SDK** for all contract interactions
-2. **Query via GraphQL** for complex data needs
-3. **Subscribe to WebSockets** for real-time updates
-4. **Cache aggressively** at the application layer
-5. **Batch operations** when possible to reduce costs
-
-### Example: Creating and Querying Atoms
-
-```typescript
-// Using the SDK to create an atom
-const atom = await intuition.createAtom({
-  uri: 'ipfs://QmXoypizjW3WknFiJnKLwHCnL72vedxjQkDDP1mXWo6uco'
-});
-
-// Staking on the atom
-await intuition.stake(atom.id, parseEther('100'));
-
-// Querying via GraphQL
-const query = gql`
-  query GetAtom($id: ID!) {
-    atom(id: $id) {
-      uri
-      creator
-      vault {
-        totalStaked
-        holders
-      }
-      signal
-    }
-  }
-`;
-
-const result = await client.query({
-  query,
-  variables: { id: atom.id }
-});
-```
-
-## Deployment Architecture
-
-### Infrastructure Setup
-
-**Network Nodes**
-- Distributed globally
-- Auto-scaling groups
-- Multi-region failover
-- 99.99% uptime SLA
-
-**Subnet Infrastructure**
-- Kubernetes clusters
-- Horizontal pod autoscaling
-- Rolling deployments
-- Blue-green releases
-
-**Data Storage**
-- PostgreSQL with replication
-- Redis sentinel clusters
-- IPFS pinning services
-- S3-compatible object storage
-
-## Next Steps
-
-Ready to start building? Explore these resources:
-
-**[Smart Contracts](/docs/developer-tools/contracts)** - Deep dive into Protocol contracts
-
-**[GraphQL API](/docs/developer-tools/graphql-api)** - Learn the query interface
-
-**[SDK Guide](/docs/developer-tools/sdks)** - Start building applications
-
-**[Deployments](/docs/developer-tools/contracts/deployments)** - Contract addresses
-
 
 ---
 
-# Custom Queries
+# 
 
 Source: https://docs.intuition.systems/guides/developer-tools/graphql-api/custom-queries
 
@@ -1736,7 +1598,6 @@ function AtomViewer({ atomId }: { atomId: string }) {
 
   return (
       {data?.atom?.metadata?.title}
-  )
 }
 ```
 
@@ -1755,7 +1616,7 @@ function useCustomAtomQuery(atomId: string) {
 
 ---
 
-# GraphQL Generator
+# 
 
 Source: https://docs.intuition.systems/guides/developer-tools/graphql-api/graphql-generator
 
@@ -1841,16 +1702,6 @@ Once you have run the codegen, you can use your custom React Query Hooks in your
 function MyComponent() {
   // Query triples based on your custom needs
   const { data: triples, isLoading: triplesLoading } = useCustomTriplesQuery({
-    query: 'query CustomQuery { ... }'
-  })
-
-  return (
-
-      Triples ({triples?.triples?.length || 0})
-      {triples?.triples?.map(triple => (
-          {triple.subject.uri} - {triple.predicate.uri} - {triple.object.uri}
-      ))}
-  )
 }
 ```
 
@@ -1865,7 +1716,7 @@ The GraphQL API provides the foundation for building powerful applications on In
 
 ---
 
-# Migrating GraphQL from v1.5 to v2.0
+# 
 
 Source: https://docs.intuition.systems/guides/developer-tools/graphql-api/migration-guide
 
@@ -1989,7 +1840,7 @@ query GetAtom($termId: String!) {
 
 ---
 
-# GraphQL NPM Package
+# 
 
 Source: https://docs.intuition.systems/guides/developer-tools/graphql-api/npm-package
 
@@ -2060,54 +1911,6 @@ const client = createServerClient({})
 
 // With optional authentication token (rarely needed)
 const clientWithAuth = createServerClient({
-  token: 'your-auth-token'
-})
-```
-
-### 3. Using Generated Hooks
-
-Import and use the generated React Query hooks:
-
-```typescript
-
-function StatsComponent() {
-  const { data, isLoading, error } = useGetStatsQuery()
-
-}
-```
-
-```tsx
-
-function MyComponent() {
-  // Query atoms
-  const { data: atoms, isLoading: atomsLoading } = useAtomsQuery({
-    variables: { first: 10 }
-  })
-
-  // Query triples
-  const { data: triples, isLoading: triplesLoading } = useTriplesQuery({
-    variables: { first: 10 }
-  })
-
-  // Query user positions
-  const { data: positions } = useUserPositionsQuery({
-    variables: { userAddress: '0x742d35Cc6634C0532925a3b8D4C9db96C4b4d8b6' }
-  })
-
-  if (atomsLoading || triplesLoading) {
-  }
-
-  return (
-      Atoms ({atoms?.atoms?.length || 0})
-      {atoms?.atoms?.map(atom => (
-          {atom.uri} - {atom.totalShares} shares
-      ))}
-
-      Triples ({triples?.triples?.length || 0})
-      {triples?.triples?.map(triple => (
-          {triple.subject.uri} - {triple.predicate.uri} - {triple.object.uri}
-      ))}
-  )
 }
 ```
 
@@ -2197,7 +2000,7 @@ The GraphQL package source code is available on GitHub: [`intuition-ts/packages/
 
 ---
 
-# GraphQL API Overview
+# 
 
 Source: https://docs.intuition.systems/guides/developer-tools/graphql-api/overview
 
@@ -2208,11 +2011,42 @@ Source: https://docs.intuition.systems/guides/developer-tools/graphql-api/overvi
     
   )}
 
-Intuition provides a GraphQL API for querying its knowledge graph in a convenient and versatile way. There are a few ways to get started with this GraphQL API, depending on the level of abstraction and customization you require.
+Intuition provides GraphQL APIs for querying its knowledge graph in a convenient and versatile way. 
+
+**Available endpoints**
+
+      Intuition mainnet
+    
+      ```text
+      https://mainnet.intuition.sh/v1/graphql
+      ```
+      <a
+        href="https://studio.apollographql.com/sandbox/explorer?endpoint=https://mainnet.intuition.sh/v1/graphql"
+        target="_blank"
+        rel="noreferrer"
+      >
+        Try on GraphQL Explorer
+      
+      Intuition testnet
+    
+      ```text
+      https://testnet.intuition.sh/v1/graphql
+      ```
+      <a
+        href="https://studio.apollographql.com/sandbox/explorer?endpoint=https://testnet.intuition.sh/v1/graphql"
+        target="_blank"
+        rel="noreferrer"
+      >
+        Try on GraphQL Explorer
+      
+Alternatively, you can import these URLs from the GraphQL package:
+
+```ts
+```
 
 If this is your first time using GraphQL, you can learn more at [graphql.org](https://graphql.org/).
 
-Until mainnet launch, the Intuition team hosts an open GraphQL API powered by Hasura, which may be accessed at [https://testnet.intuition.sh/v1/graphql](https://testnet.intuition.sh/v1/graphql). For more information about running the backend yourself, visit [Run an Intuition node](/docs/run-node/run-an-intuition-node).
+There are a few ways to get started with this GraphQL API, depending on the level of abstraction and customization you require : 
 
   <a
     href="/docs/developer-tools/sdks/overview"
@@ -2251,7 +2085,7 @@ Try the Intuition GraphQL API straight from your browser!  The playground below 
 
 ---
 
-# Reads
+# 
 
 Source: https://docs.intuition.systems/guides/developer-tools/graphql-api/reads
 
@@ -2769,7 +2603,6 @@ function AtomList() {
           {atom.label}
           
       ))}
-  )
 }
 ```
 
@@ -2779,7 +2612,7 @@ function AtomList() {
 
 ---
 
-# Building User Activity Feeds
+# 
 
 Source: https://docs.intuition.systems/guides/developer-tools/graphql-api/use-cases/building-user-activity-feeds
 
@@ -2795,144 +2628,10 @@ Learn how to create personalized, real-time activity feeds that track user inter
 3. **Get active user positions** ordered by share amount - shows current stakes with vault performance metrics.
 
   {
-    id: 'user-activity',
-    title: 'Step 1: Get User Activity',
-    query: `query GetUserActivity($userAddress: String!, $limit: Int = 20) {
-  atoms(
-    where: { creator_id: { _eq: $userAddress } }
-    order_by: [{ created_at: desc }]
-    limit: $limit
-  ) {
-    term_id
-    label
-    image
-    type
-    created_at
-    transaction_hash
-  }
-
-  positions(
-    where: { account_id: { _eq: $userAddress } }
-    order_by: [{ created_at: desc }]
-    limit: $limit
-  ) {
-    id
-    shares
-    created_at
-    vault {
-      term_id
-      current_share_price
-      market_cap
-      term {
-        atom {
-          term_id
-          label
-          image
-        }
-      }
-    }
-  }
-}`,
-    variables: {
-      userAddress: '0x4Ff2D2D253827897210bf1f29713f8389f55C68E',
-      limit: 20
-    }
-  },
-  {
-    id: 'recent-claims',
-    title: 'Step 2: User Recent Claims',
-    query: `query GetUserClaims($userAddress: String!, $limit: Int = 10) {
-  atoms(
-    where: { creator_id: { _eq: $userAddress } }
-    order_by: [{ created_at: desc }]
-    limit: $limit
-  ) {
-    term_id
-    label
-    image
-    emoji
-    type
-    data
-    created_at
-    block_number
-  }
-
-  triples(
-    where: { creator_id: { _eq: $userAddress } }
-    order_by: [{ created_at: desc }]
-    limit: $limit
-  ) {
-    term_id
-    created_at
-    subject {
-      term_id
-      label
-      image
-    }
-    predicate {
-      term_id
-      label
-    }
-    object {
-      term_id
-      label
-      image
-    }
-  }
-}`,
-    variables: {
-      userAddress: '0x4Ff2D2D253827897210bf1f29713f8389f55C68E',
-      limit: 10
-    }
-  },
-  {
-    id: 'user-positions',
-    title: 'Step 3: Active User Positions',
-    query: `query GetUserPositions($userAddress: String!, $limit: Int = 20) {
-  positions(
-    where: {
-      account_id: { _eq: $userAddress }
-      shares: { _gt: "0" }
-    }
-    order_by: [{ shares: desc }]
-    limit: $limit
-  ) {
-    id
-    shares
-    created_at
-    updated_at
-    vault {
-      term_id
-      current_share_price
-      market_cap
-      term {
-        atom {
-          term_id
-          label
-          image
-          emoji
-        }
-        triple {
-          term_id
-          subject { label image }
-          predicate { label }
-          object { label image }
-        }
-      }
-    }
-  }
-}`,
-    variables: {
-      userAddress: '0x4Ff2D2D253827897210bf1f29713f8389f55C68E',
-      limit: 20
-    }
-  }
-];
-
 
 ---
 
-# Discovering the Most Trusted Accounts
+# 
 
 Source: https://docs.intuition.systems/guides/developer-tools/graphql-api/use-cases/discovering-most-trusted-accounts
 
@@ -2948,158 +2647,10 @@ Learn how to leverage the Intuition GraphQL API to find and rank the ecosystem's
 3. **Find top 20 individual positions** by share amount, showing which accounts hold the largest single stakes.
 
   {
-    id: 'trusted-accounts',
-    title: 'Step 1: Get Most Trusted Accounts',
-    query: `query GetTrustedAccounts($limit: Int = 20) {
-  accounts(
-    limit: $limit
-    order_by: [{ positions_aggregate: { sum: { shares: desc } } }]
-    where: {
-      positions_aggregate: {
-        count: { predicate: { _gt: 0 } }
-      }
-    }
-  ) {
-    id
-    label
-    image
-    positions_aggregate {
-      aggregate {
-        count
-        sum {
-          shares
-        }
-      }
-    }
-    positions(
-      limit: 10
-      order_by: [{ shares: desc }]
-    ) {
-      id
-      shares
-      created_at
-      vault {
-        term_id
-        current_share_price
-        market_cap
-        term {
-          atom {
-            term_id
-            label
-            image
-          }
-        }
-      }
-    }
-  }
-}`,
-    variables: {
-      limit: 20
-    }
-  },
-  {
-    id: 'account-details',
-    title: 'Step 2: Get Account Details',
-    query: `query GetAccountDetails($accountId: String!) {
-  accounts(where: { id: { _eq: $accountId } }) {
-    id
-    label
-    image
-    positions_aggregate {
-      aggregate {
-        count
-        sum {
-          shares
-        }
-      }
-    }
-    positions(
-      limit: 50
-      order_by: [{ shares: desc }]
-    ) {
-      id
-      shares
-      created_at
-      vault {
-        term_id
-        current_share_price
-        market_cap
-        total_shares
-        term {
-          atom {
-            term_id
-            label
-            image
-            type
-          }
-          triple {
-            term_id
-            subject { label }
-            predicate { label }
-            object { label }
-          }
-        }
-      }
-    }
-    atoms(order_by: [{ created_at: desc }]) {
-      term_id
-      label
-      type
-      created_at
-    }
-  }
-}`,
-    variables: {
-      accountId: '0xbd2DE08aF9470c87C4475117Fb912B8f1d588D9c'
-    }
-  },
-  {
-    id: 'top-holders',
-    title: 'Step 3: Top Position Holders',
-    query: `query GetTopHolders($limit: Int = 20) {
-  positions(
-    limit: $limit
-    order_by: [{ shares: desc }]
-  ) {
-    id
-    shares
-    created_at
-    account {
-      id
-      label
-      image
-      positions_aggregate {
-        aggregate {
-          count
-          sum {
-            shares
-          }
-        }
-      }
-    }
-    vault {
-      term_id
-      market_cap
-      current_share_price
-      term {
-        atom {
-          label
-          image
-        }
-      }
-    }
-  }
-}`,
-    variables: {
-      limit: 20
-    }
-  }
-];
-
 
 ---
 
-# Finding Related Claims
+# 
 
 Source: https://docs.intuition.systems/guides/developer-tools/graphql-api/use-cases/finding-related-claims
 
@@ -3115,181 +2666,10 @@ Learn how to find and navigate related claims in the Intuition knowledge graph b
 3. **Get detailed information** about a specific triple, including vault metrics and top positions.
 
   {
-    id: 'related-claims',
-    title: 'Step 1: Find Related Claims',
-    query: `query GetRelatedClaims($atomId: String!, $limit: Int = 20) {
-  as_subject: triples(
-    where: { subject_id: { _eq: $atomId } }
-    order_by: [{ term: { vaults_aggregate: { max: { market_cap: desc } } } }]
-    limit: $limit
-  ) {
-    term_id
-    created_at
-    predicate {
-      term_id
-      label
-      image
-    }
-    object {
-      term_id
-      label
-      image
-      type
-    }
-    term {
-      vaults(where: { curve_id: { _eq: "2" } }) {
-        market_cap
-        position_count
-      }
-    }
-  }
-
-  as_object: triples(
-    where: { object_id: { _eq: $atomId } }
-    order_by: [{ term: { vaults_aggregate: { max: { market_cap: desc } } } }]
-    limit: $limit
-  ) {
-    term_id
-    created_at
-    subject {
-      term_id
-      label
-      image
-      type
-    }
-    predicate {
-      term_id
-      label
-      image
-    }
-    term {
-      vaults(where: { curve_id: { _eq: "2" } }) {
-        market_cap
-        position_count
-      }
-    }
-  }
-
-  atom: atoms(where: { term_id: { _eq: $atomId } }, limit: 1) {
-    term_id
-    label
-    image
-    type
-  }
-}`,
-    variables: {
-      atomId: '0xf12dba36ffebb8e05ae49d3f9220b1994295662ccdc573f44aff7b51f8ad8fd6',
-      limit: 20
-    }
-  },
-  {
-    id: 'similar-claims',
-    title: 'Step 2: Find Similar Claims',
-    query: `query FindSimilarClaims($predicateLabel: String!, $subjectType: atom_type, $limit: Int = 20) {
-  triples(
-    where: {
-      predicate: { label: { _ilike: $predicateLabel } }
-      _and: [
-        { subject: { type: { _eq: $subjectType } } }
-      ]
-    }
-    order_by: [{ term: { vaults_aggregate: { max: { market_cap: desc } } } }]
-    limit: $limit
-  ) {
-    term_id
-    created_at
-    subject {
-      term_id
-      label
-      image
-      type
-    }
-    predicate {
-      term_id
-      label
-    }
-    object {
-      term_id
-      label
-      image
-      type
-    }
-    term {
-      vaults(where: { curve_id: { _eq: "2" } }) {
-        total_shares
-        market_cap
-        position_count
-      }
-    }
-  }
-}`,
-    variables: {
-      predicateLabel: '%is a%',
-      subjectType: 'Thing',
-      limit: 20
-    }
-  },
-  {
-    id: 'triple-details',
-    title: 'Step 3: Get Triple Details',
-    query: `query GetTripleDetails($termId: String!) {
-  triples(where: { term_id: { _eq: $termId } }) {
-    term_id
-    counter_term_id
-    created_at
-    subject {
-      term_id
-      label
-      image
-      type
-    }
-    predicate {
-      term_id
-      label
-      image
-    }
-    object {
-      term_id
-      label
-      image
-      type
-    }
-    term {
-      vaults(where: { curve_id: { _eq: "2" } }) {
-        term_id
-        total_shares
-        current_share_price
-        market_cap
-        position_count
-        positions(limit: 5, order_by: { shares: desc }) {
-          account {
-            label
-          }
-          shares
-        }
-      }
-    }
-    counter_term {
-      vaults(where: { curve_id: { _eq: "2" } }) {
-        term_id
-        total_shares
-        current_share_price
-        market_cap
-        position_count
-      }
-    }
-  }
-}`,
-    variables: {
-      termId: '0xffb30efde2b49a7deadd920a7df684595ed4a291a582033c16b0795796965600'
-    }
-  }
-];
-
 
 ---
 
-# Finding the Top dApps on Coinbase
+# 
 
 Source: https://docs.intuition.systems/guides/developer-tools/graphql-api/use-cases/finding-top-dapps-on-coinbase
 
@@ -3308,139 +2688,10 @@ Follow these 4 queries step-by-step. Each one builds on the previous to achieve 
 4. **Repeat the query from Step 3**, but this time sort by market cap to show the top performing dApps first.
 
   {
-    id: 'step1-discover',
-    title: 'Step 1: Discover All Dapps (Organizations)',
-    query: `query DiscoverAllDapps($limit: Int = 10) {
-  atoms(
-    limit: $limit
-    where: { type: { _eq: "Thing" } }
-  ) {
-    term_id
-    label
-    image
-    emoji
-    type
-    created_at
-  }
-}`,
-    variables: {
-      limit: 10
-    }
-  },
-  {
-    id: 'step2-filter',
-    title: 'Step 2: Filter for Coinbase-Related Dapps',
-    query: `query FilterCoinbaseDapps($limit: Int = 10) {
-  atoms(
-    limit: $limit
-    where: {
-      type: { _eq: "Thing" }
-      _or: [
-        { label: { _ilike: "%coinbase%" } }
-        { data: { _ilike: "%coinbase%" } }
-      ]
-    }
-  ) {
-    term_id
-    label
-    image
-    emoji
-    type
-    data
-    created_at
-  }
-}`,
-    variables: {
-      limit: 10
-    }
-  },
-  {
-    id: 'step3-metrics',
-    title: 'Step 3: Add Performance Metrics (Market Cap, Shares)',
-    query: `query AddPerformanceMetrics($limit: Int = 10) {
-  atoms(
-    limit: $limit
-    where: {
-      type: { _eq: "Thing" }
-      _or: [
-        { label: { _ilike: "%coinbase%" } }
-        { data: { _ilike: "%coinbase%" } }
-      ]
-    }
-  ) {
-    term_id
-    label
-    image
-    emoji
-    type
-
-    term {
-      vaults(where: { curve_id: { _eq: "1" } }) {
-        total_shares
-        current_share_price
-        market_cap
-        position_count
-      }
-    }
-
-    creator {
-      id
-      label
-    }
-    created_at
-  }
-}`,
-    variables: {
-      limit: 10
-    }
-  },
-  {
-    id: 'step4-final',
-    title: 'Step 4: FINAL RESULT - Ranked by Market Cap',
-    query: `query GetTopDappsRanked($limit: Int = 10) {
-  atoms(
-    limit: $limit
-    order_by: [{ term: { vaults_aggregate: { max: { market_cap: desc } } } }]
-    where: {
-      type: { _eq: "Thing" }
-      _or: [
-        { label: { _ilike: "%coinbase%" } }
-        { data: { _ilike: "%coinbase%" } }
-      ]
-    }
-  ) {
-    term_id
-    label
-    image
-    emoji
-    type
-
-    term {
-      vaults(where: { curve_id: { _eq: "1" } }) {
-        total_shares
-        current_share_price
-        market_cap
-        position_count
-      }
-    }
-
-    creator {
-      id
-      label
-    }
-    created_at
-  }
-}`,
-    variables: {
-      limit: 10
-    }
-  }
-];
-
 
 ---
 
-# GraphQL API Use Cases
+# 
 
 Source: https://docs.intuition.systems/guides/developer-tools/graphql-api/use-cases/overview
 
@@ -3484,7 +2735,7 @@ Select a use case above to see detailed step-by-step implementation guides.
 
 ---
 
-# Writes
+# 
 
 Source: https://docs.intuition.systems/guides/developer-tools/graphql-api/writes
 
@@ -3686,165 +2937,6 @@ mutation TakePositionOnTriple(
 ```typescript
 // 1. Upload metadata
 const thingData = {
-  name: 'Example Thing',
-  description: 'Description...',
-  image: 'ipfs://Qm...',
-  url: 'https://...',
-}
-
-const { cid } = await uploadThing(thingData)
-
-// 2. Create Atom with returned CID
-const atomId = await createAtom(cid)
-```
-
-### Creating a Knowledge Graph Entry
-
-```typescript
-// 1. Create subject atom
-const subjectData = {
-  name: 'Alice',
-  description: 'A person',
-  image: 'ipfs://QmAlice...',
-  url: 'https://example.com/alice'
-}
-const { cid: subjectCid } = await uploadThing(subjectData)
-const subjectAtom = await createAtom(subjectCid)
-
-// 2. Create predicate atom
-const predicateData = {
-  name: 'knows',
-  description: 'Relationship indicating knowledge',
-  image: 'ipfs://QmKnows...',
-  url: 'https://example.com/knows'
-}
-const { cid: predicateCid } = await uploadThing(predicateData)
-const predicateAtom = await createAtom(predicateCid)
-
-// 3. Create object atom
-const objectData = {
-  name: 'Bob',
-  description: 'Another person',
-  image: 'ipfs://QmBob...',
-  url: 'https://example.com/bob'
-}
-const { cid: objectCid } = await uploadThing(objectData)
-const objectAtom = await createAtom(objectCid)
-
-// 4. Create triple relationship
-const triple = await createTriple({
-  subjectId: subjectAtom.id,
-  predicateId: predicateAtom.id,
-  objectId: objectAtom.id,
-  curveId: 1
-})
-
-// 5. Take a position on the triple
-const position = await takeTriplePosition({
-  tripleId: triple.id,
-  shares: '1000000000000000000', // 1 share in wei
-  isPositive: true,
-  curveId: 1
-})
-```
-
-### Variables for Testing
-
-```json
-{
-  "uri": "ipfs://QmExample...",
-  "curveId": 1,
-  "subjectId": "0x1234567890abcdef1234567890abcdef12345678",
-  "predicateId": "0xabcdef1234567890abcdef1234567890abcdef12",
-  "objectId": "0x9876543210fedcba9876543210fedcba98765432",
-  "atomId": "0x1234567890abcdef1234567890abcdef12345678",
-  "tripleId": "0xabcdef1234567890abcdef1234567890abcdef12",
-  "shares": "1000000000000000000",
-  "isPositive": true
-}
-```
-
-## Upcoming Schema Support
-
-We are actively expanding our mutation support to include schemas from **schema.org**. Additionally, we'll be adding support for **CAIP-10 addresses** to enable cross-chain identity resolution.
-
-## Best Practices
-
-### Complete Metadata
-Provide as much relevant metadata as possible to improve the Atom's utility across different contexts.
-
-### Persistent Storage
-All metadata is stored on IPFS, ensuring data availability and immutability.
-
-### URI Standards
-Use standard URI formats:
-- **IPFS**: `ipfs://Qm...`
-- **HTTP(S)**: `https://...`
-- **CAIP-10** (coming soon): `eip155:1:0x...`
-
-### Error Handling
-Always handle potential errors in mutations:
-
-```typescript
-try {
-  const result = await createAtom(uri, curveId)
-  console.log('Atom created:', result.id)
-} catch (error) {
-  console.error('Failed to create atom:', error.message)
-}
-```
-
-### Gas Estimation
-For on-chain operations, always estimate gas before executing:
-
-```typescript
-const gasEstimate = await contract.estimateGas.createAtom(uri, curveId)
-const tx = await contract.createAtom(uri, curveId, { gasLimit: gasEstimate })
-```
-
-## TypeScript Integration
-
-We maintain a package, `graphql` within our `intuition-ts` monorepo that auto-generates TypeScript types and React hooks to make integrations easier. This includes type-safe mutations, queries, and React hooks for all supported schemas.
-
-### Using Generated Hooks
-
-```typescript
-  useUploadThingMutation, 
-  useCreateAtomMutation, 
-  useCreateTripleMutation,
-  useTakePositionMutation 
-} from '@0xintuition/graphql'
-
-function CreateAtomComponent() {
-  const [uploadThing, { loading: uploading }] = useUploadThingMutation()
-  const [createAtom, { loading: creating }] = useCreateAtomMutation()
-
-  const handleCreateAtom = async (thingData: ThingData) => {
-    try {
-      // Upload metadata
-      const { data: uploadResult } = await uploadThing({
-        variables: thingData
-      })
-
-      // Create atom with returned CID
-      const { data: atomResult } = await createAtom({
-        variables: {
-          uri: uploadResult.uploadThing.cid,
-          curveId: 1
-        }
-      })
-
-      console.log('Atom created:', atomResult.createAtom.id)
-    } catch (error) {
-      console.error('Failed to create atom:', error)
-    }
-  }
-
-  return (
-      disabled={uploading || creating}
-    >
-      {uploading || creating ? 'Creating...' : 'Create Atom'}
-  )
 }
 ```
 
@@ -3858,7 +2950,7 @@ We are actively finalizing patterns to properly externalize this package, which 
 
 ---
 
-# Create Atom
+# 
 
 Source: https://docs.intuition.systems/guides/developer-tools/interactions/create-atom
 
@@ -3878,47 +2970,6 @@ We recommend creating a `multivault.ts` that includes the following atom creatio
 {`// Create atom with initial deposit
 const createAtomConfig = {
   ...multiVaultContract,
-  functionName: 'createAtom',
-  args: [atomData, initialDeposit],
-}
-
-// Execute transaction
-const hash = await walletClient.writeContract(createAtomConfig)
-
-// Wait for confirmation
-const receipt = await publicClient.waitForTransactionReceipt({ hash })`}
-
-## Complete Example
-
-Here is a full example of the atom creation pattern used in the `createAtom` function:
-
-{`export async function createAtom(
-  contract: string,
-  atomData: string,
-  initialDeposit: bigint,
-  walletClient: WalletClient,
-  publicClient: PublicClient
-) {
-  const multiVaultContract = createMultiVaultContract(contract)
-
-  // Prepare atom creation transaction
-  const createAtomConfig = {
-    ...multiVaultContract,
-    functionName: 'createAtom',
-    args: [atomData, initialDeposit],
-  }
-
-  try {
-    // Execute the transaction
-    const hash = await walletClient.writeContract(createAtomConfig)
-    
-    // Wait for transaction confirmation
-    const receipt = await publicClient.waitForTransactionReceipt({ hash })
-    
-    // Parse events to get atom ID
-    const atomCreatedEvent = receipt.logs.find(
-      log => log.eventName === 'AtomCreated'
-    )
     
     if (!atomCreatedEvent) {
       throw new Error('Atom creation event not found')
@@ -4001,7 +3052,7 @@ For a full reference implementation, see the [Intuition TypeScript SDK](https://
 
 ---
 
-# Create Triple
+# 
 
 Source: https://docs.intuition.systems/guides/developer-tools/interactions/create-triple
 
@@ -4021,69 +3072,10 @@ We recommend creating a `multivault.ts` that includes the following triple creat
 {`// Create triple with initial deposit
 const createTripleConfig = {
   ...multiVaultContract,
-  functionName: 'createTriple',
-  args: [subjectId, predicateId, objectId, initialDeposit],
-}
-
-// Execute transaction
-const hash = await walletClient.writeContract(createTripleConfig)`}
-
-## Key Functions
-
-We use this pattern to create triples and manage their lifecycle:
-
-Creates a new triple with optional initial deposit and returns triple/vault IDs.
-
-Validates that subject, predicate, and object atoms exist and are valid.
-
-Estimates the cost of creating a triple including fees and gas costs.
-
-## Usage Example
-
-{`// Create a new triple
-const subjectId = 123n  // Atom ID for "Alice"
-const predicateId = 456n // Atom ID for "knows"
-const objectId = 789n    // Atom ID for "Bob"
-const initialDeposit = parseEther("0.1")
-
-const result = await createTriple(
-  MULTIVAULT_CONTRACT_ADDRESS,
-  subjectId,
-  predicateId,
-  objectId,
-  initialDeposit,
-  walletClient,
-  publicClient
-)`}
-
-## Vault Management
-
-Each triple creates two vaults:
-
-For users who believe the triple is true. Deposits here signal agreement.
-
-For users who believe the triple is false. Deposits here signal disagreement.
-
-## Best Practices
-
-- Validate all atom IDs before creating triples
-- Check for existing triples to avoid duplicates
-- Estimate costs before executing transactions
-- Implement proper error handling and user feedback
-- Use multicall patterns for batch operations
-
-## Next Steps
-
-After creating triples, explore:
-
-- [Deposit & Return](/guides/developer-tools/interactions/deposit-return) - Manage vault deposits and withdrawals
-- [Retrieve Vault Details](/guides/developer-tools/interactions/retrieve-vault-details) - Get comprehensive vault information
-
-For a full reference implementation, see the [Intuition TypeScript SDK](https://github.com/0xIntuition/intuition-ts). 
 
 ---
 
-# Deposit & Return
+# 
 
 Source: https://docs.intuition.systems/guides/developer-tools/interactions/deposit-return
 
@@ -4103,83 +3095,10 @@ We recommend creating a `multivault.ts` that includes the following deposit and 
 {`// Deposit into vault
 const depositConfig = {
   ...multiVaultContract,
-  functionName: 'deposit',
-  args: [vaultId, amount],
-}
-
-// Execute transaction
-const hash = await walletClient.writeContract(depositConfig)`}
-
-## Key Functions
-
-We use these patterns to manage vault deposits and withdrawals:
-
-Deposit tokens into a vault and receive shares based on current share price.
-
-Withdraw tokens from a vault by burning shares at current share price.
-
-Estimate the number of shares received for a given deposit amount.
-
-## Usage Examples
-
-{`// Deposit into vault
-const vaultId = 123n
-const amount = parseEther("0.1")
-
-const result = await deposit(
-  MULTIVAULT_CONTRACT_ADDRESS,
-  vaultId,
-  amount,
-  walletClient,
-  publicClient
-)`}
-
-{`// Withdraw from vault
-const vaultId = 123n
-const shares = parseEther("10")
-
-const result = await withdraw(
-  MULTIVAULT_CONTRACT_ADDRESS,
-  vaultId,
-  shares,
-  walletClient,
-  publicClient
-)`}
-
-## Fee Structure
-
-Fee charged when depositing into a vault, calculated as a percentage of deposit.
-Fee charged when withdrawing from a vault, calculated as a percentage of withdrawal.
-Fee collected by the protocol for maintaining the system and infrastructure.
-
-## Share Price Dynamics
-
-Share price increases as more tokens are deposited into the vault.
-Early depositors receive more shares for the same token amount.
-Vaults provide continuous liquidity for depositors and withdrawers.
-
-## Best Practices
-
-- Always estimate fees before executing transactions
-- Consider share price impact when depositing large amounts
-- Implement proper error handling for failed transactions
-- Monitor vault state and share prices before transactions
-- Use multicall patterns for batch operations
-- Provide clear feedback to users about fee structures
-
-## Next Steps
-
-After managing deposits and withdrawals, explore:
-
-- [Retrieve Vault Details](/guides/developer-tools/interactions/retrieve-vault-details) - Get comprehensive vault information
-- [Create Atom](/guides/developer-tools/interactions/create-atom) - Create atoms to deposit into
-- [Create Triple](/guides/developer-tools/interactions/create-triple) - Create triples with associated vaults
-
-For a full reference implementation, see the [Intuition TypeScript SDK](https://github.com/0xIntuition/intuition-ts). 
 
 ---
 
-# Contract Interactions Overview
+# 
 
 Source: https://docs.intuition.systems/guides/developer-tools/interactions/overview
 
@@ -4204,55 +3123,10 @@ We utilize multicall operations that batch multiple read-only contract calls int
 const coreContractConfigs = [
   {
     ...multiVaultContract,
-    functionName: 'vaults',
-    args: [vid],
-  },
-  {
-    ...multiVaultContract, 
-    functionName: 'currentSharePrice',
-    args: [vid],
-  },
-  // ... additional calls
-]
-
-// Execute multicall
-const resp: MulticallResponse[] = await publicClient.multicall({
-  contracts: coreContractConfigs,
-})`}
-
-## Available Interactions
-
-Learn how to create new atoms and manage their associated vaults.
-
-Understand how to create triples and manage their relationships.
-
-Manage deposits and withdrawals from vaults with proper fee handling.
-
-Get comprehensive vault information including assets, prices, and positions.
-
-## Prerequisites
-
-Before diving into contract interactions, ensure you have:
-
-- Basic understanding of Intuition's core concepts (Atoms, Triples, Vaults)
-- Familiarity with Ethereum development and smart contract interactions
-- Knowledge of multicall patterns and batch operations
-- Access to the Intuition SDK and development environment
-
-## Next Steps
-
-Explore the specific interaction guides to learn how to:
-
-- Create and manage atoms and triples
-- Handle deposits and withdrawals
-- Retrieve vault state information
-- Implement proper error handling and validation
-
-Each guide provides detailed implementation examples and best practices for working with Intuition's smart contracts. 
 
 ---
 
-# Retrieve Vault Details
+# 
 
 Source: https://docs.intuition.systems/guides/developer-tools/interactions/retrieve-vault-details
 
@@ -4276,110 +3150,6 @@ const multiVaultContract = createMultiVaultContract(contract)
 const coreContractConfigs = [
   {
     ...multiVaultContract,
-    functionName: 'vaults',
-    args: [vid],
-  },
-  {
-    ...multiVaultContract, 
-    functionName: 'currentSharePrice',
-    args: [vid],
-  },
-  // ... additional calls
-]
-
-// Execute multicall
-const resp: MulticallResponse[] = await publicClient.multicall({
-  contracts: coreContractConfigs,
-})`}
-
-## Complete Example
-
-Here is a full example of the multicall pattern used in the `getMultivaultConfig` function:
-
-{`export async function getMultiVaultConfig(contract: string) {
-  const multiVaultContract = createMultiVaultContract(contract)
-
-  const coreContractConfigs = [
-    {
-      ...multiVaultContract,
-      functionName: 'generalConfig',
-      args: [],
-    },
-    {
-      ...multiVaultContract,
-      functionName: 'vaultFees',
-      args: [0],
-    },
-    {
-      ...multiVaultContract,
-      functionName: 'atomConfig',
-      args: [],
-    },
-  ]
-
-  const resp: MulticallResponse[] = await publicClient.multicall({
-    contracts: coreContractConfigs,
-  })
-
-  const admin = resp[0].result[0] as \`0x\${string}\`
-  const protocol_vault = resp[0].result[1] as \`0x\${string}\`
-  const fee_denominator = resp[0].result[2] as bigint
-  const formatted_fee_denominator = formatUnits(fee_denominator, 18)
-  const min_deposit = resp[0].result[3] as bigint
-  const formatted_min_deposit = formatUnits(min_deposit, 18)
-  const min_share = resp[0].result[4] as bigint
-  const formatted_min_share = formatUnits(min_share, 18)
-  const entry_fee = resp[1].result[0] as bigint
-  const formatted_entry_fee = formatUnits(entry_fee, 18)
-  const exit_fee = resp[1].result[1] as bigint
-  const formatted_exit_fee = formatUnits(exit_fee, 18)
-  const protocol_fee = resp[1].result[2] as bigint
-  const formatted_protocol_fee = formatUnits(protocol_fee, 18)
-  const atom_cost = resp[2].result[0] as bigint
-  const formatted_atom_cost = formatUnits(atom_cost, 18)
-  const atom_creation_fee = resp[2].result[1] as bigint
-  const formatted_atom_creation_fee = formatUnits(atom_creation_fee, 18)
-
-  return {
-    admin,
-    protocol_vault,
-    fee_denominator: fee_denominator.toString(),
-    formatted_fee_denominator,
-    min_deposit: min_deposit.toString(),
-    formatted_min_deposit,
-    min_share: min_share.toString(),
-    formatted_min_share,
-    entry_fee: entry_fee.toString(),
-    formatted_entry_fee,
-    exit_fee: exit_fee.toString(),
-    formatted_exit_fee,
-    protocol_fee: protocol_fee.toString(),
-    formatted_protocol_fee,
-    atom_cost: atom_cost.toString(),
-    formatted_atom_cost,
-    atom_creation_fee: atom_creation_fee.toString(),
-    formatted_atom_creation_fee,
-  } as MultivaultConfig
-}`}
-
-## Key Functions
-
-We use this multicall pattern to retrieve configuration that we're able to use throughout the app:
-
-Retrieves comprehensive vault information including total assets, conviction, current share price, fee configurations, user-specific positions, and counter-vault details.
-
-Retrieves global protocol configuration including fee structures, minimum deposits, and protocol admin addresses.
-
-## Usage Example
-
-The full `getVaultDetails` function follows the same pattern used in the `getMultiVaultConfig` example but is too large to include in the docs. We recommend looking at the [Intuition TypeScript SDK](https://github.com/0xIntuition/intuition-ts/blob/main/apps/portal/app/.server/multivault.ts) for a full reference implementation.
-
-{`// Fetch vault and countervault details with user positions:
-const vaultDetails = await getVaultDetails(
-  MULTIVAULT_CONTRACT_ADDRESS,
-  vaultId,
-  userWallet,
-  counterVaultId
 
 // Access formatted values such as atom_cost and triple_cost
 console.log({
@@ -4413,7 +3183,7 @@ For a full reference implementation, see the [Intuition TypeScript SDK](https://
 
 ---
 
-# Migrating SDK from v1.5 to v2.0
+# 
 
 Source: https://docs.intuition.systems/guides/developer-tools/sdks/migration-guide
 
@@ -5027,7 +3797,7 @@ Take your time with the migration and test thoroughly. The new API is more power
 
 ---
 
-# Intuition SDK Guide
+# 
 
 Source: https://docs.intuition.systems/guides/developer-tools/sdks/overview
 
@@ -5245,17 +4015,6 @@ const data = await createAtomFromIpfsUpload(
     walletClient,
     publicClient,
     address,
-    pinataApiKey: 'your-pinata-api-key',
-  },
-  {
-    url: 'https://www.intuition.systems/',
-    name: 'Intuition',
-    description: 'A decentralized trust protocol',
-    image: 'https://example.com/image.png',
-    tags: ['decentralized', 'trust', 'protocol'],
-    twitter: 'https://twitter.com/intuition_systems',
-    github: 'github.com/intuition-systems',
-  },
 ```
 
 ### Create a Thing
@@ -5267,11 +4026,6 @@ Create an atom representing a structured object:
 const data = await createAtomFromThing(
   { walletClient, publicClient, address },
   {
-    url: 'https://www.intuition.systems/',
-    name: 'Intuition',
-    description: 'A decentralized trust protocol',
-    image: 'https://example.com/image.png',
-  },
 ```
 
 ### Create an Ethereum Account
@@ -5283,9 +4037,6 @@ Create an atom representing an Ethereum account:
 const data = await createAtomFromEthereumAccount(
   { walletClient, publicClient, address },
   {
-    address: '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045',
-    chainId: 1, // Mainnet
-  },
 ```
 
 ### Batch Operations
@@ -5352,18 +4103,6 @@ const data = await batchCreateAtomsFromThings(
   { walletClient, publicClient, address: ethMultiVaultAddress },
   [
     {
-      url: 'https://www.intuition.systems/',
-      name: 'Intuition',
-      description: 'A decentralized trust protocol.',
-      image: 'https://example.com/image.png',
-    },
-    {
-      url: 'https://example.com/',
-      name: 'Example',
-      description: 'An example thing.',
-      image: 'https://example.com/example.png',
-    },
-  ],
 ```
 
 #### Batch Create Triple Statements
@@ -5421,12 +4160,6 @@ const IntuitionButton = ({ children, className }: IntuitionButton) => {
     const data = await createAtomFromThing(
       { walletClient, publicClient, address: multiVaultAddress },
       {
-        url: 'https://www.intuition.systems/',
-        name: 'Intuition',
-        description: 'A decentralized trust protocol.',
-        image: 'https://example.com/image.png',
-      },
-    )
   }
 
 }
@@ -5475,7 +4208,7 @@ Contributions are welcome! Please see the main repository for more information o
 
 ---
 
-# Economics
+# 
 
 Source: https://docs.intuition.systems/guides/economics/overview
 
@@ -5501,9 +4234,7 @@ Learn about the $TRUST token economics, distribution, and utility in our detaile
 
 ---
 
-# Index.md
-.md
-.mdx
+# 
 
 Source: https://docs.intuition.systems/guides/introduction
 
@@ -5569,7 +4300,7 @@ Glossary • Concepts • Definitions
 
 ---
 
-# Overview
+# 
 
 Source: https://docs.intuition.systems/guides/introduction/overview
 
@@ -5644,7 +4375,7 @@ Intuition provides the foundation. You build the apps, agents, and experiences t
 
 ---
 
-# Bonding Curves
+# 
 
 Source: https://docs.intuition.systems/guides/introduction/the-economics/bonding-curves
 
@@ -5827,7 +4558,7 @@ Intuition displays share values in a user-friendly format to make ownership easi
 
 ---
 
-# The Economics
+# 
 
 Source: https://docs.intuition.systems/guides/introduction/the-economics
 
@@ -5936,7 +4667,7 @@ This economic framework ensures sustainable growth while maintaining the platfor
 
 ---
 
-# Atoms
+# 
 
 Source: https://docs.intuition.systems/guides/introduction/the-primitives/fundamentals/atoms
 
@@ -6022,7 +4753,7 @@ Now that you understand Atoms, explore:
 
 ---
 
-# Fees & Rewards
+# 
 
 Source: https://docs.intuition.systems/guides/introduction/the-primitives/fundamentals/fees-rewards
 
@@ -6124,7 +4855,7 @@ Now that you understand Fees & Rewards, explore:
 
 ---
 
-# Fundamentals
+# 
 
 Source: https://docs.intuition.systems/guides/introduction/the-primitives/fundamentals
 
@@ -6168,7 +4899,7 @@ After mastering the fundamentals, explore:
 
 ---
 
-# In Practice
+# 
 
 Source: https://docs.intuition.systems/guides/introduction/the-primitives/fundamentals/intuition-in-practice
 
@@ -6261,7 +4992,7 @@ Now that you understand how Intuition primitives work together in practice, expl
 
 ---
 
-# Signal
+# 
 
 Source: https://docs.intuition.systems/guides/introduction/the-primitives/fundamentals/signal
 
@@ -6333,7 +5064,7 @@ Now that you understand Signal, explore:
 
 ---
 
-# State Interpretations
+# 
 
 Source: https://docs.intuition.systems/guides/introduction/the-primitives/fundamentals/state-interpretations
 
@@ -6413,7 +5144,7 @@ Now that you understand State Interpretations, explore:
 
 ---
 
-# Triples
+# 
 
 Source: https://docs.intuition.systems/guides/introduction/the-primitives/fundamentals/triples
 
@@ -6470,7 +5201,7 @@ Now that you understand Triples, explore:
 
 ---
 
-# Primitives
+# 
 
 Source: https://docs.intuition.systems/guides/introduction/the-primitives
 
@@ -6563,7 +5294,7 @@ Creating an Atom or Triple is distinctly different from taking a position on the
 
 ---
 
-# Atoms
+# 
 
 Source: https://docs.intuition.systems/guides/introduction/the-primitives/structuring/atoms
 
@@ -6761,7 +5492,7 @@ Now that you understand how to structure atoms, explore:
 
 ---
 
-# Calculating Rewards
+# 
 
 Source: https://docs.intuition.systems/guides/introduction/the-primitives/structuring/calculating-rewards
 
@@ -6787,401 +5518,10 @@ Rewards for creating high-quality atoms and triples.
 
 ```javascript
 const creationReward = await calculateCreationReward({
-  atomId: "did:ethr:mainnet:0x...",
-  creator: userDid,
-  quality: 0.95,
-  stake: 1000, // TRUST tokens
-  usage: 150   // views/interactions
-});
-```
-
-#### 2. Usage Rewards
-Rewards for atoms and triples that are frequently used.
-
-```javascript
-const usageReward = await calculateUsageReward({
-  atomId: "did:ethr:mainnet:0x...",
-  timeframe: "30d",
-  usage: {
-    views: 500,
-    references: 25,
-    shares: 10
-  }
-});
-```
-
-#### 3. Quality Rewards
-Rewards for maintaining high accuracy and relevance.
-
-```javascript
-const qualityReward = await calculateQualityReward({
-  atomId: "did:ethr:mainnet:0x...",
-  accuracy: 0.98,
-  consensus: 0.92,
-  relevance: 0.85
-});
-```
-
-#### 4. Staking Rewards
-Rewards for staking tokens to back contributions.
-
-```javascript
-const stakingReward = await calculateStakingReward({
-  userId: userDid,
-  stakedAmount: 5000, // TRUST tokens
-  duration: 90, // days
-  atomQuality: 0.9
-});
-```
-
-## Reward Calculation Formula
-
-### Base Reward Formula
-
-```javascript
-const baseReward = (qualityScore * stakeAmount * usageMultiplier) / totalStake;
-```
-
-### Quality Score Components
-
-```javascript
-const qualityScore = (
-  accuracyScore * 0.4 +
-  relevanceScore * 0.3 +
-  consensusScore * 0.2 +
-  noveltyScore * 0.1
-);
-```
-
-### Usage Multiplier
-
-```javascript
-const usageMultiplier = Math.log(1 + totalUsage) / Math.log(10);
-```
-
-## Detailed Calculation Examples
-
-### 1. Atom Creation Reward
-
-```javascript
-const atomReward = await calculateAtomReward({
-  atom: {
-    id: "did:ethr:mainnet:0x...",
-    content: "Machine Learning",
-    creator: userDid,
-    stake: 1000
-  },
-  metrics: {
-    views: 250,
-    references: 15,
-    accuracy: 0.95,
-    consensus: 0.88
-  },
-  timeframe: "30d"
-});
-
-// Reward calculation:
-// Base: 1000 TRUST (stake)
-// Quality: 0.95 * 0.4 + 0.88 * 0.2 = 0.556
-// Usage: log(1 + 265) / log(10) = 2.42
-// Total: (1000 * 0.556 * 2.42) / 10000 = 134.6 TRUST
-```
-
-### 2. Triple Creation Reward
-
-```javascript
-const tripleReward = await calculateTripleReward({
-  triple: {
-    id: "did:ethr:mainnet:0x...",
-    subject: "did:ethr:mainnet:0x...", // Ethereum
-    predicate: "did:ethr:mainnet:0x...", // is
-    object: "did:ethr:mainnet:0x...", // decentralized
-    creator: userDid,
-    stake: 500
-  },
-  metrics: {
-    usage: 120,
-    confidence: 0.92,
-    consensus: 0.85
-  }
-});
-```
-
-### 3. Staking Reward
-
-```javascript
-const stakingReward = await calculateStakingReward({
-  userId: userDid,
-  stakedAtoms: [
-    { atomId: "did:ethr:mainnet:0x...", amount: 2000, quality: 0.9 },
-    { atomId: "did:ethr:mainnet:0x...", amount: 1500, quality: 0.85 }
-  ],
-  duration: 60, // days
-  totalEcosystemStake: 100000
-});
-```
-
-## Reward Distribution
-
-### 1. Daily Distribution
-
-```javascript
-const dailyRewards = await distributeDailyRewards({
-  date: "2024-01-15",
-  totalPool: 10000, // TRUST tokens
-  participants: activeUsers,
-  metrics: dailyMetrics
-});
-```
-
-### 2. Weekly Bonuses
-
-```javascript
-const weeklyBonus = await calculateWeeklyBonus({
-  userId: userDid,
-  week: "2024-W03",
-  activities: {
-    atomsCreated: 5,
-    triplesCreated: 12,
-    interactions: 150,
-    quality: 0.92
-  }
-});
-```
-
-### 3. Monthly Milestones
-
-```javascript
-const monthlyMilestone = await calculateMonthlyMilestone({
-  userId: userDid,
-  month: "2024-01",
-  achievements: {
-    topContributor: true,
-    qualityExcellence: true,
-    communityLeader: true
-  }
-});
-```
-
-## Reward Optimization Strategies
-
-### 1. Quality-First Approach
-
-```javascript
-// Focus on creating high-quality content
-const qualityStrategy = {
-  research: true,
-  verification: true,
-  communityFeedback: true,
-  iterativeImprovement: true
-};
-```
-
-### 2. Strategic Staking
-
-```javascript
-// Stake on promising atoms early
-const stakingStrategy = {
-  earlyAdoption: true,
-  diversification: true,
-  qualityAssessment: true,
-  activeMonitoring: true
-};
-```
-
-### 3. Network Building
-
-```javascript
-// Create valuable connections
-const networkStrategy = {
-  meaningfulTriples: true,
-  crossReferences: true,
-  communityEngagement: true,
-  knowledgeSharing: true
-};
-```
-
-## Reward Analytics
-
-### 1. Personal Analytics
-
-```javascript
-const personalAnalytics = await getPersonalRewardAnalytics({
-  userId: userDid,
-  timeframe: "90d",
-  metrics: ['totalEarned', 'qualityScore', 'usageRate', 'stakeROI']
-});
-```
-
-### 2. Comparative Analysis
-
-```javascript
-const comparison = await compareRewardPerformance({
-  users: [userDid1, userDid2, userDid3],
-  timeframe: "30d",
-  metrics: ['rewardRate', 'qualityScore', 'efficiency']
-});
-```
-
-### 3. Predictive Modeling
-
-```javascript
-const prediction = await predictRewardGrowth({
-  userId: userDid,
-  timeframe: "7d",
-  factors: ['currentQuality', 'usageTrend', 'stakeGrowth']
-});
-```
-
-## Reward Claiming
-
-### 1. Automatic Claims
-
-```javascript
-// Set up automatic claiming
-await setupAutoClaim({
-  userId: userDid,
-  threshold: 100, // TRUST tokens
-  frequency: "weekly"
-});
-```
-
-### 2. Manual Claims
-
-```javascript
-// Manually claim rewards
-const claim = await claimRewards({
-  userId: userDid,
-  amount: 500, // TRUST tokens
-  gasEstimate: true
-});
-```
-
-### 3. Batch Claims
-
-```javascript
-// Claim multiple reward types at once
-const batchClaim = await batchClaimRewards({
-  userId: userDid,
-  types: ['creation', 'usage', 'staking', 'quality'],
-  gasOptimization: true
-});
-```
-
-## Reward Security
-
-### 1. Fraud Prevention
-
-```javascript
-const fraudCheck = await detectRewardFraud({
-  userId: userDid,
-  patterns: ['artificial_inflation', 'sock_puppets', 'collusion']
-});
-```
-
-### 2. Dispute Resolution
-
-```javascript
-const dispute = await createRewardDispute({
-  rewardId: "did:ethr:mainnet:0x...",
-  reason: "inaccurate_information",
-  evidence: ["source1", "source2"],
-  stake: 1000
-});
-```
-
-### 3. Appeal Process
-
-```javascript
-const appeal = await appealRewardDecision({
-  disputeId: "did:ethr:mainnet:0x...",
-  newEvidence: ["additional_source"],
-  communityVote: true
-});
-```
-
-## Best Practices
-
-### 1. Content Quality
-- Research thoroughly before creating atoms
-- Verify information from multiple sources
-- Update content as new information becomes available
-- Engage with the community for feedback
-
-### 2. Strategic Participation
-- Focus on high-value, underserved topics
-- Build meaningful connections between atoms
-- Stake tokens on quality content
-- Participate in community governance
-
-### 3. Continuous Learning
-- Monitor reward performance analytics
-- Adapt strategies based on results
-- Learn from successful contributors
-- Stay updated on protocol changes
-
-### 4. Community Engagement
-- Help other users improve their content
-- Participate in discussions and feedback
-- Share knowledge and best practices
-- Contribute to protocol governance
-
-## Integration Examples
-
-### Web Application
-
-```javascript
-// React component for reward tracking
-function RewardTracker({ userId }) {
-  const [rewards, setRewards] = useState(null);
-  
-  useEffect(() => {
-    const fetchRewards = async () => {
-      const userRewards = await getUserRewards({
-        userId,
-        timeframe: "30d"
-      });
-      setRewards(userRewards);
-    };
-    
-    fetchRewards();
-  }, [userId]);
-
-  return (
-      Your Rewards
-        Claim Rewards
-  );
-}
-```
-
-### Mobile Application
-
-```javascript
-// React Native reward tracking
-const trackRewardActivity = async (activity) => {
-  await logRewardActivity({
-    userId: userDid,
-    activity,
-    timestamp: new Date().toISOString(),
-    metadata: {
-      platform: 'mobile',
-      appVersion: '1.2.0'
-    }
-  });
-};
-```
-
-## Next Steps
-
-Now that you understand reward calculation, explore:
-
-- [Atoms](./atoms.md) - Learn how to create valuable atoms
-- [Triples](./triples.md) - Understand how to build meaningful relationships
-- [Capturing Signal](./capturing-signal.md) - Discover how signal drives rewards
 
 ---
 
-# Capturing Signal
+# 
 
 Source: https://docs.intuition.systems/guides/introduction/the-primitives/structuring/capturing-signal
 
@@ -7207,247 +5547,10 @@ Explicit user actions that directly indicate value.
 ```javascript
 // User explicitly rates an atom
 const rating = await rateAtom({
-  atomId: "did:ethr:mainnet:0x...",
-  rating: 5, // 1-5 scale
-  userId: userDid,
-  timestamp: new Date().toISOString()
-});
-```
-
-### 2. Implicit Signal
-Inferred from user behavior patterns.
-
-```javascript
-// User searches for and views an atom
-const view = await trackAtomView({
-  atomId: "did:ethr:mainnet:0x...",
-  userId: userDid,
-  duration: 45, // seconds
-  context: "search_result"
-});
-```
-
-### 3. Network Signal
-Signal derived from how data flows through the network.
-
-```javascript
-// Atom is referenced in a triple
-const reference = await trackAtomReference({
-  atomId: "did:ethr:mainnet:0x...",
-  tripleId: "did:ethr:mainnet:0x...",
-  context: "subject"
-});
-```
-
-## Signal Metrics
-
-### Usage Metrics
-
-#### Frequency
-```javascript
-const frequency = await calculateAtomFrequency({
-  atomId: "did:ethr:mainnet:0x...",
-  timeframe: "30d",
-  metric: "views"
-});
-```
-
-#### Duration
-```javascript
-const avgDuration = await calculateAverageDuration({
-  atomId: "did:ethr:mainnet:0x...",
-  timeframe: "7d"
-});
-```
-
-#### Reach
-```javascript
-const reach = await calculateAtomReach({
-  atomId: "did:ethr:mainnet:0x...",
-  timeframe: "24h"
-});
-```
-
-### Quality Metrics
-
-#### Accuracy Score
-```javascript
-const accuracy = await calculateAccuracyScore({
-  atomId: "did:ethr:mainnet:0x...",
-  method: "community_consensus"
-});
-```
-
-#### Relevance Score
-```javascript
-const relevance = await calculateRelevanceScore({
-  atomId: "did:ethr:mainnet:0x...",
-  context: "search_query",
-  userProfile: userProfile
-});
-```
-
-#### Consensus Score
-```javascript
-const consensus = await calculateConsensusScore({
-  atomId: "did:ethr:mainnet:0x...",
-  metric: "agreement_rate"
-});
-```
-
-## Signal Collection Methods
-
-### 1. Event Tracking (Conceptual)
-
-Event collection endpoints are not exposed as an SDK API. The signals you see in the UI are derived from on-chain deposits/redemptions and graph events. Use GraphQL to query signals data.
-
-### 2. Query Signals (GraphQL)
-
-```ts
-
-configureClient({ apiUrl: API_URL_DEV })
-const client = createServerClient({})
-
-const data = await client.request(GetSignalsDocument, { limit: 10 })
-console.log('Signals returned:', data.signals.length)
-```
-
-### 3. Real-time Streaming
-
-Real-time streams are not part of the public SDK; poll GraphQL or subscribe via your own infra.
-
-## Signal Processing
-
-### 1. Aggregation
-
-Aggregation helpers shown below are conceptual. Use GraphQL aggregations where available.
-
-### 2. Normalization
-
-Normalization is application-specific. No public SDK function currently exists.
-
-### 3. Weighting
-
-Weighting strategies are left to the integrator.
-
-## Signal Analytics
-
-### 1. Trend Analysis
-
-```javascript
-const trends = await analyzeSignalTrends({
-  atomId: "did:ethr:mainnet:0x...",
-  timeframe: "30d",
-  metrics: ['usage', 'quality', 'reach']
-});
-```
-
-### 2. Comparative Analysis
-
-```javascript
-const comparison = await compareSignals({
-  atoms: ["did:ethr:mainnet:0x...", "did:ethr:mainnet:0x..."],
-  metrics: ['engagement', 'accuracy', 'consensus']
-});
-```
-
-### 3. Predictive Modeling
-
-```javascript
-const prediction = await predictSignalGrowth({
-  atomId: "did:ethr:mainnet:0x...",
-  timeframe: "7d",
-  factors: ['current_trend', 'network_effects', 'quality_score']
-});
-```
-
-## Signal Quality Assurance
-
-### 1. Spam Detection
-
-```javascript
-const isSpam = await detectSignalSpam({
-  userId: userDid,
-  signalType: 'atom_view',
-  patterns: ['bot_behavior', 'artificial_inflation']
-});
-```
-
-### 2. Sybil Resistance
-
-```javascript
-const sybilScore = await calculateSybilResistance({
-  userId: userDid,
-  factors: ['stake_amount', 'reputation_score', 'behavior_patterns']
-});
-```
-
-### 3. Quality Validation
-
-```javascript
-const qualityScore = await validateSignalQuality({
-  signal: userSignal,
-  criteria: ['authenticity', 'relevance', 'consistency']
-});
-```
-
-## Signal Visualization
-
-### 1. Real-time Dashboards
-
-Build dashboards using GraphQL queries and your preferred charting library.
-
-### 2. Historical Analysis
-
-Use GraphQL date filters and ordering to build historical views.
-
-### 3. Network Mapping
-
-No public helper exists; derive network relationships via triples queries.
-
-## Best Practices
-
-### 1. Privacy-First Design
-- Anonymize user data when possible
-- Use differential privacy techniques
-- Respect user consent and preferences
-
-### 2. Efficient Processing
-- Implement real-time processing where needed
-- Use batch processing for historical analysis
-- Optimize for scale and performance
-
-### 3. Quality Over Quantity
-- Focus on meaningful signal patterns
-- Filter out noise and spam
-- Prioritize high-quality interactions
-
-### 4. Continuous Improvement
-- Regularly update signal models
-- Incorporate user feedback
-- Adapt to changing patterns
-
-## Integration Examples
-
-### Web Application
-
-Use the `useGetSignalsQuery` React hook from `@0xintuition/graphql` for UI displays.
-
-### Mobile Application
-
-Mobile integrations query the same GraphQL endpoints; no mobile-specific SDK is required.
-
-## Next Steps
-
-Now that you understand signal capture, explore:
-
-- [Calculating Rewards](./calculating-rewards.md) - Learn how signal translates into rewards
-- [Atoms](./atoms.md) - Review atom structure fundamentals
-- [Triples](./triples.md) - Understand triple relationships
 
 ---
 
-# Structuring
+# 
 
 Source: https://docs.intuition.systems/guides/introduction/the-primitives/structuring
 
@@ -7492,7 +5595,7 @@ After mastering structuring techniques, explore the [Developer Tools](/docs/deve
 
 ---
 
-# Triples
+# 
 
 Source: https://docs.intuition.systems/guides/introduction/the-primitives/structuring/triples
 
@@ -7771,7 +5874,7 @@ Now that you understand how to structure triples, explore:
 
 ---
 
-# Why Intuition?
+# 
 
 Source: https://docs.intuition.systems/guides/introduction/why-intuition
 
@@ -7933,7 +6036,7 @@ Whether you're a developer, researcher, or community builder, your contributions
 
 ---
 
-# Intuition AI
+# 
 
 Source: https://docs.intuition.systems/guides/intuition-ai
 
@@ -7989,7 +6092,7 @@ All Intuition AI components are open source and available on GitHub. The MCP ser
 
 ---
 
-# Intuition MCP Server
+# 
 
 Source: https://docs.intuition.systems/guides/intuition-ai/mcp-server
 
@@ -8139,81 +6242,10 @@ The server uses the Model Context Protocol SDK for client interactions. Here's a
 
 async function connectToMcpServer(url: string) {
   const client = new Client({
-    name: 'intuition-client',
-    version: '1.0.0',
-  });
-
-  const transport = new StreamableHTTPClientTransport(new URL(url));
-  await client.connect(transport);
-
-  return client;
-}
-
-// Usage
-const client = await connectToMcpServer('http://localhost:3001');
-const response = await client.callTool('search_atoms', {
-  queries: ['ethereum']
-});
-```
-
-### API Endpoints
-
-The server provides these endpoints:
-- `/mcp` - Streamable HTTP transport (recommended)
-- `/sse` - Server-Sent Events transport (legacy support)
-
-## Architecture
-
-The MCP Server operates as an HTTP stream server, leveraging the Model Context Protocol to handle streaming requests and responses. This makes it ideal for real-time applications and large-scale data queries.
-
-### Request Flow
-
-1. **Client Request**: Application sends request to MCP endpoint
-2. **Tool Processing**: Server processes the request using appropriate tool
-3. **Knowledge Graph Query**: Server queries Intuition protocol
-4. **Response Streaming**: Results are streamed back to client
-5. **Client Processing**: Application handles streaming response data
-
-## Deployment
-
-The repository includes deployment configuration:
-
-- **Dockerfile**: Ready for deployment to services like Render or any Docker-compatible host
-- **render.yaml**: Configuration for Render deployment
-- **Environment setup**: Configurable for different deployment environments
-
-### Environment Variables
-
-Configure these environment variables for your deployment:
-- `PORT`: Server port (default: 3001)
-- `HOST`: Server host (default: localhost)
-- API credentials and other service-specific configurations
-
-## Contributing
-
-We welcome contributions to the Intuition MCP Server! To contribute:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/your-feature`)
-3. Commit your changes (`git commit -m "Add your feature"`)
-4. Push to the branch (`git push origin feature/your-feature`)
-5. Open a pull request
-
-Please ensure your code follows the project's coding standards and includes tests.
-
-## Support and Resources
-
-- **[GitHub Repository](https://github.com/0xIntuition/intuition-mcp-server)**: Source code, issues, and contributions
-- **[Model Context Protocol](https://modelcontextprotocol.io)**: Learn more about the MCP specification
-- **[Intuition Protocol](https://docs.intuition.systems)**: Comprehensive protocol documentation
-
-## License
-
-The Intuition MCP Server is open-source software licensed under the MIT License. See the [LICENSE](https://github.com/0xIntuition/intuition-mcp-server/blob/main/LICENSE) file for details.
 
 ---
 
-# Run a Node
+# 
 
 Source: https://docs.intuition.systems/guides/intuition-node/backup
 
@@ -8714,7 +6746,7 @@ The node implementation is under active development, so check the repository reg
 
 ---
 
-# Run on Kubernetes Cluster
+# 
 
 Source: https://docs.intuition.systems/guides/intuition-node/kubernetes-deployment
 
@@ -8956,7 +6988,7 @@ terraform plan
 
 ---
 
-# Start all services
+# 
 
 Source: https://docs.intuition.systems/guides/intuition-node/local-development-setup
 
@@ -8993,7 +7025,7 @@ docker-compose -f docker/docker-compose-apps.yml logs -f
 
 ---
 
-# Overview
+# 
 
 Source: https://docs.intuition.systems/guides/intuition-node/overview
 
@@ -9071,7 +7103,7 @@ Once you understand the architecture and have the prerequisites ready:
 
 ---
 
-# Get Started
+# 
 
 Source: https://docs.intuition.systems/guides/intuition-node/run-an-intuition-node
 
@@ -9227,7 +7259,7 @@ The node implementation is under active development, so check the repository reg
 
 ---
 
-# Rust Backend
+# 
 
 Source: https://docs.intuition.systems/guides/intuition-node/rust-backend
 
@@ -9348,9 +7380,7 @@ The repository includes comprehensive tooling:
 
 ---
 
-# Index.md
-.md
-.mdx
+# 
 
 Source: https://docs.intuition.systems/guides/network
 
@@ -9418,7 +7448,7 @@ Need help with any of these tools? Check out our [Community & Support](/docs/res
 
 ---
 
-# Intuition Mainnet
+# 
 
 Source: https://docs.intuition.systems/guides/network/mainnet
 
@@ -9447,7 +7477,7 @@ While you wait for mainnet, you can:
 
 ---
 
-# Bridge
+# 
 
 Source: https://docs.intuition.systems/guides/network/testnet/bridge
 
@@ -9506,7 +7536,7 @@ The Metalayer uses advanced cryptographic techniques and consensus mechanisms to
 
 ---
 
-# Data Populator
+# 
 
 Source: https://docs.intuition.systems/guides/network/testnet/data-populator
 
@@ -9835,7 +7865,7 @@ For support with the Data Populator:
 
 ---
 
-# Explorer
+# 
 
 Source: https://docs.intuition.systems/guides/network/testnet/explorer
 
@@ -10068,7 +8098,7 @@ Use the explorer for development:
 
 ---
 
-# Farcaster Frames
+# 
 
 Source: https://docs.intuition.systems/guides/network/testnet/farcaster-frames
 
@@ -10217,160 +8247,10 @@ The Intuition Frame SDK provides easy integration:
 ```javascript
 // Initialize the Intuition Frame SDK
 const intuitionFrame = new IntuitionFrame({
-  network: 'mainnet',
-  wallet: 'metamask',
-});
-
-// Create an atom (identity)
-const result = await intuitionFrame.createAtom({
-  name: 'Alice Johnson',
-  description: 'Software Engineer at Tech Corp',
-  metadata: {
-    profession: 'Software Engineer',
-    company: 'Tech Corp',
-  },
-});
-
-// Display the result
-frame.postMessage({
-  type: 'identity-created',
-  atomId: result.atomId,
-  transactionHash: result.transactionHash,
-});
-```
-
-### Frame Validation
-
-All frames must meet Farcaster's validation requirements:
-
-- **Security** - Secure implementation with proper input validation
-- **Performance** - Fast loading and responsive interaction
-- **Accessibility** - Accessible to users with disabilities
-- **Compliance** - Follow Farcaster's content and behavior guidelines
-
-## Best Practices
-
-### Frame Design
-
-- **Simple Interface** - Keep frames simple and easy to use
-- **Clear Actions** - Make it obvious what actions users can take
-- **Immediate Feedback** - Provide immediate feedback for user actions
-- **Error Handling** - Gracefully handle errors and edge cases
-
-### Content Strategy
-
-- **Valuable Content** - Create frames that provide real value to users
-- **Social Sharing** - Encourage users to share frame results
-- **Community Building** - Use frames to build and engage communities
-- **Reputation Building** - Help users build reputation through frame interactions
-
-### Technical Considerations
-
-- **Performance** - Optimize frames for fast loading and interaction
-- **Security** - Implement proper security measures and input validation
-- **Scalability** - Design frames to handle high user volumes
-- **Monitoring** - Track frame usage and performance metrics
-
-## Integration Examples
-
-### Identity Verification Frame
-
-```javascript
-// Frame for verifying user identity
-const verificationFrame = {
-  title: 'Verify Your Identity',
-  description: 'Create a verified identity on Intuition',
-  actions: [
-    {
-      label: 'Create Identity',
-      action: 'create-atom',
-      parameters: {
-        name: '{{user.name}}',
-        description: 'Farcaster user: {{user.username}}',
-      },
-    },
-  ],
-};
-```
-
-### Claim Verification Frame
-
-```javascript
-// Frame for verifying claims
-const claimFrame = {
-  title: 'Verify This Claim',
-  description: 'Stake on whether this claim is true',
-  actions: [
-    {
-      label: 'Agree',
-      action: 'stake-positive',
-      parameters: {
-        claimId: '{{claim.id}}',
-        amount: '0.01',
-      },
-    },
-    {
-      label: 'Disagree',
-      action: 'stake-negative',
-      parameters: {
-        claimId: '{{claim.id}}',
-        amount: '0.01',
-      },
-    },
-  ],
-};
-```
-
-## Analytics and Metrics
-
-### Frame Performance
-
-- **Usage Statistics** - Track frame views and interactions
-- **Conversion Rates** - Measure frame completion rates
-- **User Engagement** - Monitor user engagement and retention
-- **Social Sharing** - Track frame sharing and viral spread
-
-### Intuition Integration
-
-- **Atom Creation** - Track atoms created through frames
-- **Claim Activity** - Monitor claim creation and staking activity
-- **User Growth** - Measure user acquisition through frames
-- **Network Effects** - Track network growth and engagement
-
-## Development Resources
-
-### Documentation
-
-- [Farcaster Frames Documentation](https://docs.farcaster.xyz/developers/frames)
-- [Intuition API Documentation](/guides/developer-tools/graphql-api)
-- [Frame SDK Documentation](https://github.com/0xIntuition/intuition-frame)
-
-### Tools and SDKs
-
-- **Intuition Frame SDK** - Official SDK for building Intuition frames
-- **Frame Templates** - Pre-built templates for common use cases
-- **Testing Tools** - Tools for testing frames in development
-- **Analytics Dashboard** - Dashboard for tracking frame performance
-
-### Community
-
-- **Developer Community** - Join the Intuition developer community
-- **Frame Showcase** - Browse examples of Intuition frames
-- **Support Channels** - Get help with frame development
-- **Contribution Guidelines** - Guidelines for contributing to the ecosystem
-
-## Related Resources
-
-- [Portal](/guides/network/testnet/portal) - Main web interface for Intuition
-- [MetaMask Snap](/guides/network/testnet/metamask-snap) - MetaMask integration
-- [Browser Extension](/guides/network/testnet/browser-extension) - Chrome extension
-- [Developer Tools](/guides/developer-tools) - Programmatic access
-- [API Documentation](/guides/developer-tools/graphql-api) - Technical guides
-- [Community](https://discord.gg/0xintuition) - Join the Intuition community
 
 ---
 
-# Intuition Testnet
+# 
 
 Source: https://docs.intuition.systems/guides/network/testnet
 
@@ -10414,7 +8294,7 @@ Need help? Join our [Discord](https://discord.gg/RgBenkX4mx) community for suppo
 
 ---
 
-# MetaMask Snap
+# 
 
 Source: https://docs.intuition.systems/guides/network/testnet/metamask-snap
 
@@ -10631,7 +8511,7 @@ The MetaMask Snap is open source and welcomes contributions:
 
 ---
 
-# The Intuition Portal
+# 
 
 Source: https://docs.intuition.systems/guides/network/testnet/portal
 
@@ -10756,7 +8636,7 @@ Visit **[portal.intuition.systems](https://portal.intuition.systems)** to start 
 
 ---
 
-# RPC
+# 
 
 Source: https://docs.intuition.systems/guides/network/testnet/rpc
 
@@ -10823,7 +8703,7 @@ GraphQL API
 
 ---
 
-# Atoms
+# 
 
 Source: https://docs.intuition.systems/guides/primitives/atoms
 
@@ -10915,133 +8795,10 @@ Consider representing the statement: **"Tiger Research was founded in 2021"**
 ```javascript
 // One Atom containing all information
 const statementAtom = {
-  data: "Tiger Research was founded in 2021"
-}
-```
-
-Problems with this approach:
-- Hard to verify which part might be incorrect if disputed
-- Cannot reuse individual components
-- Difficult to update or correct specific elements
-- Less composable with other data
-
-**✅ Atomic Approach** (Best Practice):
-```javascript
-// Three separate Atoms
-const tigerResearchAtom = { data: "Tiger Research" }
-const foundedInAtom = { data: "founded in" }
-const year2021Atom = { data: "2021" }
-
-// Connected via a Triple
-const foundingTriple = {
-  subject: tigerResearchAtom,
-  predicate: foundedInAtom,
-  object: year2021Atom
-}
-```
-
-Benefits of this approach:
-- Each piece can be independently verified and traced
-- Individual components are reusable (the `[2021]` Atom can be used in countless other triples)
-- Corrections can be made to specific elements without discarding everything
-- Trust accrued by each Atom benefits all its usages
-
-### Economic Incentives for Granularity
-
-Intuition's economic model naturally guides users toward optimal granularity:
-
-- **Reusable Atoms** accumulate more Signal as they're referenced in multiple Triples
-- **High-Signal Atoms** attract more $TRUST stakes, increasing their network gravity
-- **Composite Atoms** with embedded data are less likely to be reused or staked
-- **Modular Design** maximizes potential for community adoption and value accrual
-
-## Flexibility and Scope
-
-Atoms are not limited to static concepts. They can represent:
-
-- **Dynamic entities**: User-generated content, evolving documents
-- **Abstract concepts**: Tags, categories, classifications
-- **Data structures**: JSON schemas, configuration templates
-- **Content chunks**: Text snippets, code fragments (via IPFS CID)
-
-Regardless of what an Atom represents, the principles remain consistent:
-1. Give it a clear, unique identity
-2. Include relevant data in the atomData field
-3. Keep its scope narrow for maximum verifiability and reusability
-
-## Best Practices
-
-### Creating Effective Atoms
-
-1. **Leverage Deterministic IDs**: Remember that identical atomData will always produce the same Atom ID
-2. **Check for Similar Atoms**: Search for canonical Atoms before creating variations
-3. **Use Clear Data**: Choose descriptive, unambiguous data values
-4. **Maintain Single Purpose**: Each Atom should represent one thing
-5. **Consider Reusability**: Design Atoms others will want to reference
-
-### Atom Design Patterns
-
-Think of Atoms as **words in the Intuition dictionary**:
-- They are the lego-like pieces that snap into many contexts
-- Community Signal concentrates on the words that matter most
-- Triples form the "sentences" that connect these dictionary words together
-
-### Integration with Triples
-
-Atoms gain their true power when connected via Triples:
-- **Subject Atoms**: The entity being described
-- **Predicate Atoms**: The relationship or property
-- **Object Atoms**: The value or target of the relationship
-
-This separation allows each component to be independently verified, updated, and trusted.
-
-## Practical Examples
-
-### Identity Atom
-```javascript
-const aliceAtom = {
-  atomData: "https://alice.id/profile.json",
-  id: "atom_0x123...", // Deterministically generated from atomData
-  vault: "0xabc...",
-  signal: 1500
-}
-```
-
-### Concept Atom
-```javascript
-const defiAtom = {
-  atomData: {
-    name: "DeFi",
-    definition: "Decentralized Finance",
-    reference: "ipfs://QmX.../defi-definition.json"
-  },
-  id: "atom_0x456...", // Deterministically generated from atomData
-  vault: "0xdef...",
-  signal: 8500
-}
-```
-
-### Relationship Atom (Predicate)
-```javascript
-const expertInAtom = {
-  atomData: "expertIn",
-  id: "atom_0x789...", // Deterministically generated from "expertIn"
-  vault: "0xghi...",
-  signal: 3200
-}
-```
-
-## Next Steps
-
-With Atoms as your foundation, you can:
-- Learn about [Triples](./triples) to create meaningful relationships between Atoms
-- Explore [Signals](./signals) to understand attestation and trust mechanics
-- Review [Vaults](./vaults) for staking and economic participation
-- Check the [SDK Documentation](/docs/developer-tools/sdks/overview) for implementation details
 
 ---
 
-# Best Practices
+# 
 
 Source: https://docs.intuition.systems/guides/primitives/atoms/best-practices
 
@@ -11074,7 +8831,7 @@ This separation allows each component to be independently verified, updated, and
 
 ---
 
-# Design Principles: Atomic Granularity
+# 
 
 Source: https://docs.intuition.systems/guides/primitives/atoms/design-principles
 
@@ -11094,64 +8851,10 @@ Consider representing the statement: **"Tiger Research was founded in 2021"**
 ```javascript
 // One Atom containing all information
 const statementAtom = {
-  data: "Tiger Research was founded in 2021"
-}
-```
-
-Problems with this approach:
-- Hard to verify which part might be incorrect if disputed
-- Cannot reuse individual components
-- Difficult to update or correct specific elements
-- Less composable with other data
-
-### Atomic Approach (Best Practice)
-
-```javascript
-// Three separate Atoms
-const tigerResearchAtom = { data: "Tiger Research" }
-const foundedInAtom = { data: "founded in" }
-const year2021Atom = { data: "2021" }
-
-// Connected via a Triple
-const foundingTriple = {
-  subject: tigerResearchAtom,
-  predicate: foundedInAtom,
-  object: year2021Atom
-}
-```
-
-Benefits of this approach:
-- Each piece can be independently verified and traced
-- Individual components are reusable (the `[2021]` Atom can be used in countless other triples)
-- Corrections can be made to specific elements without discarding everything
-- Trust accrued by each Atom benefits all its usages
-
-## Economic Incentives for Granularity
-
-Intuition's economic model naturally guides users toward optimal granularity:
-
-- **Reusable Atoms** accumulate more Signal as they're referenced in multiple Triples
-- **High-Signal Atoms** attract more $TRUST stakes, increasing their network gravity
-- **Composite Atoms** with embedded data are less likely to be reused or staked
-- **Modular Design** maximizes potential for community adoption and value accrual
-
-## Flexibility and Scope
-
-Atoms are not limited to static concepts. They can represent:
-
-- **Dynamic entities**: User-generated content, evolving documents
-- **Abstract concepts**: Tags, categories, classifications
-- **Data structures**: JSON schemas, configuration templates
-- **Content chunks**: Text snippets, code fragments (via IPFS CID)
-
-Regardless of what an Atom represents, the principles remain consistent:
-1. Give it a clear, unique identity
-2. Include relevant data in the atomData field
-3. Keep its scope narrow for maximum verifiability and reusability
 
 ---
 
-# Atoms
+# 
 
 Source: https://docs.intuition.systems/guides/primitives/atoms/overview
 
@@ -11223,7 +8926,7 @@ With Atoms as your foundation, you can:
 
 ---
 
-# Practical Examples
+# 
 
 Source: https://docs.intuition.systems/guides/primitives/atoms/practical-examples
 
@@ -11234,50 +8937,10 @@ Source: https://docs.intuition.systems/guides/primitives/atoms/practical-example
 
 ```javascript
 const aliceAtom = {
-  atomData: "https://alice.id/profile.json",
-  id: "atom_0x123...", // Deterministically generated from atomData
-  vault: "0xabc...",
-  signal: 1500
-}
-```
-
-## Concept Atom
-
-```javascript
-const defiAtom = {
-  atomData: {
-    name: "DeFi",
-    definition: "Decentralized Finance",
-    reference: "ipfs://QmX.../defi-definition.json"
-  },
-  id: "atom_0x456...", // Deterministically generated from atomData
-  vault: "0xdef...",
-  signal: 8500
-}
-```
-
-## Relationship Atom (Predicate)
-
-```javascript
-const expertInAtom = {
-  atomData: "expertIn",
-  id: "atom_0x789...", // Deterministically generated from "expertIn"
-  vault: "0xghi...",
-  signal: 3200
-}
-```
-
-## Next Steps
-
-With Atoms as your foundation, you can:
-- Learn about [Triples](../triples) to create meaningful relationships between Atoms
-- Explore [Signals](../signals) to understand attestation and trust mechanics
-- Review [Vaults](../vaults) for staking and economic participation
-- Check the [SDK Documentation](/docs/developer-tools/sdks/overview) for implementation details
 
 ---
 
-# The Problem Atoms Solve
+# 
 
 Source: https://docs.intuition.systems/guides/primitives/atoms/problem-atoms-solve
 
@@ -11309,7 +8972,7 @@ This market-driven approach, combined with deterministic ID generation, ensures 
 
 ---
 
-# Primitives Overview
+# 
 
 Source: https://docs.intuition.systems/guides/primitives/overview
 
@@ -11346,150 +9009,10 @@ Unlike traditional identifiers that are limited to URIs or specific data formats
 **Person Atom**
 ```
 Atom ID: 0x123...
-Data: "alice.eth" (ENS name as raw string)
-```
-
-**Concept Atom**
-```
-Atom ID: 0x456...
-Data: "trustworthy" (abstract quality)
-```
-
-**Data Hash Atom**
-```
-Atom ID: 0x789...
-Data: 0xabcd...ef12 (IPFS content hash as bytes)
-```
-
-**Date Atom**
-```
-Atom ID: 0xabc...
-Data: "2024-01-15T09:00:00Z" (ISO timestamp)
-```
-
-**Smart Contract Atom**
-```
-Atom ID: 0xdef...
-Data: 0x742d35...8930 (Ethereum contract address)
-```
-
-Atoms are sometimes called "identities" in the protocol because they give any entity – whether tangible or abstract – a persistent, verifiable digital identity that can be referenced and validated by anyone in the network.
 
 ---
 
-### Triples: Expressing Relationships as Claims
-
-A **Triple** is a structured claim that follows the semantic format of **[Subject] – [Predicate] – [Object]**, where each component is itself an Atom. This creates a precise, machine-readable way to express facts, relationships, and assertions about the world.
-
-#### Example Triple Structures
-
-**Social Relationship**
-
-**Professional Credential**
-
-**Smart Contract Deployment**
-
-**Product Rating**
-
-:::tip Compositional Power
-Triples can reference other Triples as Atoms, enabling arbitrarily complex statements. For example:
-```
-[[Alice is friend of Bob]] — [was established on] — [2024-01-01]
-```
-This meta-claim adds temporal context to the friendship relationship.
-:::
-
-In many contexts, Triples are also referred to as **Claims** or **Attestations** because they represent assertions that can be verified, disputed, or supported by the community.
-
----
-
-### Signals: Quantified Trust Through Staking
-
-**Signal** represents the aggregated attestation state of an Atom or Triple – essentially, how much the community trusts or believes in that piece of information. Signal is generated through economic staking, where users deposit tokens (like $TRUST) into an entity's vault to express their conviction.
-
-Users stake tokens to support an Atom or Triple, indicating they believe it's true, valuable, or important.
-
-Users can stake against claims they disagree with, creating a market for truth discovery.
-
-Signal changes in real-time as users stake, withdraw, or shift their positions, creating a living consensus.
-
-#### How Signal Works
-
-1. **Staking Mechanism**: Users deposit tokens into Atom or Triple vaults
-2. **Weight Calculation**: More stake = stronger signal of trust/importance
-3. **Relative Comparison**: Signal strength is evaluated relative to alternatives
-4. **Economic Incentives**: Stakers earn fees from future deposits, encouraging early and accurate signaling
-
-:::warning Important Distinction
-Creating an Atom or Triple is different from signaling support for it. Creation alone doesn't constitute a Signal – only staking tokens does. A user can create an entity without staking, leaving it with zero initial Signal.
-:::
-
----
-
-## How the Primitives Work Together
-
-The true power of Intuition emerges when these three primitives interact:
-
-### Many-to-One Attestations
-
-Unlike traditional systems where a single authority issues certificates or attestations, Intuition enables many-to-one non-deterministic attestations:
-
-### Example: Building a Reputation Graph
-
-Consider how these primitives combine to create a decentralized reputation system:
-
-  {() => }
-
-In this example:
-- **Atoms** define the entities (Alice, developer, React)
-- **Triples** express relationships (Alice is a developer, Alice knows React)
-- **Signals** quantify community confidence (1000 TRUST backs the developer claim)
-
----
-
-## Key Benefits of This Architecture
-
-Any data type can become an Atom, and any relationship can be expressed as a Triple, creating infinite possibilities for knowledge representation.
-
-Economic incentives through Signal staking create a market for truth, where accurate information naturally accumulates more support.
-
-Standardized semantic structure enables different applications to understand and build upon the same knowledge graph.
-
-Trust isn't binary – it's a spectrum measured by Signal strength, allowing for nuanced representation of confidence and belief.
-
----
-
-## Getting Started with Primitives
-
-To begin working with Intuition's primitives, consider these pathways:
-
-### For Developers
-1. **Create Atoms** for entities in your domain (users, products, concepts)
-2. **Define Triples** to express relationships between those entities
-3. **Monitor Signals** to understand community consensus
-4. **Build applications** that leverage the knowledge graph
-
-### For Users
-1. **Discover existing Atoms** relevant to your interests
-2. **Stake on Triples** you believe are true or important
-3. **Create new Claims** to contribute knowledge
-4. **Earn rewards** from successful early signaling
-
-### For Data Scientists
-1. **Analyze Signal patterns** to identify emerging truths
-2. **Query the Triple graph** for relationship insights
-3. **Track Atom evolution** over time
-4. **Build prediction models** based on Signal dynamics
-
----
-
-:::info Remember
-The beauty of Intuition's primitives lies in their simplicity and composability. Three simple concepts – Atoms, Triples, and Signals – combine to create a powerful system for decentralized knowledge and trust.
-:::
-
----
-
-# Overview
+# 
 
 Source: https://docs.intuition.systems/guides/primitives/signals/overview
 
@@ -11584,279 +9107,10 @@ This model transforms Signals from simple attestations into **programmatic value
 ```javascript
 // Example: Staking creates ownership
 const stake = await stakeOnAtom({
-  atomId: "ethereum-atom",
-  amount: 100  // 100 TRUST
-});
-
-// You now own tokens representing your share
-console.log(stake);
-// {
-//   tokensReceived: 45,  // Based on bonding curve
-//   totalSupply: 1000,    // Total tokens for this Atom
-//   ownership: 0.045,     // You own 4.5% of this Atom
-//   currentPrice: 2.22    // Current price per token
-// }
-
-// As the Atom generates fees, you earn proportionally
-// Every query, every reference, every interaction = revenue
-```
-
-#### Value Flow Examples
-
-Consider these scenarios:
-
-**Popular Identity Atom**: An Atom representing "Vitalik Buterin"
-- Thousands of Triples reference it
-- Queries constantly traverse through it
-- Early stakers earn fees from every interaction
-- Acts like owning "shares" in a highly-trafficked data highway
-
-**Valuable Triple**: "[Company X] [acquired] [Company Y]"
-- News services query it
-- Financial models reference it
-- Trading bots check it
-- Token holders earn from all this usage
-
-**Infrastructure Data**: Common predicates like "owns" or "created"
-- Used in millions of queries
-- Essential graph infrastructure
-- Stakers essentially own critical data infrastructure
-
-This creates an economy where:
-- **Discovery is rewarded**: Find and stake on useful data early
-- **Curation has value**: Your stake helps validate quality
-- **Usage generates returns**: Popular data pays dividends
-- **Information becomes an asset class**: Data literally has owners who profit from its use
-
-## Three Forms of Signal Generation
-
-The Intuition model accounts for three distinct forms of signal generation:
-
-### 1. Explicit Signal
-
-Direct stakes or votes by users—the most straightforward form:
-- Users explicitly declare stance by locking tokens
-- Like upvoting/downvoting with money at risk
-- Ensures serious, considered assertions
-
-### 2. Implicit Signal
-
-Derived from usage and interaction patterns:
-- Frequency of queries and references
-- Inclusion in other Triples
-- Application usage metrics
-- Off-chain indexing tracks these metrics
-- "Crowds vote with their attention/tools"
-
-### 3. Transitive Signal
-
-Reflects web-of-trust effects:
-- Signals from trusted sources carry more weight
-- If Alice stakes on a claim and you historically align with Alice, her signal counts more strongly in your view
-- Trust propagates through the social graph of attestors
-- Reality Tunnels use this for personalized perspectives
-
-## Interpreting Signals
-
-Every piece of signal data is fully transparent and on-chain, allowing anyone to inspect why an Atom/Triple has its reputation:
-
-### Transparency Features
-
-- View which addresses have staked
-- See stake amounts and sides
-- Analyze attestor profiles
-- Trust but verify approach
-
-### Meta-Information Value
-
-The meta-layer reveals crucial context:
-- A 95% consensus might have dissenting 5% from domain experts
-- Highly reputable DAOs and individuals staking together lends strong credibility
-- "Who trusts this and who doesn't" becomes quantifiable data
-
-This transparency enables both users and AI agents to evaluate information with full context rather than blind trust.
-
-## Using Signals: Filtering and Reality Tunnels
-
-Now that we understand how signals work, let's explore their most powerful application: filtering information based on trust. In traditional databases, you can query for data that exists. In Intuition, you can query for data that is *trusted*—and define exactly what "trusted" means to you.
-
-### Trust-Based Filtering
-
-Think of signals as creating a trust layer over all information. Instead of getting raw, unvetted data, you can filter results based on community confidence, stake amounts, or specific attestors. This transforms queries from "what exists" to "what can I trust."
-
-#### Filtering by Consensus and Stakes
-
-When querying the knowledge graph, you can set minimum trust thresholds. For example, imagine you're building a DeFi aggregator that needs to identify legitimate DAO treasuries. Rather than maintaining a manual whitelist, you can query for addresses that the community has strongly validated:
-
-```javascript
-// Find DAO treasuries with strong community backing
-const trustedDAOs = await query({
-  pattern: "[Address] [is DAO Treasury] [True]",
-  minSignal: {
-    tvl: 10000,        // At least 10,000 TRUST staked
-    consensus: 0.8     // At least 80% positive consensus
-  }
-});
-```
-
-This query returns only addresses where:
-- The community has staked significant value (10,000+ TRUST) on the claim
-- There's strong agreement (80%+ consensus) that it's actually a DAO treasury
-- The signal data provides economic backing for the classification
-
-#### Filtering by Specific Attestors
-
-Sometimes you don't just want community consensus—you want verification from specific, authoritative sources. Signal filtering allows you to require attestations from particular entities.
-
-Consider an HR application that needs to verify employment. Instead of trusting any claim that "Alice works at Company Y," you can require that Company Y itself has attested to this relationship:
-
-```javascript
-// Get employee data that's been verified by the employer
-const employees = await query({
-  pattern: "[Person] [employee Of] [Company Y]",
-  requireSignalFrom: "Company Y"  // Company must have attested
-});
-```
-
-This ensures you're only getting employment claims that the company itself has staked on, providing authoritative verification without centralized APIs or manual verification processes.
-
-### Reality Tunnels
-
-Reality Tunnels take signal filtering to the next level by creating complete worldviews or perspectives through which to interpret data. Think of them as curated lenses that determine whose signals you trust and how much weight to give them.
-
-#### What is a Reality Tunnel?
-
-A Reality Tunnel is essentially a trust configuration that filters and weights signals according to specific criteria. Instead of seeing "raw truth," you see truth as interpreted through a particular perspective. The same underlying data can look completely different through different tunnels.
-
-For example, when evaluating a claim like "Cryptocurrency X is a good investment":
-- A **Conservative Investor Tunnel** might heavily weight signals from established financial institutions
-- A **Crypto Native Tunnel** might prioritize signals from DeFi protocols and veteran traders
-- A **Risk Averse Tunnel** might only show claims with near-unanimous positive consensus
-
-#### Types of Reality Tunnels
-
-Different tunnels serve different needs and communities:
-
-- **Conservative Tunnel**: Weights signals from established, verified experts in traditional fields. Useful for risk-averse users who prefer institutional validation.
-
-- **Scientific Tunnel**: Only considers claims backed by academic citations, peer review signals, or attestations from verified researchers. Filters out speculation and opinion.
-
-- **Community Tunnel**: Follows broad majority consensus, essentially "wisdom of the crowds." Good for general-purpose queries where you want mainstream agreement.
-
-- **Custom Tunnels**: Users or organizations can create their own trust parameters, perhaps weighting signals from specific DAOs, professional networks, or social graphs.
-
-#### How Reality Tunnels Work
-
-When you select a Reality Tunnel, you're essentially applying a complex filter to all signal data:
-
-```javascript
-// Example: Scientific Reality Tunnel configuration
-const scientificTunnel = {
-  requiredSignals: ["peer-reviewed", "has-citations"],
-  minAttestors: 3,
-  attestorRequirements: {
-    mustInclude: ["verified-researcher", "academic-institution"]
-  },
-  consensusThreshold: 0.7,
-  weights: {
-    "university-attestor": 2.0,    // Double weight for universities
-    "peer-reviewer": 1.5,          // 1.5x weight for peer reviewers
-    "general-user": 0.5            // Half weight for general users
-  }
-};
-
-// Query through this tunnel
-const scientificFacts = await query({
-  pattern: "[Study] [shows] [Result]",
-  tunnel: scientificTunnel
-});
-```
-
-Each tunnel adjusts which signals influence results while maintaining the same underlying data. Users can inspect or adopt any trust framework as needed.
-
-### Protocol Neutrality
-
-**Crucially, the Intuition protocol does not tell anyone how to interpret signals.** The protocol operates at a very low level, simply allowing things to "say things about things" without imposing any specific interpretation logic.
-
-Key principles of protocol neutrality:
-- **No Forced Interpretation**: The protocol never dictates what signals mean
-- **Unopinionated Infrastructure**: Signal data exists as raw, neutral information
-- **Interpretation Layer Separation**: All meaning-making happens higher up the stack
-- **Multiple Valid Views**: Different applications can interpret the same signals differently
-- **User Sovereignty**: You choose which interpretation framework to trust
-
-This means:
-- There may be default interpretations or Reality Tunnels provided for convenience
-- Communities and trusted entities can build their own interpretation layers
-- Applications can implement custom consensus algorithms
-- Users are never locked into a singular worldview
-- The same signal data can support contradictory but equally valid interpretations
-
-The protocol's unopinionated nature ensures that Intuition remains a neutral substrate for trust, allowing diverse ecosystems of interpretation to flourish on top of the same underlying signal data.
-
-## Economic Dynamics and Network Effects
-
-### Value Flow Distribution
-
-Whenever data is utilized (queried or referenced), fees flow to stakers:
-- Early stakers earn proportionally more
-- Active data generates continuous rewards
-- Unused claims provide no returns
-- Creates natural quality filtering
-
-### Self-Refinement Mechanism
-
-The economic incentives naturally drive system improvement:
-1. Stakers who identify valuable data earn more rewards
-2. Stakers on unused or irrelevant data earn less
-3. Useful information becomes economically advantageous to support
-4. Irrelevant claims naturally receive less stake
-5. System quality improves through market dynamics
-
-Importantly, the protocol itself never determines what is "true" or "false." It simply rewards participation in frequently-used data. Higher-level applications can build resolution mechanisms, prediction markets, or truth determination systems on top of this neutral substrate.
-
-### Network Effects
-
-As more users participate:
-- Signal reliability increases
-- Trust networks strengthen
-- Economic incentives amplify
-- Information quality improves
-- Collective wisdom emerges
-
-## Key Takeaways
-
-### The Signal Trinity
-
-1. **Atoms** provide the entities
-2. **Triples** provide the relationships and facts
-3. **Signals** tell us which facts and entities are trusted, relevant, and by whom
-
-Together, this trinity creates a knowledge graph where:
-- Information comes with trust context
-- Truth emerges from collective wisdom
-- Economic incentives align with accuracy
-- Transparency enables verification
-
-### Why Signals Matter
-
-Signals transform the internet's information layer:
-- **From blind trust** → To transparent verification
-- **From centralized sources** → To decentralized consensus
-- **From misinformation** → To economically-backed truth
-- **From static data** → To dynamic, living knowledge
-
-## Next Steps
-
-- Understand [Atoms](./atoms) and [Triples](./triples) as signal targets
-- Explore [Reality Tunnels](./reality-tunnels) for personalized trust views
-- Learn about [Smart Contracts](/docs/developer-tools/contracts/contract-architecture) for on-chain signaling
-- Review [Economics](/docs/guides/introduction/the-economics) for detailed tokenomics
-- Check the [API Documentation](/docs/developer-tools/graphql-api/overview) for implementation details
 
 ---
 
-# Practical Implementation Examples
+# 
 
 Source: https://docs.intuition.systems/guides/primitives/signals/practical-implementation
 
@@ -11916,7 +9170,7 @@ class TrustAPI {
 
 ---
 
-# Signal Strategies and Best Practices
+# 
 
 Source: https://docs.intuition.systems/guides/primitives/signals/strategies-best-practices
 
@@ -11947,7 +9201,7 @@ The game-theoretic optimal strategy is to:
 
 ---
 
-# Triples
+# 
 
 Source: https://docs.intuition.systems/guides/primitives/triples
 
@@ -12114,140 +9368,10 @@ const triple = await createTriple({
 // With temporal context
 const employmentTriple = await createTriple({
   subjectId: person.id,
-  predicateId: "employed-by",
-  objectId: company.id,
-  metadata: {
-    startDate: "2024-01-01",
-    department: "Engineering"
-  }
-});
-```
-
-### Nested Triple Example
-```javascript
-// Create the base claim
-const friendshipClaim = await createTriple({
-  subjectId: bob.id,
-  predicateId: isFriendOf.id,
-  objectId: alice.id
-});
-
-// Alice disputes the claim
-const dispute = await createTriple({
-  subjectId: alice.id,
-  predicateId: disproves.id,
-  objectId: friendshipClaim.id  // Reference to the Triple itself
-});
-```
-
-### Building Evidence Chains
-```javascript
-// Create a research finding
-const researchClaim = await createTriple({
-  subjectId: study.id,
-  predicateId: concludes.id,
-  objectId: result.id
-});
-
-// Link to supporting document
-const evidence = await createTriple({
-  subjectId: researchClaim.id,  // Triple as subject
-  predicateId: basedOn.id,
-  objectId: peerReviewedPaper.id
-});
-```
-
-## Use Cases
-
-### Knowledge Graphs
-Build comprehensive knowledge networks for:
-- Academic citations and research connections
-- Information hierarchies and taxonomies
-- Cross-referenced documentation systems
-
-### Identity & Reputation
-Create verifiable identity systems with:
-- Professional credentials and certifications
-- Social connections and endorsements
-- Achievement records and skill attestations
-
-### Supply Chain
-Track product journeys through:
-- Origin verification and authenticity
-- Ownership transfers and custody chains
-- Quality attestations and compliance records
-
-### DeFi & Finance
-Express financial relationships including:
-- Asset ownership and portfolio composition
-- Lending positions and collateralization
-- Liquidity provisions and yield farming positions
-
-## Querying Triples
-
-### Basic Queries
-```graphql
-# Find all facts about Alice
-query {
-  triples(where: { subjectId: "alice_atom_id" }) {
-    predicate
-    object {
-      data
-    }
-  }
-}
-
-# Find all friendship relationships
-query {
-  triples(where: { predicate: "isFriendOf" }) {
-    subject { data }
-    object { data }
-  }
-}
-```
-
-### Traversing the Graph
-```graphql
-# Find where Alice's friends live
-query {
-  triples(where: {
-    subjectId: "alice_atom_id",
-    predicate: "isFriendOf"
-  }) {
-    object {
-      triples(where: { predicate: "livesIn" }) {
-        object { data }
-      }
-    }
-  }
-}
-```
-
-## Integration with Other Primitives
-
-### With Atoms
-- Triples connect Atoms into meaningful relationships
-- Atoms gain context through Triple connections
-- Triple predicates can themselves be Atoms for maximum flexibility
-
-### With Signals
-- Signals add weight to Triple claims through staking
-- Community validates Triples through Signal attestations
-- Signal strength directly affects Triple credibility and consensus
-
-## Summary
-
-Triples allow Intuition to form a living, searchable web of knowledge. When adding Triples, the goal is to make each claim as clear and verifiable as possible, selecting the right words (Atoms) from the global dictionary, and then letting the network of users and their Signals determine validity.
-
-With Atoms as the words in our global dictionary and Triples as the sentences we construct from them, we can express any arbitrarily-complex concept while maintaining discrete, referenceable structure. Here's where it becomes powerful: each Triple receives its own unique ID, effectively becoming a new "word" in the system that encapsulates an entire concept. This ID can then be referenced by other Triples, allowing you to build increasingly sophisticated expressions.
-
-Think of it as linguistic compression—instead of repeatedly expressing complex relationships, you create them once and reference them by ID. A Triple about "Alice's employment at a specific company with particular conditions" becomes a single referenceable unit. That unit can then be used in higher-order statements about employment trends, verification claims, or temporal changes. This creates a hierarchy of meaning where complex ideas are built from simpler ones, yet each level remains independently addressable and verifiable.
-
-The result is an extraordinarily efficient knowledge transmission system. Rather than sending verbose descriptions, systems can exchange compact Triple IDs that expand into rich, contextual information. Each ID carries with it not just data, but the entire graph of relationships, evidence, and community consensus that supports it. The addition of Signals completes the picture by measuring which sentences (facts) are trusted by the community.
 
 ---
 
-# Core Benefits
+# 
 
 Source: https://docs.intuition.systems/guides/primitives/triples/core-benefits
 
@@ -12301,7 +9425,7 @@ Triples are infinitely extensible. New information can be attached in graph form
 
 ---
 
-# How to create
+# 
 
 Source: https://docs.intuition.systems/guides/primitives/triples/how-to-create
 
@@ -12333,58 +9457,10 @@ const triple = await createTriple({
 // With temporal context
 const employmentTriple = await createTriple({
   subjectId: person.id,
-  predicateId: "employed-by",
-  objectId: company.id,
-  metadata: {
-    startDate: "2024-01-01",
-    department: "Engineering"
-  }
-});
-```
-
-## Best Practices for Structuring Triples
-
-### Use Precise Predicates
-
-The Predicate Atom is crucial for clarity. Guidelines:
-- **Search first**: Check if a canonical predicate already exists
-- **Reuse standards**: Don't create `[works for]` if `[employee of]` is widely used
-- **Converge on conventions**: Using common predicates helps data link up instead of fragmenting
-
-The Intuition community and token mechanics organically push toward standard predicates through signal accumulation.
-
-For a curated list of recommended predicates, visit the [**Recommended Predicates List**](https://portal.intuition.systems/explore/list/0x7ec36d201c842dc787b45cb5bb753bea4cf849be3908fb1b0a7d067c3c3cc1f5-0x9e610f7662673a0432999db5ce51e0ffc3d0d7fbf1455c2f10a7d0bf036b8cf2) on the Intuition Portal.
-
-### One Fact Per Triple
-
-Each Triple should capture a single discrete claim:
-- ❌ "Alice isFriendOf Bob and coworker at CompanyX"
-- ✅ Two separate Triples: one for friendship, another for workplace
-
-Keeping to one relation makes staking and validation straightforward—people can agree with one link and not the other.
-
-### Leverage Nesting for Context
-
-When statements need qualification:
-- Create auxiliary Triples rather than complicating the original
-- Attach timeframes or sources through supporting Triples
-- Use nested Triples for meta-information
-
-Example: Time-bound relationships
-```
-Main Triple: [Alice] -- [is friend of] --> [Bob]
-Context Triple: [Triple ID] -- [valid since] --> [2023]
-```
-
-### Handle Counter-Claims Wisely
-
-Generally, you don't need to manually create "not X" Triples—the negative staking vault handles disagreement. However, sometimes a negation has specific meaning that deserves its own predicate (e.g., `[is Not Friend Of]` as a distinct relation type).
-
-The "Counter Triple" concept is more about how the UI and indexing organize the negative vault signal than about separate data objects
 
 ---
 
-# Practical Implementation
+# 
 
 Source: https://docs.intuition.systems/guides/primitives/triples/nested-triples-practical-implementation
 
@@ -12470,7 +9546,7 @@ const evidence = await createTriple({
 
 ---
 
-# Nested Triples: Meta-Claims & Context
+# 
 
 Source: https://docs.intuition.systems/guides/primitives/triples/nested-triples
 
@@ -12510,7 +9586,7 @@ This creates a hierarchy of meaning where complex ideas are built from simpler o
 
 ---
 
-# Triples
+# 
 
 Source: https://docs.intuition.systems/guides/primitives/triples/overview
 
@@ -12585,7 +9661,7 @@ Dive deeper into Triples with these detailed guides:
 
 ---
 
-# Positive and Negative Claims
+# 
 
 Source: https://docs.intuition.systems/guides/primitives/triples/positive-negative-claims
 
@@ -12622,7 +9698,7 @@ Importantly, Intuition doesn't force a single authoritative truth—it records t
 
 ---
 
-# Querying Triples
+# 
 
 Source: https://docs.intuition.systems/guides/primitives/triples/querying-triples
 
@@ -12657,21 +9733,10 @@ query {
 # Find where Alice's friends live
 query {
   triples(where: {
-    subjectId: "alice_atom_id",
-    predicate: "isFriendOf"
-  }) {
-    object {
-      triples(where: { predicate: "livesIn" }) {
-        object { data }
-      }
-    }
-  }
-}
-```
 
 ---
 
-# Use Cases
+# 
 
 Source: https://docs.intuition.systems/guides/primitives/triples/use-cases
 
@@ -12708,7 +9773,7 @@ Express financial relationships including:
 
 ---
 
-# Getting Started
+# 
 
 Source: https://docs.intuition.systems/guides/quickstart/getting-started
 
@@ -12742,58 +9807,8 @@ npm install wagmi viem @rainbow-me/rainbowkit @0xintuition/protocol
 
 // Define Intuition Testnet
   id: 13579,
-  name: 'Intuition Testnet',
-  nativeCurrency: {
-    decimals: 18,
-    name: 'tTRUST',
-    symbol: 'tTRUST',
-  },
-  rpcUrls: {
-    default: {
-      http: ['https://testnet.rpc.intuition.systems/'],
-    },
-  },
-  blockExplorers: {
-    default: {
-      name: 'Intuition Explorer',
-      url: 'https://testnet.explorer.intuition.systems',
-    },
-  },
-})
-
-  chains: [mainnet, base, intuitionTestnet],
-  transports: {
-    [mainnet.id]: http(),
-    [base.id]: http(),
-    [intuitionTestnet.id]: http(),
-  },
-})
-```
-
-### Option 2: Using Privy
-
-```bash
-npm install @privy-io/react-auth @privy-io/wagmi @0xintuition/protocol
-```
-
-```typescript
-
-function App() {
-  return (
-    <PrivyProvider
-      appId="your-privy-app-id"
-      config={{
-        loginMethods: ['wallet'],
-        appearance: {
-          theme: 'dark',
-          showWalletLoginFirst: true,
-        },
-        defaultChain: intuitionTestnet,
-        supportedChains: [intuitionTestnet],
-      }}
     >
       
-  )
 }
 ```
 
@@ -12824,7 +9839,6 @@ function CreateAtom() {
     const result = await createAtomFromString(
       { walletClient, publicClient, address },
       'My First Atom'
-    )
 
     console.log('Atom created:', result.transactionHash)
     console.log('Atom ID:', result.state.termId)
@@ -12840,11 +9854,6 @@ function CreateAtom() {
 const result = await createAtomFromThing(
   { walletClient, publicClient, address },
   {
-    url: 'https://example.com',
-    name: 'Example Project',
-    description: 'A cool Web3 project',
-    image: 'https://example.com/image.png',
-  }
 ```
 
 ### Create an Atom from Ethereum Account
@@ -12854,9 +9863,6 @@ const result = await createAtomFromThing(
 const result = await createAtomFromEthereumAccount(
   { walletClient, publicClient, address },
   {
-    address: '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045',
-    chainId: 1, // Mainnet
-  }
 ```
 
 ## Reading Data
@@ -13040,7 +10046,6 @@ function IntuitionQuickstart() {
     const result = await createAtomFromString(
       { walletClient, publicClient, address },
       'My Cool Idea'
-    )
     setAtomId(result.state.termId)
     console.log('Created atom:', result.state.termId)
   }
@@ -13055,7 +10060,6 @@ function IntuitionQuickstart() {
         args: [BigInt(atomId), depositAmount, walletClient.account.address],
         value: depositAmount,
       }
-    )
     console.log('Signaled support!')
   }
 
@@ -13063,7 +10067,6 @@ function IntuitionQuickstart() {
       Intuition Quickstart
       {atomId && (
       )}
-  )
 }
 ```
 
@@ -13078,29 +10081,6 @@ Create multiple atoms in a single transaction for efficiency and gas savings:
 // Batch create multiple atoms at once
 const atomData = [
   {
-    url: 'https://example.com/project1',
-    name: 'Project 1',
-    description: 'First amazing project',
-    image: 'https://example.com/project1.png',
-  },
-  {
-    url: 'https://example.com/project2',
-    name: 'Project 2',
-    description: 'Second amazing project',
-    image: 'https://example.com/project2.png',
-  },
-  {
-    url: 'https://example.com/project3',
-    name: 'Project 3',
-    description: 'Third amazing project',
-    image: 'https://example.com/project3.png',
-  },
-]
-
-const result = await batchCreateAtomsFromThings(
-  { walletClient, publicClient, address },
-  atomData,
-  1000000000000000000n // Optional: 1 ETH deposit per atom
 
 console.log('Created atoms:', result.state)
 console.log('Transaction:', result.transactionHash)
@@ -13173,7 +10153,7 @@ Now that you know the basics, explore what you can build:
 
 ---
 
-# Intuition Kits
+# 
 
 Source: https://docs.intuition.systems/guides/quickstart/intuition-kits
 
@@ -13268,7 +10248,7 @@ Start building with the official Intuition resources and join the community!
 
 ---
 
-# Community & Support
+# 
 
 Source: https://docs.intuition.systems/guides/resources/community-and-support
 
@@ -13302,7 +10282,7 @@ Share your feedback, suggestions, and ideas to help improve Intuition.
 
 ---
 
-# FAQ
+# 
 
 Source: https://docs.intuition.systems/guides/resources/faq
 
@@ -13529,7 +10509,7 @@ Contact Support
 
 ---
 
-# Resources
+# 
 
 Source: https://docs.intuition.systems/guides/resources
 
@@ -13557,7 +10537,7 @@ Security audits and best practices for Intuition. Review audit reports and learn
 
 ---
 
-# Key Terms
+# 
 
 Source: https://docs.intuition.systems/guides/resources/key-terms
 
@@ -13828,9 +10808,7 @@ Market Cap = Total Shares × Current Share Price
 
 ---
 
-# Index.md
-.md
-.mdx
+# 
 
 Source: https://docs.intuition.systems/guides/use-cases
 
