@@ -18,12 +18,59 @@ import ExcalidrawViewer from '@site/src/components/ExcalidrawViewer';
   )}
 </BrowserOnly>
 
-Intuition provides a GraphQL API for querying its knowledge graph in a convenient and versatile way. There are a few ways to get started with this GraphQL API, depending on the level of abstraction and customization you require.
+Intuition provides GraphQL APIs for querying its knowledge graph in a convenient and versatile way. 
+
+**Available endpoints**
+
+<div className="uniform-card-grid-small">
+  <div className="uniform-card items-center justify-center text-center">
+    <h3 className="uniform-card-title">
+      Intuition mainnet
+    </h3>
+    <div className="uniform-card-content text-center">
+      ```text
+      https://mainnet.intuition.sh/v1/graphql
+      ```
+      <a
+        className="button button--primary"
+        href="https://studio.apollographql.com/sandbox/explorer?endpoint=https://mainnet.intuition.sh/v1/graphql"
+        target="_blank"
+        rel="noreferrer"
+      >
+        Try on GraphQL Explorer
+      </a>
+    </div>
+  </div>
+
+  <div className="uniform-card items-center justify-center text-center">
+    <h3 className="uniform-card-title">
+      Intuition testnet
+    </h3>
+    <div className="uniform-card-content text-center">
+      ```text
+      https://testnet.intuition.sh/v1/graphql
+      ```
+      <a
+        className="button button--primary"
+        href="https://studio.apollographql.com/sandbox/explorer?endpoint=https://testnet.intuition.sh/v1/graphql"
+        target="_blank"
+        rel="noreferrer"
+      >
+        Try on GraphQL Explorer
+      </a>
+    </div>
+  </div>
+</div>
+
+Alternatively, you can import these URLs from the GraphQL package:
+
+```ts
+import { API_URL_PROD, API_URL_DEV } from '@0xintuition/graphql'
+```
 
 If this is your first time using GraphQL, you can learn more at [graphql.org](https://graphql.org/).
 
-Until mainnet launch, the Intuition team hosts an open GraphQL API powered by Hasura, which may be accessed at [https://testnet.intuition.sh/v1/graphql](https://testnet.intuition.sh/v1/graphql). For more information about running the backend yourself, visit [Run an Intuition node](/docs/run-node/run-an-intuition-node).
-
+There are a few ways to get started with this GraphQL API, depending on the level of abstraction and customization you require : 
 <div className="uniform-card-grid">
 
   <a
