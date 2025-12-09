@@ -361,6 +361,6 @@ Signals transform the internet's information layer:
 
 - Understand [Atoms](./atoms) and [Triples](./triples) as signal targets
 - Explore [Reality Tunnels](./reality-tunnels) for personalized trust views
-- Learn about [Smart Contracts](/docs/developer-tools/contracts/contract-architecture) for on-chain signaling
+- Learn about [Smart Contracts](/docs/guides/developer-tools/contracts/overview) for on-chain signaling
 - Review [Economics](/docs/guides/introduction/the-economics) for detailed tokenomics
-- Check the [API Documentation](/docs/developer-tools/graphql-api/overview) for implementation details
+- Check the [API Documentation](/docs/guides/developer-tools/graphql-api/overview) for implementation details

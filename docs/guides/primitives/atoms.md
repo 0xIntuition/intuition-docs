@@ -218,4 +218,4 @@ With Atoms as your foundation, you can:
 - Learn about [Triples](./triples) to create meaningful relationships between Atoms
 - Explore [Signals](./signals) to understand attestation and trust mechanics
 - Review [Vaults](./vaults) for staking and economic participation
-- Check the [SDK Documentation](/docs/developer-tools/sdks/overview) for implementation details
+- Check the [SDK Documentation](/docs/guides/developer-tools/sdks/overview) for implementation details

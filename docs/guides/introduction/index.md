@@ -6,7 +6,7 @@ sidebar_position: 2
 description: Learn about Intuition's vision and the problems it solves
 ---
 
-<a href="/docs/introduction/overview" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+<a href="/docs/guides/introduction/overview" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
 <div style={{
   backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.75), rgba(64, 64, 64, 0.85)), url(/img/Intro_int.png)',
   backgroundSize: 'cover',
@@ -363,7 +363,7 @@ Intuition leverages **game theoretic cryptoeconomics** to solve these problems a
   marginBottom: '3rem'
 }}>
 
-<a href="/docs/introduction/overview" style={{ textDecoration: 'none', color: 'inherit' }}>
+<a href="/docs/guides/introduction/overview" style={{ textDecoration: 'none', color: 'inherit' }}>
 <div style={{
   border: '1px solid var(--ifm-color-emphasis-200)',
   borderRadius: '16px',
@@ -412,7 +412,7 @@ Architecture • Economics • Vision
 </div>
 </a>
 
-<a href="/docs/introduction/why-intuition" style={{ textDecoration: 'none', color: 'inherit' }}>
+<a href="/docs/guides/introduction/why-intuition" style={{ textDecoration: 'none', color: 'inherit' }}>
 <div style={{
   border: '1px solid var(--ifm-color-emphasis-200)',
   borderRadius: '16px',
@@ -461,7 +461,7 @@ Problems • Solutions • Vision
 </div>
 </a>
 
-<a href="/docs/introduction/the-primitives" style={{ textDecoration: 'none', color: 'inherit' }}>
+<a href="/docs/guides/introduction/the-primitives" style={{ textDecoration: 'none', color: 'inherit' }}>
 <div style={{
   border: '1px solid var(--ifm-color-emphasis-200)',
   borderRadius: '16px',
@@ -510,7 +510,7 @@ Atoms • Triples • Signals
 </div>
 </a>
 
-<a href="/docs/resources/key-terms" style={{ textDecoration: 'none', color: 'inherit' }}>
+<a href="/docs/guides/resources/key-terms" style={{ textDecoration: 'none', color: 'inherit' }}>
 <div style={{
   border: '1px solid var(--ifm-color-emphasis-200)',
   borderRadius: '16px',

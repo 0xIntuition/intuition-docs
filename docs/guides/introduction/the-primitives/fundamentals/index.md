@@ -20,7 +20,7 @@ Master the core concepts that form the foundation of the Intuition system. These
   marginBottom: '3rem'
 }}>
 
-<a href="/docs/introduction/the-primitives/fundamentals/atoms" style={{ textDecoration: 'none', color: 'inherit' }}>
+<a href="/docs/guides/introduction/the-primitives/fundamentals/atoms" style={{ textDecoration: 'none', color: 'inherit' }}>
 <div style={{
   border: '1px solid var(--ifm-color-emphasis-200)',
   borderRadius: '16px',
@@ -57,7 +57,7 @@ Learn about the atomic units of knowledge in Intuition - unique, persistent iden
 </div>
 </a>
 
-<a href="/docs/introduction/the-primitives/fundamentals/triples" style={{ textDecoration: 'none', color: 'inherit' }}>
+<a href="/docs/guides/introduction/the-primitives/fundamentals/triples" style={{ textDecoration: 'none', color: 'inherit' }}>
 <div style={{
   border: '1px solid var(--ifm-color-emphasis-200)',
   borderRadius: '16px',
@@ -94,7 +94,7 @@ Discover how Triples create relationships between Atoms, forming the semantic st
 </div>
 </a>
 
-<a href="/docs/introduction/the-primitives/fundamentals/signal" style={{ textDecoration: 'none', color: 'inherit' }}>
+<a href="/docs/guides/introduction/the-primitives/fundamentals/signal" style={{ textDecoration: 'none', color: 'inherit' }}>
 <div style={{
   border: '1px solid var(--ifm-color-emphasis-200)',
   borderRadius: '16px',
@@ -131,7 +131,7 @@ Understand how Signal expresses intent, belief, and support within the Intuition
 </div>
 </a>
 
-<a href="/docs/introduction/the-primitives/fundamentals/fees-rewards" style={{ textDecoration: 'none', color: 'inherit' }}>
+<a href="/docs/guides/introduction/the-primitives/fundamentals/fees-rewards" style={{ textDecoration: 'none', color: 'inherit' }}>
 <div style={{
   border: '1px solid var(--ifm-color-emphasis-200)',
   borderRadius: '16px',
@@ -168,7 +168,7 @@ Explore the economic mechanisms that incentivize quality contributions and maint
 </div>
 </a>
 
-<a href="/docs/introduction/the-primitives/fundamentals/state-interpretations" style={{ textDecoration: 'none', color: 'inherit' }}>
+<a href="/docs/guides/introduction/the-primitives/fundamentals/state-interpretations" style={{ textDecoration: 'none', color: 'inherit' }}>
 <div style={{
   border: '1px solid var(--ifm-color-emphasis-200)',
   borderRadius: '16px',
@@ -205,7 +205,7 @@ Discover how Intuition's state can be interpreted in countless ways, avoiding "t
 </div>
 </a>
 
-<a href="/docs/introduction/the-primitives/fundamentals/intuition-in-practice" style={{ textDecoration: 'none', color: 'inherit' }}>
+<a href="/docs/guides/introduction/the-primitives/fundamentals/intuition-in-practice" style={{ textDecoration: 'none', color: 'inherit' }}>
 <div style={{
   border: '1px solid var(--ifm-color-emphasis-200)',
   borderRadius: '16px',
@@ -259,6 +259,6 @@ For the best learning experience, we recommend following this sequence:
 
 After mastering the fundamentals, explore:
 
-- **[Structuring](/docs/introduction/the-primitives/structuring)** - Advanced techniques for organizing data
-- **[Developer Tools](/docs/developer-tools)** - Practical tools for building with Intuition
-- **[Use Cases](/docs/use-cases)** - Real-world applications and examples 
+- **[Structuring](/docs/guides/introduction/the-primitives/structuring)** - Advanced techniques for organizing data
+- **[Developer Tools](/docs/guides/developer-tools)** - Practical tools for building with Intuition
+- **[Use Cases](/docs/guides/use-cases)** - Real-world applications and examples 

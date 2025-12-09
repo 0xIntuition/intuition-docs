@@ -18,7 +18,7 @@ Intuition introduces three new primitives:
 
 <div className="uniform-card-grid">
 
-<a href="/docs/introduction/the-primitives/fundamentals" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+<a href="/docs/guides/introduction/the-primitives/fundamentals" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
 <div className="uniform-card clickable-card">
 <h3 className="uniform-card-title">Fundamentals</h3>
 <p className="uniform-card-content">
@@ -27,7 +27,7 @@ Learn the core concepts of Atoms, Triples, Signal, Fees & Rewards, and State Int
 </div>
 </a>
 
-<a href="/docs/introduction/the-primitives/structuring" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+<a href="/docs/guides/introduction/the-primitives/structuring" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
 <div className="uniform-card clickable-card">
 <h3 className="uniform-card-title">Structuring</h3>
 <p className="uniform-card-content">

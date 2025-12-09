@@ -20,26 +20,26 @@ We believe in a future where trust online is **programmable, portable, and permi
 This documentation serves as your complete guide to understanding and building with Intuition:
 
 ### For Newcomers
-- **[Introduction](/docs/introduction)** — Learn about Intuition's vision and the problems it solves
-- **[Key Terms](/docs/resources/key-terms)** — Master essential terminology and concepts
-- **[Why Intuition?](/docs/introduction/why-intuition)** — Understand the challenges we're addressing
+- **[Introduction](/docs/guides/introduction)** — Learn about Intuition's vision and the problems it solves
+- **[Key Terms](/docs/guides/resources/key-terms)** — Master essential terminology and concepts
+- **[Why Intuition?](/docs/guides/introduction/why-intuition)** — Understand the challenges we're addressing
 
 ### For Developers
-- **[Developer Tools](/docs/developer-tools)** — Comprehensive developer resources and tooling
-- **[Quickstart Guides](/docs/quickstart)** — Get building quickly with official and community kits
-- **[SDK Documentation](/docs/developer-tools/sdks)** — Protocol and GraphQL SDK references
-- **[Smart Contracts](/docs/developer-tools/contracts)** — Contract architecture and interaction patterns
-- **[GraphQL API](/docs/developer-tools/graphql-api)** — Query the knowledge graph with powerful APIs
+- **[Developer Tools](/docs/guides/developer-tools)** — Comprehensive developer resources and tooling
+- **[Quickstart Guides](/docs/guides/quickstart)** — Get building quickly with official and community kits
+- **[SDK Documentation](/docs/guides/developer-tools/sdks)** — Protocol and GraphQL SDK references
+- **[Smart Contracts](/docs/guides/developer-tools/contracts)** — Contract architecture and interaction patterns
+- **[GraphQL API](/docs/guides/developer-tools/graphql-api)** — Query the knowledge graph with powerful APIs
 
 ### For Users & Builders
-- **[Intuition Hub](/docs/hub)** — Essential tools for interacting with the ecosystem
-- **[Use Cases](/docs/use-cases)** — Real-world applications and possibilities
-- **[Running a Node](/docs/run-node)** — Set up and operate your own Intuition node
+- **[Intuition Hub](/docs/guides/network/testnet)** — Essential tools for interacting with the ecosystem
+- **[Use Cases](/docs/guides/use-cases)** — Real-world applications and possibilities
+- **[Running a Node](/docs/guides/intuition-node)** — Set up and operate your own Intuition node
 
 ### Core Concepts
-- **[Primitives](/docs/introduction/the-primitives)** — Atoms, Triples, and Signals explained
-- **[Economics](/docs/introduction/the-economics)** — Bonding curves, fees, rewards, and tokenomics
-- **[Architecture](/docs/developer-tools/deep-dive)** — Technical deep-dive into system design
+- **[Primitives](/docs/guides/introduction/the-primitives)** — Atoms, Triples, and Signals explained
+- **[Economics](/docs/guides/introduction/the-economics)** — Bonding curves, fees, rewards, and tokenomics
+- **[Architecture](/docs/guides/developer-tools/deep-dive)** — Technical deep-dive into system design
 
 ## 🔧 Built With
 
@@ -89,9 +89,9 @@ docs/
 │   ├── introduction/          # Core concepts and vision
 │   ├── quickstart/            # Getting started guides
 │   ├── developer-tools/       # Developer resources and APIs
-│   ├── hub/                   # Intuition Hub and tools
+│   ├── network/               # Intuition Hub and network tools
 │   ├── use-cases/             # Real-world applications
-│   ├── run-node/              # Node operation guides
+│   ├── intuition-node/        # Node operation guides
 │   └── resources/             # Additional resources and support
 ├── partials/                  # Reusable content components
 └── src/                       # Custom React components and styling
@@ -142,7 +142,7 @@ The Intuition ecosystem includes:
 - **[Official Website](https://intuition.systems)** — Learn about the project and team
 - **[Documentation Site](https://docs.intuition.systems)** — Live version of this documentation
 - **[GitHub Organization](https://github.com/0xintuition)** — All open-source code and repositories
-- **[Community & Support](/docs/resources/community-and-support)** — Get help and connect with the community
+- **[Community & Support](/docs/guides/resources/community-and-support)** — Get help and connect with the community
 
 ## 📄 License
 
@@ -150,4 +150,4 @@ This documentation is licensed under the terms specified in the [LICENSE](LICENS
 
 ---
 
-**Ready to start building?** Check out our [Quickstart Guide](/docs/quickstart) or explore the [Developer Tools](/docs/developer-tools) to begin creating with the trust protocol.
+**Ready to start building?** Check out our [Quickstart Guide](/docs/guides/quickstart) or explore the [Developer Tools](/docs/guides/developer-tools) to begin creating with the trust protocol.

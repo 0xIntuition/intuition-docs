@@ -86,8 +86,8 @@ Stay tuned for:
 
 ## Next Steps
 
-- Learn about [Smart Contracts](/docs/developer-tools/contracts) for advanced features
-- Check out the [GraphQL API](/docs/developer-tools/graphql-api) for data integration
-- Explore the [SDK Guide](/docs/developer-tools/sdks) for application development
+- Learn about [Smart Contracts](/docs/guides/developer-tools/contracts) for advanced features
+- Check out the [GraphQL API](/docs/guides/developer-tools/graphql-api) for data integration
+- Explore the [SDK Guide](/docs/guides/developer-tools/sdks) for application development
 
 Start building with the official Intuition resources and join the community!

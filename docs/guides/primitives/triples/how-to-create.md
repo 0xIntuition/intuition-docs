@@ -16,7 +16,7 @@ There are multiple ways to create Triples on the Intuition platform. Choose the 
 <p className="uniform-card-content">
 Use the Intuition SDK for a streamlined development experience with TypeScript support and built-in helpers.
 </p>
-<a href="/docs/developer-tools/sdks/overview" style={{ color: 'var(--ifm-color-primary)', textDecoration: 'none', fontWeight: '500' }}>Explore SDK →</a>
+<a href="/docs/guides/developer-tools/sdks/overview" style={{ color: 'var(--ifm-color-primary)', textDecoration: 'none', fontWeight: '500' }}>Explore SDK →</a>
 </div>
 
 <div className="uniform-card">
@@ -24,7 +24,7 @@ Use the Intuition SDK for a streamlined development experience with TypeScript s
 <p className="uniform-card-content">
 Interact directly with Intuition smart contracts for maximum control and customization.
 </p>
-<a href="/docs/developer-tools/contracts/contract-architecture" style={{ color: 'var(--ifm-color-primary)', textDecoration: 'none', fontWeight: '500' }}>View Smart Contracts →</a>
+<a href="/docs/guides/developer-tools/contracts/overview" style={{ color: 'var(--ifm-color-primary)', textDecoration: 'none', fontWeight: '500' }}>View Smart Contracts →</a>
 </div>
 
 </div>
