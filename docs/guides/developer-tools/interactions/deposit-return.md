@@ -12,7 +12,7 @@ Managing deposits and withdrawals from vaults in the Intuition protocol involves
 
 ## Prerequisites
 
-This implementation guide assumes that you've completed the setup steps in the [Overview](/guides/developer-tools/interactions/overview) guide. Steps for creating the `createMultivaultContract` and the `publicClient` referenced in this implementation example can be found in the overview.
+This implementation guide assumes that you've completed the setup steps in the [Overview](/docs/guides/developer-tools/interactions/overview) guide. Steps for creating the `createMultivaultContract` and the `publicClient` referenced in this implementation example can be found in the overview.
 
 ## Implementation
 
@@ -169,8 +169,8 @@ Vaults provide continuous liquidity for depositors and withdrawers.
 
 After managing deposits and withdrawals, explore:
 
-- [Retrieve Vault Details](/guides/developer-tools/interactions/retrieve-vault-details) - Get comprehensive vault information
-- [Create Atom](/guides/developer-tools/interactions/create-atom) - Create atoms to deposit into
-- [Create Triple](/guides/developer-tools/interactions/create-triple) - Create triples with associated vaults
+- [Retrieve Vault Details](/docs/guides/developer-tools/interactions/retrieve-vault-details) - Get comprehensive vault information
+- [Create Atom](/docs/guides/developer-tools/interactions/create-atom) - Create atoms to deposit into
+- [Create Triple](/docs/guides/developer-tools/interactions/create-triple) - Create triples with associated vaults
 
 For a full reference implementation, see the [Intuition TypeScript SDK](https://github.com/0xIntuition/intuition-ts). 

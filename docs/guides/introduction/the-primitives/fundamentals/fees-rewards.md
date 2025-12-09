@@ -102,6 +102,6 @@ By integrating these economic principles, Intuition not only secures the system 
 
 Now that you understand Fees & Rewards, explore:
 
-- [State Interpretations](/guides/introduction/the-primitives/fundamentals/state-interpretations) - Learn how the system state is interpreted
-- [Calculating Rewards](/guides/introduction/the-primitives/structuring/calculating-rewards) - Advanced techniques for reward calculation
-- [Signal](/guides/introduction/the-primitives/fundamentals/signal) - Understand how users interact with the economic system 
+- [State Interpretations](/docs/guides/introduction/the-primitives/fundamentals/state-interpretations) - Learn how the system state is interpreted
+- [Calculating Rewards](/docs/guides/introduction/the-primitives/structuring/calculating-rewards) - Advanced techniques for reward calculation
+- [Signal](/docs/guides/introduction/the-primitives/fundamentals/signal) - Understand how users interact with the economic system 

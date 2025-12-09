@@ -182,6 +182,6 @@ As users increasingly interact with these Atoms, a TCR emerges, ranking Atoms ba
 
 Now that you understand Atoms, explore:
 
-- [Triples](/guides/introduction/the-primitives/fundamentals/triples) - Learn how Atoms combine to form relationships
-- [Signal](/guides/introduction/the-primitives/fundamentals/signal) - Understand how users interact with Atoms
-- [Structuring Atoms](/guides/introduction/the-primitives/structuring/atoms) - Advanced techniques for working with Atoms 
+- [Triples](/docs/guides/introduction/the-primitives/fundamentals/triples) - Learn how Atoms combine to form relationships
+- [Signal](/docs/guides/introduction/the-primitives/fundamentals/signal) - Understand how users interact with Atoms
+- [Structuring Atoms](/docs/guides/introduction/the-primitives/structuring/atoms) - Advanced techniques for working with Atoms 

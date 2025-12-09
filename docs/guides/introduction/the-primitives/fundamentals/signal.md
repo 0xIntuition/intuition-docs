@@ -202,6 +202,6 @@ This not only enhances the granularity of data but also provides richer insights
 
 Now that you understand Signal, explore:
 
-- [Fees & Rewards](/guides/introduction/the-primitives/fundamentals/fees-rewards) - Learn about the economic incentives
-- [Capturing Signal](/guides/introduction/the-primitives/structuring/capturing-signal) - Advanced techniques for signal capture
-- [State Interpretations](/guides/introduction/the-primitives/fundamentals/state-interpretations) - Understand how signal is interpreted 
+- [Fees & Rewards](/docs/guides/introduction/the-primitives/fundamentals/fees-rewards) - Learn about the economic incentives
+- [Capturing Signal](/docs/guides/introduction/the-primitives/structuring/capturing-signal) - Advanced techniques for signal capture
+- [State Interpretations](/docs/guides/introduction/the-primitives/fundamentals/state-interpretations) - Understand how signal is interpreted 

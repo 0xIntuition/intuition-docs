@@ -152,6 +152,6 @@ The TCR encourages system participants to adopt common ways of structuring data 
 
 Now that you understand Triples, explore:
 
-- [Signal](/guides/introduction/the-primitives/fundamentals/signal) - Learn how users interact with Triples
-- [Structuring Triples](/guides/introduction/the-primitives/structuring/triples) - Advanced techniques for working with Triples
-- [Fees & Rewards](/guides/introduction/the-primitives/fundamentals/fees-rewards) - Understand the economic model 
+- [Signal](/docs/guides/introduction/the-primitives/fundamentals/signal) - Learn how users interact with Triples
+- [Structuring Triples](/docs/guides/introduction/the-primitives/structuring/triples) - Advanced techniques for working with Triples
+- [Fees & Rewards](/docs/guides/introduction/the-primitives/fundamentals/fees-rewards) - Understand the economic model 

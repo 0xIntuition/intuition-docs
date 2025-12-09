@@ -28,8 +28,8 @@ This documentation serves as your complete guide to understanding and building w
 - **[Developer Tools](/docs/guides/developer-tools)** — Comprehensive developer resources and tooling
 - **[Quickstart Guides](/docs/guides/quickstart)** — Get building quickly with official and community kits
 - **[SDK Documentation](/docs/guides/developer-tools/sdks)** — Protocol and GraphQL SDK references
-- **[Smart Contracts](/docs/guides/developer-tools/contracts)** — Contract architecture and interaction patterns
-- **[GraphQL API](/docs/guides/developer-tools/graphql-api)** — Query the knowledge graph with powerful APIs
+- **[Smart Contracts](/docs/guides/developer-tools/contracts/overview)** — Contract architecture and interaction patterns
+- **[GraphQL API](/docs/guides/developer-tools/graphql-api/overview)** — Query the knowledge graph with powerful APIs
 
 ### For Users & Builders
 - **[Intuition Hub](/docs/guides/network/testnet)** — Essential tools for interacting with the ecosystem

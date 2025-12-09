@@ -7,7 +7,7 @@ sidebar_position: 1
 # Intuition Mainnet
 
 :::info Coming Soon
-The Intuition Mainnet is currently under development. Please use the [Testnet](/guides/network/testnet) for development and testing.
+The Intuition Mainnet is currently under development. Please use the [Testnet](/docs/guides/network/testnet) for development and testing.
 :::
 
 ## Stay Updated
@@ -22,6 +22,6 @@ Follow our progress and get notified when mainnet launches:
 
 While you wait for mainnet, you can:
 
-1. **Build on Testnet** - Develop and test your applications on our [testnet environment](/guides/network/testnet)
+1. **Build on Testnet** - Develop and test your applications on our [testnet environment](/docs/guides/network/testnet)
 2. **Learn the Protocol** - Explore our [documentation](/guides) to understand the Intuition protocol
 3. **Join the Community** - Connect with other developers in our [Discord](https://discord.gg/0xintuition)

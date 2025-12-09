@@ -228,6 +228,6 @@ This approach enriches discussions, improves decision-making, and ensures the ec
 
 Now that you understand State Interpretations, explore:
 
-- [Structuring](/guides/introduction/the-primitives/structuring) - Learn advanced techniques for working with interpretations
-- [Signal](/guides/introduction/the-primitives/fundamentals/signal) - Understand how signal influences interpretations
-- [Developer Tools](/guides/developer-tools) - Implement custom interpretations and algorithms 
+- [Structuring](/docs/guides/introduction/the-primitives/structuring) - Learn advanced techniques for working with interpretations
+- [Signal](/docs/guides/introduction/the-primitives/fundamentals/signal) - Understand how signal influences interpretations
+- [Developer Tools](/docs/guides/developer-tools) - Implement custom interpretations and algorithms 

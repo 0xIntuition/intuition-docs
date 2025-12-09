@@ -14,7 +14,7 @@ We utilize multicall operations that batch multiple read-only contract calls int
 
 ## Implementation
 
-This implementation guide assumes that you've completed the steps in the [Overview](/guides/developer-tools/interactions/overview) guide. Steps for creating the `createMultivaultContract` and the `publicClient` referenced in this implementation example can be found in the overview.
+This implementation guide assumes that you've completed the steps in the [Overview](/docs/guides/developer-tools/interactions/overview) guide. Steps for creating the `createMultivaultContract` and the `publicClient` referenced in this implementation example can be found in the overview.
 
 We recommend creating a `multivault.ts` that includes the following:
 
@@ -190,8 +190,8 @@ For a full example of how we implement all of our EthMultiVault multicalls, you 
 
 After retrieving vault details, explore:
 
-- [Create Atom](/guides/developer-tools/interactions/create-atom) - Create atoms and manage their vaults
-- [Create Triple](/guides/developer-tools/interactions/create-triple) - Create triples with associated vaults
-- [Deposit & Return](/guides/developer-tools/interactions/deposit-return) - Manage vault deposits and withdrawals
+- [Create Atom](/docs/guides/developer-tools/interactions/create-atom) - Create atoms and manage their vaults
+- [Create Triple](/docs/guides/developer-tools/interactions/create-triple) - Create triples with associated vaults
+- [Deposit & Return](/docs/guides/developer-tools/interactions/deposit-return) - Manage vault deposits and withdrawals
 
 For a full reference implementation, see the [Intuition TypeScript SDK](https://github.com/0xIntuition/intuition-ts). 

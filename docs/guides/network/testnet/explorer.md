@@ -213,9 +213,9 @@ Use the explorer for development:
 ## Support and Resources
 
 ### **Getting Help**
-- [Community & Support](/guides/resources/community-and-support) for explorer questions
-- [FAQ](/guides/resources/faq) for common issues
-- [Developer Tools](/guides/developer-tools) for technical integration
+- [Community & Support](/docs/guides/resources/community-and-support) for explorer questions
+- [FAQ](/docs/guides/resources/faq) for common issues
+- [Developer Tools](/docs/guides/developer-tools) for technical integration
 
 ### **Additional Resources**
 - Blockscout documentation
@@ -227,5 +227,5 @@ Use the explorer for development:
 
 - Monitor your transactions and contracts
 - Integrate explorer APIs into your applications
-- Use with [Bridge](/guides/network/testnet/bridge) for cross-chain verification
-- Check [Network Health](/guides/resources/network-health) for service health 
+- Use with [Bridge](/docs/guides/network/testnet/bridge) for cross-chain verification
+- Check [Network Health](/docs/guides/resources/network-health) for service health 
