@@ -1,0 +1,348 @@
+---
+id: finding-top-dapps-on-coinbase
+title: Finding Top Dapps on Coinbase
+sidebar_label: Top Dapps
+sidebar_position: 1
+description: Step-by-step guide to query and rank top decentralized applications
+---
+
+import GraphQLPlaygroundCustom from '@site/src/components/GraphQLPlaygroundCustom';
+
+# Finding the Top dApps on Coinbase
+
+**Time to complete:** 30 minutes
+**Difficulty:** Beginner
+
+## Why You'd Need This
+
+Building a dApp directory, protocol aggregator, or ecosystem dashboard? This tutorial shows you how to query and rank decentralized applications by community confidence (measured via market cap in vaults).
+
+**Use cases:**
+- Creating a "Top dApps" leaderboard
+- Building protocol discovery platforms
+- Analyzing ecosystem growth
+- Tracking trending applications
+
+## What You'll Learn
+
+This guide shows you how to progressively build queries to discover and rank the top decentralized applications (dApps) on Coinbase by market capitalization.
+
+Follow these 4 queries step-by-step. Each one builds on the previous to achieve the final result: **a ranked list of top dApps on Coinbase**.
+
+## Understanding the Progression
+
+1. **Run a basic query** to view all dApps (organizations) in the system.
+2. **Repeat the query**, but filtered for Coinbase-related Dapps (note how the results narrow down).
+3. **Add performance metrics** from vaults (market cap, shares, and positions), data is now richer but not yet sorted.
+4. **Repeat the query from Step 3**, but this time sort by market cap to show the top performing dApps first.
+
+export const progressiveQueries = [
+  {
+    id: 'step1-discover',
+    title: 'Step 1: Discover All Dapps (Organizations)',
+    query: `query DiscoverAllDapps($limit: Int = 10) {
+  atoms(
+    limit: $limit
+    where: { type: { _eq: "Thing" } }
+  ) {
+    term_id
+    label
+    image
+    emoji
+    type
+    created_at
+  }
+}`,
+    variables: {
+      limit: 10
+    }
+  },
+  {
+    id: 'step2-filter',
+    title: 'Step 2: Filter for Coinbase-Related Dapps',
+    query: `query FilterCoinbaseDapps($limit: Int = 10) {
+  atoms(
+    limit: $limit
+    where: {
+      type: { _eq: "Thing" }
+      _or: [
+        { label: { _ilike: "%coinbase%" } }
+        { data: { _ilike: "%coinbase%" } }
+      ]
+    }
+  ) {
+    term_id
+    label
+    image
+    emoji
+    type
+    data
+    created_at
+  }
+}`,
+    variables: {
+      limit: 10
+    }
+  },
+  {
+    id: 'step3-metrics',
+    title: 'Step 3: Add Performance Metrics (Market Cap, Shares)',
+    query: `query AddPerformanceMetrics($limit: Int = 10) {
+  atoms(
+    limit: $limit
+    where: {
+      type: { _eq: "Thing" }
+      _or: [
+        { label: { _ilike: "%coinbase%" } }
+        { data: { _ilike: "%coinbase%" } }
+      ]
+    }
+  ) {
+    term_id
+    label
+    image
+    emoji
+    type
+
+    term {
+      vaults(where: { curve_id: { _eq: "1" } }) {
+        total_shares
+        current_share_price
+        market_cap
+        position_count
+      }
+    }
+
+    creator {
+      id
+      label
+    }
+    created_at
+  }
+}`,
+    variables: {
+      limit: 10
+    }
+  },
+  {
+    id: 'step4-final',
+    title: 'Step 4: FINAL RESULT - Ranked by Market Cap',
+    query: `query GetTopDappsRanked($limit: Int = 10) {
+  atoms(
+    limit: $limit
+    order_by: [{ term: { vaults_aggregate: { max: { market_cap: desc } } } }]
+    where: {
+      type: { _eq: "Thing" }
+      _or: [
+        { label: { _ilike: "%coinbase%" } }
+        { data: { _ilike: "%coinbase%" } }
+      ]
+    }
+  ) {
+    term_id
+    label
+    image
+    emoji
+    type
+
+    term {
+      vaults(where: { curve_id: { _eq: "1" } }) {
+        total_shares
+        current_share_price
+        market_cap
+        position_count
+      }
+    }
+
+    creator {
+      id
+      label
+    }
+    created_at
+  }
+}`,
+    variables: {
+      limit: 10
+    }
+  }
+];
+
+<GraphQLPlaygroundCustom queries={progressiveQueries} />
+
+## UI Integration Example
+
+Here's how to display the results in a React component:
+
+```tsx
+import { request, gql } from 'graphql-request'
+import { useEffect, useState } from 'react'
+
+const GRAPHQL_ENDPOINT = 'https://api.intuition.systems/graphql'
+
+const GET_TOP_DAPPS = gql`
+  query GetTopDappsRanked($limit: Int = 10) {
+    atoms(
+      limit: $limit
+      order_by: [{ term: { vaults_aggregate: { max: { market_cap: desc } } } }]
+      where: {
+        type: { _eq: "Thing" }
+        _or: [
+          { label: { _ilike: "%coinbase%" } }
+          { data: { _ilike: "%coinbase%" } }
+        ]
+      }
+    ) {
+      term_id
+      label
+      image
+      term {
+        vaults(where: { curve_id: { _eq: "1" } }) {
+          total_shares
+          current_share_price
+          market_cap
+          position_count
+        }
+      }
+    }
+  }
+`
+
+export function TopDappsLeaderboard() {
+  const [dapps, setDapps] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    async function fetchDapps() {
+      const data = await request(GRAPHQL_ENDPOINT, GET_TOP_DAPPS, {
+        limit: 10
+      })
+      setDapps(data.atoms)
+      setLoading(false)
+    }
+
+    fetchDapps()
+  }, [])
+
+  if (loading) return <div>Loading top dApps...</div>
+
+  return (
+    <div className="leaderboard">
+      <h2>Top dApps on Coinbase</h2>
+      <div className="dapp-list">
+        {dapps.map((dapp, index) => (
+          <DappCard key={dapp.term_id} dapp={dapp} rank={index + 1} />
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function DappCard({ dapp, rank }) {
+  const vault = dapp.term?.vaults?.[0]
+  const marketCap = vault ? parseFloat(vault.market_cap) : 0
+
+  return (
+    <div className="dapp-card">
+      <div className="rank">#{rank}</div>
+      <img src={dapp.image} alt={dapp.label} className="logo" />
+      <div className="info">
+        <h3>{dapp.label}</h3>
+        <div className="stats">
+          <span>Market Cap: ${(marketCap / 1e18).toFixed(2)}</span>
+          <span>{vault?.position_count || 0} positions</span>
+        </div>
+      </div>
+    </div>
+  )
+}
+```
+
+## Real-World Applications
+
+### 1. Ecosystem Dashboard
+
+Display protocol rankings by category:
+
+```typescript
+async function getDappsByCategory(category: string, limit: number = 20) {
+  const query = gql`
+    query GetDappsByCategory($category: String!, $limit: Int!) {
+      atoms(
+        limit: $limit
+        order_by: [{ term: { vaults_aggregate: { max: { market_cap: desc } } } }]
+        where: {
+          type: { _eq: "Thing" }
+          data: { _ilike: $category }
+        }
+      ) {
+        term_id
+        label
+        image
+        term {
+          vaults(where: { curve_id: { _eq: "1" } }) {
+            market_cap
+            position_count
+          }
+        }
+      }
+    }
+  `
+
+  return request(GRAPHQL_ENDPOINT, query, {
+    category: `%${category}%`,
+    limit
+  })
+}
+
+// Usage
+const defiDapps = await getDappsByCategory('defi', 20)
+const nftDapps = await getDappsByCategory('nft', 20)
+```
+
+### 2. Trending Tracker
+
+Track market cap changes over time:
+
+```typescript
+interface DappMetrics {
+  term_id: string
+  label: string
+  current_market_cap: number
+  previous_market_cap: number
+  change_percentage: number
+}
+
+async function getTrendingDapps(): Promise<DappMetrics[]> {
+  // Store current data
+  const currentData = await getDapps()
+
+  // Compare with cached previous data
+  const previousData = await getCachedDappsData()
+
+  return currentData.map(dapp => {
+    const previous = previousData.find(p => p.term_id === dapp.term_id)
+    const currentMC = parseFloat(dapp.term.vaults[0]?.market_cap || '0')
+    const previousMC = previous?.market_cap || currentMC
+
+    return {
+      term_id: dapp.term_id,
+      label: dapp.label,
+      current_market_cap: currentMC,
+      previous_market_cap: previousMC,
+      change_percentage: ((currentMC - previousMC) / previousMC) * 100
+    }
+  })
+}
+```
+
+## Next Steps
+
+- [Discovering Trusted Accounts](/docs/guides/tutorials/queries/trusted-accounts) - Find reliable users
+- [Building Activity Feeds](/docs/guides/tutorials/queries/activity-feeds) - Track user actions
+- [Curated Lists Tutorial](/docs/guides/tutorials/curated-lists) - Create ranked registries
+
+## Resources
+
+- [GraphQL API Reference](/docs/guides/developer-tools/graphql-api/overview)
+- [Schema Explorer](/docs/guides/developer-tools/graphql-api/schema)
+- [GraphQL Playground](https://api.intuition.systems/graphql)

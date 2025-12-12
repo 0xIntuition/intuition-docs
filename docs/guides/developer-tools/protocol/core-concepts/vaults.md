@@ -329,5 +329,5 @@ const txHashAgainst = await multiVaultDeposit(
 
 ## Next Steps
 
-- [Bonding Curves](/docs/guides/developer-tools/protocol/core-concepts/bonding-curves) - Understand pricing mechanics
+- [Bonding Curves](/docs/guides/concepts/economics/bonding-curves) - Understand pricing mechanics
 - [Examples](/docs/guides/developer-tools/protocol/examples/deposit-redeem) - See complete deposit/redeem workflows

@@ -1,26 +1,140 @@
 ---
 id: network
-title: Network Overview
-sidebar_label: Network Overview
+title: Intuition Network
+sidebar_label: Overview
 sidebar_position: 1
-description: Essential tools and applications for interacting with the Intuition Network
+description: Intuition Network architecture and infrastructure
 ---
 
-<a href="https://intuition-testnet.hub.caldera.xyz/" target="_blank" rel="noopener noreferrer" className="hub-hero">
-  <h1 className="hub-hero-title">
-    Intuition Network
-  </h1>
-  <p className="hub-hero-description">
-    Essential tools and applications for interacting with the Intuition ecosystem on the L3 network. From exploring the knowledge graph to bridging assets across networks.
-  </p>
-  <div className="hub-hero-button">
-    Enter
-  </div>
-</a>
+# Intuition Network
 
-## What You'll Find Inside
+Intuition Network is a specialized Layer 3 blockchain built on Arbitrum Orbit, optimized for knowledge graph operations and decentralized attestations.
 
-Everything you need to build and test on Intuition's L3 network:
+## Architecture
+
+Intuition leverages a multi-layer architecture designed for performance, cost-efficiency, and scalability:
+
+- **Layer 3 on Base** - Built using Arbitrum Orbit technology
+- **AnyTrust DA** - Arbitrum's data availability solution for scalability
+- **Specialized for Knowledge Graphs** - Optimized for semantic triple operations
+- **EVM Compatible** - Full Ethereum smart contract compatibility
+
+### Performance Benefits
+
+- **~10,000x cheaper** than Ethereum mainnet
+- **~100x faster** transaction times
+- **Block time:** ~2 seconds
+- **Transaction finality:** Less than 10 seconds
+- **Throughput:** 1000+ TPS
+
+## Network Details
+
+**For developer setup and configuration, see:** [Network Configuration](/docs/getting-started/network-configuration)
+
+### Testnet
+
+The Intuition testnet is currently active for development and testing.
+
+- **Chain ID:** 13579
+- **RPC URL:** https://testnet.rpc.intuition.systems/
+- **Explorer:** https://testnet.explorer.intuition.systems
+- **Currency:** tTRUST (testnet TRUST)
+
+**Testnet Tools:**
+- [Portal](/docs/network/testnet/portal) - Web interface for creating atoms and triples
+- [Bridge](/docs/network/testnet/bridge) - Token bridge from Base Sepolia
+- [Explorer](/docs/network/testnet/explorer) - Blockchain explorer
+- [RPC Endpoints](/docs/network/testnet/rpc) - API access
+
+### Mainnet
+
+> Coming soon! Testnet is currently active for development.
+
+## Running a Node
+
+Want to run your own Intuition node for indexing and querying the knowledge graph?
+
+**[→ Node Setup Guide](/docs/network/node/overview)**
+
+Running a node provides:
+- **Full data access** - Complete knowledge graph indexing
+- **Custom queries** - Direct database access
+- **GraphQL API** - Self-hosted query capabilities
+- **Privacy** - No reliance on third-party infrastructure
+
+## Infrastructure Components
+
+### RPC Endpoints
+
+Managed infrastructure providing API access to the network:
+- **HTTP RPC:** For standard web3 calls
+- **WebSocket RPC:** For real-time subscriptions
+- **Rate limiting:** Fair usage policies apply
+
+See [RPC Documentation](/docs/network/testnet/rpc) for details.
+
+### Indexing Layer
+
+The Rust-based indexing subnet provides:
+- **Fast queries** - Optimized database for knowledge graph traversal
+- **GraphQL API** - Flexible query language for complex graph operations
+- **Real-time updates** - Live data synchronization
+- **Semantic search** - Full-text search across atoms and triples
+
+Learn more: [GraphQL API](/docs/developer-tools/graphql-api/getting-started/quickstart)
+
+### Settlement Layer
+
+Transactions settle to Base (via Base Sepolia for testnet):
+- **Security inheritance** - Leverages Ethereum's security
+- **Data availability** - AnyTrust committee ensures data availability
+- **Fraud proofs** - Optimistic rollup security model
+
+## Network Economics
+
+### Gas Costs
+
+Gas costs on Intuition are dramatically lower than Ethereum:
+- **Atom creation:** ~1/10,000th the cost
+- **Triple creation:** ~1/10,000th the cost
+- **Vault operations:** ~1/10,000th the cost
+
+### Native Token
+
+**$TRUST** is the native token of Intuition Network:
+- **Gas fees** - Pay for transactions
+- **Staking** - Signal on atoms and triples
+- **Governance** - (Coming soon)
+
+See [Tokenomics](/docs/concepts/economics/tokenomics) for details.
+
+## Getting Started
+
+### For Users
+
+1. **[Connect to Testnet](/docs/resources/faq#how-do-i-connect-to-the-intuition-testnet)** - Setup your wallet
+2. **[Get Test Tokens](https://intuition-testnet.hub.caldera.xyz/)** - Use the faucet
+3. **[Use Portal](/docs/network/testnet/portal)** - Create your first atom
+
+### For Developers
+
+1. **[Network Configuration](/docs/getting-started/network-configuration)** - Configure your environment
+2. **[SDK Setup](/docs/developer-tools/sdk/getting-started/installation)** - Install development tools
+3. **[Create Your First Atom](/docs/tutorials/basics/create-first-atom)** - Build something!
+
+### For Node Operators
+
+1. **[Node Overview](/docs/network/node/overview)** - Understand node architecture
+2. **[Local Setup](/docs/network/node/local-setup)** - Run locally for development
+3. **[Kubernetes Deployment](/docs/network/node/kubernetes)** - Production deployment
+
+## Support & Monitoring
+
+- **[Network Status](https://status.intuition.systems)** - Real-time status monitoring
+- **[Community Support](/docs/resources/community-and-support)** - Get help
+- **[FAQ](/docs/resources/faq)** - Common questions
+
+## Next Steps
 
 <div className="grid-3-cols">
 
@@ -32,23 +146,8 @@ Everything you need to build and test on Intuition's L3 network:
   boxShadow: '0 4px 16px rgba(0, 0, 0, 0.08)',
   height: '100%',
   display: 'flex',
-  flexDirection: 'column',
-  transition: 'all 0.3s ease',
-  cursor: 'pointer'
+  flexDirection: 'column'
 }}>
-<div style={{
-  width: '48px',
-  height: '48px',
-  borderRadius: '12px',
-  backgroundColor: 'var(--ifm-color-primary)',
-  color: 'white',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  marginBottom: '1.5rem',
-  fontSize: '1.25rem',
-  fontWeight: 'bold'
-}}>🛠️</div>
 <h3 style={{
   marginTop: 0,
   marginBottom: '1rem',
@@ -56,7 +155,7 @@ Everything you need to build and test on Intuition's L3 network:
   fontSize: '1.3rem',
   fontWeight: '600'
 }}>
-Build & Deploy
+Configure Development
 </h3>
 <p style={{
   margin: 0,
@@ -65,7 +164,10 @@ Build & Deploy
   color: 'var(--ifm-color-emphasis-700)',
   flexGrow: 1
 }}>
-Deploy smart contracts, test transactions, and monitor your applications in a safe environment.
+Set up your development environment to start building on Intuition.
+</p>
+<p style={{ marginTop: '1rem', marginBottom: 0 }}>
+<a href="/docs/getting-started/network-configuration">Network Configuration →</a>
 </p>
 </div>
 
@@ -77,23 +179,8 @@ Deploy smart contracts, test transactions, and monitor your applications in a sa
   boxShadow: '0 4px 16px rgba(0, 0, 0, 0.08)',
   height: '100%',
   display: 'flex',
-  flexDirection: 'column',
-  transition: 'all 0.3s ease',
-  cursor: 'pointer'
+  flexDirection: 'column'
 }}>
-<div style={{
-  width: '48px',
-  height: '48px',
-  borderRadius: '12px',
-  backgroundColor: 'var(--ifm-color-primary)',
-  color: 'white',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  marginBottom: '1.5rem',
-  fontSize: '1.25rem',
-  fontWeight: 'bold'
-}}>🔗</div>
 <h3 style={{
   marginTop: 0,
   marginBottom: '1rem',
@@ -101,7 +188,7 @@ Deploy smart contracts, test transactions, and monitor your applications in a sa
   fontSize: '1.3rem',
   fontWeight: '600'
 }}>
-Connect & Test
+Run a Node
 </h3>
 <p style={{
   margin: 0,
@@ -110,7 +197,10 @@ Connect & Test
   color: 'var(--ifm-color-emphasis-700)',
   flexGrow: 1
 }}>
-Test APIs, validate SDK integrations, and explore the GraphQL playground with real data.
+Self-host the indexing layer for direct database access and GraphQL API.
+</p>
+<p style={{ marginTop: '1rem', marginBottom: 0 }}>
+<a href="/docs/network/node/overview">Node Setup →</a>
 </p>
 </div>
 
@@ -122,23 +212,8 @@ Test APIs, validate SDK integrations, and explore the GraphQL playground with re
   boxShadow: '0 4px 16px rgba(0, 0, 0, 0.08)',
   height: '100%',
   display: 'flex',
-  flexDirection: 'column',
-  transition: 'all 0.3s ease',
-  cursor: 'pointer'
+  flexDirection: 'column'
 }}>
-<div style={{
-  width: '48px',
-  height: '48px',
-  borderRadius: '12px',
-  backgroundColor: 'var(--ifm-color-primary)',
-  color: 'white',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  marginBottom: '1.5rem',
-  fontSize: '1.25rem',
-  fontWeight: 'bold'
-}}>⚡</div>
 <h3 style={{
   marginTop: 0,
   marginBottom: '1rem',
@@ -146,7 +221,7 @@ Test APIs, validate SDK integrations, and explore the GraphQL playground with re
   fontSize: '1.3rem',
   fontWeight: '600'
 }}>
-Monitor & Optimize
+Use Testnet Tools
 </h3>
 <p style={{
   margin: 0,
@@ -155,405 +230,11 @@ Monitor & Optimize
   color: 'var(--ifm-color-emphasis-700)',
   flexGrow: 1
 }}>
-Track performance, monitor network health, and get test tokens to fuel your development.
+Access Portal, Bridge, Explorer, and other testnet services.
+</p>
+<p style={{ marginTop: '1rem', marginBottom: 0 }}>
+<a href="/docs/network/testnet/portal">Testnet Portal →</a>
 </p>
 </div>
 
 </div>
-
-## Getting Started
-
-Ready to start building on Intuition? Follow these steps:
-
-<div className="getting-started-grid">
-
-<a href="/docs/resources/faq#how-do-i-connect-to-the-intuition-testnet" style={{
-  textDecoration: 'none',
-  color: 'inherit',
-  display: 'block',
-  transition: 'all 0.3s ease'
-}}>
-
-<div style={{
-  padding: '2rem',
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '16px',
-  textAlign: 'center',
-  backgroundColor: 'var(--ifm-background-color)',
-  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
-  height: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'flex-start',
-  cursor: 'pointer'
-}}>
-<div style={{
-  width: '60px',
-  height: '60px',
-  borderRadius: '50%',
-  backgroundColor: 'var(--ifm-color-emphasis-200)',
-  color: '#000000',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  margin: '0 auto 1.5rem auto',
-  fontSize: '1.5rem',
-  fontWeight: 'bold',
-  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)'
-}}>1</div>
-<h4 style={{ marginBottom: '1rem', fontSize: '1.1rem', fontWeight: '600' }}>Connect Your Wallet</h4>
-<p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-600)', lineHeight: '1.6', marginBottom: '1rem' }}>
-Use MetaMask or any Web3 wallet to connect to the testnet
-</p>
-
-</div>
-</a>
-
-<a href="https://intuition-testnet.hub.caldera.xyz/" target="\_blank" rel="noopener noreferrer" style={{
-  textDecoration: 'none',
-  color: 'inherit',
-  display: 'block',
-  transition: 'all 0.3s ease'
-}}>
-
-<div style={{
-  padding: '2rem',
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '16px',
-  textAlign: 'center',
-  backgroundColor: 'var(--ifm-background-color)',
-  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
-  height: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'flex-start',
-  cursor: 'pointer'
-}}>
-<div style={{
-  width: '60px',
-  height: '60px',
-  borderRadius: '50%',
-  backgroundColor: 'var(--ifm-color-emphasis-200)',
-  color: '#000000',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  margin: '0 auto 1.5rem auto',
-  fontSize: '1.5rem',
-  fontWeight: 'bold',
-  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)'
-}}>2</div>
-<h4 style={{ marginBottom: '1rem', fontSize: '1.1rem', fontWeight: '600' }}>Get Test Tokens</h4>
-<p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-600)', lineHeight: '1.6', marginBottom: '1rem' }}>
-Use the built-in faucet to obtain test tokens for transactions
-</p>
-
-</div>
-</a>
-
-<a href="/docs/network/testnet/explorer" style={{
-  textDecoration: 'none',
-  color: 'inherit',
-  display: 'block',
-  transition: 'all 0.3s ease'
-}}>
-
-<div style={{
-  padding: '2rem',
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '16px',
-  textAlign: 'center',
-  backgroundColor: 'var(--ifm-background-color)',
-  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
-  height: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'flex-start',
-  cursor: 'pointer'
-}}>
-<div style={{
-  width: '60px',
-  height: '60px',
-  borderRadius: '50%',
-  backgroundColor: 'var(--ifm-color-emphasis-200)',
-  color: '#000000',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  margin: '0 auto 1.5rem auto',
-  fontSize: '1.5rem',
-  fontWeight: 'bold',
-  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)'
-}}>3</div>
-<h4 style={{ marginBottom: '1rem', fontSize: '1.1rem', fontWeight: '600' }}>Explore Services</h4>
-<p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-600)', lineHeight: '1.6', marginBottom: '1rem' }}>
-Access all testnet tools and services from the centralized dashboard
-</p>
-
-</div>
-</a>
-
-<a href="/docs/developer-tools" style={{
-  textDecoration: 'none',
-  color: 'inherit',
-  display: 'block',
-  transition: 'all 0.3s ease'
-}}>
-
-<div style={{
-  padding: '2rem',
-  border: '1px solid var(--ifm-color-emphasis-200)',
-  borderRadius: '16px',
-  textAlign: 'center',
-  backgroundColor: 'var(--ifm-background-color)',
-  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
-  height: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'flex-start',
-  cursor: 'pointer'
-}}>
-<div style={{
-  width: '60px',
-  height: '60px',
-  borderRadius: '50%',
-  backgroundColor: 'var(--ifm-color-emphasis-200)',
-  color: '#000000',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  margin: '0 auto 1.5rem auto',
-  fontSize: '1.5rem',
-  fontWeight: 'bold',
-  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)'
-}}>4</div>
-<h4 style={{ marginBottom: '1rem', fontSize: '1.1rem', fontWeight: '600' }}>Start Building</h4>
-<p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--ifm-color-emphasis-600)', lineHeight: '1.6', marginBottom: '1rem' }}>
-Deploy your first smart contract or create your first atom
-</p>
-
-</div>
-</a>
-
-</div>
-
-## Network Details
-
-<div className="network-details-container">
-
-<table className="network-details-table">
-<thead>
-<tr>
-<th>Parameter</th>
-<th>Value</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>Chain ID</strong></td>
-<td>13579</td>
-<td>Unique identifier for the Intuition testnet</td>
-</tr>
-<tr>
-<td><strong>Native Token</strong></td>
-<td>$TTRUST</td>
-<td>Native token for transactions and gas fees</td>
-</tr>
-<tr>
-<td><strong>Settlement Layer</strong></td>
-<td>Base Sepolia</td>
-<td>Layer 1 settlement and data availability</td>
-</tr>
-<tr>
-<td><strong>Data Availability</strong></td>
-<td>Arbitrum AnyTrust</td>
-<td>Data availability and security layer</td>
-</tr>
-<tr>
-<td><strong>Rollup Stack</strong></td>
-<td>Arbitrum Nitro</td>
-<td>Optimistic rollup technology stack</td>
-</tr>
-<tr>
-<td><strong>RPC (HTTP)</strong></td>
-<td colspan="2"><code className="rpc-endpoint">https://testnet.rpc.intuition.systems/http</code></td>
-</tr>
-<tr>
-<td><strong>RPC (WebSocket)</strong></td>
-<td colspan="2"><code className="rpc-endpoint">wss://testnet.rpc.intuition.systems/ws</code></td>
-</tr>
-</tbody>
-</table>
-
-</div>
-
-## Key Features
-
-<div className="key-features-grid">
-
-<div className="key-feature-card">
-<h3 className="key-feature-title">Centralized Dashboard</h3>
-<p className="key-feature-description">
-All testnet services are accessible from a single, intuitive interface that provides:
-</p>
-<ul className="green-checklist">
-<li>Service status monitoring</li>
-<li>Quick navigation to tools</li>
-<li>Real-time network metrics</li>
-<li>Developer notifications</li>
-</ul>
-</div>
-
-<div className="key-feature-card">
-<h3 className="key-feature-title">Seamless Integration</h3>
-<p className="key-feature-description">
-The hub integrates with all Intuition testnet services:
-</p>
-<ul className="green-checklist">
-<li><a href="/docs/network/testnet/bridge">Bridge</a> for cross-chain transfers</li>
-<li><a href="/docs/network/testnet/explorer">Explorer</a> for blockchain exploration</li>
-<li><a href="/docs/resources/network-health">Network Status</a> for service monitoring</li>
-</ul>
-</div>
-
-<div className="key-feature-card">
-<h3 className="key-feature-title">Developer-Friendly</h3>
-<p className="key-feature-description">
-Built with developers in mind:
-</p>
-<ul className="green-checklist">
-<li>Clear documentation links</li>
-<li>Code examples and snippets</li>
-<li>Testing best practices</li>
-<li>Troubleshooting guides</li>
-</ul>
-</div>
-
-</div>
-
-## Core Applications
-
-<div style={{
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '1.5rem',
-  marginTop: '2rem',
-  marginBottom: '3rem'
-}}>
-
-<a href="https://intuition-testnet.hub.caldera.xyz/" target="_blank" rel="noopener noreferrer" className="core-app-card clickable-card">
-<div className="core-app-icon">
-<svg width="32" height="32" viewBox="0 0 24 24" fill="white">
-<path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/>
-</svg>
-</div>
-<div className="core-app-content">
-<h3 className="core-app-title">Hub</h3>
-<p className="core-app-description">
-Development environment hub for the Intuition testnet. Access all testnet services, tools, and resources in one centralized location.
-</p>
-<div className="core-app-tags">
-<span className="core-app-tag">Testnet</span>
-<span className="core-app-tag">Development</span>
-<span className="core-app-tag">Testing</span>
-</div>
-</div>
-</a>
-
-<a href="/docs/network/testnet/bridge" className="core-app-card clickable-card">
-<div className="core-app-icon">
-<svg width="32" height="32" viewBox="0 0 24 24" fill="white">
-<path d="M6 6v2h8.59L5 17.59 6.41 19 16 9.41V18h2V6z"/>
-</svg>
-</div>
-<div className="core-app-content">
-<h3 className="core-app-title">Bridge</h3>
-<p className="core-app-description">
-Bridge assets between Ethereum testnets and Intuition testnet. Secure cross-chain transfers for testing and development purposes.
-</p>
-<div className="core-app-tags">
-<span className="core-app-tag">Bridge</span>
-<span className="core-app-tag">Cross-chain</span>
-<span className="core-app-tag">Testing</span>
-</div>
-</div>
-</a>
-
-<a href="/docs/resources/network-health" className="core-app-card clickable-card">
-<div className="core-app-icon">
-<svg width="32" height="32" viewBox="0 0 24 24" fill="white">
-<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-</svg>
-</div>
-<div className="core-app-content">
-<h3 className="core-app-title">Network Status</h3>
-<p className="core-app-description">
-Real-time status monitoring for the Intuition network. Check service availability, network health, and uptime statistics.
-</p>
-<div className="core-app-tags">
-<span className="core-app-tag">Status</span>
-<span className="core-app-tag">Monitoring</span>
-<span className="core-app-tag">Uptime</span>
-</div>
-</div>
-</a>
-
-<a href="/docs/network/testnet/portal" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
-
-<div className="uniform-card clickable-card">
-<div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
-<div style={{ width: '40px', height: '40px', borderRadius: '8px', backgroundColor: '#6366F1', display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: '1rem' }}>
-<svg width="20" height="20" viewBox="0 0 24 24" fill="white">
-<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-</svg>
-</div>
-<h3 style={{ margin: 0 }}>Portal</h3>
-</div>
-<p className="uniform-card-content">
-The main interface for creating identities, making claims, and staking on the Intuition knowledge graph. Your gateway to the decentralized social network. Perfect for new users - start here to create your first identity and make claims.
-</p>
-</div>
-</a>
-
-<a href="/docs/network/testnet/explorer" className="core-app-card clickable-card">
-<div className="core-app-icon">
-<svg width="32" height="32" viewBox="0 0 24 24" fill="white">
-<path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/>
-</svg>
-</div>
-<div className="core-app-content">
-<h3 className="core-app-title">Explorer</h3>
-<p className="core-app-description">
-Blockchain explorer for the Intuition testnet. View transactions, blocks, and network activity. Monitor testnet performance and verify test transactions.
-</p>
-<div className="core-app-tags">
-<span className="core-app-tag">Explorer</span>
-<span className="core-app-tag">Transactions</span>
-<span className="core-app-tag">Analytics</span>
-</div>
-</div>
-</a>
-
-<a href="/docs/network/testnet/rpc" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
-
-<div className="uniform-card clickable-card">
-<div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
-<div style={{ width: '40px', height: '40px', borderRadius: '8px', backgroundColor: '#EF4444', display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: '1rem' }}>
-<svg width="20" height="20" viewBox="0 0 24 24" fill="white">
-<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-</svg>
-</div>
-<h3 style={{ margin: 0 }}>RPC</h3>
-</div>
-<p className="uniform-card-content">
-Programmatic access to the Intuition network. Query blockchain data, submit transactions, and interact with smart contracts. Ideal for developers - use for programmatic access to the network.
-</p>
-</div>
-</a>
-
-</div>
-
-## Support
-
-Need help with any of these tools? Check out our [Community & Support](/docs/resources/community-and-support) page or [FAQ](/docs/resources/faq) for answers to common questions.

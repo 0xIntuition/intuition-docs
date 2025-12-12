@@ -65,7 +65,176 @@ const plugins = [
   [
     '@docusaurus/plugin-client-redirects',
     {
-      redirects: [],
+      redirects: [
+        // ===== GETTING STARTED REDIRECTS =====
+        // Only include redirects for pages that exist
+        {
+          from: '/docs/introduction/overview',
+          to: '/docs/getting-started/overview',
+        },
+        {
+          from: '/docs/introduction/why-intuition',
+          to: '/docs/getting-started/why-intuition',
+        },
+        {
+          from: '/docs/quickstart/getting-started',
+          to: '/docs/getting-started/quickstart',
+        },
+        {
+          from: '/docs/quickstart/intuition-kits',
+          to: '/docs/getting-started/intuition-kits',
+        },
+
+        // Commented out redirects to pages that don't exist yet (will be added in future weeks)
+        /*
+        // ===== ECONOMICS REDIRECTS =====
+        {
+          from: '/docs/introduction/the-economics',
+          to: '/docs/concepts/economics/overview',
+        },
+        {
+          from: '/docs/introduction/the-economics/the-economics',
+          to: '/docs/concepts/economics/overview',
+        },
+        {
+          from: '/docs/economics/overview',
+          to: '/docs/concepts/economics/tokenomics',
+        },
+        {
+          from: '/docs/core-concepts/economics/bonding-curves',
+          to: '/docs/concepts/economics/bonding-curves',
+        },
+        {
+          from: '/docs/core-concepts/economics/fees-rewards',
+          to: '/docs/concepts/economics/fees-and-rewards',
+        },
+        {
+          from: '/docs/developer-tools/protocol/core-concepts/bonding-curves',
+          to: '/docs/concepts/economics/bonding-curves',
+        },
+
+        // ===== PRIMITIVES REDIRECTS =====
+        {
+          from: '/docs/core-concepts/primitives/:path*',
+          to: '/docs/concepts/primitives/:path*',
+        },
+        {
+          from: '/docs/developer-tools/protocol/core-concepts/atoms',
+          to: '/docs/developer-tools/protocol/working-with-primitives',
+        },
+        {
+          from: '/docs/developer-tools/protocol/core-concepts/triples',
+          to: '/docs/developer-tools/protocol/working-with-primitives',
+        },
+
+        // ===== TUTORIALS REDIRECTS =====
+        {
+          from: '/docs/use-cases',
+          to: '/docs/tutorials/overview',
+        },
+        {
+          from: '/docs/use-cases/use-cases',
+          to: '/docs/tutorials/overview',
+        },
+        {
+          from: '/docs/developer-tools/graphql-api/use-cases/overview',
+          to: '/docs/tutorials/queries/overview',
+        },
+        {
+          from: '/docs/developer-tools/graphql-api/use-cases/finding-top-dapps-on-coinbase',
+          to: '/docs/tutorials/queries/top-dapps',
+        },
+        {
+          from: '/docs/developer-tools/graphql-api/use-cases/discovering-most-trusted-accounts',
+          to: '/docs/tutorials/queries/trusted-accounts',
+        },
+        {
+          from: '/docs/developer-tools/graphql-api/use-cases/building-user-activity-feeds',
+          to: '/docs/tutorials/queries/activity-feeds',
+        },
+        {
+          from: '/docs/developer-tools/graphql-api/use-cases/finding-related-claims',
+          to: '/docs/tutorials/queries/related-claims',
+        },
+
+        // ===== SDK REDIRECTS =====
+        {
+          from: '/docs/developer-tools/sdk/atoms/create-from-string',
+          to: '/docs/developer-tools/sdk/atoms-guide',
+        },
+        {
+          from: '/docs/developer-tools/sdk/atoms/create-from-thing',
+          to: '/docs/developer-tools/sdk/atoms-guide',
+        },
+        {
+          from: '/docs/developer-tools/sdk/atoms/create-from-ethereum-account',
+          to: '/docs/developer-tools/sdk/atoms-guide',
+        },
+        {
+          from: '/docs/developer-tools/sdk/atoms/create-from-smart-contract',
+          to: '/docs/developer-tools/sdk/atoms-guide',
+        },
+        {
+          from: '/docs/developer-tools/sdk/atoms/create-from-ipfs',
+          to: '/docs/developer-tools/sdk/atoms-guide',
+        },
+        {
+          from: '/docs/developer-tools/sdk/atoms/batch-creation',
+          to: '/docs/developer-tools/sdk/atoms-guide',
+        },
+        {
+          from: '/docs/developer-tools/sdk/atoms/querying',
+          to: '/docs/developer-tools/sdk/atoms-guide',
+        },
+        {
+          from: '/docs/developer-tools/sdk/triples/:path',
+          to: '/docs/developer-tools/sdk/triples-guide',
+        },
+        {
+          from: '/docs/developer-tools/sdk/vaults/:path',
+          to: '/docs/developer-tools/sdk/vaults-guide',
+        },
+        {
+          from: '/docs/developer-tools/sdk/search/:path',
+          to: '/docs/developer-tools/sdk/search-guide',
+        },
+
+        // ===== RESOURCES REDIRECTS =====
+        {
+          from: '/docs/resources/key-terms',
+          to: '/docs/resources/glossary',
+        },
+        */
+
+        // ===== NETWORK REDIRECTS =====
+        // These pages do exist, so keep them
+        {
+          from: '/docs/intuition-node/overview',
+          to: '/docs/network/node/overview',
+        },
+        {
+          from: '/docs/intuition-node/rust-backend',
+          to: '/docs/network/node/rust-backend',
+        },
+        {
+          from: '/docs/intuition-node/local-development-setup',
+          to: '/docs/network/node/local-setup',
+        },
+        {
+          from: '/docs/intuition-node/kubernetes-deployment',
+          to: '/docs/network/node/kubernetes',
+        },
+
+        // ===== INTEGRATIONS REDIRECTS =====
+        {
+          from: '/docs/intuition-ai/index',
+          to: '/docs/integrations/ai/overview',
+        },
+        {
+          from: '/docs/intuition-ai/mcp-server',
+          to: '/docs/integrations/ai/mcp-server',
+        },
+      ],
       createRedirects: (path) => {
         if (path.startsWith('/docs/capabilities/chat/export-chat-dump')) {
           return ['/capabilities/export-chat-dump'];

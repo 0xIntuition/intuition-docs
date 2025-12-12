@@ -38,7 +38,7 @@ This documentation serves as your complete guide to understanding and building w
 
 ### Core Concepts
 - **[Primitives](/docs/introduction/the-primitives)** — Atoms, Triples, and Signals explained
-- **[Economics](/docs/introduction/the-economics)** — Bonding curves, fees, rewards, and tokenomics
+- **[Economics](/docs/guides/concepts/economics/overview)** — Bonding curves, fees, rewards, and tokenomics
 - **[Architecture](/docs/developer-tools/deep-dive)** — Technical deep-dive into system design
 
 ## 🔧 Built With
