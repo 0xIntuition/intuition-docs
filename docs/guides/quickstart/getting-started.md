@@ -106,7 +106,7 @@ npm install @0xintuition/sdk @0xintuition/protocol
 
 Atoms are the foundational building blocks of Intuition's knowledge graph – the words in our global dictionary. Think of Intuition as a vast, collaborative dictionary where anyone can create a new word, and each word has its own globally persistent, unique digital identifier that can be used to reference it across the entire internet!
 
-[Learn more about Atoms →](/docs/primitives/atoms)
+[Learn more about Atoms →](/docs/guides/core-concepts/primitives/atoms/fundamentals)
 
 ### Create an Atom from a String
 
@@ -250,7 +250,7 @@ console.log('On-chain atom:', atomOnChain)
 
 If Atoms are the words in Intuition's global dictionary, Triples are the sentences we create from those words. A Triple connects three Atoms to assert a relationship or fact in the form **[Subject] – [Predicate] – [Object]**. You can string these sentences together to express any arbitrarily-complex concept, all while retaining a discrete, referenceable structure!
 
-[Learn more about Triples →](/docs/primitives/triples)
+[Learn more about Triples →](/docs/guides/core-concepts/primitives/triples/fundamentals)
 
 ```typescript
 import { createAtomFromString, createTripleStatement } from '@0xintuition/sdk'
@@ -291,7 +291,7 @@ console.log('Triple created:', triple.transactionHash)
 
 Signals represent the trust, confidence, or relevance that the community assigns to Atoms and Triples in the Intuition knowledge graph. Think of the knowledge graph as a weighted graph where Signal is the weight on each node (Atom) or edge (Triple), indicating how strongly people believe in or care about this information.
 
-[Learn more about Signals →](/docs/primitives/signals)
+[Learn more about Signals →](/docs/guides/core-concepts/primitives/signals/fundamentals)
 
 ### Deposit (Signal Support)
 
@@ -508,6 +508,6 @@ Now that you know the basics, explore what you can build:
 ## Next Steps
 
 - **[Explore the SDK](/docs/developer-tools/sdks/overview)** - Deep dive into SDK capabilities
-- **[Smart Contracts](/docs/developer-tools/contracts/contract-architecture)** - Contract architecture and ABIs
+- **[Smart Contracts](/docs/guides/developer-tools/contracts/overview)** - Contract architecture and ABIs
 - **[GraphQL API](/docs/developer-tools/graphql-api/overview)** - Query the knowledge graph
 - **[Join the Community](/docs/resources/community-and-support)** - Get help and share ideas
