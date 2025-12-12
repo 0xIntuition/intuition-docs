@@ -1178,7 +1178,7 @@ npm run dev
 
 ## Resources
 
-- [SDK Documentation](/docs/guides/developer-tools/sdk/getting-started)
+- [SDK Overview](/docs/guides/developer-tools/sdk/overview)
 - [GraphQL API Reference](/docs/guides/developer-tools/graphql-api/overview)
 - [Triples Fundamentals](/docs/guides/core-concepts/primitives/triples/fundamentals)
 - [Community Discord](https://discord.gg/intuition)

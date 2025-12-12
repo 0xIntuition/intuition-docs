@@ -9,7 +9,7 @@ description: Create and interact with atoms, triples, and vaults using the Proto
 
 This guide shows how to create and interact with atoms, triples, and vaults using the Protocol package (low-level contract interactions).
 
-**For conceptual understanding:** [Primitives Overview](/docs/concepts/primitives/overview)
+**For conceptual understanding:** [Primitives Overview](/docs/guides/core-concepts/primitives)
 
 ## Creating Atoms
 
@@ -45,7 +45,7 @@ const tx = await multiVaultCreateAtoms({
 console.log('Atom created:', tx.atomIds[0])
 ```
 
-**See also:** [Atoms Concept](/docs/concepts/primitives/atoms/fundamentals)
+**See also:** [Atoms Concept](/docs/guides/core-concepts/primitives/atoms)
 
 ## Creating Triples
 
@@ -70,7 +70,7 @@ const tx = await multiVaultCreateTriples({
 console.log('Triple created:', tx.tripleIds[0])
 ```
 
-**See also:** [Triples Concept](/docs/concepts/primitives/triples/fundamentals)
+**See also:** [Triples Concept](/docs/guides/core-concepts/primitives/triples)
 
 ## Vault Operations
 
@@ -123,7 +123,7 @@ console.log('Total shares:', vaultDetails.totalShares)
 console.log('Share price:', vaultDetails.currentSharePrice)
 ```
 
-**See also:** [Signals Concept](/docs/concepts/primitives/signals/fundamentals)
+**See also:** [Signals Concept](/docs/guides/core-concepts/primitives/signals)
 
 ## Batch Operations
 
@@ -190,21 +190,16 @@ publicClient.watchContractEvent({
 ## Examples
 
 See complete examples:
-- [Creating Atoms & Triples](/docs/developer-tools/protocol/examples/creating-atoms-triples)
-- [Deposit & Redeem](/docs/developer-tools/protocol/examples/deposit-redeem)
-- [Batch Operations](/docs/developer-tools/protocol/examples/batch-operations)
-- [Event Parsing](/docs/developer-tools/protocol/examples/event-parsing)
+- [Protocol Examples](/docs/guides/developer-tools/protocol/examples)
 
 ## SDK Alternative
 
 For a higher-level API with React hooks, see:
-- [SDK Atoms Guide](/docs/developer-tools/sdk/atoms-guide)
-- [SDK Triples Guide](/docs/developer-tools/sdk/triples-guide)
-- [SDK Vaults Guide](/docs/developer-tools/sdk/vaults-guide)
+- [SDK Atoms Guide](/docs/guides/developer-tools/sdk/atoms-guide)
+- [SDK Triples Guide](/docs/guides/developer-tools/sdk/triples-guide)
+- [SDK Vaults Guide](/docs/guides/developer-tools/sdk/vaults-guide)
 
 ## API Reference
 
 Full API documentation:
-- [MultiVault Atoms API](/docs/developer-tools/protocol/api-reference/multivault/atoms)
-- [MultiVault Triples API](/docs/developer-tools/protocol/api-reference/multivault/triples)
-- [MultiVault Vaults API](/docs/developer-tools/protocol/api-reference/multivault/vaults)
+- [MultiVault API Reference](/docs/guides/developer-tools/protocol/api-reference/multivault)

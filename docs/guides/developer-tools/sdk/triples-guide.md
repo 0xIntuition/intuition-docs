@@ -615,9 +615,7 @@ async function comparePositions(tripleId: Hex) {
 
 ## Complete Examples
 
-See working examples:
-- [Create Triple Statement](/docs/guides/developer-tools/sdk/examples/create-triple-statement)
-- [Find Existing Entities](/docs/guides/developer-tools/sdk/examples/find-existing-entities)
+See working examples in the SDK Examples section
 
 ## Next Steps
 

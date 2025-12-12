@@ -714,9 +714,7 @@ console.log('Best vault:', vaults[bestIndex])
 
 ## Complete Examples
 
-See working examples:
-- [Deposit into Vault](/docs/guides/developer-tools/sdk/examples/deposit-into-vault)
-- [Vault Operations](/docs/guides/developer-tools/sdk/examples/vault-operations)
+See working examples in the SDK Examples section
 
 ## Next Steps
 

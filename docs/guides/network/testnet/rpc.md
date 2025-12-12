@@ -223,7 +223,7 @@ Ready to Connect?
 Start building with the Intuition RPC service and integrate blockchain functionality into your applications.
 </p>
 <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-<a href="/docs/quickstart" style={{
+<a href="/docs/guides/getting-started/quickstart" style={{
   backgroundColor: 'var(--ifm-color-primary)',
   color: 'white',
   padding: '0.75rem 1.5rem',
@@ -237,7 +237,7 @@ Start building with the Intuition RPC service and integrate blockchain functiona
 }}>
 Get Started
 </a>
-<a href="/docs/developer-tools/graphql-api" style={{
+<a href="/docs/guides/developer-tools/graphql-api/overview" style={{
   backgroundColor: 'transparent',
   color: 'white',
   padding: '0.75rem 1.5rem',

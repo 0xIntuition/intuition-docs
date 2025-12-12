@@ -1068,7 +1068,7 @@ npm run dev
 
 ## Resources
 
-- [SDK Documentation](/docs/guides/developer-tools/sdk/getting-started)
+- [SDK Overview](/docs/guides/developer-tools/sdk/overview)
 - [GraphQL API](/docs/guides/developer-tools/graphql-api/overview)
 - [Community Discord](https://discord.gg/intuition)
 

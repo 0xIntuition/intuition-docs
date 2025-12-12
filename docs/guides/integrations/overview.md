@@ -13,8 +13,8 @@ Intuition integrates with various platforms and tools to extend its capabilities
 
 Use Intuition's knowledge graph with AI systems and agents to create persistent, verifiable memory and context.
 
-- **[AI Overview](/docs/integrations/ai/overview)** - AI capabilities and use cases
-- **[MCP Server](/docs/integrations/ai/mcp-server)** - Model Context Protocol integration
+- **AI Overview** - AI capabilities and use cases (Coming Soon)
+- **MCP Server** - Model Context Protocol integration (Coming Soon)
 
 **Use cases:**
 - **AI agents with persistent memory** - Store and retrieve agent knowledge on-chain
@@ -87,17 +87,17 @@ Have an integration idea? We'd love to hear from you!
 
 Intuition's open architecture makes it easy to build custom integrations:
 
-1. **[SDK Documentation](/docs/developer-tools/sdk/getting-started/installation)** - Start with the TypeScript SDK
-2. **[Protocol API](/docs/developer-tools/protocol/api-reference/multivault/atoms)** - Direct smart contract integration
-3. **[GraphQL API](/docs/developer-tools/graphql-api/getting-started/quickstart)** - Query the knowledge graph
+1. **[SDK Overview](/docs/guides/developer-tools/sdk/overview)** - Start with the TypeScript SDK
+2. **[Protocol Overview](/docs/guides/developer-tools/protocol/overview)** - Direct smart contract integration
+3. **[GraphQL API](/docs/guides/developer-tools/graphql-api/overview)** - Query the knowledge graph
 
 ## Examples
 
 See these integration patterns:
 
-- **[Atoms Guide](/docs/developer-tools/sdk/atoms-guide)** - Working with atoms
-- **[Triples Guide](/docs/developer-tools/sdk/triples-guide)** - Creating attestations
-- **[Vaults Guide](/docs/developer-tools/sdk/vaults-guide)** - Vault operations
+- **[Atoms Guide](/docs/guides/developer-tools/sdk/atoms-guide)** - Working with atoms
+- **[Triples Guide](/docs/guides/developer-tools/sdk/triples-guide)** - Creating attestations
+- **[Vaults Guide](/docs/guides/developer-tools/sdk/vaults-guide)** - Vault operations
 
 ## Stay Updated
 

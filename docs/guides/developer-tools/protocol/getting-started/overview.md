@@ -190,12 +190,11 @@ The Protocol package is ideal when you need:
 - **Event parsing**: Extract detailed event data from transactions
 - **Custom workflows**: Build your own higher-level abstractions
 
-For simpler, more user-friendly interactions, consider using the [SDK Package](/docs/guides/developer-tools/sdk/getting-started/installation) which provides higher-level abstractions including IPFS pinning, JSON-LD support, and simplified APIs.
+For simpler, more user-friendly interactions, consider using the [SDK Package](/docs/guides/developer-tools/sdk/overview) which provides higher-level abstractions including IPFS pinning, JSON-LD support, and simplified APIs.
 
 ## Next Steps
 
 - [Configuration Guide](/docs/guides/developer-tools/protocol/getting-started/configuration) - Set up clients and networks
-- [Working with Primitives](/docs/developer-tools/protocol/working-with-primitives) - Create and interact with atoms, triples, and vaults
 - [API Reference](/docs/guides/developer-tools/protocol/api-reference/multivault/atoms) - Explore all available functions
 - [Examples](/docs/guides/developer-tools/protocol/examples/creating-atoms-triples) - See complete workflows
 
@@ -207,6 +206,6 @@ For simpler, more user-friendly interactions, consider using the [SDK Package](/
 
 ## See Also
 
-- [SDK Package](/docs/guides/developer-tools/sdk/getting-started/installation) - Higher-level API with IPFS and JSON-LD support
+- [SDK Package](/docs/guides/developer-tools/sdk/overview) - Higher-level API with IPFS and JSON-LD support
 - [GraphQL API](/docs/guides/developer-tools/graphql-api/overview) - Query protocol data efficiently
-- [Primitives Overview](/docs/concepts/primitives/overview) - Understand atoms, triples, and signals
+- [Primitives Overview](/docs/guides/core-concepts/primitives/overview) - Understand atoms, triples, and signals

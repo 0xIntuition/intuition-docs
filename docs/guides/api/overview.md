@@ -15,26 +15,26 @@ For now, see our comprehensive manual API documentation:
 
 Complete TypeScript SDK documentation:
 
-- **[SDK Examples](/docs/developer-tools/sdk/examples/create-atom-from-string)** - Code examples and patterns
-- **[Atoms Guide](/docs/developer-tools/sdk/atoms-guide)** - Working with atoms
-- **[Triples Guide](/docs/developer-tools/sdk/triples-guide)** - Working with triples
-- **[Vaults Guide](/docs/developer-tools/sdk/vaults-guide)** - Vault operations
+- **[SDK Examples](/docs/guides/developer-tools/sdk/examples)** - Code examples and patterns
+- **[Atoms Guide](/docs/guides/developer-tools/sdk/atoms-guide)** - Working with atoms
+- **[Triples Guide](/docs/guides/developer-tools/sdk/triples-guide)** - Working with triples
+- **[Vaults Guide](/docs/guides/developer-tools/sdk/vaults-guide)** - Vault operations
 
 ## Protocol API
 
 Smart contract API reference:
 
-- **[MultiVault API](/docs/developer-tools/protocol/api-reference/multivault/atoms)** - Core protocol contracts
-- **[Events Reference](/docs/developer-tools/protocol/api-reference/events/atom-events)** - Contract events
-- **[Wrapped Trust API](/docs/developer-tools/protocol/api-reference/wrapped-trust/overview)** - ERC-20 wrapper
+- **[MultiVault API](/docs/guides/developer-tools/protocol/api-reference/multivault)** - Core protocol contracts
+- **[Events Reference](/docs/guides/developer-tools/protocol/api-reference/events)** - Contract events
+- **[Protocol API Reference](/docs/guides/developer-tools/protocol/api-reference)** - Full protocol reference
 
 ## GraphQL API
 
 Query the knowledge graph:
 
-- **[Schema Reference](/docs/developer-tools/graphql-api/getting-started/schema-reference)** - GraphQL schema
-- **[Query Examples](/docs/developer-tools/graphql-api/usage-examples/atoms-queries)** - Common queries
-- **[Quickstart](/docs/developer-tools/graphql-api/getting-started/quickstart)** - Getting started
+- **[GraphQL API](/docs/guides/developer-tools/graphql-api)** - GraphQL documentation
+- **[Query Examples](/docs/guides/developer-tools/graphql-api/usage-examples)** - Common queries
+- **[Quickstart](/docs/guides/developer-tools/graphql-api/getting-started/quickstart)** - Getting started
 
 ## External Documentation
 
@@ -63,6 +63,6 @@ We're working on:
 
 ## Need Help?
 
-- **[Tutorials](/docs/tutorials/overview)** - Step-by-step guides
-- **[Community Support](/docs/resources/community-and-support)** - Get help
+- **[Tutorials](/docs/guides/tutorials)** - Step-by-step guides
+- **[Community Support](/docs/guides/resources/community)** - Get help
 - **[Discord](https://discord.gg/intuition)** - Ask questions

@@ -29,7 +29,7 @@ Intuition leverages a multi-layer architecture designed for performance, cost-ef
 
 ## Network Details
 
-**For developer setup and configuration, see:** [Network Configuration](/docs/getting-started/network-configuration)
+**For developer setup and configuration, see:** [Network Configuration](/docs/guides/getting-started/network-configuration)
 
 ### Testnet
 
@@ -41,10 +41,10 @@ The Intuition testnet is currently active for development and testing.
 - **Currency:** tTRUST (testnet TRUST)
 
 **Testnet Tools:**
-- [Portal](/docs/network/testnet/portal) - Web interface for creating atoms and triples
-- [Bridge](/docs/network/testnet/bridge) - Token bridge from Base Sepolia
-- [Explorer](/docs/network/testnet/explorer) - Blockchain explorer
-- [RPC Endpoints](/docs/network/testnet/rpc) - API access
+- **Portal** - Web interface for creating atoms and triples
+- **Bridge** - Token bridge from Base Sepolia
+- **Explorer** - Blockchain explorer at https://testnet.explorer.intuition.systems
+- **RPC Endpoints** - API access via https://testnet.rpc.intuition.systems/
 
 ### Mainnet
 
@@ -54,7 +54,7 @@ The Intuition testnet is currently active for development and testing.
 
 Want to run your own Intuition node for indexing and querying the knowledge graph?
 
-**[→ Node Setup Guide](/docs/network/node/overview)**
+**Node Setup** - Contact support for node setup information
 
 Running a node provides:
 - **Full data access** - Complete knowledge graph indexing
@@ -71,7 +71,7 @@ Managed infrastructure providing API access to the network:
 - **WebSocket RPC:** For real-time subscriptions
 - **Rate limiting:** Fair usage policies apply
 
-See [RPC Documentation](/docs/network/testnet/rpc) for details.
+Use the RPC endpoint at https://testnet.rpc.intuition.systems/ for development.
 
 ### Indexing Layer
 
@@ -81,7 +81,7 @@ The Rust-based indexing subnet provides:
 - **Real-time updates** - Live data synchronization
 - **Semantic search** - Full-text search across atoms and triples
 
-Learn more: [GraphQL API](/docs/developer-tools/graphql-api/getting-started/quickstart)
+Learn more: [GraphQL API](/docs/guides/developer-tools/graphql-api)
 
 ### Settlement Layer
 
@@ -106,33 +106,31 @@ Gas costs on Intuition are dramatically lower than Ethereum:
 - **Staking** - Signal on atoms and triples
 - **Governance** - (Coming soon)
 
-See [Tokenomics](/docs/concepts/economics/tokenomics) for details.
+See [Signals](/docs/guides/core-concepts/primitives/signals) for information about staking and token usage.
 
 ## Getting Started
 
 ### For Users
 
-1. **[Connect to Testnet](/docs/resources/faq#how-do-i-connect-to-the-intuition-testnet)** - Setup your wallet
+1. **[Connect to Testnet](/docs/guides/resources/faq#how-do-i-connect-to-the-intuition-testnet)** - Setup your wallet
 2. **[Get Test Tokens](https://intuition-testnet.hub.caldera.xyz/)** - Use the faucet
-3. **[Use Portal](/docs/network/testnet/portal)** - Create your first atom
+3. **Explore Tools** - Use Portal and Explorer to interact with the network
 
 ### For Developers
 
-1. **[Network Configuration](/docs/getting-started/network-configuration)** - Configure your environment
-2. **[SDK Setup](/docs/developer-tools/sdk/getting-started/installation)** - Install development tools
-3. **[Create Your First Atom](/docs/tutorials/basics/create-first-atom)** - Build something!
+1. **[Network Configuration](/docs/guides/getting-started/network-configuration)** - Configure your environment
+2. **[SDK Setup](/docs/guides/developer-tools/sdk/getting-started/installation)** - Install development tools
+3. **[Quickstart Guide](/docs/guides/getting-started/quickstart)** - Build something!
 
 ### For Node Operators
 
-1. **[Node Overview](/docs/network/node/overview)** - Understand node architecture
-2. **[Local Setup](/docs/network/node/local-setup)** - Run locally for development
-3. **[Kubernetes Deployment](/docs/network/node/kubernetes)** - Production deployment
+Contact support for node setup and deployment information.
 
 ## Support & Monitoring
 
 - **[Network Status](https://status.intuition.systems)** - Real-time status monitoring
-- **[Community Support](/docs/resources/community-and-support)** - Get help
-- **[FAQ](/docs/resources/faq)** - Common questions
+- **[Community Support](/docs/guides/resources/community)** - Get help
+- **[FAQ](/docs/guides/resources/faq)** - Common questions
 
 ## Next Steps
 
@@ -167,7 +165,7 @@ Configure Development
 Set up your development environment to start building on Intuition.
 </p>
 <p style={{ marginTop: '1rem', marginBottom: 0 }}>
-<a href="/docs/getting-started/network-configuration">Network Configuration →</a>
+<a href="/docs/guides/getting-started/network-configuration">Network Configuration →</a>
 </p>
 </div>
 
@@ -200,7 +198,7 @@ Run a Node
 Self-host the indexing layer for direct database access and GraphQL API.
 </p>
 <p style={{ marginTop: '1rem', marginBottom: 0 }}>
-<a href="/docs/network/node/overview">Node Setup →</a>
+<a href="/docs/guides/resources/community">Contact Support →</a>
 </p>
 </div>
 
@@ -233,7 +231,7 @@ Use Testnet Tools
 Access Portal, Bridge, Explorer, and other testnet services.
 </p>
 <p style={{ marginTop: '1rem', marginBottom: 0 }}>
-<a href="/docs/network/testnet/portal">Testnet Portal →</a>
+<a href="https://testnet.explorer.intuition.systems">Testnet Explorer →</a>
 </p>
 </div>
 

@@ -530,10 +530,7 @@ await processInBatches(allData, 100, async (batch) => {
 
 ## Complete Examples
 
-See working examples:
-- [Global Search](/docs/guides/developer-tools/sdk/examples/global-search)
-- [Find Existing Entities](/docs/guides/developer-tools/sdk/examples/find-existing-entities)
-- [Bulk Sync Cost Estimation](/docs/guides/developer-tools/sdk/examples/bulk-sync-cost-estimation)
+See working examples in the SDK Examples section
 
 ## Next Steps
 

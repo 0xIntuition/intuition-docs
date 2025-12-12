@@ -83,53 +83,18 @@ Build a non-resolving forecasting platform.
 
 ## Data Queries
 
-GraphQL-focused tutorials for querying the knowledge graph.
-
-### [Finding Top Dapps](/docs/guides/tutorials/queries/top-dapps)
-Query and rank decentralized applications by metrics.
-
-**Time:** 30 minutes | **Level:** Beginner
-
-### [Discovering Trusted Accounts](/docs/guides/tutorials/queries/trusted-accounts)
-Build trust graphs and find reliable accounts.
-
-**Time:** 45 minutes | **Level:** Intermediate
-
-### [Building Activity Feeds](/docs/guides/tutorials/queries/activity-feeds)
-Create real-time user activity streams.
-
-**Time:** 45 minutes | **Level:** Intermediate
-
-### [Finding Related Claims](/docs/guides/tutorials/queries/related-claims)
-Traverse the knowledge graph to find connections.
-
-**Time:** 45 minutes | **Level:** Intermediate
-
----
+GraphQL-focused tutorials for querying the knowledge graph (Coming Soon).
 
 ## Advanced Patterns
 
-### [Working with Nested Triples](/docs/guides/tutorials/advanced/nested-triples)
-Use triples as atoms for complex expressions.
-
-**Time:** Coming soon | **Level:** Advanced
-
-### [Optimizing Batch Operations](/docs/guides/tutorials/advanced/batch-operations)
-Efficiently create multiple atoms and triples.
-
-**Time:** Coming soon | **Level:** Advanced
-
-### [Oracle Integration](/docs/guides/tutorials/advanced/oracle-integration)
-Use Intuition claims in smart contracts.
-
-**Time:** Coming soon | **Level:** Advanced
+Advanced tutorials coming soon including nested triples, batch operations, and oracle integration.
 
 ---
 
 ## Need Help?
 
-- [Community Support](/docs/resources/community-and-support)
-- [FAQ](/docs/resources/faq)
+- [Community Support](/docs/guides/resources/community-and-support)
+- [FAQ](/docs/guides/resources/faq)
 - [Discord](https://discord.gg/intuition)
 
 ## Prerequisites for Tutorials
@@ -151,4 +116,4 @@ Before starting these tutorials, make sure you have:
    - Code editor (VS Code recommended)
    - Git for cloning example repos
 
-See [Getting Started](/docs/guides/developer-tools/sdk/getting-started) for setup instructions.
+See [Getting Started](/docs/guides/getting-started/quickstart) for setup instructions.

@@ -24,5 +24,5 @@ A web app where users can:
 This tutorial is being developed as part of our documentation expansion. In the meantime:
 
 - Follow the [Quick Start Guide](/docs/guides/getting-started/quickstart)
-- Explore [Tutorials](/docs/tutorials/overview)
+- Explore [Tutorials](/docs/guides/tutorials/overview)
 - Try the [SDK Examples](/docs/guides/developer-tools/sdk/examples/create-atom-from-string)

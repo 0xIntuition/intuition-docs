@@ -54,7 +54,7 @@ Not sure where to start? Pick the path that matches your goal.
 - Reputation system
 - Curated lists
 - Social attestations
-- **Start here:** [Tutorials](/docs/tutorials/overview)
+- **Start here:** [Tutorials](/docs/guides/tutorials/overview)
 
 ## Decision Tree
 
@@ -95,5 +95,5 @@ Once you've chosen your path:
 
 1. Follow the quick start guide for your chosen tool
 2. Read through the [Core Concepts](/docs/guides/core-concepts/primitives/overview)
-3. Try a [Tutorial](/docs/tutorials/overview)
+3. Try a [Tutorial](/docs/guides/tutorials/overview)
 4. Join the [Community](/docs/guides/resources/community-and-support)

@@ -604,11 +604,7 @@ async function getMultipleAtoms(atomIds: string[]) {
 
 ## Complete Examples
 
-See working examples:
-- [Create Atom from String](/docs/guides/developer-tools/sdk/examples/create-atom-from-string)
-- [Batch Ethereum Accounts](/docs/guides/developer-tools/sdk/examples/batch-ethereum-accounts)
-- [Thing IPFS Pinning](/docs/guides/developer-tools/sdk/examples/thing-ipfs-pinning)
-- [Find Existing Entities](/docs/guides/developer-tools/sdk/examples/find-existing-entities)
+See working examples in the SDK Examples section
 
 ## Next Steps
 
