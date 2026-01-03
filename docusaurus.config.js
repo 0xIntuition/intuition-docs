@@ -76,10 +76,13 @@ const plugins = [
           from: '/docs/introduction/why-intuition',
           to: '/docs/getting-started/why-intuition',
         },
+        // Quickstart page doesn't exist yet
+        /*
         {
           from: '/docs/quickstart/getting-started',
           to: '/docs/getting-started/quickstart',
         },
+        */
         {
           from: '/docs/quickstart/intuition-kits',
           to: '/docs/getting-started/intuition-kits',
@@ -207,32 +210,41 @@ const plugins = [
         */
 
         // ===== NETWORK REDIRECTS =====
-        // These pages do exist, so keep them
+        // Redirect from old /docs/network/node/* paths to new /docs/intuition-node/* paths
         {
-          from: '/docs/intuition-node/overview',
-          to: '/docs/network/node/overview',
+          from: '/docs/network/node/overview',
+          to: '/docs/intuition-node/overview',
         },
         {
-          from: '/docs/intuition-node/rust-backend',
-          to: '/docs/network/node/rust-backend',
+          from: '/docs/network/node/rust-backend',
+          to: '/docs/intuition-node/rust-backend',
         },
         {
-          from: '/docs/intuition-node/local-development-setup',
-          to: '/docs/network/node/local-setup',
+          from: '/docs/network/node/local-setup',
+          to: '/docs/intuition-node/local-setup',
         },
         {
-          from: '/docs/intuition-node/kubernetes-deployment',
-          to: '/docs/network/node/kubernetes',
+          from: '/docs/network/node/kubernetes',
+          to: '/docs/intuition-node/kubernetes',
         },
 
         // ===== INTEGRATIONS REDIRECTS =====
+        // Redirect old paths to experimental-applications/mcp-server which exists
         {
           from: '/docs/intuition-ai/index',
-          to: '/docs/integrations/ai/overview',
+          to: '/docs/experimental-applications/mcp-server',
         },
         {
           from: '/docs/intuition-ai/mcp-server',
-          to: '/docs/integrations/ai/mcp-server',
+          to: '/docs/experimental-applications/mcp-server',
+        },
+        {
+          from: '/docs/integrations/ai/overview',
+          to: '/docs/experimental-applications/mcp-server',
+        },
+        {
+          from: '/docs/integrations/ai/mcp-server',
+          to: '/docs/experimental-applications/mcp-server',
         },
       ],
       createRedirects: (path) => {
