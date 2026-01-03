@@ -1,0 +1,622 @@
+---
+id: data-populator
+title: Data Populator (Deprecated)
+sidebar_label: Data Populator (Deprecated)
+sidebar_position: 3
+description: Documentation for the Intuition Data Populator application
+---
+
+# Data Populator
+
+The **Intuition Data Populator** is a specialized tool designed to help users and developers efficiently populate the Intuition knowledge graph with high-quality, structured data. This application streamlines the process of creating atoms, triples, and establishing meaningful relationships within the decentralized knowledge network.
+
+## Why did we create the Data Populator?
+
+Do you have a large amount of data you want to add to the Intuition System, but not enough time or patience to manually create each data point as an atom or triple in the Portal? Look no further! The Data Populator V1 is here!
+
+## What it does, in brief
+
+You can use the Data Populator to load CSV files which contain long lists of atom data. The user interface will allow you to perform some basic proofreading of the data, and when you're ready you can submit it to the Intuition System in one fell swoop. This works by batching all of the atom data together into very large EVM transactions, after automatically pinning and filtering the metadata onto IPFS. This is very similar to the behavior in the Portal App, except it's designed to work with much larger volumes of data.
+
+## Where you can access it
+
+<div style={{ 
+  backgroundColor: 'var(--ifm-color-emphasis-100)', 
+  border: '1px solid var(--ifm-color-emphasis-300)', 
+  borderRadius: '8px', 
+  padding: '1.5rem', 
+  margin: '2rem 0',
+  borderLeft: '4px solid var(--ifm-color-primary)'
+}}>
+
+There are two deployments for the Data Populator - one for testing, which runs on Base Sepolia, and one for production which runs on Base.
+
+- **Testnet Data Populator**: [https://data-populator-dev.onrender.com](https://data-populator-dev.onrender.com)
+- **Mainnet Data Populator**: [https://upload.intuition.systems](https://upload.intuition.systems)
+
+It's strongly recommended, especially for first time users, to start off with the **Testnet** version to verify everything looks good with your data before spending real Base Ethereum on populating it.
+
+</div>
+
+## Overview
+
+<div style={{ 
+  backgroundColor: 'var(--ifm-color-emphasis-100)', 
+  border: '1px solid var(--ifm-color-emphasis-300)', 
+  borderRadius: '8px', 
+  padding: '1.5rem', 
+  margin: '2rem 0',
+  borderLeft: '4px solid var(--ifm-color-primary)'
+}}>
+
+The Data Populator serves as a bridge between traditional data sources and the Intuition ecosystem, enabling users to:
+
+- **Bulk import data** - Efficiently create multiple atoms and triples from structured datasets
+- **Validate data quality** - Ensure imported data meets Intuition's standards and requirements
+- **Establish relationships** - Create meaningful connections between imported entities
+- **Maintain data integrity** - Preserve the semantic structure and provenance of imported information
+
+</div>
+
+## Key Features
+
+<div style={{ 
+  display: 'grid', 
+  gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', 
+  gap: '1.5rem', 
+  margin: '2rem 0'
+}}>
+
+<div style={{ 
+  backgroundColor: 'var(--ifm-background-color)', 
+  border: '1px solid var(--ifm-color-emphasis-300)', 
+  borderRadius: '8px', 
+  padding: '1.5rem'
+}}>
+
+### 🔄 **Bulk Data Import**
+- Import large datasets in various formats (CSV, JSON, XML)
+- Automated atom and triple creation from structured data
+- Batch processing for efficient handling of large datasets
+- Progress tracking and error reporting
+
+</div>
+
+<div style={{ 
+  backgroundColor: 'var(--ifm-background-color)', 
+  border: '1px solid var(--ifm-color-emphasis-300)', 
+  borderRadius: '8px', 
+  padding: '1.5rem'
+}}>
+
+### ✅ **Data Validation**
+- Automatic validation of data structure and format
+- Quality checks for imported atoms and triples
+- Duplicate detection and resolution
+- Semantic consistency verification
+
+</div>
+
+<div style={{ 
+  backgroundColor: 'var(--ifm-background-color)', 
+  border: '1px solid var(--ifm-color-emphasis-300)', 
+  borderRadius: '8px', 
+  padding: '1.5rem'
+}}>
+
+### 🔗 **Relationship Mapping**
+- Automatic creation of triples based on imported relationships
+- Support for complex relationship structures
+- Mapping of traditional data schemas to Intuition's semantic model
+- Preservation of data provenance and metadata
+
+</div>
+
+<div style={{ 
+  backgroundColor: 'var(--ifm-background-color)', 
+  border: '1px solid var(--ifm-color-emphasis-300)', 
+  borderRadius: '8px', 
+  padding: '1.5rem'
+}}>
+
+### 🎯 **Quality Assurance**
+- Data quality scoring and reporting
+- Conflict resolution for conflicting claims
+- Automated tagging and categorization
+- Integration with Intuition's trust mechanisms
+
+</div>
+
+</div>
+
+## Use Cases
+
+<div style={{ 
+  display: 'grid', 
+  gridTemplateColumns: 'repeat(3, 1fr)', 
+  gap: '1.5rem', 
+  margin: '2rem 0'
+}}>
+
+<div style={{ 
+  backgroundColor: 'var(--ifm-background-color)', 
+  border: '1px solid var(--ifm-color-emphasis-300)', 
+  borderRadius: '8px', 
+  padding: '1.5rem'
+}}>
+
+### 🎓 **Academic Research**
+- Import research datasets and establish connections between findings
+- Create atoms for research entities, methodologies, and conclusions
+- Build knowledge graphs for specific research domains
+- Enable collaborative research through shared knowledge structures
+
+</div>
+
+<div style={{ 
+  backgroundColor: 'var(--ifm-background-color)', 
+  border: '1px solid var(--ifm-color-emphasis-300)', 
+  borderRadius: '8px', 
+  padding: '1.5rem'
+}}>
+
+### 💼 **Business Intelligence**
+- Import organizational data and establish entity relationships
+- Create comprehensive knowledge graphs for business domains
+- Enable data-driven decision making through structured insights
+- Facilitate cross-organizational knowledge sharing
+
+</div>
+
+<div style={{ 
+  backgroundColor: 'var(--ifm-background-color)', 
+  border: '1px solid var(--ifm-color-emphasis-300)', 
+  borderRadius: '8px', 
+  padding: '1.5rem'
+}}>
+
+### 📚 **Content Curation**
+- Import content from various sources and establish semantic relationships
+- Create comprehensive knowledge graphs for specific domains
+- Enable content discovery and recommendation systems
+- Build curated collections of related information
+
+</div>
+
+</div>
+
+## Instruction Guide
+
+### Authentication
+
+The first thing you will need to do, if you haven't already, is authenticate and log into the system. If you are not authenticated yet, you will be shown a **Connect** button. Click the connect button and authorize using your method of choice. Follow the prompts shown on screen to complete the log-in process.
+
+### User Interface Overview
+
+After logging in, you'll see the main interface with:
+
+- **Top menu bar**: Contains a helpful tooltip toggle button and a history button
+- **Version indicator**: Shows which version of the Data Populator app you're using (TESTNET or MAINNET)
+- **Four main tabs**: Select Atom Type, Load CSV, Publish Atoms, and Tag Atoms
+
+### Select Atom Type
+
+<div style={{ 
+  backgroundColor: 'var(--ifm-background-color)', 
+  border: '1px solid var(--ifm-color-emphasis-300)', 
+  borderRadius: '8px', 
+  padding: '1.5rem', 
+  margin: '1.5rem 0'
+}}>
+
+As of right now, you have 3 options here. Most users can stick with the default value of **Schema.org &lt;Thing&gt;** to create and tag basic metadata atoms. If you want to populate **CAIP-10** atoms or **Raw URI** atoms, you can select either option from the drop-down before pressing **Continue**.
+
+#### **Schema.org &lt;Thing&gt;**
+
+We currently support 1 type from schema.org, the **&lt;Thing&gt;**. Most of the atoms in the Intuition Portal are **&lt;Thing&gt;**s. The **&lt;Thing&gt;** has 6 fields:
+
+| Field | Description |
+|-------|-------------|
+| @context | This will always be [https://schema.org](https://schema.org/) - it's used to identify where the metadata type is defined |
+| @type | This will always be **&lt;Thing&gt;** - it's used to determine which metadata type is being used |
+| name | This is the name of your atom. This could be the name of an article, person, place, or thing |
+| description | A description of your atom. This is a more in-depth blob of text which helps people understand the thing being referenced |
+| image | A URL pointing to an image for your atom. This might point to a logo, a twitter avatar, or anything which visually demonstrates the thing being referenced |
+| url | A URL pointing to a website for your atom. This could be a social media profile, the website for a business, an article, or anything else on the web |
+
+#### **CAIP-10**
+
+A `CAIP-10` is a string of text which is used to reference smart contracts. `CAIP-10` atoms comprise of only one variable, the `CAIP-10` itself. The `CAIP-10` identifier is comprised of 4 `:` delimited values:
+
+`CAIP10` `:` `[NAMESPACE]` `:` `[CHAIN_ID]` `:` `[ADDRESS]`
+
+**Examples:**
+```
+# Ethereum mainnet (canonicalized with EIP-55 checksum)
+CAIP10:eip155:1:0xab16a96D359eC26a11e2C2b3d8f8B8942d5Bfcdb
+
+# Bitcoin mainnet
+CAIP10:bip122:000000000019d6689c085ae165831e93:128Lkh3S7CkDTBZ8W7BbpsN3YYizJMp8p6
+
+# Cosmos Hub
+CAIP10:cosmos:cosmoshub-3:cosmos1t2uflqwqe0fsj0shcfkrvpukewcw40yjj6hdc0
+```
+
+You can read more about the `CAIP-10` standard here: [https://chainagnostic.org/CAIPs/caip-10](https://chainagnostic.org/CAIPs/caip-10)
+
+#### **Raw URI**
+
+The `Intuition System` also uses `Raw URI`s. These cannot be proofread, and are for advanced users only. One example use case for these is the [https://schema.org/keywords](https://schema.org/keywords) `Raw URI`. The `Intuition Portal` uses this as a `Predicate` in `Semantic Triples` in order to denote that something has a `Tag Keyword`.
+
+</div>
+
+### Load CSV
+
+<div style={{ 
+  backgroundColor: 'var(--ifm-background-color)', 
+  border: '1px solid var(--ifm-color-emphasis-300)', 
+  borderRadius: '8px', 
+  padding: '1.5rem', 
+  margin: '1.5rem 0'
+}}>
+
+The `Load CSV` box allows you to load a `.csv` file from your PC which contains numerous `Atom`s. 
+
+#### **Schema.org &lt;Thing&gt; CSV Example:**
+
+```csv
+@context,@type,name,url,description,image
+https://schema.org,Thing,Google,https://www.google.com,"A website where you can search for stuff.",https://google.com/google_logo.jpg
+https://schema.org,Thing,Facebook,https://www.facebook.com,"A social media website.",https://facebook.com/facebook_logo.jpg
+```
+
+#### **CAIP-10 CSV Example:**
+
+```csv
+CAIP10
+eip155:1:0x1234567890abcdef1234567890aBcdef12345678
+eip155:1:0x1234567890abcfeF1234567890aBCDEf12345675
+eip155:1:0x1234567890aBcdeF1234567890AbcDef12345672
+```
+
+**Important Notes:**
+- The column order, capitalization, and naming is crucial - ensure it matches the specification before exporting
+- If there's anything weird going on with your `.csv` file, the Data Populator will show you a `Proofreading` window which flags any unusual characters or errors
+- The application will attempt to fix any errors on its own, and can automatically checksum Ethereum addresses
+
+</div>
+
+### Publish Atoms
+
+<div style={{ 
+  backgroundColor: 'var(--ifm-background-color)', 
+  border: '1px solid var(--ifm-color-emphasis-300)', 
+  borderRadius: '8px', 
+  padding: '1.5rem', 
+  margin: '1.5rem 0'
+}}>
+
+The `Publish Atoms` tab shows you some basic information about the `Atoms` you have loaded. Once you've reviewed them, you can select them and `publish` them using the `Publish Selected Atoms` button.
+
+**Publishing Process:**
+1. Select atoms using the checkbox on the left of their rows
+2. Press `Publish Selected Atoms`
+3. Confirm the transaction in the dialog
+4. Approve the EVM transaction in your wallet
+5. Wait for confirmation and see green "Atom Already Exists" icons
+
+</div>
+
+### Atoms View
+
+<div style={{ 
+  backgroundColor: 'var(--ifm-background-color)', 
+  border: '1px solid var(--ifm-color-emphasis-300)', 
+  borderRadius: '8px', 
+  padding: '1.5rem', 
+  margin: '1.5rem 0'
+}}>
+
+The `Atoms View` appears below all four tabs in the application, and displays the `Atoms` you currently have loaded. It has several features:
+
+- **Edit and Preview**: Cells can be selected and freely edited
+- **Sort Data**: Click on any column header to sort the data
+- **Duplicate Detection**: Identify partial duplicates before publishing
+- **Delete Rows**: Select unwanted rows and press `Delete Row`
+- **Save CSV**: Save a new copy to your PC after making edits
+- **Add New Row**: Manually enter atom data directly into the Data Populator
+
+</div>
+
+### Tag Atoms
+
+<div style={{ 
+  backgroundColor: 'var(--ifm-background-color)', 
+  border: '1px solid var(--ifm-color-emphasis-300)', 
+  borderRadius: '8px', 
+  padding: '1.5rem', 
+  margin: '1.5rem 0'
+}}>
+
+If you want to add your newly published `Atoms` to a `List`, you can use the `Tag Atoms` feature:
+
+1. **Create the Tag**: Fill out the tag metadata fields and press `Create Tag`
+2. **Publish Tag**: The tag will be published as another `Atom` in the system
+3. **Tag Selected Atoms**: Once the tag exists, press `Tag Selected Atoms` to associate your atoms with it
+
+**Important**: Be precise while entering metadata. Each `Atom's` uniqueness is determined by the exact contents of its data.
+
+</div>
+
+### History Window
+
+<div style={{ 
+  backgroundColor: 'var(--ifm-background-color)', 
+  border: '1px solid var(--ifm-color-emphasis-300)', 
+  borderRadius: '8px', 
+  padding: '1.5rem', 
+  margin: '1.5rem 0'
+}}>
+
+If you press the `View Your History` button near the top-right corner of the screen, a new window will appear showing:
+
+- History of all the `Atoms`, `Triples` (`Tags`), and `Requests` that you've submitted
+- Ability to `Save` `.csv` files that you've previously submitted
+- Helpful when working on multiple machines or collaborating with others
+
+</div>
+
+## Getting Started
+
+<div style={{ 
+  backgroundColor: 'var(--ifm-color-emphasis-100)', 
+  border: '1px solid var(--ifm-color-emphasis-300)', 
+  borderRadius: '8px', 
+  padding: '1.5rem', 
+  margin: '2rem 0',
+  borderLeft: '4px solid var(--ifm-color-primary)'
+}}>
+
+### **Prerequisites**
+- Access to the Intuition network
+- Structured data in supported formats
+- Understanding of Intuition's atom and triple concepts
+- Familiarity with the data you want to import
+
+### **Installation**
+The Data Populator is available as a web application and can be accessed through the Intuition ecosystem.
+
+</div>
+
+### **Basic Workflow**
+
+<div style={{ 
+  backgroundColor: 'var(--ifm-color-emphasis-50)', 
+  border: '1px solid var(--ifm-color-emphasis-200)', 
+  borderRadius: '6px', 
+  padding: '1rem', 
+  margin: '1rem 0'
+}}>
+
+1. **Prepare your data** - Ensure your data is in a supported format and properly structured
+2. **Validate data** - Use the built-in validation tools to check data quality
+3. **Map relationships** - Define how your data relationships should be represented as triples
+4. **Import data** - Execute the import process with appropriate settings
+5. **Review results** - Check the imported atoms and triples for accuracy
+6. **Iterate** - Refine your import process based on results
+
+</div>
+
+## Data Formats
+
+<div style={{ 
+  display: 'grid', 
+  gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', 
+  gap: '1.5rem', 
+  margin: '2rem 0'
+}}>
+
+<div style={{ 
+  backgroundColor: 'var(--ifm-background-color)', 
+  border: '1px solid var(--ifm-color-emphasis-300)', 
+  borderRadius: '8px', 
+  padding: '1.5rem'
+}}>
+
+### 📄 **Supported Formats**
+- **CSV** - Comma-separated values with headers
+- **JSON** - Structured JSON objects and arrays
+- **XML** - Extensible Markup Language documents
+- **Excel** - Microsoft Excel spreadsheets
+
+</div>
+
+<div style={{ 
+  backgroundColor: 'var(--ifm-background-color)', 
+  border: '1px solid var(--ifm-color-emphasis-300)', 
+  borderRadius: '8px', 
+  padding: '1.5rem'
+}}>
+
+### 📋 **Data Structure Requirements**
+- Clear entity identification
+- Relationship definitions
+- Metadata and provenance information
+- Quality indicators and confidence scores
+
+</div>
+
+</div>
+
+## Best Practices
+
+### Data Preparation
+- Clean and normalize your data before import
+- Ensure consistent naming conventions
+- Validate data quality and completeness
+- Document data sources and transformation processes
+
+### Relationship Mapping
+- Clearly define how traditional relationships map to triples
+- Consider the semantic meaning of relationships
+- Plan for relationship validation and verification
+- Account for relationship confidence and uncertainty
+
+### Quality Control
+- Implement comprehensive validation checks
+- Monitor import success rates and error patterns
+- Establish feedback loops for continuous improvement
+- Maintain data provenance and audit trails
+
+## Integration
+
+### With Intuition Portal
+- Imported data appears in the Portal for user interaction
+- Users can stake on imported atoms and triples
+- Integration with Portal's tagging and list features
+- Support for Portal's social features and user interactions
+
+### With Developer Tools
+- Programmatic access to imported data through APIs
+- Integration with custom applications and workflows
+- Support for automated data processing and analysis
+- Compatibility with Intuition's developer ecosystem
+
+## Advanced Features
+
+### Custom Mappings
+- Define custom mapping rules for complex data structures
+- Support for domain-specific ontologies and schemas
+- Flexible relationship mapping and transformation
+- Integration with external data sources and APIs
+
+### Automated Processing
+- Scheduled data imports and updates
+- Real-time data synchronization
+- Automated quality monitoring and reporting
+- Integration with external data pipelines
+
+### Analytics and Reporting
+- Import statistics and success rates
+- Data quality metrics and trends
+- Usage analytics and impact assessment
+- Performance monitoring and optimization
+
+## Development
+
+The Data Populator is part of the Intuition ecosystem and follows the same development principles:
+
+- **Open source** - Available for community contribution and improvement
+- **Modular design** - Flexible architecture for custom extensions
+- **API-first** - Programmatic access for integration with other tools
+- **Community-driven** - Development guided by user needs and feedback
+
+## Getting Help
+
+For support with the Data Populator:
+
+- Check the [Intuition documentation](/guides) for detailed guides
+- Visit the [GitHub repository](https://github.com/0xIntuition) for technical details
+- Join the [community discussions](https://discord.gg/RgBenkX4mx) for user support
+- Review the [API documentation](/guides/developer-tools) for integration help
+
+## Getting Started
+
+<div style={{ 
+  backgroundColor: 'var(--ifm-color-primary-lightest)', 
+  border: '1px solid var(--ifm-color-primary-light)', 
+  borderRadius: '8px', 
+  padding: '1.5rem', 
+  margin: '2rem 0',
+  textAlign: 'center'
+}}>
+
+### 🚀 **Ready to populate your data?**
+
+<div style={{ 
+  display: 'grid', 
+  gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', 
+  gap: '1rem', 
+  marginTop: '1rem'
+}}>
+
+<div style={{ 
+  border: '1px solid var(--ifm-color-primary-light)', 
+  borderRadius: '6px', 
+  padding: '1rem', 
+  backgroundColor: 'var(--ifm-background-color)'
+}}>
+
+**[Testnet Data Populator](https://data-populator-dev.onrender.com)** - Start here for testing
+
+</div>
+
+<div style={{ 
+  border: '1px solid var(--ifm-color-primary-light)', 
+  borderRadius: '6px', 
+  padding: '1rem', 
+  backgroundColor: 'var(--ifm-background-color)'
+}}>
+
+**[Mainnet Data Populator](https://upload.intuition.systems)** - Production environment
+
+</div>
+
+</div>
+
+</div>
+
+## Related Resources
+
+<div style={{ 
+  display: 'grid', 
+  gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', 
+  gap: '1rem', 
+  marginTop: '2rem'
+}}>
+
+<div style={{ 
+  border: '1px solid var(--ifm-color-emphasis-300)', 
+  borderRadius: '6px', 
+  padding: '1rem', 
+  backgroundColor: 'var(--ifm-background-color)'
+}}>
+
+**[Portal](/guides/network/testnet/portal)** - Main interface for interacting with the knowledge graph
+
+</div>
+
+<div style={{ 
+  border: '1px solid var(--ifm-color-emphasis-300)', 
+  borderRadius: '6px', 
+  padding: '1rem', 
+  backgroundColor: 'var(--ifm-background-color)'
+}}>
+
+**[Explorer](/guides/network/testnet/explorer)** - Network exploration and transaction monitoring
+
+</div>
+
+<div style={{ 
+  border: '1px solid var(--ifm-color-emphasis-300)', 
+  borderRadius: '6px', 
+  padding: '1rem', 
+  backgroundColor: 'var(--ifm-background-color)'
+}}>
+
+**[Developer Tools](/guides/developer-tools)** - Programmatic access and integration
+
+</div>
+
+<div style={{ 
+  border: '1px solid var(--ifm-color-emphasis-300)', 
+  borderRadius: '6px', 
+  padding: '1rem', 
+  backgroundColor: 'var(--ifm-background-color)'
+}}>
+
+**[API Documentation](/guides/developer-tools/graphql-api)** - Technical integration guides
+
+</div>
+
+</div> 

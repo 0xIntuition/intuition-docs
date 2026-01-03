@@ -19,20 +19,20 @@ Migrate comprehensive documentation from package READMEs into the Docusaurus sit
 **Goal**: Merge duplicate primitives sections into single authoritative reference
 
 **Files to Create**:
-- `docs/guides/core-concepts/primitives/overview.md` - Consolidated primitives overview
-- `docs/guides/core-concepts/primitives/atoms/fundamentals.md` - Atom fundamentals
-- `docs/guides/core-concepts/primitives/atoms/structuring.md` - Atom design patterns
-- `docs/guides/core-concepts/primitives/atoms/best-practices.md` - Atom usage guidelines
-- `docs/guides/core-concepts/primitives/triples/fundamentals.md` - Triple fundamentals
-- `docs/guides/core-concepts/primitives/triples/structuring.md` - Triple composition
-- `docs/guides/core-concepts/primitives/triples/nested-triples.md` - Advanced nested structures
-- `docs/guides/core-concepts/primitives/signals/fundamentals.md` - Signal mechanics
-- `docs/guides/core-concepts/primitives/signals/capturing.md` - Staking & deposits
-- `docs/guides/core-concepts/primitives/signals/rewards.md` - Fee & reward calculations
-- `docs/guides/core-concepts/economics/bonding-curves.md` - Curve mechanics
-- `docs/guides/core-concepts/economics/fees-rewards.md` - Fee structure
-- `docs/guides/core-concepts/trust-mechanisms/overview.md` - Trust attestation
-- `docs/guides/core-concepts/architecture/system-design.md` - Architecture
+- `docs/guides/concepts/primitives/overview.md` - Consolidated primitives overview
+- `docs/guides/concepts/primitives/atoms/fundamentals.md` - Atom fundamentals
+- `docs/guides/concepts/primitives/atoms/structuring.md` - Atom design patterns
+- `docs/guides/concepts/primitives/atoms/best-practices.md` - Atom usage guidelines
+- `docs/guides/concepts/primitives/triples/fundamentals.md` - Triple fundamentals
+- `docs/guides/concepts/primitives/triples/structuring.md` - Triple composition
+- `docs/guides/concepts/primitives/triples/nested-triples.md` - Advanced nested structures
+- `docs/guides/concepts/primitives/signals/fundamentals.md` - Signal mechanics
+- `docs/guides/concepts/primitives/signals/capturing.md` - Staking & deposits
+- `docs/guides/concepts/primitives/signals/rewards.md` - Fee & reward calculations
+- `docs/guides/concepts/economics/bonding-curves.md` - Curve mechanics
+- `docs/guides/concepts/economics/fees-rewards.md` - Fee structure
+- `docs/guides/concepts/trust-mechanisms/overview.md` - Trust attestation
+- `docs/guides/concepts/architecture/system-design.md` - Architecture
 
 **Source Content**:
 - Merge from: `docs/guides/introduction/the-primitives/` (2,749 lines)

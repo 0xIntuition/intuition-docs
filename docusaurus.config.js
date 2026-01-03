@@ -70,7 +70,7 @@ const plugins = [
         // Only include redirects for pages that exist
         {
           from: '/docs/introduction/overview',
-          to: '/docs/getting-started/overview',
+          to: '/docs',
         },
         {
           from: '/docs/introduction/why-intuition',
@@ -277,8 +277,8 @@ const config = {
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
-          path: 'docs/guides',
-          id: 'guides',
+          path: 'docs/_data',
+          id: '_data',
           routeBasePath: '/docs',
           ...defaultSettings,
         },
@@ -325,8 +325,8 @@ const config = {
         hideOnScroll: false,
         items: [
           {
-            label: 'Docs',
-            to: 'docs/introduction/overview',
+            label: 'Documentation',
+            to: 'docs',
             className: 'guides-top-header',
             position: 'left',
           },

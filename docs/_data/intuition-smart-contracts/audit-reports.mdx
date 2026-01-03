@@ -1,0 +1,79 @@
+---
+id: audit-reports
+title: Audit Reports
+sidebar_label: Audit Reports
+sidebar_position: 7
+description: Security audit reports for Intuition smart contracts
+---
+
+# Audit Reports
+
+## Overview
+
+This page contains security audit reports for Intuition smart contracts. All contracts undergo rigorous security assessments before deployment.
+
+## Latest Audit
+
+### Security Assessment (Summary Report) - March 28, 2024
+
+**Audit Scope**: The smart contracts audited can be found on the main branch in the repository: `intuition-tob-audit`
+
+{/* **Audit File**: [Intuition Smart Contracts Summary Report.pdf](Intuition-_Smart_Contracts-_Summary_Report.pdf) */}
+
+## Summary of Findings and Fixes
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Tabs>
+<TabItem value="high" label="High Severity" default>
+
+**No high severity issues found** ✅
+
+</TabItem>
+
+<TabItem value="medium" label="Medium Severity">
+
+| Issue | Status | Fix |
+|-------|--------|-----|
+| Protocol deposit fees unaccounted for in createAtom | ✅ Fixed | commit#edc4584 |
+| Triple identifiers can contain hash collisions | ✅ Fixed | PR#33 |
+| Atom equity should be calculated on raw asset amounts | ✅ Fixed | commit#028748d |
+| Distributing atom equity should not include protocol fees | ✅ Fixed | commit#028748d |
+| Asset accounting should not be reduced by minShare | ✅ Fixed | PR#36 |
+
+</TabItem>
+
+<TabItem value="low" label="Low Severity">
+
+| Issue | Status | Fix |
+|-------|--------|-----|
+| createAtomCompressed allows creating duplicate atoms with the same URI | ✅ Fixed | commit#4d0b2ba from PR#30 |
+| Upgrade could lead to mismatch in atom wallet address prediction | ✅ Fixed | PR#38 |
+| createAtom mints sharesForZeroAddress twice | ✅ Fixed | commit#edc4584 |
+| EthMultiVault should not receive ether donations | ✅ Fixed | PR#24 |
+| Atom wallets can be created before the atom is created | ✅ Fixed | PR#29 |
+| Atom URI data is unbounded | ✅ Fixed | PR#32 |
+
+</TabItem>
+
+<TabItem value="informational" label="Informational Issues">
+
+| Issue | Status | Fix |
+|-------|--------|-----|
+| Salt contains superfluous address(this) | ✅ Fixed | PR#27 |
+| Unbound storage reads in getVaultStates | ✅ Fixed | PR#25 |
+| EthMultiVault is missing ERC-4626 functionality | 📝 Addressed in comments | - |
+| Redundant and ineffective reinitialization check | ✅ Fixed | PR#28 |
+| Impossible condition | ✅ Fixed | PR#26 |
+| Distributing atom equity should not mint new shares to receiver | ✅ Fixed | PR#39 |
+| getVaultStates does not retrieve counter vaults | ✅ Fixed | PR#25 |
+| Excessive duplicate code | ✅ Fixed | PR#30 |
+| Admin can bypass fee setter limits | ✅ Fixed | PR#34 |
+| Minting ghost shares is unnecessary to prevent share inflation attacks | 🗑️ Removed from report | - |
+| Code Quality | ✅ Fixed | PR#40 and PR#41 |
+| [Weak Maturity] Decentralization | ✅ Fixed | PR#42 and PR#45 |
+| [Weak Maturity] Arithmetic | 📝 Addressed in comments | - |
+
+</TabItem>
+</Tabs>

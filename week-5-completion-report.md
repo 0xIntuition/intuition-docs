@@ -38,9 +38,9 @@ Week 5 successfully completed all cleanup and polish tasks for the Intuition Doc
 
 - `docs/guides/quickstart/getting-started.md`
   - Updated 3 broken links to primitives pages:
-    - `/docs/primitives/atoms` → `/docs/guides/core-concepts/primitives/atoms/fundamentals`
-    - `/docs/primitives/triples` → `/docs/guides/core-concepts/primitives/triples/fundamentals`
-    - `/docs/primitives/signals` → `/docs/guides/core-concepts/primitives/signals/fundamentals`
+    - `/docs/primitives/atoms` → `/docs/guides/concepts/primitives/atoms/fundamentals`
+    - `/docs/primitives/triples` → `/docs/guides/concepts/primitives/triples/fundamentals`
+    - `/docs/primitives/signals` → `/docs/guides/concepts/primitives/signals/fundamentals`
   - Fixed contract architecture link:
     - `/docs/developer-tools/contracts/contract-architecture` → `/docs/guides/developer-tools/contracts/overview`
 
@@ -220,9 +220,9 @@ keywords: [atom, create, sdk, intuition]
 ### Broken Links Fixed
 
 **Links Fixed**:
-1. ✅ `/docs/primitives/atoms` → `/docs/guides/core-concepts/primitives/atoms/fundamentals`
-2. ✅ `/docs/primitives/triples` → `/docs/guides/core-concepts/primitives/triples/fundamentals`
-3. ✅ `/docs/primitives/signals` → `/docs/guides/core-concepts/primitives/signals/fundamentals`
+1. ✅ `/docs/primitives/atoms` → `/docs/guides/concepts/primitives/atoms/fundamentals`
+2. ✅ `/docs/primitives/triples` → `/docs/guides/concepts/primitives/triples/fundamentals`
+3. ✅ `/docs/primitives/signals` → `/docs/guides/concepts/primitives/signals/fundamentals`
 4. ✅ `/docs/developer-tools/contracts/contract-architecture` → `/docs/guides/developer-tools/contracts/overview`
 5. ✅ `configuration#networks--configuration` → `configuration#network-configuration` (anchor fixed)
 

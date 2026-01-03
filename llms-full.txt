@@ -3221,10 +3221,10 @@ The core smart contract has been upgraded from `EthMultiVault` to `MultiVault`, 
 
 | Package                 | Previous Version | New Version     |
 | ----------------------- | ---------------- | --------------- |
-| `@0xintuition/protocol` | `1.0.0-alpha.1`  | `2.0.0-alpha.2` |
-| `@0xintuition/sdk`      | `1.0.0-alpha.3`  | `2.0.0-alpha.2` |
-| `@0xintuition/graphql`  | `1.0.0-alpha.3`  | `2.0.0-alpha.2` |
-| `@0xintuition/cli`      | `0.0.2`          | `2.0.0-alpha.2` |
+| `@0xintuition/protocol` | `1.0.0-alpha.1`  | `2.0.0` |
+| `@0xintuition/sdk`      | `1.0.0-alpha.3`  | `2.0.0` |
+| `@0xintuition/graphql`  | `1.0.0-alpha.3`  | `2.0.0` |
+| `@0xintuition/cli`      | `0.0.2`          | `2.0.0` |
 
 ## 1. Contract Migration Impact
 
@@ -4200,7 +4200,7 @@ bun test
 
 - [NPMJS/Intuition](https://www.npmjs.com/package/@0xintuition/sdk)
 - [Github Repo](https://github.com/0xIntuition/intuition-ts/tree/main/packages/sdk)
-- [Intuition Discord](https://discord.gg/intuition)
+- [Intuition Discord](https://discord.gg/RgBenkX4mx)
 
 ## Contributing
 
@@ -4302,7 +4302,7 @@ Glossary • Concepts • Definitions
 
 # 
 
-Source: https://docs.intuition.systems/guides/introduction/overview
+Source: https://docs.intuition.systems/docs/getting-started/overview
 
 
 # Overview
@@ -7841,7 +7841,7 @@ For support with the Data Populator:
 
 - Check the [Intuition documentation](/guides) for detailed guides
 - Visit the [GitHub repository](https://github.com/0xIntuition) for technical details
-- Join the [community discussions](https://discord.gg/intuition) for user support
+- Join the [community discussions](https://discord.gg/RgBenkX4mx) for user support
 - Review the [API documentation](/guides/developer-tools) for integration help
 
 ## Getting Started
@@ -9784,9 +9784,9 @@ Get started building with Intuition in minutes. This guide provides direct code 
 
 :::info Version Compatibility
 This guide uses the v2 contract architecture and requires the following package versions:
-- [`@0xintuition/sdk@^2.0.0-alpha.2`](https://www.npmjs.com/package/@0xintuition/sdk)
-- [`@0xintuition/protocol@^2.0.0-alpha.2`](https://www.npmjs.com/package/@0xintuition/protocol)
-- [`@0xintuition/graphql@^2.0.0-alpha.2`](https://www.npmjs.com/package/@0xintuition/graphql)
+- [`@0xintuition/sdk@latest`](https://www.npmjs.com/package/@0xintuition/sdk)
+- [`@0xintuition/protocol@latest`](https://www.npmjs.com/package/@0xintuition/protocol)
+- [`@0xintuition/graphql@latest`](https://www.npmjs.com/package/@0xintuition/graphql)
 :::
 
 ## Prerequisites
@@ -10302,7 +10302,7 @@ The protocol uses atomic primitives (atoms, triples, signals, and bonding curves
 ### How do I get started with Intuition?
 
 **Step 1: Read the Documentation**  
-Start with the [Introduction](/docs/introduction) and [Overview](/docs/introduction/overview) guides to understand the core concepts.
+Start with the [Introduction](/docs/introduction) and [Overview](/docs/getting-started/overview) guides to understand the core concepts.
 
 **Step 2: Connect to Testnet**  
 Visit the [Intuition Hub](/docs/hub) to access the testnet and get your development environment set up.
