@@ -9,7 +9,7 @@ description: Create and interact with atoms, triples, and vaults using the Proto
 
 This guide shows how to create and interact with atoms, triples, and vaults using the Protocol package (low-level contract interactions).
 
-**For conceptual understanding:** [Primitives Overview](/docs/guides/concepts/primitives)
+**For conceptual understanding:** [Primitives Overview](/docs/intuition-concepts)
 
 ## Creating Atoms
 
@@ -45,7 +45,7 @@ const tx = await multiVaultCreateAtoms({
 console.log('Atom created:', tx.atomIds[0])
 ```
 
-**See also:** [Atoms Concept](/docs/guides/concepts/primitives/atoms)
+**See also:** [Atoms Concept](/docs/docs/intuition-concepts/atoms)
 
 ## Creating Triples
 
@@ -70,7 +70,7 @@ const tx = await multiVaultCreateTriples({
 console.log('Triple created:', tx.tripleIds[0])
 ```
 
-**See also:** [Triples Concept](/docs/guides/concepts/primitives/triples)
+**See also:** [Triples Concept](/docs/docs/intuition-concepts/triples)
 
 ## Vault Operations
 
@@ -123,7 +123,7 @@ console.log('Total shares:', vaultDetails.totalShares)
 console.log('Share price:', vaultDetails.currentSharePrice)
 ```
 
-**See also:** [Signals Concept](/docs/guides/concepts/primitives/signals)
+**See also:** [Signals Concept](/docs/docs/intuition-concepts/signals)
 
 ## Batch Operations
 
@@ -190,16 +190,16 @@ publicClient.watchContractEvent({
 ## Examples
 
 See complete examples:
-- [Protocol Examples](/docs/guides/developer-tools/protocol/examples)
+- [Protocol Examples](/docs/docs/protocol/examples)
 
 ## SDK Alternative
 
 For a higher-level API with React hooks, see:
-- [SDK Atoms Guide](/docs/guides/developer-tools/sdk/atoms-guide)
-- [SDK Triples Guide](/docs/guides/developer-tools/sdk/triples-guide)
-- [SDK Vaults Guide](/docs/guides/developer-tools/sdk/vaults-guide)
+- [SDK Atoms Guide](/docs/docs/intuition-sdk/atoms-guide)
+- [SDK Triples Guide](/docs/docs/intuition-sdk/triples-guide)
+- [SDK Vaults Guide](/docs/docs/intuition-sdk/vaults-guide)
 
 ## API Reference
 
 Full API documentation:
-- [MultiVault API Reference](/docs/guides/developer-tools/protocol/api-reference/multivault)
+- [MultiVault API Reference](/docs/docs/protocol/api-reference/multivault)

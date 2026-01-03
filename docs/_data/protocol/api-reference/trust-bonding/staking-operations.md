@@ -18,7 +18,7 @@ The Trust Bonding contract primarily tracks utilization and distributes rewards.
 
 Trust Bonding rewards are earned through:
 
-1. **Depositing to vaults** via [multiVaultDeposit](/docs/guides/developer-tools/protocol/api-reference/multivault/vaults#multivaultdeposit)
+1. **Depositing to vaults** via [multiVaultDeposit](/docs/docs/protocol/api-reference/multivault/vaults#multivaultdeposit)
 2. **Vault utilization** tracked by the protocol
 3. **Epoch-based rewards** calculated from utilization
 
@@ -69,6 +69,6 @@ console.log('Claimable rewards:', formatEther(claimable))
 
 ## See Also
 
-- [Vault Operations](/docs/guides/developer-tools/protocol/api-reference/multivault/vaults)
-- [Trust Bonding Rewards](/docs/guides/developer-tools/protocol/api-reference/trust-bonding/rewards)
-- [Examples: Trust Bonding](/docs/guides/developer-tools/protocol/examples/trust-bonding)
+- [Vault Operations](/docs/docs/protocol/api-reference/multivault/vaults)
+- [Trust Bonding Rewards](/docs/docs/protocol/api-reference/trust-bonding/rewards)
+- [Examples: Trust Bonding](/docs/docs/protocol/examples/trust-bonding)

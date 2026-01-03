@@ -110,9 +110,9 @@ The GraphQL API enables a wide range of applications:
 
 ## Next Steps
 
-- [Client Setup](/docs/guides/developer-tools/graphql-api/getting-started/client-setup) - Configure a GraphQL client in your preferred language
-- [Schema Reference](/docs/guides/developer-tools/graphql-api/getting-started/schema-reference) - Learn about schema features and introspection
-- [Query Patterns](/docs/guides/developer-tools/graphql-api/queries/atoms/single-atom) - Explore common query patterns
+- [Client Setup](/docs/docs/graphql-api/getting-started/client-setup) - Configure a GraphQL client in your preferred language
+- [Schema Reference](/docs/docs/graphql-api/getting-started/schema-reference) - Learn about schema features and introspection
+- [Query Patterns](/docs/docs/graphql-api/queries/atoms/single-atom) - Explore common query patterns
 
 ## Resources
 

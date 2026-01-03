@@ -205,5 +205,5 @@ console.log('- Atom warden:', configs.walletConfig.atomWarden)
 
 ## See Also
 
-- [Configuration Guide](/docs/guides/developer-tools/protocol/getting-started/configuration)
-- [Fee Calculations](/docs/guides/developer-tools/protocol/api-reference/multivault/fees)
+- [Configuration Guide](/docs/docs/protocol/getting-started/configuration)
+- [Fee Calculations](/docs/docs/protocol/api-reference/multivault/fees)

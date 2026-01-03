@@ -1053,9 +1053,9 @@ console.log('Rankings:', rankings)
 
 You've built a complete curated list system! Explore:
 
-1. **[Reputation System](/docs/guides/tutorials/reputation-system)** - Combine with reputation
-2. **[Fraud Detection](/docs/guides/tutorials/fraud-detection)** - Use for safety lists
-3. **[Nested Triples](/docs/guides/tutorials/advanced/nested-triples)** - Advanced list logic
+1. **[Reputation System](/docs/docs/tutorials/reputation-system)** - Combine with reputation
+2. **[Fraud Detection](/docs/docs/tutorials/fraud-detection)** - Use for safety lists
+3. **[Nested Triples](/docs/docs/tutorials/advanced/nested-triples)** - Advanced list logic
 
 ## Example Repository
 
@@ -1068,8 +1068,8 @@ npm run dev
 
 ## Resources
 
-- [SDK Overview](/docs/guides/developer-tools/sdk/overview)
-- [GraphQL API](/docs/guides/developer-tools/graphql-api/overview)
+- [SDK Overview](/docs/docs/intuition-sdk/overview)
+- [GraphQL API](/docs/docs/graphql-api/overview)
 - [Community Discord](https://discord.gg/RgBenkX4mx)
 
 ---

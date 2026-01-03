@@ -7,7 +7,7 @@ description: Deposit, redeem, and query vaults using the SDK
 
 # Working with Vaults
 
-**Conceptual overview:** [Signals Fundamentals](/docs/guides/concepts/primitives/signals/fundamentals)
+**Conceptual overview:** [Signals Fundamentals](/docs/docs/intuition-concepts/signals/fundamentals)
 
 Vaults enable staking on atoms and triples through bonding curve-based share pricing. This guide covers deposits, redemptions, queries, and preview operations.
 
@@ -718,6 +718,6 @@ See working examples in the SDK Examples section
 
 ## Next Steps
 
-- [Search and Discovery](/docs/guides/developer-tools/sdk/search-guide) - Find atoms and triples
-- [SDK Integrations](/docs/guides/developer-tools/sdk/integrations/react) - Use with React
-- [Protocol Reference](/docs/guides/developer-tools/protocol/api-reference/multivault/vaults) - Low-level vault operations
+- [Search and Discovery](/docs/docs/intuition-sdk/search-guide) - Find atoms and triples
+- [SDK Integrations](/docs/docs/intuition-sdk/integrations/react) - Use with React
+- [Protocol Reference](/docs/docs/protocol/api-reference/multivault/vaults) - Low-level vault operations

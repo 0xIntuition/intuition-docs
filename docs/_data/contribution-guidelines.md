@@ -1,7 +1,11 @@
 ---
-sidebar_position: 15
+title: Contribution Guidelines
 sidebar_label: 🤝 Contribution Guidelines
+sidebar_position: 15
+description: Guidelines for contributing to Intuition projects across all repositories including intuition-ts, intuition-rs, intuition-mcp-server, and intuition-contracts-v2
+keywords: [contributing, contribution, development, open source, github, pull request, code of conduct]
 ---
+
 
 # Contribution Guidelines
 

@@ -194,6 +194,6 @@ console.log('Vault fee comparison:', vaultComparison)
 
 ## See Also
 
-- [Fee Calculations API](/docs/guides/developer-tools/protocol/api-reference/multivault/fees)
-- [Configuration](/docs/guides/developer-tools/protocol/api-reference/multivault/configuration)
-- [Vault Operations](/docs/guides/developer-tools/protocol/api-reference/multivault/vaults)
+- [Fee Calculations API](/docs/docs/protocol/api-reference/multivault/fees)
+- [Configuration](/docs/docs/protocol/api-reference/multivault/configuration)
+- [Vault Operations](/docs/docs/protocol/api-reference/multivault/vaults)

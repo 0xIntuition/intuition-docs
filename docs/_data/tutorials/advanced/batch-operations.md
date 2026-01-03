@@ -25,9 +25,9 @@ This tutorial will cover:
 
 See these resources:
 
-- [SDK Documentation](/docs/guides/developer-tools/sdk/getting-started)
-- [Protocol API Reference](/docs/guides/developer-tools/protocol/api-reference)
-- [Performance Best Practices](/docs/guides/developer-tools/sdk/best-practices)
+- [SDK Documentation](/docs/docs/intuition-sdk/getting-started)
+- [Protocol API Reference](/docs/docs/protocol/api-reference)
+- [Performance Best Practices](/docs/docs/intuition-sdk/best-practices)
 
 ## Quick Example
 

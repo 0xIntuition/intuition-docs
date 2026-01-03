@@ -81,6 +81,6 @@ console.log('Max redeemable:', formatEther(maxShares))
 
 ## See Also
 
-- [Trust Bonding Balances](/docs/guides/developer-tools/protocol/api-reference/trust-bonding/balances)
-- [Vault Queries](/docs/guides/developer-tools/protocol/api-reference/multivault/vault-queries)
-- [Share Conversions](/docs/guides/developer-tools/protocol/api-reference/multivault/conversions)
+- [Trust Bonding Balances](/docs/docs/protocol/api-reference/trust-bonding/balances)
+- [Vault Queries](/docs/docs/protocol/api-reference/multivault/vault-queries)
+- [Share Conversions](/docs/docs/protocol/api-reference/multivault/conversions)

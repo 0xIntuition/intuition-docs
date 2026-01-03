@@ -200,9 +200,9 @@ const query = `
 
 ## Related Patterns
 
-- [Single Atom](/docs/guides/developer-tools/graphql-api/queries/atoms/single-atom) - Basic atom query
-- [Vault Details](/docs/guides/developer-tools/graphql-api/queries/vaults/vault-details) - Detailed vault queries
-- [User Positions](/docs/guides/developer-tools/graphql-api/queries/vaults/user-positions) - Query user positions
+- [Single Atom](/docs/docs/graphql-api/queries/atoms/single-atom) - Basic atom query
+- [Vault Details](/docs/docs/graphql-api/queries/vaults/vault-details) - Detailed vault queries
+- [User Positions](/docs/docs/graphql-api/queries/vaults/user-positions) - Query user positions
 
 ## Best Practices
 

@@ -884,9 +884,9 @@ console.log('Safety:', safety.status)
 
 Explore more:
 
-1. **[Curated Lists](/docs/guides/tutorials/curated-lists)** - Trusted contract registries
-2. **[Reputation System](/docs/guides/tutorials/reputation-system)** - Expert reputation
-3. **[Oracle Integration](/docs/guides/tutorials/advanced/oracle-integration)** - Use in smart contracts
+1. **[Curated Lists](/docs/docs/tutorials/curated-lists)** - Trusted contract registries
+2. **[Reputation System](/docs/docs/tutorials/reputation-system)** - Expert reputation
+3. **[Oracle Integration](/docs/docs/tutorials/advanced/oracle-integration)** - Use in smart contracts
 
 ## Example Repository
 
@@ -896,8 +896,8 @@ git clone https://github.com/0xIntuition/fraud-detection-example
 
 ## Resources
 
-- [SDK Documentation](/docs/guides/developer-tools/sdk/getting-started)
-- [GraphQL API](/docs/guides/developer-tools/graphql-api/overview)
+- [SDK Documentation](/docs/docs/intuition-sdk/getting-started)
+- [GraphQL API](/docs/docs/graphql-api/overview)
 - [Discord Community](https://discord.gg/RgBenkX4mx)
 
 ---

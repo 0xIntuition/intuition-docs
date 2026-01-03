@@ -190,13 +190,13 @@ The Protocol package is ideal when you need:
 - **Event parsing**: Extract detailed event data from transactions
 - **Custom workflows**: Build your own higher-level abstractions
 
-For simpler, more user-friendly interactions, consider using the [SDK Package](/docs/guides/developer-tools/sdk/overview) which provides higher-level abstractions including IPFS pinning, JSON-LD support, and simplified APIs.
+For simpler, more user-friendly interactions, consider using the [SDK Package](/docs/docs/intuition-sdk/overview) which provides higher-level abstractions including IPFS pinning, JSON-LD support, and simplified APIs.
 
 ## Next Steps
 
-- [Configuration Guide](/docs/guides/developer-tools/protocol/getting-started/configuration) - Set up clients and networks
-- [API Reference](/docs/guides/developer-tools/protocol/api-reference/multivault/atoms) - Explore all available functions
-- [Examples](/docs/guides/developer-tools/protocol/examples/creating-atoms-triples) - See complete workflows
+- [Configuration Guide](/docs/docs/protocol/getting-started/configuration) - Set up clients and networks
+- [API Reference](/docs/docs/protocol/api-reference/multivault/atoms) - Explore all available functions
+- [Examples](/docs/docs/protocol/examples/creating-atoms-triples) - See complete workflows
 
 ## Resources
 
@@ -206,6 +206,6 @@ For simpler, more user-friendly interactions, consider using the [SDK Package](/
 
 ## See Also
 
-- [SDK Package](/docs/guides/developer-tools/sdk/overview) - Higher-level API with IPFS and JSON-LD support
-- [GraphQL API](/docs/guides/developer-tools/graphql-api/overview) - Query protocol data efficiently
-- [Primitives Overview](/docs/guides/concepts/primitives/overview) - Understand atoms, triples, and signals
+- [SDK Package](/docs/docs/intuition-sdk/overview) - Higher-level API with IPFS and JSON-LD support
+- [GraphQL API](/docs/docs/graphql-api/overview) - Query protocol data efficiently
+- [Primitives Overview](/docs/docs/intuition-concepts/overview) - Understand atoms, triples, and signals

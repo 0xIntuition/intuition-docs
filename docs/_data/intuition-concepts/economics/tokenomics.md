@@ -90,6 +90,6 @@ For comprehensive information about $TRUST tokenomics:
 
 ## Next Steps
 
-- [Bonding Curves](/docs/guides/concepts/economics/bonding-curves) - Understand how $TRUST pricing works
-- [Fees & Rewards](/docs/guides/concepts/economics/fees-and-rewards) - Learn how rewards are distributed
-- [Incentive Design](/docs/guides/concepts/economics/incentive-design) - Explore economic incentive mechanisms
+- [Bonding Curves](/docs/intuition-concepts/economics/bonding-curves) - Understand how $TRUST pricing works
+- [Fees & Rewards](/docs/intuition-concepts/economics/fees-and-rewards) - Learn how rewards are distributed
+- [Incentive Design](/docs/intuition-concepts/economics/incentive-design) - Explore economic incentive mechanisms

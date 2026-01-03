@@ -2,8 +2,10 @@
 title: Introduction
 sidebar_label: Introduction
 sidebar_position: 0
-description: Introduction to Intuition
+description: Introduction to Intuition - the decentralized protocol for building the world's first open, semantic, and token-curated knowledge graph
+keywords: [intuition, introduction, knowledge graph, attestations, decentralized, semantic web, trust protocol, atoms, triples, signals]
 ---
+
 
 **Intuition is a decentralized protocol for building the world's first open, semantic, and token-curated knowledge graph.** It provides the infrastructure for verifiable attestations, portable identity, and trustful interactions at scale—creating a universal data layer that enables information to flow freely across applications, blockchains, and AI agents.
 
@@ -74,6 +76,13 @@ Whether you're building applications, contributing data, or exploring the knowle
 - [Developer Tools](/docs/developer-tools) — Explore SDKs, APIs, and integration guides
 - [Network](/docs/network) — Learn about the Intuition Network architecture
 - [Economics](/docs/economics) — Understand the cryptoeconomic incentive model
+
+## For AI Agents
+
+Intuition documentation is optimized for AI agent access:
+- [llms.txt](/llms.txt) — Concise documentation index for LLM consumption
+- [llms-full.txt](/llms-full.txt) — Complete documentation in LLM-friendly format
+
 ---
 **Intuition transforms information from passive data into programmable, verifiable, and valuable attestations—building the trust layer for the decentralized web.**
 

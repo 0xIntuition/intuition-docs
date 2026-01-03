@@ -70,6 +70,6 @@ const bondingEvents = await eventParse(
 
 ## See Also
 
-- [Atom Events](/docs/guides/developer-tools/protocol/events/atom-events)
-- [Vault Events](/docs/guides/developer-tools/protocol/events/vault-events)
-- [Examples: Event Parsing](/docs/guides/developer-tools/protocol/examples/event-parsing)
+- [Atom Events](/docs/docs/protocol/events/atom-events)
+- [Vault Events](/docs/docs/protocol/events/vault-events)
+- [Examples: Event Parsing](/docs/docs/protocol/examples/event-parsing)

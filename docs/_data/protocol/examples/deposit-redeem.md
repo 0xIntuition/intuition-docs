@@ -192,6 +192,6 @@ await performCycle()
 
 ## See Also
 
-- [Vault Operations](/docs/guides/developer-tools/protocol/api-reference/multivault/vaults)
-- [Share Conversions](/docs/guides/developer-tools/protocol/api-reference/multivault/conversions)
-- [Core Concepts: Vaults](/docs/guides/developer-tools/protocol/core-concepts/vaults)
+- [Vault Operations](/docs/docs/protocol/api-reference/multivault/vaults)
+- [Share Conversions](/docs/docs/protocol/api-reference/multivault/conversions)
+- [Core Concepts: Vaults](/docs/docs/protocol/core-concepts/vaults)

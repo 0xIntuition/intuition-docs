@@ -15,26 +15,26 @@ For now, see our comprehensive manual API documentation:
 
 Complete TypeScript SDK documentation:
 
-- **[SDK Examples](/docs/guides/developer-tools/sdk/examples)** - Code examples and patterns
-- **[Atoms Guide](/docs/guides/developer-tools/sdk/atoms-guide)** - Working with atoms
-- **[Triples Guide](/docs/guides/developer-tools/sdk/triples-guide)** - Working with triples
-- **[Vaults Guide](/docs/guides/developer-tools/sdk/vaults-guide)** - Vault operations
+- **[SDK Examples](/docs/docs/intuition-sdk/examples)** - Code examples and patterns
+- **[Atoms Guide](/docs/docs/intuition-sdk/atoms-guide)** - Working with atoms
+- **[Triples Guide](/docs/docs/intuition-sdk/triples-guide)** - Working with triples
+- **[Vaults Guide](/docs/docs/intuition-sdk/vaults-guide)** - Vault operations
 
 ## Protocol API
 
 Smart contract API reference:
 
-- **[MultiVault API](/docs/guides/developer-tools/protocol/api-reference/multivault)** - Core protocol contracts
-- **[Events Reference](/docs/guides/developer-tools/protocol/api-reference/events)** - Contract events
-- **[Protocol API Reference](/docs/guides/developer-tools/protocol/api-reference)** - Full protocol reference
+- **[MultiVault API](/docs/docs/protocol/api-reference/multivault)** - Core protocol contracts
+- **[Events Reference](/docs/docs/protocol/api-reference/events)** - Contract events
+- **[Protocol API Reference](/docs/docs/protocol/api-reference)** - Full protocol reference
 
 ## GraphQL API
 
 Query the knowledge graph:
 
-- **[GraphQL API](/docs/guides/developer-tools/graphql-api)** - GraphQL documentation
-- **[Query Examples](/docs/guides/developer-tools/graphql-api/usage-examples)** - Common queries
-- **[Quickstart](/docs/guides/developer-tools/graphql-api/getting-started/quickstart)** - Getting started
+- **[GraphQL API](/docs/graphql-api)** - GraphQL documentation
+- **[Query Examples](/docs/docs/graphql-api/usage-examples)** - Common queries
+- **[Quickstart](/docs/docs/graphql-api/getting-started/quickstart)** - Getting started
 
 ## External Documentation
 
@@ -63,6 +63,6 @@ We're working on:
 
 ## Need Help?
 
-- **[Tutorials](/docs/guides/tutorials)** - Step-by-step guides
-- **[Community Support](/docs/guides/resources/community)** - Get help
+- **[Tutorials](/docs/tutorials)** - Step-by-step guides
+- **[Community Support](/docs/docs/resources/community)** - Get help
 - **[Discord](https://discord.gg/RgBenkX4mx)** - Ask questions

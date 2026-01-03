@@ -1013,9 +1013,9 @@ console.log('Accuracy:', record.accuracy)
 
 Explore more:
 
-1. **[Reputation System](/docs/guides/tutorials/reputation-system)** - Track forecaster expertise
-2. **[Curated Lists](/docs/guides/tutorials/curated-lists)** - Top forecasters
-3. **[Fraud Detection](/docs/guides/tutorials/fraud-detection)** - Verify event outcomes
+1. **[Reputation System](/docs/docs/tutorials/reputation-system)** - Track forecaster expertise
+2. **[Curated Lists](/docs/docs/tutorials/curated-lists)** - Top forecasters
+3. **[Fraud Detection](/docs/docs/tutorials/fraud-detection)** - Verify event outcomes
 
 ## Example Repository
 
@@ -1025,8 +1025,8 @@ git clone https://github.com/0xIntuition/prediction-market-example
 
 ## Resources
 
-- [SDK Documentation](/docs/guides/developer-tools/sdk/getting-started)
-- [GraphQL API](/docs/guides/developer-tools/graphql-api/overview)
+- [SDK Documentation](/docs/docs/intuition-sdk/getting-started)
+- [GraphQL API](/docs/docs/graphql-api/overview)
 - [Discord Community](https://discord.gg/RgBenkX4mx)
 
 ---

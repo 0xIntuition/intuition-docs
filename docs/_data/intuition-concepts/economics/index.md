@@ -137,7 +137,7 @@ Forward-looking value assessment ensures durable contributions
 
 Explore the specific mechanisms that power Intuition's economics:
 
-- [Tokenomics](/docs/guides/concepts/economics/tokenomics) - Deep dive into $TRUST token distribution and utility
-- [Bonding Curves](/docs/guides/concepts/economics/bonding-curves) - How dynamic pricing creates markets for knowledge
-- [Fees & Rewards](/docs/guides/concepts/economics/fees-and-rewards) - Understanding the fee structure and reward mechanisms
-- [Incentive Design](/docs/guides/concepts/economics/incentive-design) - How economics drive consensus and reduce fragmentation
+- [Tokenomics](/docs/intuition-concepts/economics/tokenomics) - Deep dive into $TRUST token distribution and utility
+- [Bonding Curves](/docs/intuition-concepts/economics/bonding-curves) - How dynamic pricing creates markets for knowledge
+- [Fees & Rewards](/docs/intuition-concepts/economics/fees-and-rewards) - Understanding the fee structure and reward mechanisms
+- [Incentive Design](/docs/intuition-concepts/economics/incentive-design) - How economics drive consensus and reduce fragmentation

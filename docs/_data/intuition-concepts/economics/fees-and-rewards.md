@@ -183,6 +183,6 @@ Economic integration achieves:
 
 ## Next Steps
 
-- [Bonding Curves](/docs/guides/concepts/economics/bonding-curves) - Understand pricing mechanics
-- [Tokenomics](/docs/guides/concepts/economics/tokenomics) - Learn about $TRUST token
-- [Incentive Design](/docs/guides/concepts/economics/incentive-design) - How economics drive consensus
+- [Bonding Curves](/docs/intuition-concepts/economics/bonding-curves) - Understand pricing mechanics
+- [Tokenomics](/docs/intuition-concepts/economics/tokenomics) - Learn about $TRUST token
+- [Incentive Design](/docs/intuition-concepts/economics/incentive-design) - How economics drive consensus

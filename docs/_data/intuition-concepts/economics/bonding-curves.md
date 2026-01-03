@@ -170,6 +170,6 @@ Pricing automatically reflects the value of underlying assets, ensuring market m
 
 ## Next Steps
 
-- [Fees & Rewards](/docs/guides/concepts/economics/fees-and-rewards) - Understanding the fee structure
-- [Tokenomics](/docs/guides/concepts/economics/tokenomics) - Learn about $TRUST token utility
-- [Incentive Design](/docs/guides/concepts/economics/incentive-design) - How economics drive consensus
+- [Fees & Rewards](/docs/intuition-concepts/economics/fees-and-rewards) - Understanding the fee structure
+- [Tokenomics](/docs/intuition-concepts/economics/tokenomics) - Learn about $TRUST token utility
+- [Incentive Design](/docs/intuition-concepts/economics/incentive-design) - How economics drive consensus

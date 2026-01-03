@@ -287,7 +287,7 @@ const claimFrame = {
 ### Documentation
 
 - [Farcaster Frames Documentation](https://docs.farcaster.xyz/developers/frames)
-- [Intuition API Documentation](/guides/developer-tools/graphql-api)
+- [Intuition API Documentation](/docs/graphql-api)
 - [Frame SDK Documentation](https://github.com/0xIntuition/intuition-frame)
 
 ### Tools and SDKs
@@ -306,9 +306,9 @@ const claimFrame = {
 
 ## Related Resources
 
-- [Portal](/guides/network/testnet/portal) - Main web interface for Intuition
-- [MetaMask Snap](/guides/network/testnet/metamask-snap) - MetaMask integration
-- [Browser Extension](/guides/network/testnet/browser-extension) - Chrome extension
-- [Developer Tools](/guides/developer-tools) - Programmatic access
-- [API Documentation](/guides/developer-tools/graphql-api) - Technical guides
+- [Portal](/docs/intuition-network/testnet/portal) - Main web interface for Intuition
+- [MetaMask Snap](/docs/intuition-network/testnet/metamask-snap) - MetaMask integration
+- [Browser Extension](/docs/intuition-network/testnet/browser-extension) - Chrome extension
+- [Developer Tools](/docs/developer-tools) - Programmatic access
+- [API Documentation](/docs/graphql-api) - Technical guides
 - [Community](https://discord.gg/0xintuition) - Join the Intuition community

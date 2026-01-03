@@ -12,7 +12,7 @@ Creating triples in the Intuition protocol involves establishing relationships b
 
 ## Prerequisites
 
-This implementation guide assumes that you've completed the setup steps in the [Overview](/guides/developer-tools/interactions/overview) guide and have existing atoms to work with.
+This implementation guide assumes that you've completed the setup steps in the [Overview](/docs/interaction-guide/overview) guide and have existing atoms to work with.
 
 ## Implementation
 
@@ -123,7 +123,7 @@ For users who believe the triple is false. Deposits here signal disagreement.
 
 After creating triples, explore:
 
-- [Deposit & Return](/guides/developer-tools/interactions/deposit-return) - Manage vault deposits and withdrawals
-- [Retrieve Vault Details](/guides/developer-tools/interactions/retrieve-vault-details) - Get comprehensive vault information
+- [Deposit & Return](/docs/interaction-guide/deposit-return) - Manage vault deposits and withdrawals
+- [Retrieve Vault Details](/docs/interaction-guide/retrieve-vault-details) - Get comprehensive vault information
 
 For a full reference implementation, see the [Intuition TypeScript SDK](https://github.com/0xIntuition/intuition-ts). 

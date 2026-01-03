@@ -24,9 +24,9 @@ This tutorial will cover:
 
 See these resources to learn about nested triples:
 
-- [Triples Fundamentals](/docs/guides/concepts/primitives/triples/fundamentals)
-- [Nested Triples Concept](/docs/guides/concepts/primitives/triples/nested-triples)
-- [SDK Documentation](/docs/guides/developer-tools/sdk/getting-started)
+- [Triples Fundamentals](/docs/docs/intuition-concepts/triples/fundamentals)
+- [Nested Triples Concept](/docs/docs/intuition-concepts/triples/nested-triples)
+- [SDK Documentation](/docs/docs/intuition-sdk/getting-started)
 
 ## Simple Example
 

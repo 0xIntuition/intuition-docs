@@ -1,7 +1,7 @@
 ---
 title: Integrations
-sidebar_label: Overview
-sidebar_position: 1
+sidebar_label: Integrations
+sidebar_position: 10
 description: Integrate Intuition with various platforms and tools
 ---
 
@@ -87,17 +87,17 @@ Have an integration idea? We'd love to hear from you!
 
 Intuition's open architecture makes it easy to build custom integrations:
 
-1. **[SDK Overview](/docs/guides/developer-tools/sdk/overview)** - Start with the TypeScript SDK
-2. **[Protocol Overview](/docs/guides/developer-tools/protocol/overview)** - Direct smart contract integration
-3. **[GraphQL API](/docs/guides/developer-tools/graphql-api/overview)** - Query the knowledge graph
+1. **[SDK Overview](/docs/docs/intuition-sdk/overview)** - Start with the TypeScript SDK
+2. **[Protocol Overview](/docs/docs/protocol/overview)** - Direct smart contract integration
+3. **[GraphQL API](/docs/docs/graphql-api/overview)** - Query the knowledge graph
 
 ## Examples
 
 See these integration patterns:
 
-- **[Atoms Guide](/docs/guides/developer-tools/sdk/atoms-guide)** - Working with atoms
-- **[Triples Guide](/docs/guides/developer-tools/sdk/triples-guide)** - Creating attestations
-- **[Vaults Guide](/docs/guides/developer-tools/sdk/vaults-guide)** - Vault operations
+- **[Atoms Guide](/docs/docs/intuition-sdk/atoms-guide)** - Working with atoms
+- **[Triples Guide](/docs/docs/intuition-sdk/triples-guide)** - Creating attestations
+- **[Vaults Guide](/docs/docs/intuition-sdk/vaults-guide)** - Vault operations
 
 ## Stay Updated
 

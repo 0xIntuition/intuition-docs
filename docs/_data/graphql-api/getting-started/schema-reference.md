@@ -411,6 +411,6 @@ Use the schema with code generation tools:
 
 ## Next Steps
 
-- [Query Atoms](/docs/guides/developer-tools/graphql-api/queries/atoms/single-atom) - Learn atom query patterns
-- [Query Triples](/docs/guides/developer-tools/graphql-api/queries/triples/single-triple) - Learn triple query patterns
-- [Best Practices](/docs/guides/developer-tools/graphql-api/best-practices/request-only-needed) - Optimize your queries
+- [Query Atoms](/docs/docs/graphql-api/queries/atoms/single-atom) - Learn atom query patterns
+- [Query Triples](/docs/docs/graphql-api/queries/triples/single-triple) - Learn triple query patterns
+- [Best Practices](/docs/docs/graphql-api/best-practices/request-only-needed) - Optimize your queries

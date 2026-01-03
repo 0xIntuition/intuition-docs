@@ -1,10 +1,11 @@
 ---
-id: portal
-title: Portal
+title: Portal (Explorer) Guide
 sidebar_label: 🧠 Portal (Explorer) Guide
-sidebar_position: 7
-description: Documentation for the Intuition Portal application
+sidebar_position: 11
+description: Documentation for the Intuition Portal application - create identities, make claims, stake, and explore the knowledge graph
+keywords: [portal, explorer, identities, claims, atoms, triples, staking, vault, tags, lists]
 ---
+
 
 # The Intuition Portal
 
@@ -303,7 +304,7 @@ Visit **[portal.intuition.systems](https://portal.intuition.systems)** to start 
   backgroundColor: 'var(--ifm-background-color)'
 }}>
 
-**[Explorer](/guides/network/testnet/explorer)** - Network exploration tools
+**[Explorer](/docs/intuition-network/testnet/explorer)** - Network exploration tools
 
 </div>
 
@@ -314,7 +315,7 @@ Visit **[portal.intuition.systems](https://portal.intuition.systems)** to start 
   backgroundColor: 'var(--ifm-background-color)'
 }}>
 
-**[Bridge](/guides/network/testnet/bridge)** - Cross-chain functionality
+**[Bridge](/docs/intuition-network/testnet/bridge)** - Cross-chain functionality
 
 </div>
 
@@ -325,7 +326,7 @@ Visit **[portal.intuition.systems](https://portal.intuition.systems)** to start 
   backgroundColor: 'var(--ifm-background-color)'
 }}>
 
-**[RPC](/guides/network/testnet/rpc)** - Network connectivity options
+**[RPC](/docs/intuition-network/testnet/rpc)** - Network connectivity options
 
 </div>
 

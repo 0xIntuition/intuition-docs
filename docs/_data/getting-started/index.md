@@ -1,10 +1,11 @@
 ---
-id: use-cases
 title: Use Cases
 sidebar_label: Use Cases
 sidebar_position: 1
-description: Discover how to build amazing applications with Intuition's decentralized knowledge graph
+description: Discover how to build amazing applications with Intuition's decentralized knowledge graph - from list curation to verification and fraud protection
+keywords: [use cases, applications, list curation, verification, fraud detection, social platforms, reputation, oracles, prediction markets]
 ---
+
 
 ![Use Cases](/img/use-cases.png)
 

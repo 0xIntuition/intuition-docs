@@ -287,8 +287,8 @@ The MetaMask Snap is open source and welcomes contributions:
 
 ## Related Resources
 
-- [Portal](/guides/network/testnet/portal) - Main web interface for Intuition
-- [Browser Extension](/guides/network/testnet/browser-extension) - Chrome extension for web browsing
-- [Developer Tools](/guides/developer-tools) - Programmatic access and integration
-- [API Documentation](/guides/developer-tools/graphql-api) - Technical integration guides
+- [Portal](/docs/intuition-network/testnet/portal) - Main web interface for Intuition
+- [Browser Extension](/docs/intuition-network/testnet/browser-extension) - Chrome extension for web browsing
+- [Developer Tools](/docs/developer-tools) - Programmatic access and integration
+- [API Documentation](/docs/graphql-api) - Technical integration guides
 - [Community](https://discord.gg/0xintuition) - Join the Intuition community

@@ -3,7 +3,9 @@ title: Choose Your Path
 sidebar_label: Choose Your Path
 sidebar_position: 3
 description: Find the best way to get started with Intuition based on your goals
+keywords: [getting started, quick start, decision tree, sdk, graphql, protocol, tutorials, developer tools]
 ---
+
 
 # Choose Your Path
 
@@ -18,7 +20,7 @@ Not sure where to start? Pick the path that matches your goal.
 - Best for: Web apps, dashboards, social platforms
 - Abstracts complexity
 - React integration ready
-- **Start here:** [SDK Quick Start](/docs/guides/developer-tools/sdk/getting-started/quick-start)
+- **Start here:** [SDK Quick Start](/docs/docs/intuition-sdk/getting-started/quick-start)
 
 ### Query Data Only (No Writes)
 
@@ -27,7 +29,7 @@ Not sure where to start? Pick the path that matches your goal.
 - Best for: Analytics, dashboards, data visualization
 - No wallet needed for reads
 - Powerful filtering and aggregation
-- **Start here:** [GraphQL Setup](/docs/guides/developer-tools/graphql-api/getting-started/client-setup)
+- **Start here:** [GraphQL Setup](/docs/docs/graphql-api/getting-started/client-setup)
 
 ### Build Smart Contract Integration
 
@@ -36,7 +38,7 @@ Not sure where to start? Pick the path that matches your goal.
 - Best for: Other smart contracts, custom logic, gas optimization
 - Direct contract calls
 - Full control
-- **Start here:** [Protocol Configuration](/docs/guides/developer-tools/protocol/getting-started/configuration)
+- **Start here:** [Protocol Configuration](/docs/docs/protocol/getting-started/configuration)
 
 ### Understand the System First
 
@@ -45,7 +47,7 @@ Not sure where to start? Pick the path that matches your goal.
 - Atoms, Triples, Signals
 - Economics and incentives
 - Architecture
-- **Start here:** [Primitives Overview](/docs/guides/concepts/primitives/overview)
+- **Start here:** [Primitives Overview](/docs/docs/intuition-concepts/overview)
 
 ### See Complete Examples
 
@@ -54,7 +56,7 @@ Not sure where to start? Pick the path that matches your goal.
 - Reputation system
 - Curated lists
 - Social attestations
-- **Start here:** [Tutorials](/docs/guides/tutorials/overview)
+- **Start here:** [Tutorials](/docs/docs/tutorials/overview)
 
 ## Decision Tree
 
@@ -94,6 +96,6 @@ Join our [Discord](https://discord.gg/RgBenkX4mx) and ask the community!
 Once you've chosen your path:
 
 1. Follow the quick start guide for your chosen tool
-2. Read through the [Core Concepts](/docs/guides/concepts/primitives/overview)
-3. Try a [Tutorial](/docs/guides/tutorials/overview)
-4. Join the [Community](/docs/guides/resources/community-and-support)
+2. Read through the [Core Concepts](/docs/docs/intuition-concepts/overview)
+3. Try a [Tutorial](/docs/docs/tutorials/overview)
+4. Join the [Community](/docs/docs/resources/community-and-support)

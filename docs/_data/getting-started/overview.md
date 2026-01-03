@@ -1,9 +1,11 @@
 ---
-title: Where to Start
-sidebar_label: Where to Start
+title: Developer Stack Overview
+sidebar_label: Developer Stack Overview
 sidebar_position: 1
 description: Choose the right tool for building with Intuition
+keywords: [developer tools, sdk, protocol, graphql, smart contracts, getting started, comparison]
 ---
+
 
 # Developer Tools
 
@@ -19,7 +21,7 @@ High-level TypeScript SDK with React integration.
 - Need React hooks
 - Prefer abstraction over low-level control
 
-**[→ SDK Overview](/docs/guides/developer-tools/sdk/getting-started/quick-start)**
+**[→ SDK Overview](/docs/docs/intuition-sdk/getting-started/quick-start)**
 
 ## Protocol Package
 
@@ -31,7 +33,7 @@ Low-level contract interactions for advanced use cases.
 - Optimizing gas costs
 - Building on Solidity
 
-**[→ Protocol Overview](/docs/guides/developer-tools/protocol/getting-started/overview)**
+**[→ Protocol Overview](/docs/docs/protocol/getting-started/overview)**
 
 ## GraphQL API
 
@@ -43,7 +45,7 @@ Query the knowledge graph with GraphQL.
 - Data visualization
 - No wallet needed for reads
 
-**[→ GraphQL Overview](/docs/guides/developer-tools/graphql-api/overview)**
+**[→ GraphQL Overview](/docs/docs/graphql-api/overview)**
 
 ## Smart Contracts
 
@@ -55,7 +57,7 @@ Direct contract interactions and ABIs.
 - Verifying on-chain data
 - Auditing contracts
 
-**[→ Contracts Overview](/docs/guides/developer-tools/contracts/overview)**
+**[→ Contracts Overview](/docs/intuition-smart-contracts)**
 
 ## Comparison
 

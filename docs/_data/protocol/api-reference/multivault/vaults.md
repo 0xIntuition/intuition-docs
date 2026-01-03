@@ -255,5 +255,5 @@ const data = multiVaultRedeemBatchEncode(
 
 ## See Also
 
-- [Core Concepts: Vaults](/docs/guides/developer-tools/protocol/core-concepts/vaults)
-- [Examples: Deposit & Redeem](/docs/guides/developer-tools/protocol/examples/deposit-redeem)
+- [Core Concepts: Vaults](/docs/docs/protocol/core-concepts/vaults)
+- [Examples: Deposit & Redeem](/docs/docs/protocol/examples/deposit-redeem)

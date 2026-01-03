@@ -33,9 +33,9 @@ This tutorial will cover:
 
 See these resources:
 
-- [Protocol Smart Contracts](/docs/guides/developer-tools/protocol/getting-started)
-- [Multivault Contract API](/docs/guides/developer-tools/protocol/api-reference)
-- [Solidity Integration Guide](/docs/guides/developer-tools/protocol/solidity-integration)
+- [Protocol Smart Contracts](/docs/docs/protocol/getting-started)
+- [Multivault Contract API](/docs/docs/protocol/api-reference)
+- [Solidity Integration Guide](/docs/docs/protocol/solidity-integration)
 
 ## Quick Example
 

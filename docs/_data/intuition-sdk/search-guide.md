@@ -534,6 +534,6 @@ See working examples in the SDK Examples section
 
 ## Next Steps
 
-- [Working with Atoms](/docs/guides/developer-tools/sdk/atoms-guide) - Create and manage atoms
-- [Working with Triples](/docs/guides/developer-tools/sdk/triples-guide) - Build relationships
-- [SDK Integrations](/docs/guides/developer-tools/sdk/integrations/react) - Use with React
+- [Working with Atoms](/docs/docs/intuition-sdk/atoms-guide) - Create and manage atoms
+- [Working with Triples](/docs/docs/intuition-sdk/triples-guide) - Build relationships
+- [SDK Integrations](/docs/docs/intuition-sdk/integrations/react) - Use with React

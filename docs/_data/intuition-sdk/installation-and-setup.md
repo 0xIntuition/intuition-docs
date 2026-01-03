@@ -481,5 +481,5 @@ npm install
 ## See Also
 
 - [Viem Documentation](https://viem.sh)
-- [Protocol Package](/docs/guides/developer-tools/protocol/getting-started/overview) - Low-level contract interactions
-- [GraphQL API](/docs/guides/developer-tools/graphql-api/overview) - Query protocol data
+- [Protocol Package](/docs/docs/protocol/getting-started/overview) - Low-level contract interactions
+- [GraphQL API](/docs/docs/graphql-api/overview) - Query protocol data

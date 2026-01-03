@@ -166,6 +166,6 @@ event FeeTransfer(uint256 indexed vaultId, address indexed recipient, uint256 am
 
 ## Next Steps
 
-- [Protocol Overview](/docs/guides/developer-tools/protocol/overview) - Detailed contract documentation
-- [SDK Overview](/docs/guides/developer-tools/sdk/overview) - Using the SDK
-- [GraphQL API](/docs/guides/developer-tools/graphql-api/overview) - Querying the system
+- [Protocol Overview](/docs/docs/protocol/overview) - Detailed contract documentation
+- [SDK Overview](/docs/docs/intuition-sdk/overview) - Using the SDK
+- [GraphQL API](/docs/docs/graphql-api/overview) - Querying the system

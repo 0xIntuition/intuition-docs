@@ -94,7 +94,7 @@ try {
 
 - [multiVaultGetAtomCost](#multivaultgetatomcost) - Get atom creation cost
 - [multiVaultPreviewAtomCreate](#multivaultpreviewatomcreate) - Preview atom creation
-- [eventParseAtomCreated](/docs/guides/developer-tools/protocol/events/atom-events#eventparseatomcreated) - Parse creation events
+- [eventParseAtomCreated](/docs/docs/protocol/events/atom-events#eventparseatomcreated) - Parse creation events
 
 ### Common Use Cases
 
@@ -170,7 +170,7 @@ try {
 ### Related Functions
 
 - [multiVaultCreateAtoms](#multivaultcreateatoms) - Create atoms
-- [multiVaultIsTermCreated](/docs/guides/developer-tools/protocol/api-reference/multivault/vault-queries#multivaultistermcreated) - Check if atom exists
+- [multiVaultIsTermCreated](/docs/docs/protocol/api-reference/multivault/vault-queries#multivaultistermcreated) - Check if atom exists
 
 ### Common Use Cases
 
@@ -234,7 +234,7 @@ try {
 ### Related Functions
 
 - [multiVaultCreateAtoms](#multivaultcreateatoms) - Create atoms with this cost
-- [multiVaultGetAtomConfig](/docs/guides/developer-tools/protocol/api-reference/multivault/configuration#multivaultgetatomconfig) - Get detailed atom configuration
+- [multiVaultGetAtomConfig](/docs/docs/protocol/api-reference/multivault/configuration#multivaultgetatomconfig) - Get detailed atom configuration
 
 ### Common Use Cases
 
@@ -313,7 +313,7 @@ try {
 ### Related Functions
 
 - [multiVaultCreateAtoms](#multivaultcreateatoms) - Execute atom creation
-- [multiVaultEntryFeeAmount](/docs/guides/developer-tools/protocol/api-reference/multivault/fees#multivaultentryfeeamount) - Calculate entry fees
+- [multiVaultEntryFeeAmount](/docs/docs/protocol/api-reference/multivault/fees#multivaultentryfeeamount) - Calculate entry fees
 
 ### Common Use Cases
 
@@ -387,7 +387,7 @@ try {
 ### Related Functions
 
 - [multiVaultCreateAtoms](#multivaultcreateatoms) - Higher-level creation function
-- [multiVaultDepositEncode](/docs/guides/developer-tools/protocol/api-reference/multivault/vaults#multivaultdepositencode) - Encode deposit calls
+- [multiVaultDepositEncode](/docs/docs/protocol/api-reference/multivault/vaults#multivaultdepositencode) - Encode deposit calls
 
 ### Common Use Cases
 
@@ -399,6 +399,6 @@ try {
 
 ## See Also
 
-- [Core Concepts: Atoms](/docs/guides/developer-tools/protocol/core-concepts/atoms)
-- [Atom Events](/docs/guides/developer-tools/protocol/events/atom-events)
-- [Examples: Creating Atoms](/docs/guides/developer-tools/protocol/examples/creating-atoms-triples)
+- [Core Concepts: Atoms](/docs/docs/protocol/core-concepts/atoms)
+- [Atom Events](/docs/docs/protocol/events/atom-events)
+- [Examples: Creating Atoms](/docs/docs/protocol/examples/creating-atoms-triples)

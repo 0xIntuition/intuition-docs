@@ -1,10 +1,11 @@
 ---
-id: why-intuition
 title: Why Intuition?
 sidebar_label: Why Intuition?
 sidebar_position: 2
 description: Understanding the trust crisis Intuition addresses and our mission to rebuild the internet's trust architecture
+keywords: [why intuition, trust layer, information finance, attestations, semantic web, data ownership, digital sovereignty, knowledge graph]
 ---
+
 
 # Why Intuition?
 

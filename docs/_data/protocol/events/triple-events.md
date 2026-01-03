@@ -90,5 +90,5 @@ events.forEach((event) => {
 
 ## See Also
 
-- [Atom Events](/docs/guides/developer-tools/protocol/events/atom-events)
-- [Vault Events](/docs/guides/developer-tools/protocol/events/vault-events)
+- [Atom Events](/docs/docs/protocol/events/atom-events)
+- [Vault Events](/docs/docs/protocol/events/vault-events)

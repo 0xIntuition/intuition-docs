@@ -279,6 +279,6 @@ const hash = await walletClient.sendTransaction(tx)
 
 ## See Also
 
-- [Core Concepts: Triples](/docs/guides/developer-tools/protocol/core-concepts/triples)
-- [Triple Events](/docs/guides/developer-tools/protocol/events/triple-events)
-- [Examples: Creating Triples](/docs/guides/developer-tools/protocol/examples/creating-atoms-triples)
+- [Core Concepts: Triples](/docs/docs/protocol/core-concepts/triples)
+- [Triple Events](/docs/docs/protocol/events/triple-events)
+- [Examples: Creating Triples](/docs/docs/protocol/examples/creating-atoms-triples)

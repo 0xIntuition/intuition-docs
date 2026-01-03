@@ -112,7 +112,7 @@ Data in the Intuition protocol is represented as atoms and triples. As a develop
 
 Atoms are the foundational building blocks of Intuition's knowledge graph – the words in our global dictionary. Think of Intuition as a vast, collaborative dictionary where anyone can create a new word, and each word has its own globally persistent, unique digital identifier that can be used to reference it across the entire internet!
 
-[Learn more about Atoms →](/docs/guides/concepts/primitives/atoms/fundamentals)
+[Learn more about Atoms →](/docs/docs/intuition-concepts/atoms/fundamentals)
 
 ### Create an Atom from a String
 
@@ -256,7 +256,7 @@ console.log('On-chain atom:', atomOnChain)
 
 If Atoms are the words in Intuition's global dictionary, Triples are the sentences we create from those words. A Triple connects three Atoms to assert a relationship or fact in the form **[Subject] – [Predicate] – [Object]**. You can string these sentences together to express any arbitrarily-complex concept, all while retaining a discrete, referenceable structure!
 
-[Learn more about Triples →](/docs/guides/concepts/primitives/triples/fundamentals)
+[Learn more about Triples →](/docs/docs/intuition-concepts/triples/fundamentals)
 
 ```typescript
 import { createAtomFromString, createTripleStatement } from '@0xintuition/sdk'
@@ -297,7 +297,7 @@ console.log('Triple created:', triple.transactionHash)
 
 Signals represent the trust, confidence, or relevance that the community assigns to Atoms and Triples in the Intuition knowledge graph. Think of the knowledge graph as a weighted graph where Signal is the weight on each node (Atom) or edge (Triple), indicating how strongly people believe in or care about this information.
 
-[Learn more about Signals →](/docs/guides/concepts/primitives/signals/fundamentals)
+[Learn more about Signals →](/docs/docs/intuition-concepts/signals/fundamentals)
 
 ### Deposit (Signal Support)
 
@@ -513,14 +513,14 @@ Now that you know the basics, explore what you can build:
 
 ## Next Steps
 
-- **[Build Your First App](/docs/guides/getting-started/first-app)** - Complete tutorial for a full application
-- **[Network Configuration](/docs/guides/getting-started/network-configuration)** - Detailed network setup
-- **[Explore the SDK](/docs/guides/developer-tools/sdk/overview)** - Deep dive into SDK capabilities
-- **[Smart Contracts](/docs/guides/developer-tools/protocol/overview)** - Contract architecture and ABIs
-- **[GraphQL API](/docs/guides/developer-tools/graphql-api/overview)** - Query the knowledge graph
-- **[Join the Community](/docs/guides/resources/community-and-support)** - Get help and share ideas
+- **[Build Your First App](/docs/docs/getting-started/first-app)** - Complete tutorial for a full application
+- **[Network Configuration](/docs/docs/getting-started/network-configuration)** - Detailed network setup
+- **[Explore the SDK](/docs/docs/intuition-sdk/overview)** - Deep dive into SDK capabilities
+- **[Smart Contracts](/docs/docs/protocol/overview)** - Contract architecture and ABIs
+- **[GraphQL API](/docs/docs/graphql-api/overview)** - Query the knowledge graph
+- **[Join the Community](/docs/docs/resources/community-and-support)** - Get help and share ideas
 
 
 :::tip Not sure which tool to use?
-Check out [Choose Your Path](/docs/guides/getting-started/choose-your-path) to find the best starting point for your project.
+Check out [Choose Your Path](/docs/docs/getting-started/choose-your-path) to find the best starting point for your project.
 :::

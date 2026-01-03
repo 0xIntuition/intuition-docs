@@ -119,6 +119,6 @@ console.log('Deposits:', depositEvents.map(e => formatEther(e.args.assets)))
 
 ## See Also
 
-- [Triple Events](/docs/guides/developer-tools/protocol/events/triple-events)
-- [Vault Events](/docs/guides/developer-tools/protocol/events/vault-events)
-- [Examples: Event Parsing](/docs/guides/developer-tools/protocol/examples/event-parsing)
+- [Triple Events](/docs/docs/protocol/events/triple-events)
+- [Vault Events](/docs/docs/protocol/events/vault-events)
+- [Examples: Event Parsing](/docs/docs/protocol/examples/event-parsing)

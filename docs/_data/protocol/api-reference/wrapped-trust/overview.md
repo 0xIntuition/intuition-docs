@@ -187,4 +187,4 @@ console.log('Unwrapped:', unwrapTx)
 
 ## See Also
 
-- [Configuration](/docs/guides/developer-tools/protocol/getting-started/configuration)
+- [Configuration](/docs/docs/protocol/getting-started/configuration)

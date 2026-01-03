@@ -402,6 +402,6 @@ export const config = {
 
 ## Next Steps
 
-- [Core Concepts: Atoms](/docs/guides/developer-tools/protocol/core-concepts/atoms) - Learn about atoms
-- [API Reference: MultiVault](/docs/guides/developer-tools/protocol/api-reference/multivault/atoms) - Explore available functions
-- [Examples](/docs/guides/developer-tools/protocol/examples/creating-atoms-triples) - See complete workflows
+- [Core Concepts: Atoms](/docs/docs/protocol/core-concepts/atoms) - Learn about atoms
+- [API Reference: MultiVault](/docs/docs/protocol/api-reference/multivault/atoms) - Explore available functions
+- [Examples](/docs/docs/protocol/examples/creating-atoms-triples) - See complete workflows

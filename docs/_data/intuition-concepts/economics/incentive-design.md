@@ -136,6 +136,6 @@ This economic framework ensures sustainable growth while maintaining the platfor
 
 ## Next Steps
 
-- [Tokenomics](/docs/guides/concepts/economics/tokenomics) - Understand $TRUST token utility
-- [Bonding Curves](/docs/guides/concepts/economics/bonding-curves) - Learn about dynamic pricing
-- [Fees & Rewards](/docs/guides/concepts/economics/fees-and-rewards) - See how rewards flow
+- [Tokenomics](/docs/intuition-concepts/economics/tokenomics) - Understand $TRUST token utility
+- [Bonding Curves](/docs/intuition-concepts/economics/bonding-curves) - Learn about dynamic pricing
+- [Fees & Rewards](/docs/intuition-concepts/economics/fees-and-rewards) - See how rewards flow

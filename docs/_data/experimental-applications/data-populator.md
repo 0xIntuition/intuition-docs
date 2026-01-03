@@ -518,7 +518,7 @@ For support with the Data Populator:
 - Check the [Intuition documentation](/guides) for detailed guides
 - Visit the [GitHub repository](https://github.com/0xIntuition) for technical details
 - Join the [community discussions](https://discord.gg/RgBenkX4mx) for user support
-- Review the [API documentation](/guides/developer-tools) for integration help
+- Review the [API documentation](/docs/developer-tools) for integration help
 
 ## Getting Started
 
@@ -582,7 +582,7 @@ For support with the Data Populator:
   backgroundColor: 'var(--ifm-background-color)'
 }}>
 
-**[Portal](/guides/network/testnet/portal)** - Main interface for interacting with the knowledge graph
+**[Portal](/docs/intuition-network/testnet/portal)** - Main interface for interacting with the knowledge graph
 
 </div>
 
@@ -593,7 +593,7 @@ For support with the Data Populator:
   backgroundColor: 'var(--ifm-background-color)'
 }}>
 
-**[Explorer](/guides/network/testnet/explorer)** - Network exploration and transaction monitoring
+**[Explorer](/docs/intuition-network/testnet/explorer)** - Network exploration and transaction monitoring
 
 </div>
 
@@ -604,7 +604,7 @@ For support with the Data Populator:
   backgroundColor: 'var(--ifm-background-color)'
 }}>
 
-**[Developer Tools](/guides/developer-tools)** - Programmatic access and integration
+**[Developer Tools](/docs/developer-tools)** - Programmatic access and integration
 
 </div>
 
@@ -615,7 +615,7 @@ For support with the Data Populator:
   backgroundColor: 'var(--ifm-background-color)'
 }}>
 
-**[API Documentation](/guides/developer-tools/graphql-api)** - Technical integration guides
+**[API Documentation](/docs/graphql-api)** - Technical integration guides
 
 </div>
 

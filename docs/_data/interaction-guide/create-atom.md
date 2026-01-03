@@ -12,7 +12,7 @@ Creating atoms in the Intuition protocol involves interacting with the EthMultiV
 
 ## Prerequisites
 
-This implementation guide assumes that you've completed the setup steps in the [Overview](/guides/developer-tools/interactions/overview) guide. Steps for creating the `createMultivaultContract` and the `publicClient` referenced in this implementation example can be found in the overview.
+This implementation guide assumes that you've completed the setup steps in the [Overview](/docs/interaction-guide/overview) guide. Steps for creating the `createMultivaultContract` and the `publicClient` referenced in this implementation example can be found in the overview.
 
 ## Implementation
 
@@ -197,8 +197,8 @@ Handle RPC failures and network connectivity issues.
 
 After creating atoms, explore:
 
-- [Create Triple](/guides/developer-tools/interactions/create-triple) - Learn how to create relationships between atoms
-- [Deposit & Return](/guides/developer-tools/interactions/deposit-return) - Manage vault deposits and withdrawals
-- [Retrieve Vault Details](/guides/developer-tools/interactions/retrieve-vault-details) - Get comprehensive vault information
+- [Create Triple](/docs/interaction-guide/create-triple) - Learn how to create relationships between atoms
+- [Deposit & Return](/docs/interaction-guide/deposit-return) - Manage vault deposits and withdrawals
+- [Retrieve Vault Details](/docs/interaction-guide/retrieve-vault-details) - Get comprehensive vault information
 
 For a full reference implementation, see the [Intuition TypeScript SDK](https://github.com/0xIntuition/intuition-ts). 
