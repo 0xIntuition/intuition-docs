@@ -1,0 +1,33 @@
+---
+title: Intuition Monorepo Overview
+sidebar_position: 1
+description: Get an overview of the Intuition monorepo structure and organization
+---
+
+# Intuition Monorepo Overview
+
+The Intuition project is organized as a monorepo, which means all related packages and services are stored in a single repository. This approach provides several benefits, including:
+
+- **Simplified dependency management** - shared dependencies are installed once
+- **Consistent tooling** - all packages use the same development tools
+- **Cross-package development** - easier to make changes that span multiple packages
+- **Atomic commits** - changes across multiple packages can be committed together
+
+## Repository Structure
+
+The monorepo contains the following main directories:
+
+- **`apps/`** - Frontend applications and services
+- **`packages/`** - Shared libraries and utilities
+- **`docs/`** - Documentation (where you are now)
+- **`tools/`** - Development tools and scripts
+
+## Development Workflow
+
+Working in the monorepo allows you to develop across multiple packages simultaneously. Common workflows include:
+
+1. Installing dependencies for the entire monorepo
+2. Running tests across all packages
+3. Building packages in the correct order based on dependencies
+
+For detailed information about the architectural design of the monorepo, see [intuition-ts](/guides/intuition-monorepo/architecture) guide. 

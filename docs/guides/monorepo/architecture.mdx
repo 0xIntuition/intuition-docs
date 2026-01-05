@@ -1,0 +1,62 @@
+---
+title: intuition-ts
+sidebar_position: 2
+description: Deep dive into the architectural design of the Intuition monorepo
+---
+
+# Monorepo Architecture
+
+This guide provides a detailed overview of the architectural design of the Intuition monorepo, explaining how different components interact with each other.
+
+## Package Organization
+
+The Intuition monorepo uses a structured approach to organize packages:
+
+### Core Packages
+
+Core packages provide fundamental functionality used throughout the system:
+
+- **`@intuition/core`** - Core data structures and utilities
+- **`@intuition/api`** - GraphQL API definitions and implementations
+- **`@intuition/types`** - Shared TypeScript type definitions
+
+### SDK Packages
+
+SDK packages provide language-specific interfaces to the Intuition platform:
+
+- **`@intuition/js-sdk`** - JavaScript/TypeScript SDK
+- **`@intuition/react`** - React-specific bindings and hooks
+
+### App Packages
+
+Application packages implement specific user-facing products:
+
+- **Web Applications** - Frontend applications built with Next.js or Remix
+- **Mobile Applications** - Mobile apps built with React Native/Expo
+- **Developer Tools** - Tools for developers building on Intuition
+
+## Build System
+
+The monorepo uses a sophisticated build system to manage dependencies and ensure packages are built in the correct order:
+
+1. **Dependency Graph Analysis** - Automatically determines build order
+2. **Incremental Builds** - Only rebuilds affected packages when changes occur
+3. **Parallel Execution** - Builds independent packages simultaneously
+
+## Continuous Integration
+
+The CI/CD pipeline for the monorepo includes:
+
+- **Automated Testing** - Unit and integration tests run for all affected packages
+- **Documentation Generation** - Automatic documentation updates
+- **Deployment Workflows** - Automated deployment of applications and services
+
+## Development Guidelines
+
+When working in the monorepo:
+
+1. Make targeted changes to specific packages when possible
+2. Run tests for affected packages to ensure changes don't break dependencies
+3. Follow the established code style and architecture patterns
+
+For more information about day-to-day development in the monorepo, see the [Monorepo Overview](/guides/intuition-monorepo) guide. 
