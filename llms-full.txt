@@ -5971,7 +5971,7 @@ Where the Semantic Web asked the world to voluntarily agree on standards, Intuit
 On Intuition, every attestation has consequences:
 
 - **Publish a useful attestation** → earn reputation and rewards
-- **Publish misinformation** → lose your stake and credibility
+- **Publish misinformation** → miss out on potential financial gain and lose credibility
 - **Signal strong conviction** → stake more on your attestation
 - **Build trust** → accumulate a reputation that travels with you
 - **Use consensus identifiers** → earn more by aligning with the network

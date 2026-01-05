@@ -13,53 +13,6 @@ Not sure where to start? Pick the path that matches your goal.
 
 ## I Want to...
 
-### Build a Frontend App (Most Common)
-
-**Use the SDK** - High-level TypeScript SDK with React hooks.
-
-- Best for: Web apps, dashboards, social platforms
-- Abstracts complexity
-- React integration ready
-- **Start here:** [SDK Quick Start](/docs/docs/intuition-sdk/getting-started/quick-start)
-
-### Query Data Only (No Writes)
-
-**Use GraphQL API** - Read-only queries for the knowledge graph.
-
-- Best for: Analytics, dashboards, data visualization
-- No wallet needed for reads
-- Powerful filtering and aggregation
-- **Start here:** [GraphQL Setup](/docs/docs/graphql-api/getting-started/client-setup)
-
-### Build Smart Contract Integration
-
-**Use Protocol Package** - Low-level contract interactions.
-
-- Best for: Other smart contracts, custom logic, gas optimization
-- Direct contract calls
-- Full control
-- **Start here:** [Protocol Configuration](/docs/docs/protocol/getting-started/configuration)
-
-### Understand the System First
-
-**Read Concepts** - Learn how Intuition works.
-
-- Atoms, Triples, Signals
-- Economics and incentives
-- Architecture
-- **Start here:** [Primitives Overview](/docs/docs/intuition-concepts/overview)
-
-### See Complete Examples
-
-**Follow Tutorials** - Build real applications step-by-step.
-
-- Reputation system
-- Curated lists
-- Social attestations
-- **Start here:** [Tutorials](/docs/docs/tutorials/overview)
-
-## Decision Tree
-
 ```mermaid
 graph TD
     A[What are you building?] --> B[Web Application]
@@ -77,6 +30,56 @@ graph TD
     H --> L[GraphQL Setup]
     I --> M[Primitives Overview]
 ```
+
+### Build a Frontend App (Most Common)
+
+**Use the SDK** - High-level TypeScript SDK with React hooks.
+
+- Best for: Web apps, dashboards, social platforms
+- Abstracts complexity
+- React integration ready
+
+<a class="button button--primary" href="/docs/docs/intuition-sdk/getting-started/quick-start">Start with SDK Quick Start →</a>
+
+### Query Data Only (No Writes)
+
+**Use GraphQL API** - Read-only queries for the knowledge graph.
+
+- Best for: Analytics, dashboards, data visualization
+- No wallet needed for reads
+- Powerful filtering and aggregation
+
+<a class="button button--primary" href="/docs/docs/graphql-api/getting-started/client-setup">Start with GraphQL Setup →</a>
+
+### Build Smart Contract Integration
+
+**Use Protocol Package** - Low-level contract interactions.
+
+- Best for: Other smart contracts, custom logic, gas optimization
+- Direct contract calls
+- Full control
+
+<a class="button button--primary" href="/docs/docs/protocol/getting-started/configuration">Start with Protocol Configuration →</a>
+
+### Understand the System First
+
+**Read Concepts** - Learn how Intuition works.
+
+- Atoms, Triples, Signals
+- Economics and incentives
+- Architecture
+
+<a class="button button--primary" href="/docs/docs/intuition-concepts/overview">Start with Primitives Overview →</a>
+
+### See Complete Examples
+
+**Follow Tutorials** - Build real applications step-by-step.
+
+- Reputation system
+- Curated lists
+- Social attestations
+
+<a class="button button--primary" href="/docs/docs/tutorials/overview">Start with Tutorials →</a>
 
 ## Comparison Table
 
