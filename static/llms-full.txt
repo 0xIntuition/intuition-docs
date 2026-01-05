@@ -4,10 +4,7 @@
 
 Intuition is a permissionless protocol that enables users to create attestations (atoms), make connections between concepts (triples), and signal agreement or disagreement through economic mechanisms. It creates a decentralized knowledge graph of validated information.
 
-
-# 
-
-Source: https://docs.intuition.systems/docs/contribute/contribution-guidelines
+# Source: https://docs.intuition.systems/docs/contribute/contribution-guidelines
 
 
 # Contribution Guidelines

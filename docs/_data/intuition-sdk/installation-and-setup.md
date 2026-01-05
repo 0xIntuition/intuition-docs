@@ -16,6 +16,23 @@ The Intuition SDK is a comprehensive TypeScript library for building application
 - **Package Manager**: npm, pnpm, yarn, or bun
 - **TypeScript** (recommended): Version 5.x or higher
 
+## Auto-Generated Package Documentation
+
+For a complete list of `0xintuition/sdk` functions and interfaces, see the [Intuition SDK documentation](https://github.com/0xIntuition/intuition-ts/tree/main/packages/sdk/docs).
+
+- [Intuition SDK NPM](https://www.npmjs.com/package/@0xintuition/sdk)
+- [Intuition SDK GitHub](https://github.com/0xIntuition/intuition-ts/tree/main/packages/sdk/docs)
+
+For a complete list of `0xintuition/protocol` functions and interfaces, see the [Intuition Protocol documentation](https://github.com/0xIntuition/intuition-ts/tree/main/packages/protocol/docs).
+
+- [Intuition Protocol NPM](https://www.npmjs.com/package/@0xintuition/protocol)
+- [Intuition Protocol GitHub](https://github.com/0xIntuition/intuition-ts/tree/main/packages/protocol/docs)
+
+For a complete list of `0xintuition/graphql` functions and interfaces, see the [Intuition Protocol documentation](https://github.com/0xIntuition/intuition-ts/tree/main/packages/graphql).
+
+- [Intuition Protocol NPM](https://www.npmjs.com/package/@0xintuition/graphql)
+- [Intuition Protocol GitHub](https://github.com/0xIntuition/intuition-ts/tree/main/packages/graphql)
+
 ## Installation
 
 Install the SDK using your preferred package manager:
