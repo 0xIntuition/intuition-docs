@@ -1,0 +1,157 @@
+---
+id: overview
+title: Overview
+sidebar_label: Overview
+sidebar_position: 1
+description: Introduction to the Intuition GraphQL API and its main features
+---
+
+import GraphQLPlayground from '@site/src/components/GraphQLPlayground';
+import BrowserOnly from '@docusaurus/BrowserOnly';
+import ExcalidrawViewer from '@site/src/components/ExcalidrawViewer';
+
+# GraphQL API Overview
+
+<BrowserOnly fallback={<p>Loading diagram...</p>}>
+  {() => (
+    <ExcalidrawViewer src="/excalidraw/architecture-diagram.excalidraw.json" />
+  )}
+</BrowserOnly>
+
+Intuition provides GraphQL APIs for querying its knowledge graph in a convenient and versatile way. 
+
+**Available endpoints**
+
+<div className="uniform-card-grid-small">
+  <div className="uniform-card items-center justify-center text-center">
+    <h3 className="uniform-card-title">
+      Intuition mainnet
+    </h3>
+    <div className="uniform-card-content text-center">
+      ```text
+      https://mainnet.intuition.sh/v1/graphql
+      ```
+      <a
+        className="button button--primary"
+        href="https://studio.apollographql.com/sandbox/explorer?endpoint=https://mainnet.intuition.sh/v1/graphql"
+        target="_blank"
+        rel="noreferrer"
+      >
+        Try on GraphQL Explorer
+      </a>
+    </div>
+  </div>
+
+  <div className="uniform-card items-center justify-center text-center">
+    <h3 className="uniform-card-title">
+      Intuition testnet
+    </h3>
+    <div className="uniform-card-content text-center">
+      ```text
+      https://testnet.intuition.sh/v1/graphql
+      ```
+      <a
+        className="button button--primary"
+        href="https://studio.apollographql.com/sandbox/explorer?endpoint=https://testnet.intuition.sh/v1/graphql"
+        target="_blank"
+        rel="noreferrer"
+      >
+        Try on GraphQL Explorer
+      </a>
+    </div>
+  </div>
+</div>
+
+Alternatively, you can import these URLs from the GraphQL package:
+
+```ts
+import { API_URL_PROD, API_URL_DEV } from '@0xintuition/graphql'
+```
+
+If this is your first time using GraphQL, you can learn more at [graphql.org](https://graphql.org/).
+
+There are a few ways to get started with this GraphQL API, depending on the level of abstraction and customization you require : 
+<div className="uniform-card-grid">
+
+  <a
+    href="/docs/developer-tools/sdks/overview"
+    className="clickable-card uniform-card vision-card items-center justify-center text-center"
+  >
+    <span className="mb-4 relative flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-primary/10 to-primary/5">
+      <SdkIcon className="text-primary" />
+    </span>
+    <h3 className="uniform-card-title">
+      SDK
+    </h3>
+    <p className="uniform-card-content">
+      Integrate with Intuition smart contracts using our TypeScript SDK.
+    </p>
+  </a>
+
+  <a
+    href="/docs/developer-tools/graphql-api/custom-queries"
+    className="clickable-card uniform-card vision-card items-center justify-center text-center"
+  >
+    <span className="mb-4 relative flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-primary/10 to-primary/5">
+      <QueriesIcon className="text-primary" />
+    </span>
+    <h3 className="uniform-card-title">
+      Custom Queries
+    </h3>
+    <p className="uniform-card-content">
+      Create bespoke GraphQL queries for your specific use case.
+    </p>
+  </a>
+
+</div>
+
+### GraphQL Package
+
+<div className="uniform-card-grid-small">
+  <a
+    href="/docs/developer-tools/graphql-api/npm-package"
+    className="clickable-card uniform-card vision-card items-center justify-center text-center"
+  >
+    <span className="mb-4 relative flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-primary/10 to-primary/5">
+      <NpmIcon className="text-primary" />
+    </span>
+    <h3 className="uniform-card-title">
+      Install it with NPM
+    </h3>
+    <p className="uniform-card-content">
+      Install and use the NPM package with ready-made React Query hooks.
+    </p>
+  </a>
+
+  <a
+    href="/docs/developer-tools/graphql-api/npm-package"
+    className="clickable-card uniform-card vision-card items-center justify-center text-center"
+  >
+    <span className="mb-4 relative flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-primary/10 to-primary/5">
+      <GraphQlGeneratorIcon className="text-primary" />
+    </span>
+    <h3 className="uniform-card-title">
+      Use it as a GraphQL Generator
+    </h3>
+    <p className="uniform-card-content">
+      Use the GraphQL package to generate your own queries and mutations.
+    </p>
+  </a>
+</div>
+
+## See GraphQL in Action
+
+Check out these complete tutorials using the GraphQL API:
+
+- **[Finding Top Dapps](/docs/tutorials/queries/top-dapps)** - Query and rank decentralized applications by market cap
+- **[Building Activity Feeds](/docs/tutorials/queries/activity-feeds)** - Create real-time user activity streams
+- **[Discovering Trusted Accounts](/docs/tutorials/queries/trusted-accounts)** - Build trust graphs and find reliable accounts
+- **[Finding Related Claims](/docs/tutorials/queries/related-claims)** - Traverse the knowledge graph to find connections
+
+[More tutorials →](/docs/tutorials/overview)
+
+## Interactive Playground
+
+Try the Intuition GraphQL API straight from your browser! The playground below connects to the live testnet endpoint and allows you to explore the knowledge graph in real time.
+
+<GraphQLPlayground />

@@ -1,64 +1,64 @@
 # Intuition Documentation
 
-Welcome to the official documentation for **Intuition** — the world's first open, semantic, and decentralized knowledge graph. This repository contains comprehensive guides, API references, and developer resources for building with the trust protocol that's revolutionizing how we create, verify, and share knowledge online.
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Documentation](https://img.shields.io/badge/docs-docs.intuition.systems-brightgreen)](https://docs.intuition.systems)
+[![Node Version](https://img.shields.io/badge/node-%3E%3D18.0-brightgreen)](https://nodejs.org)
 
-## 🌐 What is Intuition?
+Welcome to the official documentation repository for **Intuition** — the world's first open, semantic, and decentralized knowledge graph. This repository contains comprehensive guides, API references, and developer resources for building with the trust protocol that's revolutionizing how we create, verify, and share knowledge online.
 
-Intuition is building a **universal trust and identity layer** for the decentralized web. At its core, Intuition creates an open, semantic knowledge graph that enables trustful interactions at scale by:
+**Live Documentation**: [docs.intuition.systems](https://docs.intuition.systems)
+
+## Table of Contents
+
+- [About Intuition](#about-intuition)
+- [Quick Start](#quick-start)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Development](#development)
+  - [Building](#building)
+- [Documentation Structure](#documentation-structure)
+- [Available Scripts](#available-scripts)
+- [What's in This Documentation](#whats-in-this-documentation)
+- [For AI Agents](#for-ai-agents)
+- [Technology Stack](#technology-stack)
+- [Ecosystem Links](#ecosystem-links)
+- [Contributing](#contributing)
+- [License](#license)
+
+## About Intuition
+
+Intuition is building a **universal trust and identity layer** for the decentralized web. At its core, Intuition creates an open, semantic knowledge graph that enables trustful interactions at scale through:
 
 - **Decoupling data from applications** — Creating a universal data layer accessible across platforms
 - **Enabling verifiable claims** — Making both objective facts and subjective opinions verifiable and incentive-aligned
 - **Providing semantic structure** — Building rich, queryable relationships between any entities or concepts
 - **Incentivizing quality data** — Using cryptoeconomic mechanisms to reward valuable contributions
 
-### The Vision
+We believe in a future where trust online is **programmable, portable, and permissionless**.
 
-We believe in a future where trust online is **programmable, portable, and permissionless**. Intuition leverages game-theoretic cryptoeconomics to solve the limitations of today's information systems — from verification and provenance challenges to bias, accountability issues, and misaligned incentives.
+### Core Primitives
 
-## 📚 What This Documentation Covers
+Intuition's knowledge graph is built on three fundamental primitives:
 
-This documentation serves as your complete guide to understanding and building with Intuition:
+- **Atoms** — Universal identifiers for any entity (people, concepts, products, etc.)
+- **Triples** — Semantic relationships expressing statements like "Subject → Predicate → Object"
+- **Signals** — Community attestations that add weight and credibility to statements
 
-### For Newcomers
-- **[Introduction](/docs/introduction)** — Learn about Intuition's vision and the problems it solves
-- **[Key Terms](/docs/resources/key-terms)** — Master essential terminology and concepts
-- **[Why Intuition?](/docs/introduction/why-intuition)** — Understand the challenges we're addressing
+These primitives work together to create a structured, queryable, and economically incentivized knowledge graph.
 
-### For Developers
-- **[Developer Tools](/docs/developer-tools)** — Comprehensive developer resources and tooling
-- **[Quickstart Guides](/docs/quickstart)** — Get building quickly with official and community kits
-- **[SDK Documentation](/docs/developer-tools/sdks)** — Protocol and GraphQL SDK references
-- **[Smart Contracts](/docs/developer-tools/contracts)** — Contract architecture and interaction patterns
-- **[GraphQL API](/docs/developer-tools/graphql-api)** — Query the knowledge graph with powerful APIs
-
-### For Users & Builders
-- **[Intuition Hub](/docs/hub)** — Essential tools for interacting with the ecosystem
-- **[Use Cases](/docs/use-cases)** — Real-world applications and possibilities
-- **[Running a Node](/docs/run-node)** — Set up and operate your own Intuition node
-
-### Core Concepts
-- **[Primitives](/docs/introduction/the-primitives)** — Atoms, Triples, and Signals explained
-- **[Economics](/docs/introduction/the-economics)** — Bonding curves, fees, rewards, and tokenomics
-- **[Architecture](/docs/developer-tools/deep-dive)** — Technical deep-dive into system design
-
-## 🔧 Built With
-
-- **[Docusaurus](https://docusaurus.io/)** — Modern static site generator
-- **React & TypeScript** — Interactive components and type safety
-- **Tailwind CSS** — Utility-first styling
-- **GraphQL** — API documentation and examples
-
-## 🚀 Getting Started
+## Quick Start
 
 ### Prerequisites
-- Node.js >= 18.0
-- npm or yarn package manager
 
-### Local Development
+- **Node.js** >= 18.0 (< 25.0.0)
+- **npm** or **yarn** package manager
+- **Git** for version control
+
+### Installation
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/0xintuition/intuition-docs.git
+   git clone https://github.com/0xIntuition/intuition-docs.git
    cd intuition-docs
    ```
 
@@ -67,87 +67,229 @@ This documentation serves as your complete guide to understanding and building w
    npm install
    ```
 
-3. **Start development server**
-   ```bash
-   npm run dev
-   ```
-   
-   The site will be available at `http://localhost:3000`
+   This will also automatically run `patch-package` to apply any necessary patches.
 
-### Building for Production
+### Development
+
+**Start the development server** with hot reload:
+
+```bash
+npm run dev
+```
+
+The documentation site will be available at `http://localhost:3000`
+
+> **Note**: The `dev` script runs `docusaurus start --no-open` to start the server without automatically opening a browser.
+
+### Building
+
+**Build the production-optimized site**:
 
 ```bash
 npm run build
+```
+
+**Preview the production build locally**:
+
+```bash
 npm run serve
 ```
 
-## 📁 Documentation Structure
+The built site will be in the `build/` directory.
+
+## Documentation Structure
+
+This repository uses [Docusaurus](https://docusaurus.io/) to generate a static documentation site. The documentation content is organized as follows:
 
 ```
-docs/
-├── guides/
-│   ├── introduction/          # Core concepts and vision
-│   ├── quickstart/            # Getting started guides
-│   ├── developer-tools/       # Developer resources and APIs
-│   ├── hub/                   # Intuition Hub and tools
-│   ├── use-cases/             # Real-world applications
-│   ├── run-node/              # Node operation guides
-│   └── resources/             # Additional resources and support
-├── partials/                  # Reusable content components
-└── src/                       # Custom React components and styling
+intuition-docs/
+├── docs/
+│   └── _data/                      # Main documentation content (routes to /docs/*)
+│       ├── getting-started/        # Introduction and onboarding
+│       ├── quick-start/            # Quick start guides
+│       ├── intuition-sdk/          # SDK documentation and guides
+│       ├── intuition-smart-contracts/  # Smart contracts documentation
+│       ├── intuition-network/      # Network information and setup
+│       ├── intuition-node/         # Node operation guides
+│       ├── graphql-api/            # GraphQL API reference
+│       ├── protocol/               # Protocol primitives and concepts
+│       ├── intuition-concepts/     # Core concepts and architecture
+│       ├── interaction-guide/      # How-to guides for common tasks
+│       ├── tutorials/              # Step-by-step tutorials and use cases
+│       ├── experimental-applications/  # Experimental integrations
+│       └── resources/              # Glossary, FAQ, and community resources
+├── src/                            # Custom React components and styling
+│   ├── components/                 # Reusable UI components
+│   ├── css/                        # Custom CSS and Tailwind styles
+│   └── pages/                      # Custom pages
+├── static/                         # Static assets (images, files, etc.)
+│   ├── img/                        # Images and icons
+│   └── llms-full.txt               # LLM-optimized documentation
+├── docusaurus.config.js            # Docusaurus configuration
+├── sidebars.js                     # Sidebar navigation configuration
+└── package.json                    # Dependencies and scripts
 ```
 
-## 🛠 Available Scripts
+**How it works**:
+- Files in `docs/_data/` are served at `/docs/*` routes
+- Example: `docs/_data/getting-started/overview.md` → `/docs/getting-started/overview`
+- The sidebar navigation is auto-generated based on folder structure and frontmatter
 
-- `npm run dev` — Start development server with hot reload
-- `npm run build` — Build optimized production site
-- `npm run serve` — Preview production build locally
-- `npm run lint` — Run ESLint for code quality
-- `npm run format` — Format code with Prettier
-- `npm run typecheck` — Run TypeScript type checking
-- `npm run spell-check` — Check documentation spelling
+## Available Scripts
 
-## 🤝 Contributing
+| Script | Command | Description |
+|--------|---------|-------------|
+| **Development** | | |
+| `npm run dev` | `docusaurus start --no-open` | Start dev server without opening browser |
+| `npm start` | `docusaurus start` | Start dev server and open browser |
+| **Building** | | |
+| `npm run build` | `docusaurus build` | Build production site |
+| `npm run serve` | `docusaurus serve` | Serve production build locally |
+| `npm run clear` | `docusaurus clear` | Clear Docusaurus cache |
+| **Code Quality** | | |
+| `npm run lint` | `eslint . --ext .js,.ts,.jsx,.tsx` | Run ESLint |
+| `npm run lint:fix` | `npm run lint -- --fix` | Fix ESLint errors automatically |
+| `npm run format` | `prettier -w src docs` | Format code with Prettier |
+| `npm run format:docs` | `prettier -w docs` | Format only documentation files |
+| `npm run typecheck` | `tsc` | Run TypeScript type checking |
+| **Other** | | |
+| `npm run deploy` | `docusaurus deploy` | Deploy to hosting |
+| `npm run swizzle` | `docusaurus swizzle` | Eject Docusaurus components |
 
-We welcome contributions to improve our documentation! Whether you're fixing typos, adding examples, or suggesting new content, your input helps make Intuition more accessible to everyone.
+**Additional Commands**:
+```bash
+# Check spelling in documentation
+npx cspell docs/**/*.mdx
 
-Please see our [Contributing Guidelines](CONTRIBUTING.md) for:
+# Write translation files
+npm run write-translations
+
+# Write heading IDs
+npm run write-heading-ids
+```
+
+## What's in This Documentation
+
+### For Newcomers
+
+- **[Introduction](/docs)** — Learn about Intuition's vision and the problems it solves
+- **[Getting Started](/docs/getting-started)** — Choose your path and get onboarded
+- **[Why Intuition?](/docs/getting-started/why-intuition)** — Understand the challenges we're addressing
+- **[Glossary](/docs/resources/glossary)** — Master essential terminology and concepts
+
+### For Developers
+
+- **[Quick Start](/docs/quick-start)** — Get up and running quickly
+- **[Intuition SDK](/docs/intuition-sdk)** — TypeScript SDK documentation and guides
+  - [Installation & Setup](/docs/intuition-sdk/installation-and-setup)
+  - [Quick Start Guide](/docs/intuition-sdk/quick-start)
+  - [Working with Atoms](/docs/intuition-sdk/atoms-guide)
+  - [Working with Triples](/docs/intuition-sdk/triples-guide)
+  - [Working with Vaults](/docs/intuition-sdk/vaults-guide)
+  - [Search Guide](/docs/intuition-sdk/search-guide)
+- **[Smart Contracts](/docs/intuition-smart-contracts)** — Contract architecture and deployment information
+- **[GraphQL API](/docs/graphql-api)** — Query the knowledge graph with powerful APIs
+- **[Protocol Documentation](/docs/protocol)** — Working with primitives and core concepts
+- **[Tutorials](/docs/tutorials)** — Step-by-step guides and real-world examples
+
+### For Node Operators
+
+- **[Node Overview](/docs/intuition-node/overview)** — Introduction to running an Intuition node
+- **[Local Setup](/docs/intuition-node/local-setup)** — Set up a node locally
+- **[Kubernetes Deployment](/docs/intuition-node/kubernetes)** — Deploy nodes with Kubernetes
+- **[Rust Backend](/docs/intuition-node/rust-backend)** — Understanding the Rust implementation
+
+### Network Information
+
+- **[Intuition Network](/docs/intuition-network)** — Network architecture and information
+- **[Mainnet](/docs/intuition-network/mainnet)** — Mainnet details
+- **[Testnet](/docs/intuition-network/testnet)** — Testnet information
+- **[RPC Endpoints](/docs/intuition-network/rpc)** — Network RPC endpoints
+- **[Network Details](/docs/quick-start/network-details)** — Chain IDs, contracts, and more
+- **[Testnet Faucet](/docs/quick-start/testnet-faucet)** — Get testnet tokens
+
+### Additional Resources
+
+- **[Interaction Guide](/docs/interaction-guide)** — How-to guides for common operations
+- **[Experimental Applications](/docs/experimental-applications)** — Explore experimental integrations
+  - [MCP Server](/docs/experimental-applications/mcp-server) — Model Context Protocol integration
+  - [Farcaster Frames](/docs/experimental-applications/farcaster-frames)
+  - [MetaMask Snap](/docs/experimental-applications/metamask-snap)
+  - [Data Populator](/docs/experimental-applications/data-populator)
+- **[FAQ](/docs/resources/faq)** — Frequently asked questions
+- **[Community & Support](/docs/resources/community-and-support)** — Get help and connect
+
+## For AI Agents
+
+This documentation is optimized for AI agent access with specialized formats:
+
+- **[llms.txt](https://docs.intuition.systems/llms.txt)** — Concise documentation index for LLM consumption
+- **[llms-full.txt](https://docs.intuition.systems/llms-full.txt)** — Complete documentation in LLM-friendly format
+
+These files follow the [llms.txt standard](https://llmstxt.org/) for AI-readable documentation.
+
+## Technology Stack
+
+This documentation site is built with:
+
+- **[Docusaurus 3.9](https://docusaurus.io/)** — Modern static site generator with MDX support
+- **React 18** — UI components and interactivity
+- **TypeScript** — Type safety and better developer experience
+- **Tailwind CSS** — Utility-first styling
+- **Mermaid** — Diagram generation in markdown
+- **Algolia** — Powered search functionality
+- **GraphQL Sandbox** — Interactive API exploration
+
+## Ecosystem Links
+
+### Official Services
+
+- **[Intuition Website](https://intuition.systems)** — Learn about the project and team
+- **[Documentation](https://docs.intuition.systems)** — This documentation site (live)
+- **[Protocol Explorer](https://portal.intuition.systems)** — Explore the knowledge graph
+- **[Network Hub](https://testnet.hub.intuition.systems/)** — Testnet development environment and tools
+- **[Forum](https://atlas.discourse.group)** — Community discussions and support
+
+### Development Tools
+
+- **[GitHub Organization](https://github.com/0xIntuition)** — All open-source repositories
+- **[Chrome Extension](https://github.com/0xIntuition/intuition-chrome-extension)** — Browser integration for the knowledge graph
+
+## Contributing
+
+We welcome contributions to improve our documentation! Whether you're fixing typos, adding examples, improving clarity, or creating new guides, your input helps make Intuition more accessible to everyone.
+
+**Ways to contribute**:
+- 🐛 Report issues or broken links
+- 📝 Improve existing documentation
+- ✨ Add new guides and tutorials
+- 🌍 Help with translations
+- 💡 Suggest new content
+
+Please see our [Contributing Guidelines](/docs/contribution-guidelines) for:
 - How to submit pull requests
-- Documentation standards and style guide
+- Documentation style guide and standards
 - Content review process
 - Community guidelines
 
-## 🏗 Core Primitives
+**Quick contribution workflow**:
+1. Fork this repository
+2. Create a feature branch: `git checkout -b docs/your-improvement`
+3. Make your changes and test locally with `npm run dev`
+4. Run linting and formatting: `npm run lint:fix && npm run format`
+5. Commit your changes with a descriptive message
+6. Push and create a pull request
 
-Intuition's knowledge graph is built on three fundamental primitives:
-
-- **Atoms** — Universal identifiers for any entity (people, concepts, products, etc.)
-- **Triples** — Semantic relationships expressing statements like "Person A knows Person B"
-- **Signals** — Community attestations that add weight and credibility to statements
-
-These primitives work together to create a structured, queryable, and economically incentivized knowledge graph that spans the entire web.
-
-## 🌍 Ecosystem
-
-The Intuition ecosystem includes:
-
-- **[Hub](https://intuition-testnet.hub.caldera.xyz/)** — L3 network development environment and tools
-- **[Portal](https://beta.portal.intuition.systems/)** — Main Intuition portal and explorer
-- **[Data Populator](https://data-populator.onrender.com/)** — Tool for populating test data
-- **[Chrome Extension](https://github.com/0xIntuition/intuition-chrome-extension)** — Browser integration
-- **Browser Extension** — Access the knowledge graph across the web
-
-## 📖 Additional Resources
-
-- **[Official Website](https://intuition.systems)** — Learn about the project and team
-- **[Documentation Site](https://docs.intuition.systems)** — Live version of this documentation
-- **[GitHub Organization](https://github.com/0xintuition)** — All open-source code and repositories
-- **[Community & Support](/docs/resources/community-and-support)** — Get help and connect with the community
-
-## 📄 License
+## License
 
 This documentation is licensed under the terms specified in the [LICENSE](LICENSE) file.
 
+Copyright © Intuition Systems Inc. since 2023. All rights reserved.
+
 ---
 
-**Ready to start building?** Check out our [Quickstart Guide](/docs/quickstart) or explore the [Developer Tools](/docs/developer-tools) to begin creating with the trust protocol.
+**Ready to start building?** 
+- 🚀 [Quick Start Guide](/docs/quick-start) 
+- 📚 [SDK Documentation](/docs/intuition-sdk)
+- 🔧 [Developer Tools](/docs/protocol)
+- 💬 [Join our Community](/docs/resources/community-and-support)

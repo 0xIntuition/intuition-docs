@@ -174,7 +174,7 @@ export default function CommunitySection() {
               Quick Resources
             </h3>
             <Link
-              to="/docs/introduction/overview"
+              to="/docs/getting-started/overview"
               className="group flex items-center gap-2 text-sm font-medium text-primary transition-colors hover:text-primary-600"
             >
               View all docs

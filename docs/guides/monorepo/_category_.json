@@ -1,0 +1,10 @@
+{
+  "position": 4,
+  "label": "Intuition Monorepo",
+  "collapsible": true,
+  "className": "sectionSidebarHeading",
+  "customProps": {
+    "separatorBefore": true,
+    "separatorAfter": true
+  }
+} 

@@ -49,7 +49,7 @@ const FAQ: React.FC = () => {
       <FAQItem question="How do I get started with Intuition?">
         <div>
           <h4>Step 1</h4>
-          <p>Read the Documentation: Start with the <a href="/docs/introduction">Introduction</a> and <a href="/docs/introduction/overview">Overview</a> guides to understand the core concepts.</p>
+          <p>Read the Documentation: Start with the <a href="/docs/getting-started">Getting Started</a> and <a href="/docs/getting-started/overview">Overview</a> guides to understand the core concepts.</p>
           
           <h4>Step 2</h4>
           <p>Connect to Intuition: Visit the <a href="/docs/hub">Intuition Hub</a> to access the L3 network development environment and get your development environment set up.</p>
@@ -208,7 +208,7 @@ const FAQ: React.FC = () => {
       <FAQItem question="How do I get help and support?">
         <div>
           <p><strong>Community Support</strong>: Join our <a href="https://discord.com/invite/0xintuition" target="_blank" rel="noopener noreferrer">Discord</a> for real-time help from the community.</p>
-          <p><strong>Documentation</strong>: Check our comprehensive <a href="/docs/introduction/overview">documentation</a> for detailed guides and tutorials.</p>
+          <p><strong>Documentation</strong>: Check our comprehensive <a href="/docs/getting-started/overview">documentation</a> for detailed guides and tutorials.</p>
           <p><strong>GitHub</strong>: Report issues and contribute to the project on <a href="https://github.com/0xintuition" target="_blank" rel="noopener noreferrer">GitHub</a>.</p>
           <p><strong>Email Support</strong>: Contact us directly at <a href="mailto:support@intuition.systems">support@intuition.systems</a> for technical assistance.</p>
         </div>

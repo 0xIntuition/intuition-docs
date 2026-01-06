@@ -1,0 +1,60 @@
+# Intuition
+
+> Intuition is a permissionless protocol for creating verifiable, tokenized attestations. It enables developers to build context-aware applications using semantic triples (subject-predicate-object relationships) backed by economic incentives through bonding curves.
+
+## Introduction
+
+- [Introduction](https://docs.intuition.systems/docs): Intuition at a glance and core value proposition
+- [Getting Started](https://docs.intuition.systems/docs/getting-started): Start building with Intuition
+
+## Primitives
+
+- [Atoms](https://docs.intuition.systems/docs/intuition-concepts/atoms): Individual claims and pieces of information stored on-chain
+- [Triples](https://docs.intuition.systems/docs/intuition-concepts/triples): Subject-predicate-object relationships connecting atoms
+- [Signals](https://docs.intuition.systems/docs/intuition-concepts/signals): Economic mechanisms for agreement and disagreement
+- [Identities](https://docs.intuition.systems/docs/intuition-concepts/identities): Decentralized identity system
+
+## Quick Start
+
+- [Quickstart Guide](https://docs.intuition.systems/docs/quick-start): Get up and running with Intuition
+- [First App](https://docs.intuition.systems/docs/getting-started/first-app): Build your first Intuition application
+
+## Economics
+
+- [Bonding Curves](https://docs.intuition.systems/docs/intuition-concepts/economics/bonding-curves): How dynamic pricing works in Intuition
+- [Fees & Rewards](https://docs.intuition.systems/docs/intuition-concepts/economics/fees-and-rewards): Protocol fee structure and reward distribution
+
+## Developer Tools
+
+- [SDK Overview](https://docs.intuition.systems/docs/intuition-sdk): TypeScript/JavaScript SDKs for protocol interaction
+- [GraphQL API](https://docs.intuition.systems/docs/graphql-api/overview): Query the Intuition knowledge graph
+- [Smart Contracts](https://docs.intuition.systems/docs/intuition-smart-contracts): Core protocol contracts and architecture
+- [Contract Interactions](https://docs.intuition.systems/docs/interaction-guide/overview): Low-level contract interaction patterns
+- [Protocol Package](https://docs.intuition.systems/docs/protocol): Low-level protocol interactions
+
+## Network & Infrastructure
+
+- [Intuition Network](https://docs.intuition.systems/docs/intuition-network): Layer 3 blockchain overview
+- [Intuition Node](https://docs.intuition.systems/docs/intuition-node): Run your own Intuition node
+
+## Tutorials
+
+- [Tutorials Overview](https://docs.intuition.systems/docs/tutorials): Step-by-step guides for building with Intuition
+- [GraphQL Queries](https://docs.intuition.systems/docs/tutorials/queries/activity-feeds): Learn to query the knowledge graph
+
+## Resources
+
+- [FAQ](https://docs.intuition.systems/docs/resources/faq): Frequently asked questions
+- [Key Terms](https://docs.intuition.systems/docs/resources/key-terms): Essential terminology and concepts
+- [Glossary](https://docs.intuition.systems/docs/resources/glossary): Complete terminology reference
+- [Community](https://docs.intuition.systems/docs/resources/community): Get help and connect with the community
+
+## Contributing
+
+- [Contribution Guidelines](https://docs.intuition.systems/docs/contribution-guidelines): How to contribute to Intuition
+
+## Experimental Applications
+
+- [Portal Guide](https://docs.intuition.systems/docs/portal): Complete guide to using The Portal
+- [Farcaster Frames](https://docs.intuition.systems/docs/experimental-applications/farcaster-frames): Build Intuition-powered Farcaster frames
+- [MetaMask Snap](https://docs.intuition.systems/docs/experimental-applications/metamask-snap): Intuition integration for MetaMask

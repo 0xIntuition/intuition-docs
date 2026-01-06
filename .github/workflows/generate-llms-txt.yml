@@ -4,9 +4,8 @@ on:
   push:
     branches: [main]
     paths:
-      - 'docs/**/*.md'
-      - 'docs/**/*.mdx'
-      - 'src/**/*.mdx'
+      - 'docs/_data/**/*.md'
+      - 'docs/_data/**/*.mdx'
   workflow_dispatch: # Allow manual trigger
 
 jobs:
@@ -31,77 +30,71 @@ jobs:
 
       - name: Generate llms.txt (essential docs)
         run: |
-          cat > llms.txt << 'EOF'
+          cat > static/llms.txt << 'EOF'
           # Intuition
 
           > Intuition is a permissionless protocol for creating verifiable, tokenized attestations. It enables developers to build context-aware applications using semantic triples (subject-predicate-object relationships) backed by economic incentives through bonding curves.
 
           ## Introduction
 
-          - [Overview](https://docs.intuition.systems/guides/introduction/overview): Intuition at a glance and core value proposition
-          - [Why Intuition](https://docs.intuition.systems/guides/introduction/why-intuition): The problem Intuition solves and Information Finance
+          - [Introduction](https://docs.intuition.systems/docs): Intuition at a glance and core value proposition
+          - [Getting Started](https://docs.intuition.systems/docs/getting-started): Start building with Intuition
 
           ## Primitives
 
-          - [Primitives Overview](https://docs.intuition.systems/guides/primitives/overview): Understanding Intuition's core building blocks
-          - [Atoms](https://docs.intuition.systems/guides/primitives/atoms): Individual claims and pieces of information stored on-chain
-          - [Triples](https://docs.intuition.systems/guides/primitives/triples): Subject-predicate-object relationships connecting atoms
-          - [Signals](https://docs.intuition.systems/guides/primitives/signals): Economic mechanisms for agreement and disagreement
+          - [Atoms](https://docs.intuition.systems/docs/intuition-concepts/atoms): Individual claims and pieces of information stored on-chain
+          - [Triples](https://docs.intuition.systems/docs/intuition-concepts/triples): Subject-predicate-object relationships connecting atoms
+          - [Signals](https://docs.intuition.systems/docs/intuition-concepts/signals): Economic mechanisms for agreement and disagreement
+          - [Identities](https://docs.intuition.systems/docs/intuition-concepts/identities): Decentralized identity system
 
-          ## Getting Started
+          ## Quick Start
 
-          - [Quickstart Guide](https://docs.intuition.systems/guides/quickstart): Get up and running with Intuition
+          - [Quickstart Guide](https://docs.intuition.systems/docs/quick-start): Get up and running with Intuition
+          - [First App](https://docs.intuition.systems/docs/getting-started/first-app): Build your first Intuition application
 
           ## Economics
 
-          - [Economic Primitives](https://docs.intuition.systems/guides/economics): Understanding the protocol's economic mechanisms
-          - [Bonding Curves](https://docs.intuition.systems/guides/economics/bonding-curves): How dynamic pricing works in Intuition
-          - [Fees & Rewards](https://docs.intuition.systems/guides/economics/fees-rewards): Protocol fee structure and reward distribution
+          - [Bonding Curves](https://docs.intuition.systems/docs/intuition-concepts/economics/bonding-curves): How dynamic pricing works in Intuition
+          - [Fees & Rewards](https://docs.intuition.systems/docs/intuition-concepts/economics/fees-and-rewards): Protocol fee structure and reward distribution
 
           ## Developer Tools
 
-          - [SDK Overview](https://docs.intuition.systems/guides/developer-tools/sdks/overview): TypeScript/JavaScript SDKs for protocol interaction
-          - [GraphQL API](https://docs.intuition.systems/guides/developer-tools/graphql-api/overview): Query the Intuition knowledge graph
-          - [Smart Contracts](https://docs.intuition.systems/guides/developer-tools/contracts/overview): Core protocol contracts and architecture
-          - [Contract Deployments](https://docs.intuition.systems/guides/developer-tools/contracts/deployments): Contract addresses across networks
-          - [Audit Reports](https://docs.intuition.systems/guides/developer-tools/audit-reports): Security audit reports for smart contracts
+          - [SDK Overview](https://docs.intuition.systems/docs/intuition-sdk): TypeScript/JavaScript SDKs for protocol interaction
+          - [GraphQL API](https://docs.intuition.systems/docs/graphql-api/overview): Query the Intuition knowledge graph
+          - [Smart Contracts](https://docs.intuition.systems/docs/intuition-smart-contracts): Core protocol contracts and architecture
+          - [Contract Interactions](https://docs.intuition.systems/docs/interaction-guide/overview): Low-level contract interaction patterns
+          - [Protocol Package](https://docs.intuition.systems/docs/protocol): Low-level protocol interactions
 
           ## Network & Infrastructure
 
-          - [Testnet Overview](https://docs.intuition.systems/guides/network/testnet): Getting started with the Intuition testnet
-          - [RPC Endpoints](https://docs.intuition.systems/guides/network/testnet/rpc): Connect to Intuition network
-          - [Explorer](https://docs.intuition.systems/guides/network/testnet/explorer): Browse on-chain data and transactions
-          - [Bridge](https://docs.intuition.systems/guides/network/testnet/bridge): Transfer assets to Intuition network
+          - [Intuition Network](https://docs.intuition.systems/docs/intuition-network): Layer 3 blockchain overview
+          - [Intuition Node](https://docs.intuition.systems/docs/intuition-node): Run your own Intuition node
 
-          ## Intuition AI
+          ## Tutorials
 
-          - [AI Overview](https://docs.intuition.systems/guides/intuition-ai): AI-powered features and integrations
-          - [MCP Server](https://docs.intuition.systems/guides/intuition-ai/mcp-server): Model Context Protocol integration
-
-          ## Intuition Node
-
-          - [Node Overview](https://docs.intuition.systems/guides/intuition-node): Run your own Intuition node
-          - [Setup Guide](https://docs.intuition.systems/guides/intuition-node/setup): Installation and configuration
-
-          ## Use Cases
-
-          - [Example Applications](https://docs.intuition.systems/guides/use-cases): Real-world applications built with Intuition
-          - [Build a Portal](https://docs.intuition.systems/guides/use-cases/build-a-portal): Create custom Intuition portals
+          - [Tutorials Overview](https://docs.intuition.systems/docs/tutorials): Step-by-step guides for building with Intuition
+          - [GraphQL Queries](https://docs.intuition.systems/docs/tutorials/queries/activity-feeds): Learn to query the knowledge graph
 
           ## Resources
 
-          - [FAQ](https://docs.intuition.systems/guides/resources/faq): Frequently asked questions
-          - [Key Terms](https://docs.intuition.systems/guides/resources/key-terms): Essential terminology and concepts
-          - [Community & Support](https://docs.intuition.systems/guides/resources/community-and-support): Get help and connect with the community
+          - [FAQ](https://docs.intuition.systems/docs/resources/faq): Frequently asked questions
+          - [Glossary](https://docs.intuition.systems/docs/resources/glossary): Complete terminology reference
+          - [Community](https://docs.intuition.systems/docs/resources/community): Get help and connect with the community
 
           ## Contributing
 
-          - [Contribution Guidelines](https://docs.intuition.systems/guides/contribute/contribution-guidelines): How to contribute to Intuition
+          - [Contribution Guidelines](https://docs.intuition.systems/docs/contribution-guidelines): How to contribute to Intuition
+
+          ## Experimental Applications
+
+          - [Portal Guide](https://docs.intuition.systems/docs/portal): Complete guide to using The Portal
+          - [Farcaster Frames](https://docs.intuition.systems/docs/experimental-applications/farcaster-frames): Build Intuition-powered Farcaster frames
+          - [MetaMask Snap](https://docs.intuition.systems/docs/experimental-applications/metamask-snap): Intuition integration for MetaMask
           EOF
 
       - name: Generate llms-full.txt (comprehensive docs)
         run: |
-          cat > llms-full.txt << 'EOF'
+          cat > static/llms-full.txt << 'EOF'
           # Intuition Protocol - Complete Documentation
 
           > This file contains comprehensive documentation for the Intuition protocol, including all guides, API references, and technical documentation.
@@ -110,18 +103,18 @@ jobs:
 
           EOF
 
-          echo "" >> llms-full.txt
+          echo "" >> static/llms-full.txt
 
           # Function to convert file path to URL
           file_to_url() {
             local file="$1"
-            # Remove docs/ prefix and file extension
-            local path="${file#docs/}"
+            # Remove docs/_data/ prefix and file extension
+            local path="${file#docs/_data/}"
             path="${path%.md}"
             path="${path%.mdx}"
             # Remove index from path
             path="${path%/index}"
-            echo "https://docs.intuition.systems/$path"
+            echo "https://docs.intuition.systems/docs/$path"
           }
 
           # Function to extract title from front matter or filename
@@ -206,8 +199,8 @@ jobs:
             '
           }
 
-          # Process all documentation files
-          find docs -type f \( -name "*.md" -o -name "*.mdx" \) | sort | while read file; do
+          # Process all documentation files from docs/_data
+          find docs/_data -type f \( -name "*.md" -o -name "*.mdx" \) | sort | while read file; do
             # Skip hidden files, partials, and files starting with underscore
             if [[ "$file" == *"/_hidden/"* ]] || [[ "$file" == *"/partials/"* ]] || [[ "$(basename "$file")" == _* ]]; then
               continue
@@ -222,20 +215,20 @@ jobs:
             title=$(get_title "$file")
             url=$(file_to_url "$file")
 
-            echo "# $title" >> llms-full.txt
-            echo "" >> llms-full.txt
-            echo "Source: $url" >> llms-full.txt
-            echo "" >> llms-full.txt
-            clean_content "$file" >> llms-full.txt
-            echo "" >> llms-full.txt
-            echo "---" >> llms-full.txt
-            echo "" >> llms-full.txt
+            echo "# $title" >> static/llms-full.txt
+            echo "" >> static/llms-full.txt
+            echo "Source: $url" >> static/llms-full.txt
+            echo "" >> static/llms-full.txt
+            clean_content "$file" >> static/llms-full.txt
+            echo "" >> static/llms-full.txt
+            echo "---" >> static/llms-full.txt
+            echo "" >> static/llms-full.txt
           done
 
       - name: Check for changes
         id: check-changes
         run: |
-          git add llms.txt llms-full.txt
+          git add static/llms.txt static/llms-full.txt
           if git diff --staged --quiet; then
             echo "changes=false" >> $GITHUB_OUTPUT
           else

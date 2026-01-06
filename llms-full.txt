@@ -7,7 +7,7 @@ Intuition is a permissionless protocol that enables users to create attestations
 
 # 
 
-Source: https://docs.intuition.systems/guides/contribute/contribution-guidelines
+Source: https://docs.intuition.systems/docs/contribute/contribution-guidelines
 
 
 # Contribution Guidelines
@@ -155,7 +155,7 @@ Thank you for contributing to the future of decentralized trust! 🚀
 
 # 
 
-Source: https://docs.intuition.systems/guides/developer-tools/audit-reports
+Source: https://docs.intuition.systems/docs/developer-tools/audit-reports
 
 
 # Audit Reports
@@ -212,7 +212,7 @@ This page contains security audit reports for Intuition smart contracts. All con
 
 # 
 
-Source: https://docs.intuition.systems/guides/developer-tools/contracts/configuration
+Source: https://docs.intuition.systems/docs/developer-tools/contracts/configuration
 
 
 # Configurations & Fees
@@ -266,7 +266,7 @@ The OffsetProgressiveCurve parameters are fixed and cannot be changed by governa
 
 # 
 
-Source: https://docs.intuition.systems/guides/developer-tools/contracts/contract-migration
+Source: https://docs.intuition.systems/docs/developer-tools/contracts/contract-migration
 
 
 # Migrating from 2.0 to 2.1 Smart Contracts
@@ -380,7 +380,7 @@ SLOPE=2e18;
 
 # 
 
-Source: https://docs.intuition.systems/guides/developer-tools/contracts/deployments
+Source: https://docs.intuition.systems/docs/developer-tools/contracts/deployments
 
 
 # Contract Deployments
@@ -487,7 +487,7 @@ Contract ABIs can be found in the following locations:
 
 # 
 
-Source: https://docs.intuition.systems/guides/developer-tools/contracts/multivault
+Source: https://docs.intuition.systems/docs/developer-tools/contracts/multivault
 
 
 # MultiVault.sol
@@ -809,7 +809,7 @@ For more detailed information on the MultiVault contract and its functions, plea
 
 # 
 
-Source: https://docs.intuition.systems/guides/developer-tools/contracts/overview
+Source: https://docs.intuition.systems/docs/developer-tools/contracts/overview
 
 
 # Contract Architecture Overview
@@ -874,7 +874,7 @@ The SatelliteEmissionsController contract is responsible for managing the emissi
 
 # 
 
-Source: https://docs.intuition.systems/guides/developer-tools/contracts/trust-bonding
+Source: https://docs.intuition.systems/docs/developer-tools/contracts/trust-bonding
 
 
 # TrustBonding.sol
@@ -993,7 +993,7 @@ For more detailed information on the MultiVault contract and its functions, plea
 
 # 
 
-Source: https://docs.intuition.systems/guides/developer-tools/deep-dive/architecture
+Source: https://docs.intuition.systems/docs/developer-tools/deep-dive/architecture
 
 
 # Technical Architecture
@@ -1466,7 +1466,7 @@ interface SyncStrategy {
 
 # 
 
-Source: https://docs.intuition.systems/guides/developer-tools/graphql-api/custom-queries
+Source: https://docs.intuition.systems/docs/developer-tools/graphql-api/custom-queries
 
 
 # Custom Queries
@@ -1618,7 +1618,7 @@ function useCustomAtomQuery(atomId: string) {
 
 # 
 
-Source: https://docs.intuition.systems/guides/developer-tools/graphql-api/graphql-generator
+Source: https://docs.intuition.systems/docs/developer-tools/graphql-api/graphql-generator
 
 
 # GraphQL Generator
@@ -1718,7 +1718,7 @@ The GraphQL API provides the foundation for building powerful applications on In
 
 # 
 
-Source: https://docs.intuition.systems/guides/developer-tools/graphql-api/migration-guide
+Source: https://docs.intuition.systems/docs/developer-tools/graphql-api/migration-guide
 
 
 # Migrating GraphQL from v1.5 to v2.0
@@ -1842,7 +1842,7 @@ query GetAtom($termId: String!) {
 
 # 
 
-Source: https://docs.intuition.systems/guides/developer-tools/graphql-api/npm-package
+Source: https://docs.intuition.systems/docs/developer-tools/graphql-api/npm-package
 
 
 # GraphQL NPM Package
@@ -2002,7 +2002,7 @@ The GraphQL package source code is available on GitHub: [`intuition-ts/packages/
 
 # 
 
-Source: https://docs.intuition.systems/guides/developer-tools/graphql-api/overview
+Source: https://docs.intuition.systems/docs/developer-tools/graphql-api/overview
 
 
 # GraphQL API Overview
@@ -2087,7 +2087,7 @@ Try the Intuition GraphQL API straight from your browser!  The playground below 
 
 # 
 
-Source: https://docs.intuition.systems/guides/developer-tools/graphql-api/reads
+Source: https://docs.intuition.systems/docs/developer-tools/graphql-api/reads
 
 
 # Reads
@@ -2614,7 +2614,7 @@ function AtomList() {
 
 # 
 
-Source: https://docs.intuition.systems/guides/developer-tools/graphql-api/use-cases/building-user-activity-feeds
+Source: https://docs.intuition.systems/docs/developer-tools/graphql-api/use-cases/building-user-activity-feeds
 
 
 # Building User Activity Feeds
@@ -2633,7 +2633,7 @@ Learn how to create personalized, real-time activity feeds that track user inter
 
 # 
 
-Source: https://docs.intuition.systems/guides/developer-tools/graphql-api/use-cases/discovering-most-trusted-accounts
+Source: https://docs.intuition.systems/docs/developer-tools/graphql-api/use-cases/discovering-most-trusted-accounts
 
 
 # Discovering the Most Trusted Accounts
@@ -2652,7 +2652,7 @@ Learn how to leverage the Intuition GraphQL API to find and rank the ecosystem's
 
 # 
 
-Source: https://docs.intuition.systems/guides/developer-tools/graphql-api/use-cases/finding-related-claims
+Source: https://docs.intuition.systems/docs/developer-tools/graphql-api/use-cases/finding-related-claims
 
 
 # Finding Related Claims
@@ -2671,7 +2671,7 @@ Learn how to find and navigate related claims in the Intuition knowledge graph b
 
 # 
 
-Source: https://docs.intuition.systems/guides/developer-tools/graphql-api/use-cases/finding-top-dapps-on-coinbase
+Source: https://docs.intuition.systems/docs/developer-tools/graphql-api/use-cases/finding-top-dapps-on-coinbase
 
 
 # Finding the Top dApps on Coinbase
@@ -2693,7 +2693,7 @@ Follow these 4 queries step-by-step. Each one builds on the previous to achieve 
 
 # 
 
-Source: https://docs.intuition.systems/guides/developer-tools/graphql-api/use-cases/overview
+Source: https://docs.intuition.systems/docs/developer-tools/graphql-api/use-cases/overview
 
 
 # GraphQL API Use Cases
@@ -2737,7 +2737,7 @@ Select a use case above to see detailed step-by-step implementation guides.
 
 # 
 
-Source: https://docs.intuition.systems/guides/developer-tools/graphql-api/writes
+Source: https://docs.intuition.systems/docs/developer-tools/graphql-api/writes
 
 
 # Writes
@@ -2952,7 +2952,7 @@ We are actively finalizing patterns to properly externalize this package, which 
 
 # 
 
-Source: https://docs.intuition.systems/guides/developer-tools/interactions/create-atom
+Source: https://docs.intuition.systems/docs/developer-tools/interactions/create-atom
 
 
 # Create Atom
@@ -3054,7 +3054,7 @@ For a full reference implementation, see the [Intuition TypeScript SDK](https://
 
 # 
 
-Source: https://docs.intuition.systems/guides/developer-tools/interactions/create-triple
+Source: https://docs.intuition.systems/docs/developer-tools/interactions/create-triple
 
 
 # Create Triple
@@ -3077,7 +3077,7 @@ const createTripleConfig = {
 
 # 
 
-Source: https://docs.intuition.systems/guides/developer-tools/interactions/deposit-return
+Source: https://docs.intuition.systems/docs/developer-tools/interactions/deposit-return
 
 
 # Deposit & Return
@@ -3100,7 +3100,7 @@ const depositConfig = {
 
 # 
 
-Source: https://docs.intuition.systems/guides/developer-tools/interactions/overview
+Source: https://docs.intuition.systems/docs/developer-tools/interactions/overview
 
 
 # Contract Interactions Overview
@@ -3128,7 +3128,7 @@ const coreContractConfigs = [
 
 # 
 
-Source: https://docs.intuition.systems/guides/developer-tools/interactions/retrieve-vault-details
+Source: https://docs.intuition.systems/docs/developer-tools/interactions/retrieve-vault-details
 
 
 # Retrieve Vault Details
@@ -3185,7 +3185,7 @@ For a full reference implementation, see the [Intuition TypeScript SDK](https://
 
 # 
 
-Source: https://docs.intuition.systems/guides/developer-tools/sdks/migration-guide
+Source: https://docs.intuition.systems/docs/developer-tools/sdks/migration-guide
 
 
 # Migrating SDK from v1.5 to v2.0
@@ -3221,10 +3221,10 @@ The core smart contract has been upgraded from `EthMultiVault` to `MultiVault`, 
 
 | Package                 | Previous Version | New Version     |
 | ----------------------- | ---------------- | --------------- |
-| `@0xintuition/protocol` | `1.0.0-alpha.1`  | `2.0.0-alpha.2` |
-| `@0xintuition/sdk`      | `1.0.0-alpha.3`  | `2.0.0-alpha.2` |
-| `@0xintuition/graphql`  | `1.0.0-alpha.3`  | `2.0.0-alpha.2` |
-| `@0xintuition/cli`      | `0.0.2`          | `2.0.0-alpha.2` |
+| `@0xintuition/protocol` | `1.0.0-alpha.1`  | `2.0.0` |
+| `@0xintuition/sdk`      | `1.0.0-alpha.3`  | `2.0.0` |
+| `@0xintuition/graphql`  | `1.0.0-alpha.3`  | `2.0.0` |
+| `@0xintuition/cli`      | `0.0.2`          | `2.0.0` |
 
 ## 1. Contract Migration Impact
 
@@ -3799,7 +3799,7 @@ Take your time with the migration and test thoroughly. The new API is more power
 
 # 
 
-Source: https://docs.intuition.systems/guides/developer-tools/sdks/overview
+Source: https://docs.intuition.systems/docs/developer-tools/sdks/overview
 
 
 # Intuition SDK Guide
@@ -4200,7 +4200,7 @@ bun test
 
 - [NPMJS/Intuition](https://www.npmjs.com/package/@0xintuition/sdk)
 - [Github Repo](https://github.com/0xIntuition/intuition-ts/tree/main/packages/sdk)
-- [Intuition Discord](https://discord.gg/intuition)
+- [Intuition Discord](https://discord.gg/RgBenkX4mx)
 
 ## Contributing
 
@@ -4210,7 +4210,7 @@ Contributions are welcome! Please see the main repository for more information o
 
 # 
 
-Source: https://docs.intuition.systems/guides/economics/overview
+Source: https://docs.intuition.systems/docs/economics/overview
 
 
 # Economics
@@ -4236,7 +4236,7 @@ Learn about the $TRUST token economics, distribution, and utility in our detaile
 
 # 
 
-Source: https://docs.intuition.systems/guides/introduction
+Source: https://docs.intuition.systems/docs/introduction
 
 
     The Trust Protocol
@@ -4302,7 +4302,7 @@ Glossary • Concepts • Definitions
 
 # 
 
-Source: https://docs.intuition.systems/guides/introduction/overview
+Source: https://docs.intuition.systems/docs/getting-started/overview
 
 
 # Overview
@@ -4377,7 +4377,7 @@ Intuition provides the foundation. You build the apps, agents, and experiences t
 
 # 
 
-Source: https://docs.intuition.systems/guides/introduction/the-economics/bonding-curves
+Source: https://docs.intuition.systems/docs/introduction/the-economics/bonding-curves
 
 
 # Bonding Curves
@@ -4560,7 +4560,7 @@ Intuition displays share values in a user-friendly format to make ownership easi
 
 # 
 
-Source: https://docs.intuition.systems/guides/introduction/the-economics
+Source: https://docs.intuition.systems/docs/introduction/the-economics
 
 
 # The Economics
@@ -4669,7 +4669,7 @@ This economic framework ensures sustainable growth while maintaining the platfor
 
 # 
 
-Source: https://docs.intuition.systems/guides/introduction/the-primitives/fundamentals/atoms
+Source: https://docs.intuition.systems/docs/introduction/the-primitives/fundamentals/atoms
 
 
 # Atoms
@@ -4755,7 +4755,7 @@ Now that you understand Atoms, explore:
 
 # 
 
-Source: https://docs.intuition.systems/guides/introduction/the-primitives/fundamentals/fees-rewards
+Source: https://docs.intuition.systems/docs/introduction/the-primitives/fundamentals/fees-rewards
 
 
 # Fees & Rewards
@@ -4857,7 +4857,7 @@ Now that you understand Fees & Rewards, explore:
 
 # 
 
-Source: https://docs.intuition.systems/guides/introduction/the-primitives/fundamentals
+Source: https://docs.intuition.systems/docs/introduction/the-primitives/fundamentals
 
 
 # Fundamentals
@@ -4901,7 +4901,7 @@ After mastering the fundamentals, explore:
 
 # 
 
-Source: https://docs.intuition.systems/guides/introduction/the-primitives/fundamentals/intuition-in-practice
+Source: https://docs.intuition.systems/docs/introduction/the-primitives/fundamentals/intuition-in-practice
 
 
 # In Practice
@@ -4994,7 +4994,7 @@ Now that you understand how Intuition primitives work together in practice, expl
 
 # 
 
-Source: https://docs.intuition.systems/guides/introduction/the-primitives/fundamentals/signal
+Source: https://docs.intuition.systems/docs/introduction/the-primitives/fundamentals/signal
 
 
 # Signal
@@ -5066,7 +5066,7 @@ Now that you understand Signal, explore:
 
 # 
 
-Source: https://docs.intuition.systems/guides/introduction/the-primitives/fundamentals/state-interpretations
+Source: https://docs.intuition.systems/docs/introduction/the-primitives/fundamentals/state-interpretations
 
 
 # State Interpretations
@@ -5146,7 +5146,7 @@ Now that you understand State Interpretations, explore:
 
 # 
 
-Source: https://docs.intuition.systems/guides/introduction/the-primitives/fundamentals/triples
+Source: https://docs.intuition.systems/docs/introduction/the-primitives/fundamentals/triples
 
 
 # Triples
@@ -5203,7 +5203,7 @@ Now that you understand Triples, explore:
 
 # 
 
-Source: https://docs.intuition.systems/guides/introduction/the-primitives
+Source: https://docs.intuition.systems/docs/introduction/the-primitives
 
 
 # Primitives
@@ -5296,7 +5296,7 @@ Creating an Atom or Triple is distinctly different from taking a position on the
 
 # 
 
-Source: https://docs.intuition.systems/guides/introduction/the-primitives/structuring/atoms
+Source: https://docs.intuition.systems/docs/introduction/the-primitives/structuring/atoms
 
 
 # Atoms
@@ -5494,7 +5494,7 @@ Now that you understand how to structure atoms, explore:
 
 # 
 
-Source: https://docs.intuition.systems/guides/introduction/the-primitives/structuring/calculating-rewards
+Source: https://docs.intuition.systems/docs/introduction/the-primitives/structuring/calculating-rewards
 
 
 # Calculating Rewards
@@ -5523,7 +5523,7 @@ const creationReward = await calculateCreationReward({
 
 # 
 
-Source: https://docs.intuition.systems/guides/introduction/the-primitives/structuring/capturing-signal
+Source: https://docs.intuition.systems/docs/introduction/the-primitives/structuring/capturing-signal
 
 
 # Capturing Signal
@@ -5552,7 +5552,7 @@ const rating = await rateAtom({
 
 # 
 
-Source: https://docs.intuition.systems/guides/introduction/the-primitives/structuring
+Source: https://docs.intuition.systems/docs/introduction/the-primitives/structuring
 
 
 # Structuring
@@ -5597,7 +5597,7 @@ After mastering structuring techniques, explore the [Developer Tools](/docs/deve
 
 # 
 
-Source: https://docs.intuition.systems/guides/introduction/the-primitives/structuring/triples
+Source: https://docs.intuition.systems/docs/introduction/the-primitives/structuring/triples
 
 
 # Triples
@@ -5876,7 +5876,7 @@ Now that you understand how to structure triples, explore:
 
 # 
 
-Source: https://docs.intuition.systems/guides/introduction/why-intuition
+Source: https://docs.intuition.systems/docs/introduction/why-intuition
 
 
 # Why Intuition?
@@ -5971,7 +5971,7 @@ Where the Semantic Web asked the world to voluntarily agree on standards, Intuit
 On Intuition, every attestation has consequences:
 
 - **Publish a useful attestation** → earn reputation and rewards
-- **Publish misinformation** → lose your stake and credibility
+- **Publish misinformation** → miss out on potential financial gain and lose credibility
 - **Signal strong conviction** → stake more on your attestation
 - **Build trust** → accumulate a reputation that travels with you
 - **Use consensus identifiers** → earn more by aligning with the network
@@ -6038,7 +6038,7 @@ Whether you're a developer, researcher, or community builder, your contributions
 
 # 
 
-Source: https://docs.intuition.systems/guides/intuition-ai
+Source: https://docs.intuition.systems/docs/intuition-ai
 
 
 # Intuition AI
@@ -6094,7 +6094,7 @@ All Intuition AI components are open source and available on GitHub. The MCP ser
 
 # 
 
-Source: https://docs.intuition.systems/guides/intuition-ai/mcp-server
+Source: https://docs.intuition.systems/docs/intuition-ai/mcp-server
 
 
 # Intuition MCP Server
@@ -6247,7 +6247,7 @@ async function connectToMcpServer(url: string) {
 
 # 
 
-Source: https://docs.intuition.systems/guides/intuition-node/backup
+Source: https://docs.intuition.systems/docs/intuition-node/backup
 
 
 # Run a Node
@@ -6748,7 +6748,7 @@ The node implementation is under active development, so check the repository reg
 
 # 
 
-Source: https://docs.intuition.systems/guides/intuition-node/kubernetes-deployment
+Source: https://docs.intuition.systems/docs/intuition-node/kubernetes-deployment
 
 
 # Run on Kubernetes Cluster
@@ -6990,7 +6990,7 @@ terraform plan
 
 # 
 
-Source: https://docs.intuition.systems/guides/intuition-node/local-development-setup
+Source: https://docs.intuition.systems/docs/intuition-node/local-development-setup
 
 
 Set up your local environment for developing and testing Intuition node services.
@@ -7027,7 +7027,7 @@ docker-compose -f docker/docker-compose-apps.yml logs -f
 
 # 
 
-Source: https://docs.intuition.systems/guides/intuition-node/overview
+Source: https://docs.intuition.systems/docs/intuition-node/overview
 
 
 # Overview
@@ -7105,7 +7105,7 @@ Once you understand the architecture and have the prerequisites ready:
 
 # 
 
-Source: https://docs.intuition.systems/guides/intuition-node/run-an-intuition-node
+Source: https://docs.intuition.systems/docs/intuition-node/run-an-intuition-node
 
 
 # Get Started
@@ -7261,7 +7261,7 @@ The node implementation is under active development, so check the repository reg
 
 # 
 
-Source: https://docs.intuition.systems/guides/intuition-node/rust-backend
+Source: https://docs.intuition.systems/docs/intuition-node/rust-backend
 
 
 # Rust Backend
@@ -7382,7 +7382,7 @@ The repository includes comprehensive tooling:
 
 # 
 
-Source: https://docs.intuition.systems/guides/network
+Source: https://docs.intuition.systems/docs/network
 
 
     Intuition Network
@@ -7450,7 +7450,7 @@ Need help with any of these tools? Check out our [Community & Support](/docs/res
 
 # 
 
-Source: https://docs.intuition.systems/guides/network/mainnet
+Source: https://docs.intuition.systems/docs/network/mainnet
 
 
 # Intuition Mainnet
@@ -7479,7 +7479,7 @@ While you wait for mainnet, you can:
 
 # 
 
-Source: https://docs.intuition.systems/guides/network/testnet/bridge
+Source: https://docs.intuition.systems/docs/network/testnet/bridge
 
 
 # Bridge
@@ -7538,7 +7538,7 @@ The Metalayer uses advanced cryptographic techniques and consensus mechanisms to
 
 # 
 
-Source: https://docs.intuition.systems/guides/network/testnet/data-populator
+Source: https://docs.intuition.systems/docs/network/testnet/data-populator
 
 
 # Data Populator
@@ -7841,7 +7841,7 @@ For support with the Data Populator:
 
 - Check the [Intuition documentation](/guides) for detailed guides
 - Visit the [GitHub repository](https://github.com/0xIntuition) for technical details
-- Join the [community discussions](https://discord.gg/intuition) for user support
+- Join the [community discussions](https://discord.gg/RgBenkX4mx) for user support
 - Review the [API documentation](/guides/developer-tools) for integration help
 
 ## Getting Started
@@ -7867,7 +7867,7 @@ For support with the Data Populator:
 
 # 
 
-Source: https://docs.intuition.systems/guides/network/testnet/explorer
+Source: https://docs.intuition.systems/docs/network/testnet/explorer
 
 
 # Explorer
@@ -8100,7 +8100,7 @@ Use the explorer for development:
 
 # 
 
-Source: https://docs.intuition.systems/guides/network/testnet/farcaster-frames
+Source: https://docs.intuition.systems/docs/network/testnet/farcaster-frames
 
 
 # Farcaster Frames
@@ -8252,7 +8252,7 @@ const intuitionFrame = new IntuitionFrame({
 
 # 
 
-Source: https://docs.intuition.systems/guides/network/testnet
+Source: https://docs.intuition.systems/docs/network/testnet
 
 
 # Intuition Testnet
@@ -8296,7 +8296,7 @@ Need help? Join our [Discord](https://discord.gg/RgBenkX4mx) community for suppo
 
 # 
 
-Source: https://docs.intuition.systems/guides/network/testnet/metamask-snap
+Source: https://docs.intuition.systems/docs/network/testnet/metamask-snap
 
 
 # MetaMask Snap
@@ -8513,7 +8513,7 @@ The MetaMask Snap is open source and welcomes contributions:
 
 # 
 
-Source: https://docs.intuition.systems/guides/network/testnet/portal
+Source: https://docs.intuition.systems/docs/network/testnet/portal
 
 
 # The Intuition Portal
@@ -8638,7 +8638,7 @@ Visit **[portal.intuition.systems](https://portal.intuition.systems)** to start 
 
 # 
 
-Source: https://docs.intuition.systems/guides/network/testnet/rpc
+Source: https://docs.intuition.systems/docs/network/testnet/rpc
 
 
 # RPC
@@ -8705,7 +8705,7 @@ GraphQL API
 
 # 
 
-Source: https://docs.intuition.systems/guides/primitives/atoms
+Source: https://docs.intuition.systems/docs/primitives/atoms
 
 
 # Atoms
@@ -8800,7 +8800,7 @@ const statementAtom = {
 
 # 
 
-Source: https://docs.intuition.systems/guides/primitives/atoms/best-practices
+Source: https://docs.intuition.systems/docs/primitives/atoms/best-practices
 
 
 # Best Practices
@@ -8833,7 +8833,7 @@ This separation allows each component to be independently verified, updated, and
 
 # 
 
-Source: https://docs.intuition.systems/guides/primitives/atoms/design-principles
+Source: https://docs.intuition.systems/docs/primitives/atoms/design-principles
 
 
 # Design Principles: Atomic Granularity
@@ -8856,7 +8856,7 @@ const statementAtom = {
 
 # 
 
-Source: https://docs.intuition.systems/guides/primitives/atoms/overview
+Source: https://docs.intuition.systems/docs/primitives/atoms/overview
 
 
 # Atoms
@@ -8928,7 +8928,7 @@ With Atoms as your foundation, you can:
 
 # 
 
-Source: https://docs.intuition.systems/guides/primitives/atoms/practical-examples
+Source: https://docs.intuition.systems/docs/primitives/atoms/practical-examples
 
 
 # Practical Examples
@@ -8942,7 +8942,7 @@ const aliceAtom = {
 
 # 
 
-Source: https://docs.intuition.systems/guides/primitives/atoms/problem-atoms-solve
+Source: https://docs.intuition.systems/docs/primitives/atoms/problem-atoms-solve
 
 
 # The Problem Atoms Solve
@@ -8974,7 +8974,7 @@ This market-driven approach, combined with deterministic ID generation, ensures 
 
 # 
 
-Source: https://docs.intuition.systems/guides/primitives/overview
+Source: https://docs.intuition.systems/docs/primitives/overview
 
 
 # Primitives Overview
@@ -9014,7 +9014,7 @@ Atom ID: 0x123...
 
 # 
 
-Source: https://docs.intuition.systems/guides/primitives/signals/overview
+Source: https://docs.intuition.systems/docs/primitives/signals/overview
 
 
 # Overview
@@ -9112,7 +9112,7 @@ const stake = await stakeOnAtom({
 
 # 
 
-Source: https://docs.intuition.systems/guides/primitives/signals/practical-implementation
+Source: https://docs.intuition.systems/docs/primitives/signals/practical-implementation
 
 
 # Practical Implementation Examples
@@ -9172,7 +9172,7 @@ class TrustAPI {
 
 # 
 
-Source: https://docs.intuition.systems/guides/primitives/signals/strategies-best-practices
+Source: https://docs.intuition.systems/docs/primitives/signals/strategies-best-practices
 
 
 # Signal Strategies and Best Practices
@@ -9203,7 +9203,7 @@ The game-theoretic optimal strategy is to:
 
 # 
 
-Source: https://docs.intuition.systems/guides/primitives/triples
+Source: https://docs.intuition.systems/docs/primitives/triples
 
 
 # Triples
@@ -9373,7 +9373,7 @@ const employmentTriple = await createTriple({
 
 # 
 
-Source: https://docs.intuition.systems/guides/primitives/triples/core-benefits
+Source: https://docs.intuition.systems/docs/primitives/triples/core-benefits
 
 ## Why Triples Matter
 
@@ -9427,7 +9427,7 @@ Triples are infinitely extensible. New information can be attached in graph form
 
 # 
 
-Source: https://docs.intuition.systems/guides/primitives/triples/how-to-create
+Source: https://docs.intuition.systems/docs/primitives/triples/how-to-create
 
 
 # How to create
@@ -9462,7 +9462,7 @@ const employmentTriple = await createTriple({
 
 # 
 
-Source: https://docs.intuition.systems/guides/primitives/triples/nested-triples-practical-implementation
+Source: https://docs.intuition.systems/docs/primitives/triples/nested-triples-practical-implementation
 
 
 # Practical Implementation
@@ -9548,7 +9548,7 @@ const evidence = await createTriple({
 
 # 
 
-Source: https://docs.intuition.systems/guides/primitives/triples/nested-triples
+Source: https://docs.intuition.systems/docs/primitives/triples/nested-triples
 
 
 # Nested Triples: Meta-Claims & Context
@@ -9588,7 +9588,7 @@ This creates a hierarchy of meaning where complex ideas are built from simpler o
 
 # 
 
-Source: https://docs.intuition.systems/guides/primitives/triples/overview
+Source: https://docs.intuition.systems/docs/primitives/triples/overview
 
 
 # Triples
@@ -9663,7 +9663,7 @@ Dive deeper into Triples with these detailed guides:
 
 # 
 
-Source: https://docs.intuition.systems/guides/primitives/triples/positive-negative-claims
+Source: https://docs.intuition.systems/docs/primitives/triples/positive-negative-claims
 
 
 # Positive and Negative Claims
@@ -9700,7 +9700,7 @@ Importantly, Intuition doesn't force a single authoritative truth—it records t
 
 # 
 
-Source: https://docs.intuition.systems/guides/primitives/triples/querying-triples
+Source: https://docs.intuition.systems/docs/primitives/triples/querying-triples
 
 
 # Querying Triples
@@ -9738,7 +9738,7 @@ query {
 
 # 
 
-Source: https://docs.intuition.systems/guides/primitives/triples/use-cases
+Source: https://docs.intuition.systems/docs/primitives/triples/use-cases
 
 
 # Use Cases
@@ -9775,7 +9775,7 @@ Express financial relationships including:
 
 # 
 
-Source: https://docs.intuition.systems/guides/quickstart/getting-started
+Source: https://docs.intuition.systems/docs/quickstart/getting-started
 
 
 # Getting Started
@@ -9784,9 +9784,9 @@ Get started building with Intuition in minutes. This guide provides direct code 
 
 :::info Version Compatibility
 This guide uses the v2 contract architecture and requires the following package versions:
-- [`@0xintuition/sdk@^2.0.0-alpha.2`](https://www.npmjs.com/package/@0xintuition/sdk)
-- [`@0xintuition/protocol@^2.0.0-alpha.2`](https://www.npmjs.com/package/@0xintuition/protocol)
-- [`@0xintuition/graphql@^2.0.0-alpha.2`](https://www.npmjs.com/package/@0xintuition/graphql)
+- [`@0xintuition/sdk@latest`](https://www.npmjs.com/package/@0xintuition/sdk)
+- [`@0xintuition/protocol@latest`](https://www.npmjs.com/package/@0xintuition/protocol)
+- [`@0xintuition/graphql@latest`](https://www.npmjs.com/package/@0xintuition/graphql)
 :::
 
 ## Prerequisites
@@ -10155,7 +10155,7 @@ Now that you know the basics, explore what you can build:
 
 # 
 
-Source: https://docs.intuition.systems/guides/quickstart/intuition-kits
+Source: https://docs.intuition.systems/docs/quickstart/intuition-kits
 
 
 # Intuition Kits
@@ -10250,7 +10250,7 @@ Start building with the official Intuition resources and join the community!
 
 # 
 
-Source: https://docs.intuition.systems/guides/resources/community-and-support
+Source: https://docs.intuition.systems/docs/resources/community-and-support
 
 
 # Community & Support
@@ -10284,7 +10284,7 @@ Share your feedback, suggestions, and ideas to help improve Intuition.
 
 # 
 
-Source: https://docs.intuition.systems/guides/resources/faq
+Source: https://docs.intuition.systems/docs/resources/faq
 
 
 # FAQ
@@ -10302,7 +10302,7 @@ The protocol uses atomic primitives (atoms, triples, signals, and bonding curves
 ### How do I get started with Intuition?
 
 **Step 1: Read the Documentation**  
-Start with the [Introduction](/docs/introduction) and [Overview](/docs/introduction/overview) guides to understand the core concepts.
+Start with the [Introduction](/docs/introduction) and [Overview](/docs/getting-started/overview) guides to understand the core concepts.
 
 **Step 2: Connect to Testnet**  
 Visit the [Intuition Hub](/docs/hub) to access the testnet and get your development environment set up.
@@ -10511,7 +10511,7 @@ Contact Support
 
 # 
 
-Source: https://docs.intuition.systems/guides/resources
+Source: https://docs.intuition.systems/docs/resources
 
 
 # Resources
@@ -10539,7 +10539,7 @@ Security audits and best practices for Intuition. Review audit reports and learn
 
 # 
 
-Source: https://docs.intuition.systems/guides/resources/key-terms
+Source: https://docs.intuition.systems/docs/resources/key-terms
 
 
 # Key Terms
@@ -10810,7 +10810,7 @@ Market Cap = Total Shares × Current Share Price
 
 # 
 
-Source: https://docs.intuition.systems/guides/use-cases
+Source: https://docs.intuition.systems/docs/use-cases
 
 
 ![Use Cases](/img/use-cases.png)
