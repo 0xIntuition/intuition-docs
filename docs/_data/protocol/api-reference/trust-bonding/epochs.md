@@ -163,5 +163,5 @@ console.log('Epochs per year:', epochsPerYear)
 
 ## See Also
 
-- [Core Concepts: Epochs](/docs/docs/protocol/core-concepts/epochs)
-- [Trust Bonding Rewards](/docs/docs/protocol/api-reference/trust-bonding/rewards)
+- [Core Concepts: Epochs](/docs/protocol/core-concepts/epochs)
+- [Trust Bonding Rewards](/docs/protocol/api-reference/trust-bonding/rewards)

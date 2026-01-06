@@ -14,25 +14,111 @@ Before starting development, we recommend adding the Intuition Testnet and Mainn
 ## Installation
 In most cases, you will only need to install the `@0xintuition/sdk` package. This package provides a high-level API for interacting with the Intuition protocol, plus exports the core `@0xintuition/protocol` and `@0xintuition/graphql` functionality.
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 **Primary dependencies:**
 
 The `@0xintuition/sdk` package is the only required package to get started.
+
+<Tabs>
+<TabItem value="npm" label="npm" default>
+
 ```bash
 npm install @0xintuition/sdk@latest
 ```
 
-If you're starting a new project entirely, be sure to install the required peer dependencies as well.
+</TabItem>
+<TabItem value="pnpm" label="pnpm">
+
 ```bash
-npm install @0xintuition/sdk@latest viem@latest wagmi@latest
+pnpm add @0xintuition/sdk@latest
 ```
+
+</TabItem>
+<TabItem value="yarn" label="yarn">
+
+```bash
+yarn add @0xintuition/sdk@latest
+```
+
+</TabItem>
+<TabItem value="bun" label="bun">
+
+```bash
+bun add @0xintuition/sdk@latest
+```
+
+</TabItem>
+</Tabs>
+
+If you're starting a new project entirely, be sure to install the required peer dependencies as well.
+
+<Tabs>
+<TabItem value="npm" label="npm" default>
+
+```bash
+npm install @0xintuition/sdk@latest viem@latest
+```
+
+</TabItem>
+<TabItem value="pnpm" label="pnpm">
+
+```bash
+pnpm add @0xintuition/sdk@latest viem@latest
+```
+
+</TabItem>
+<TabItem value="yarn" label="yarn">
+
+```bash
+yarn add @0xintuition/sdk@latest viem@latest
+```
+
+</TabItem>
+<TabItem value="bun" label="bun">
+
+```bash
+bun add @0xintuition/sdk@latest viem@latest
+```
+
+</TabItem>
+</Tabs>
 
 **Secondary dependencies:**
 
 If you need to interact with the Intuition contracts directly, you will need to install the `@0xintuition/protocol` package.
 
+<Tabs>
+<TabItem value="npm" label="npm" default>
+
 ```bash
 npm install @0xintuition/protocol@latest @0xintuition/graphql@latest
 ```
+
+</TabItem>
+<TabItem value="pnpm" label="pnpm">
+
+```bash
+pnpm add @0xintuition/protocol@latest @0xintuition/graphql@latest
+```
+
+</TabItem>
+<TabItem value="yarn" label="yarn">
+
+```bash
+yarn add @0xintuition/protocol@latest @0xintuition/graphql@latest
+```
+
+</TabItem>
+<TabItem value="bun" label="bun">
+
+```bash
+bun add @0xintuition/protocol@latest @0xintuition/graphql@latest
+```
+
+</TabItem>
+</Tabs>
 
 ## Prerequisites
 
@@ -112,7 +198,7 @@ Data in the Intuition protocol is represented as atoms and triples. As a develop
 
 Atoms are the foundational building blocks of Intuition's knowledge graph – the words in our global dictionary. Think of Intuition as a vast, collaborative dictionary where anyone can create a new word, and each word has its own globally persistent, unique digital identifier that can be used to reference it across the entire internet!
 
-[Learn more about Atoms →](/docs/docs/intuition-concepts/atoms/fundamentals)
+[Learn more about Atoms →](/docs/intuition-concepts/primitives/Atoms/fundamentals)
 
 ### Create an Atom from a String
 
@@ -256,7 +342,7 @@ console.log('On-chain atom:', atomOnChain)
 
 If Atoms are the words in Intuition's global dictionary, Triples are the sentences we create from those words. A Triple connects three Atoms to assert a relationship or fact in the form **[Subject] – [Predicate] – [Object]**. You can string these sentences together to express any arbitrarily-complex concept, all while retaining a discrete, referenceable structure!
 
-[Learn more about Triples →](/docs/docs/intuition-concepts/triples/fundamentals)
+[Learn more about Triples →](/docs/intuition-concepts/primitives/Triples/fundamentals)
 
 ```typescript
 import { createAtomFromString, createTripleStatement } from '@0xintuition/sdk'
@@ -297,7 +383,7 @@ console.log('Triple created:', triple.transactionHash)
 
 Signals represent the trust, confidence, or relevance that the community assigns to Atoms and Triples in the Intuition knowledge graph. Think of the knowledge graph as a weighted graph where Signal is the weight on each node (Atom) or edge (Triple), indicating how strongly people believe in or care about this information.
 
-[Learn more about Signals →](/docs/docs/intuition-concepts/signals/fundamentals)
+[Learn more about Signals →](/docs/intuition-concepts/primitives/Signals/fundamentals)
 
 ### Deposit (Signal Support)
 
@@ -502,25 +588,25 @@ Batch operations significantly reduce gas costs when working with multiple atoms
 
 Now that you know the basics, explore what you can build:
 
-- **[List Curation & Ranking](/docs/use-cases#list-curation--ranking-systems)** - Create curated lists and reputation systems
-- **[Verification & Fraud Protection](/docs/use-cases#verification-and-fraud-protection)** - Build trust and safety mechanisms
-- **[Social Platforms](/docs/use-cases#community-owned-social-platforms)** - Portable identities and attestations
-- **[Reputation Scores](/docs/use-cases#reputation-scores)** - Context-aware trust scoring
-- **[Q&A Platforms](/docs/use-cases#qa-platforms)** - Knowledge sharing with proof
-- **[Oracles](/docs/use-cases#oracles)** - Decentralized data feeds
+- **[List Curation & Ranking](/docs/getting-started/use-cases#list-curation--ranking-systems)** - Create curated lists and reputation systems
+- **[Verification & Fraud Protection](/docs/getting-started/use-cases#verification-and-fraud-protection)** - Build trust and safety mechanisms
+- **[Social Platforms](/docs/getting-started/use-cases#community-owned-social-platforms)** - Portable identities and attestations
+- **[Reputation Scores](/docs/getting-started/use-cases#reputation-scores)** - Context-aware trust scoring
+- **[Q&A Platforms](/docs/getting-started/use-cases#qa-platforms)** - Knowledge sharing with proof
+- **[Oracles](/docs/getting-started/use-cases#oracles)** - Decentralized data feeds
 
-[View all use cases →](/docs/use-cases)
+[View all use cases →](/docs/getting-started/use-cases)
 
 ## Next Steps
 
-- **[Build Your First App](/docs/docs/getting-started/first-app)** - Complete tutorial for a full application
-- **[Network Configuration](/docs/docs/getting-started/network-configuration)** - Detailed network setup
-- **[Explore the SDK](/docs/docs/intuition-sdk/overview)** - Deep dive into SDK capabilities
-- **[Smart Contracts](/docs/docs/protocol/overview)** - Contract architecture and ABIs
-- **[GraphQL API](/docs/docs/graphql-api/overview)** - Query the knowledge graph
-- **[Join the Community](/docs/docs/resources/community-and-support)** - Get help and share ideas
+- **[Build Your First App](/docs/tutorials/overview)** - Complete tutorial for a full application
+- **[Network Configuration](/docs/quick-start/network-details)** - Detailed network setup
+- **[Explore the SDK](/docs/intuition-sdk/quick-start)** - Deep dive into SDK capabilities
+- **[Smart Contracts](/docs/protocol/getting-started/overview)** - Contract architecture and ABIs
+- **[GraphQL API](/docs/graphql-api/overview)** - Query the knowledge graph
+- **[Join the Community](/docs/resources/community-and-support)** - Get help and share ideas
 
 
 :::tip Not sure which tool to use?
-Check out [Choose Your Path](/docs/docs/getting-started/choose-your-path) to find the best starting point for your project.
+Check out [Choose Your Path](/docs/getting-started/choose-your-path) to find the best starting point for your project.
 :::

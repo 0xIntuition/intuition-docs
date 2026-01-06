@@ -304,7 +304,7 @@ Visit **[portal.intuition.systems](https://portal.intuition.systems)** to start 
   backgroundColor: 'var(--ifm-background-color)'
 }}>
 
-**[Explorer](/docs/intuition-network/testnet/explorer)** - Network exploration tools
+**[Explorer](/docs/intuition-network)** - Network exploration tools
 
 </div>
 
@@ -315,7 +315,7 @@ Visit **[portal.intuition.systems](https://portal.intuition.systems)** to start 
   backgroundColor: 'var(--ifm-background-color)'
 }}>
 
-**[Bridge](/docs/intuition-network/testnet/bridge)** - Cross-chain functionality
+**[Bridge](/docs/intuition-network)** - Cross-chain functionality
 
 </div>
 
@@ -326,7 +326,7 @@ Visit **[portal.intuition.systems](https://portal.intuition.systems)** to start 
   backgroundColor: 'var(--ifm-background-color)'
 }}>
 
-**[RPC](/docs/intuition-network/testnet/rpc)** - Network connectivity options
+**[RPC](/docs/intuition-network/rpc)** - Network connectivity options
 
 </div>
 

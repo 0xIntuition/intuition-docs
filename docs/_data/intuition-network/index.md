@@ -29,7 +29,7 @@ Intuition leverages a multi-layer architecture designed for performance, cost-ef
 
 ## Network Details
 
-**For developer setup and configuration, see:** [Network Configuration](/docs/docs/getting-started/network-configuration)
+**For developer setup and configuration, see:** [Network Configuration](/docs/quick-start/network-details)
 
 ### Testnet
 
@@ -81,7 +81,7 @@ The Rust-based indexing subnet provides:
 - **Real-time updates** - Live data synchronization
 - **Semantic search** - Full-text search across atoms and triples
 
-Learn more: [GraphQL API](/docs/graphql-api)
+Learn more: [GraphQL API](/docs/graphql-api/overview)
 
 ### Settlement Layer
 
@@ -106,21 +106,21 @@ Gas costs on Intuition are dramatically lower than Ethereum:
 - **Staking** - Signal on atoms and triples
 - **Governance** - (Coming soon)
 
-See [Signals](/docs/docs/intuition-concepts/signals) for information about staking and token usage.
+See [Signals](/docs/intuition-concepts/primitives/Signals/fundamentals) for information about staking and token usage.
 
 ## Getting Started
 
 ### For Users
 
-1. **[Connect to Testnet](/docs/docs/resources/faq#how-do-i-connect-to-the-intuition-testnet)** - Setup your wallet
+1. **[Connect to Testnet](/docs/resources/faq#how-do-i-connect-to-the-intuition-testnet)** - Setup your wallet
 2. **[Get Test Tokens](https://intuition-testnet.hub.caldera.xyz/)** - Use the faucet
 3. **Explore Tools** - Use Portal and Explorer to interact with the network
 
 ### For Developers
 
-1. **[Network Configuration](/docs/docs/getting-started/network-configuration)** - Configure your environment
-2. **[SDK Setup](/docs/docs/intuition-sdk/getting-started/installation)** - Install development tools
-3. **[Quickstart Guide](/docs/docs/getting-started/quickstart)** - Build something!
+1. **[Network Configuration](/docs/quick-start/network-details)** - Configure your environment
+2. **[SDK Setup](/docs/intuition-sdk/installation-and-setup)** - Install development tools
+3. **[Quickstart Guide](/docs/quick-start/using-the-sdk)** - Build something!
 
 ### For Node Operators
 
@@ -129,8 +129,8 @@ Contact support for node setup and deployment information.
 ## Support & Monitoring
 
 - **[Network Status](https://status.intuition.systems)** - Real-time status monitoring
-- **[Community Support](/docs/docs/resources/community)** - Get help
-- **[FAQ](/docs/docs/resources/faq)** - Common questions
+- **[Community Support](/docs/resources/community-and-support)** - Get help
+- **[FAQ](/docs/resources/faq)** - Common questions
 
 ## Next Steps
 
@@ -165,7 +165,7 @@ Configure Development
 Set up your development environment to start building on Intuition.
 </p>
 <p style={{ marginTop: '1rem', marginBottom: 0 }}>
-<a href="/docs/docs/getting-started/network-configuration">Network Configuration →</a>
+<a href="/docs/quick-start/network-details">Network Configuration →</a>
 </p>
 </div>
 
@@ -198,7 +198,7 @@ Run a Node
 Self-host the indexing layer for direct database access and GraphQL API.
 </p>
 <p style={{ marginTop: '1rem', marginBottom: 0 }}>
-<a href="/docs/docs/resources/community">Contact Support →</a>
+<a href="/docs/resources/community">Contact Support →</a>
 </p>
 </div>
 

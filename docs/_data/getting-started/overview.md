@@ -104,7 +104,7 @@ Tokenized stakes that weight attestations with economic confidence. Signals show
 - Creates economic incentives for accuracy
 - Provides the "weights" in the knowledge graph
 
-**[→ Deep dive into Primitives](/docs/docs/intuition-concepts/overview)**
+**[→ Deep dive into Primitives](/docs/intuition-concepts/primitives)**
 
 ---
 

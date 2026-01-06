@@ -1161,9 +1161,9 @@ Congratulations! You've built a complete reputation system. Here's what to explo
    - Add search functionality
 
 3. **Explore Related Patterns**
-   - [Curated Lists](/docs/docs/tutorials/curated-lists) - Rank items by community stake
-   - [Social Attestations](/docs/docs/tutorials/social-attestations) - Professional networks
-   - [Nested Triples](/docs/docs/tutorials/advanced/nested-triples) - Complex claims
+   - [Curated Lists](/docs/tutorials/curated-lists) - Rank items by community stake
+   - [Social Attestations](/docs/tutorials/social-attestations) - Professional networks
+   - [Nested Triples](/docs/tutorials/advanced/nested-triples) - Complex claims
 
 ## Example Repository
 
@@ -1178,9 +1178,9 @@ npm run dev
 
 ## Resources
 
-- [SDK Overview](/docs/docs/intuition-sdk/overview)
-- [GraphQL API Reference](/docs/docs/graphql-api/overview)
-- [Triples Fundamentals](/docs/docs/intuition-concepts/triples/fundamentals)
+- [SDK Overview](/docs/intuition-sdk/quick-start)
+- [GraphQL API Reference](/docs/graphql-api/overview)
+- [Triples Fundamentals](/docs/intuition-concepts/primitives/Triples/fundamentals)
 - [Community Discord](https://discord.gg/RgBenkX4mx)
 
 ## Get Help

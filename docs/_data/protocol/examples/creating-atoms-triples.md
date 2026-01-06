@@ -300,7 +300,7 @@ const atomId = await createAtomIfNotExists('My Unique Atom')
 
 ## See Also
 
-- [Atom Functions](/docs/docs/protocol/api-reference/multivault/atoms)
-- [Triple Functions](/docs/docs/protocol/api-reference/multivault/triples)
-- [Atoms Fundamentals](/docs/docs/intuition-concepts/atoms/fundamentals)
-- [Triples Fundamentals](/docs/docs/intuition-concepts/triples/fundamentals)
+- [Atom Functions](/docs/protocol/api-reference/multivault/atoms)
+- [Triple Functions](/docs/protocol/api-reference/multivault/triples)
+- [Atoms Fundamentals](/docs/intuition-concepts/primitives/Atoms/fundamentals)
+- [Triples Fundamentals](/docs/intuition-concepts/primitives/Triples/fundamentals)

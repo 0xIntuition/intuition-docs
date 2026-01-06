@@ -20,7 +20,7 @@ Not sure where to start? Pick the path that matches your goal.
 - Best for: Web apps, dashboards, social platforms
 - Abstracts complexity
 - React integration ready
-- **Start here:** [SDK Quick Start](/docs/docs/intuition-sdk/getting-started/quick-start)
+- **Start here:** [SDK Quick Start](/docs/intuition-sdk/quick-start)
 
 ### Query Data Only (No Writes)
 
@@ -29,7 +29,7 @@ Not sure where to start? Pick the path that matches your goal.
 - Best for: Analytics, dashboards, data visualization
 - No wallet needed for reads
 - Powerful filtering and aggregation
-- **Start here:** [GraphQL Setup](/docs/docs/graphql-api/getting-started/client-setup)
+- **Start here:** [GraphQL Setup](/docs/graphql-api/getting-started/client-setup)
 
 ### Build Smart Contract Integration
 
@@ -38,7 +38,7 @@ Not sure where to start? Pick the path that matches your goal.
 - Best for: Other smart contracts, custom logic, gas optimization
 - Direct contract calls
 - Full control
-- **Start here:** [Protocol Configuration](/docs/docs/protocol/getting-started/configuration)
+- **Start here:** [Protocol Configuration](/docs/protocol/getting-started/configuration)
 
 ### Understand the System First
 
@@ -47,7 +47,7 @@ Not sure where to start? Pick the path that matches your goal.
 - Atoms, Triples, Signals
 - Economics and incentives
 - Architecture
-- **Start here:** [Primitives Overview](/docs/docs/intuition-concepts/overview)
+- **Start here:** [Primitives Overview](/docs/intuition-concepts/primitives)
 
 ### See Complete Examples
 
@@ -56,7 +56,7 @@ Not sure where to start? Pick the path that matches your goal.
 - Reputation system
 - Curated lists
 - Social attestations
-- **Start here:** [Tutorials](/docs/docs/tutorials/overview)
+- **Start here:** [Tutorials](/docs/tutorials/overview)
 
 ## Decision Tree
 
@@ -96,6 +96,6 @@ Join our [Discord](https://discord.gg/RgBenkX4mx) and ask the community!
 Once you've chosen your path:
 
 1. Follow the quick start guide for your chosen tool
-2. Read through the [Core Concepts](/docs/docs/intuition-concepts/overview)
-3. Try a [Tutorial](/docs/docs/tutorials/overview)
-4. Join the [Community](/docs/docs/resources/community-and-support)
+2. Read through the [Core Concepts](/docs/intuition-concepts/primitives)
+3. Try a [Tutorial](/docs/tutorials/overview)
+4. Join the [Community](/docs/resources/community-and-support)

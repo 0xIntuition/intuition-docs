@@ -339,5 +339,5 @@ console.log('Epoch emissions:', formatEther(emissions))
 
 ## See Also
 
-- [Core Concepts: Epochs](/docs/docs/protocol/core-concepts/epochs)
-- [Examples: Trust Bonding](/docs/docs/protocol/examples/trust-bonding)
+- [Core Concepts: Epochs](/docs/protocol/core-concepts/epochs)
+- [Examples: Trust Bonding](/docs/protocol/examples/trust-bonding)

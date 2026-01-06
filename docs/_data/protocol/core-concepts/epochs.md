@@ -290,12 +290,12 @@ setInterval(async () => {
 
 ## Related Functions
 
-- [multiVaultCurrentEpoch](/docs/docs/protocol/api-reference/multivault/epochs-utilization#multivaultcurrentepoch) - Get current epoch
-- [multiVaultGetTotalUtilizationForEpoch](/docs/docs/protocol/api-reference/multivault/epochs-utilization#multivaultgettotalutilizationforepoch) - Get total utilization
-- [trustBondingGetUserApy](/docs/docs/protocol/api-reference/trust-bonding/rewards#trustbondinggetuserapy) - Get user APY
-- [Trust Bonding Epochs](/docs/docs/protocol/api-reference/trust-bonding/epochs) - Epoch management functions
+- [multiVaultCurrentEpoch](/docs/protocol/api-reference/multivault/epochs-utilization#multivaultcurrentepoch) - Get current epoch
+- [multiVaultGetTotalUtilizationForEpoch](/docs/protocol/api-reference/multivault/epochs-utilization#multivaultgettotalutilizationforepoch) - Get total utilization
+- [trustBondingGetUserApy](/docs/protocol/api-reference/trust-bonding/rewards#trustbondinggetuserapy) - Get user APY
+- [Trust Bonding Epochs](/docs/protocol/api-reference/trust-bonding/epochs) - Epoch management functions
 
 ## Next Steps
 
-- [Trust Bonding](/docs/docs/protocol/api-reference/trust-bonding/epochs) - Explore bonding system
-- [Examples](/docs/docs/protocol/examples/trust-bonding) - See epoch tracking examples
+- [Trust Bonding](/docs/protocol/api-reference/trust-bonding/epochs) - Explore bonding system
+- [Examples](/docs/protocol/examples/trust-bonding) - See epoch tracking examples

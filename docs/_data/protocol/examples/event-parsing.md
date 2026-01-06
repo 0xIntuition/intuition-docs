@@ -126,6 +126,6 @@ console.log('Recent activity:', feed)
 
 ## See Also
 
-- [Atom Events](/docs/docs/protocol/events/atom-events)
-- [Vault Events](/docs/docs/protocol/events/vault-events)
-- [Triple Events](/docs/docs/protocol/events/triple-events)
+- [Atom Events](/docs/protocol/events/atom-events)
+- [Vault Events](/docs/protocol/events/vault-events)
+- [Triple Events](/docs/protocol/events/triple-events)

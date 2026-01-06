@@ -179,5 +179,5 @@ console.log(fees)
 
 ## See Also
 
-- [Examples: Fee Calculations](/docs/docs/protocol/examples/fee-calculations)
-- [Configuration](/docs/docs/protocol/api-reference/multivault/configuration)
+- [Examples: Fee Calculations](/docs/protocol/examples/fee-calculations)
+- [Configuration](/docs/protocol/api-reference/multivault/configuration)

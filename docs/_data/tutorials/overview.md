@@ -11,7 +11,7 @@ Learn by building real applications with Intuition. Each tutorial is a complete,
 
 ## Building Applications
 
-### [Reputation System](/docs/docs/tutorials/reputation-system)
+### [Reputation System](/docs/tutorials/reputation-system)
 
 Build a developer reputation platform with skills, endorsements, and verifiable credentials.
 
@@ -25,7 +25,7 @@ Build a developer reputation platform with skills, endorsements, and verifiable 
 
 ---
 
-### [Curated Lists](/docs/docs/tutorials/curated-lists)
+### [Curated Lists](/docs/tutorials/curated-lists)
 
 Create community-curated, ranked lists where stake determines ranking.
 
@@ -39,7 +39,7 @@ Create community-curated, ranked lists where stake determines ranking.
 
 ---
 
-### [Social Attestations](/docs/docs/tutorials/social-attestations)
+### [Social Attestations](/docs/tutorials/social-attestations)
 
 Build a decentralized professional network with portable identity.
 
@@ -53,7 +53,7 @@ Build a decentralized professional network with portable identity.
 
 ---
 
-### [Fraud Detection](/docs/docs/tutorials/fraud-detection)
+### [Fraud Detection](/docs/tutorials/fraud-detection)
 
 Create a community-driven scam flagging system.
 
@@ -67,7 +67,7 @@ Create a community-driven scam flagging system.
 
 ---
 
-### [Prediction Market](/docs/docs/tutorials/prediction-market)
+### [Prediction Market](/docs/tutorials/prediction-market)
 
 Build a non-resolving forecasting platform.
 
@@ -93,8 +93,8 @@ Advanced tutorials coming soon including nested triples, batch operations, and o
 
 ## Need Help?
 
-- [Community Support](/docs/docs/resources/community-and-support)
-- [FAQ](/docs/docs/resources/faq)
+- [Community Support](/docs/resources/community-and-support)
+- [FAQ](/docs/resources/faq)
 - [Discord](https://discord.gg/RgBenkX4mx)
 
 ## Prerequisites for Tutorials
@@ -116,4 +116,4 @@ Before starting these tutorials, make sure you have:
    - Code editor (VS Code recommended)
    - Git for cloning example repos
 
-See [Getting Started](/docs/docs/getting-started/quickstart) for setup instructions.
+See [Getting Started](/docs/quick-start/using-the-sdk) for setup instructions.

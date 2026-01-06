@@ -21,7 +21,7 @@ High-level TypeScript SDK with React integration.
 - Need React hooks
 - Prefer abstraction over low-level control
 
-**[→ SDK Overview](/docs/docs/intuition-sdk/getting-started/quick-start)**
+**[→ SDK Overview](/docs/intuition-sdk/quick-start)**
 
 ## Protocol Package
 
@@ -33,7 +33,7 @@ Low-level contract interactions for advanced use cases.
 - Optimizing gas costs
 - Building on Solidity
 
-**[→ Protocol Overview](/docs/docs/protocol/getting-started/overview)**
+**[→ Protocol Overview](/docs/protocol/getting-started/overview)**
 
 ## GraphQL API
 
@@ -45,7 +45,7 @@ Query the knowledge graph with GraphQL.
 - Data visualization
 - No wallet needed for reads
 
-**[→ GraphQL Overview](/docs/docs/graphql-api/overview)**
+**[→ GraphQL Overview](/docs/graphql-api/overview)**
 
 ## Smart Contracts
 

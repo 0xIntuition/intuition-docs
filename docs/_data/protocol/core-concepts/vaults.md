@@ -322,12 +322,12 @@ const txHashAgainst = await multiVaultDeposit(
 
 ## Related Functions
 
-- [multiVaultDeposit](/docs/docs/protocol/api-reference/multivault/vaults#multivaultdeposit) - Deposit to vault
-- [multiVaultRedeem](/docs/docs/protocol/api-reference/multivault/vaults#multivaultredeem) - Redeem shares
-- [multiVaultPreviewDeposit](/docs/docs/protocol/api-reference/multivault/vaults#multivaultpreviewdeposit) - Preview deposit
-- [multiVaultGetShares](/docs/docs/protocol/api-reference/multivault/conversions#multivaultgetshares) - Get user shares
+- [multiVaultDeposit](/docs/protocol/api-reference/multivault/vaults#multivaultdeposit) - Deposit to vault
+- [multiVaultRedeem](/docs/protocol/api-reference/multivault/vaults#multivaultredeem) - Redeem shares
+- [multiVaultPreviewDeposit](/docs/protocol/api-reference/multivault/vaults#multivaultpreviewdeposit) - Preview deposit
+- [multiVaultGetShares](/docs/protocol/api-reference/multivault/conversions#multivaultgetshares) - Get user shares
 
 ## Next Steps
 
 - [Bonding Curves](/docs/intuition-concepts/economics/bonding-curves) - Understand pricing mechanics
-- [Examples](/docs/docs/protocol/examples/deposit-redeem) - See complete deposit/redeem workflows
+- [Examples](/docs/protocol/examples/deposit-redeem) - See complete deposit/redeem workflows

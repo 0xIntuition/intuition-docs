@@ -149,5 +149,5 @@ const txHash = await checkAndCreate('My Unique Atom')
 
 ## See Also
 
-- [Core Concepts: Vaults](/docs/docs/protocol/core-concepts/vaults)
-- [Core Concepts: Atoms](/docs/docs/protocol/core-concepts/atoms)
+- [Core Concepts: Vaults](/docs/protocol/core-concepts/vaults)
+- [Core Concepts: Atoms](/docs/intuition-concepts/primitives/Atoms/fundamentals)

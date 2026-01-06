@@ -151,8 +151,8 @@ const query = `
 
 ## Related Patterns
 
-- [Single Triple](/docs/docs/graphql-api/queries/triples/single-triple) - Query triple details
-- [Filter Triples](/docs/docs/graphql-api/queries/triples/filter-by-subject) - Advanced filtering
+- [Single Triple](/docs/graphql-api/queries/triples/single-triple) - Query triple details
+- [Filter Triples](/docs/graphql-api/queries/triples/filter-by-subject) - Advanced filtering
 
 ## Best Practices
 

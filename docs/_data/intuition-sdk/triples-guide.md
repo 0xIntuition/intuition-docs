@@ -7,7 +7,7 @@ description: Create and query triples using the SDK
 
 # Working with Triples
 
-**Conceptual overview:** [Triples Fundamentals](/docs/docs/intuition-concepts/triples/fundamentals)
+**Conceptual overview:** [Triples Fundamentals](/docs/intuition-concepts/primitives/Triples/fundamentals)
 
 Triples are subject-predicate-object statements that connect three atoms to form relationships in the knowledge graph. This guide covers all ways to create and query triples using the SDK.
 
@@ -619,6 +619,6 @@ See working examples in the SDK Examples section
 
 ## Next Steps
 
-- [Working with Vaults](/docs/docs/intuition-sdk/vaults-guide) - Deposit and redeem from vaults
-- [Search and Discovery](/docs/docs/intuition-sdk/search-guide) - Find triples
-- [SDK Integrations](/docs/docs/intuition-sdk/integrations/react) - Use with React
+- [Working with Vaults](/docs/intuition-sdk/vaults-guide) - Deposit and redeem from vaults
+- [Search and Discovery](/docs/intuition-sdk/search-guide) - Find triples
+- [SDK Integrations](/docs/intuition-sdk/integrations/react) - Use with React
