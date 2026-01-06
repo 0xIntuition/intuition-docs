@@ -13,8 +13,6 @@ Not sure where to start? Pick the path that matches your goal.
 
 ## I Want to...
 
-<<<<<<< HEAD
-=======
 ### Build a Frontend App (Most Common)
 
 **Use the SDK** - High-level TypeScript SDK with React hooks.
@@ -62,7 +60,6 @@ Not sure where to start? Pick the path that matches your goal.
 
 ## Decision Tree
 
->>>>>>> feat/ai-optimized
 ```mermaid
 graph TD
     A[What are you building?] --> B[Web Application]
