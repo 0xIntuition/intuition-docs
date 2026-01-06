@@ -33,9 +33,9 @@ This tutorial will cover:
 
 See these resources:
 
-- [Protocol Smart Contracts](/docs/docs/protocol/getting-started)
-- [Multivault Contract API](/docs/docs/protocol/api-reference)
-- [Solidity Integration Guide](/docs/docs/protocol/solidity-integration)
+- [Protocol Smart Contracts](/docs/protocol/getting-started/overview)
+- [Multivault Contract API](/docs/protocol/api-reference/multivault/atoms)
+- [Solidity Integration Guide](/docs/protocol/getting-started/overview)
 
 ## Quick Example
 

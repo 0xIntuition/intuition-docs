@@ -343,6 +343,11 @@ const config = {
             position: 'left',
           },
           {
+            label: 'Status',
+            href: 'https://stats.intuition.sh/',
+            position: 'left',
+          },
+          {
             label: 'Protocol Explorer',
             href: 'https://portal.intuition.systems',
             position: 'right',

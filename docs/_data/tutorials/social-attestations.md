@@ -1013,9 +1013,9 @@ await platform.recommendSkill('0xBob...', '0xAlice...', 'Solidity', BigInt('1e18
 
 Explore related tutorials:
 
-1. **[Reputation System](/docs/docs/tutorials/reputation-system)** - Deeper skill reputation
-2. **[Fraud Detection](/docs/docs/tutorials/fraud-detection)** - Verify claims
-3. **[Curated Lists](/docs/docs/tutorials/curated-lists)** - Professional registries
+1. **[Reputation System](/docs/tutorials/reputation-system)** - Deeper skill reputation
+2. **[Fraud Detection](/docs/tutorials/fraud-detection)** - Verify claims
+3. **[Curated Lists](/docs/tutorials/curated-lists)** - Professional registries
 
 ## Example Repository
 
@@ -1025,8 +1025,8 @@ git clone https://github.com/0xIntuition/social-attestations-example
 
 ## Resources
 
-- [SDK Documentation](/docs/docs/intuition-sdk/getting-started)
-- [GraphQL API](/docs/docs/graphql-api/overview)
+- [SDK Documentation](/docs/intuition-sdk/installation-and-setup)
+- [GraphQL API](/docs/graphql-api/overview)
 - [Discord Community](https://discord.gg/RgBenkX4mx)
 
 ---

@@ -161,5 +161,5 @@ console.log('Last active epoch:', lastEpoch)
 
 ## See Also
 
-- [Core Concepts: Epochs](/docs/docs/protocol/core-concepts/epochs)
-- [Trust Bonding](/docs/docs/protocol/api-reference/trust-bonding/epochs)
+- [Core Concepts: Epochs](/docs/protocol/core-concepts/epochs)
+- [Trust Bonding](/docs/protocol/api-reference/trust-bonding/epochs)

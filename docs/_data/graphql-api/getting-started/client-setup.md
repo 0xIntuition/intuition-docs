@@ -362,6 +362,6 @@ try {
 
 ## Next Steps
 
-- [Schema Reference](/docs/docs/graphql-api/getting-started/schema-reference) - Learn about schema features
-- [Query Patterns](/docs/docs/graphql-api/queries/atoms/single-atom) - Explore common queries
-- [Best Practices](/docs/docs/graphql-api/best-practices/request-only-needed) - Optimize your queries
+- [Schema Reference](/docs/graphql-api/getting-started/schema-reference) - Learn about schema features
+- [Query Patterns](/docs/graphql-api/queries/atoms/single-atom) - Explore common queries
+- [Best Practices](/docs/graphql-api/best-practices/request-only-needed) - Optimize your queries

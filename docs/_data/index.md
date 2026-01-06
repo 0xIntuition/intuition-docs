@@ -70,12 +70,12 @@ Whether you're building applications, contributing data, or exploring the knowle
 
 ## Learn More
 
-- [Introduction](/docs/introduction) — Understand Intuition's vision and the problems it solves
-- [Quickstart](/docs/quickstart) — Get started building with Intuition
-- [Primitives](/docs/primitives) — Deep dive into Atoms, Triples, and Signals
-- [Developer Tools](/docs/developer-tools) — Explore SDKs, APIs, and integration guides
-- [Network](/docs/network) — Learn about the Intuition Network architecture
-- [Economics](/docs/economics) — Understand the cryptoeconomic incentive model
+- [Introduction](/docs/getting-started/overview) — Understand Intuition's vision and the problems it solves
+- [Quickstart](/docs/quick-start/using-the-sdk) — Get started building with Intuition
+- [Primitives](/docs/intuition-concepts/primitives) — Deep dive into Atoms, Triples, and Signals
+- [Developer Tools](/docs/getting-started/developer-stack) — Explore SDKs, APIs, and integration guides
+- [Network](/docs/intuition-network) — Learn about the Intuition Network architecture
+- [Economics](/docs/intuition-concepts/economics) — Understand the cryptoeconomic incentive model
 
 ## For AI Agents
 

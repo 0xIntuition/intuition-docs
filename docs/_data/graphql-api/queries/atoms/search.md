@@ -197,8 +197,8 @@ const query = `
 
 ## Related Patterns
 
-- [Global Search](/docs/docs/graphql-api/examples/complex-filtering) - Search across all entities
-- [Best Practices: Performance](/docs/docs/graphql-api/best-practices/performance) - Optimize searches
+- [Global Search](/docs/graphql-api/examples/complex-filtering) - Search across all entities
+- [Best Practices: Performance](/docs/graphql-api/best-practices/performance) - Optimize searches
 
 ## Best Practices
 

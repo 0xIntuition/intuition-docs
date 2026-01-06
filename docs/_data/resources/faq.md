@@ -24,7 +24,7 @@ The protocol uses atomic primitives (atoms, triples, signals, and bonding curves
 ### How do I get started with Intuition?
 
 **Step 1: Read the Documentation**  
-Start with the [Getting Started](/docs/getting-started) guides to understand the core concepts.
+Start with the [Getting Started](/docs/getting-started/overview) guides to understand the core concepts.
 
 **Step 2: Connect to Testnet**  
 Visit the [Intuition Hub](https://intuition-testnet.hub.caldera.xyz/) to access the testnet and get your development environment set up.
@@ -251,7 +251,7 @@ Common causes of transaction failures:
 We're here to help! Reach out to our community or support team for assistance.
 </p>
 <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-<a href="/docs/docs/resources/community" style={{ 
+<a href="/docs/resources/community" style={{ 
   backgroundColor: 'transparent', 
   color: 'var(--ifm-color-primary)', 
   padding: '0.75rem 1.5rem', 

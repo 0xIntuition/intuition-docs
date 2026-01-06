@@ -353,9 +353,9 @@ const query = `
 
 ## Related Patterns
 
-- [Single Atom](/docs/docs/graphql-api/queries/atoms/single-atom) - Fetch individual atom
-- [Atom Search](/docs/docs/graphql-api/queries/atoms/search) - Full-text search
-- [Best Practices: Filtering](/docs/docs/graphql-api/best-practices/filtering) - Efficient filtering strategies
+- [Single Atom](/docs/graphql-api/queries/atoms/single-atom) - Fetch individual atom
+- [Atom Search](/docs/graphql-api/queries/atoms/search) - Full-text search
+- [Best Practices: Filtering](/docs/graphql-api/best-practices/filtering) - Efficient filtering strategies
 
 ## Best Practices
 

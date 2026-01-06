@@ -195,6 +195,6 @@ events.forEach((event, i) => {
 
 ## See Also
 
-- [Atom Functions](/docs/docs/protocol/api-reference/multivault/atoms)
-- [Vault Operations](/docs/docs/protocol/api-reference/multivault/vaults)
-- [Triple Functions](/docs/docs/protocol/api-reference/multivault/triples)
+- [Atom Functions](/docs/protocol/api-reference/multivault/atoms)
+- [Vault Operations](/docs/protocol/api-reference/multivault/vaults)
+- [Triple Functions](/docs/protocol/api-reference/multivault/triples)

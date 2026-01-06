@@ -198,9 +198,9 @@ const query = `
 
 ## Related Patterns
 
-- [List Atoms with Filtering](/docs/docs/graphql-api/queries/atoms/list-filter) - Filter atoms by type, creator, date
-- [Atom with Vault Details](/docs/docs/graphql-api/queries/atoms/with-vault) - Include vault information
-- [Atom with Triples](/docs/docs/graphql-api/queries/atoms/with-triples) - Find related triples
+- [List Atoms with Filtering](/docs/graphql-api/queries/atoms/list-filter) - Filter atoms by type, creator, date
+- [Atom with Vault Details](/docs/graphql-api/queries/atoms/with-vault) - Include vault information
+- [Atom with Triples](/docs/graphql-api/queries/atoms/with-triples) - Find related triples
 
 ## Common Errors
 
@@ -224,6 +224,6 @@ const query = `
 
 ## See Also
 
-- [SDK: Create Atoms](/docs/docs/intuition-sdk/atoms/create-from-string) - Create atoms to query
-- [Protocol: Atom Functions](/docs/docs/protocol/api-reference/multivault/atoms) - Low-level atom creation
-- [Core Concepts: Atoms](/docs/docs/intuition-concepts/atoms/fundamentals) - Understanding atoms
+- [SDK: Create Atoms](/docs/intuition-sdk/examples/create-atom-from-string) - Create atoms to query
+- [Protocol: Atom Functions](/docs/protocol/api-reference/multivault/atoms) - Low-level atom creation
+- [Core Concepts: Atoms](/docs/intuition-concepts/primitives/Atoms/fundamentals) - Understanding atoms

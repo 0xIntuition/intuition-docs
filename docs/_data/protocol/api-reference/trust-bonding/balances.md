@@ -117,5 +117,5 @@ console.log('Total locked:', formatEther(locked))
 
 ## See Also
 
-- [Trust Bonding Rewards](/docs/docs/protocol/api-reference/trust-bonding/rewards)
-- [Examples: Trust Bonding](/docs/docs/protocol/examples/trust-bonding)
+- [Trust Bonding Rewards](/docs/protocol/api-reference/trust-bonding/rewards)
+- [Examples: Trust Bonding](/docs/protocol/examples/trust-bonding)

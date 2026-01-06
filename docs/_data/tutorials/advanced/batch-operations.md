@@ -25,9 +25,9 @@ This tutorial will cover:
 
 See these resources:
 
-- [SDK Documentation](/docs/docs/intuition-sdk/getting-started)
-- [Protocol API Reference](/docs/docs/protocol/api-reference)
-- [Performance Best Practices](/docs/docs/intuition-sdk/best-practices)
+- [SDK Documentation](/docs/intuition-sdk/installation-and-setup)
+- [Protocol API Reference](/docs/protocol/api-reference/multivault/atoms)
+- [Performance Best Practices](/docs/intuition-sdk/quick-start)
 
 ## Quick Example
 

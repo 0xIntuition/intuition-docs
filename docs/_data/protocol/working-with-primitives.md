@@ -45,7 +45,7 @@ const tx = await multiVaultCreateAtoms({
 console.log('Atom created:', tx.atomIds[0])
 ```
 
-**See also:** [Atoms Concept](/docs/docs/intuition-concepts/atoms)
+**See also:** [Atoms Concept](/docs/intuition-concepts/primitives/Atoms/fundamentals)
 
 ## Creating Triples
 
@@ -70,7 +70,7 @@ const tx = await multiVaultCreateTriples({
 console.log('Triple created:', tx.tripleIds[0])
 ```
 
-**See also:** [Triples Concept](/docs/docs/intuition-concepts/triples)
+**See also:** [Triples Concept](/docs/intuition-concepts/primitives/Triples/fundamentals)
 
 ## Vault Operations
 
@@ -123,7 +123,7 @@ console.log('Total shares:', vaultDetails.totalShares)
 console.log('Share price:', vaultDetails.currentSharePrice)
 ```
 
-**See also:** [Signals Concept](/docs/docs/intuition-concepts/signals)
+**See also:** [Signals Concept](/docs/intuition-concepts/primitives/Signals/fundamentals)
 
 ## Batch Operations
 
@@ -190,16 +190,16 @@ publicClient.watchContractEvent({
 ## Examples
 
 See complete examples:
-- [Protocol Examples](/docs/docs/protocol/examples)
+- [Protocol Examples](/docs/protocol/examples/creating-atoms-triples)
 
 ## SDK Alternative
 
 For a higher-level API with React hooks, see:
-- [SDK Atoms Guide](/docs/docs/intuition-sdk/atoms-guide)
-- [SDK Triples Guide](/docs/docs/intuition-sdk/triples-guide)
-- [SDK Vaults Guide](/docs/docs/intuition-sdk/vaults-guide)
+- [SDK Atoms Guide](/docs/intuition-sdk/atoms-guide)
+- [SDK Triples Guide](/docs/intuition-sdk/triples-guide)
+- [SDK Vaults Guide](/docs/intuition-sdk/vaults-guide)
 
 ## API Reference
 
 Full API documentation:
-- [MultiVault API Reference](/docs/docs/protocol/api-reference/multivault)
+- [MultiVault API Reference](/docs/protocol/api-reference/multivault/atoms)

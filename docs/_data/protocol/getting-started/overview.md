@@ -25,16 +25,39 @@ The Protocol package is built on top of [viem](https://viem.sh), providing type-
 
 Install the package along with its peer dependency `viem`:
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Tabs>
+<TabItem value="npm" label="npm" default>
+
 ```bash
-# npm
 npm install viem @0xintuition/protocol
+```
 
-# pnpm
+</TabItem>
+<TabItem value="pnpm" label="pnpm">
+
+```bash
 pnpm install viem @0xintuition/protocol
+```
 
-# bun
+</TabItem>
+<TabItem value="yarn" label="yarn">
+
+```bash
+yarn add viem @0xintuition/protocol
+```
+
+</TabItem>
+<TabItem value="bun" label="bun">
+
+```bash
 bun install viem @0xintuition/protocol
 ```
+
+</TabItem>
+</Tabs>
 
 **Peer Dependencies:** `viem ^2.0.0`
 
@@ -190,13 +213,13 @@ The Protocol package is ideal when you need:
 - **Event parsing**: Extract detailed event data from transactions
 - **Custom workflows**: Build your own higher-level abstractions
 
-For simpler, more user-friendly interactions, consider using the [SDK Package](/docs/docs/intuition-sdk/overview) which provides higher-level abstractions including IPFS pinning, JSON-LD support, and simplified APIs.
+For simpler, more user-friendly interactions, consider using the [SDK Package](/docs/intuition-sdk/quick-start) which provides higher-level abstractions including IPFS pinning, JSON-LD support, and simplified APIs.
 
 ## Next Steps
 
-- [Configuration Guide](/docs/docs/protocol/getting-started/configuration) - Set up clients and networks
-- [API Reference](/docs/docs/protocol/api-reference/multivault/atoms) - Explore all available functions
-- [Examples](/docs/docs/protocol/examples/creating-atoms-triples) - See complete workflows
+- [Configuration Guide](/docs/protocol/getting-started/configuration) - Set up clients and networks
+- [API Reference](/docs/protocol/api-reference/multivault/atoms) - Explore all available functions
+- [Examples](/docs/protocol/examples/creating-atoms-triples) - See complete workflows
 
 ## Resources
 
@@ -206,6 +229,6 @@ For simpler, more user-friendly interactions, consider using the [SDK Package](/
 
 ## See Also
 
-- [SDK Package](/docs/docs/intuition-sdk/overview) - Higher-level API with IPFS and JSON-LD support
-- [GraphQL API](/docs/docs/graphql-api/overview) - Query protocol data efficiently
-- [Primitives Overview](/docs/docs/intuition-concepts/overview) - Understand atoms, triples, and signals
+- [SDK Package](/docs/intuition-sdk/quick-start) - Higher-level API with IPFS and JSON-LD support
+- [GraphQL API](/docs/graphql-api/overview) - Query protocol data efficiently
+- [Primitives Overview](/docs/intuition-concepts/primitives) - Understand atoms, triples, and signals

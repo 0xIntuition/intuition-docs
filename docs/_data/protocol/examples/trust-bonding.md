@@ -124,6 +124,6 @@ await monitorUtilization()
 
 ## See Also
 
-- [Trust Bonding Rewards](/docs/docs/protocol/api-reference/trust-bonding/rewards)
-- [Epoch Management](/docs/docs/protocol/api-reference/trust-bonding/epochs)
-- [Core Concepts: Epochs](/docs/docs/protocol/core-concepts/epochs)
+- [Trust Bonding Rewards](/docs/protocol/api-reference/trust-bonding/rewards)
+- [Epoch Management](/docs/protocol/api-reference/trust-bonding/epochs)
+- [Core Concepts: Epochs](/docs/protocol/core-concepts/epochs)

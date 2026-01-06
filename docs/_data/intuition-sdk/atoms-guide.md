@@ -7,7 +7,7 @@ description: Create and query atoms using the SDK
 
 # Working with Atoms
 
-**Conceptual overview:** [Atoms Fundamentals](/docs/docs/intuition-concepts/atoms/fundamentals)
+**Conceptual overview:** [Atoms Fundamentals](/docs/intuition-concepts/primitives/Atoms/fundamentals)
 
 Atoms are unique identifiers for any entity—people, concepts, smart contracts, or data. This guide covers all ways to create and query atoms using the SDK.
 
@@ -638,6 +638,6 @@ See working examples in the SDK Examples section
 
 ## Next Steps
 
-- [Working with Triples](/docs/docs/intuition-sdk/triples-guide)
-- [Working with Vaults](/docs/docs/intuition-sdk/vaults-guide)
-- [SDK Integrations](/docs/docs/intuition-sdk/integrations/react)
+- [Working with Triples](/docs/intuition-sdk/triples-guide)
+- [Working with Vaults](/docs/intuition-sdk/vaults-guide)
+- [SDK Integrations](/docs/intuition-sdk/integrations/react)

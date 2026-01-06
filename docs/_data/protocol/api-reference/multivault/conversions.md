@@ -216,6 +216,6 @@ const txHash = await multiVaultRedeem(
 
 ## See Also
 
-- [Core Concepts: Vaults](/docs/docs/protocol/core-concepts/vaults)
+- [Core Concepts: Vaults](/docs/protocol/core-concepts/vaults)
 - [Core Concepts: Bonding Curves](/docs/intuition-concepts/economics/bonding-curves)
-- [Vault Operations](/docs/docs/protocol/api-reference/multivault/vaults)
+- [Vault Operations](/docs/protocol/api-reference/multivault/vaults)

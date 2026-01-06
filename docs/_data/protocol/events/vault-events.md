@@ -112,6 +112,6 @@ events.forEach((event) => {
 
 ## See Also
 
-- [Atom Events](/docs/docs/protocol/events/atom-events)
-- [Triple Events](/docs/docs/protocol/events/triple-events)
-- [Examples: Event Parsing](/docs/docs/protocol/examples/event-parsing)
+- [Atom Events](/docs/protocol/events/atom-events)
+- [Triple Events](/docs/protocol/events/triple-events)
+- [Examples: Event Parsing](/docs/protocol/examples/event-parsing)
