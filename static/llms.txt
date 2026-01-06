@@ -45,7 +45,6 @@
 ## Resources
 
 - [FAQ](https://docs.intuition.systems/docs/resources/faq): Frequently asked questions
-- [Key Terms](https://docs.intuition.systems/docs/resources/key-terms): Essential terminology and concepts
 - [Glossary](https://docs.intuition.systems/docs/resources/glossary): Complete terminology reference
 - [Community](https://docs.intuition.systems/docs/resources/community): Get help and connect with the community
 
