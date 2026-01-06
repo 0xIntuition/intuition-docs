@@ -9,19 +9,21 @@ Interacting with the Intuition protocol requires connecting to the Intuition net
 
 ## Explorers
 
-### Intuition Mainnet Explorer
+### Intuition Mainnet Explorers
 
-- https://explorer.intuition.systems/
+- Network Explorer: https://explorer.intuition.systems/
+- Protocol Explorer: https://portal.intuition.systems/explore/
 
-### Intuition Testnet Explorer
+### Intuition Testnet Explorers
 
-- https://testnet.explorer.intuition.systems/
+- Network Explorer: https://testnet.explorer.intuition.systems/
+- Protocol Explorer: https://testnet.portal.intuition.systems/explore/
 
-### Base Sepolia Explorer
+### Base Sepolia Explorer (Deprecated)
 
 - https://sepolia.basescan.org
 
-### Base Mainnet Explorer
+### Base Mainnet Explorer (Deprecated)
 
 - https://basescan.org
 
@@ -48,13 +50,13 @@ You can visit the [Intuition Testnet faucet](https://testnet.hub.intuition.syste
 - **Explorer**: `https://testnet.explorer.intuition.systems/`
 - **Native Token**: $tTRUST
 
-### Base Sepolia Configuration
+### Base Sepolia Configuration (Deprecated)
 - **Chain ID**: 84532
 - **RPC URL**: `https://sepolia.base.org`
 - **Explorer**: `https://sepolia.basescan.org`
 - **Native Token**: ETH
 
-### Base Sepolia Configuration
+### Base Mainnet Configuration (Deprecated)
 - **Chain ID**: 8453
 - **RPC URL**: `https://mainnet.base.org`
 - **Explorer**: `https://basescan.org`

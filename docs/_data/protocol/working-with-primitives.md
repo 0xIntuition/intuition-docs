@@ -9,7 +9,7 @@ description: Create and interact with atoms, triples, and vaults using the Proto
 
 This guide shows how to create and interact with atoms, triples, and vaults using the Protocol package (low-level contract interactions).
 
-**For conceptual understanding:** [Primitives Overview](/docs/intuition-concepts)
+**For conceptual understanding:** [Primitives Overview](/docs/intuition-concepts/primitives)
 
 ## Creating Atoms
 
