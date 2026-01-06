@@ -9751,7 +9751,10 @@ Learn how to run your own Intuition indexing service using the official Rust imp
 
 ## What is an Intuition Node?
 
-The `intuition-rs` workspace is a comprehensive Rust workspace for blockchain data indexing and processing, featuring a modular architecture with multiple specialized services. This implementation provides high performance, memory safety, and reliability for running Intuition nodes and backend services.
+
+An Intuition node is a self-hosted data indexing and processing service that independently ingests, decodes, and serves data from the Intuition network.
+
+The `intuition-rs` workspace is a comprehensive Rust codebase for building these indexing and backend services. It features a modular architecture with multiple specialized components, designed for high performance, memory safety, and operational reliability.
 
 :::warning Node Requirements
 Running an Intuition node requires Docker, Rust toolchain, and proper environment configuration. This guide provides comprehensive setup instructions for local development and production deployments.
@@ -9764,12 +9767,14 @@ Running an Intuition node requires Docker, Rust toolchain, and proper environmen
 
 Running your own Intuition node provides several key benefits:
 
-- **Full Data Access**: Direct access to all blockchain data without relying on third-party services
-- **Network Participation**: Actively contribute to the decentralization and resilience of the Intuition network
-- **Custom Indexing**: Tailor data indexing and processing to your specific needs
-- **Performance Control**: Optimize performance and resource allocation based on your requirements
-- **Enhanced Privacy**: Process and query data without exposing your queries to external services
-- **Development Freedom**: Ideal for building and testing applications in a controlled environment
+- **Full Data Access**: Direct access to on-chain Intuition data without relying on third-party indexing services
+- **Independent Operation**: Operate fully independently from hosted providers while consuming public network data
+- **Custom Indexing**: Tailor data ingestion, decoding, and indexing pipelines to your specific application needs
+- **Performance Control**: Optimize performance, storage, and resource allocation based on your requirements
+- **Enhanced Privacy**: Process and query data locally without exposing usage patterns to external services
+- **Development Freedom**: Ideal for building, testing, and operating applications in a fully controlled environment
+- **Reduced Centralization Risk**: Avoid reliance on shared or centralized indexing providers by operating your own infrastructure
+
 
 ## Architecture
 
