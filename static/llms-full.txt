@@ -9747,7 +9747,7 @@ Source: https://docs.intuition.systems/docs/intuition-node/overview
 
 # Overview
 
-Learn how to set up and run your own Intuition node to participate in the network using the official Rust implementation.
+Learn how to run your own Intuition indexing service using the official Rust implementation to mirror on-chain data into your own infrastructure.
 
 ## What is an Intuition Node?
 
