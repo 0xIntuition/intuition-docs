@@ -25,7 +25,7 @@ Welcome to the official documentation repository for **Intuition** — the world
 - [Contributing](#contributing)
 - [License](#license)
 
-## About Intuition
+## About Intuition Protocols
 
 Intuition is building a **universal trust and identity layer** for the decentralized web. At its core, Intuition creates an open, semantic knowledge graph that enables trustful interactions at scale through:
 

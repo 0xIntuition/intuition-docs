@@ -1,6 +1,6 @@
 ---
 title: Introduction
-sidebar_label: Introduction
+sidebar_label: Introduction - What Is Intuition
 sidebar_position: 0
 description: Introduction to Intuition - the decentralized protocol for building the world's first open, semantic, and token-curated knowledge graph
 keywords: [intuition, introduction, knowledge graph, attestations, decentralized, semantic web, trust protocol, atoms, triples, signals]
