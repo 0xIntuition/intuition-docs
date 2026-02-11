@@ -9,15 +9,15 @@
 
 ## Primitives
 
-- [Atoms](https://docs.intuition.systems/docs/intuition-concepts/atoms): Individual claims and pieces of information stored on-chain
-- [Triples](https://docs.intuition.systems/docs/intuition-concepts/triples): Subject-predicate-object relationships connecting atoms
-- [Signals](https://docs.intuition.systems/docs/intuition-concepts/signals): Economic mechanisms for agreement and disagreement
-- [Identities](https://docs.intuition.systems/docs/intuition-concepts/identities): Decentralized identity system
+- [Atoms](https://docs.intuition.systems/docs/intuition-concepts/primitives/Atoms/fundamentals): Individual claims and pieces of information stored on-chain
+- [Triples](https://docs.intuition.systems/docs/intuition-concepts/primitives/Triples/fundamentals): Subject-predicate-object relationships connecting atoms
+- [Signals](https://docs.intuition.systems/docs/intuition-concepts/primitives/Signals/fundamentals): Economic mechanisms for agreement and disagreement
+- [Primitives Overview](https://docs.intuition.systems/docs/intuition-concepts/primitives): How Atoms, Triples, and Signals work together
 
 ## Quick Start
 
 - [Quickstart Guide](https://docs.intuition.systems/docs/quick-start): Get up and running with Intuition
-- [First App](https://docs.intuition.systems/docs/getting-started/first-app): Build your first Intuition application
+- [Choose Your Path](https://docs.intuition.systems/docs/getting-started/choose-your-path): Pick the right starting point for your use case
 
 ## Economics
 
@@ -46,7 +46,7 @@
 
 - [FAQ](https://docs.intuition.systems/docs/resources/faq): Frequently asked questions
 - [Glossary](https://docs.intuition.systems/docs/resources/glossary): Complete terminology reference
-- [Community](https://docs.intuition.systems/docs/resources/community): Get help and connect with the community
+- [Community](https://docs.intuition.systems/docs/resources/community-and-support): Get help and connect with the community
 
 ## Contributing
 

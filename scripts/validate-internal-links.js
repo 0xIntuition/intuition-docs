@@ -47,6 +47,16 @@ function buildValidPaths() {
   for (const file of files) {
     const rel = path.relative(DOCS_DIR, file);
     const ext = path.extname(rel);
+
+    // Directories with _category_.json get auto-generated category index pages
+    if (path.basename(rel) === '_category_.json') {
+      const dirPath = '/docs/' + path.dirname(rel).split(path.sep).join('/');
+      if (dirPath !== '/docs/.') {
+        validPaths.add(dirPath);
+      }
+      continue;
+    }
+
     if (ext !== '.md' && ext !== '.mdx') continue;
 
     // Skip files starting with _
@@ -141,6 +151,9 @@ function extractLinks(rawContent, filePath) {
   const links = [];
   const lines = content.split('\n');
 
+  // llms.txt files use full URLs like https://docs.intuition.systems/docs/...
+  const isLlmsTxt = path.basename(filePath) === 'llms.txt';
+
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
 
@@ -157,6 +170,13 @@ function extractLinks(rawContent, filePath) {
       /link:\s*["'](\/docs\/[^"'#?]*)/g,       // data array link:
       /href=\{["'](\/docs\/[^"'#?]*)/g,        // JSX href={"/docs/..."}
     ];
+
+    // llms.txt uses full URLs: [text](https://docs.intuition.systems/docs/...)
+    if (isLlmsTxt) {
+      patterns.push(
+        /\]\(https:\/\/docs\.intuition\.systems(\/docs[^)\s#?"]*)/g,
+      );
+    }
 
     for (const pattern of patterns) {
       let m;
@@ -199,6 +219,13 @@ function getFilesToScan(specificFiles) {
       }
     }
   }
+
+  // Also scan llms.txt for full-URL doc links
+  const llmsTxt = path.join(ROOT, 'static', 'llms.txt');
+  if (fs.existsSync(llmsTxt)) {
+    files.push(llmsTxt);
+  }
+
   return files;
 }
 
