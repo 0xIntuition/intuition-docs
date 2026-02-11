@@ -9,8 +9,11 @@ on:
       - 'src/pages/**'
       - 'src/snippets/**'
       - 'static/llms.txt'
+      - 'static/llms-full.txt'
+      - 'static/llms-medium.txt'
       - 'docusaurus.config.js'
       - 'scripts/validate-internal-links.js'
+      - 'scripts/generate-llms-full.js'
       - '.github/workflows/generate-llms-txt.yml'
 
 jobs:
