@@ -8,7 +8,7 @@
  * Docusaurus URLs (frontmatter-aware), and per-section metadata.
  *
  * Usage:
- *   node scripts/generate-llms-full.js              # generate all output files
+ *   node scripts/generate-llms-full.js              # generate both output files
  *   node scripts/generate-llms-full.js --full-only   # only llms-full.txt
  *   node scripts/generate-llms-full.js --medium-only  # only llms-medium.txt
  *   node scripts/generate-llms-full.js --stdout       # print llms-full.txt to stdout
@@ -24,23 +24,6 @@ const ROOT = path.resolve(__dirname, '..');
 const DOCS_DIR = path.join(ROOT, 'docs', '_data');
 const STATIC_DIR = path.join(ROOT, 'static');
 const BASE_URL = 'https://docs.intuition.systems';
-
-// Topic labels for human-readable section grouping
-const TOPIC_LABELS = {
-  'getting-started': 'Getting Started',
-  'quick-start': 'Quick Start',
-  'intuition-concepts': 'Core Concepts',
-  'intuition-sdk': 'SDK',
-  'graphql-api': 'GraphQL API',
-  'protocol': 'Protocol Package',
-  'intuition-smart-contracts': 'Smart Contracts',
-  'interaction-guide': 'Contract Interactions',
-  'tutorials': 'Tutorials',
-  'intuition-network': 'Network',
-  'intuition-node': 'Node',
-  'experimental-applications': 'Experimental',
-  'resources': 'Resources',
-};
 
 // ---------------------------------------------------------------------------
 // Utilities (mirrored from validate-internal-links.js)
@@ -366,9 +349,6 @@ function parseSections() {
     const title = extractTitle(frontMatter, body, file);
     const description = extractDescription(frontMatter, body);
 
-    // Determine topic from top-level directory
-    const topDir = parts[0] || '';
-
     // Get last_updated from git
     const gitKey = `docs/_data/${rel}`;
     const lastUpdated = lastUpdatedMap.get(gitKey) || '';
@@ -393,7 +373,6 @@ function parseSections() {
       url,
       route,
       lastUpdated,
-      topic: topDir,
       contentFull: cleanedFull,
       contentMedium: cleanedMedium,
     });
@@ -501,66 +480,6 @@ Intuition is a permissionless protocol for creating verifiable, tokenized attest
   return preamble + '\n' + body + '\n';
 }
 
-function generateTopicFiles(sections) {
-  // Group sections by topic
-  const byTopic = new Map();
-  for (const s of sections) {
-    const topic = s.topic || '_root';
-    if (!byTopic.has(topic)) {
-      byTopic.set(topic, []);
-    }
-    byTopic.get(topic).push(s);
-  }
-
-  const generated = [];
-
-  for (const [topic, topicSections] of byTopic) {
-    if (topicSections.length < 2) continue; // Skip tiny topics
-
-    const label = TOPIC_LABELS[topic] || titleCase(topic);
-    const filename = `llms-full-${topic}.txt`;
-
-    const preamble = `# Intuition ${label} - Complete Documentation
-
-> ${label} section of the Intuition protocol documentation. For the full docs, see: ${BASE_URL}/llms-full.txt
-> For a curated navigation index, see: ${BASE_URL}/llms.txt
-`;
-
-    const body = topicSections
-      .map((s) => {
-        const meta = formatMetadataBlock(s);
-        return `${meta}\n\n# ${s.title}\n\n${s.contentFull}`;
-      })
-      .join('\n\n');
-
-    const content = preamble + '\n' + body + '\n';
-    const outPath = path.join(STATIC_DIR, filename);
-    fs.writeFileSync(outPath, content, 'utf-8');
-
-    const sizeKB = Math.round(fs.statSync(outPath).size / 1024);
-    generated.push({ filename, sections: topicSections.length, sizeKB });
-  }
-
-  return generated;
-}
-
-function cleanupTopicFiles() {
-  if (!fs.existsSync(STATIC_DIR)) {
-    return [];
-  }
-
-  const existingTopicFiles = fs
-    .readdirSync(STATIC_DIR)
-    .filter((name) => /^llms-full-[a-z0-9-]+\.txt$/i.test(name))
-    .sort();
-
-  for (const filename of existingTopicFiles) {
-    fs.unlinkSync(path.join(STATIC_DIR, filename));
-  }
-
-  return existingTopicFiles;
-}
-
 // ---------------------------------------------------------------------------
 // Main
 // ---------------------------------------------------------------------------
@@ -573,7 +492,6 @@ function main() {
 
   const doFull = !mediumOnly || fullOnly;
   const doMedium = !fullOnly || mediumOnly;
-  const doTopics = !fullOnly && !mediumOnly && !toStdout;
 
   // Parse all sections once
   const sections = parseSections();
@@ -600,19 +518,6 @@ function main() {
     fs.writeFileSync(mediumPath, mediumContent, 'utf-8');
     const mediumSizeKB = Math.round(fs.statSync(mediumPath).size / 1024);
     console.log(`Generated ${mediumPath} (${sections.length} sections, ${mediumSizeKB}KB)`);
-  }
-
-  // Generate topic-split files
-  if (doTopics) {
-    const removed = cleanupTopicFiles();
-    if (removed.length > 0) {
-      console.log(`Removed ${removed.length} stale topic file(s)`);
-    }
-
-    const topicFiles = generateTopicFiles(sections);
-    for (const { filename, sections: count, sizeKB } of topicFiles) {
-      console.log(`Generated static/${filename} (${count} sections, ${sizeKB}KB)`);
-    }
   }
 }
 
