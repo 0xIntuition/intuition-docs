@@ -4695,10 +4695,10 @@ There are a few ways to get started with this GraphQL API, depending on the leve
 
 Check out these complete tutorials using the GraphQL API:
 
-- **[Finding Top Dapps](/docs/tutorials/queries/top-dapps)** - Query and rank decentralized applications by market cap
-- **[Building Activity Feeds](/docs/tutorials/queries/activity-feeds)** - Create real-time user activity streams
-- **[Discovering Trusted Accounts](/docs/tutorials/queries/trusted-accounts)** - Build trust graphs and find reliable accounts
-- **[Finding Related Claims](/docs/tutorials/queries/related-claims)** - Traverse the knowledge graph to find connections
+- **[Finding Top Dapps](/docs/tutorials/queries/finding-top-dapps-on-coinbase)** - Query and rank decentralized applications by market cap
+- **[Building Activity Feeds](/docs/tutorials/queries/building-user-activity-feeds)** - Create real-time user activity streams
+- **[Discovering Trusted Accounts](/docs/tutorials/queries/discovering-most-trusted-accounts)** - Build trust graphs and find reliable accounts
+- **[Finding Related Claims](/docs/tutorials/queries/finding-related-claims)** - Traverse the knowledge graph to find connections
 
 [More tutorials →](/docs/tutorials/overview)
 
@@ -24739,8 +24739,8 @@ async function getTrendingDapps(): Promise {
 
 ## Next Steps
 
-- [Discovering Trusted Accounts](/docs/tutorials/queries/trusted-accounts) - Find reliable users
-- [Building Activity Feeds](/docs/tutorials/queries/activity-feeds) - Track user actions
+- [Discovering Trusted Accounts](/docs/tutorials/queries/discovering-most-trusted-accounts) - Find reliable users
+- [Building Activity Feeds](/docs/tutorials/queries/building-user-activity-feeds) - Track user actions
 - [Curated Lists Tutorial](/docs/tutorials/curated-lists) - Create ranked registries
 
 ## Resources
@@ -24800,8 +24800,8 @@ Learn how to leverage the Intuition GraphQL API to find and rank the ecosystem's
 
 ## Next Steps
 
-- [Building Activity Feeds](/docs/tutorials/queries/activity-feeds) - Track user actions
-- [Finding Related Claims](/docs/tutorials/queries/related-claims) - Explore connections
+- [Building Activity Feeds](/docs/tutorials/queries/building-user-activity-feeds) - Track user actions
+- [Finding Related Claims](/docs/tutorials/queries/finding-related-claims) - Explore connections
 - [Reputation System Tutorial](/docs/tutorials/reputation-system) - Build reputation scoring
 
 ## Resources
