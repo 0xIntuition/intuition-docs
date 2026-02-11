@@ -16,25 +16,25 @@ import clsx from 'clsx';
 const MAIN_CARDS = [
   {
     title: 'Quick Start',
-    link: '/docs/quickstart/getting-started',
+    link: '/docs/getting-started/overview',
     icon: ArrowRightFilled,
     text: 'Get up and running with Intuition in minutes. Build your first app with our starter kits.',
   },
   {
     title: 'GraphQL API',
-    link: '/docs/developer-tools/graphql-api/overview',
+    link: '/docs/graphql-api/overview',
     icon: DatabaseRegular,
     text: 'Query the knowledge graph with our powerful GraphQL API.',
   },
   {
     title: 'SDK',
-    link: '/docs/developer-tools/sdks/overview',
+    link: '/docs/intuition-sdk/installation-and-setup',
     icon: CodeRegular,
     text: 'TypeScript/JavaScript SDKs for seamless integration.',
   },
   {
     title: 'Intuition Network',
-    link: '/docs/network',
+    link: '/docs/intuition-network',
     icon: ShareRegular,
     text: 'Learn about the decentralized trust and reputation network.',
   },
@@ -43,7 +43,7 @@ const MAIN_CARDS = [
 const TECH_CARDS = [
   {
     title: 'Rust Subnet',
-    link: '/docs/run-node/run-an-intuition-node',
+    link: '/docs/intuition-node/run-an-intuition-node',
     icon: ServerRegular,
     text: 'Dive into the Rust-based subnet infrastructure powering Intuition.',
   },
@@ -55,7 +55,7 @@ const TECH_CARDS = [
   },
   {
     title: 'Smart Contracts',
-    link: '/docs/developer-tools/contracts/contract-architecture',
+    link: '/docs/intuition-smart-contracts',
     icon: CubeRegular,
     text: 'Deep dive into the Intuition smart contract architecture.',
   },

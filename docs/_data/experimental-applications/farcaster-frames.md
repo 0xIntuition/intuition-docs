@@ -308,7 +308,7 @@ const claimFrame = {
 
 - [Portal](/docs/portal) - Main web interface for Intuition
 - [MetaMask Snap](/docs/experimental-applications/metamask-snap) - MetaMask integration
-- [Browser Extension](/docs/experimental-applications) - Chrome extension
+- [Browser Extension](/docs/experimental-applications/metamask-snap) - Chrome extension
 - [Developer Tools](/docs/getting-started/developer-stack) - Programmatic access
 - [API Documentation](/docs/graphql-api/overview) - Technical guides
 - [Community](https://discord.gg/0xintuition) - Join the Intuition community

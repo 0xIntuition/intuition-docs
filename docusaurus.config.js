@@ -419,9 +419,9 @@ const config = {
         ],
       },
       algolia: {
-        appId: 'HL0HSV62RK',
-        apiKey: '72ebf02146698733b7114c7b36da0945',
-        indexName: 'docs',
+        appId: '02BM8VR1N5',
+        apiKey: 'a57ea0ddc696d1891962958f22cc7525',
+        indexName: 'Intuition Docs',
         contextualSearch: true,
         searchParameters: {},
       },

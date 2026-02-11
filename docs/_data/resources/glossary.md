@@ -119,7 +119,7 @@ The system of fees charged for creating atoms, triples, and vault operations. Fe
 
 A query language for APIs that allows clients to request exactly the data they need. Intuition provides a GraphQL API for querying the knowledge graph.
 
-**See:** [GraphQL API](/docs/graphql-api)
+**See:** [GraphQL API](/docs/graphql-api/overview)
 
 ## I
 
@@ -153,7 +153,7 @@ A blockchain built on top of a Layer 2 solution. Intuition is an L3 built on Bas
 
 The core smart contract that manages all atoms, triples, and vaults in Intuition. Acts as the central registry and vault factory.
 
-**See:** [MultiVault API](/docs/protocol/api-reference/multivault)
+**See:** [MultiVault API](/docs/protocol/api-reference/multivault/atoms)
 
 **Functions:**
 - Create atoms and triples
@@ -286,7 +286,7 @@ An on-chain smart contract holding staked assets for a specific atom or triple. 
 
 The unique identifier for a vault, derived from the corresponding atom or triple ID. Used to reference vaults in contracts and APIs.
 
-**See:** [MultiVault API](/docs/protocol/api-reference/multivault)
+**See:** [MultiVault API](/docs/protocol/api-reference/multivault/atoms)
 
 ### Vault Shares
 
@@ -300,7 +300,7 @@ Tokens representing ownership in a vault's assets. Issued when depositing, burne
 
 A tokenized representation of staked TRUST in a vault, making staked positions transferable as ERC-20 tokens.
 
-**See:** [Protocol API Reference](/docs/protocol/api-reference)
+**See:** [Protocol API Reference](/docs/protocol/api-reference/wrapped-trust/overview)
 
 **Use cases:**
 - Transfer staked positions

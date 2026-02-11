@@ -51,27 +51,27 @@ const tools = [
 const developers = [
   {
     name: 'Architecture',
-    href: '/docs/developer-tools/deep-dive/architecture',
+    href: '/docs/intuition-concepts/architecture',
   },
   {
     name: 'Primitives',
-    href: '/docs/primitives/overview',
+    href: '/docs/intuition-concepts/primitives',
   },
   {
     name: 'Smart Contracts',
-    href: '/docs/developer-tools/contracts/contract-architecture',
+    href: '/docs/intuition-smart-contracts',
   },
   {
     name: 'GraphQL',
-    href: '/docs/developer-tools/graphql-api/overview',
+    href: '/docs/graphql-api/overview',
   },
   {
     name: 'SDK',
-    href: '/docs/developer-tools/sdks/overview'
+    href: '/docs/intuition-sdk/installation-and-setup'
   },
   {
     name: 'AI Integration',
-    href: '/docs/intuition-ai'
+    href: '/docs/experimental-applications/mcp-server'
   },
 ];
 

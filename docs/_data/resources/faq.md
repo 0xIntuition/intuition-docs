@@ -251,7 +251,7 @@ Common causes of transaction failures:
 We're here to help! Reach out to our community or support team for assistance.
 </p>
 <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-<a href="/docs/resources/community" style={{ 
+<a href="/docs/resources/community-and-support" style={{ 
   backgroundColor: 'transparent', 
   color: 'var(--ifm-color-primary)', 
   padding: '0.75rem 1.5rem', 

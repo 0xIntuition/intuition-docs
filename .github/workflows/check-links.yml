@@ -1,0 +1,38 @@
+name: Check Internal Links
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'docs/**'
+      - 'src/components/**'
+      - 'src/pages/**'
+      - 'src/snippets/**'
+      - 'docusaurus.config.js'
+      - 'scripts/validate-internal-links.js'
+
+jobs:
+  validate-links:
+    name: Validate internal links
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate internal /docs/ links
+        run: node scripts/validate-internal-links.js
+
+  build:
+    name: Docusaurus build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Build site
+        run: npm run build

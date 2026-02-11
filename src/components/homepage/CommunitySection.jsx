@@ -66,19 +66,19 @@ const quickLinks = [
     title: 'Getting Started',
     description: 'Kits and repos to get started building',
     icon: Zap,
-    link: '/docs/quickstart/intuition-kits'
+    link: '/docs/getting-started/intuition-kits'
   },
   {
     title: 'SDK',
     description: 'Getting started with our SDK',
     icon: CodeRegular,
-    link: '/docs/developer-tools/sdks/overview'
+    link: '/docs/intuition-sdk/installation-and-setup'
   },
   {
     title: 'GraphQL API Reference',
     description: 'GraphQL API documentation',
     icon: DatabaseRegular,
-    link: '/docs/developer-tools/graphql-api/overview'
+    link: '/docs/graphql-api/overview'
   },
   {
     title: 'Video Tutorials',

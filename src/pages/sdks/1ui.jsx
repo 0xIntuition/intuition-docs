@@ -177,7 +177,7 @@ function ResponsiveComponent() {
         </p>
         <ul className="list-disc pl-6 mb-6">
           <li className="mb-2">Visit our <a href="https://0xintuition.github.io/intuition-ts/" className="text-primary-500 hover:underline">Storybook</a> for interactive examples</li>
-          <li className="mb-2">Check our <a href="/docs/components" className="text-primary-500 hover:underline">Component Documentation</a></li>
+          <li className="mb-2">Check our <a href="https://0xintuition.github.io/intuition-ts/" className="text-primary-500 hover:underline">Component Documentation</a></li>
           <li className="mb-2">Join our <a href="/community" className="text-primary-500 hover:underline">Discord community</a></li>
         </ul>
       </div>

@@ -198,7 +198,7 @@ Run a Node
 Self-host the indexing layer for direct database access and GraphQL API.
 </p>
 <p style={{ marginTop: '1rem', marginBottom: 0 }}>
-<a href="/docs/resources/community">Contact Support →</a>
+<a href="/docs/resources/community-and-support">Contact Support →</a>
 </p>
 </div>
 
