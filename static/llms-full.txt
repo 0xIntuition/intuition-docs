@@ -997,7 +997,7 @@ The MetaMask Snap is open source and welcomes contributions:
 ## Related Resources
 
 - [Portal](/docs/portal) - Main web interface for Intuition
-- [Browser Extension](/docs/experimental-applications) - Chrome extension for web browsing
+- [Browser Extension](/docs/experimental-applications/metamask-snap) - Chrome extension for web browsing
 - [Developer Tools](/docs/getting-started/developer-stack) - Programmatic access and integration
 - [API Documentation](/docs/graphql-api/overview) - Technical integration guides
 - [Community](https://discord.gg/0xintuition) - Join the Intuition community
@@ -4662,14 +4662,14 @@ If this is your first time using GraphQL, you can learn more at [graphql.org](ht
 There are a few ways to get started with this GraphQL API, depending on the level of abstraction and customization you require : 
 
   <a
-    href="/docs/developer-tools/sdks/overview"
+    href="/docs/intuition-sdk/installation-and-setup"
   >
       SDK
     
       Integrate with Intuition smart contracts using our TypeScript SDK.
   
   <a
-    href="/docs/developer-tools/graphql-api/custom-queries"
+    href="/docs/graphql-api/custom-queries"
   >
       Custom Queries
     
@@ -4678,14 +4678,14 @@ There are a few ways to get started with this GraphQL API, depending on the leve
 ### GraphQL Package
 
   <a
-    href="/docs/developer-tools/graphql-api/npm-package"
+    href="/docs/graphql-api/npm-package"
   >
       Install it with NPM
     
       Install and use the NPM package with ready-made React Query hooks.
   
   <a
-    href="/docs/developer-tools/graphql-api/npm-package"
+    href="/docs/graphql-api/npm-package"
   >
       Use it as a GraphQL Generator
     
@@ -9747,14 +9747,11 @@ Source: https://docs.intuition.systems/docs/intuition-node/overview
 
 # Overview
 
-Learn how to run your own Intuition indexing service using the official Rust implementation to mirror on-chain data into your own infrastructure.
+Learn how to set up and run your own Intuition node to participate in the network using the official Rust implementation.
 
 ## What is an Intuition Node?
 
-
-An Intuition node is a self-hosted data indexing and processing service that independently ingests, decodes, and serves data from the Intuition network.
-
-The `intuition-rs` workspace is a comprehensive Rust codebase for building these indexing and backend services. It features a modular architecture with multiple specialized components, designed for high performance, memory safety, and operational reliability.
+The `intuition-rs` workspace is a comprehensive Rust workspace for blockchain data indexing and processing, featuring a modular architecture with multiple specialized services. This implementation provides high performance, memory safety, and reliability for running Intuition nodes and backend services.
 
 :::warning Node Requirements
 Running an Intuition node requires Docker, Rust toolchain, and proper environment configuration. This guide provides comprehensive setup instructions for local development and production deployments.
@@ -9767,14 +9764,12 @@ Running an Intuition node requires Docker, Rust toolchain, and proper environmen
 
 Running your own Intuition node provides several key benefits:
 
-- **Full Data Access**: Direct access to on-chain Intuition data without relying on third-party indexing services
-- **Independent Operation**: Operate fully independently from hosted providers while consuming public network data
-- **Custom Indexing**: Tailor data ingestion, decoding, and indexing pipelines to your specific application needs
-- **Performance Control**: Optimize performance, storage, and resource allocation based on your requirements
-- **Enhanced Privacy**: Process and query data locally without exposing usage patterns to external services
-- **Development Freedom**: Ideal for building, testing, and operating applications in a fully controlled environment
-- **Reduced Centralization Risk**: Avoid reliance on shared or centralized indexing providers by operating your own infrastructure
-
+- **Full Data Access**: Direct access to all blockchain data without relying on third-party services
+- **Network Participation**: Actively contribute to the decentralization and resilience of the Intuition network
+- **Custom Indexing**: Tailor data indexing and processing to your specific needs
+- **Performance Control**: Optimize performance and resource allocation based on your requirements
+- **Enhanced Privacy**: Process and query data without exposing your queries to external services
+- **Development Freedom**: Ideal for building and testing applications in a controlled environment
 
 ## Architecture
 
@@ -21890,7 +21885,7 @@ The system of fees charged for creating atoms, triples, and vault operations. Fe
 
 A query language for APIs that allows clients to request exactly the data they need. Intuition provides a GraphQL API for querying the knowledge graph.
 
-**See:** [GraphQL API](/docs/graphql-api)
+**See:** [GraphQL API](/docs/graphql-api/overview)
 
 ## I
 
@@ -21924,7 +21919,7 @@ A blockchain built on top of a Layer 2 solution. Intuition is an L3 built on Bas
 
 The core smart contract that manages all atoms, triples, and vaults in Intuition. Acts as the central registry and vault factory.
 
-**See:** [MultiVault API](/docs/protocol/api-reference/multivault)
+**See:** [MultiVault API](/docs/protocol/api-reference/multivault/atoms)
 
 **Functions:**
 - Create atoms and triples
@@ -22057,7 +22052,7 @@ An on-chain smart contract holding staked assets for a specific atom or triple. 
 
 The unique identifier for a vault, derived from the corresponding atom or triple ID. Used to reference vaults in contracts and APIs.
 
-**See:** [MultiVault API](/docs/protocol/api-reference/multivault)
+**See:** [MultiVault API](/docs/protocol/api-reference/multivault/atoms)
 
 ### Vault Shares
 
@@ -22071,7 +22066,7 @@ Tokens representing ownership in a vault's assets. Issued when depositing, burne
 
 A tokenized representation of staked TRUST in a vault, making staked positions transferable as ERC-20 tokens.
 
-**See:** [Protocol API Reference](/docs/protocol/api-reference)
+**See:** [Protocol API Reference](/docs/protocol/api-reference/wrapped-trust/overview)
 
 **Use cases:**
 - Transfer staked positions
@@ -22175,8 +22170,6 @@ Complete documentation in LLM-friendly format. Full protocol reference for advan
 - **[Documentation Updates](https://github.com/0xIntuition/intuition-docs/commits/main)** - Docs changelog
 
 ## Additional Tools
-
-Useful tools and scripts for working with Intuition. Enhance your development workflow.
 
 Monitor real-time network status and uptime statistics. Stay informed about maintenance and incidents.
 
