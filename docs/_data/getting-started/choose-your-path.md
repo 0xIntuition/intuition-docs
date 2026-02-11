@@ -86,7 +86,7 @@ graph TD
 - Abstracts complexity
 - React integration ready
 
-<a class="button button--primary" href="/docs/docs/intuition-sdk/getting-started/quick-start">Start with SDK Quick Start →</a>
+<a class="button button--primary" href="/docs/intuition-sdk/quick-start">Start with SDK Quick Start →</a>
 
 ### Query Data Only (No Writes)
 
@@ -96,7 +96,7 @@ graph TD
 - No wallet needed for reads
 - Powerful filtering and aggregation
 
-<a class="button button--primary" href="/docs/docs/graphql-api/getting-started/client-setup">Start with GraphQL Setup →</a>
+<a class="button button--primary" href="/docs/graphql-api/getting-started/client-setup">Start with GraphQL Setup →</a>
 
 ### Build Smart Contract Integration
 
@@ -106,7 +106,7 @@ graph TD
 - Direct contract calls
 - Full control
 
-<a class="button button--primary" href="/docs/docs/protocol/getting-started/configuration">Start with Protocol Configuration →</a>
+<a class="button button--primary" href="/docs/protocol/getting-started/configuration">Start with Protocol Configuration →</a>
 
 ### Understand the System First
 
@@ -116,7 +116,7 @@ graph TD
 - Economics and incentives
 - Architecture
 
-<a class="button button--primary" href="/docs/docs/intuition-concepts/overview">Start with Primitives Overview →</a>
+<a class="button button--primary" href="/docs/intuition-concepts/primitives">Start with Primitives Overview →</a>
 
 ### See Complete Examples
 
@@ -126,7 +126,7 @@ graph TD
 - Curated lists
 - Social attestations
 
-<a class="button button--primary" href="/docs/docs/tutorials/overview">Start with Tutorials →</a>
+<a class="button button--primary" href="/docs/tutorials/overview">Start with Tutorials →</a>
 
 ## Comparison Table
 
