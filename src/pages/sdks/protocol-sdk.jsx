@@ -187,7 +187,7 @@ subscription.unsubscribe();`}
           If you need assistance with the Protocol SDK, you can:
         </p>
         <ul className="list-disc pl-6 mb-6">
-          <li className="mb-2">Check our <a href="/docs/contracts" className="text-primary-500 hover:underline">Smart Contract Documentation</a></li>
+          <li className="mb-2">Check our <a href="/docs/intuition-smart-contracts" className="text-primary-500 hover:underline">Smart Contract Documentation</a></li>
           <li className="mb-2">Visit our <a href="https://github.com/0xIntuition/intuition-ts/tree/main/packages/sdk" className="text-primary-500 hover:underline">GitHub repository</a></li>
           <li className="mb-2">Join our <a href="/community" className="text-primary-500 hover:underline">Discord community</a></li>
         </ul>
