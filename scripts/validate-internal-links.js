@@ -37,43 +37,154 @@ function walkDir(dir) {
   return results;
 }
 
+function normalizeDocPath(docPath) {
+  if (!docPath) return '/docs';
+  let normalized = docPath.replace(/\\/g, '/');
+  if (!normalized.startsWith('/')) {
+    normalized = `/${normalized}`;
+  }
+  normalized = normalized.replace(/\/+/g, '/');
+  if (normalized !== '/' && normalized.endsWith('/')) {
+    normalized = normalized.slice(0, -1);
+  }
+  return normalized;
+}
+
+function parseFrontMatter(content) {
+  const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/);
+  if (!match) return {};
+
+  const frontMatter = {};
+  const lines = match[1].split(/\r?\n/);
+  for (const line of lines) {
+    const m = line.match(/^\s*([A-Za-z0-9_-]+)\s*:\s*(.+?)\s*$/);
+    if (!m) continue;
+    const key = m[1];
+    let value = m[2].trim();
+
+    if (
+      (value.startsWith('"') && value.endsWith('"')) ||
+      (value.startsWith("'") && value.endsWith("'"))
+    ) {
+      value = value.slice(1, -1);
+    }
+
+    frontMatter[key] = value;
+  }
+
+  return frontMatter;
+}
+
+function resolveDocRoute({ dirPath, basename, frontMatter }) {
+  const fmId = frontMatter.id ? String(frontMatter.id).trim() : '';
+  const fmSlug = frontMatter.slug ? String(frontMatter.slug).trim() : '';
+
+  if (fmSlug) {
+    if (fmSlug.startsWith('/docs/')) {
+      return normalizeDocPath(fmSlug);
+    }
+    if (fmSlug.startsWith('/')) {
+      return normalizeDocPath(`/docs${fmSlug}`);
+    }
+    if (dirPath) {
+      return normalizeDocPath(`/docs/${dirPath}/${fmSlug}`);
+    }
+    return normalizeDocPath(`/docs/${fmSlug}`);
+  }
+
+  // Docusaurus keeps directory index routes at /docs/<dir> even when frontmatter id is set.
+  if (basename === 'index') {
+    return dirPath ? normalizeDocPath(`/docs/${dirPath}`) : '/docs';
+  }
+
+  const routeSegment = fmId || basename;
+
+  if (dirPath) {
+    return normalizeDocPath(`/docs/${dirPath}/${routeSegment}`);
+  }
+  return normalizeDocPath(`/docs/${routeSegment}`);
+}
+
 function buildValidPaths() {
   const validPaths = new Set();
   const files = walkDir(DOCS_DIR);
+  const docIdToRoute = new Map();
+  const categoryFiles = [];
 
   // Add /docs root (index.md in docs/_data/)
   validPaths.add('/docs');
 
   for (const file of files) {
     const rel = path.relative(DOCS_DIR, file);
-    const ext = path.extname(rel);
+    const basename = path.basename(rel);
+    const ext = path.extname(rel).toLowerCase();
 
-    // Directories with _category_.json get auto-generated category index pages
-    if (path.basename(rel) === '_category_.json') {
-      const dirPath = '/docs/' + path.dirname(rel).split(path.sep).join('/');
-      if (dirPath !== '/docs/.') {
-        validPaths.add(dirPath);
-      }
+    if (basename === '_category_.json') {
+      categoryFiles.push(file);
       continue;
     }
 
     if (ext !== '.md' && ext !== '.mdx') continue;
 
     // Skip files starting with _
-    if (path.basename(rel).startsWith('_')) continue;
+    if (basename.startsWith('_')) continue;
 
     const withoutExt = rel.replace(/\.(md|mdx)$/, '');
     const parts = withoutExt.split(path.sep);
+    const dirPath = parts.slice(0, -1).join('/');
+    const baseNameNoExt = parts[parts.length - 1];
+    const content = fs.readFileSync(file, 'utf-8');
+    const frontMatter = parseFrontMatter(content);
 
-    // /docs/getting-started/overview → from docs/_data/getting-started/overview.md
-    const docPath = '/docs/' + parts.join('/');
-    validPaths.add(docPath);
+    const docRoute = resolveDocRoute({
+      dirPath,
+      basename: baseNameNoExt,
+      frontMatter,
+    });
+    validPaths.add(docRoute);
 
-    // Index files also serve as directory paths:
-    // docs/_data/intuition-network/index.md → /docs/intuition-network
-    const basename = parts[parts.length - 1];
-    if (basename === 'index') {
-      validPaths.add('/docs/' + parts.slice(0, -1).join('/'));
+    // Register several doc id forms for _category_.json link.type === "doc" resolution.
+    const pathId = withoutExt.split(path.sep).join('/');
+    docIdToRoute.set(pathId, docRoute);
+    if (baseNameNoExt === 'index' && dirPath) {
+      docIdToRoute.set(dirPath, docRoute);
+    }
+
+    const fmId = frontMatter.id ? String(frontMatter.id).trim() : '';
+    if (fmId) {
+      docIdToRoute.set(fmId, docRoute);
+      if (dirPath) {
+        docIdToRoute.set(`${dirPath}/${fmId}`, docRoute);
+      }
+    }
+  }
+
+  // Only generated-index category pages create a new routable /docs/<dir> path.
+  // link.type === "doc" points at an existing doc route, not /docs/<dir>.
+  for (const categoryFile of categoryFiles) {
+    let category;
+    try {
+      category = JSON.parse(fs.readFileSync(categoryFile, 'utf-8'));
+    } catch {
+      continue;
+    }
+
+    const rel = path.relative(DOCS_DIR, categoryFile);
+    const dirPath = path.dirname(rel).split(path.sep).join('/');
+    const categoryRoute = normalizeDocPath(`/docs/${dirPath}`);
+    const linkType = category?.link?.type;
+    const linkId = category?.link?.id;
+
+    if (linkType === 'generated-index') {
+      validPaths.add(categoryRoute);
+      continue;
+    }
+
+    if (linkType === 'doc' && typeof linkId === 'string') {
+      const linkedDocRoute = docIdToRoute.get(linkId);
+      if (linkedDocRoute) {
+        validPaths.add(linkedDocRoute);
+      }
     }
   }
 
