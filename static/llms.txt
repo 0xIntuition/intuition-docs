@@ -3,6 +3,7 @@
 > Intuition is a permissionless protocol for creating verifiable, tokenized attestations on a Layer 3 blockchain. Developers build context-aware applications using semantic triples (subject-predicate-object relationships) backed by economic incentives through bonding curves. The three core primitives are Atoms (universal identifiers), Triples (structured claims), and Signals (staked conviction).
 
 - [llms-full.txt](https://docs.intuition.systems/llms-full.txt): Complete documentation with full page content for deep reference
+- [llms-medium.txt](https://docs.intuition.systems/llms-medium.txt): Condensed summaries with metadata — fits in a single context window
 
 ## Quick Start
 

@@ -36,5 +36,8 @@ yarn-error.log*
 # Optional eslint cache
 .eslintcache
 
+# Stale root copy — canonical version is static/llms-full.txt
+/llms-full.txt
+
 # Claude Code
 .claude/settings.local.json

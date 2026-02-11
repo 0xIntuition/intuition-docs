@@ -1,0 +1,5809 @@
+# Intuition Protocol - Documentation Summary
+
+> Condensed reference for the Intuition protocol. Each section includes metadata and prose content without code examples. For full content with code, see: https://docs.intuition.systems/llms-full.txt
+> For a curated navigation index, see: https://docs.intuition.systems/llms.txt
+
+Intuition is a permissionless protocol for creating verifiable, tokenized attestations on a Layer 3 blockchain. The three core primitives are Atoms (universal identifiers), Triples (structured claims), and Signals (staked conviction).
+
+---
+title: "Contribution Guidelines"
+description: "Guidelines for contributing to Intuition projects across all repositories including intuition-ts, intuition-rs, intuition-mcp-server, and intuition-contracts-v2"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/contribution-guidelines"
+---
+
+# Contribution Guidelines
+
+Thanks for your interest in contributing to 0xIntuition! We're excited to have you join our community of builders working on the trust protocol for the internet.
+
+Please take a moment to review this document before submitting your first pull request. We also strongly recommend that you check for open issues and pull requests to see if someone else is working on something similar.
+
+If you need any help, feel free to reach out to [@0xintuition](https://twitter.com/0xintuition).
+
+## General Guidelines
+
+[... see full docs for complete content]
+
+---
+title: "Data Populator (Deprecated)"
+description: "Documentation for the Intuition Data Populator application"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/experimental-applications/data-populator"
+---
+
+# Data Populator (Deprecated)
+
+# Data Populator
+
+The **Intuition Data Populator** is a specialized tool designed to help users and developers efficiently populate the Intuition knowledge graph with high-quality, structured data. This application streamlines the process of creating atoms, triples, and establishing meaningful relationships within the decentralized knowledge network.
+
+## Why did we create the Data Populator?
+
+Do you have a large amount of data you want to add to the Intuition System, but not enough time or patience to manually create each data point as an atom or triple in the Portal? Look no further! The Data Populator V1 is here!
+
+[... see full docs for complete content]
+
+---
+title: "Farcaster Frames"
+description: "Documentation for the Intuition Farcaster Frames integration"
+last_updated: "2026-02-11T09:19:02-05:00"
+source: "https://docs.intuition.systems/docs/experimental-applications/farcaster-frames"
+---
+
+# Farcaster Frames
+
+The **Intuition Farcaster Frames** integration brings the power of Intuition's knowledge graph directly into the Farcaster social network. This integration enables users to create, verify, and interact with Intuition atoms and triples through interactive frames embedded in Farcaster posts, creating a seamless bridge between social media and decentralized knowledge.
+
+## Overview
+
+Farcaster Frames provide an interactive way for users to engage with Intuition's knowledge graph without leaving the Farcaster platform. Users can:
+
+- **Create identities** - Generate Intuition atoms directly from Farcaster posts
+- **Make claims** - Create triples and assertions through interactive frames
+
+[... see full docs for complete content]
+
+---
+title: "MCP Server"
+description: "Documentation for the Intuition MCP Server"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/experimental-applications/mcp-server"
+---
+
+# MCP Server
+
+# Intuition MCP Server
+
+The Intuition MCP Server is an HTTP stream server designed to interact with the Intuition knowledge graph, enabling AI models and applications to query and manage data through powerful tools built on the Model Context Protocol.
+
+## Overview
+
+The Intuition MCP Server acts as a bridge between AI applications and the Intuition protocol, providing:
+
+- **Structured data extraction** from natural language using triple extraction
+- **Comprehensive search** for entities (atoms), accounts, and concepts
+- **Social graph exploration** with followers and following relationships
+- **Account information** retrieval with detailed connection data
+
+[... see full docs for complete content]
+
+---
+title: "MetaMask Snap"
+description: "Documentation for the Intuition MetaMask Snap"
+last_updated: "2026-02-11T09:19:02-05:00"
+source: "https://docs.intuition.systems/docs/experimental-applications/metamask-snap"
+---
+
+# MetaMask Snap
+
+The **Intuition MetaMask Snap** extends MetaMask's functionality to seamlessly integrate with the Intuition knowledge graph. This Snap enables users to interact with Intuition's decentralized identity and reputation system directly through their MetaMask wallet, providing a familiar and secure interface for managing atoms, triples, and staking operations.
+
+## Overview
+
+The MetaMask Snap serves as a bridge between traditional Web3 wallet functionality and Intuition's knowledge graph, enabling users to:
+
+- **Manage identities** - Create and manage Intuition atoms directly from MetaMask
+- **Make claims** - Create triples and assertions about entities in the knowledge graph
+
+[... see full docs for complete content]
+
+---
+title: "Architecture"
+description: "Technical architecture of Intuition's three-layer system - Network, Protocol, and Subnet"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/getting-started/architecture"
+---
+
+# Architecture
+
+# Technical Architecture
+
+Intuition's architecture consists of three tightly integrated layers that work together to create a high-performance, decentralized knowledge graph. This document provides a technical deep-dive into each layer and how they interconnect.
+
+## Architecture Overview
+
+![Intuition System Overview](/img/intuition-intro.png)
+
+Intuition's architecture is designed for **speed**, **scale**, and **interoperability**. By separating concerns across three specialized layers, we achieve optimal performance while maintaining decentralization and cross-chain compatibility.
+
+## Layer 1: Intuition Network (Base L3)
+
+### Overview
+
+[... see full docs for complete content]
+
+---
+title: "Choose Your Path"
+description: "Find the best way to get started with Intuition based on your goals"
+last_updated: "2026-02-11T09:19:02-05:00"
+source: "https://docs.intuition.systems/docs/getting-started/choose-your-path"
+---
+
+# Choose Your Path
+
+Not sure where to start? Pick the path that matches your goal.
+
+## I Want to...
+
+### Build a Frontend App (Most Common)
+
+**Use the SDK** - High-level TypeScript SDK with React hooks.
+
+- Best for: Web apps, dashboards, social platforms
+- Abstracts complexity
+- React integration ready
+- **Start here:** [SDK Quick Start](/docs/intuition-sdk/quick-start)
+
+### Query Data Only (No Writes)
+
+**Use GraphQL API** - Read-only queries for the knowledge graph.
+
+- Best for: Analytics, dashboards, data visualization
+- No wallet needed for reads
+- Powerful filtering and aggregation
+- **Start here:** [GraphQL Setup](/docs/graphql-api/getting-started/client-setup)
+
+### Build Smart Contract Integration
+
+[... see full docs for complete content]
+
+---
+title: "Developer Stack"
+description: "Choose the right tool for building with Intuition"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/getting-started/developer-stack"
+---
+
+# Developer Stack
+
+# Developer Tools
+
+Choose the right tool for your use case.
+
+## SDK (Recommended for Most Developers)
+
+High-level TypeScript SDK with React integration.
+
+**Use when:**
+- Building web applications
+- Want simplicity and speed
+- Need React hooks
+- Prefer abstraction over low-level control
+
+**[→ SDK Overview](/docs/intuition-sdk/quick-start)**
+
+## Protocol Package
+
+Low-level contract interactions for advanced use cases.
+
+**Use when:**
+- Integrating with other smart contracts
+- Need maximum control and flexibility
+- Optimizing gas costs
+- Building on Solidity
+
+**[→ Protocol Overview](/docs/protocol/getting-started/overview)**
+
+## GraphQL API
+
+Query the knowledge graph with GraphQL.
+
+**Use when:**
+- Read-only queries
+- Building analytics dashboards
+
+[... see full docs for complete content]
+
+---
+title: "Integrations"
+description: "Integrate Intuition with various platforms and tools"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/getting-started/integrations"
+---
+
+# Integrations
+
+Intuition integrates with various platforms and tools to extend its capabilities beyond the core knowledge graph protocol.
+
+## AI Integration
+
+Use Intuition's knowledge graph with AI systems and agents to create persistent, verifiable memory and context.
+
+- **AI Overview** - AI capabilities and use cases (Coming Soon)
+- **MCP Server** - Model Context Protocol integration (Coming Soon)
+
+**Use cases:**
+- **AI agents with persistent memory** - Store and retrieve agent knowledge on-chain
+- **LLM context enhancement** - Provide verified context to language models
+- **Knowledge graph reasoning** - Enable semantic reasoning over structured data
+
+[... see full docs for complete content]
+
+---
+title: "Intuition Kits"
+description: "Jump-start your development with our official Intuition kits and resources. These pre-configured templates and official tools provide everything you need to build Intuition-powered applications."
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/getting-started/intuition-kits"
+---
+
+# Intuition Kits
+
+Jump-start your development with our official Intuition kits and resources. These pre-configured templates and official tools provide everything you need to build Intuition-powered applications.
+
+## Official Kits
+
+### Core Development Tools
+
+| Resource | Description | Primary Use |
+|----------|-------------|-------------|
+| **[intuition-ts](https://github.com/0xIntuition/intuition-ts)** | TypeScript SDK and tools | Main SDK for application development |
+| **[intuition-contracts-v2](https://github.com/0xIntuition/intuition-contracts-v2)** | Smart contracts and protocol implementation | Core protocol and contract development |
+| **[intuition-rs](https://github.com/0xIntuition/intuition-rs)** | Rust implementation | High-performance applications and services |
+
+### Integration Tools
+
+| Resource | Description | Primary Use |
+|----------|-------------|-------------|
+
+[... see full docs for complete content]
+
+---
+title: "Overview"
+description: "Learn about Intuition's core concepts, architecture, and economic model"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/getting-started/overview"
+---
+
+# Overview
+
+## Intuition at a Glance
+
+Intuition is a decentralized system that makes attestations viable as a meta for digital expression.
+
+A universal language for signed data.
+
+Instead of information living as unstructured, siloed, minimally-attributable data in Web2 platforms, Intuition turns information into verifiable, tokenized, and portable objects that can flow across apps, chains, and agents.
+
+The result is a Semantic Web of Trust, powered the world's first token-curated knowledge graph — a network where information isn't just stored, but structured, incentivized, and made usable for developers and AI systems alike — all while maintaining verifiable provenance and attribution.
+
+---
+
+[... see full docs for complete content]
+
+---
+title: "Use Cases"
+description: "Discover how to build amazing applications with Intuition's decentralized knowledge graph - from list curation to verification and fraud protection"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/getting-started/use-cases"
+---
+
+# Use Cases
+
+![Use Cases](/img/use-cases.png)
+
+This article outlines use cases that take advantage of Intuition's unique knowledge graph and claim infrastructure. There are many more ways to use Intuition (and we would love to see what you come up with!), but here are some ideas to get you started.
+
+## List Curation & Ranking Systems
+
+[... see full docs for complete content]
+
+---
+title: "Why Intuition?"
+description: "Understanding the trust crisis Intuition addresses and our mission to rebuild the internet's trust architecture"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/getting-started/why-intuition"
+---
+
+# Why Intuition?
+
+> **Every interaction online is an attestation.**
+> A review or a purchase on Amazon, a comment on Reddit, the watching of a show on Netflix, a retweet, a LinkedIn endorsement, a 'follow', a bookmark, the ordering of an Uber, even a "like" — all are forms of attestations: claims made by things about things.
+
+But attestations today are fragmented, unverifiable, and platform-locked. They don't move with you. They don't carry weight. They aren't semantically structured and unambiguously consumable by machines.
+
+**Intuition changes that.** We've rebuilt attestations as first-class, tokenized primitives — structured, portable, and economically backed. _Attestations on steroids._
+
+[... see full docs for complete content]
+
+---
+title: "Choose Appropriate Operators"
+description: "Use the right comparison operator for the job"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/graphql-api/best-practices/comparison-operators"
+---
+
+# Choose Appropriate Operators
+
+Use the right comparison operator for better performance.
+
+## Anti-Pattern
+
+## Best Practice
+
+## Operator Guidelines
+
+- **_eq**: Exact matches (fastest)
+- **_ilike**: Case-insensitive pattern matching (slower)
+- **_in**: Multiple values
+- **_gt/_lt**: Comparisons
+- **Primary key lookup**: Most efficient (when possible)
+
+---
+title: "Use Database Functions"
+description: "Leverage backend functions for complex queries"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/graphql-api/best-practices/database-functions"
+---
+
+# Use Database Functions
+
+Use backend functions for complex queries instead of client-side filtering.
+
+## Anti-Pattern
+
+## Best Practice
+
+## Available Functions
+
+- `following`: Get accounts a user follows
+- `positions_from_following`: Social feed of positions
+- `search_term`: Semantic search
+- `signals_from_following`: Activity from followed accounts
+
+## Benefits
+
+1. **Faster execution**: Runs in database
+2. **Less data transfer**: Filtered server-side
+3. **More maintainable**: Logic in one place
+
+---
+title: "Error Handling"
+description: "Handle GraphQL errors gracefully"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/graphql-api/best-practices/error-handling"
+---
+
+# Error Handling
+
+Handle GraphQL errors gracefully in your application.
+
+## Error Structure
+
+## Error Types
+
+- **validation-failed**: Query syntax or schema validation error
+- **constraint-violation**: Database constraint violated
+- **unexpected**: Internal server error
+
+## Best Practice
+
+## Tips
+
+1. **Check errors array**: GraphQL can return partial data with errors
+2. **Log error details**: Include query and variables for debugging
+3. **Show user-friendly messages**: Don't expose internal errors
+4. **Implement retry logic**: For network failures
+
+---
+title: "Efficient Filtering"
+description: "Use indexed fields and appropriate operators"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/graphql-api/best-practices/filtering"
+---
+
+# Efficient Filtering
+
+Filter early and use indexed fields for better performance.
+
+## Best Practice
+
+## Indexed Fields
+
+These fields have database indexes:
+- `term_id` (primary key)
+- `creator_id`
+- `type`
+- `created_at`
+
+## Operator Selection
+
+- Use `_eq` for exact matches (not `_ilike`)
+- Use `_ilike` only for pattern matching
+- Use `_in` for multiple values
+- Combine filters with `_and` for specificity
+
+---
+title: "Use Fragments"
+description: "Reuse field selections with GraphQL fragments"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/graphql-api/best-practices/fragments"
+---
+
+# Use Fragments
+
+Reuse field selections across queries with GraphQL fragments.
+
+## Anti-Pattern
+
+## Best Practice
+
+## Benefits
+
+1. **DRY code**: Define once, use everywhere
+2. **Easier maintenance**: Update in one place
+3. **Consistent data**: Same fields across queries
+4. **Better readability**: Named, semantic units
+
+---
+title: "Pagination Best Practices"
+description: "Efficient pagination with limit and offset"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/graphql-api/best-practices/pagination"
+---
+
+# Pagination Best Practices
+
+Always use limit and offset for efficient pagination with consistent ordering.
+
+## Best Practice
+
+## Key Points
+
+1. **Always include order_by** for consistent results
+2. **Fetch total count** using aggregates
+3. **Use reasonable limits** (10-100 items per page)
+4. **Calculate offset** as `(page - 1) * limit`
+
+---
+title: "Query Performance"
+description: "Optimize GraphQL query performance"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/graphql-api/best-practices/performance"
+---
+
+# Query Performance
+
+Optimize your GraphQL queries for better performance.
+
+## Performance Checklist
+
+### 1. Use Indexed Fields for Filtering
+
+**Indexed fields:**
+- `term_id` (primary keys)
+- `creator_id`
+- `type`
+- `created_at`
+- `account_id`
+
+### 2. Request Only Needed Fields
+
+### 3. Use Aggregates Instead of Fetching All Nodes
+
+### 4. Limit Nested Queries
+
+### 5. Use Primary Key Lookups When Possible
+
+### 6. Paginate Large Result Sets
+
+### 7. Use Pre-Computed Tables
+
+### 8. Leverage Database Functions
+
+## Monitoring
+
+- Profile query execution time
+- Monitor response payload sizes
+- Track cache hit rates
+- Watch for N+1 query patterns
+
+---
+title: "Use Pre-Computed Statistics"
+description: "Leverage time-series tables for analytics"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/graphql-api/best-practices/pre-computed-stats"
+---
+
+# Use Pre-Computed Statistics
+
+Leverage time-series aggregation tables for efficient analytics.
+
+## Anti-Pattern
+
+## Best Practice
+
+## Available Tables
+
+- `share_price_change_stats_hourly/daily/weekly/monthly`
+- `signal_stats_hourly/daily/monthly`
+
+## Benefits
+
+1. **Faster queries**: Pre-aggregated data
+2. **Less computation**: Done server-side
+3. **Smaller payloads**: Aggregated vs raw data
+4. **Better UX**: Faster dashboard loading
+
+---
+title: "Request Only Needed Fields"
+description: "Avoid over-fetching by requesting only required fields"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/graphql-api/best-practices/request-only-needed"
+---
+
+# Request Only Needed Fields
+
+Avoid over-fetching by requesting only the fields you actually need.
+
+## Anti-Pattern
+
+## Best Practice
+
+## Benefits
+
+1. **Faster queries**: Less data to fetch and serialize
+2. **Reduced bandwidth**: Smaller response payloads
+3. **Lower memory usage**: Less data to process client-side
+4. **Better caching**: Smaller cache footprints
+
+## Tips
+
+- Start minimal and add fields as needed
+- Remove unused fields from queries
+- Use fragments for commonly requested field sets
+- Profile queries to identify over-fetching
+
+---
+title: "Subscriptions vs Polling"
+description: "When to use subscriptions vs polling"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/graphql-api/best-practices/subscriptions-vs-polling"
+---
+
+# Subscriptions vs Polling
+
+Choose the right approach for your data update needs.
+
+## Use Subscriptions When
+
+- Building real-time dashboards
+- Monitoring live protocol activity
+- Data changes frequently (multiple times per minute)
+- User expects immediate updates
+- Creating notification systems
+
+**Example:**
+
+## Use Polling When
+
+- Data updates infrequently (e.g., daily statistics)
+- Real-time updates aren't critical for UX
+- Minimizing server connections is important
+- Building static reports or analytics
+
+**Example:**
+
+## Guidelines
+
+- **Polling interval**: 30-60 seconds for most use cases
+- **Subscription batch_size**: 10-50 items
+- **Handle reconnections**: Store last cursor for resumability
+
+---
+title: "Use Variables"
+description: "Always use variables for dynamic values"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/graphql-api/best-practices/variables"
+---
+
+# Use Variables
+
+Always use variables for dynamic values instead of hardcoding.
+
+## Anti-Pattern
+
+## Best Practice
+
+**Variables:**
+
+## Benefits
+
+1. **Reusability**: Same query, different values
+2. **Type safety**: GraphQL validates variable types
+3. **Security**: Prevents injection attacks
+4. **Caching**: Better query plan caching
+
+---
+title: "Custom Queries"
+description: "Common GraphQL query examples and patterns for the Intuition API"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/graphql-api/custom-queries"
+---
+
+# Custom Queries
+
+This page provides practical examples of common GraphQL queries for the Intuition API.
+
+## Best Practices
+
+1. **Use Fragments**: Create reusable fragments for common fields
+2. **Optimize Queries**: Only request the fields you need
+3. **Handle Errors**: Always implement proper error handling
+4. **Cache Strategically**: Use React Query's caching capabilities
+5. **Type Safety**: Leverage generated types for better development experience
+
+## Basic Queries
+
+This page will be expanded with more query examples, advanced patterns, and real-world use cases.
+
+### Fetching Atoms
+
+### Fetching Triples
+
+### Fetching Signals
+
+## Advanced Queries
+
+### Complex Filtering
+
+### Pagination
+
+## React Query Hooks
+
+[... see full docs for complete content]
+
+---
+title: "Activity Feed"
+description: "Build real-time activity feed"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/graphql-api/examples/activity-feed"
+---
+
+# Activity Feed
+
+# Example: Activity Feed
+
+Build an activity feed showing recent protocol activity.
+
+## Query
+
+    id: 'recent-activity',
+    title: 'Recent Protocol Activity',
+    query: `query GetRecentActivity($limit: Int!) {
+  deposits(
+    order_by: { created_at: desc }
+    limit: $limit
+  ) {
+    id
+    event_type
+    sender_id
+    assets_for_receiver
+    created_at
+    vault {
+      term {
+        atom { label }
+
+  redemptions(
+    order_by: { created_at: desc }
+    limit: $limit
+  ) {
+    id
+    event_type
+    receiver_id
+    assets_for_receiver
+    created_at
+
+}`,
+    variables: {
+      limit: 10
+
+];
+
+---
+title: "Atom with Vault"
+description: "Fetch atom details with vault statistics"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/graphql-api/examples/atom-with-vault"
+---
+
+# Atom with Vault
+
+# Example: Atom with Vault
+
+Fetch atom metadata along with vault statistics.
+
+## Use Case
+
+Display atom information with market data on a detail page.
+
+## Query
+
+    id: 'atom-with-vault',
+    title: 'Atom with Vault Info',
+    query: `query GetAtomWithVault($atomId: String!, $curveId: numeric!) {
+  atom(term_id: $atomId) {
+    term_id
+    label
+    image
+    type
+    created_at
+    creator {
+      id
+      label
+
+    term {
+      vaults(where: { curve_id: { _eq: $curveId } }) {
+        curve_id
+        total_shares
+        total_assets
+        current_share_price
+        market_cap
+        position_count
+
+}`,
+    variables: {
+      atomId: '0x57d94c116a33bb460428eced262b7ae2ec6f865e7aceef6357cec3d034e8ea21',
+      curveId: '1'
+
+];
+
+## Implementation
+
+---
+title: "Complex Filtering"
+description: "Multi-criteria search and filtering"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/graphql-api/examples/complex-filtering"
+---
+
+# Complex Filtering
+
+# Example: Complex Filtering
+
+Implement multi-criteria search across entities.
+
+## Query
+
+    id: 'global-search',
+    title: 'Global Search',
+    query: `query GlobalSearch($searchTerm: String!, $limit: Int!) {
+  accounts(
+    where: {
+      _or: [
+        { label: { _ilike: $searchTerm } }
+        { atom: { label: { _ilike: $searchTerm } } }
+      ]
+
+    limit: $limit
+  ) {
+    id
+    label
+    image
+
+  atoms(
+    where: { label: { _ilike: $searchTerm } }
+    limit: $limit
+  ) {
+    term_id
+    label
+    image
+    type
+
+  triples(
+    where: {
+      _or: [
+        { subject: { label: { _ilike: $searchTerm } } }
+        { predicate: { label: { _ilike: $searchTerm } } }
+
+[... see full docs for complete content]
+
+---
+title: "Multi-Language Examples"
+description: "GraphQL API usage in Python, Go, and Rust"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/graphql-api/examples/multi-language"
+---
+
+# Multi-Language Examples
+
+Use the Intuition GraphQL API across different programming languages.
+
+## Python
+
+## Go
+
+## Rust
+
+---
+title: "Price History"
+description: "Analyze price trends over time"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/graphql-api/examples/price-history"
+---
+
+# Price History
+
+# Example: Price History
+
+Analyze share price trends using time-series data.
+
+## Query
+
+    id: 'price-trends',
+    title: 'Daily Price Trends',
+    query: `query GetPriceTrends($termId: String!, $curveId: numeric!, $days: Int!) {
+  share_price_change_stats_daily(
+    where: {
+      term_id: { _eq: $termId }
+      curve_id: { _eq: $curveId }
+
+    order_by: { bucket: desc }
+    limit: $days
+  ) {
+    bucket
+    first_share_price
+    last_share_price
+    difference
+    change_count
+
+}`,
+    variables: {
+      termId: '0x57d94c116a33bb460428eced262b7ae2ec6f865e7aceef6357cec3d034e8ea21',
+      curveId: '1',
+      days: 30
+
+];
+
+---
+title: "Social Graph"
+description: "Build social feed from followed accounts"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/graphql-api/examples/social-graph"
+---
+
+# Social Graph
+
+# Example: Social Graph
+
+Build a social activity feed from followed accounts.
+
+## Query
+
+    id: 'following-feed',
+    title: 'Following Activity Feed',
+    query: `query GetFollowingFeed($address: String!, $limit: Int!) {
+  following_count: following_aggregate(args: { address: $address }) {
+    aggregate {
+      count
+
+  positions_from_following(
+    args: { address: $address }
+    limit: $limit
+    order_by: { created_at: desc }
+  ) {
+    id
+    shares
+    created_at
+    account {
+      id
+      label
+      image
+
+    vault {
+      term_id
+      term {
+        atom { label image }
+
+}`,
+    variables: {
+      address: '0xd8da6bf26964af9d7eed9e03e53415d37aa96045',
+      limit: 20
+
+];
+
+---
+title: "Real-Time Subscriptions"
+description: "Implement real-time updates with subscriptions"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/graphql-api/examples/subscriptions"
+---
+
+# Real-Time Subscriptions
+
+# Example: Real-Time Subscriptions
+
+Implement real-time position monitoring with subscriptions.
+
+## Subscription
+
+    id: 'position-stream',
+    title: 'Live Position Updates',
+    query: `subscription WatchPositions(
+  $cursor: [positions_stream_cursor_input]!
+  $accountId: String
+  $batchSize: Int!
+) {
+  positions_stream(
+    cursor: $cursor
+    batch_size: $batchSize
+    where: {
+      account_id: { _eq: $accountId }
+      shares: { _gt: "0" }
+
+  ) {
+    id
+    shares
+    vault {
+      term_id
+      current_share_price
+
+}`,
+    variables: {
+      cursor: [{
+        initial_value: { created_at: '2024-12-01T00:00:00Z' },
+        ordering: 'ASC'
+      }],
+      accountId: '0xd8da6bf26964af9d7eed9e03e53415d37aa96045',
+      batchSize: 10
+
+];
+
+## Implementation
+
+---
+title: "Trending Atoms"
+description: "Find top atoms by market cap and activity"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/graphql-api/examples/trending-atoms"
+---
+
+# Trending Atoms
+
+# Example: Trending Atoms
+
+Find top atoms ranked by vault market cap.
+
+## Query
+
+    id: 'trending-atoms',
+    title: 'Top Atoms by Market Cap',
+    query: `query GetTrendingAtoms($curveId: numeric!, $limit: Int!) {
+  vaults(
+    where: { curve_id: { _eq: $curveId } }
+    order_by: { market_cap: desc }
+    limit: $limit
+  ) {
+    term_id
+    market_cap
+    position_count
+    total_shares
+    term {
+      atom {
+        term_id
+        label
+        image
+        type
+
+}`,
+    variables: {
+      curveId: '1',
+      limit: 20
+
+];
+
+---
+title: "Triples Pagination"
+description: "Paginate through triples with total count"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/graphql-api/examples/triples-pagination"
+---
+
+# Triples Pagination
+
+# Example: Triples Pagination
+
+Paginate through triples with total count for UI.
+
+## Query
+
+    id: 'triples-page',
+    title: 'Paginated Triples',
+    query: `query GetTriplesPage($limit: Int!, $offset: Int!) {
+  total: triples_aggregate {
+    aggregate {
+      count
+
+  triples(
+    limit: $limit
+    offset: $offset
+    order_by: { created_at: desc }
+  ) {
+    term_id
+    created_at
+    subject { label image }
+    predicate { label }
+    object { label image }
+
+}`,
+    variables: {
+      limit: 20,
+      offset: 0
+
+];
+
+---
+title: "User Positions"
+description: "Fetch all positions for a user with aggregates"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/graphql-api/examples/user-positions"
+---
+
+# User Positions
+
+# Example: User Positions
+
+Fetch user positions with aggregate statistics.
+
+## Query
+
+    id: 'user-positions',
+    title: 'User Portfolio',
+    query: `query GetUserPositions($accountId: String!, $limit: Int!) {
+  stats: positions_aggregate(where: { account_id: { _eq: $accountId } }) {
+    aggregate {
+      count
+      sum { shares }
+
+  positions(
+    where: { account_id: { _eq: $accountId } }
+    order_by: { shares: desc }
+    limit: $limit
+  ) {
+    id
+    shares
+    vault {
+      term_id
+      current_share_price
+      market_cap
+      term {
+        atom { label image }
+
+}`,
+    variables: {
+      accountId: '0xd8da6bf26964af9d7eed9e03e53415d37aa96045',
+      limit: 20
+
+];
+
+---
+title: "Client Setup"
+description: "Set up GraphQL clients in JavaScript, Python, Go, and Rust"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/graphql-api/getting-started/client-setup"
+---
+
+# Client Setup
+
+The Intuition GraphQL API works with any GraphQL client in any language. This guide provides setup examples for popular clients across different languages.
+
+## JavaScript / TypeScript
+
+For JavaScript/TypeScript projects, import endpoints from the package instead of hardcoding them:
+
+### graphql-request
+
+Lightweight and simple GraphQL client:
+
+**Installation**:
+
+[graphql-request documentation](https://github.com/jasonkuhrt/graphql-request)
+
+### Apollo Client
+
+Full-featured GraphQL client with caching and React integration:
+
+**Installation**:
+
+[@apollo/client documentation](https://www.apollographql.com/docs/react/)
+
+### urql
+
+Highly customizable and lightweight GraphQL client:
+
+**Installation**:
+
+[urql documentation](https://formidable.com/open-source/urql/docs/)
+
+### Plain fetch
+
+No dependencies required:
+
+## Python
+
+### gql
+
+Type-safe Python GraphQL client:
+
+**Installation**:
+
+[gql documentation](https://gql.readthedocs.io/)
+
+### python-graphql-client
+
+Simple and lightweight GraphQL client:
+
+**Installation**:
+
+[... see full docs for complete content]
+
+---
+title: "Introduction"
+description: "Introduction to the Intuition GraphQL API and its capabilities"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/graphql-api/getting-started/introduction"
+---
+
+# Introduction
+
+# GraphQL API Introduction
+
+The Intuition GraphQL API provides comprehensive access to the Intuition knowledge graph, including atoms (entities), triples (relationships), vaults (asset pools), and user positions. The API is powered by Hasura and offers rich querying capabilities with filtering, sorting, pagination, and aggregations.
+
+## Public Endpoints
+
+No authentication required to access the GraphQL API:
+
+- **Mainnet**: `https://mainnet.intuition.sh/v1/graphql`
+- **Testnet**: `https://testnet.intuition.sh/v1/graphql`
+
+## Interactive Explorers
+
+Explore the API interactively with Apollo Studio Sandbox:
+
+- [Mainnet Explorer](https://studio.apollographql.com/sandbox/explorer?endpoint=https%3A%2F%2Fmainnet.intuition.sh%2Fv1%2Fgraphql)
+- [Testnet Explorer](https://studio.apollographql.com/sandbox/explorer?endpoint=https%3A%2F%2Ftestnet.intuition.sh%2Fv1%2Fgraphql)
+
+## Core Concepts
+
+### Atoms
+
+[... see full docs for complete content]
+
+---
+title: "Schema Reference"
+description: "GraphQL schema features including filtering, sorting, pagination, and aggregations"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/graphql-api/getting-started/schema-reference"
+---
+
+# Schema Reference
+
+The Intuition GraphQL API is powered by Hasura, providing a rich set of features for querying and manipulating data.
+
+## Getting the Schema
+
+Generate the GraphQL schema via introspection:
+
+This schema file can be used with code generation tools to create type-safe clients.
+
+## Filtering with `where` Clauses
+
+Use boolean expressions to filter query results:
+
+### Available Operators
+
+**Equality**:
+- `_eq` - Equal to
+- `_neq` - Not equal to
+
+**Comparisons**:
+- `_gt` - Greater than
+- `_gte` - Greater than or equal to
+- `_lt` - Less than
+- `_lte` - Less than or equal to
+
+**Array Operations**:
+
+[... see full docs for complete content]
+
+---
+title: "GraphQL Generator"
+description: "Comprehensive guide to the Intuition GraphQL Generator"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/graphql-api/graphql-generator"
+---
+
+# GraphQL Generator
+
+The Intuition GraphQL package can be used as a GraphQL generator for your custom queries. It provides a type-safe interface for interacting with the Intuition API. It functions as the core data fetching layer, supplying generated types and React Query hooks for easy integration with the semantic knowledge graph.
+
+## Key Features
+
+- Type-safe GraphQL operations leveraging code gen
+- React Query hooks for data fetching
+- Reusable GraphQL fragments
+- Easy to customize to your specific needs
+- Supports real-time updates from the Intuition GraphQL API through GraphQL subscriptions
+
+## Installation
+
+[... see full docs for complete content]
+
+---
+title: "Migration Guide"
+description: "Migrating GraphQL from v1.5 to v2.0"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/graphql-api/migration-guide"
+---
+
+# Migration Guide
+
+# Migrating GraphQL from v1.5 to v2.0
+
+## Overview
+
+| Environment | Endpoint |
+|-------------|----------|
+| **Intuition Testnet** | `https://testnet.intuition.sh/v1/graphql` |
+
+## ⚠️ Breaking Changes
+
+### 1. ID Field Type Changes: Numeric → String
+
+**CRITICAL IMPACT** - All existing queries and mutations using these fields will break.
+
+#### Core Entity ID Changes
+
+| Entity        | Field             | Old Type   | New Type  |
+| ------------- | ----------------- | ---------- | --------- |
+| `accounts`    | `atom_id`         | `numeric`  | `String`  |
+| `atoms`       | `term_id`         | `numeric!` | `String!` |
+| `atoms`       | `value_id`        | `numeric`  | `String`  |
+
+[... see full docs for complete content]
+
+---
+title: "Pin Organization"
+description: "Pin Organization metadata to IPFS"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/graphql-api/mutations/pin-organization"
+---
+
+# Pin Organization
+
+# Pin Organization Mutation
+
+Pin an Organization entity to IPFS for use in atom creation.
+
+## Mutation Structure
+
+## Variables
+
+## Best Practices
+
+1. **Include official name** of organization
+2. **Add logo image** for branding
+3. **Provide website URL** for reference
+4. **Include contact email** if available
+
+---
+title: "Pin Person"
+description: "Pin Person metadata to IPFS"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/graphql-api/mutations/pin-person"
+---
+
+# Pin Person
+
+# Pin Person Mutation
+
+Pin a Person entity to IPFS for use in atom creation.
+
+## Mutation Structure
+
+## Variables
+
+## Best Practices
+
+1. **Include identifier** (ENS, username, etc.)
+2. **Add image** for visual representation
+3. **Provide description** for context
+4. **Use person-specific fields** for rich metadata
+
+---
+title: "Pin Thing"
+description: "Pin Thing metadata to IPFS"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/graphql-api/mutations/pin-thing"
+---
+
+# Pin Thing
+
+# Pin Thing Mutation
+
+Pin a "Thing" object (general entity) to IPFS for use in atom creation.
+
+## Mutation Structure
+
+## Variables
+
+## Response
+
+## Workflow
+
+1. **Pin metadata** using `pinThing` mutation
+2. **Get IPFS hash** from response
+3. **Create atom on-chain** using the hash
+4. **Query the atom** via GraphQL API
+
+## Best Practices
+
+1. **Upload images first** if needed using `uploadImage`
+2. **Include all metadata** fields for rich display
+3. **Store IPFS hash** for future reference
+4. **Wait for indexing** before querying the atom
+
+---
+title: "GraphQL NPM Package"
+description: "Comprehensive guide to use the Intuition GraphQL NPM package"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/graphql-api/npm-package"
+---
+
+# GraphQL NPM Package
+
+The Intuition GraphQL package provides a type-safe interface for interacting with the Intuition API. It functions as the core data fetching layer, supplying generated types and React Query hooks for easy integration with the semantic knowledge graph.
+
+## Key Features
+
+- React Query hooks for data fetching
+- Type-safe data fetching
+- Error handling
+- Loading state
+- Pagination
+- Sorting
+- Filtering
+
+## Installation
+
+Install the package using your preferred package manager:
+
+## Quick Start
+
+### 1. Client Configuration (Optional)
+
+Configure the GraphQL client at the root of your application:
+
+**Available API URLs:**
+- `API_URL_PROD`: `https://testnet.intuition.sh/v1/graphql` (default)
+
+[... see full docs for complete content]
+
+---
+title: "Overview"
+description: "Introduction to the Intuition GraphQL API and its main features"
+last_updated: "2026-02-11T14:23:51-05:00"
+source: "https://docs.intuition.systems/docs/graphql-api/overview"
+---
+
+# Overview
+
+# GraphQL API Overview
+
+Intuition provides GraphQL APIs for querying its knowledge graph in a convenient and versatile way. 
+
+**Available endpoints**
+
+    <h3>
+      Intuition mainnet
+    </h3>
+
+      ```text
+      https://mainnet.intuition.sh/v1/graphql
+      ```
+
+        target="_blank"
+        rel="noreferrer"
+
+        Try on GraphQL Explorer
+
+    <h3>
+      Intuition testnet
+    </h3>
+
+      ```text
+      https://testnet.intuition.sh/v1/graphql
+      ```
+
+        target="_blank"
+        rel="noreferrer"
+
+        Try on GraphQL Explorer
+
+Alternatively, you can import these URLs from the GraphQL package:
+
+If this is your first time using GraphQL, you can learn more at [graphql.org](https://graphql.org/).
+
+There are a few ways to get started with this GraphQL API, depending on the level of abstraction and customization you require : 
+
+    <h3>
+      SDK
+    </h3>
+
+[... see full docs for complete content]
+
+---
+title: "Aggregations"
+description: "Statistical aggregations with count, sum, avg, stddev"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/advanced/aggregations"
+---
+
+# Aggregations
+
+Compute statistical aggregations without fetching all nodes.
+
+## Query Structure
+
+## Available Functions
+
+- **count**: Total number of rows
+- **sum**: Sum of values
+- **avg**: Average value
+- **min**: Minimum value
+- **max**: Maximum value
+- **stddev**: Standard deviation
+- **variance**: Variance
+- **stddev_pop**: Population standard deviation
+- **stddev_samp**: Sample standard deviation
+- **var_pop**: Population variance
+- **var_samp**: Sample variance
+
+## Best Practices
+
+1. **Use aggregates** instead of fetching all nodes
+2. **Combine with filters** for targeted statistics
+3. **Include in paginated queries** for total counts
+
+---
+title: "Database Functions"
+description: "Use backend functions for complex queries"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/advanced/database-functions"
+---
+
+# Database Functions
+
+Leverage backend functions for complex queries that would be inefficient client-side.
+
+## Available Functions
+
+### following
+
+Get accounts a user follows:
+
+### positions_from_following
+
+Get positions from followed accounts:
+
+### search_term
+
+Semantic search:
+
+### search_positions_on_subject
+
+Complex position filtering:
+
+## Best Practices
+
+1. **Use backend functions** for complex filtering
+2. **Faster execution** in database vs client
+3. **Less data transfer** over network
+4. **More maintainable** code
+
+---
+title: "Pagination"
+description: "Offset-based pagination patterns"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/advanced/pagination"
+---
+
+# Pagination
+
+Implement efficient offset-based pagination with total counts.
+
+## Query Structure
+
+## Variables
+
+This fetches page 3 (items 41-60) when using 20 items per page.
+
+## Best Practices
+
+1. **Always include order_by** for consistent pagination
+2. **Fetch total count** using aggregates
+3. **Use reasonable limits** (10-100 items per page)
+4. **Calculate offset** as `(page - 1) * limit`
+
+---
+title: "Predicate-Object Aggregations"
+description: "Query denormalized predicate-object collections"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/advanced/predicate-objects"
+---
+
+# Predicate-Object Aggregations
+
+Use the denormalized `predicate_objects` table for efficient collection queries.
+
+## Query Structure
+
+## Best Practices
+
+1. **Use for collection aggregations** instead of manual counting
+2. **More efficient** than aggregating raw triples
+3. **Pre-computed metrics** updated automatically
+4. **Order by triple_count** for popular collections
+
+---
+title: "Time-Series Analysis"
+description: "Query pre-computed time-series aggregations"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/advanced/time-series"
+---
+
+# Time-Series Analysis
+
+Use pre-computed time-series tables for efficient analytics.
+
+## Query Structure
+
+## Available Tables
+
+- **share_price_change_stats_hourly**: Hourly price aggregations
+- **share_price_change_stats_daily**: Daily price aggregations
+- **share_price_change_stats_weekly**: Weekly price aggregations
+- **share_price_change_stats_monthly**: Monthly price aggregations
+- **signal_stats_daily**: Daily signal aggregations
+- **signal_stats_hourly**: Hourly signal aggregations
+- **signal_stats_monthly**: Monthly signal aggregations
+
+## Best Practices
+
+1. **Use pre-computed tables** for charts and analytics
+2. **Choose appropriate granularity** (hourly/daily/weekly/monthly)
+3. **Order by bucket** for time-based queries
+4. **Limit results** to relevant time period
+
+---
+title: "List and Filter Atoms"
+description: "Filter atoms by type, creator, date, and other criteria"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/atoms/list-filter"
+---
+
+# List and Filter Atoms
+
+Query multiple atoms with filtering, sorting, and pagination to find specific entities in the knowledge graph.
+
+## Query Structure
+
+## Variables
+
+## Interactive Examples
+
+    id: 'by-type',
+    title: 'Filter by Type',
+    query: `query GetAtomsByType($type: atom_type!, $limit: Int!) {
+  atoms(
+    where: { type: { _eq: $type } }
+    order_by: { created_at: desc }
+    limit: $limit
+  ) {
+    term_id
+    label
+    image
+    type
+    created_at
+
+}`,
+    variables: {
+      type: 'Person',
+      limit: 20
+
+  },
+
+    id: 'by-creator',
+    title: 'Filter by Creator',
+    query: `query GetAtomsByCreator($creatorId: String!, $limit: Int!) {
+  atoms(
+    where: { creator_id: { _eq: $creatorId } }
+    order_by: { created_at: desc }
+    limit: $limit
+  ) {
+    term_id
+
+[... see full docs for complete content]
+
+---
+title: "Atom Search"
+description: "Full-text and semantic search for atoms"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/atoms/search"
+---
+
+# Atom Search
+
+Search atoms using pattern matching and semantic search capabilities.
+
+## Query Structure
+
+### Pattern Matching Search
+
+### Semantic Search
+
+## Interactive Examples
+
+    id: 'pattern-search',
+    title: 'Pattern Matching',
+    query: `query SearchAtoms($search: String!, $limit: Int!) {
+  atoms(
+    where: {
+      _or: [
+        { label: { _ilike: $search } }
+        { data: { _ilike: $search } }
+      ]
+
+    order_by: { created_at: desc }
+    limit: $limit
+  ) {
+    term_id
+    label
+    image
+    type
+
+}`,
+    variables: {
+      search: '%ethereum%',
+      limit: 20
+
+  },
+
+    id: 'semantic-search',
+    title: 'Semantic Search',
+    query: `query SemanticSearch($query: String!, $limit: Int!) {
+  search_term(args: { query: $query }, limit: $limit) {
+    atom {
+      term_id
+      label
+      type
+
+[... see full docs for complete content]
+
+---
+title: "Single Atom Query"
+description: "Fetch individual atom details by term ID"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/atoms/single-atom"
+---
+
+# Single Atom Query
+
+Fetch detailed information about a specific atom using its term ID. This is the most efficient way to retrieve atom data using a primary key lookup.
+
+## Query Structure
+
+## Variables
+
+## Expected Response
+
+## Interactive Example
+
+    id: 'basic-atom',
+    title: 'Basic Atom Query',
+    query: `query GetAtom($id: String!) {
+  atom(term_id: $id) {
+    term_id
+    data
+    label
+    image
+    emoji
+    type
+    created_at
+    creator {
+      id
+      label
+      image
+
+}`,
+    variables: {
+      id: '0x57d94c116a33bb460428eced262b7ae2ec6f865e7aceef6357cec3d034e8ea21'
+
+  },
+
+    id: 'atom-with-metadata',
+    title: 'Atom with All Metadata',
+    query: `query GetAtomWithMetadata($id: String!) {
+  atom(term_id: $id) {
+    term_id
+    data
+    label
+    image
+    emoji
+    type
+    wallet_id
+    block_number
+    created_at
+    transaction_hash
+    creator {
+      id
+      label
+      image
+      type
+
+[... see full docs for complete content]
+
+---
+title: "Atom with Related Triples"
+description: "Find triples where an atom appears as subject, predicate, or object"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/atoms/with-triples"
+---
+
+# Atom with Related Triples
+
+Discover relationships by finding all triples where an atom appears as subject, predicate, or object.
+
+## Query Structure
+
+## Interactive Examples
+
+    id: 'related-triples',
+    title: 'Find Related Triples',
+    query: `query GetAtomWithTriples($atomId: String!, $limit: Int!) {
+  atom(term_id: $atomId) {
+    term_id
+    label
+    image
+    as_subject_triples(limit: $limit, order_by: { created_at: desc }) {
+      term_id
+      predicate { term_id label }
+      object { term_id label image }
+
+    as_object_triples(limit: $limit, order_by: { created_at: desc }) {
+      term_id
+      subject { term_id label image }
+      predicate { term_id label }
+
+}`,
+    variables: {
+      atomId: '0xf12dba36ffebb8e05ae49d3f9220b1994295662ccdc573f44aff7b51f8ad8fd6',
+      limit: 10
+
+  },
+
+    id: 'filtered-relationships',
+    title: 'Filter by Predicate',
+    query: `query GetSpecificRelationships(
+  $atomId: String!
+
+[... see full docs for complete content]
+
+---
+title: "Atom with Vault Details"
+description: "Query atoms with nested vault information and statistics"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/atoms/with-vault"
+---
+
+# Atom with Vault Details
+
+Fetch atom data along with associated vault statistics, including total shares, current share price, market cap, and position count.
+
+## Query Structure
+
+## Variables
+
+## Interactive Examples
+
+    id: 'basic-vault',
+    title: 'Atom with Basic Vault Info',
+    query: `query GetAtomWithVault($atomId: String!, $curveId: numeric!) {
+  atom(term_id: $atomId) {
+    term_id
+    label
+    image
+    term {
+      vaults(where: { curve_id: { _eq: $curveId } }) {
+        total_shares
+        current_share_price
+        market_cap
+        position_count
+
+}`,
+    variables: {
+      atomId: '0x57d94c116a33bb460428eced262b7ae2ec6f865e7aceef6357cec3d034e8ea21',
+      curveId: '1'
+
+  },
+
+    id: 'vault-with-positions',
+    title: 'Vault with Top Positions',
+    query: `query GetAtomWithTopPositions($atomId: String!, $curveId: numeric!) {
+  atom(term_id: $atomId) {
+    term_id
+    label
+    term {
+
+[... see full docs for complete content]
+
+---
+title: "Counter Triples"
+description: "Query opposing triple positions"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/triples/counter-triples"
+---
+
+# Counter Triples
+
+Query triples along with their counter (opposing) triples to see both sides of a claim.
+
+## Query Structure
+
+## Interactive Example
+
+    id: 'with-counter',
+    title: 'Triple with Counter',
+    query: `query GetTripleWithCounter($id: String!, $curveId: numeric!) {
+  triple(term_id: $id) {
+    term_id
+    subject { label }
+    predicate { label }
+    object { label }
+    term {
+      vaults(where: { curve_id: { _eq: $curveId } }) {
+        total_shares
+        market_cap
+        position_count
+
+    counter_term_id
+    counter_term {
+      vaults(where: { curve_id: { _eq: $curveId } }) {
+        total_shares
+        market_cap
+        position_count
+
+}`,
+    variables: {
+      id: '0xffb30efde2b49a7deadd920a7df684595ed4a291a582033c16b0795796965600',
+      curveId: '2'
+
+];
+
+## Best Practices
+
+1. **Include counter_term** for opposing positions
+
+[... see full docs for complete content]
+
+---
+title: "Filter by Predicate-Object"
+description: "Query predicate-object aggregations and collections"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/triples/filter-by-predicate-object"
+---
+
+# Filter by Predicate-Object
+
+Use the denormalized `predicate_objects` table to efficiently query pre-aggregated collections.
+
+## Query Structure
+
+## Interactive Example
+
+    id: 'popular-collections',
+    title: 'Popular Collections',
+    query: `query GetPopularCollections($predicateId: String!, $limit: Int!) {
+  predicate_objects(
+    where: { predicate_id: { _eq: $predicateId } }
+    order_by: { triple_count: desc }
+    limit: $limit
+  ) {
+    object { term_id label image }
+    triple_count
+    total_market_cap
+
+}`,
+    variables: {
+      predicateId: '0x...',
+      limit: 20
+
+];
+
+## Best Practices
+
+1. **Use for aggregations** instead of manually counting triples
+2. **Order by triple_count** for popular collections
+3. **Filter by predicate** to find specific relationship types
+4. **More efficient** than aggregating raw triples
+
+---
+title: "Filter Triples by Subject"
+description: "Find all triples with a specific atom as subject"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/triples/filter-by-subject"
+---
+
+# Filter Triples by Subject
+
+Query all triples where a specific atom is the subject.
+
+## Query Structure
+
+## Interactive Example
+
+    id: 'by-subject',
+    title: 'Triples by Subject',
+    query: `query GetTriplesBySubject($subjectId: String!, $limit: Int!) {
+  triples(
+    where: { subject_id: { _eq: $subjectId } }
+    order_by: { created_at: desc }
+    limit: $limit
+  ) {
+    term_id
+    predicate { term_id label }
+    object { term_id label image }
+    created_at
+
+}`,
+    variables: {
+      subjectId: '0xf12dba36ffebb8e05ae49d3f9220b1994295662ccdc573f44aff7b51f8ad8fd6',
+      limit: 20
+
+];
+
+## Best Practices
+
+1. **Use indexed subject_id field** for performance
+2. **Order by created_at** for chronological results
+3. **Include limit** to prevent over-fetching
+4. **Filter by predicate** to narrow relationship types
+
+---
+title: "Nested Triple Queries"
+description: "Query complex nested triple relationships"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/triples/nested-queries"
+---
+
+# Nested Triple Queries
+
+Query triples with nested relationships to explore the knowledge graph.
+
+## Query Structure
+
+## Best Practices
+
+1. **Limit nesting depth** to 2-3 levels maximum
+2. **Use limits** on nested queries
+3. **Avoid circular references** in graph traversal
+4. **Consider performance** with deep nesting
+
+---
+title: "Single Triple Query"
+description: "Fetch individual triple details by term ID"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/triples/single-triple"
+---
+
+# Single Triple Query
+
+Fetch detailed information about a specific triple using its term ID.
+
+## Query Structure
+
+## Interactive Example
+
+    id: 'basic-triple',
+    title: 'Basic Triple Query',
+    query: `query GetTriple($id: String!) {
+  triple(term_id: $id) {
+    term_id
+    created_at
+    subject { term_id label image }
+    predicate { term_id label }
+    object { term_id label image }
+
+}`,
+    variables: {
+      id: '0xffb30efde2b49a7deadd920a7df684595ed4a291a582033c16b0795796965600'
+
+  },
+
+    id: 'triple-with-vault',
+    title: 'Triple with Vault Details',
+    query: `query GetTripleWithVault($id: String!, $curveId: numeric!) {
+  triple(term_id: $id) {
+    term_id
+    subject { label }
+    predicate { label }
+    object { label }
+    term {
+      vaults(where: { curve_id: { _eq: $curveId } }) {
+        total_shares
+        market_cap
+        position_count
+
+[... see full docs for complete content]
+
+---
+title: "Deposits & Redemptions"
+description: "Query deposit and redemption transaction history"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/vaults/deposits-redemptions"
+---
+
+# Deposits & Redemptions
+
+Query transaction history for deposits and redemptions.
+
+## Query Structure
+
+## Best Practices
+
+1. **Filter by term and curve** for specific vault
+2. **Order by created_at** for chronological history
+3. **Use limit** to paginate results
+4. **Combine deposits and redemptions** for full history
+
+---
+title: "Share Price Changes"
+description: "Track share price changes over time"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/vaults/share-price-changes"
+---
+
+# Share Price Changes
+
+Track how share prices change over time.
+
+## Query Structure
+
+## Best Practices
+
+1. **Use time-series tables** for aggregated data
+2. **Filter by term and curve** for specific vault
+3. **Calculate percentage change** from old and new price
+4. **Use daily/hourly stats** for charts
+
+---
+title: "Top Vaults"
+description: "Query top vaults by market cap and activity"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/vaults/top-vaults"
+---
+
+# Top Vaults
+
+Query top vaults ranked by market cap, position count, or other metrics.
+
+## Query Structure
+
+## Interactive Example
+
+    id: 'top-by-market-cap',
+    title: 'Top by Market Cap',
+    query: `query GetTopVaults($curveId: numeric!, $limit: Int!) {
+  vaults(
+    where: { curve_id: { _eq: $curveId } }
+    order_by: { market_cap: desc }
+    limit: $limit
+  ) {
+    term_id
+    market_cap
+    position_count
+    term {
+      atom { label image }
+
+}`,
+    variables: {
+      curveId: '1',
+      limit: 20
+
+];
+
+## Best Practices
+
+1. **Order by market_cap** for TVL ranking
+2. **Filter by curve_id** for specific bonding curve
+3. **Include term data** for display
+4. **Use limit** to show top N vaults
+
+---
+title: "User Positions"
+description: "Query user positions in vaults"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/vaults/user-positions"
+---
+
+# User Positions
+
+Query all positions held by a specific account.
+
+## Query Structure
+
+## Interactive Example
+
+    id: 'user-positions',
+    title: 'User Positions',
+    query: `query GetUserPositions($accountId: String!, $limit: Int!) {
+  positions(
+    where: { account_id: { _eq: $accountId } }
+    order_by: { shares: desc }
+    limit: $limit
+  ) {
+    id
+    shares
+    vault {
+      term_id
+      current_share_price
+      market_cap
+
+}`,
+    variables: {
+      accountId: '0xd8da6bf26964af9d7eed9e03e53415d37aa96045',
+      limit: 20
+
+];
+
+## Best Practices
+
+1. **Order by shares** to show largest positions first
+2. **Include vault data** for context
+3. **Use aggregates** for totals
+4. **Filter by shares > 0** for active positions
+
+---
+title: "Vault Details"
+description: "Query vault statistics and information"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/vaults/vault-details"
+---
+
+# Vault Details
+
+Fetch comprehensive vault statistics including shares, assets, price, and positions.
+
+## Query Structure
+
+## Interactive Example
+
+    id: 'vault-stats',
+    title: 'Vault Statistics',
+    query: `query GetVaultStats($termId: String!, $curveId: numeric!) {
+  vault(term_id: $termId, curve_id: $curveId) {
+    term_id
+    curve_id
+    total_shares
+    total_assets
+    current_share_price
+    market_cap
+    position_count
+    positions_aggregate {
+      aggregate {
+        count
+        sum { shares }
+        avg { shares }
+
+}`,
+    variables: {
+      termId: '0x57d94c116a33bb460428eced262b7ae2ec6f865e7aceef6357cec3d034e8ea21',
+      curveId: '1'
+
+];
+
+## Best Practices
+
+1. **Use composite key** (term_id, curve_id) for lookup
+2. **Include aggregates** for statistics
+3. **Cache market data** as it updates frequently
+
+---
+title: "Reads"
+description: "Guide to read data using GraphQL queries in the Intuition API"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/graphql-api/reads"
+---
+
+# Reads
+
+## GraphQL API
+
+Our GraphQL API provides a flexible and efficient way to interact with our atomic data structure system. Through this documentation, you'll learn how to query and manipulate atomic data using our GraphQL endpoints. To help you explore and test the API interactively, we've integrated Apollo Explorer sandbox environments throughout this documentation.
+
+These interactive playgrounds allow you to experiment with queries in real-time, seeing exactly how the API responds to different inputs and parameters.
+
+This documentation will be split into sections by primitive, such as `Atoms`, `Triples`, and so on.
+
+[... see full docs for complete content]
+
+---
+title: "Subscriptions Overview"
+description: "Real-time subscriptions with cursor-based streaming"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/graphql-api/subscriptions/overview"
+---
+
+# Subscriptions Overview
+
+The GraphQL API supports real-time subscriptions for live data updates using cursor-based streaming.
+
+## Basic Subscription Pattern
+
+## Variables
+
+## Cursor Configuration
+
+- **initial_value**: Starting point for the stream
+- **ordering**: Sort direction (ASC or DESC)
+- **batch_size**: Number of items per batch
+
+## When to Use Subscriptions
+
+**Use subscriptions when:**
+- Building real-time dashboards
+- Monitoring live protocol activity
+- Creating notification systems
+- Data changes frequently
+
+**Use polling when:**
+- Data updates infrequently
+- Real-time updates aren't critical
+- Minimizing server connections
+
+## Best Practices
+
+1. **Store last cursor** to resume after disconnection
+
+[... see full docs for complete content]
+
+---
+title: "Price Updates"
+description: "Subscribe to share price changes in real-time"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/graphql-api/subscriptions/price-updates"
+---
+
+# Price Updates
+
+# Price Update Subscriptions
+
+Subscribe to real-time share price changes.
+
+## Subscription Structure
+
+## Best Practices
+
+1. **Filter by term_id** for specific vault
+2. **Use batch_size** to control update frequency
+3. **Calculate percentage change** from old/new prices
+4. **Update charts** with new data points
+
+---
+title: "Real-Time Positions"
+description: "Subscribe to position changes in real-time"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/graphql-api/subscriptions/real-time-positions"
+---
+
+# Real-Time Positions
+
+# Real-Time Position Updates
+
+Subscribe to position changes for live portfolio tracking.
+
+## Subscription Structure
+
+## Best Practices
+
+1. **Filter by account** for user-specific updates
+2. **Filter shares > 0** for active positions only
+3. **Update UI state** with new data
+4. **Resume from last cursor** after disconnection
+
+---
+title: "Use Cases"
+description: "Real-world examples and step-by-step tutorials to use the Intuition GraphQL API"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/graphql-api/use-cases/overview"
+---
+
+# Use Cases
+
+# GraphQL API Use Cases
+
+This section contains practical, step-by-step tutorials for common use cases when working with the Intuition GraphQL API. Each example explains how to build real-world applications with our semantic knowledge graph.
+
+## Available Examples
+
+Select a use case above to see detailed step-by-step implementation guides.
+
+    <h3>
+      Finding the Top dApps on Coinbase
+    </h3>
+
+      Query and rank decentralized applications based on market data.
+
+    <h3>
+      Discovering the Most Trusted Accounts
+    </h3>
+
+      Find highly trusted accounts based on stake and activity.
+
+    <h3>
+      Building User Activity Feeds
+    </h3>
+
+      Create personalized activity streams for users.
+
+    <h3>
+      Finding Related Claims
+    </h3>
+
+[... see full docs for complete content]
+
+---
+title: "Writes"
+description: "Guide to write data using GraphQL mutations in the Intuition API"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/graphql-api/writes"
+---
+
+# Writes
+
+## GraphQL Mutations
+
+Our GraphQL API provides convenient mutations to help structure and publish Atom metadata following common schemas and best practices. While the protocol supports any URI scheme, these mutations offer an opinionated approach to creating well-structured, interoperable data.
+
+## Current Schema Support
+
+Our GraphQL API provides mutations for uploading structured metadata following common schemas. The primary mutation is `pinThing` which uploads metadata to IPFS following the **Thing schema**.
+
+### pinThing Mutation
+
+### Example Usage
+
+### Variables Example
+
+The mutation returns an IPFS URI that can be used when creating an Atom:
+
+## Advanced Mutation Examples
+
+[... see full docs for complete content]
+
+---
+title: "Introduction"
+description: "Introduction to Intuition - the decentralized protocol for building the world's first open, semantic, and token-curated knowledge graph"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs"
+---
+
+# Introduction
+
+**Intuition is a decentralized protocol for building the world's first open, semantic, and token-curated knowledge graph.** It provides the infrastructure for verifiable attestations, portable identity, and trustful interactions at scale—creating a universal data layer that enables information to flow freely across applications, blockchains, and AI agents.
+
+## What is Intuition?
+While blockchains have historically decentralized money, **Intuition decentralizes information**—specifically its trust, ownership, discoverability, and monetization. By transforming unstructured, siloed data into structured, verifiable, and economically-backed attestations, Intuition creates a Semantic Web of Trust that makes knowledge programmable and interoperable.
+
+### Core Capabilities
+
+[... see full docs for complete content]
+
+---
+title: "Create Atom"
+description: "Learn how to create atoms and manage their associated vaults"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/interaction-guide/create-atom"
+---
+
+# Create Atom
+
+Creating atoms in the Intuition protocol involves interacting with the EthMultiVault contract to establish new entities in the knowledge graph. This process includes creating the atom itself and managing its associated vault.
+
+## Prerequisites
+
+This implementation guide assumes that you've completed the setup steps in the [Overview](/docs/interaction-guide/overview) guide. Steps for creating the `createMultivaultContract` and the `publicClient` referenced in this implementation example can be found in the overview.
+
+## Implementation
+
+We recommend creating a `multivault.ts` that includes the following atom creation functionality:
+
+<h3 >Core Atom Creation Pattern</h3>
+
+{`// Create atom with initial deposit
+const createAtomConfig = {
+  ...multiVaultContract,
+  functionName: 'createAtom',
+
+[... see full docs for complete content]
+
+---
+title: "Create Triple"
+description: "Learn how to create triples and manage their relationships"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/interaction-guide/create-triple"
+---
+
+# Create Triple
+
+Creating triples in the Intuition protocol involves establishing relationships between atoms through the EthMultiVault contract. This process creates both the triple structure and its associated vaults for positive and negative positions.
+
+## Prerequisites
+
+This implementation guide assumes that you've completed the setup steps in the [Overview](/docs/interaction-guide/overview) guide and have existing atoms to work with.
+
+## Implementation
+
+We recommend creating a `multivault.ts` that includes the following triple creation functionality:
+
+<h3 >Core Triple Creation Pattern</h3>
+
+{`// Create triple with initial deposit
+const createTripleConfig = {
+  ...multiVaultContract,
+  functionName: 'createTriple',
+  args: [subjectId, predicateId, objectId, initialDeposit],
+
+// Execute transaction
+const hash = await walletClient.writeContract(createTripleConfig)`}
+
+[... see full docs for complete content]
+
+---
+title: "Deposit & Return"
+description: "Manage deposits and withdrawals from vaults with proper fee handling"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/interaction-guide/deposit-return"
+---
+
+# Deposit & Return
+
+Managing deposits and withdrawals from vaults in the Intuition protocol involves interacting with the EthMultiVault contract to stake and unstake tokens. This process includes proper fee handling and share price calculations.
+
+## Prerequisites
+
+This implementation guide assumes that you've completed the setup steps in the [Overview](/docs/interaction-guide/overview) guide. Steps for creating the `createMultivaultContract` and the `publicClient` referenced in this implementation example can be found in the overview.
+
+## Implementation
+
+We recommend creating a `multivault.ts` that includes the following deposit and withdrawal functionality:
+
+<h3 >Core Deposit Pattern</h3>
+
+{`// Deposit into vault
+const depositConfig = {
+  ...multiVaultContract,
+  functionName: 'deposit',
+  args: [vaultId, amount],
+
+[... see full docs for complete content]
+
+---
+title: "Overview"
+description: "Introduction to Intuition contract interactions and smart contract operations"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/interaction-guide/overview"
+---
+
+# Overview
+
+# Contract Interactions Overview
+
+The Intuition protocol's smart contracts manage complex state involving Atoms, Triples, and their associated vaults. When interacting with these primitives, we recommend retrieving state data directly from the EthMultiVault contract.
+
+## Key Concepts
+
+<h4 >Multicall Operations</h4>
+
+Batch multiple read-only contract calls into a single request to reduce RPC calls and improve performance.
+
+<h4 >State Management</h4>
+
+Retrieve comprehensive vault information including assets, share prices, and user positions.
+
+<h4 >Configuration Access</h4>
+
+Access global protocol configuration including fee structures and minimum deposits.
+
+## Implementation Approach
+
+[... see full docs for complete content]
+
+---
+title: "Retrieve Vault Details"
+description: "Get comprehensive vault information including assets, prices, and positions"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/interaction-guide/retrieve-vault-details"
+---
+
+# Retrieve Vault Details
+
+The Intuition protocol's EthMultiVault contract manages complex state involving Atoms, Triples, and their associated vaults. When interacting with these primitives, we recommend retrieving the state data directly from the EthMultiVault contract.
+
+We utilize multicall operations that batch multiple read-only contract calls into a single request. This approach significantly reduces RPC calls and provides data you'll need for contract interactions, such as the `atomCost` that is referenced in the contract interaction guides.
+
+## Implementation
+
+[... see full docs for complete content]
+
+---
+title: "System Architecture"
+description: "Overview of Intuition's technical architecture and design principles"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/intuition-concepts/architecture"
+---
+
+# System Architecture
+
+This guide provides an overview of Intuition's technical architecture and how the various components work together.
+
+## High-Level Architecture
+
+Intuition is built as a multi-layer system:
+
+### Layer 1: On-Chain Primitives
+- **Smart Contracts**: Core protocol logic
+- **MultiVault System**: Atom and Triple vaults
+- **Bonding Curves**: Price discovery mechanisms
+- **ERC-1155 Tokens**: Atom and Triple representations
+
+### Layer 2: Off-Chain Data
+- **IPFS/Arweave**: Decentralized storage for Atom data
+- **DIDs**: Decentralized identifier resolution
+- **Metadata**: Rich context and descriptions
+
+### Layer 3: Indexing & Query
+- **GraphQL API**: Efficient data querying
+- **PostgreSQL**: Indexed on-chain data
+
+[... see full docs for complete content]
+
+---
+title: "Bonding Curves"
+description: "How bonding curves create markets for knowledge"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/intuition-concepts/economics/bonding-curves"
+---
+
+# Bonding Curves
+
+Bonding curves are a core economic primitive in Intuition, determining how the price of shares changes as more users stake tokens in Atom and Triple vaults.
+
+## What is a Bonding Curve?
+
+A bonding curve is a mathematical function that defines the relationship between the supply of tokens and their price. In Intuition:
+
+- Price increases as more tokens are staked
+- Price decreases as tokens are withdrawn
+- Creates continuous liquidity
+- Eliminates need for order books
+
+## How Bonding Curves Work
+
+### Basic Mechanics
+
+1. **Initial Price**: First stake gets shares at base price
+
+[... see full docs for complete content]
+
+---
+title: "Fees and Rewards"
+description: "Understanding fee structure and reward mechanisms"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/intuition-concepts/economics/fees-and-rewards"
+---
+
+# Fees and Rewards
+
+# Fees & Rewards
+
+In the Intuition system, interactions incur fees similar to gas costs in blockchain transactions. These fees serve critical roles in maintaining system integrity, incentivizing contributions, and fostering high-quality data.
+
+## Purpose of Fees
+
+### Preventing Abuse and Attacks
+
+Decentralized systems face risks such as Sybil and DoS attacks. Intuition mitigates these through economic disincentives:
+
+- Fees deter malicious activity by imposing costs
+- Network resilience: attacks inadvertently benefit the system through fee payments
+- Similar to how Ethereum benefits from all transaction fees
+
+### Encouraging Active Participation
+
+Economic incentives motivate meaningful contributions:
+
+[... see full docs for complete content]
+
+---
+title: "Incentive Design"
+description: "How economics drive consensus and reduce fragmentation"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/intuition-concepts/economics/incentive-design"
+---
+
+# Incentive Design
+
+Intuition's economic model is carefully designed to solve fundamental challenges in decentralized knowledge systems: fragmentation, quality control, and consensus formation.
+
+## Reducing Fragmentation
+
+In many systems, user-generated tags and classifications, known as **folksonomies**, can lead to fragmented and disorganized data. Different people might use different labels for the same thing, making it hard to gather or analyze information effectively. Intuition solves this by encouraging users to converge on a common set of identifiers.
+
+[... see full docs for complete content]
+
+---
+title: "Economics"
+description: "Understanding Intuition's token-curated knowledge graph economics"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/intuition-concepts/economics"
+---
+
+# Economics
+
+# Economics Overview
+
+Intuition is built on the idea that information deserves its own decentralized distribution and financial rails.
+
+Just as blockchains turned money into programmable assets, Intuition turns information into tokenized, ownable, and composable units that anyone can create and monetize in.
+
+At the core are Atoms (entities) and Triples (relationships). As users publish, curate, and stake on these objects, they generate a token-curated knowledge graph where ownership weights are represented by positions in $TRUST — the native token of the Intuition Network and Protocol.
+
+## The Vision
+
+[... see full docs for complete content]
+
+---
+title: "$TRUST Tokenomics"
+description: "Understanding the $TRUST token distribution and utility"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/intuition-concepts/economics/tokenomics"
+---
+
+# $TRUST Tokenomics
+
+$TRUST is the native token of the Intuition Network and Protocol, designed to enable economic participation in the decentralized knowledge graph.
+
+## Token Purpose
+
+The $TRUST token serves as the fundamental economic unit within Intuition, enabling:
+
+- **Ownership in Data**: Stake $TRUST to acquire ownership shares in Atoms and Triples
+- **Reward Mechanism**: Earn rewards as your contributed data gains traction and usage
+- **Economic Signaling**: Express confidence in specific data points through token deposits
+- **Network Incentives**: Align participant behavior with network growth and data quality
+
+## Token Utility
+
+### Staking and Ownership
+
+[... see full docs for complete content]
+
+---
+title: "Atom Best Practices"
+description: "Patterns and guidelines for creating high-quality, reusable Atoms in the Intuition ecosystem"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/intuition-concepts/primitives/Atoms/best-practices"
+---
+
+# Atom Best Practices
+
+This guide provides comprehensive best practices for creating effective, reusable Atoms that contribute to a high-quality Intuition knowledge graph.
+
+## Creating Effective Atoms
+
+### 1. Leverage Deterministic IDs
+
+Remember that identical atomData will always produce the same Atom ID. This ensures:
+- No duplicate Atoms for the same data
+- Predictable, verifiable identifiers
+- Consistent references across the network
+
+### 2. Check for Similar Atoms
+
+Before creating new Atoms, search for existing canonical Atoms:
+- Reduces fragmentation
+- Leverages existing Signal
+- Improves data consistency
+- Benefits from accumulated trust
+
+### 3. Use Clear, Descriptive Data
+
+[... see full docs for complete content]
+
+---
+title: "Atom Fundamentals"
+description: "Understanding Atoms - the fundamental units of data in the Intuition knowledge graph"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/intuition-concepts/primitives/Atoms/fundamentals"
+---
+
+# Atom Fundamentals
+
+Atoms are the foundational building blocks of Intuition's knowledge graph – the words in our global dictionary. Think of Intuition as a vast, collaborative dictionary where anyone can create a new word, and each word has its own globally persistent, unique digital identifier that can be used to reference it across the entire internet.
+
+## What are Atoms?
+
+A system facilitating the arrival at social consensus around globally persistent canonical identifiers for all things demands that these identifiers possess a few key attributes.
+
+<h3 >Decentralized Identifiers</h3>
+
+[... see full docs for complete content]
+
+---
+title: "Atom Structuring"
+description: "Advanced techniques for structuring Atoms effectively in the Intuition knowledge graph"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/intuition-concepts/primitives/Atoms/structuring"
+---
+
+# Atom Structuring
+
+Understanding how to properly structure Atoms is crucial for building effective applications on the Intuition protocol. This guide covers advanced techniques and patterns for creating well-designed, reusable Atoms.
+
+## Design Principles: Atomic Granularity
+
+A crucial best practice is keeping information modular and atomic. You are economically incentivized to create "flatter" Atoms – each representing a single, minimal concept – rather than packing composite information into one Atom.
+
+### Why Granularity Matters
+
+Consider representing the statement: **"Tiger Research was founded in 2021"**
+
+#### Monolithic Approach (Not Recommended)
+
+Problems with this approach:
+
+[... see full docs for complete content]
+
+---
+title: "Capturing Signal"
+description: "Advanced techniques for capturing and interpreting signal in the knowledge graph"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/intuition-concepts/primitives/Signals/capturing"
+---
+
+# Capturing Signal
+
+This guide covers advanced techniques for capturing signal from users and interpreting signal data within the Intuition ecosystem.
+
+## Signal Capture Mechanisms
+
+### Direct Staking
+Users explicitly deposit tokens to signal support or opposition:
+
+### Continuous Markets
+
+Staking is not a one-time vote but a continuous market:
+- Add more stake to increase your signal
+- Withdraw stake (with potential rewards or penalties)
+- Counter-stake on opposite sides for Triples
+- Market "odds" constantly adjust to reflect aggregated beliefs
+
+## Interpreting Signal Strength
+
+### Analyzing TVL (Total Value Locked)
+
+Higher TVL generally indicates:
+- Greater community interest
+
+[... see full docs for complete content]
+
+---
+title: "Signal Fundamentals"
+description: "Understanding Signals - the trust and consensus layer of the knowledge graph"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/intuition-concepts/primitives/Signals/fundamentals"
+---
+
+# Signal Fundamentals
+
+Signals represent the trust, confidence, or relevance that the community assigns to Atoms and Triples in the Intuition knowledge graph. Think of the knowledge graph as a weighted graph where Signal is the weight on each node (Atom) or edge (Triple), indicating how strongly people believe in or care about this information.
+
+## Understanding Signals
+
+Signal, in the context of Intuition, refers to any action or indication that expresses intent, belief, or support. Signals can be classified into three broad categories: explicit signal, implicit signal, and transitive signal.
+
+[... see full docs for complete content]
+
+---
+title: "Signal Rewards"
+description: "Understanding fee structures and reward distribution for signal participants"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/intuition-concepts/primitives/Signals/rewards"
+---
+
+# Signal Rewards
+
+Understanding the economic incentives and reward mechanisms is crucial for participating effectively in the Intuition signal economy.
+
+## Fee Structure
+
+### Entry Fees
+When a user deposits tokens into an Atom or Triple vault:
+- A small fee is charged on the deposit
+- Fee goes to existing vault shareholders
+- Incentivizes early discovery and staking
+
+### Exit Fees
+When a user withdraws their stake:
+- A fee may be charged on redemption
+- Helps stabilize the vault
+- Discourages rapid speculation
+
+### Protocol Fees
+A portion of fees goes to:
+- Protocol treasury
+- Development funding
+- Network maintenance
+
+[... see full docs for complete content]
+
+---
+title: "Triple Fundamentals"
+description: "Understanding Triples - semantic relationships that form the knowledge graph"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/intuition-concepts/primitives/Triples/fundamentals"
+---
+
+# Triple Fundamentals
+
+If Atoms are the words in Intuition's global dictionary, Triples are the sentences we create from those words. A Triple connects three Atoms to assert a relationship or fact in the form **[Subject] – [Predicate] – [Object]**.
+
+## Understanding Triples
+
+A Triple is a fundamental data structure that expresses relationships between Atoms, following the classic RDF triple format used in semantic web technologies. This makes Intuition's data inherently machine-readable and structured.
+
+[... see full docs for complete content]
+
+---
+title: "Nested Triples"
+description: "Creating meta-claims and context through nested Triple structures"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/intuition-concepts/primitives/Triples/nested-triples"
+---
+
+# Nested Triples
+
+# Nested Triples: Meta-Claims & Context
+
+One of Intuition's most powerful features is that Triples can reference other Triples, effectively nesting statements to provide context or provenance. Intuition supports using a Triple itself as a Subject or Object in another Triple.
+
+## Understanding Nested Triples
+
+Think of it as linguistic compression—instead of repeatedly expressing complex relationships, you create them once and reference them by ID. A Triple about "Alice's employment at a specific company with particular conditions" becomes a single referenceable unit.
+
+[... see full docs for complete content]
+
+---
+title: "Triple Structuring"
+description: "Advanced techniques for structuring effective Triples in the knowledge graph"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/intuition-concepts/primitives/Triples/structuring"
+---
+
+# Triple Structuring
+
+Understanding how to properly structure Triples is essential for building rich, queryable knowledge graphs. This guide covers techniques for creating well-designed semantic relationships.
+
+## Basic Triple Structure
+
+## Triple Categories
+
+### 1. Property Triples
+Describe attributes or characteristics of entities.
+
+**Example**: "Ethereum is decentralized"
+
+### 2. Relationship Triples
+Connect entities through specific relationships.
+
+**Example**: "Vitalik Buterin created Ethereum"
+
+### 3. Classification Triples
+Establish hierarchical or categorical relationships.
+
+**Example**: "Machine Learning is a subset of AI"
+
+## Creating Triples Programmatically
+
+### Using the SDK
+
+## Best Practices
+
+### 1. Use Atomic Components
+
+[... see full docs for complete content]
+
+---
+title: "Primitives"
+description: "Understanding Intuition's core primitives - Atoms, Triples, and Signals - the building blocks of a decentralized knowledge graph"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/intuition-concepts/primitives"
+---
+
+# Primitives
+
+# Primitives Overview
+
+Intuition's data model is built on three fundamental primitives that work together to create a rich, self-regulating knowledge graph. These primitives form the foundation of the ecosystem and enable the creation of a structured, semantic web of trust.
+
+<h2>Atoms</h2>
+
+The basic entities or identifiers - unique decentralized identifiers for everything in existence. Think of them as the nodes in the knowledge graph, or the words in the dictionary. Atoms are Intuition's atomic unit of knowledge, enabling unique, persistent, canonical identifiers for all things - not just people.
+
+<h2>Triples</h2>
+
+[... see full docs for complete content]
+
+---
+title: "Trust Mechanisms Overview"
+description: "Understanding how trust and attestation work in the Intuition ecosystem"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/intuition-concepts/trust-mechanisms"
+---
+
+# Trust Mechanisms Overview
+
+Intuition creates a decentralized trust layer through its primitives and economic incentives. This guide explains how trust emerges and is validated in the system.
+
+## Many-to-One Attestations
+
+Unlike traditional systems where a single authority issues certificates or attestations, Intuition enables **many-to-one non-deterministic attestations**:
+
+### Key Characteristics
+
+- **Multiple Validators**: Any number of users can signal their belief
+- **Weighted Consensus**: Aggregate signal determines confidence level
+- **No Single Point of Failure**: Truth emerges from collective validation
+- **Dynamic Evolution**: Attestations change as new information emerges
+
+## Trust Generation Mechanisms
+
+### Explicit Trust
+Direct attestations through staking:
+
+[... see full docs for complete content]
+
+---
+title: "Intuition Network"
+description: "Intuition Network architecture and infrastructure"
+last_updated: "2026-02-11T09:19:02-05:00"
+source: "https://docs.intuition.systems/docs/intuition-network"
+---
+
+# Intuition Network
+
+Intuition Network is a specialized Layer 3 blockchain built on Arbitrum Orbit, optimized for knowledge graph operations and decentralized attestations.
+
+## Architecture
+
+Intuition leverages a multi-layer architecture designed for performance, cost-efficiency, and scalability:
+
+- **Layer 3 on Base** - Built using Arbitrum Orbit technology
+- **AnyTrust DA** - Arbitrum's data availability solution for scalability
+- **Specialized for Knowledge Graphs** - Optimized for semantic triple operations
+- **EVM Compatible** - Full Ethereum smart contract compatibility
+
+### Performance Benefits
+
+- **~10,000x cheaper** than Ethereum mainnet
+- **~100x faster** transaction times
+- **Block time:** ~2 seconds
+- **Transaction finality:** Less than 10 seconds
+
+[... see full docs for complete content]
+
+---
+title: "Intuition Mainnet"
+description: "Welcome to the Intuition Mainnet - your development and testing environment for building on the Intuition Network."
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/intuition-network/mainnet"
+---
+
+# Intuition Mainnet
+
+Welcome to the Intuition Mainnet - your development and testing environment for building on the Intuition Network.
+
+Intuition leverages **Caldera's Metalayer** infrastructure to provide seamless cross-chain bridging capabilities. As part of Caldera's **Internet of Chains**, we benefit from a robust, interconnected ecosystem of blockchain networks.
+
+## Network Configuration
+
+| Parameter | Value |
+|-----------|-------|
+| **Network Name** | Intuition Mainnet |
+| **Chain ID** | 1155 |
+| **Native Token** | $TRUST |
+| **RPC URL** | `https://rpc.intuition.systems/http` |
+| **WebSocket URL** | `wss://rpc.intuition.systems/ws` |
+| **Block Explorer** | [https://explorer.intuition.systems](https://explorer.intuition.systems) |
+
+## Bridging & Hub
+
+[... see full docs for complete content]
+
+---
+title: "Powered By Caldera"
+description: "The Intuition Network is powered by Caldera's Metalayer, a cross-chain infrastructure that enables seamless asset transfers between different blockchain networks."
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/intuition-network/powered-by-caldera"
+---
+
+# Powered By Caldera
+
+### Intuition is Powered by Caldera's Metalayer
+The Intuition Network is powered by Caldera's Metalayer, a cross-chain infrastructure that enables seamless asset transfers between different blockchain networks.
+
+### What is Caldera's Metalayer?
+
+The Metalayer is Caldera's innovative cross-chain infrastructure that enables:
+
+- **Unified Bridging**: A single interface for transferring assets across multiple chains in the Caldera ecosystem
+- **Shared Security**: Leveraging collective security models across interconnected chains
+- **Interoperability**: Native communication between different blockchain networks without complex integrations
+- **Simplified UX**: One-click bridging experiences that abstract away technical complexity
+
+### The Internet of Chains
+
+[... see full docs for complete content]
+
+---
+title: "Remote Procedure Call (RPC)"
+description: "The Intuition RPC (Remote Procedure Call) service provides programmatic access to the Intuition network."
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/intuition-network/rpc"
+---
+
+# Remote Procedure Call (RPC)
+
+The Intuition RPC (Remote Procedure Call) service provides programmatic access to the Intuition network.
+
+RPC endpoints allow developers and applications to:
+
+- Query blockchain data
+- Submit transactions
+- Monitor network state
+- Access historical data
+- Interact with smart contracts
+
+## Available Endpoints
+
+### Core RPC Methods
+
+- **eth_getBalance**: Get account balance
+- **eth_getBlockByNumber**: Retrieve block information
+- **eth_getTransactionByHash**: Get transaction details
+- **eth_sendRawTransaction**: Submit signed transactions
+- **eth_call**: Execute contract calls
+- **eth_getLogs**: Retrieve event logs
+
+## Usage Examples
+
+Using the `viem` library:
+
+Using the `ethers` library:
+
+## Authentication
+
+RPC access requires authentication for production use:
+
+[... see full docs for complete content]
+
+---
+title: "Intuition Testnet"
+description: "Welcome to the Intuition Testnet - your development and testing environment for building on the Intuition Network."
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/intuition-network/testnet"
+---
+
+# Intuition Testnet
+
+Welcome to the Intuition Testnet - your development and testing environment for building on the Intuition Network.
+
+Intuition leverages **Caldera's Metalayer** infrastructure to provide seamless cross-chain bridging capabilities. As part of Caldera's **Internet of Chains**, we benefit from a robust, interconnected ecosystem of blockchain networks.
+
+## Network Configuration
+
+| Parameter | Value |
+|-----------|-------|
+| **Network Name** | Intuition Testnet |
+| **Chain ID** | 13579 |
+| **Native Token** | $TTRUST |
+| **RPC URL** | `https://testnet.rpc.intuition.systems/http` |
+| **WebSocket URL** | `wss://testnet.rpc.intuition.systems/ws` |
+| **Block Explorer** | [https://explorer.intuition.systems](https://explorer.intuition.systems) |
+
+## Bridging & Hub
+
+[... see full docs for complete content]
+
+---
+title: "Run on Kubernetes Cluster"
+description: "A comprehensive Kubernetes-based deployment infrastructure for blockchain indexing and data services, managed with ArgoCD and Terraform."
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/intuition-node/kubernetes"
+---
+
+# Run on Kubernetes Cluster
+
+A comprehensive Kubernetes-based deployment infrastructure for blockchain indexing and data services, managed with ArgoCD and Terraform.
+
+## Architecture Overview
+
+This project deploys a complete blockchain indexing platform on Google Cloud Platform (GCP) using:
+
+- **GKE Cluster**: Multi-node pool Kubernetes cluster
+- **ArgoCD**: GitOps-based continuous deployment
+- **Terraform**: Infrastructure as Code for GCP resources
+- **Kustomize**: Kubernetes manifest management
+
+## Core Services
+
+### Data Layer
+- **TimescaleDB**: Time-series database with PostgreSQL extensions and AI capabilities
+- **Indexer Database**: Dedicated database for blockchain indexing operations
+
+### Application Services
+- **GraphQL Engine**: Hasura GraphQL API for data access
+
+[... see full docs for complete content]
+
+---
+title: "Local Development Setup"
+description: "Set up your local environment for developing and testing Intuition node services."
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/intuition-node/local-setup"
+---
+
+# Local Development Setup
+
+Set up your local environment for developing and testing Intuition node services.
+
+### Using Local Ethereum Node
+
+Add to your `.env` file:
+
+Create local test data:
+
+### Manual Service Management
+
+---
+title: "Overview"
+description: "Learn how to set up and run your own Intuition node to participate in the network using the official Rust implementation."
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/intuition-node/overview"
+---
+
+# Overview
+
+Learn how to set up and run your own Intuition node to participate in the network using the official Rust implementation.
+
+## What is an Intuition Node?
+
+The `intuition-rs` workspace is a comprehensive Rust workspace for blockchain data indexing and processing, featuring a modular architecture with multiple specialized services. This implementation provides high performance, memory safety, and reliability for running Intuition nodes and backend services.
+
+Running an Intuition node requires Docker, Rust toolchain, and proper environment configuration. This guide provides comprehensive setup instructions for local development and production deployments.
+
+### Supported Contract Versions
+- Multivault v2.0
+
+[... see full docs for complete content]
+
+---
+title: "Run an Intuition Node"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/intuition-node/run-an-intuition-node"
+---
+
+# Run an Intuition Node
+
+## Running the System
+
+### Option 1: Using Published Docker Images (Recommended)
+
+### Option 2: Building from Source
+
+### Option 3: Running with Integration Tests
+
+## Testing
+
+### Run All Tests
+
+### Run Integration Tests
+
+### Run Specific Test Suites
+
+### Development Testing
+
+#### CLI Tool
+
+#### Code Quality
+
+#### Database Operations
+
+## Monitoring and Observability
+
+### Logging
+
+The system includes comprehensive logging capabilities:
+
+**Features:**
+- **Structured JSON Logging**: All services output machine-readable logs
+- **Container Logs**: Direct access to service logs via Docker
+- **Log Filtering**: Easy filtering by log level and service
+
+**Benefits:**
+
+[... see full docs for complete content]
+
+---
+title: "Rust Backend"
+description: "The `intuition-rs` repository is organized as a Rust workspace, which provides several key benefits:"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/intuition-node/rust-backend"
+---
+
+# Rust Backend
+
+## The Intuition Rust Monorepo
+
+The `intuition-rs` repository is organized as a Rust workspace, which provides several key benefits:
+
+### Monorepo Architecture
+A monorepo (monolithic repository) consolidates all backend services and shared code in a single repository, offering:
+
+- **Code sharing**: Common utilities and models shared across all services
+- **Unified versioning**: All services stay in sync with compatible versions
+- **Atomic changes**: Update multiple services in a single commit
+- **Simplified dependencies**: Internal dependencies managed through workspace
+- **Consistent tooling**: Shared build, test, and lint configurations
+
+### Workspace Organization
+The workspace is structured into logical layers:
+
+[... see full docs for complete content]
+
+---
+title: "Working with Atoms"
+description: "Create and query atoms using the SDK"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/intuition-sdk/atoms-guide"
+---
+
+# Working with Atoms
+
+**Conceptual overview:** [Atoms Fundamentals](/docs/intuition-concepts/primitives/Atoms/fundamentals)
+
+Atoms are unique identifiers for any entity—people, concepts, smart contracts, or data. This guide covers all ways to create and query atoms using the SDK.
+
+## Table of Contents
+
+- [Creating from Strings](#creating-from-strings)
+- [Creating from Thing (JSON-LD)](#creating-from-thing)
+- [Creating from Ethereum Accounts](#creating-from-ethereum-accounts)
+- [Creating from Smart Contracts](#creating-from-smart-contracts)
+- [Creating from IPFS](#creating-from-ipfs)
+- [Batch Creation](#batch-creation)
+- [Querying Atoms](#querying-atoms)
+
+---
+
+## Creating from Strings
+
+The simplest way to create an atom is from a plain string.
+
+### Function Signature
+
+### Parameters
+
+| Parameter | Type | Description | Required |
+|-----------|------|-------------|----------|
+
+[... see full docs for complete content]
+
+---
+title: "Example: Batch Create Ethereum Accounts"
+description: "Create multiple identity atoms from Ethereum addresses in one transaction"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/intuition-sdk/examples/batch-ethereum-accounts"
+---
+
+# Example: Batch Create Ethereum Accounts
+
+# Example: Batch Create Ethereum Account Atoms
+
+This example demonstrates creating multiple identity atoms from Ethereum addresses in a single transaction.
+
+## Complete Code
+
+## See Also
+
+- [batchCreateAtomsFromEthereumAccounts](../atoms/batch-creation.md)
+- [Batch Creation Guide](../atoms/batch-creation.md)
+
+---
+title: "Example: Bulk Sync with Cost Estimation"
+description: "Use the experimental sync function to estimate costs for bulk operations"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/intuition-sdk/examples/bulk-sync-cost-estimation"
+---
+
+# Example: Bulk Sync with Cost Estimation
+
+This example demonstrates using the experimental `sync` function to estimate costs for creating a knowledge graph.
+
+## Complete Code
+
+## Run the Example
+
+## See Also
+
+- sync Function (Experimental)
+- [Batch Creation](../atoms/batch-creation.md)
+
+---
+title: "Example: Create Atom from String"
+description: "Complete example of creating an atom from a text string"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/intuition-sdk/examples/create-atom-from-string"
+---
+
+# Example: Create Atom from String
+
+This example demonstrates creating an atom from a plain text string, including setup, error handling, and querying the result.
+
+## Complete Code
+
+## Run the Example
+
+## Expected Output
+
+## See Also
+
+- [createAtomFromString](../atoms/create-from-string.md)
+- [getAtomDetails](../atoms/querying.md)
+- [Quick Start Guide](../getting-started/quick-start.md)
+
+---
+title: "Example: Create Triple Statement"
+description: "Complete example of creating a subject-predicate-object triple"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/intuition-sdk/examples/create-triple-statement"
+---
+
+# Example: Create Triple Statement
+
+This example demonstrates creating a complete triple (subject-predicate-object statement).
+
+## Complete Code
+
+## See Also
+
+- [createTripleStatement](../triples/create-triple.md)
+- [Create Atom Example](./create-atom-from-string.md)
+
+---
+title: "Example: Deposit into Vault"
+description: "Deposit assets into an atom vault and receive shares"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/intuition-sdk/examples/deposit-into-vault"
+---
+
+# Example: Deposit into Vault
+
+This example demonstrates depositing assets into a vault and tracking share balances.
+
+## Complete Code
+
+## See Also
+
+- [deposit](../vaults/deposits.md)
+- [Vault Queries](../vaults/queries.md)
+- [Vault Previews](../vaults/previews.md)
+
+---
+title: "Example: Find Existing Entities"
+description: "Search for existing atoms and triples before creating new ones"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/intuition-sdk/examples/find-existing-entities"
+---
+
+# Example: Find Existing Entities
+
+This example demonstrates how to find existing atoms and triples to avoid creating duplicates.
+
+## Complete Code
+
+## See Also
+
+- [findAtomIds](../search/advanced-queries.md#findatomids)
+- [findTripleIds](../search/advanced-queries.md#findtripleids)
+- [calculateAtomId](../atoms/querying.md#calculateatomid)
+- [calculateTripleId](../triples/querying.md#calculatetripleid)
+
+---
+title: "Example: Global Search"
+description: "Search across atoms, accounts, triples, and collections"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/intuition-sdk/examples/global-search"
+---
+
+# Example: Global Search
+
+This example demonstrates using global search to find entities across the Intuition protocol.
+
+## Complete Code
+
+## See Also
+
+- [globalSearch](../search/global-search.md)
+- [getAtomDetails](../atoms/querying.md)
+
+---
+title: "Example: Thing IPFS Pinning"
+description: "Create rich entities with JSON-LD and automatic IPFS pinning"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/intuition-sdk/examples/thing-ipfs-pinning"
+---
+
+# Example: Thing IPFS Pinning
+
+This example demonstrates creating a rich entity (Thing) with automatic IPFS pinning.
+
+## Complete Code
+
+## See Also
+
+- [createAtomFromThing](../atoms/create-from-thing.md)
+- [pinThing](../integrations/pinata-ipfs.md)
+- [IPFS Integration](../integrations/pinata-ipfs.md)
+
+---
+title: "Installation & Setup"
+description: "Install the Intuition SDK and configure your development environment"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/intuition-sdk/installation-and-setup"
+---
+
+# Installation & Setup
+
+The Intuition SDK is a comprehensive TypeScript library for building applications on the Intuition protocol. This guide covers installation, configuration, and getting your development environment ready.
+
+## Prerequisites
+
+- **Node.js**: Version 18.x or higher
+- **Package Manager**: npm, pnpm, yarn, or bun
+- **TypeScript** (recommended): Version 5.x or higher
+
+## Auto-Generated Package Documentation
+
+For a complete list of `0xintuition/sdk` functions and interfaces, see the [Intuition SDK documentation](https://github.com/0xIntuition/intuition-ts/tree/main/packages/sdk/docs).
+
+- [Intuition SDK NPM](https://www.npmjs.com/package/@0xintuition/sdk)
+- [Intuition SDK GitHub](https://github.com/0xIntuition/intuition-ts/tree/main/packages/sdk/docs)
+
+For a complete list of `0xintuition/protocol` functions and interfaces, see the [Intuition Protocol documentation](https://github.com/0xIntuition/intuition-ts/tree/main/packages/protocol/docs).
+
+- [Intuition Protocol NPM](https://www.npmjs.com/package/@0xintuition/protocol)
+- [Intuition Protocol GitHub](https://github.com/0xIntuition/intuition-ts/tree/main/packages/protocol/docs)
+
+[... see full docs for complete content]
+
+---
+title: "Pinata IPFS Integration"
+description: "Upload and pin content to IPFS using Pinata integration"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/intuition-sdk/integrations/pinata-ipfs"
+---
+
+# Pinata IPFS Integration
+
+Upload and pin content to IPFS using Pinata or the Intuition API.
+
+## pinThing
+
+Pin a Thing object to IPFS via the Intuition API (no Pinata key required).
+
+### Function Signature
+
+### Basic Example
+
+## uploadJsonToPinata
+
+Upload JSON directly to Pinata (requires Pinata API JWT).
+
+### Function Signature
+
+### Basic Example
+
+### Return Type
+
+## Getting a Pinata API Key
+
+1. Sign up at [pinata.cloud](https://pinata.cloud)
+2. Go to API Keys section
+3. Create a new API key
+4. Copy the JWT token
+5. Store securely in environment variables
+
+## Common Use Cases
+
+### Pin Thing and Create Atom
+
+[... see full docs for complete content]
+
+---
+title: "React Integration"
+description: "Integrate the Intuition SDK with React applications using Wagmi hooks"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/intuition-sdk/integrations/react"
+---
+
+# React Integration
+
+Use the Intuition SDK with React applications via Wagmi hooks for wallet connectivity and blockchain interactions.
+
+## Setup
+
+Install required dependencies:
+
+## Wagmi Configuration
+
+Set up Wagmi provider in your app:
+
+## Creating Atoms
+
+Use SDK functions with Wagmi hooks:
+
+## Custom Hooks
+
+Create reusable hooks for SDK operations:
+
+## Query Hooks
+
+Fetch data with React Query:
+
+## Complete Example
+
+Full-featured React component:
+
+## Related Resources
+
+- [TanStack Query Integration](./tanstack-query.md)
+- [Wagmi Documentation](https://wagmi.sh)
+- [SDK Quick Start](../getting-started/quick-start.md)
+
+## See Also
+
+- [Wagmi Hooks Reference](https://wagmi.sh/react/hooks)
+- [TanStack Query](https://tanstack.com/query)
+
+---
+title: "TanStack Query Integration"
+description: "Use the Intuition SDK with TanStack Query for optimized data fetching and caching"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/intuition-sdk/integrations/tanstack-query"
+---
+
+# TanStack Query Integration
+
+Integrate the Intuition SDK with TanStack Query (React Query) for powerful data fetching, caching, and synchronization.
+
+## Setup
+
+## Query Hooks
+
+Create reusable query hooks for SDK functions:
+
+### useAtomDetails
+
+### useGlobalSearch
+
+## Mutation Hooks
+
+Create mutation hooks for write operations:
+
+### useCreateAtom
+
+### useCreateTriple
+
+## Complete Example
+
+Full React component with TanStack Query:
+
+## Advanced Patterns
+
+### Optimistic Updates
+
+### Dependent Queries
+
+## Related Resources
+
+- [React Integration](./react.md)
+- [TanStack Query Documentation](https://tanstack.com/query)
+
+## See Also
+
+- [Wagmi Hooks](https://wagmi.sh)
+- [SDK Query Functions](../search/global-search.md)
+
+---
+title: "SDK Migration V1 to V2"
+description: "Migrating SDK from v1.5 to v2.0"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/intuition-sdk/migration-guide"
+---
+
+# SDK Migration V1 to V2
+
+# Migrating SDK from v1.5 to v2.0
+
+This guide helps you migrate your code from v1.x to v2.0.0-alpha of the Intuition TypeScript packages. This is a **major version update** with significant breaking changes due to the underlying contract migration from `EthMultiVault` to `MultiVault`.
+
+## Contract Migration Overview
+
+The core smart contract has been upgraded from `EthMultiVault` to `MultiVault`, introducing significant architectural changes that impact all TypeScript libraries built on top.
+
+### Key Contract Changes
+
+#### 1. **ID System Migration**
+
+- **EthMultiVault**: Uses `uint256` for atom/triple IDs
+- **MultiVault**: Uses `bytes32` for term IDs (atoms and triples are now "terms")
+
+[... see full docs for complete content]
+
+---
+title: "Quick Start"
+description: "Create your first atom and triple with the Intuition SDK in minutes"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/intuition-sdk/quick-start"
+---
+
+# Quick Start
+
+Get started with the Intuition SDK by creating your first atom and triple in minutes.
+
+## Auto-Generated Package Documentation
+
+For a complete list of `0xintuition/sdk` functions and interfaces, see the [Intuition SDK documentation](https://github.com/0xIntuition/intuition-ts/tree/main/packages/sdk/docs).
+
+- [Intuition SDK NPM](https://www.npmjs.com/package/@0xintuition/sdk)
+- [Intuition SDK GitHub](https://github.com/0xIntuition/intuition-ts/tree/main/packages/sdk/docs)
+
+For a complete list of `0xintuition/protocol` functions and interfaces, see the [Intuition Protocol documentation](https://github.com/0xIntuition/intuition-ts/tree/main/packages/protocol/docs).
+
+- [Intuition Protocol NPM](https://www.npmjs.com/package/@0xintuition/protocol)
+- [Intuition Protocol GitHub](https://github.com/0xIntuition/intuition-ts/tree/main/packages/protocol/docs)
+
+For a complete list of `0xintuition/graphql` functions and interfaces, see the [Intuition Protocol documentation](https://github.com/0xIntuition/intuition-ts/tree/main/packages/graphql).
+
+- [Intuition Protocol NPM](https://www.npmjs.com/package/@0xintuition/graphql)
+- [Intuition Protocol GitHub](https://github.com/0xIntuition/intuition-ts/tree/main/packages/graphql)
+
+## Overview
+
+In this quick start guide, you'll:
+
+1. Set up the SDK clients
+
+[... see full docs for complete content]
+
+---
+title: "Search and Discovery"
+description: "Search atoms, triples, and perform advanced queries"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/intuition-sdk/search-guide"
+---
+
+# Search and Discovery
+
+Discover atoms, triples, accounts, and collections using powerful search capabilities including full-text search, semantic search, and batch entity lookups.
+
+## Table of Contents
+
+- [Global Search](#global-search)
+- [Searching Atoms](#searching-atoms)
+- [Searching Triples](#searching-triples)
+- [Advanced Queries](#advanced-queries)
+
+---
+
+## Global Search
+
+Search across all entity types (atoms, accounts, triples, collections) with a single query.
+
+### Function Signature
+
+### Parameters
+
+| Parameter | Type | Description | Required |
+|-----------|------|-------------|----------|
+| `query` | `string` | Search query text | Yes |
+| `options` | `GlobalSearchOptions` | Search limits per type | No |
+
+### GlobalSearchOptions
+
+### Basic Example
+
+### Advanced Example
+
+[... see full docs for complete content]
+
+---
+title: "Working with Triples"
+description: "Create and query triples using the SDK"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/intuition-sdk/triples-guide"
+---
+
+# Working with Triples
+
+**Conceptual overview:** [Triples Fundamentals](/docs/intuition-concepts/primitives/Triples/fundamentals)
+
+Triples are subject-predicate-object statements that connect three atoms to form relationships in the knowledge graph. This guide covers all ways to create and query triples using the SDK.
+
+## Table of Contents
+
+- [Creating Triples](#creating-triples)
+- [Batch Creation](#batch-creation)
+- [Querying Triples](#querying-triples)
+- [Counter-Triples](#counter-triples)
+
+---
+
+## Creating Triples
+
+Create a triple (subject-predicate-object statement) connecting three atoms in a relationship.
+
+### Function Signature
+
+### Parameters
+
+| Parameter | Type | Description | Required |
+|-----------|------|-------------|----------|
+| `config` | `WriteConfig` | Client configuration | Yes |
+| `args.args[0]` | `Hex[]` | Subject atom IDs | Yes |
+
+[... see full docs for complete content]
+
+---
+title: "Working with Vaults"
+description: "Deposit, redeem, and query vaults using the SDK"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/intuition-sdk/vaults-guide"
+---
+
+# Working with Vaults
+
+**Conceptual overview:** [Signals Fundamentals](/docs/intuition-concepts/primitives/Signals/fundamentals)
+
+Vaults enable staking on atoms and triples through bonding curve-based share pricing. This guide covers deposits, redemptions, queries, and preview operations.
+
+## Table of Contents
+
+- [Deposits](#deposits)
+- [Redemptions](#redemptions)
+- [Vault Queries](#vault-queries)
+- [Preview Operations](#preview-operations)
+
+---
+
+## Deposits
+
+Deposit assets into atom or triple vaults to receive shares based on bonding curve pricing.
+
+### deposit
+
+Deposit assets into a single vault.
+
+#### Function Signature
+
+#### Parameters
+
+| Parameter | Type | Description | Required |
+|-----------|------|-------------|----------|
+| `receiver` | `Address` | Address receiving shares | Yes |
+
+[... see full docs for complete content]
+
+---
+title: "Audit Reports"
+description: "Security audit reports for Intuition smart contracts"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/intuition-smart-contracts/audit-reports"
+---
+
+# Audit Reports
+
+## Overview
+
+This page contains security audit reports for Intuition smart contracts. All contracts undergo rigorous security assessments before deployment.
+
+### Intuition TRUST Token, Bonding and Emissions Audit | Diligence
+#### September 2025
+- [Diligence Audit Report - 1](https://github.com/0xIntuition/intuition-contracts-v2/blob/main/audits/Diligence-Audit-Report-1.pdf)
+
+### Intuition MultiVault Audit | Diligence
+#### September 2025
+- [Diligence Audit Report - 2](https://github.com/0xIntuition/intuition-contracts-v2/blob/main/audits/Diligence-Audit-Report-2.pdf)
+
+### Intuition Smart Contracts | Trail of Bits
+#### March 2024
+- [Intuition Smart Contracts](https://github.com/0xIntuition/intuition-contracts-v0.1/blob/main/audits/tob/Intuition%20Summary%20Report%20-%20ToB%20Audit%201.pdf)
+
+---
+title: "Configurations & Fees"
+description: "The Intuition protocol smart contracts utilize a configuration system that allows for dynamic adjustment of various parameters effecting the behavior of the protocol. This document outlines the key..."
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/intuition-smart-contracts/configuration"
+---
+
+# Configurations & Fees
+
+The Intuition protocol smart contracts utilize a configuration system that allows for dynamic adjustment of various parameters effecting the behavior of the protocol. This document outlines the key configuration parameters and fees associated with the **mainnet Intuition protocol** deployment.
+
+The smart contract configurations and parameters can be adjusted by governance through onchain proposals, allowing for flexibility and adaptability as the protocol evolves.
+
+## MultiVault
+
+### Atom & Triple Creation Fees
+
+The following fixed fees are applied when creating atoms and triples within the MultiVault:
+
+- **Atom Creation Fee:** 0.1 TRUST (1e17)
+- **Triple Creation Fee:** 0.1 TRUST (1e17)
+
+[... see full docs for complete content]
+
+---
+title: "Deployments"
+description: "The Intuition protocol contracts are deployed on both the Base Mainnet and the Intuition Layer 3 network, as well as their respective testnets. Below are the details of the deployed contracts,..."
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/intuition-smart-contracts/deployments"
+---
+
+# Deployments
+
+# Contract Deployments
+
+The Intuition protocol contracts are deployed on both the Base Mainnet and the Intuition Layer 3 network, as well as their respective testnets. Below are the details of the deployed contracts, including their addresses and network configurations.
+
+## Mainnet
+
+### Base Mainnet
+
+| Contract      | Address                                    |
+|---------------|--------------------------------------------|
+| Trust (ERC20) | 0x6cd905dF2Ed214b22e0d48FF17CD4200C1C6d8A3 |
+
+### Intuition Mainnet (L3)
+
+| Contract Name                 | Address                                    |
+|-------------------------------|--------------------------------------------|
+| WrappedTrust                  | 0x81cFb09cb44f7184Ad934C09F82000701A4bF672 |
+| Upgrades TimelockController   | 0x321e5d4b20158648dFd1f360A79CAFc97190bAd1 |
+| Parameters TimelockController | 0x71b0F1ABebC2DaA0b7B5C3f9b72FAa1cd9F35FEA |
+| MultiVault                    | 0x6E35cF57A41fA15eA0EaE9C33e751b01A784Fe7e |
+| AtomWalletFactory             | 0x33827373a7D1c7C78a01094071C2f6CE74253B9B |
+| AtomWalletBeacon              | 0xC23cD55CF924b3FE4b97deAA0EAF222a5082A1FF |
+
+[... see full docs for complete content]
+
+---
+title: "Overview"
+description: "Overview of Intuition's smart contract architecture and design patterns"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/intuition-smart-contracts"
+---
+
+# Overview
+
+# Contract Architecture Overview
+
+Intuition's smart contracts are central to the user experience, handling critical onchain activities such as the creation of Atoms (also known as Identities) and Triples (also known as Claims), as well as the staking and rewards.
+
+# MultiVault
+
+The MultiVault contract is the core component of Intuition's architecture, responsible for managing the creation of Atoms/Triples and handling deposits, redemptions, and share distributions. It supports multiple bonding curve implementations through a registry system.
+
+- **Creation**: Users can create Atoms and Triples
+- **Deposits**: Users can deposit ETH to receive shares in atoms/triples
+
+[... see full docs for complete content]
+
+---
+title: "MultiVault.sol"
+description: "Documentation for the MultiVault smart contract"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/intuition-smart-contracts/multivault"
+---
+
+# MultiVault.sol
+
+The MultiVault contract is the core economic engine of the Intuition protocol, managing deposits, redemptions, and creation of atoms and triples. It implements a sophisticated vault system that supports multiple bonding curves and provides the foundation for the protocol's economic incentives.
+
+The MultiVault is the primary interface for users to interact with the economic aspects of atoms and triples:
+
+### Atom IDs
+Atom IDs are generated using a hash function that hashes the Atom's data.
+
+### Triple IDs
+Triple IDs are generated using a hash function that hashes the subject, predicate, and object Atom IDs.
+
+## Smart Contract Writes
+
+[... see full docs for complete content]
+
+---
+title: "TrustBonding.sol"
+description: "Documentation for the TrustBonding smart contract"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/intuition-smart-contracts/trust-bonding"
+---
+
+# TrustBonding.sol
+
+The TrustBonding contract is the primary smart contract for bonding/staking of TRUST tokens within the Intuition protocol. Responsible for managing emissions of new TRUST tokens for various stakeholders, including atom creators, triple creators, and other participants in the ecosystem.
+
+### Wrapped Trust (wTRUST)
+The TrustBonding contract requires users to wrap their TRUST tokens into Wrapped TRUST (wTRUST) before locking them in the voting escrow. This wrapping process is handled by the `WrappedTrust` contract, which allows users to deposit TRUST tokens and receive an equivalent amount of wTRUST tokens.
+
+### Voting Escrow (veTRUST)
+
+[... see full docs for complete content]
+
+---
+title: "Portal (Explorer) Guide"
+description: "Documentation for the Intuition Portal application - create identities, make claims, stake, and explore the knowledge graph"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/portal"
+---
+
+# Portal (Explorer) Guide
+
+# The Intuition Portal
+
+The Portal is Intuition's first Explorer (akin to a block explorer), which provides users with easy access to the social and knowledge graph. Positioned at the application layer, the Portal offers an intuitive interface for users to create, manage, and interact with Identities (Atoms) and Claims (Triples). It serves as the gateway for creating decentralized identities, making claims, and managing your stake, transforming the exploration of the knowledge graph into an accessible and user-friendly experience.
+
+[... see full docs for complete content]
+
+---
+title: "Atom Functions"
+description: "API reference for MultiVault atom management functions"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/protocol/api-reference/multivault/atoms"
+---
+
+# Atom Functions
+
+Functions for creating and querying atoms in the MultiVault contract.
+
+## multiVaultCreateAtoms
+
+Create one or more atoms with optional initial deposits.
+
+### Parameters
+
+| Parameter | Type | Description | Required |
+|-----------|------|-------------|----------|
+| config | `WriteConfig` | Contract address, publicClient, walletClient | Yes |
+| args | `[bytes[], bigint[]]` | Array of atom URIs (hex) and deposit amounts | Yes |
+| value | `bigint` | Total ETH to send (sum of deposits) | Yes |
+
+### Returns
+
+### Basic Example
+
+### Advanced Example
+
+### Related Functions
+
+- [multiVaultGetAtomCost](#multivaultgetatomcost) - Get atom creation cost
+
+[... see full docs for complete content]
+
+---
+title: "Configuration Queries"
+description: "API reference for querying protocol configuration parameters"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/protocol/api-reference/multivault/configuration"
+---
+
+# Configuration Queries
+
+Functions for querying protocol configuration settings.
+
+## multiVaultGetGeneralConfig
+
+Get general protocol configuration.
+
+### Returns
+
+### Example
+
+---
+
+## multiVaultGetAtomConfig
+
+Get atom-specific configuration.
+
+### Returns
+
+### Example
+
+---
+
+## multiVaultGetTripleConfig
+
+Get triple-specific configuration.
+
+### Returns
+
+### Example
+
+---
+
+## multiVaultGetBondingCurveConfig
+
+Get bonding curve configuration.
+
+### Returns
+
+### Example
+
+---
+
+## multiVaultGetWalletConfig
+
+Get wallet configuration.
+
+### Returns
+
+### Example
+
+---
+
+## multiVaultMultiCallIntuitionConfigs
+
+Get all configurations in a single multicall.
+
+### Returns
+
+### Example
+
+### Advanced Example
+
+---
+
+## See Also
+
+- [Configuration Guide](/docs/protocol/getting-started/configuration)
+- [Fee Calculations](/docs/protocol/api-reference/multivault/fees)
+
+---
+title: "Share & Asset Conversions"
+description: "API reference for converting between shares and assets"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/protocol/api-reference/multivault/conversions"
+---
+
+# Share & Asset Conversions
+
+Functions for converting between shares and assets, and querying share balances and prices.
+
+## multiVaultConvertToShares
+
+Convert asset amount to expected shares.
+
+### Parameters
+
+| Parameter | Type | Description | Required |
+|-----------|------|-------------|----------|
+| config | `ReadConfig` | Contract address and publicClient | Yes |
+| args | `[bytes32, bigint, bigint]` | VaultId, curveId, assets | Yes |
+
+### Returns
+
+### Example
+
+---
+
+## multiVaultConvertToAssets
+
+Convert shares to expected assets.
+
+### Parameters
+
+| Parameter | Type | Description | Required |
+|-----------|------|-------------|----------|
+| config | `ReadConfig` | Contract address and publicClient | Yes |
+
+[... see full docs for complete content]
+
+---
+title: "Epochs & Utilization"
+description: "API reference for epoch and utilization tracking functions"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/protocol/api-reference/multivault/epochs-utilization"
+---
+
+# Epochs & Utilization
+
+Functions for querying epoch information and utilization metrics.
+
+## multiVaultCurrentEpoch
+
+Get the current epoch number.
+
+### Returns
+
+### Example
+
+---
+
+## multiVaultGetTotalUtilizationForEpoch
+
+Get total protocol utilization for an epoch.
+
+### Parameters
+
+| Parameter | Type | Description | Required |
+|-----------|------|-------------|----------|
+| config | `ReadConfig` | Contract address and publicClient | Yes |
+| args | `[bigint]` | Epoch number | Yes |
+
+### Returns
+
+### Example
+
+---
+
+## multiVaultGetUserUtilizationForEpoch
+
+Get user's total utilization for an epoch.
+
+### Parameters
+
+| Parameter | Type | Description | Required |
+|-----------|------|-------------|----------|
+
+[... see full docs for complete content]
+
+---
+title: "Fee Calculations"
+description: "API reference for fee calculation functions"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/protocol/api-reference/multivault/fees"
+---
+
+# Fee Calculations
+
+Functions for calculating various fees in the protocol.
+
+## multiVaultEntryFeeAmount
+
+Calculate entry fee for a deposit.
+
+### Parameters
+
+| Parameter | Type | Description | Required |
+|-----------|------|-------------|----------|
+| config | `ReadConfig` | Contract address and publicClient | Yes |
+| args | `[bytes32, bigint]` | VaultId, assets | Yes |
+
+### Returns
+
+### Example
+
+---
+
+## multiVaultExitFeeAmount
+
+Calculate exit fee for a redemption.
+
+### Parameters
+
+| Parameter | Type | Description | Required |
+|-----------|------|-------------|----------|
+| config | `ReadConfig` | Contract address and publicClient | Yes |
+| args | `[bytes32, bigint]` | VaultId, assets | Yes |
+
+[... see full docs for complete content]
+
+---
+title: "Triple Functions"
+description: "API reference for MultiVault triple management functions"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/protocol/api-reference/multivault/triples"
+---
+
+# Triple Functions
+
+Functions for creating and managing triples (statements) in the MultiVault contract.
+
+## multiVaultCreateTriples
+
+Create one or more triples (subject-predicate-object statements).
+
+### Parameters
+
+| Parameter | Type | Description | Required |
+|-----------|------|-------------|----------|
+| config | `WriteConfig` | Contract address, publicClient, walletClient | Yes |
+| args | `[bytes32[], bytes32[], bytes32[], bigint[]]` | Subject IDs, predicate IDs, object IDs, deposit amounts | Yes |
+| value | `bigint` | Total ETH to send | Yes |
+
+### Returns
+
+### Basic Example
+
+### Advanced Example
+
+### Related Functions
+
+- [multiVaultGetTriple](#multivaultgettriple) - Query triple details
+- [multiVaultGetTripleCost](#multivaultgettriplecost) - Get creation cost
+
+---
+
+[... see full docs for complete content]
+
+---
+title: "Vault Queries"
+description: "API reference for vault query functions"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/protocol/api-reference/multivault/vault-queries"
+---
+
+# Vault Queries
+
+Functions for querying vault information and state.
+
+## multiVaultGetVault
+
+Get vault details.
+
+### Parameters
+
+| Parameter | Type | Description | Required |
+|-----------|------|-------------|----------|
+| config | `ReadConfig` | Contract address and publicClient | Yes |
+| args | `[bytes32]` | Vault ID | Yes |
+
+### Returns
+
+### Example
+
+---
+
+## multiVaultGetVaultType
+
+Get vault type (atom or triple).
+
+### Parameters
+
+| Parameter | Type | Description | Required |
+|-----------|------|-------------|----------|
+| config | `ReadConfig` | Contract address and publicClient | Yes |
+| args | `[bytes32]` | Vault ID | Yes |
+
+### Returns
+
+### Example
+
+---
+
+## multiVaultIsTermCreated
+
+[... see full docs for complete content]
+
+---
+title: "Vault Operations"
+description: "API reference for vault deposit and redemption functions"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/protocol/api-reference/multivault/vaults"
+---
+
+# Vault Operations
+
+Functions for depositing to and redeeming from vaults.
+
+## multiVaultDeposit
+
+Deposit assets into a vault to receive shares.
+
+### Parameters
+
+| Parameter | Type | Description | Required |
+|-----------|------|-------------|----------|
+| config | `WriteConfig` | Contract address, publicClient, walletClient | Yes |
+| args | `[Address, bytes32, bigint, bigint]` | Receiver, vaultId, curveId, minShares | Yes |
+| value | `bigint` | Deposit amount in wei | Yes |
+
+### Example
+
+---
+
+## multiVaultDepositBatch
+
+Deposit to multiple vaults in a single transaction.
+
+### Parameters
+
+| Parameter | Type | Description | Required |
+|-----------|------|-------------|----------|
+
+[... see full docs for complete content]
+
+---
+title: "Balance Queries"
+description: "API reference for Trust Bonding balance query functions"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/protocol/api-reference/trust-bonding/balances"
+---
+
+# Balance Queries
+
+Functions for querying bonded balances and locked amounts.
+
+## trustBondingTotalBondedBalance
+
+Get the total bonded balance across all users.
+
+### Returns
+
+### Example
+
+---
+
+## trustBondingTotalBondedBalanceAtEpochEnd
+
+Get total bonded balance at the end of an epoch.
+
+### Parameters
+
+| Parameter | Type | Description | Required |
+|-----------|------|-------------|----------|
+| config | `ReadConfig` | Contract address and publicClient | Yes |
+| args | `[bigint]` | Epoch number | Yes |
+
+### Returns
+
+### Example
+
+---
+
+## trustBondingUserBondedBalanceAtEpochEnd
+
+Get user's bonded balance at the end of an epoch.
+
+### Parameters
+
+| Parameter | Type | Description | Required |
+|-----------|------|-------------|----------|
+
+[... see full docs for complete content]
+
+---
+title: "Epoch Management"
+description: "API reference for Trust Bonding epoch management functions"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/protocol/api-reference/trust-bonding/epochs"
+---
+
+# Epoch Management
+
+Functions for managing and querying epoch information in the Trust Bonding contract.
+
+## trustBondingCurrentEpoch
+
+Get the current epoch number.
+
+### Returns
+
+### Example
+
+---
+
+## trustBondingPreviousEpoch
+
+Get the previous epoch number.
+
+### Returns
+
+### Example
+
+---
+
+## trustBondingEpochAtTimestamp
+
+Get the epoch number for a specific timestamp.
+
+### Parameters
+
+| Parameter | Type | Description | Required |
+|-----------|------|-------------|----------|
+| config | `ReadConfig` | Contract address and publicClient | Yes |
+| args | `[bigint]` | Unix timestamp | Yes |
+
+### Returns
+
+### Example
+
+---
+
+## trustBondingEpochTimestampEnd
+
+Get the end timestamp for an epoch.
+
+### Parameters
+
+[... see full docs for complete content]
+
+---
+title: "Lock Queries"
+description: "API reference for Trust Bonding lock query functions"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/protocol/api-reference/trust-bonding/lock-queries"
+---
+
+# Lock Queries
+
+Functions for querying lock information in the Trust Bonding system (if applicable).
+
+## Note
+
+Lock functionality may be implemented through the broader bonding mechanism. User positions and bonded balances can be queried through:
+
+## Query User Position
+
+## Query User Shares in Vaults
+
+## Maximum Redeemable Amount
+
+---
+
+## See Also
+
+- [Trust Bonding Balances](/docs/protocol/api-reference/trust-bonding/balances)
+- [Vault Queries](/docs/protocol/api-reference/multivault/vault-queries)
+- [Share Conversions](/docs/protocol/api-reference/multivault/conversions)
+
+---
+title: "Reward Calculations"
+description: "API reference for Trust Bonding reward calculation functions"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/protocol/api-reference/trust-bonding/rewards"
+---
+
+# Reward Calculations
+
+Functions for calculating and querying bonding rewards.
+
+## trustBondingGetUserApy
+
+Get user's annual percentage yield (APY).
+
+### Parameters
+
+| Parameter | Type | Description | Required |
+|-----------|------|-------------|----------|
+| config | `ReadConfig` | Contract address and publicClient | Yes |
+| args | `[Address]` | User address | Yes |
+
+### Returns
+
+### Example
+
+---
+
+## trustBondingGetSystemApy
+
+Get system-wide APY.
+
+### Returns
+
+### Example
+
+---
+
+## trustBondingGetUserCurrentClaimableRewards
+
+Get user's currently claimable rewards.
+
+### Parameters
+
+| Parameter | Type | Description | Required |
+|-----------|------|-------------|----------|
+| config | `ReadConfig` | Contract address and publicClient | Yes |
+
+[... see full docs for complete content]
+
+---
+title: "Staking Operations"
+description: "API reference for Trust Bonding staking operation functions"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/protocol/api-reference/trust-bonding/staking-operations"
+---
+
+# Staking Operations
+
+Functions for Trust Bonding staking operations (if applicable based on contract implementation).
+
+## Note
+
+The Trust Bonding contract primarily tracks utilization and distributes rewards. Direct staking operations like creating locks may be handled through the MultiVault deposit mechanism.
+
+## Related Staking Mechanism
+
+Trust Bonding rewards are earned through:
+
+1. **Depositing to vaults** via [multiVaultDeposit](/docs/protocol/api-reference/multivault/vaults#multivaultdeposit)
+2. **Vault utilization** tracked by the protocol
+3. **Epoch-based rewards** calculated from utilization
+
+### Deposit to Earn Rewards
+
+### Check Your Bonding Position
+
+---
+
+## See Also
+
+- [Vault Operations](/docs/protocol/api-reference/multivault/vaults)
+- [Trust Bonding Rewards](/docs/protocol/api-reference/trust-bonding/rewards)
+- [Examples: Trust Bonding](/docs/protocol/examples/trust-bonding)
+
+---
+title: "Wrapped Trust"
+description: "API reference for Wrapped Trust token functions"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/protocol/api-reference/wrapped-trust/overview"
+---
+
+# Wrapped Trust
+
+Functions for wrapping and unwrapping native TRUST tokens.
+
+## wrappedTrustDeposit
+
+Deposit native TRUST to receive wrapped TRUST.
+
+### Parameters
+
+| Parameter | Type | Description | Required |
+|-----------|------|-------------|----------|
+| config | `WriteConfig` | Contract address, publicClient, walletClient | Yes |
+| value | `bigint` | Amount of TRUST to wrap | Yes |
+
+### Returns
+
+### Example
+
+---
+
+## wrappedTrustWithdraw
+
+Withdraw wrapped TRUST to receive native TRUST.
+
+### Parameters
+
+| Parameter | Type | Description | Required |
+|-----------|------|-------------|----------|
+| config | `WriteConfig` | Contract address, publicClient, walletClient | Yes |
+
+[... see full docs for complete content]
+
+---
+title: "Epochs & Utilization"
+description: "Understanding the epoch-based reward system and utilization tracking"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/protocol/core-concepts/epochs"
+---
+
+# Epochs & Utilization
+
+The Intuition Protocol operates on an **epoch-based system** for tracking bonding rewards and vault utilization. Epochs are fixed time periods that determine reward distribution.
+
+## What are Epochs?
+
+An epoch is a fixed time period used to:
+- Track vault utilization across the protocol
+- Calculate and distribute bonding rewards
+- Measure user activity and participation
+- Determine APY and reward eligibility
+
+## Epoch Mechanics
+
+### Current Epoch
+
+Get the active epoch number:
+
+### Epoch Configuration
+
+Query epoch parameters from TrustBonding contract:
+
+### Epoch at Timestamp
+
+Get the epoch number for a specific time:
+
+### Epoch End Time
+
+[... see full docs for complete content]
+
+---
+title: "Vaults & Shares"
+description: "Understanding vault mechanics and share-based deposits in the Intuition Protocol"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/protocol/core-concepts/vaults"
+---
+
+# Vaults & Shares
+
+Every atom and triple has an associated **vault** that holds deposited assets. Users receive **shares** representing their ownership when they deposit, with prices determined by bonding curves.
+
+## What is a Vault?
+
+A vault is a container for assets associated with an atom or triple:
+
+- **Assets**: Total deposited value (in native token)
+- **Shares**: Tokenized ownership stakes
+- **Share Price**: Determined by bonding curve
+- **Vault ID**: Same as the atom/triple ID
+
+## Depositing to Vaults
+
+### Basic Deposit
+
+### Preview Deposit
+
+Check expected shares before depositing:
+
+### Batch Deposits
+
+Deposit to multiple vaults in one transaction:
+
+[... see full docs for complete content]
+
+---
+title: "Atom Events"
+description: "API reference for atom event parsing functions"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/protocol/events/atom-events"
+---
+
+# Atom Events
+
+Functions for parsing atom-related events from transaction receipts.
+
+## eventParseAtomCreated
+
+Parse AtomCreated events from a transaction.
+
+### Parameters
+
+| Parameter | Type | Description | Required |
+|-----------|------|-------------|----------|
+| publicClient | `PublicClient` | Viem public client | Yes |
+| txHash | `Hash` | Transaction hash | Yes |
+
+### Returns
+
+### Example
+
+---
+
+## eventParseAtomDepositCreated
+
+Parse AtomDepositCreated events (atom creation with initial deposit).
+
+### Returns
+
+### Example
+
+---
+
+## Complete Example
+
+---
+
+## See Also
+
+- [Triple Events](/docs/protocol/events/triple-events)
+- [Vault Events](/docs/protocol/events/vault-events)
+- [Examples: Event Parsing](/docs/protocol/examples/event-parsing)
+
+---
+title: "Triple Events"
+description: "API reference for triple event parsing functions"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/protocol/events/triple-events"
+---
+
+# Triple Events
+
+Functions for parsing triple-related events from transaction receipts.
+
+## eventParseTripleCreated
+
+Parse TripleCreated events from a transaction.
+
+### Parameters
+
+| Parameter | Type | Description | Required |
+|-----------|------|-------------|----------|
+| publicClient | `PublicClient` | Viem public client | Yes |
+| txHash | `Hash` | Transaction hash | Yes |
+
+### Returns
+
+### Example
+
+---
+
+## eventParseTripleDepositCreated
+
+Parse TripleDepositCreated events.
+
+### Returns
+
+### Example
+
+---
+
+## See Also
+
+- [Atom Events](/docs/protocol/events/atom-events)
+- [Vault Events](/docs/protocol/events/vault-events)
+
+---
+title: "Trust Bonding Events"
+description: "API reference for Trust Bonding event parsing functions"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/protocol/events/trust-bonding-events"
+---
+
+# Trust Bonding Events
+
+Functions for parsing Trust Bonding events from transaction receipts.
+
+## eventParseRewardsClaimed
+
+Parse RewardsClaimed events from a transaction.
+
+### Returns
+
+### Example
+
+---
+
+## Generic Event Parser
+
+For parsing any event from protocol contracts:
+
+---
+
+## See Also
+
+- [Atom Events](/docs/protocol/events/atom-events)
+- [Vault Events](/docs/protocol/events/vault-events)
+- [Examples: Event Parsing](/docs/protocol/examples/event-parsing)
+
+---
+title: "Vault Events"
+description: "API reference for vault event parsing functions"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/protocol/events/vault-events"
+---
+
+# Vault Events
+
+Functions for parsing vault-related events from transaction receipts.
+
+## eventParseDeposited
+
+Parse Deposited events from a transaction.
+
+### Returns
+
+### Example
+
+---
+
+## eventParseRedeemed
+
+Parse Redeemed events from a transaction.
+
+### Returns
+
+### Example
+
+---
+
+## eventParseSharePriceChanged
+
+Parse SharePriceChanged events.
+
+### Returns
+
+### Example
+
+---
+
+## See Also
+
+- [Atom Events](/docs/protocol/events/atom-events)
+- [Triple Events](/docs/protocol/events/triple-events)
+- [Examples: Event Parsing](/docs/protocol/examples/event-parsing)
+
+---
+title: "Batch Operations"
+description: "Complete examples for batch creation and deposit operations"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/protocol/examples/batch-operations"
+---
+
+# Batch Operations
+
+# Batch Operations Examples
+
+Complete workflows for performing batch operations to save gas and improve efficiency.
+
+## Example 1: Batch Create Atoms
+
+## Example 2: Batch Deposit to Multiple Vaults
+
+## Example 3: Batch Create Triples
+
+## Example 4: Batch Redeem from Multiple Vaults
+
+## See Also
+
+- [Atom Functions](/docs/protocol/api-reference/multivault/atoms)
+- [Vault Operations](/docs/protocol/api-reference/multivault/vaults)
+- [Triple Functions](/docs/protocol/api-reference/multivault/triples)
+
+---
+title: "Creating Atoms & Triples"
+description: "Complete examples for creating atoms and triples"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/protocol/examples/creating-atoms-triples"
+---
+
+# Creating Atoms & Triples
+
+Complete workflows for creating atoms and triples with the Protocol package.
+
+## Example 1: Create a Simple Atom
+
+## Example 2: Create Atom with Initial Deposit
+
+## Example 3: Create Multiple Atoms
+
+## Example 4: Create a Triple (Statement)
+
+## Example 5: Complete Workflow - Create Atoms Then Triple
+
+## Example 6: Check Before Creating
+
+## See Also
+
+- [Atom Functions](/docs/protocol/api-reference/multivault/atoms)
+- [Triple Functions](/docs/protocol/api-reference/multivault/triples)
+- [Atoms Fundamentals](/docs/intuition-concepts/primitives/Atoms/fundamentals)
+- [Triples Fundamentals](/docs/intuition-concepts/primitives/Triples/fundamentals)
+
+---
+title: "Deposit & Redeem"
+description: "Complete examples for vault deposits and redemptions"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/protocol/examples/deposit-redeem"
+---
+
+# Deposit & Redeem
+
+# Deposit & Redeem Examples
+
+Complete workflows for depositing to and redeeming from vaults.
+
+## Example 1: Simple Deposit
+
+## Example 2: Batch Deposit
+
+## Example 3: Redeem Shares
+
+## Example 4: Full Cycle - Deposit and Redeem
+
+## See Also
+
+- [Vault Operations](/docs/protocol/api-reference/multivault/vaults)
+- [Share Conversions](/docs/protocol/api-reference/multivault/conversions)
+- [Core Concepts: Vaults](/docs/protocol/core-concepts/vaults)
+
+---
+title: "Event Parsing Examples"
+description: "Complete examples for parsing transaction events"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/protocol/examples/event-parsing"
+---
+
+# Event Parsing Examples
+
+Complete workflows for parsing events from transaction receipts.
+
+## Example 1: Parse Atom Creation Events
+
+## Example 2: Parse Multiple Event Types
+
+## Example 3: Build Activity Feed
+
+## See Also
+
+- [Atom Events](/docs/protocol/events/atom-events)
+- [Vault Events](/docs/protocol/events/vault-events)
+- [Triple Events](/docs/protocol/events/triple-events)
+
+---
+title: "Fee Calculations"
+description: "Complete examples for calculating and estimating fees"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/protocol/examples/fee-calculations"
+---
+
+# Fee Calculations
+
+# Fee Calculations Examples
+
+Complete workflows for calculating fees and estimating costs.
+
+## Example 1: Calculate Deposit Fees
+
+## Example 2: Calculate Redemption Fees
+
+## Example 3: Estimate Total Cost for Operations
+
+## Example 4: Calculate Triple Atom Deposit Fraction
+
+## Example 5: Fee Comparison Across Vaults
+
+## See Also
+
+- [Fee Calculations API](/docs/protocol/api-reference/multivault/fees)
+- [Configuration](/docs/protocol/api-reference/multivault/configuration)
+- [Vault Operations](/docs/protocol/api-reference/multivault/vaults)
+
+---
+title: "Trust Bonding Examples"
+description: "Complete examples for Trust Bonding and rewards"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/protocol/examples/trust-bonding"
+---
+
+# Trust Bonding Examples
+
+Complete workflows for tracking rewards and utilization in the Trust Bonding system.
+
+## Example 1: Check Rewards
+
+## Example 2: Track Historical Rewards
+
+## Example 3: Monitor Utilization
+
+## See Also
+
+- [Trust Bonding Rewards](/docs/protocol/api-reference/trust-bonding/rewards)
+- [Epoch Management](/docs/protocol/api-reference/trust-bonding/epochs)
+- [Core Concepts: Epochs](/docs/protocol/core-concepts/epochs)
+
+---
+title: "Configuration"
+description: "Configure clients, networks, and contract addresses for the Intuition Protocol"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/protocol/getting-started/configuration"
+---
+
+# Configuration
+
+This guide covers how to configure the Protocol package for use with Intuition networks, including client setup, network configuration, and contract address management.
+
+## Client Configuration
+
+The Protocol package uses two types of configurations depending on the operation:
+
+### ReadConfig (Read-Only Operations)
+
+For querying data without submitting transactions:
+
+### WriteConfig (Transaction Operations)
+
+For operations that modify blockchain state:
+
+## Network Configuration
+
+### Intuition Testnet
+
+The testnet is ideal for development and testing:
+
+### Intuition Mainnet
+
+For production deployments:
+
+## Contract Addresses
+
+### MultiVault Contract
+
+The MultiVault is the main protocol contract for atoms, triples, and vaults:
+
+### Other Protocol Contracts
+
+[... see full docs for complete content]
+
+---
+title: "Protocol Package Overview"
+description: "TypeScript SDK for interacting with the Intuition Protocol - atoms, triples, vaults, and bonding rewards"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/protocol/getting-started/overview"
+---
+
+# Protocol Package Overview
+
+The `@0xintuition/protocol` package is a comprehensive TypeScript/JavaScript SDK for interacting with the Intuition onchain knowledge graph. It provides low-level access to build, query, and manage atoms (entities), triples (statements), vaults, and bonding rewards on the Intuition blockchain.
+
+## What is the Protocol Package?
+
+The Protocol package is built on top of [viem](https://viem.sh), providing type-safe, performant access to all Intuition smart contracts. It handles:
+
+- **Atom Management**: Create and query entities (people, organizations, concepts)
+- **Triple Management**: Create statements connecting atoms (subject-predicate-object)
+- **Vault Operations**: Deposit and redeem assets, manage shares
+- **Trust Bonding**: Participate in epoch-based rewards and staking
+
+[... see full docs for complete content]
+
+---
+title: "Working with Primitives"
+description: "Create and interact with atoms, triples, and vaults using the Protocol package"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/protocol/working-with-primitives"
+---
+
+# Working with Primitives
+
+This guide shows how to create and interact with atoms, triples, and vaults using the Protocol package (low-level contract interactions).
+
+**For conceptual understanding:** [Primitives Overview](/docs/intuition-concepts/primitives)
+
+## Creating Atoms
+
+Atoms are unique identifiers for any entity. Here's how to create them with the Protocol package:
+
+**See also:** [Atoms Concept](/docs/intuition-concepts/primitives/Atoms/fundamentals)
+
+## Creating Triples
+
+Triples connect three atoms to create structured claims:
+
+**See also:** [Triples Concept](/docs/intuition-concepts/primitives/Triples/fundamentals)
+
+## Vault Operations
+
+Every atom and triple has an associated vault for staking:
+
+### Depositing (Signaling Support)
+
+### Redeeming (Withdrawing)
+
+### Querying Vault Details
+
+**See also:** [Signals Concept](/docs/intuition-concepts/primitives/Signals/fundamentals)
+
+## Batch Operations
+
+[... see full docs for complete content]
+
+---
+title: "Contract Deployments"
+description: "The Intuition protocol contracts are deployed on both the Base Mainnet and the Intuition Layer 3 network, as well as their respective testnets. Below are the details of the deployed contracts,..."
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/quick-start/deployments"
+---
+
+# Contract Deployments
+
+The Intuition protocol contracts are deployed on both the Base Mainnet and the Intuition Layer 3 network, as well as their respective testnets. Below are the details of the deployed contracts, including their addresses and network configurations.
+
+## Mainnet
+
+### Base Mainnet
+
+| Contract      | Address                                    |
+|---------------|--------------------------------------------|
+| Trust (ERC20) | 0x6cd905dF2Ed214b22e0d48FF17CD4200C1C6d8A3 |
+
+### Intuition Mainnet (L3)
+
+| Contract Name                 | Address                                    |
+|-------------------------------|--------------------------------------------|
+| WrappedTrust                  | 0x81cFb09cb44f7184Ad934C09F82000701A4bF672 |
+| Upgrades TimelockController   | 0x321e5d4b20158648dFd1f360A79CAFc97190bAd1 |
+| Parameters TimelockController | 0x71b0F1ABebC2DaA0b7B5C3f9b72FAa1cd9F35FEA |
+| MultiVault                    | 0x6E35cF57A41fA15eA0EaE9C33e751b01A784Fe7e |
+| AtomWalletFactory             | 0x33827373a7D1c7C78a01094071C2f6CE74253B9B |
+| AtomWalletBeacon              | 0xC23cD55CF924b3FE4b97deAA0EAF222a5082A1FF |
+
+[... see full docs for complete content]
+
+---
+title: "Network & Explorers"
+description: "Interacting with the Intuition protocol requires connecting to the Intuition network - an L3 network that posts to [Base](https://base.org/)."
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/quick-start/network-details"
+---
+
+# Network & Explorers
+
+# Intuition Network & Explorers
+
+Interacting with the Intuition protocol requires connecting to the Intuition network - an L3 network that posts to [Base](https://base.org/).
+
+## Explorers
+
+### Intuition Mainnet Explorers
+
+- Network Explorer: https://explorer.intuition.systems/
+- Protocol Explorer: https://portal.intuition.systems/explore/
+
+### Intuition Testnet Explorers
+
+- Network Explorer: https://testnet.explorer.intuition.systems/
+- Protocol Explorer: https://testnet.portal.intuition.systems/explore/
+
+### Base Sepolia Explorer (Deprecated)
+
+- https://sepolia.basescan.org
+
+### Base Mainnet Explorer (Deprecated)
+
+- https://basescan.org
+
+## Faucets
+
+### Intuition Testnet Faucet
+You can visit the [Intuition Testnet faucet](https://testnet.hub.intuition.systems/) to get some $tTRUST tokens for testing.
+
+- https://testnet.hub.intuition.systems/
+
+# Network Details
+
+### Intuition Mainnet Configuration
+- **Chain ID**: 1155
+
+[... see full docs for complete content]
+
+---
+title: "Intuition Testnet Faucet"
+description: "You can visit the [Intuition Testnet faucet](https://testnet.hub.intuition.systems/) to get some $tTRUST tokens for testing."
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/quick-start/testnet-faucet"
+---
+
+# Intuition Testnet Faucet
+
+You can visit the [Intuition Testnet faucet](https://testnet.hub.intuition.systems/) to get some $tTRUST tokens for testing.
+
+**https://testnet.hub.intuition.systems**
+
+**Each day you can claim 0.1 $tTRUST tokens.** You can claim as many times as you want.
+
+If you have any questions visit the [Intuition Discord](https://discord.gg/RgBenkX4mx) developers channel.
+
+**https://discord.gg/RgBenkX4mx**
+
+---
+title: "Using the SDK"
+description: "Get started building with Intuition in minutes."
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/quick-start/using-the-sdk"
+---
+
+# Using the SDK
+
+# Intuition SDK Quick Start
+
+Get started building with Intuition in minutes. 
+
+This guide provides direct code snippets to create atoms, triples, and signal on them.
+
+Before starting development, we recommend adding the Intuition Testnet and Mainnet networks to your preferred wallet. You can find the networks in the [Network Details](/docs/quick-start/network-details) page.
+
+## Installation
+In most cases, you will only need to install the `@0xintuition/sdk` package. This package provides a high-level API for interacting with the Intuition protocol, plus exports the core `@0xintuition/protocol` and `@0xintuition/graphql` functionality.
+
+**Primary dependencies:**
+
+The `@0xintuition/sdk` package is the only required package to get started.
+
+[... see full docs for complete content]
+
+---
+title: "Community & Support"
+description: "Connect with the Intuition community and get the support you need"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/resources/community-and-support"
+---
+
+# Community & Support
+
+Connect with the Intuition community, get help, and stay updated with the latest developments.
+
+## Official Channels
+
+<svg width="32" height="32" viewBox="0 0 24 24" fill="white">
+<path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+</svg>
+
+Follow us on X for real-time updates, announcements, and community highlights.
+
+<svg width="32" height="32" viewBox="0 0 24 24" fill="white">
+
+[... see full docs for complete content]
+
+---
+title: "FAQ"
+description: "Frequently Asked Questions about Intuition"
+last_updated: "2026-02-11T09:19:02-05:00"
+source: "https://docs.intuition.systems/docs/resources/faq"
+---
+
+# FAQ
+
+This page is organized into expandable sections for easy navigation. Click on any section below to explore the questions within that category.
+
+Getting Started - Basic information about Intuition and how to begin
+
+## Getting Started
+
+### What is Intuition?
+
+Intuition is a decentralized protocol that enables the creation of trustful interactions through atomic primitives. It provides a foundation for building decentralized applications that can establish and maintain trust between parties without centralized intermediaries.
+
+[... see full docs for complete content]
+
+---
+title: "Glossary"
+description: "Key terms and definitions for Intuition"
+last_updated: "2026-02-11T09:19:02-05:00"
+source: "https://docs.intuition.systems/docs/resources/glossary"
+---
+
+# Glossary
+
+Comprehensive glossary of key terms used in Intuition documentation.
+
+## A
+
+### Atom
+
+A unique decentralized identifier for any entity, concept, or piece of data. Atoms are the fundamental building blocks of the knowledge graph.
+
+**See:** [Atoms Fundamentals](/docs/intuition-concepts/primitives/Atoms/fundamentals)
+
+**Example:** An atom representing "TypeScript" or an Ethereum address "0x742d35..."
+
+### Attestation
+
+A verifiable claim or statement made on-chain using triples. Attestations can be supported or opposed through signals (staking).
+
+**See:** [Triples Fundamentals](/docs/intuition-concepts/primitives/Triples/fundamentals)
+
+**Example:** `[Alice] [endorses] [Bob]` is an attestation that Alice endorses Bob.
+
+### AnyTrust DA
+
+[... see full docs for complete content]
+
+---
+title: "Resources"
+description: "Additional resources and community support"
+last_updated: "2026-02-11T09:19:02-05:00"
+source: "https://docs.intuition.systems/docs/resources"
+---
+
+# Resources
+
+Find additional resources, support, and tools for building with Intuition.
+
+## Documentation Resources
+
+<h3>FAQ</h3>
+
+Frequently asked questions about Intuition. From basic concepts to advanced implementation details, get quick answers to common questions.
+
+<h3>Glossary</h3>
+
+Comprehensive glossary of key terms and definitions. Master the essential terminology for working with Intuition.
+
+<h3>Tutorials</h3>
+
+Step-by-step guides for building with Intuition. Learn by doing with hands-on tutorials covering common use cases.
+
+## Community & Support
+
+<h3>Community Channels</h3>
+
+Connect with the Intuition community. Join Discord, Forum discussions, and follow us on Twitter for updates.
+
+<h3>Contributing</h3>
+
+[... see full docs for complete content]
+
+---
+title: "Key Terms"
+description: "Essential terminology and concepts for the Intuition ecosystem"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/resources/key-terms"
+---
+
+# Key Terms
+
+This page defines the essential terminology and concepts you need to understand the Intuition protocol. Terms are organized by category to help you quickly find what you're looking for.
+
+## Quick Navigation
+
+This page is organized into expandable sections for easy navigation. Click on any section below to explore the terms within that category.
+
+<svg width="12" height="12" viewBox="0 0 24 24" fill="#3B82F6" >
+<path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z"/>
+</svg>
+Core Primitives - Fundamental building blocks of the Intuition protocol
+
+## Core Primitives
+
+### **Atoms**
+
+[... see full docs for complete content]
+
+---
+title: "Optimizing Batch Operations"
+description: "Efficiently create multiple atoms and triples"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/tutorials/advanced/batch-operations"
+---
+
+# Optimizing Batch Operations
+
+> Coming soon! This tutorial will show how to efficiently create and manage multiple atoms and triples in batches.
+
+Learn how to optimize gas costs and improve performance when creating many atoms, triples, or signals at once.
+
+## What You'll Learn
+
+This tutorial will cover:
+- Batch atom creation
+- Bulk triple creation
+- Multi-sig signal deposits
+- Gas optimization strategies
+- Transaction batching patterns
+- Error handling for batch operations
+
+## In the Meantime
+
+See these resources:
+
+- [SDK Documentation](/docs/intuition-sdk/installation-and-setup)
+- [Protocol API Reference](/docs/protocol/api-reference/multivault/atoms)
+- [Performance Best Practices](/docs/intuition-sdk/quick-start)
+
+## Quick Example
+
+## Get Notified
+
+[... see full docs for complete content]
+
+---
+title: "Working with Nested Triples"
+description: "Use triples as atoms for complex expressions"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/tutorials/advanced/nested-triples"
+---
+
+# Working with Nested Triples
+
+> Coming soon! This tutorial will show how to create complex, multi-layered claims.
+
+Nested triples allow you to make statements about statements, creating powerful recursive knowledge structures.
+
+## What You'll Learn
+
+This tutorial will cover:
+- Creating triples as atoms
+- Building complex conditional logic
+- Implementing recursive relationships
+- Querying nested structures
+- Real-world use cases (meta-claims, conditional predictions, hierarchical data)
+
+## In the Meantime
+
+See these resources to learn about nested triples:
+
+- [Triples Fundamentals](/docs/intuition-concepts/primitives/Triples/fundamentals)
+- [Nested Triples Concept](/docs/intuition-concepts/primitives/Triples/nested-triples)
+- [SDK Documentation](/docs/intuition-sdk/installation-and-setup)
+
+## Simple Example
+
+## Get Notified
+
+[... see full docs for complete content]
+
+---
+title: "Oracle Integration"
+description: "Use Intuition claims in smart contracts"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/tutorials/advanced/oracle-integration"
+---
+
+# Oracle Integration
+
+> Coming soon! This tutorial will show how to use Intuition as an oracle for your smart contracts.
+
+Learn how to read Intuition's on-chain data from your smart contracts, enabling trust-weighted decision making and reputation-gated access.
+
+## What You'll Learn
+
+This tutorial will cover:
+- Reading atom and triple data from contracts
+- Querying vault metrics (market cap, positions)
+- Implementing reputation-gated functions
+- Using signals for weighted voting
+- Building trust-based access control
+- Real-time oracle updates
+
+## Use Cases
+
+- **Reputation-gated DAOs** - Only allow voting from trusted accounts
+- **Trust-weighted governance** - Weight votes by reputation
+
+[... see full docs for complete content]
+
+---
+title: "Building Curated Lists with Community Ranking"
+description: "Create token-curated registries with signal-based ranking"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/tutorials/curated-lists"
+---
+
+# Building Curated Lists with Community Ranking
+
+Build a community-curated list where ranking is determined by stake. Perfect for token-curated registries (TCRs), trusted contract lists, or any ranked collection.
+
+**Time to complete:** 2 hours
+**Difficulty:** Intermediate
+**Prerequisites:**
+- SDK installed
+- Wallet connected to Intuition Testnet
+- Understanding of atoms and triples
+
+## What We'll Build
+
+A curated list system featuring:
+- ✅ List creation (e.g., "Safe DeFi Protocols")
+- ✅ Item submission to lists
+- ✅ Stake-based ranking
+- ✅ Challenge mechanism for disputed entries
+- ✅ Automatic sorting by community confidence
+- ✅ UI for browsing and curating
+
+[... see full docs for complete content]
+
+---
+title: "Building a Fraud Detection System"
+description: "Community-driven scam flagging with weighted voting"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/tutorials/fraud-detection"
+---
+
+# Building a Fraud Detection System
+
+Create a community-driven fraud detection system where users flag malicious contracts, scam tokens, and phishing sites, with expert signals weighted more heavily.
+
+**Time to complete:** 2 hours
+**Difficulty:** Advanced
+**Prerequisites:**
+- SDK installed
+- Understanding of triples and signals
+- GraphQL knowledge
+
+## What We'll Build
+
+A fraud detection platform featuring:
+- ✅ Contract safety claims
+- ✅ Scam flagging with evidence
+- ✅ Expert-weighted voting
+- ✅ Automatic alert system
+- ✅ False positive dispute mechanism
+- ✅ Safety score calculation
+
+This creates a decentralized, community-curated database of known scams and safe contracts.
+
+## Architecture Overview
+
+**How It Works:**
+
+[... see full docs for complete content]
+
+---
+title: "Tutorials"
+description: "Learn by building real applications with Intuition"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/tutorials/overview"
+---
+
+# Tutorials
+
+Learn by building real applications with Intuition. Each tutorial is a complete, end-to-end guide with working code.
+
+## Building Applications
+
+### [Reputation System](/docs/tutorials/reputation-system)
+
+Build a developer reputation platform with skills, endorsements, and verifiable credentials.
+
+**You'll learn:**
+- Creating identity atoms from Ethereum addresses
+- Skill attestations with triples
+- Weighted endorsements with signals
+- Querying and displaying reputation data
+
+**Time:** 2-3 hours | **Level:** Intermediate
+
+---
+
+### [Curated Lists](/docs/tutorials/curated-lists)
+
+Create community-curated, ranked lists where stake determines ranking.
+
+**You'll learn:**
+- Token-curated registries (TCRs)
+- Signal-based ranking algorithms
+- List management and curation
+- Dispute resolution mechanisms
+
+[... see full docs for complete content]
+
+---
+title: "Building a Non-Resolving Prediction Market"
+description: "Create a forecasting platform with track records"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/tutorials/prediction-market"
+---
+
+# Building a Non-Resolving Prediction Market
+
+Create a prediction market where forecasts don't need formal resolution. Instead, track record and reputation emerge from the accuracy of past predictions.
+
+**Time to complete:** 2 hours
+**Difficulty:** Advanced
+**Prerequisites:**
+- SDK installed
+- Understanding of signals and triples
+- GraphQL knowledge
+
+## What We'll Build
+
+A prediction platform featuring:
+- ✅ Event atoms (future events to predict)
+- ✅ Prediction triples with confidence levels
+- ✅ Track record calculation based on accuracy
+- ✅ Forecaster reputation scores
+- ✅ Confidence-weighted predictions
+- ✅ Historical accuracy metrics
+
+[... see full docs for complete content]
+
+---
+title: "Building User Activity Feeds"
+description: "Step-by-step guide to create user-specific activity streams"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/tutorials/queries/building-user-activity-feeds"
+---
+
+# Building User Activity Feeds
+
+Learn how to create personalized, real-time activity feeds that track user interactions across the Intuition ecosystem using the GraphQL API.
+
+## Understanding the Progression
+
+1. **Get the whole user activity feed**, including atoms made and positions taken, along with vault details.
+2. **Get recent claims** produced by the user, both atoms (max 10) and triples (max 10) with detailed metadata.
+3. **Get active user positions** ordered by share amount - shows current stakes with vault performance metrics.
+
+    id: 'user-activity',
+    title: 'Step 1: Get User Activity',
+    query: `query GetUserActivity($userAddress: String!, $limit: Int = 20) {
+  atoms(
+
+[... see full docs for complete content]
+
+---
+title: "Finding Related Claims"
+description: "A step-by-step guide to discover related triples and relationship patterns"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/tutorials/queries/finding-related-claims"
+---
+
+# Finding Related Claims
+
+Learn how to find and navigate related claims in the Intuition knowledge graph by exploring triples, their relationships, and semantic connections.
+
+## Understanding the Progression
+
+1. **Find all triples** where a specific atom appears as subject or object and discover direct relationships.
+2. **Find similar claims** by predicate pattern and subject type, then discover relationship patterns across the graph.
+3. **Get detailed information** about a specific triple, including vault metrics and top positions.
+
+    id: 'related-claims',
+    title: 'Step 1: Find Related Claims',
+    query: `query GetRelatedClaims($atomId: String!, $limit: Int = 20) {
+  as_subject: triples(
+    where: { subject_id: { _eq: $atomId } }
+
+[... see full docs for complete content]
+
+---
+title: "Finding Top Dapps on Coinbase"
+description: "Step-by-step guide to query and rank top decentralized applications"
+last_updated: "2026-02-11T14:23:51-05:00"
+source: "https://docs.intuition.systems/docs/tutorials/queries/finding-top-dapps-on-coinbase"
+---
+
+# Finding Top Dapps on Coinbase
+
+# Finding the Top dApps on Coinbase
+
+**Time to complete:** 30 minutes
+**Difficulty:** Beginner
+
+## Why You'd Need This
+
+Building a dApp directory, protocol aggregator, or ecosystem dashboard? This tutorial shows you how to query and rank decentralized applications by community confidence (measured via market cap in vaults).
+
+**Use cases:**
+- Creating a "Top dApps" leaderboard
+- Building protocol discovery platforms
+- Analyzing ecosystem growth
+- Tracking trending applications
+
+## What You'll Learn
+
+This guide shows you how to progressively build queries to discover and rank the top decentralized applications (dApps) on Coinbase by market capitalization.
+
+[... see full docs for complete content]
+
+---
+title: "Discovering Most Trusted Accounts"
+description: "Find and rank the ecosystem's most trusted accounts based on stake and activity"
+last_updated: "2026-02-11T14:23:51-05:00"
+source: "https://docs.intuition.systems/docs/tutorials/queries/discovering-most-trusted-accounts"
+---
+
+# Discovering Most Trusted Accounts
+
+# Discovering the Most Trusted Accounts
+
+**Time to complete:** 45 minutes
+**Difficulty:** Intermediate
+
+## Why You'd Need This
+
+Building trust graphs, recommendation systems, or expert finders? This tutorial shows you how to identify the most trusted and active participants in the Intuition ecosystem.
+
+**Use cases:**
+- Expert discovery platforms
+- Trust-weighted voting systems
+- Recommendation engines
+- Influencer identification
+- Reputation dashboards
+
+## What You'll Learn
+
+Learn how to leverage the Intuition GraphQL API to find and rank the ecosystem's most trusted accounts based on their positions, stakes, and activity patterns.
+
+## Understanding the Progression
+
+[... see full docs for complete content]
+
+---
+title: "Building a Reputation System"
+description: "Build a developer reputation platform with skills, endorsements, and verifiable credentials"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/tutorials/reputation-system"
+---
+
+# Building a Reputation System
+
+Learn how to build a complete reputation system using Intuition's primitives. We'll create a developer reputation platform where users can claim skills, receive endorsements, and build verifiable credentials.
+
+**Time to complete:** 2-3 hours
+**Difficulty:** Intermediate
+**Prerequisites:**
+- SDK installed
+- Wallet connected to Intuition Testnet
+- Basic TypeScript/React knowledge
+
+## What We'll Build
+
+A developer reputation platform with:
+- ✅ Developer profile atoms (from Ethereum addresses)
+- ✅ Skill atoms (TypeScript, React, Solidity, etc.)
+- ✅ Skill attestation triples ([Developer] [has skill] [TypeScript])
+- ✅ Endorsement signals (stake-weighted support)
+- ✅ Reputation scoring based on signal strength
+
+[... see full docs for complete content]
+
+---
+title: "Building a Social Attestation Platform"
+description: "Create a decentralized LinkedIn with portable identity"
+last_updated: "2026-01-05T17:16:01-08:00"
+source: "https://docs.intuition.systems/docs/tutorials/social-attestations"
+---
+
+# Building a Social Attestation Platform
+
+Build a decentralized professional network where connections, recommendations, and work history are portable across platforms and verifiable on-chain.
+
+**Time to complete:** 2-3 hours
+**Difficulty:** Intermediate
+**Prerequisites:**
+- SDK installed
+- Understanding of atoms and triples
+- Basic React knowledge
+
+## What We'll Build
+
+A professional network featuring:
+- ✅ Profile atoms from Ethereum addresses
+- ✅ Connection triples ("knows" relationships)
+- ✅ Recommendation triples with endorsements
+- ✅ Experience verification
+- ✅ Skill attestations from colleagues
+- ✅ Portable, cross-platform identity
+
+Unlike traditional platforms, all data is on-chain, portable, and owned by the user.
+
+## Architecture Overview
+
+**Core Components:**
+
+[... see full docs for complete content]
