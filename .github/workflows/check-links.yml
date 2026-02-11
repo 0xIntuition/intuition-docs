@@ -8,8 +8,10 @@ on:
       - 'src/components/**'
       - 'src/pages/**'
       - 'src/snippets/**'
+      - 'static/llms.txt'
       - 'docusaurus.config.js'
       - 'scripts/validate-internal-links.js'
+      - '.github/workflows/generate-llms-txt.yml'
 
 jobs:
   validate-links:

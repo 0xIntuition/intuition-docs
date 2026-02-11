@@ -33,61 +33,70 @@ jobs:
           cat > static/llms.txt << 'EOF'
           # Intuition
 
-          > Intuition is a permissionless protocol for creating verifiable, tokenized attestations. It enables developers to build context-aware applications using semantic triples (subject-predicate-object relationships) backed by economic incentives through bonding curves.
+          > Intuition is a permissionless protocol for creating verifiable, tokenized attestations on a Layer 3 blockchain. Developers build context-aware applications using semantic triples (subject-predicate-object relationships) backed by economic incentives through bonding curves. The three core primitives are Atoms (universal identifiers), Triples (structured claims), and Signals (staked conviction).
 
-          ## Introduction
-
-          - [Introduction](https://docs.intuition.systems/docs): Intuition at a glance and core value proposition
-          - [Getting Started](https://docs.intuition.systems/docs/getting-started): Start building with Intuition
-
-          ## Primitives
-
-          - [Atoms](https://docs.intuition.systems/docs/intuition-concepts/atoms): Individual claims and pieces of information stored on-chain
-          - [Triples](https://docs.intuition.systems/docs/intuition-concepts/triples): Subject-predicate-object relationships connecting atoms
-          - [Signals](https://docs.intuition.systems/docs/intuition-concepts/signals): Economic mechanisms for agreement and disagreement
-          - [Identities](https://docs.intuition.systems/docs/intuition-concepts/identities): Decentralized identity system
+          - [llms-full.txt](https://docs.intuition.systems/llms-full.txt): Complete documentation with full page content for deep reference
 
           ## Quick Start
 
-          - [Quickstart Guide](https://docs.intuition.systems/docs/quick-start): Get up and running with Intuition
-          - [First App](https://docs.intuition.systems/docs/getting-started/first-app): Build your first Intuition application
+          - [Choose Your Path](https://docs.intuition.systems/docs/getting-started/choose-your-path): Decision tree — routes to SDK, GraphQL, Protocol, or concepts based on your goal
+          - [SDK Quick Start](https://docs.intuition.systems/docs/quick-start/using-the-sdk): Install the SDK, create atoms and triples, run your first example
+          - [Network Details](https://docs.intuition.systems/docs/quick-start/network-details): Chain IDs, RPC endpoints, and block explorers for mainnet and testnet
+          - [Contract Deployments](https://docs.intuition.systems/docs/quick-start/deployments): All contract addresses for mainnet and testnet
+          - [Testnet Faucet](https://docs.intuition.systems/docs/quick-start/testnet-faucet): Get test tokens for development
+
+          ## Core Concepts
+
+          - [Overview](https://docs.intuition.systems/docs/getting-started/overview): What Intuition is — Network, Protocol, and Subnet layers explained
+          - [Architecture](https://docs.intuition.systems/docs/getting-started/architecture): Full system architecture — L3 chain, EthMultiVault, event pipeline, indexing, and caching
+          - [Primitives Overview](https://docs.intuition.systems/docs/intuition-concepts/primitives): How Atoms, Triples, and Signals work together as a data model
+          - [Atoms](https://docs.intuition.systems/docs/intuition-concepts/primitives/Atoms/fundamentals): Universal identifiers for entities, concepts, and data — the nodes in the knowledge graph
+          - [Triples](https://docs.intuition.systems/docs/intuition-concepts/primitives/Triples/fundamentals): Subject-predicate-object claims — the edges in the knowledge graph
+          - [Signals](https://docs.intuition.systems/docs/intuition-concepts/primitives/Signals/fundamentals): Staked conviction on atoms and triples — the weights in the knowledge graph
 
           ## Economics
 
-          - [Bonding Curves](https://docs.intuition.systems/docs/intuition-concepts/economics/bonding-curves): How dynamic pricing works in Intuition
-          - [Fees & Rewards](https://docs.intuition.systems/docs/intuition-concepts/economics/fees-and-rewards): Protocol fee structure and reward distribution
+          - [Bonding Curves](https://docs.intuition.systems/docs/intuition-concepts/economics/bonding-curves): How dynamic pricing works for atom and triple vaults
+          - [Fees & Rewards](https://docs.intuition.systems/docs/intuition-concepts/economics/fees-and-rewards): Protocol fee structure, reward distribution, and staking incentives
 
           ## Developer Tools
 
-          - [SDK Overview](https://docs.intuition.systems/docs/intuition-sdk): TypeScript/JavaScript SDKs for protocol interaction
-          - [GraphQL API](https://docs.intuition.systems/docs/graphql-api/overview): Query the Intuition knowledge graph
-          - [Smart Contracts](https://docs.intuition.systems/docs/intuition-smart-contracts): Core protocol contracts and architecture
-          - [Contract Interactions](https://docs.intuition.systems/docs/interaction-guide/overview): Low-level contract interaction patterns
-          - [Protocol Package](https://docs.intuition.systems/docs/protocol): Low-level protocol interactions
+          Use the SDK for frontend/full-stack apps, GraphQL for read-heavy queries, Protocol package for direct contract interaction, and the Interaction Guide for low-level call patterns.
 
-          ## Network & Infrastructure
-
-          - [Intuition Network](https://docs.intuition.systems/docs/intuition-network): Layer 3 blockchain overview
-          - [Intuition Node](https://docs.intuition.systems/docs/intuition-node): Run your own Intuition node
+          - [SDK Overview](https://docs.intuition.systems/docs/intuition-sdk/quick-start): TypeScript/JavaScript SDK — atoms, triples, signals, vaults, search, and batch operations
+          - [GraphQL API](https://docs.intuition.systems/docs/graphql-api/overview): Query the knowledge graph — atoms, triples, vaults, positions, activity, and subscriptions
+          - [Smart Contracts](https://docs.intuition.systems/docs/intuition-smart-contracts): Contract architecture — MultiVault, Trust Token, Trust Bonding, and bonding curves
+          - [Contract Interactions](https://docs.intuition.systems/docs/interaction-guide/overview): Low-level patterns for creating atoms/triples, depositing, and reading vault state
+          - [Protocol Package](https://docs.intuition.systems/docs/protocol/getting-started/overview): Direct protocol interaction via TypeScript — configuration, vaults, epochs, and events
 
           ## Tutorials
 
-          - [Tutorials Overview](https://docs.intuition.systems/docs/tutorials): Step-by-step guides for building with Intuition
-          - [GraphQL Queries](https://docs.intuition.systems/docs/tutorials/queries/activity-feeds): Learn to query the knowledge graph
+          - [Tutorials Overview](https://docs.intuition.systems/docs/tutorials/overview): Index of all step-by-step building guides
+          - [Reputation System](https://docs.intuition.systems/docs/tutorials/reputation-system): Build skill attestations, endorsements, and reputation scoring
+          - [Curated Lists](https://docs.intuition.systems/docs/tutorials/curated-lists): Token-curated registries with stake-based community ranking
+          - [Social Attestations](https://docs.intuition.systems/docs/tutorials/social-attestations): Decentralized identity with portable connections and recommendations
+          - [Fraud Detection](https://docs.intuition.systems/docs/tutorials/fraud-detection): Community-driven scam flagging with expert-weighted voting
+          - [Prediction Market](https://docs.intuition.systems/docs/tutorials/prediction-market): Non-resolving forecasting with track records and confidence signals
+          - [Activity Feeds](https://docs.intuition.systems/docs/tutorials/queries/building-user-activity-feeds): Build personalized activity streams with GraphQL
+          - [Related Claims](https://docs.intuition.systems/docs/tutorials/queries/finding-related-claims): Discover relationship patterns in the knowledge graph
+          - [Top dApps Query](https://docs.intuition.systems/docs/tutorials/queries/finding-top-dapps-on-coinbase): Rank decentralized applications by market cap
+          - [Trusted Accounts](https://docs.intuition.systems/docs/tutorials/queries/discovering-most-trusted-accounts): Find and rank ecosystem participants by stake
+
+          ## Network & Infrastructure
+
+          - [Intuition Network](https://docs.intuition.systems/docs/intuition-network): Layer 3 blockchain built on Base — architecture and capabilities
+          - [Intuition Node](https://docs.intuition.systems/docs/intuition-node/overview): Run your own node for direct chain access
 
           ## Resources
 
-          - [FAQ](https://docs.intuition.systems/docs/resources/faq): Frequently asked questions
-          - [Glossary](https://docs.intuition.systems/docs/resources/glossary): Complete terminology reference
-          - [Community](https://docs.intuition.systems/docs/resources/community): Get help and connect with the community
+          - [FAQ](https://docs.intuition.systems/docs/resources/faq): Frequently asked questions about the protocol and ecosystem
+          - [Glossary](https://docs.intuition.systems/docs/resources/glossary): Complete terminology reference for all Intuition concepts
+          - [Community & Support](https://docs.intuition.systems/docs/resources/community-and-support): Discord, GitHub, and support channels
 
-          ## Contributing
+          ## Optional
 
-          - [Contribution Guidelines](https://docs.intuition.systems/docs/contribution-guidelines): How to contribute to Intuition
-
-          ## Experimental Applications
-
-          - [Portal Guide](https://docs.intuition.systems/docs/portal): Complete guide to using The Portal
+          - [Contribution Guidelines](https://docs.intuition.systems/docs/contribution-guidelines): How to contribute to Intuition documentation and code
+          - [Portal Guide](https://docs.intuition.systems/docs/portal): Using The Portal web application
           - [Farcaster Frames](https://docs.intuition.systems/docs/experimental-applications/farcaster-frames): Build Intuition-powered Farcaster frames
           - [MetaMask Snap](https://docs.intuition.systems/docs/experimental-applications/metamask-snap): Intuition integration for MetaMask
           EOF
@@ -224,6 +233,9 @@ jobs:
             echo "---" >> static/llms-full.txt
             echo "" >> static/llms-full.txt
           done
+
+      - name: Validate llms.txt links
+        run: node scripts/validate-internal-links.js static/llms.txt
 
       - name: Check for changes
         id: check-changes
