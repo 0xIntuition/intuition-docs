@@ -19,7 +19,9 @@
     "format": "prettier -w src docs",
     "format:docs": "prettier -w docs",
     "typecheck": "tsc",
-    "spell-check": "npx cspell docs/**/*.mdx"
+    "spell-check": "npx cspell docs/**/*.mdx",
+    "validate-links": "node scripts/validate-internal-links.js",
+    "prepare": "husky"
   },
   "dependencies": {
     "@apollo/explorer": "^3.7.2",
@@ -69,7 +71,9 @@
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
     "gray-matter": "^4.0.3",
+    "husky": "^9.1.7",
     "js-yaml": "^4.1.0",
+    "lint-staged": "^16.2.7",
     "pascal-case": "^3.1.2",
     "path-browserify": "^1.0.1",
     "postcss": "^8.5.1",
@@ -112,6 +116,20 @@
   "commitlint": {
     "extends": [
       "@commitlint/config-conventional"
+    ]
+  },
+  "lint-staged": {
+    "docs/_data/**/*.{md,mdx}": [
+      "node scripts/validate-internal-links.js"
+    ],
+    "src/components/**/*.{jsx,tsx}": [
+      "node scripts/validate-internal-links.js"
+    ],
+    "src/pages/**/*.{jsx,tsx}": [
+      "node scripts/validate-internal-links.js"
+    ],
+    "src/snippets/**/*.html": [
+      "node scripts/validate-internal-links.js"
     ]
   }
 }
