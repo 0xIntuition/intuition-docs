@@ -21,6 +21,8 @@
     "typecheck": "tsc",
     "spell-check": "npx cspell docs/**/*.mdx",
     "validate-links": "node scripts/validate-internal-links.js",
+    "generate-llms": "node scripts/generate-llms-full.js",
+    "generate-llms-full": "node scripts/generate-llms-full.js --full-only",
     "prepare": "husky"
   },
   "dependencies": {
