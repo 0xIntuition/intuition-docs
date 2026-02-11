@@ -262,8 +262,9 @@ function extractLinks(rawContent, filePath) {
   const links = [];
   const lines = content.split('\n');
 
-  // llms.txt files use full URLs like https://docs.intuition.systems/docs/...
-  const isLlmsTxt = path.basename(filePath) === 'llms.txt';
+  // llms files use full URLs like https://docs.intuition.systems/docs/...
+  // Includes llms.txt, llms-full.txt, llms-medium.txt, llms-full-*.txt.
+  const isLlmsTxt = /^llms(?:-[a-z0-9-]+)?\.txt$/i.test(path.basename(filePath));
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
@@ -282,10 +283,13 @@ function extractLinks(rawContent, filePath) {
       /href=\{["'](\/docs\/[^"'#?]*)/g,        // JSX href={"/docs/..."}
     ];
 
-    // llms.txt uses full URLs: [text](https://docs.intuition.systems/docs/...)
+    // llms files use full URLs:
+    // - Markdown links: [text](https://docs.intuition.systems/docs/...)
+    // - Metadata lines: source: "https://docs.intuition.systems/docs/..."
     if (isLlmsTxt) {
       patterns.push(
         /\]\(https:\/\/docs\.intuition\.systems(\/docs[^)\s#?"]*)/g,
+        /source:\s*["']?https:\/\/docs\.intuition\.systems(\/docs[^"'\s#?]*)["']?/g,
       );
     }
 
@@ -331,10 +335,18 @@ function getFilesToScan(specificFiles) {
     }
   }
 
-  // Also scan llms.txt for full-URL doc links
-  const llmsTxt = path.join(ROOT, 'static', 'llms.txt');
-  if (fs.existsSync(llmsTxt)) {
-    files.push(llmsTxt);
+  // Also scan llms*.txt files for full-URL doc links
+  const staticDir = path.join(ROOT, 'static');
+  if (fs.existsSync(staticDir)) {
+    const llmsFiles = fs
+      .readdirSync(staticDir)
+      .filter(name => /^llms(?:-[a-z0-9-]+)?\.txt$/i.test(name))
+      .sort()
+      .map(name => path.join(staticDir, name));
+
+    for (const llmsFile of llmsFiles) {
+      files.push(llmsFile);
+    }
   }
 
   return files;
