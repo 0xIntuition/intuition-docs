@@ -34,4 +34,7 @@ yarn-error.log*
 .npm
 
 # Optional eslint cache
-.eslintcache 
+.eslintcache
+
+# Claude Code
+.claude/settings.local.json
