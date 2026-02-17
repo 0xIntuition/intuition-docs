@@ -8,7 +8,7 @@ keywords: [graphql, schema, introspection, filtering, sorting, pagination, hasur
 
 # Schema Reference
 
-The Intuition GraphQL API is powered by Hasura, providing a rich set of features for querying and manipulating data.
+The Intuition GraphQL API is powered by Hasura, providing a rich set of features for querying and manipulating data. This page documents all available types, queries, and schema features.
 
 ## Getting the Schema
 
@@ -23,6 +23,80 @@ npx get-graphql-schema https://testnet.intuition.sh/v1/graphql > schema.graphql
 ```
 
 This schema file can be used with code generation tools to create type-safe clients.
+
+## Available Types
+
+The API exposes the following main entity types:
+
+### Core Entities
+
+| Type | Description | Primary Key |
+|------|-------------|-------------|
+| `account` | User accounts/wallets | `id` (address) |
+| `atom` | Atomic units in the knowledge graph | `term_id` |
+| `atom_value` | Values associated with atoms | `id` |
+| `term` | Terms (concepts) in the system | `id` |
+| `triple` | RDF-style triples (subject-predicate-object) | `term_id` |
+| `vault` | AMM vaults for terms | `term_id`, `curve_id` (composite) |
+| `position` | User positions in vaults | `id` |
+| `signal` | Signals (deposits/redemptions) on atoms | `id` |
+| `deposit` | Deposit transactions | `id` |
+| `redemption` | Redemption transactions | `id` |
+| `event` | Blockchain events | `id` |
+| `fee_transfer` | Protocol fee transfers | `id` |
+
+### Value Objects (Schema.org Types)
+
+| Type | Description |
+|------|-------------|
+| `thing` | Generic entity (schema.org/Thing) |
+| `person` | Person entity (schema.org/Person) |
+| `organization` | Organization entity (schema.org/Organization) |
+| `book` | Book entity (schema.org/Book) |
+| `caip10` | CAIP-10 blockchain addresses |
+| `json_object` | JSON data objects |
+| `text_object` | Text data objects |
+| `byte_object` | Binary data objects |
+
+### Relationship & Aggregate Tables
+
+| Type | Description |
+|------|-------------|
+| `predicate_object` | Predicate-object aggregate relationships |
+| `triple_term` | Triple to term relationships |
+| `triple_vault` | Triple to vault relationships |
+| `following` | Following relationships between accounts |
+| `cached_image` | Cached image metadata |
+| `counter_positions` | Counter positions on triples |
+
+### Statistics & Analytics Tables
+
+| Type | Description |
+|------|-------------|
+| `stats` | General protocol statistics |
+| `signal_stats_daily` | Daily signal aggregations |
+| `signal_stats_hourly` | Hourly signal aggregations |
+| `signal_stats_weekly` | Weekly signal aggregations |
+| `signal_stats_monthly` | Monthly signal aggregations |
+| `share_price_change_stats_daily` | Daily share price statistics |
+| `share_price_change_stats_hourly` | Hourly share price statistics |
+| `share_price_change_stats_weekly` | Weekly share price statistics |
+| `share_price_change_stats_monthly` | Monthly share price statistics |
+| `term_total_state_change_stats_daily` | Daily term state changes |
+| `term_total_state_change_stats_hourly` | Hourly term state changes |
+| `term_total_state_change_stats_weekly` | Weekly term state changes |
+| `term_total_state_change_stats_monthly` | Monthly term state changes |
+| `chainlink_price` | Chainlink oracle price data |
+
+### Social Features
+
+| Type | Description |
+|------|-------------|
+| `positions_from_following` | Positions from accounts you follow |
+| `signals_from_following` | Signals from accounts you follow |
+| `search_term` | Term search results |
+| `search_term_from_following` | Term search from following |
+| `search_positions_on_subject` | Position search by subject |
 
 ## Filtering with `where` Clauses
 
@@ -289,6 +363,15 @@ query GetAtom($id: String!) {
 - `account(id: String!)` - Single account
 - `vault(term_id: String!, curve_id: numeric!)` - Single vault (composite key)
 - `position(id: String!)` - Single position
+- `signal(id: String!)` - Single signal
+- `deposit(id: String!)` - Single deposit
+- `redemption(id: String!)` - Single redemption
+- `event(id: String!)` - Single event
+- `thing(id: String!)` - Single thing
+- `person(id: String!)` - Single person
+- `organization(id: String!)` - Single organization
+- `book(id: String!)` - Single book
+- `fee_transfer(id: String!)` - Single fee transfer
 
 ## Distinct Values
 
