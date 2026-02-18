@@ -1,0 +1,8 @@
+{
+  "label": "Statistics",
+  "position": 11,
+  "link": {
+    "type": "generated-index",
+    "description": "Protocol-wide statistics and metrics."
+  }
+}

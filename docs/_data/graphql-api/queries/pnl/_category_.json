@@ -1,0 +1,8 @@
+{
+  "label": "PnL",
+  "position": 5,
+  "link": {
+    "type": "generated-index",
+    "description": "Profit and Loss (PnL) queries for tracking account and position performance."
+  }
+}

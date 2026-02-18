@@ -1,0 +1,8 @@
+{
+  "label": "Signals",
+  "position": 7,
+  "link": {
+    "type": "generated-index",
+    "description": "Queries for signals (deposits and redemptions) in the Intuition protocol."
+  }
+}

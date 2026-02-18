@@ -24,6 +24,89 @@ npx get-graphql-schema https://testnet.intuition.sh/v1/graphql > schema.graphql
 
 This schema file can be used with code generation tools to create type-safe clients.
 
+## Available Entities
+
+The GraphQL API exposes the following entity types:
+
+### Core Entities
+
+| Entity | Primary Key | Description |
+|--------|-------------|-------------|
+| `atoms` | `term_id` | Basic units of knowledge |
+| `triples` | `term_id` | Subject-predicate-object relationships |
+| `terms` | `id` | Unified term table (atoms + triples) |
+| `vaults` | `term_id`, `curve_id` | Asset pools for terms |
+| `positions` | `id` | User share positions in vaults |
+| `accounts` | `id` | Blockchain addresses |
+| `signals` | `id` | Deposit/redemption events |
+| `events` | `id` | Raw blockchain events |
+
+### Value Objects
+
+| Entity | Description |
+|--------|-------------|
+| `atom_values` | Atom metadata values |
+| `things` | Thing schema data |
+| `persons` | Person schema data |
+| `organizations` | Organization schema data |
+| `books` | Book entity data |
+| `caip10` | Cross-chain identifiers |
+| `cached_images` | Cached image data |
+
+### Statistics Tables
+
+| Entity | Description |
+|--------|-------------|
+| `stats` | Protocol-wide statistics |
+| `signal_stats_daily` | Daily signal aggregates |
+| `signal_stats_hourly` | Hourly signal aggregates |
+| `signal_stats_weekly` | Weekly signal aggregates |
+| `signal_stats_monthly` | Monthly signal aggregates |
+
+### Social & Relationship Tables
+
+| Entity | Description |
+|--------|-------------|
+| `following` | Following relationships |
+| `followers` | Follower relationships |
+| `positions_from_following` | Positions held by followed accounts |
+| `signals_from_following` | Signals from followed accounts |
+
+### Fee & Price Tables
+
+| Entity | Description |
+|--------|-------------|
+| `fee_transfers` | Protocol fee transfers |
+| `share_price_changes` | Vault share price history |
+| `chainlink_prices` | Oracle price data |
+
+### Custom Operations
+
+| Operation | Type | Description |
+|-----------|------|-------------|
+| `getAccountPnlCurrent` | Query | Current PnL snapshot |
+| `getAccountPnlChart` | Query | PnL chart data |
+| `getAccountPnlRealized` | Query | Realized PnL breakdown |
+| `getPositionPnlChart` | Query | Position PnL chart |
+| `getChartJson` | Query | Chart as JSON |
+| `getChartSvg` | Query | Chart as SVG |
+| `getChartRawJson` | Query | Raw chart JSON |
+| `getChartRawSvg` | Query | Raw chart SVG |
+| `pinThing` | Mutation | Pin Thing to IPFS |
+| `pinPerson` | Mutation | Pin Person to IPFS |
+| `pinOrganization` | Mutation | Pin Organization to IPFS |
+| `uploadImage` | Mutation | Upload base64 image |
+| `uploadImageFromUrl` | Mutation | Upload image from URL |
+| `uploadJsonToIpfs` | Mutation | Upload JSON to IPFS |
+
+### Search Functions
+
+| Function | Description |
+|----------|-------------|
+| `search_term` | Semantic search across terms |
+| `search_term_from_following` | Search within followed accounts |
+| `search_positions_on_subject` | Search positions on a subject |
+
 ## Filtering with `where` Clauses
 
 Use boolean expressions to filter query results:
@@ -269,6 +352,8 @@ query GetAtomWithCreator($id: String!) {
 - Vaults → Positions
 - Positions → Account
 - Positions → Vault
+- Signals → Account, Term
+- Events → Sender, Receiver, Atom, Triple
 
 ## Primary Key Lookups
 
@@ -284,11 +369,16 @@ query GetAtom($id: String!) {
 ```
 
 **Primary keys by entity**:
-- `atom(term_id: String!)` - Single atom
-- `triple(term_id: String!)` - Single triple
-- `account(id: String!)` - Single account
-- `vault(term_id: String!, curve_id: numeric!)` - Single vault (composite key)
-- `position(id: String!)` - Single position
+
+| Entity | Primary Key | Example |
+|--------|-------------|---------|
+| `atom` | `term_id: String!` | `atom(term_id: "0x123...")` |
+| `triple` | `term_id: String!` | `triple(term_id: "0x456...")` |
+| `account` | `id: String!` | `account(id: "0x789...")` |
+| `vault` | `term_id, curve_id` | `vault(term_id: "0x123...", curve_id: 1)` |
+| `position` | `id: String!` | `position(id: "0xabc...")` |
+| `signal` | `id: String!` | `signal(id: "0xdef...")` |
+| `event` | `id: String!` | `event(id: "0x111...")` |
 
 ## Distinct Values
 
@@ -413,4 +503,5 @@ Use the schema with code generation tools:
 
 - [Query Atoms](/docs/graphql-api/queries/atoms/single-atom) - Learn atom query patterns
 - [Query Triples](/docs/graphql-api/queries/triples/single-triple) - Learn triple query patterns
+- [PnL Queries](/docs/graphql-api/queries/pnl/account-pnl-current) - Track profit and loss
 - [Best Practices](/docs/graphql-api/best-practices/request-only-needed) - Optimize your queries

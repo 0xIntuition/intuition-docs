@@ -1,0 +1,8 @@
+{
+  "label": "Accounts",
+  "position": 8,
+  "link": {
+    "type": "generated-index",
+    "description": "Queries for accounts and social graph relationships."
+  }
+}
