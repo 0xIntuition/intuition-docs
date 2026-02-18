@@ -8,372 +8,323 @@ description: Guide to write data using GraphQL mutations in the Intuition API
 
 # Writes
 
-## GraphQL Mutations
+## Understanding Mutations vs Smart Contract Operations
 
-Our GraphQL API provides convenient mutations to help structure and publish Atom metadata following common schemas and best practices. While the protocol supports any URI scheme, these mutations offer an opinionated approach to creating well-structured, interoperable data.
+The Intuition GraphQL API provides mutations for **off-chain operations** like uploading metadata to IPFS. For **on-chain operations** like creating atoms, triples, and positions, you must use the [Intuition SDK](/docs/intuition-sdk/installation-and-setup) or interact directly with the smart contracts.
 
-## Current Schema Support
+:::info GraphQL vs Smart Contracts
+**GraphQL mutations** handle:
+- Uploading metadata to IPFS (pinThing, pinPerson, pinOrganization)
+- Uploading images (uploadImage, uploadImageFromUrl)
+- Uploading JSON data (uploadJsonToIpfs)
+- Generating charts (getChartJson, getChartSvg)
+- Fetching PnL data (getAccountPnlCurrent, etc.)
 
-Our GraphQL API provides mutations for uploading structured metadata following common schemas. The primary mutation is `pinThing` which uploads metadata to IPFS following the **Thing schema**.
+**Smart contract operations** handle:
+- Creating atoms
+- Creating triples
+- Taking positions (depositing/redeeming)
+- All on-chain state changes
+
+Use the [SDK](/docs/intuition-sdk/installation-and-setup) for smart contract interactions.
+:::
+
+## Available Mutations
+
+### IPFS & Metadata Mutations
+
+| Mutation | Description | Documentation |
+|----------|-------------|---------------|
+| `pinThing` | Pin Thing metadata to IPFS | [Pin Thing](/docs/graphql-api/mutations/pin-thing) |
+| `pinPerson` | Pin Person metadata to IPFS | [Pin Person](/docs/graphql-api/mutations/pin-person) |
+| `pinOrganization` | Pin Organization metadata to IPFS | [Pin Organization](/docs/graphql-api/mutations/pin-organization) |
+| `uploadImage` | Upload base64 image to IPFS | [Upload Image](/docs/graphql-api/mutations/images/upload-image) |
+| `uploadImageFromUrl` | Upload image from URL to IPFS | [Upload from URL](/docs/graphql-api/mutations/images/upload-image-from-url) |
+| `uploadJsonToIpfs` | Upload JSON metadata to IPFS | [Upload JSON](/docs/graphql-api/mutations/images/upload-json-to-ipfs) |
+
+### Chart & Analytics Mutations
+
+| Mutation | Description | Documentation |
+|----------|-------------|---------------|
+| `getChartJson` | Get chart data as JSON | [Chart JSON](/docs/graphql-api/mutations/charts/chart-json) |
+| `getChartSvg` | Get chart as SVG | [Chart SVG](/docs/graphql-api/mutations/charts/chart-svg) |
+| `getChartRawJson` | Get raw chart JSON | [Chart Raw JSON](/docs/graphql-api/mutations/charts/chart-raw-json) |
+| `getChartRawSvg` | Get raw chart SVG | [Chart Raw SVG](/docs/graphql-api/mutations/charts/chart-raw-svg) |
+
+### PnL (Profit & Loss) Operations
+
+| Operation | Description | Documentation |
+|-----------|-------------|---------------|
+| `getAccountPnlCurrent` | Current account PnL snapshot | [Account PnL Current](/docs/graphql-api/mutations/pnl/account-pnl-current) |
+| `getAccountPnlChart` | Account PnL over time | [Account PnL Chart](/docs/graphql-api/mutations/pnl/account-pnl-chart) |
+| `getAccountPnlRealized` | Realized PnL breakdown | [Account PnL Realized](/docs/graphql-api/mutations/pnl/account-pnl-realized) |
+| `getPositionPnlChart` | Position-level PnL | [Position PnL Chart](/docs/graphql-api/mutations/pnl/position-pnl-chart) |
+
+## Pin Mutations
 
 ### pinThing Mutation
 
+Pin a Thing entity to IPFS:
+
 ```graphql
-mutation pinThing(
-  $name: String!
-  $description: String
-  $image: String
-  $url: String
-) {
-  pinThing(
-    thing: {
-      name: $name,
-      description: $description,
-      image: $image,
-      url: $url
-    }
-  ) {
-    uri
+mutation PinThing($thing: PinThingInput!) {
+  pinThing(thing: $thing) {
+    hash
+    name
+    size
   }
 }
 ```
 
-### Example Usage
-
+**Variables:**
 ```json
 {
-  "name": "My First Thing",
-  "description": "This is an example description of a thing",
-  "image": "https://example.com/image.png",
-  "url": "https://example.com"
+  "thing": {
+    "name": "Ethereum",
+    "description": "A decentralized blockchain platform",
+    "image": "ipfs://QmXnnyufdzAWL5CqZ2RnSNgPbvCc1ALT73s6epPrRnZ1Xy",
+    "url": "https://ethereum.org"
+  }
 }
 ```
 
-### Variables Example
+### pinPerson Mutation
 
+Pin a Person entity to IPFS:
+
+```graphql
+mutation PinPerson($person: PinPersonInput!) {
+  pinPerson(person: $person) {
+    hash
+    name
+    size
+  }
+}
+```
+
+**Variables:**
 ```json
 {
-  "name": "Intuition Protocol",
-  "description": "A decentralized trust protocol for the internet",
-  "image": "https://intuition.systems/logo.png",
-  "url": "https://intuition.systems"
+  "person": {
+    "name": "Vitalik Buterin",
+    "description": "Co-founder of Ethereum",
+    "email": "vitalik@ethereum.org",
+    "identifier": "vitalik.eth",
+    "image": "ipfs://Qm...",
+    "url": "https://vitalik.ca"
+  }
 }
 ```
 
-The mutation returns an IPFS URI that can be used when creating an Atom:
+### pinOrganization Mutation
+
+Pin an Organization entity to IPFS:
+
+```graphql
+mutation PinOrganization($organization: PinOrganizationInput!) {
+  pinOrganization(organization: $organization) {
+    hash
+    name
+    size
+  }
+}
+```
+
+**Variables:**
+```json
+{
+  "organization": {
+    "name": "Ethereum Foundation",
+    "description": "Non-profit supporting Ethereum",
+    "email": "info@ethereum.org",
+    "image": "ipfs://Qm...",
+    "url": "https://ethereum.foundation"
+  }
+}
+```
+
+## Image Upload Mutations
+
+### uploadImage
+
+Upload a base64-encoded image:
+
+```graphql
+mutation UploadImage($input: UploadImageInput!) {
+  uploadImage(input: $input) {
+    hash
+    url
+    size
+    mime_type
+  }
+}
+```
+
+### uploadImageFromUrl
+
+Upload an image from a URL:
+
+```graphql
+mutation UploadImageFromUrl($url: String!) {
+  uploadImageFromUrl(url: $url) {
+    hash
+    url
+    size
+    mime_type
+  }
+}
+```
+
+### uploadJsonToIpfs
+
+Upload JSON metadata:
+
+```graphql
+mutation UploadJsonToIpfs($json: JSON!) {
+  uploadJsonToIpfs(json: $json) {
+    hash
+    url
+    size
+  }
+}
+```
+
+## Complete Workflow Example
+
+Here's how to prepare metadata for atom creation:
 
 ```typescript
-const { data } = await pinThing(thingVariables)
-// data.pinThing.uri contains the IPFS URI
-// Use this URI when creating atoms via the SDK
-```
+import { GraphQLClient } from 'graphql-request'
+import { API_URL_PROD } from '@0xintuition/graphql'
+import { createMultivaultClient } from '@0xintuition/sdk'
 
-## Advanced Mutation Examples
+const graphqlClient = new GraphQLClient(API_URL_PROD)
 
-### Creating Atoms with Metadata
-
-```graphql
-mutation CreateAtomWithMetadata($uri: String!, $curveId: Int!) {
-  createAtom(uri: $uri, curveId: $curveId) {
-    id
-    uri
-    createdAt
-    vault {
-      id
-      curveId
-      isActive
+// Step 1: Upload image to IPFS (via GraphQL)
+const imageResult = await graphqlClient.request(`
+  mutation UploadImageFromUrl($url: String!) {
+    uploadImageFromUrl(url: $url) {
+      url
     }
   }
-}
-```
+`, { url: 'https://example.com/logo.png' })
 
-### Creating Triples
-
-```graphql
-mutation CreateTriple(
-  $subjectId: String!
-  $predicateId: String!
-  $objectId: String!
-  $curveId: Int!
-) {
-  createTriple(
-    subjectId: $subjectId
-    predicateId: $predicateId
-    objectId: $objectId
-    curveId: $curveId
-  ) {
-    id
-    subject {
-      id
-      uri
-    }
-    predicate {
-      id
-      uri
-    }
-    object {
-      id
-      uri
-    }
-    positiveVault {
-      id
-      curveId
-    }
-    negativeVault {
-      id
-      curveId
+// Step 2: Upload metadata to IPFS (via GraphQL)
+const metadataResult = await graphqlClient.request(`
+  mutation PinThing($thing: PinThingInput!) {
+    pinThing(thing: $thing) {
+      hash
     }
   }
-}
-```
-
-### Taking Positions on Atoms
-
-```graphql
-mutation TakePositionOnAtom(
-  $atomId: String!
-  $shares: String!
-  $curveId: Int!
-) {
-  takePosition(
-    atomId: $atomId
-    shares: $shares
-    curveId: $curveId
-  ) {
-    id
-    user
-    shares
-    assets
-    atom {
-      id
-      uri
-    }
-    vault {
-      id
-      curveId
-    }
+`, {
+  thing: {
+    name: 'My Project',
+    description: 'Description of my project',
+    image: imageResult.uploadImageFromUrl.url,
+    url: 'https://example.com'
   }
-}
-```
-
-### Taking Positions on Triples
-
-```graphql
-mutation TakePositionOnTriple(
-  $tripleId: String!
-  $shares: String!
-  $isPositive: Boolean!
-  $curveId: Int!
-) {
-  takeTriplePosition(
-    tripleId: $tripleId
-    shares: $shares
-    isPositive: $isPositive
-    curveId: $curveId
-  ) {
-    id
-    user
-    shares
-    assets
-    isPositive
-    triple {
-      id
-      subject {
-        uri
-      }
-      predicate {
-        uri
-      }
-      object {
-        uri
-      }
-    }
-    vault {
-      id
-      curveId
-    }
-  }
-}
-```
-
-## Example Workflows
-
-### Basic Thing Creation
-
-```typescript
-// 1. Upload metadata
-const thingData = {
-  name: 'Example Thing',
-  description: 'Description...',
-  image: 'ipfs://Qm...',
-  url: 'https://...',
-}
-
-const { cid } = await uploadThing(thingData)
-
-// 2. Create Atom with returned CID
-const atomId = await createAtom(cid)
-```
-
-### Creating a Knowledge Graph Entry
-
-```typescript
-// 1. Create subject atom
-const subjectData = {
-  name: 'Alice',
-  description: 'A person',
-  image: 'ipfs://QmAlice...',
-  url: 'https://example.com/alice'
-}
-const { cid: subjectCid } = await uploadThing(subjectData)
-const subjectAtom = await createAtom(subjectCid)
-
-// 2. Create predicate atom
-const predicateData = {
-  name: 'knows',
-  description: 'Relationship indicating knowledge',
-  image: 'ipfs://QmKnows...',
-  url: 'https://example.com/knows'
-}
-const { cid: predicateCid } = await uploadThing(predicateData)
-const predicateAtom = await createAtom(predicateCid)
-
-// 3. Create object atom
-const objectData = {
-  name: 'Bob',
-  description: 'Another person',
-  image: 'ipfs://QmBob...',
-  url: 'https://example.com/bob'
-}
-const { cid: objectCid } = await uploadThing(objectData)
-const objectAtom = await createAtom(objectCid)
-
-// 4. Create triple relationship
-const triple = await createTriple({
-  subjectId: subjectAtom.id,
-  predicateId: predicateAtom.id,
-  objectId: objectAtom.id,
-  curveId: 1
 })
 
-// 5. Take a position on the triple
-const position = await takeTriplePosition({
-  tripleId: triple.id,
-  shares: '1000000000000000000', // 1 share in wei
-  isPositive: true,
-  curveId: 1
+// Step 3: Create atom on-chain (via SDK)
+const multivault = createMultivaultClient(walletClient)
+const atomId = await multivault.createAtom({
+  uri: `ipfs://${metadataResult.pinThing.hash}`
 })
 ```
-
-### Variables for Testing
-
-```json
-{
-  "uri": "ipfs://QmExample...",
-  "curveId": 1,
-  "subjectId": "0x1234567890abcdef1234567890abcdef12345678",
-  "predicateId": "0xabcdef1234567890abcdef1234567890abcdef12",
-  "objectId": "0x9876543210fedcba9876543210fedcba98765432",
-  "atomId": "0x1234567890abcdef1234567890abcdef12345678",
-  "tripleId": "0xabcdef1234567890abcdef1234567890abcdef12",
-  "shares": "1000000000000000000",
-  "isPositive": true
-}
-```
-
-## Upcoming Schema Support
-
-We are actively expanding our mutation support to include schemas from **schema.org**. Additionally, we'll be adding support for **CAIP-10 addresses** to enable cross-chain identity resolution.
 
 ## Best Practices
 
-### Complete Metadata
-Provide as much relevant metadata as possible to improve the Atom's utility across different contexts.
+### 1. Complete Metadata
+Provide comprehensive metadata for better discoverability:
 
-### Persistent Storage
-All metadata is stored on IPFS, ensuring data availability and immutability.
+```typescript
+const thing = {
+  name: 'Project Name',           // Required
+  description: 'Full description', // Recommended
+  image: 'ipfs://...',            // Recommended
+  url: 'https://...'              // Optional
+}
+```
 
-### URI Standards
-Use standard URI formats:
-- **IPFS**: `ipfs://Qm...`
-- **HTTP(S)**: `https://...`
-- **CAIP-10** (coming soon): `eip155:1:0x...`
+### 2. Use IPFS URLs
+Always reference images using IPFS URLs for permanence:
 
-### Error Handling
-Always handle potential errors in mutations:
+```typescript
+// Good - permanent
+image: 'ipfs://QmXnnyufdzAWL5CqZ2RnSNgPbvCc1ALT73s6epPrRnZ1Xy'
+
+// Avoid - may change
+image: 'https://example.com/image.png'
+```
+
+### 3. Error Handling
 
 ```typescript
 try {
-  const result = await createAtom(uri, curveId)
-  console.log('Atom created:', result.id)
+  const result = await graphqlClient.request(UPLOAD_IMAGE, { input })
+  console.log('Uploaded:', result.uploadImage.url)
 } catch (error) {
-  console.error('Failed to create atom:', error.message)
+  if (error.message.includes('File too large')) {
+    console.error('Image exceeds size limit')
+  } else if (error.message.includes('Invalid')) {
+    console.error('Invalid image format')
+  }
 }
 ```
 
-### Gas Estimation
-For on-chain operations, always estimate gas before executing:
+### 4. Size Limits
 
-```typescript
-const gasEstimate = await contract.estimateGas.createAtom(uri, curveId)
-const tx = await contract.createAtom(uri, curveId, { gasLimit: gasEstimate })
-```
+| Upload Type | Maximum Size |
+|-------------|--------------|
+| Image (base64) | 5 MB |
+| Image from URL | 10 MB |
+| JSON | 1 MB |
 
 ## TypeScript Integration
 
-We maintain a package, `graphql` within our `intuition-ts` monorepo that auto-generates TypeScript types and React hooks to make integrations easier. This includes type-safe mutations, queries, and React hooks for all supported schemas.
-
-### Using Generated Hooks
+Use the `@0xintuition/graphql` package for type-safe mutations:
 
 ```typescript
-import { 
-  useUploadThingMutation, 
-  useCreateAtomMutation, 
-  useCreateTripleMutation,
-  useTakePositionMutation 
+import {
+  usePinThingMutation,
+  useUploadImageFromUrlMutation
 } from '@0xintuition/graphql'
 
-function CreateAtomComponent() {
-  const [uploadThing, { loading: uploading }] = useUploadThingMutation()
-  const [createAtom, { loading: creating }] = useCreateAtomMutation()
+function CreateAtomForm() {
+  const [pinThing] = usePinThingMutation()
+  const [uploadImage] = useUploadImageFromUrlMutation()
 
-  const handleCreateAtom = async (thingData: ThingData) => {
-    try {
-      // Upload metadata
-      const { data: uploadResult } = await uploadThing({
-        variables: thingData
-      })
+  const handleSubmit = async (data: FormData) => {
+    // Upload image first
+    const imageResult = await uploadImage({
+      variables: { url: data.imageUrl }
+    })
 
-      // Create atom with returned CID
-      const { data: atomResult } = await createAtom({
-        variables: {
-          uri: uploadResult.uploadThing.cid,
-          curveId: 1
+    // Then pin metadata
+    const thingResult = await pinThing({
+      variables: {
+        thing: {
+          name: data.name,
+          description: data.description,
+          image: imageResult.data.uploadImageFromUrl.url,
+          url: data.url
         }
-      })
+      }
+    })
 
-      console.log('Atom created:', atomResult.createAtom.id)
-    } catch (error) {
-      console.error('Failed to create atom:', error)
-    }
+    // Use the IPFS hash for atom creation
+    const ipfsUri = `ipfs://${thingResult.data.pinThing.hash}`
+    // ... create atom via SDK
   }
 
-  return (
-    <button 
-      onClick={() => handleCreateAtom(thingData)}
-      disabled={uploading || creating}
-    >
-      {uploading || creating ? 'Creating...' : 'Create Atom'}
-    </button>
-  )
+  return <form onSubmit={handleSubmit}>...</form>
 }
 ```
 
-We are actively finalizing patterns to properly externalize this package, which will be released shortly. This guide will be updated to provide example implementations once the package is released.
-
-
 ## Related Resources
 
-- [GraphQL API Overview](/docs/graphql-api/overview)
-- [GraphQL Reads](/docs/graphql-api/reads)
-- [Intuition GraphQL Package Source](https://github.com/0xIntuition/intuition-ts/tree/main/packages/graphql) 
+- [PnL Operations](/docs/graphql-api/mutations/pnl/overview) - Profit & Loss tracking
+- [Chart Operations](/docs/graphql-api/mutations/charts/overview) - Chart generation
+- [Image Operations](/docs/graphql-api/mutations/images/overview) - Image uploads
+- [SDK Documentation](/docs/intuition-sdk/installation-and-setup) - On-chain operations
+- [GraphQL Reads](/docs/graphql-api/reads) - Query documentation

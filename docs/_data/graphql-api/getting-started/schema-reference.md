@@ -409,8 +409,97 @@ Use the schema with code generation tools:
 - [graphql-client](https://github.com/graphql-rust/graphql-client) - Typed queries in Rust
 - [cynic](https://cynic-rs.dev/) - Type-safe GraphQL client
 
+## Complete Entity Reference
+
+The Intuition GraphQL API provides access to the following entity types:
+
+### Core Entities
+
+| Entity | Primary Key | Description |
+|--------|-------------|-------------|
+| `atoms` | `term_id` | Fundamental units of knowledge |
+| `triples` | `term_id` | Subject-predicate-object relationships |
+| `accounts` | `id` | User accounts and wallets |
+| `terms` | `id` | Shared term data for atoms and triples |
+| `vaults` | `term_id`, `curve_id` | Bonding curve vaults for staking |
+| `positions` | `id` | User stakes in vaults |
+
+### Activity Entities
+
+| Entity | Primary Key | Description |
+|--------|-------------|-------------|
+| `signals` | `id` | Enriched deposit/redemption events |
+| `events` | `id` | Raw blockchain events |
+| `deposits` | `id` | Deposit transactions |
+| `redemptions` | `id` | Redemption transactions |
+
+### Social Entities
+
+| Entity | Primary Key | Description |
+|--------|-------------|-------------|
+| `following` | `id` | Following relationships |
+| `books` | `id` | Book entities |
+| `cached_images` | `id` | Cached image data |
+
+### Statistics Entities
+
+| Entity | Primary Key | Description |
+|--------|-------------|-------------|
+| `stats` | `id` | Protocol-wide statistics |
+| `fee_transfers` | `id` | Protocol fee transfers |
+| `signal_stats_hourly` | `id` | Hourly signal aggregations |
+| `signal_stats_daily` | `id` | Daily signal aggregations |
+| `signal_stats_weekly` | `id` | Weekly signal aggregations |
+| `signal_stats_monthly` | `id` | Monthly signal aggregations |
+| `term_total_state_changes` | `id` | Term state change tracking |
+
+### Price Data
+
+| Entity | Primary Key | Description |
+|--------|-------------|-------------|
+| `chainlink_prices` | `id` | Chainlink oracle price data |
+| `share_price_changes` | `id` | Vault share price history |
+
+### Cross-Chain
+
+| Entity | Primary Key | Description |
+|--------|-------------|-------------|
+| `caip10` | `id` | Cross-chain identifier mapping |
+
+### Database Functions
+
+The API also exposes several database functions as queries:
+
+| Function | Description |
+|----------|-------------|
+| `search_term` | Full-text search for atoms |
+| `search_term_from_following` | Search within followed accounts |
+| `search_positions_on_subject` | Find positions on a subject |
+| `signals_from_following` | Signals from followed accounts |
+| `positions_from_following` | Positions from followed accounts |
+
+### Custom Operations (Actions)
+
+| Operation | Type | Description |
+|-----------|------|-------------|
+| `getAccountPnlCurrent` | Query | Current account PnL |
+| `getAccountPnlChart` | Query | Account PnL over time |
+| `getAccountPnlRealized` | Query | Realized PnL breakdown |
+| `getPositionPnlChart` | Query | Position-level PnL |
+| `getChartJson` | Query | Chart data as JSON |
+| `getChartSvg` | Query | Chart as SVG |
+| `uploadImage` | Mutation | Upload image to IPFS |
+| `uploadImageFromUrl` | Mutation | Upload image from URL |
+| `uploadJsonToIpfs` | Mutation | Upload JSON to IPFS |
+| `pinThing` | Mutation | Pin Thing metadata |
+| `pinPerson` | Mutation | Pin Person metadata |
+| `pinOrganization` | Mutation | Pin Organization metadata |
+
 ## Next Steps
 
 - [Query Atoms](/docs/graphql-api/queries/atoms/single-atom) - Learn atom query patterns
 - [Query Triples](/docs/graphql-api/queries/triples/single-triple) - Learn triple query patterns
+- [Query Signals](/docs/graphql-api/queries/signals/overview) - Learn signal query patterns
+- [Query Accounts](/docs/graphql-api/queries/accounts/overview) - Learn account query patterns
+- [PnL Queries](/docs/graphql-api/mutations/pnl/overview) - Track profit and loss
 - [Best Practices](/docs/graphql-api/best-practices/request-only-needed) - Optimize your queries
