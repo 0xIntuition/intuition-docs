@@ -134,12 +134,16 @@ mutation PinOrganization($organization: PinOrganizationInput!) {
 Upload a base64-encoded image:
 
 ```graphql
-mutation UploadImage($input: UploadImageInput!) {
-  uploadImage(input: $input) {
-    hash
-    url
-    size
-    mime_type
+mutation UploadImage($image: UploadImageInput!) {
+  uploadImage(image: $image) {
+    images {
+      url
+      original_url
+      safe
+      score
+      model
+      created_at
+    }
   }
 }
 ```
@@ -149,12 +153,14 @@ mutation UploadImage($input: UploadImageInput!) {
 Upload an image from a URL:
 
 ```graphql
-mutation UploadImageFromUrl($url: String!) {
-  uploadImageFromUrl(url: $url) {
-    hash
-    url
-    size
-    mime_type
+mutation UploadImageFromUrl($image: UploadImageFromUrlInput!) {
+  uploadImageFromUrl(image: $image) {
+    images {
+      url
+      original_url
+      safe
+      score
+    }
   }
 }
 ```
@@ -164,10 +170,10 @@ mutation UploadImageFromUrl($url: String!) {
 Upload JSON metadata:
 
 ```graphql
-mutation UploadJsonToIpfs($json: JSON!) {
+mutation UploadJsonToIpfs($json: jsonb!) {
   uploadJsonToIpfs(json: $json) {
     hash
-    url
+    name
     size
   }
 }
@@ -186,12 +192,14 @@ const graphqlClient = new GraphQLClient(API_URL_PROD)
 
 // Step 1: Upload image to IPFS (via GraphQL)
 const imageResult = await graphqlClient.request(`
-  mutation UploadImageFromUrl($url: String!) {
-    uploadImageFromUrl(url: $url) {
-      url
+  mutation UploadImageFromUrl($image: UploadImageFromUrlInput!) {
+    uploadImageFromUrl(image: $image) {
+      images {
+        url
+      }
     }
   }
-`, { url: 'https://example.com/logo.png' })
+`, { image: { url: 'https://example.com/logo.png' } })
 
 // Step 2: Upload metadata to IPFS (via GraphQL)
 const metadataResult = await graphqlClient.request(`
@@ -204,7 +212,7 @@ const metadataResult = await graphqlClient.request(`
   thing: {
     name: 'My Project',
     description: 'Description of my project',
-    image: imageResult.uploadImageFromUrl.url,
+    image: imageResult.uploadImageFromUrl.images[0].url,
     url: 'https://example.com'
   }
 })
@@ -245,8 +253,8 @@ image: 'https://example.com/image.png'
 
 ```typescript
 try {
-  const result = await graphqlClient.request(UPLOAD_IMAGE, { input })
-  console.log('Uploaded:', result.uploadImage.url)
+  const result = await graphqlClient.request(UPLOAD_IMAGE, { image: input })
+  console.log('Uploaded:', result.uploadImage.images[0].url)
 } catch (error) {
   if (error.message.includes('File too large')) {
     console.error('Image exceeds size limit')
@@ -281,7 +289,7 @@ function CreateAtomForm() {
   const handleSubmit = async (data: FormData) => {
     // Upload image first
     const imageResult = await uploadImage({
-      variables: { url: data.imageUrl }
+      variables: { image: { url: data.imageUrl } }
     })
 
     // Then pin metadata
@@ -290,7 +298,7 @@ function CreateAtomForm() {
         thing: {
           name: data.name,
           description: data.description,
-          image: imageResult.data.uploadImageFromUrl.url,
+          image: imageResult.data.uploadImageFromUrl.images[0].url,
           url: data.url
         }
       }

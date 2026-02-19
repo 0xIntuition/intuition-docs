@@ -257,10 +257,14 @@ query GetAccounts($limit: Int, $offset: Int) {
       id
       shares
       vault {
-        id
-        atom {
-          label
-          image
+        term_id
+        curve_id
+        current_share_price
+        term {
+          atom {
+            label
+            image
+          }
         }
       }
     }
@@ -442,11 +446,13 @@ Fetch vault information including share prices and positions.
 ```graphql
 query GetVaults($limit: Int, $offset: Int) {
   vaults(limit: $limit, offset: $offset) {
-    id
-    atom {
-      id
-      label
-      image
+    term_id
+    curve_id
+    term {
+      atom {
+        label
+        image
+      }
     }
     current_share_price
     total_shares
@@ -468,9 +474,9 @@ query GetVaults($limit: Int, $offset: Int) {
 ### Search and Filtering
 
 ```graphql
-query SearchAtoms($query: String!, $filters: atoms_bool_exp) {
-  atoms(where: $filters) {
-    id
+query SearchAtoms($query: String!, $limit: Int) {
+  search_term(args: { query: $query }, limit: $limit) {
+    term_id
     label
     image
     type
@@ -484,24 +490,24 @@ query SearchAtoms($query: String!, $filters: atoms_bool_exp) {
 
 ### Pagination
 
+Hasura uses offset-based pagination with `limit` and `offset`:
+
 ```graphql
-query GetAtomsPaginated($first: Int, $after: String) {
-  atoms(first: $first, after: $after) {
-    edges {
-      node {
-        id
-        label
-        image
-        type
-      }
-      cursor
+query GetAtomsPaginated($limit: Int!, $offset: Int!) {
+  atoms_aggregate {
+    aggregate {
+      count
     }
-    pageInfo {
-      hasNextPage
-      hasPreviousPage
-      startCursor
-      endCursor
-    }
+  }
+  atoms(
+    limit: $limit
+    offset: $offset
+    order_by: { created_at: desc }
+  ) {
+    term_id
+    label
+    image
+    type
   }
 }
 ```
