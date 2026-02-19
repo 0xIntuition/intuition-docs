@@ -318,21 +318,25 @@ async function getReporterReputation(address: string): Promise<number> {
   // Query all flags by this reporter
   const query = gql`
     query GetReporterHistory($address: String!) {
-      signals(
+      positions(
         where: {
-          accountId: $address
+          account_id: { _eq: $address }
         }
       ) {
-        triple {
-          id
-          subject {
-            value
-          }
-          object {
-            value
+        shares
+        vault {
+          term {
+            triple {
+              term_id
+              subject {
+                data
+              }
+              object {
+                label
+              }
+            }
           }
         }
-        delta
       }
     }
   `
@@ -345,13 +349,16 @@ async function getReporterReputation(address: string): Promise<number> {
   let correct = 0
   let total = 0
 
-  for (const signal of data.signals) {
+  for (const position of data.positions) {
+    const triple = position.vault?.term?.triple
+    if (!triple) continue
+
     // Check if this flag was later verified by community
-    const consensusReached = await checkConsensus(signal.triple.id)
+    const consensusReached = await checkConsensus(triple.term_id)
 
     if (consensusReached) {
       total++
-      if (signal.triple.object.value === consensusReached.value) {
+      if (triple.object.label === consensusReached.value) {
         correct++
       }
     }
@@ -407,24 +414,29 @@ console.log('Expert weighted stake:', expertWeight)
 ```typescript
 import { request, gql } from 'graphql-request'
 
-const GRAPHQL_ENDPOINT = 'https://api.intuition.systems/graphql'
+const GRAPHQL_ENDPOINT = 'https://mainnet.intuition.sh/v1/graphql'
 
 const GET_SAFETY_CLAIMS = gql`
   query GetSafetyClaims($contractAddress: String!) {
     triples(
       where: {
-        subject: { value: $contractAddress }
-        predicate: { value: "is_safe" }
+        subject: { data: { _eq: $contractAddress } }
+        predicate: { label: { _eq: "is_safe" } }
       }
     ) {
-      id
+      term_id
       object {
-        value
+        label
       }
-      signals {
-        accountId
-        delta
-        direction
+      term {
+        vaults(where: { curve_id: { _eq: "2" } }) {
+          total_shares
+          position_count
+          positions {
+            account_id
+            shares
+          }
+        }
       }
     }
   }
@@ -472,19 +484,19 @@ async function calculateSafetyScore(
   const reporters = new Set<string>()
 
   for (const claim of claims) {
-    const isSafeClaim = claim.object.value === 'true'
+    const isSafeClaim = claim.object.label === 'true'
+    const vault = claim.term?.vaults?.[0]
+    if (!vault) continue
 
-    for (const signal of claim.signals) {
-      if (signal.direction !== 'for') continue
-
-      reporters.add(signal.accountId)
+    for (const position of vault.positions) {
+      reporters.add(position.account_id)
 
       // Get reporter reputation
-      const reputation = await getReporterReputation(signal.accountId)
+      const reputation = await getReporterReputation(position.account_id)
 
-      // Weight the signal
+      // Weight the position
       const weightedStake = calculateWeightedSignal(
-        BigInt(signal.delta),
+        BigInt(position.shares),
         reputation
       )
 

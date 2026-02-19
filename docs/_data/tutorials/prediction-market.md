@@ -321,24 +321,30 @@ await updatePredictionStake(
 ```typescript
 import { request, gql } from 'graphql-request'
 
-const GRAPHQL_ENDPOINT = 'https://api.intuition.systems/graphql'
+const GRAPHQL_ENDPOINT = 'https://mainnet.intuition.sh/v1/graphql'
 
 const GET_EVENT_PREDICTIONS = gql`
   query GetEventPredictions($eventAtomId: String!) {
     triples(
       where: {
-        subject: { id: $eventAtomId }
-        predicate: { value: "will_happen" }
+        subject_id: { _eq: $eventAtomId }
+        predicate: { label: { _eq: "will_happen" } }
       }
     ) {
-      id
+      term_id
       object {
-        value
+        label
+        data
       }
-      signals {
-        accountId
-        delta
-        timestamp
+      term {
+        vaults(where: { curve_id: { _eq: "2" } }) {
+          total_shares
+          positions {
+            account_id
+            shares
+            created_at
+          }
+        }
       }
     }
   }
@@ -507,28 +513,33 @@ interface TrackRecord {
 async function calculateTrackRecord(
   forecasterAddress: string
 ): Promise<TrackRecord> {
-  // Get all predictions by this forecaster
+  // Get all prediction positions by this forecaster
   const query = gql`
     query GetForecasterPredictions($address: String!) {
-      signals(
+      positions(
         where: {
-          accountId: $address
+          account_id: { _eq: $address }
         }
       ) {
-        triple {
-          id
-          subject {
-            id
-            value
-          }
-          object {
-            value
-          }
-          predicate {
-            value
+        shares
+        vault {
+          term {
+            triple {
+              term_id
+              subject {
+                term_id
+                data
+              }
+              object {
+                label
+                data
+              }
+              predicate {
+                label
+              }
+            }
           }
         }
-        delta
       }
     }
   `
@@ -537,9 +548,9 @@ async function calculateTrackRecord(
     address: forecasterAddress.toLowerCase()
   })
 
-  // Filter only prediction signals
-  const predictions = data.signals.filter(
-    (s: any) => s.triple.predicate.value === 'will_happen'
+  // Filter only prediction positions (triples with "will_happen" predicate)
+  const predictions = data.positions.filter(
+    (p: any) => p.vault?.term?.triple?.predicate?.label === 'will_happen'
   )
 
   let correct = 0
@@ -548,15 +559,18 @@ async function calculateTrackRecord(
   let brierScoreSum = 0
 
   for (const pred of predictions) {
+    const triple = pred.vault?.term?.triple
+    if (!triple) continue
+
     // Check if event is resolved
-    const eventAtomId = pred.triple.subject.id
+    const eventAtomId = triple.subject.term_id
     const resolution = await getEventResolution(eventAtomId)
 
     if (!resolution) continue // Event not resolved yet
 
     total++
 
-    const predictedOutcome = pred.triple.object.value === 'true'
+    const predictedOutcome = triple.object.label === 'true'
     const actualOutcome = resolution.outcome
 
     // Check if correct
@@ -565,7 +579,7 @@ async function calculateTrackRecord(
     }
 
     // Get prediction metadata
-    const metadata = await getPredictionMetadata(pred.triple.id)
+    const metadata = await getPredictionMetadata(triple.term_id)
     const confidence = metadata?.confidence || 50
 
     totalConfidence += confidence

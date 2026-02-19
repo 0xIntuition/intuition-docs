@@ -359,33 +359,33 @@ await challengeItem(
 ```typescript
 import { request, gql } from 'graphql-request'
 
-const GRAPHQL_ENDPOINT = 'https://api.intuition.systems/graphql'
+const GRAPHQL_ENDPOINT = 'https://mainnet.intuition.sh/v1/graphql'
 
 const GET_LIST_ITEMS = gql`
   query GetListItems($listAtomId: String!) {
     triples(
       where: {
-        subject: { id: $listAtomId }
-        predicate: { value: "contains" }
+        subject_id: { _eq: $listAtomId }
+        predicate: { label: { _eq: "contains" } }
       }
     ) {
-      id
+      term_id
       object {
-        id
-        value
+        term_id
+        label
         type
       }
-      vault {
-        id
-        totalShares
-        currentSharePrice
-        positionCount
-      }
-      signals(orderBy: delta, orderDirection: desc) {
-        accountId
-        delta
-        direction
-        timestamp
+      term {
+        vaults(where: { curve_id: { _eq: "2" } }) {
+          total_shares
+          current_share_price
+          position_count
+          positions(order_by: { shares: desc }) {
+            account_id
+            shares
+            created_at
+          }
+        }
       }
     }
   }
@@ -416,39 +416,29 @@ interface RankedItem {
 
 function calculateRanking(items: any[]): RankedItem[] {
   const ranked = items.map(item => {
-    const signals = item.signals || []
+    const vault = item.term?.vaults?.[0]
+    const positions = vault?.positions || []
 
-    // Separate vouch (for) and challenge (against) signals
-    const vouches = signals.filter((s: any) => s.direction === 'for')
-    const challenges = signals.filter((s: any) => s.direction === 'against')
-
-    // Calculate total stake
-    const totalVouches = vouches.reduce(
-      (sum: bigint, s: any) => sum + BigInt(s.delta),
-      BigInt(0)
-    )
-    const totalChallenges = challenges.reduce(
-      (sum: bigint, s: any) => sum + BigInt(s.delta),
+    // Total stake from all positions
+    const totalStake = positions.reduce(
+      (sum: bigint, p: any) => sum + BigInt(p.shares),
       BigInt(0)
     )
 
-    // Net signal = vouches - challenges
-    const netSignal = totalVouches - totalChallenges
-
-    // Confidence score considers both amount and number of signals
-    const stakeWeight = Math.log10(Number(netSignal) / 1e18 + 1)
-    const participantWeight = Math.sqrt(vouches.length)
+    // Confidence score considers both amount and number of positions
+    const stakeWeight = Math.log10(Number(totalStake) / 1e18 + 1)
+    const participantWeight = Math.sqrt(positions.length)
     const confidence = stakeWeight * participantWeight
 
     return {
-      tripleId: item.id,
-      name: item.object.value,
+      tripleId: item.term_id,
+      name: item.object.label,
       rank: 0, // Will be set after sorting
-      totalStake: totalVouches,
-      vouchCount: vouches.length,
-      challengeCount: challenges.length,
+      totalStake,
+      vouchCount: positions.length,
+      challengeCount: 0,
       confidence,
-      netSignal
+      netSignal: totalStake
     }
   })
 

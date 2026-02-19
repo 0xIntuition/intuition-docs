@@ -20,21 +20,26 @@ This page provides practical examples of common GraphQL queries for the Intuitio
 
 ## Basic Queries
 
-:::note
-This page will be expanded with more query examples, advanced patterns, and real-world use cases.
-:::
+### Fetching a Single Atom
 
-### Fetching Atoms
+Use the primary key lookup for fetching a single atom by its `term_id`:
 
 ```graphql
-query GetAtom($id: ID!) {
-  atom(id: $id) {
-    id
-    content
-    metadata {
-      title
-      author
-      createdAt
+query GetAtom($termId: String!) {
+  atom(term_id: $termId) {
+    term_id
+    label
+    image
+    type
+    created_at
+    creator {
+      id
+      label
+    }
+    value {
+      thing { name description url }
+      person { name description url }
+      organization { name description url }
     }
   }
 }
@@ -42,82 +47,101 @@ query GetAtom($id: ID!) {
 
 ### Fetching Triples
 
+Query triples with Hasura's `where` filtering:
+
 ```graphql
-query GetTriples($subject: ID, $predicate: String, $object: ID) {
-  triples(subject: $subject, predicate: $predicate, object: $object) {
-    id
+query GetTriples($subjectId: String, $predicateLabel: String, $limit: Int = 20) {
+  triples(
+    where: {
+      subject_id: { _eq: $subjectId }
+      predicate: { label: { _ilike: $predicateLabel } }
+    }
+    order_by: { created_at: desc }
+    limit: $limit
+  ) {
+    term_id
     subject {
-      id
-      content
+      term_id
+      label
     }
-    predicate
+    predicate {
+      term_id
+      label
+    }
     object {
-      id
-      content
+      term_id
+      label
     }
-    metadata {
-      createdAt
-      confidence
-    }
+    created_at
   }
 }
 ```
 
 ### Fetching Signals
 
+Query signal events for a specific atom or account:
+
 ```graphql
-query GetSignals($type: String, $limit: Int) {
-  signals(type: $type, limit: $limit) {
+query GetSignals($accountId: String!, $limit: Int = 20) {
+  signals(
+    where: { account_id: { _eq: $accountId } }
+    order_by: { created_at: desc }
+    limit: $limit
+  ) {
     id
-    type
-    data
-    timestamp
-    source
+    delta
+    atom_id
+    triple_id
+    created_at
+    account {
+      label
+    }
   }
 }
 ```
 
 ## Advanced Queries
 
-### Complex Filtering
+### Search
+
+Use the `search_term` database function for text search:
 
 ```graphql
-query SearchAtoms($query: String!, $filters: AtomFilters) {
-  searchAtoms(query: $query, filters: $filters) {
-    id
-    content
-    metadata {
-      title
-      tags
-      createdAt
+query SearchAtoms($query: String!, $limit: Int = 20) {
+  search_term(args: { query: $query }, limit: $limit) {
+    term_id
+    label
+    image
+    type
+    creator {
+      id
+      label
     }
-    relevance
   }
 }
 ```
 
 ### Pagination
 
+Hasura uses offset-based pagination with `limit` and `offset`:
+
 ```graphql
-query GetAtomsPaginated($first: Int, $after: String) {
-  atoms(first: $first, after: $after) {
-    edges {
-      node {
-        id
-        content
-        metadata {
-          title
-          createdAt
-        }
-      }
-      cursor
+query GetAtomsPaginated($limit: Int!, $offset: Int!) {
+  atoms_aggregate {
+    aggregate {
+      count
     }
-    pageInfo {
-      hasNextPage
-      hasPreviousPage
-      startCursor
-      endCursor
-    }
+  }
+  atoms(
+    limit: $limit
+    offset: $offset
+    order_by: { created_at: desc }
+  ) {
+    term_id
+    label
+    image
+    type
+    created_at
   }
 }
 ```
@@ -130,17 +154,18 @@ query GetAtomsPaginated($first: Int, $after: String) {
 import { useGetAtomQuery } from '@0xintuition/graphql'
 
 function AtomViewer({ atomId }: { atomId: string }) {
-  const { data, loading, error } = useGetAtomQuery({
-    variables: { id: atomId }
+  const { data, isLoading, error } = useGetAtomQuery({
+    variables: { termId: atomId }
   })
 
-  if (loading) return <div>Loading...</div>
+  if (isLoading) return <div>Loading...</div>
   if (error) return <div>Error: {error.message}</div>
 
   return (
     <div>
-      <h1>{data?.atom?.metadata?.title}</h1>
-      <p>{data?.atom?.content}</p>
+      <h1>{data?.atom?.label}</h1>
+      <img src={data?.atom?.image} alt={data?.atom?.label} />
+      <p>Type: {data?.atom?.type}</p>
     </div>
   )
 }
@@ -150,13 +175,25 @@ function AtomViewer({ atomId }: { atomId: string }) {
 
 ```tsx
 import { useQuery } from '@tanstack/react-query'
-import { getAtomDocument } from '@0xintuition/graphql'
+import { GraphQLClient } from 'graphql-request'
+import { API_URL_PROD } from '@0xintuition/graphql'
 
-function useCustomAtomQuery(atomId: string) {
+const client = new GraphQLClient(API_URL_PROD)
+
+function useCustomAtomQuery(termId: string) {
   return useQuery({
-    queryKey: ['atom', atomId],
-    queryFn: () => client.request(getAtomDocument, { id: atomId }),
-    enabled: !!atomId
+    queryKey: ['atom', termId],
+    queryFn: () => client.request(`
+      query GetAtom($termId: String!) {
+        atom(term_id: $termId) {
+          term_id
+          label
+          image
+          type
+        }
+      }
+    `, { termId }),
+    enabled: !!termId
   })
 }
 ```

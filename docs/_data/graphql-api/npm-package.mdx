@@ -122,12 +122,12 @@ import { useAtomsQuery, useTriplesQuery, useUserPositionsQuery } from '@0xintuit
 function MyComponent() {
   // Query atoms
   const { data: atoms, isLoading: atomsLoading } = useAtomsQuery({
-    variables: { first: 10 }
+    variables: { limit: 10 }
   })
 
   // Query triples
   const { data: triples, isLoading: triplesLoading } = useTriplesQuery({
-    variables: { first: 10 }
+    variables: { limit: 10 }
   })
 
   // Query user positions
@@ -143,15 +143,15 @@ function MyComponent() {
     <div>
       <h2>Atoms ({atoms?.atoms?.length || 0})</h2>
       {atoms?.atoms?.map(atom => (
-        <div key={atom.id}>
-          <strong>{atom.uri}</strong> - {atom.totalShares} shares
+        <div key={atom.term_id}>
+          <strong>{atom.label}</strong> - {atom.type}
         </div>
       ))}
 
       <h2>Triples ({triples?.triples?.length || 0})</h2>
       {triples?.triples?.map(triple => (
-        <div key={triple.id}>
-          {triple.subject.uri} - {triple.predicate.uri} - {triple.object.uri}
+        <div key={triple.term_id}>
+          {triple.subject.label} - {triple.predicate.label} - {triple.object.label}
         </div>
       ))}
     </div>

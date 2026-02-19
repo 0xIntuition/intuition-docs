@@ -223,7 +223,7 @@ export function TrustedAccountsWidget() {
   useEffect(() => {
     async function fetchAccounts() {
       const data = await request(
-        'https://api.intuition.systems/graphql',
+        'https://mainnet.intuition.sh/v1/graphql',
         GET_TRUSTED_ACCOUNTS,
         { limit: 10 }
       )

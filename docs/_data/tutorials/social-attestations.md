@@ -284,24 +284,26 @@ await acceptConnection(connectionTripleId)
 ```typescript
 import { request, gql } from 'graphql-request'
 
-const GRAPHQL_ENDPOINT = 'https://api.intuition.systems/graphql'
+const GRAPHQL_ENDPOINT = 'https://mainnet.intuition.sh/v1/graphql'
 
 const GET_CONNECTIONS = gql`
   query GetConnections($address: String!) {
     triples(
       where: {
-        subject: { value: $address }
-        predicate: { value: "knows" }
+        subject: { data: { _eq: $address } }
+        predicate: { label: { _eq: "knows" } }
       }
     ) {
-      id
+      term_id
       object {
-        id
-        value
+        term_id
+        label
       }
-      signals {
-        accountId
-        delta
+      term {
+        vaults(where: { curve_id: { _eq: "2" } }) {
+          total_shares
+          position_count
+        }
       }
     }
   }
@@ -328,8 +330,8 @@ async function getMutualConnections(address1: string, address2: string) {
   const connections2 = await getConnections(address2)
 
   // Find common connections
-  const set1 = new Set(connections1.map((c: any) => c.object.value))
-  const mutual = connections2.filter((c: any) => set1.has(c.object.value))
+  const set1 = new Set(connections1.map((c: any) => c.object.label))
+  const mutual = connections2.filter((c: any) => set1.has(c.object.label))
 
   return mutual
 }
