@@ -16,12 +16,12 @@ Search for atoms by their label or data content.
 
 ```graphql
 query SearchTerm(
-  $search: String!
+  $query: String!
   $limit: Int
   $offset: Int
 ) {
   search_term(
-    args: { search: $search }
+    args: { query: $query }
     limit: $limit
     offset: $offset
   ) {
@@ -44,19 +44,21 @@ query SearchTerm(
 
 | Variable | Type | Required | Description |
 |----------|------|----------|-------------|
-| `search` | `String` | Yes | Search query text |
+| `query` | `String` | Yes | Search query text |
 | `limit` | `Int` | No | Maximum results (default: 20) |
 | `offset` | `Int` | No | Pagination offset |
 
 ```json
 {
-  "search": "ethereum",
+  "query": "ethereum",
   "limit": 10,
   "offset": 0
 }
 ```
 
 ## Response Fields
+
+The function returns `atoms` rows, so all atom fields are available:
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -99,8 +101,8 @@ export const searchQueries = [
   {
     id: 'basic-search',
     title: 'Basic Search',
-    query: `query SearchTerm($search: String!, $limit: Int!) {
-  search_term(args: { search: $search }, limit: $limit) {
+    query: `query SearchTerm($query: String!, $limit: Int!) {
+  search_term(args: { query: $query }, limit: $limit) {
     term_id
     label
     image
@@ -108,15 +110,15 @@ export const searchQueries = [
   }
 }`,
     variables: {
-      search: 'ethereum',
+      query: 'ethereum',
       limit: 10
     }
   },
   {
     id: 'search-with-creator',
     title: 'Search with Creator Info',
-    query: `query SearchTerm($search: String!, $limit: Int!) {
-  search_term(args: { search: $search }, limit: $limit) {
+    query: `query SearchTerm($query: String!, $limit: Int!) {
+  search_term(args: { query: $query }, limit: $limit) {
     term_id
     label
     image
@@ -130,7 +132,7 @@ export const searchQueries = [
   }
 }`,
     variables: {
-      search: 'bitcoin',
+      query: 'bitcoin',
       limit: 5
     }
   }
@@ -147,12 +149,12 @@ Implement search-as-you-type:
 ```typescript
 import { debounce } from 'lodash'
 
-async function searchAtoms(query: string, limit: number = 10) {
-  if (query.length < 2) return []
+async function searchAtoms(searchQuery: string, limit: number = 10) {
+  if (searchQuery.length < 2) return []
 
   const gqlQuery = `
-    query SearchTerm($search: String!, $limit: Int!) {
-      search_term(args: { search: $search }, limit: $limit) {
+    query SearchTerm($query: String!, $limit: Int!) {
+      search_term(args: { query: $query }, limit: $limit) {
         term_id
         label
         image
@@ -161,64 +163,12 @@ async function searchAtoms(query: string, limit: number = 10) {
     }
   `
 
-  const data = await client.request(gqlQuery, { search: query, limit })
+  const data = await client.request(gqlQuery, { query: searchQuery, limit })
   return data.search_term
 }
 
 // Debounced version for autocomplete
 const debouncedSearch = debounce(searchAtoms, 300)
-```
-
-### React Search Component
-
-```tsx
-function AtomSearch({ onSelect }: { onSelect: (atom: Atom) => void }) {
-  const [query, setQuery] = useState('')
-  const [results, setResults] = useState<Atom[]>([])
-  const [loading, setLoading] = useState(false)
-
-  useEffect(() => {
-    if (query.length < 2) {
-      setResults([])
-      return
-    }
-
-    setLoading(true)
-    const search = async () => {
-      const data = await searchAtoms(query)
-      setResults(data)
-      setLoading(false)
-    }
-
-    const timeout = setTimeout(search, 300)
-    return () => clearTimeout(timeout)
-  }, [query])
-
-  return (
-    <div className="search-container">
-      <input
-        type="text"
-        placeholder="Search atoms..."
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-      />
-
-      {loading && <Spinner />}
-
-      {results.length > 0 && (
-        <ul className="search-results">
-          {results.map(atom => (
-            <li key={atom.term_id} onClick={() => onSelect(atom)}>
-              {atom.image && <img src={resolveIpfs(atom.image)} alt="" />}
-              <span>{atom.label}</span>
-              <span className="type">{atom.type}</span>
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-  )
-}
 ```
 
 ### Filter by Type
@@ -227,13 +177,13 @@ Search and filter by atom type:
 
 ```typescript
 async function searchByType(
-  query: string,
+  searchQuery: string,
   type: 'Thing' | 'Person' | 'Organization'
 ) {
   const gqlQuery = `
-    query SearchByType($search: String!, $type: String!) {
+    query SearchByType($query: String!, $type: String!) {
       search_term(
-        args: { search: $search }
+        args: { query: $query }
         where: { type: { _eq: $type } }
         limit: 20
       ) {
@@ -245,7 +195,7 @@ async function searchByType(
     }
   `
 
-  return client.request(gqlQuery, { search: query, type })
+  return client.request(gqlQuery, { query: searchQuery, type })
 }
 ```
 

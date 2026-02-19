@@ -16,14 +16,14 @@ Search for terms within the context of accounts you follow, prioritizing results
 
 ```graphql
 query SearchTermFromFollowing(
-  $account_id: String!
-  $search: String!
+  $address: String!
+  $query: String!
   $limit: Int
 ) {
   search_term_from_following(
     args: {
-      account_id: $account_id
-      search: $search
+      address: $address
+      query: $query
     }
     limit: $limit
   ) {
@@ -43,14 +43,14 @@ query SearchTermFromFollowing(
 
 | Variable | Type | Required | Description |
 |----------|------|----------|-------------|
-| `account_id` | `String` | Yes | Account whose following list to use |
-| `search` | `String` | Yes | Search query text |
+| `address` | `String` | Yes | Account address whose following list to use |
+| `query` | `String` | Yes | Search query text |
 | `limit` | `Int` | No | Maximum results |
 
 ```json
 {
-  "account_id": "0xd8da6bf26964af9d7eed9e03e53415d37aa96045",
-  "search": "defi",
+  "address": "0xd8da6bf26964af9d7eed9e03e53415d37aa96045",
+  "query": "defi",
   "limit": 10
 }
 ```
@@ -63,16 +63,16 @@ Search prioritizing content from your network:
 
 ```typescript
 async function searchInNetwork(
-  accountId: string,
-  query: string
+  address: string,
+  searchQuery: string
 ) {
   const gqlQuery = `
     query SearchFromFollowing(
-      $account_id: String!
-      $search: String!
+      $address: String!
+      $query: String!
     ) {
       network: search_term_from_following(
-        args: { account_id: $account_id, search: $search }
+        args: { address: $address, query: $query }
         limit: 10
       ) {
         term_id
@@ -81,7 +81,7 @@ async function searchInNetwork(
         creator { label }
       }
       global: search_term(
-        args: { search: $search }
+        args: { query: $query }
         limit: 10
       ) {
         term_id
@@ -92,8 +92,8 @@ async function searchInNetwork(
   `
 
   const data = await client.request(gqlQuery, {
-    account_id: accountId,
-    search: query
+    address,
+    query: searchQuery
   })
 
   return {
@@ -106,11 +106,11 @@ async function searchInNetwork(
 ### React Social Search
 
 ```tsx
-function SocialSearch({ accountId }: { accountId: string }) {
+function SocialSearch({ address }: { address: string }) {
   const [query, setQuery] = useState('')
 
   const { data, loading } = useQuery(SEARCH_FROM_FOLLOWING, {
-    variables: { account_id: accountId, search: query },
+    variables: { address, query },
     skip: query.length < 2
   })
 

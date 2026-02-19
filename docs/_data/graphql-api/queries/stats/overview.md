@@ -16,6 +16,7 @@ Query protocol-wide statistics including total value locked (TVL), fee transfers
 |-------|-------------|
 | [`stats`](./protocol-stats) | Protocol-wide statistics and metrics |
 | [`fee_transfers`](./fee-transfers) | Protocol fee transfer events |
+| [`protocol_fee_accruals`](./fee-accruals) | Protocol fee accruals by epoch |
 
 ## Quick Start
 
@@ -59,3 +60,4 @@ const data = await client.request(query)
 
 - [Protocol Stats](./protocol-stats) - Detailed statistics
 - [Fee Transfers](./fee-transfers) - Fee transfer history
+- [Fee Accruals](./fee-accruals) - Fee accruals by epoch

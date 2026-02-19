@@ -10,18 +10,21 @@ import GraphQLPlaygroundCustom from '@site/src/components/GraphQLPlaygroundCusto
 
 # Search Positions on Subject
 
-Search for positions (stakes) related to a specific subject atom or term.
+Search for positions (stakes) related to a specific subject. This function takes an array of addresses and a JSONB search fields object to filter positions.
 
 ## Query Structure
 
 ```graphql
 query SearchPositionsOnSubject(
-  $subject_id: String!
-  $search: String
+  $addresses: _text!
+  $searchFields: jsonb!
   $limit: Int
 ) {
   search_positions_on_subject(
-    args: { subject_id: $subject_id, search: $search }
+    args: {
+      addresses: $addresses
+      search_fields: $searchFields
+    }
     limit: $limit
     order_by: { shares: desc }
   ) {
@@ -31,15 +34,15 @@ query SearchPositionsOnSubject(
       label
       image
     }
-    vault_id
+    shares
+    created_at
     vault {
+      term_id
       triple {
         predicate { label }
         object { label }
       }
     }
-    shares
-    created_at
   }
 }
 ```
@@ -48,41 +51,50 @@ query SearchPositionsOnSubject(
 
 | Variable | Type | Required | Description |
 |----------|------|----------|-------------|
-| `subject_id` | `String` | Yes | Subject atom/term ID |
-| `search` | `String` | No | Optional text filter |
+| `addresses` | `_text` | Yes | PostgreSQL text array of account addresses to search |
+| `search_fields` | `jsonb` | Yes | JSONB object specifying search criteria |
 | `limit` | `Int` | No | Maximum results |
 
 ```json
 {
-  "subject_id": "0x57d94c116a33bb460428eced262b7ae2ec6f865e7aceef6357cec3d034e8ea21",
+  "addresses": "{0xd8da6bf26964af9d7eed9e03e53415d37aa96045}",
+  "searchFields": {},
   "limit": 20
 }
 ```
 
+:::note
+The `addresses` parameter uses PostgreSQL's `_text` array format: `{addr1,addr2}` (curly braces, comma-separated, no quotes within the braces).
+:::
+
 ## Response Fields
+
+The function returns position rows, so all position fields are available:
 
 | Field | Type | Description |
 |-------|------|-------------|
 | `id` | `String` | Position identifier |
 | `account_id` | `String` | Account holding position |
-| `account` | `Account` | Account details |
-| `vault_id` | `String` | Vault ID |
-| `vault` | `Vault` | Vault with triple info |
-| `shares` | `String` | Shares held |
-| `created_at` | `DateTime` | Position creation time |
+| `account` | `accounts` | Account details (relationship) |
+| `shares` | `numeric` | Shares held |
+| `created_at` | `timestamptz` | Position creation time |
+| `vault` | `vaults` | Associated vault (relationship) |
 
 ## Use Cases
 
 ### Find Who Believes Something
 
-See all positions on claims about a subject:
+See all positions from specific accounts:
 
 ```typescript
-async function getPositionsOnSubject(subjectId: string) {
+async function getPositionsForAccounts(addresses: string[]) {
   const query = `
-    query GetPositionsOnSubject($subject_id: String!) {
+    query GetPositions($addresses: _text!, $searchFields: jsonb!) {
       search_positions_on_subject(
-        args: { subject_id: $subject_id }
+        args: {
+          addresses: $addresses
+          search_fields: $searchFields
+        }
         order_by: { shares: desc }
         limit: 50
       ) {
@@ -102,59 +114,15 @@ async function getPositionsOnSubject(subjectId: string) {
     }
   `
 
-  const data = await client.request(query, { subject_id: subjectId })
+  // Format as PostgreSQL text array
+  const pgArray = `{${addresses.join(',')}}`
 
-  // Group by predicate-object combination
-  const claims = data.search_positions_on_subject.reduce((acc, pos) => {
-    const claim = `${pos.vault.triple.predicate.label} ${pos.vault.triple.object.label}`
-
-    if (!acc[claim]) {
-      acc[claim] = { claim, supporters: [], totalShares: BigInt(0) }
-    }
-
-    acc[claim].supporters.push(pos.account)
-    acc[claim].totalShares += BigInt(pos.shares)
-
-    return acc
-  }, {})
-
-  return Object.values(claims).sort((a, b) =>
-    Number(b.totalShares - a.totalShares)
-  )
-}
-```
-
-### Entity Profile Page
-
-Show all claims about an entity:
-
-```tsx
-function EntityClaims({ subjectId }: { subjectId: string }) {
-  const { data, loading } = useQuery(SEARCH_POSITIONS_ON_SUBJECT, {
-    variables: { subject_id: subjectId, limit: 100 }
+  const data = await client.request(query, {
+    addresses: pgArray,
+    searchFields: {}
   })
 
-  if (loading) return <Spinner />
-
-  const grouped = groupByPredicate(data.search_positions_on_subject)
-
-  return (
-    <div className="entity-claims">
-      {Object.entries(grouped).map(([predicate, claims]) => (
-        <div key={predicate}>
-          <h3>{predicate}</h3>
-          {claims.map(claim => (
-            <ClaimCard
-              key={claim.id}
-              object={claim.object}
-              supporters={claim.supporters}
-              totalStake={claim.totalShares}
-            />
-          ))}
-        </div>
-      ))}
-    </div>
-  )
+  return data.search_positions_on_subject
 }
 ```
 

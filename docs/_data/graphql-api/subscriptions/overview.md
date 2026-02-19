@@ -82,6 +82,13 @@ The API provides streaming subscriptions for all major entities:
 | `deposits_stream` | Deposit events |
 | `redemptions_stream` | Redemption events |
 
+### Position Tracking Streams
+
+| Subscription | Description |
+|--------------|-------------|
+| `positions_with_value_stream` | Position updates with computed PnL/value |
+| `position_changes_stream` | Individual position change events |
+
 ### Price & Stats Streams
 
 | Subscription | Description |
@@ -89,7 +96,35 @@ The API provides streaming subscriptions for all major entities:
 | `share_price_changes_stream` | Share price updates |
 | `chainlink_prices_stream` | Oracle price updates |
 | `fee_transfers_stream` | Protocol fee transfers |
+| `protocol_fee_accruals_stream` | Protocol fee accrual events |
 | `stats_stream` | Protocol statistics updates |
+
+### Time-Series Streams
+
+| Subscription | Description |
+|--------------|-------------|
+| `share_price_change_stats_hourly_stream` | Hourly price stat updates |
+| `share_price_change_stats_daily_stream` | Daily price stat updates |
+| `signal_stats_hourly_stream` | Hourly signal stat updates |
+| `signal_stats_daily_stream` | Daily signal stat updates |
+| `term_total_state_changes_stream` | Term state change updates |
+
+### Graph Structure Streams
+
+| Subscription | Description |
+|--------------|-------------|
+| `terms_stream` | Term entity updates |
+| `triple_terms_stream` | Triple-term relationship updates |
+| `triple_vaults_stream` | Triple vault data updates |
+| `subject_predicates_stream` | Subject-predicate pair updates |
+
+### Leaderboard Streams
+
+| Subscription | Description |
+|--------------|-------------|
+| `pnl_leaderboard_entry_stream` | PnL leaderboard updates |
+| `pnl_leaderboard_stats_stream` | Leaderboard aggregate stats updates |
+| `account_pnl_rank_stream` | Account rank changes |
 
 ### Social Streams
 
