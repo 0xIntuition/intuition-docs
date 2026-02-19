@@ -110,7 +110,7 @@ The MetaMask Snap serves as a bridge between traditional Web3 wallet functionali
 ---
 title: "Architecture"
 description: "Technical architecture of Intuition's three-layer system - Network, Protocol, and Subnet"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-02-19T15:00:01-05:00"
 source: "https://docs.intuition.systems/docs/getting-started/architecture"
 ---
 
@@ -520,7 +520,7 @@ Optimize your GraphQL queries for better performance.
 ---
 title: "Use Pre-Computed Statistics"
 description: "Leverage time-series tables for analytics"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-02-19T15:00:01-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/best-practices/pre-computed-stats"
 ---
 
@@ -636,7 +636,7 @@ Always use variables for dynamic values instead of hardcoding.
 ---
 title: "Custom Queries"
 description: "Common GraphQL query examples and patterns for the Intuition API"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-02-19T15:00:01-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/custom-queries"
 ---
 
@@ -654,21 +654,15 @@ This page provides practical examples of common GraphQL queries for the Intuitio
 
 ## Basic Queries
 
-This page will be expanded with more query examples, advanced patterns, and real-world use cases.
+### Fetching a Single Atom
 
-### Fetching Atoms
+Use the primary key lookup for fetching a single atom by its `term_id`:
 
 ### Fetching Triples
 
+Query triples with Hasura's `where` filtering:
+
 ### Fetching Signals
-
-## Advanced Queries
-
-### Complex Filtering
-
-### Pagination
-
-## React Query Hooks
 
 [... see full docs for complete content]
 
@@ -1192,7 +1186,7 @@ Explore the API interactively with Apollo Studio Sandbox:
 ---
 title: "Schema Reference"
 description: "GraphQL schema features including filtering, sorting, pagination, and aggregations"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-02-19T15:00:01-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/getting-started/schema-reference"
 ---
 
@@ -1229,7 +1223,7 @@ Use boolean expressions to filter query results:
 ---
 title: "GraphQL Generator"
 description: "Comprehensive guide to the Intuition GraphQL Generator"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-02-19T15:00:01-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/graphql-generator"
 ---
 
@@ -1279,6 +1273,133 @@ source: "https://docs.intuition.systems/docs/graphql-api/migration-guide"
 | `accounts`    | `atom_id`         | `numeric`  | `String`  |
 | `atoms`       | `term_id`         | `numeric!` | `String!` |
 | `atoms`       | `value_id`        | `numeric`  | `String`  |
+
+[... see full docs for complete content]
+
+---
+title: "Image & IPFS Operations"
+description: "Upload images and JSON data to IPFS"
+last_updated: "2026-02-19T15:00:01-05:00"
+source: "https://docs.intuition.systems/docs/graphql-api/mutations/images/overview"
+---
+
+# Image & IPFS Operations
+
+The Intuition GraphQL API provides mutations for uploading images and JSON data to IPFS (InterPlanetary File System). These operations return IPFS hashes that can be used in atom creation.
+
+## Available Operations
+
+| Operation | Description |
+|-----------|-------------|
+| [`uploadImage`](./upload-image) | Upload a base64-encoded image to IPFS |
+| [`uploadImageFromUrl`](./upload-image-from-url) | Upload an image from a URL to IPFS |
+| [`uploadJsonToIpfs`](./upload-json-to-ipfs) | Upload JSON metadata to IPFS |
+
+## Use Cases
+
+### Atom Creation Workflow
+
+When creating atoms with images or metadata:
+
+1. Upload image using `uploadImage` or `uploadImageFromUrl`
+2. Upload JSON metadata using `uploadJsonToIpfs`
+
+[... see full docs for complete content]
+
+---
+title: "Upload Image from URL"
+description: "Upload an image from a URL"
+last_updated: "2026-02-19T15:00:01-05:00"
+source: "https://docs.intuition.systems/docs/graphql-api/mutations/images/upload-image-from-url"
+---
+
+# Upload Image from URL
+
+Upload an image by providing its URL. The server fetches, caches, and moderates the image. Returns a `CachedImage` with the hosted URL and safety score.
+
+## Mutation Structure
+
+## Variables
+
+The mutation takes an `image` argument with the `UploadImageFromUrlInput` type:
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `url` | `String` | Yes | URL of the image to upload |
+
+## Response Fields
+
+Returns `UploadImageFromUrlOutput` containing an `images` array of `CachedImage` objects:
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `images` | `[CachedImage!]!` | Array of cached image results |
+
+[... see full docs for complete content]
+
+---
+title: "Upload Image"
+description: "Upload a base64-encoded image via the API"
+last_updated: "2026-02-19T15:00:01-05:00"
+source: "https://docs.intuition.systems/docs/graphql-api/mutations/images/upload-image"
+---
+
+# Upload Image
+
+Upload a base64-encoded image. The image is cached and a moderation check is performed. Returns a `CachedImage` with the hosted URL and safety score.
+
+## Mutation Structure
+
+## Variables
+
+The mutation takes an `image` argument with the `UploadImageInput` type:
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `data` | `String` | Yes | Base64-encoded image data |
+| `filename` | `String` | Yes | Filename with extension |
+| `contentType` | `String` | Yes | MIME type (e.g. `"image/png"`) |
+
+## Response Fields
+
+Returns `UploadImageFromUrlOutput` containing an `images` array of `CachedImage` objects:
+
+[... see full docs for complete content]
+
+---
+title: "Upload JSON to IPFS"
+description: "Upload JSON metadata to IPFS"
+last_updated: "2026-02-19T15:00:01-05:00"
+source: "https://docs.intuition.systems/docs/graphql-api/mutations/images/upload-json-to-ipfs"
+---
+
+# Upload JSON to IPFS
+
+Upload JSON metadata to IPFS for use in atom creation. Returns the IPFS hash, name, and size.
+
+## Mutation Structure
+
+## Variables
+
+| Variable | Type | Required | Description |
+|----------|------|----------|-------------|
+| `json` | `jsonb` | Yes | JSON object to upload |
+
+## Response Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `hash` | `String!` | IPFS content hash (CID) |
+| `name` | `String!` | Filename on IPFS |
+| `size` | `String!` | File size |
+
+## Expected Response
+
+## Interactive Example
+
+    id: 'upload-thing-metadata',
+    title: 'Upload Thing Metadata',
+    query: `mutation UploadJsonToIpfs($json: jsonb!) {
 
 [... see full docs for complete content]
 
@@ -1366,7 +1487,7 @@ Pin a "Thing" object (general entity) to IPFS for use in atom creation.
 ---
 title: "GraphQL NPM Package"
 description: "Comprehensive guide to use the Intuition GraphQL NPM package"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-02-19T15:00:01-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/npm-package"
 ---
 
@@ -1449,6 +1570,173 @@ There are a few ways to get started with this GraphQL API, depending on the leve
     <h3>
       SDK
     </h3>
+
+[... see full docs for complete content]
+
+---
+title: "Following Query"
+description: "Query following relationships in the social graph"
+last_updated: "2026-02-19T15:00:01-05:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/accounts/following"
+---
+
+# Following Query
+
+Query the social graph to find who an account follows and who follows them.
+
+## Query Structure
+
+## Variables
+
+## Response Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | `String` | Relationship identifier |
+| `follower_id` | `String` | Account doing the following |
+| `follower` | `Account` | Follower account details |
+| `following_id` | `String` | Account being followed |
+| `following` | `Account` | Followed account details |
+| `created_at` | `DateTime` | When the follow was created |
+
+## Expected Response
+
+## Interactive Example
+
+    id: 'who-follows',
+    title: 'Who Account Follows',
+
+[... see full docs for complete content]
+
+---
+title: "List Accounts"
+description: "Query multiple accounts with filtering and pagination"
+last_updated: "2026-02-19T15:00:01-05:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/accounts/list-accounts"
+---
+
+# List Accounts
+
+Query multiple accounts with filtering, sorting, and pagination.
+
+## Query Structure
+
+## Variables
+
+## Response Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | `String` | Account address |
+| `label` | `String` | Human-readable name |
+| `image` | `String` | Profile image URL |
+| `type` | `String` | Account type |
+| `created_at` | `DateTime` | First interaction timestamp |
+
+## Interactive Example
+
+    id: 'recent-accounts',
+    title: 'Recent Accounts',
+    query: `query GetRecentAccounts($limit: Int!) {
+  accounts(
+    order_by: { created_at: desc }
+    limit: $limit
+  ) {
+    id
+    label
+    image
+    type
+    created_at
+
+}`,
+    variables: { limit: 10 }
+
+[... see full docs for complete content]
+
+---
+title: "Account Queries"
+description: "Query account data, social relationships, and positions"
+last_updated: "2026-02-19T15:00:01-05:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/accounts/overview"
+---
+
+# Account Queries
+
+Query account information including profile data, social relationships (following), and positions from followed accounts.
+
+## Available Queries
+
+| Query | Description |
+|-------|-------------|
+| [`account`](./single-account) | Query a single account by address |
+| [`accounts`](./list-accounts) | Query multiple accounts with filtering |
+| [`following`](./following) | Query following relationships |
+| [`positions_from_following`](./positions-from-following) | Query positions from followed accounts |
+
+## What Are Accounts?
+
+Accounts represent Ethereum addresses that have interacted with the Intuition protocol. Each account includes:
+
+- **Identity**: Address, ENS name, and profile metadata
+- **Labels**: Human-readable names from atoms
+- **Images**: Profile pictures from atoms
+
+[... see full docs for complete content]
+
+---
+title: "Positions from Following"
+description: "Query positions held by accounts you follow"
+last_updated: "2026-02-19T15:00:01-05:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/accounts/positions-from-following"
+---
+
+# Positions from Following
+
+Query positions (stakes) held by accounts that a user follows. This enables building social portfolio views and discovering popular investments within your network.
+
+## Query Structure
+
+## Variables
+
+## Response Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | `String` | Position identifier |
+| `account_id` | `String` | Account holding the position |
+| `account` | `Account` | Account details |
+| `vault_id` | `String` | Vault ID for the position |
+| `vault` | `Vault` | Vault details with atom/triple |
+| `shares` | `String` | Number of shares held |
+
+[... see full docs for complete content]
+
+---
+title: "Single Account Query"
+description: "Query individual account details by address"
+last_updated: "2026-02-19T15:00:01-05:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/accounts/single-account"
+---
+
+# Single Account Query
+
+Fetch detailed information about a specific account using its Ethereum address.
+
+## Query Structure
+
+## Variables
+
+## Response Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | `String` | Account address (primary key) |
+| `label` | `String` | Human-readable name (from atom or ENS) |
+| `image` | `String` | Profile image URL |
+| `type` | `String` | Account type: `Default`, `AtomWallet`, `ProtocolVault` |
+| `atom_id` | `String` | Linked atom ID (if any) |
+| `atom` | `Atom` | Linked atom details |
+| `created_at` | `DateTime` | First interaction timestamp |
 
 [... see full docs for complete content]
 
@@ -1567,33 +1855,30 @@ Use the denormalized `predicate_objects` table for efficient collection queries.
 
 ---
 title: "Time-Series Analysis"
-description: "Query pre-computed time-series aggregations"
-last_updated: "2026-01-05T17:16:01-08:00"
+description: "Query pre-computed time-series aggregations for share prices, signals, and market state"
+last_updated: "2026-02-19T15:00:01-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/advanced/time-series"
 ---
 
 # Time-Series Analysis
 
-Use pre-computed time-series tables for efficient analytics.
+The API provides pre-computed time-series tables (TimescaleDB continuous aggregates) for efficient analytics. These are available at four granularities: hourly, daily, weekly, and monthly.
 
-## Query Structure
+## Share Price Change Stats
 
-## Available Tables
+Track share price movements over time for any term/curve combination.
 
-- **share_price_change_stats_hourly**: Hourly price aggregations
-- **share_price_change_stats_daily**: Daily price aggregations
-- **share_price_change_stats_weekly**: Weekly price aggregations
-- **share_price_change_stats_monthly**: Monthly price aggregations
-- **signal_stats_daily**: Daily signal aggregations
-- **signal_stats_hourly**: Hourly signal aggregations
-- **signal_stats_monthly**: Monthly signal aggregations
+### Fields
 
-## Best Practices
+| Field | Type | Description |
+|-------|------|-------------|
+| `bucket` | `timestamptz` | Time bucket start |
+| `term_id` | `String` | Term ID |
+| `curve_id` | `numeric` | Bonding curve ID |
+| `first_share_price` | `numeric` | Opening price for the period |
+| `last_share_price` | `numeric` | Closing price for the period |
 
-1. **Use pre-computed tables** for charts and analytics
-2. **Choose appropriate granularity** (hourly/daily/weekly/monthly)
-3. **Order by bucket** for time-based queries
-4. **Limit results** to relevant time period
+[... see full docs for complete content]
 
 ---
 title: "List and Filter Atoms"
@@ -1858,6 +2143,873 @@ Fetch atom data along with associated vault statistics, including total shares, 
 [... see full docs for complete content]
 
 ---
+title: "Get Chart JSON"
+description: "Get chart data as structured JSON"
+last_updated: "2026-02-19T15:00:01-05:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/charts/chart-json"
+---
+
+# Get Chart JSON
+
+Retrieve chart data in structured JSON format for use with charting libraries.
+
+## Query Structure
+
+## Variables
+
+The query takes a single `input` object of type `GetChartJsonInput`:
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `term_id` | `String` | Yes | Term ID to generate chart for |
+| `curve_id` | `String` | Yes | Curve ID (bonding curve) |
+| `interval` | `String` | Yes | Time interval (e.g. `"1h"`, `"1d"`, `"1w"`) |
+| `start_time` | `String` | Yes | Start of time range (ISO 8601) |
+
+[... see full docs for complete content]
+
+---
+title: "Get Chart Raw JSON"
+description: "Get raw chart data as JSON"
+last_updated: "2026-02-19T15:00:01-05:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/charts/chart-raw-json"
+---
+
+# Get Chart Raw JSON
+
+Retrieve raw chart data in JSON format. Uses the same input and output types as `getChartJson`.
+
+## Query Structure
+
+## Variables
+
+Same as [`getChartJson`](./chart-json) -- takes `GetChartJsonInput`:
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `term_id` | `String` | Yes | Term ID to query |
+| `curve_id` | `String` | Yes | Curve ID (bonding curve) |
+| `interval` | `String` | Yes | Time interval (e.g. `"1h"`, `"1d"`) |
+| `start_time` | `String` | Yes | Start of time range (ISO 8601) |
+
+[... see full docs for complete content]
+
+---
+title: "Get Chart Raw SVG"
+description: "Get minimal raw SVG chart output"
+last_updated: "2026-02-19T15:00:01-05:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/charts/chart-raw-svg"
+---
+
+# Get Chart Raw SVG
+
+Retrieve a minimal SVG chart, suitable for custom post-processing or styling. Uses the same input type as `getChartSvg`.
+
+## Query Structure
+
+## Variables
+
+Same as [`getChartSvg`](./chart-svg) -- takes `GetChartSvgInput`:
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `term_id` | `String` | Yes | Term ID to query |
+| `curve_id` | `String` | Yes | Curve ID (bonding curve) |
+| `interval` | `String` | Yes | Time interval |
+| `start_time` | `String` | Yes | Start of time range (ISO 8601) |
+
+[... see full docs for complete content]
+
+---
+title: "Get Chart SVG"
+description: "Get chart rendered as SVG"
+last_updated: "2026-02-19T15:00:01-05:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/charts/chart-svg"
+---
+
+# Get Chart SVG
+
+Retrieve a pre-rendered chart as an SVG image, ready for embedding in HTML or documents.
+
+## Query Structure
+
+## Variables
+
+The query takes a single `input` object of type `GetChartSvgInput`:
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `term_id` | `String` | Yes | Term ID to generate chart for |
+| `curve_id` | `String` | Yes | Curve ID (bonding curve) |
+| `interval` | `String` | Yes | Time interval (e.g. `"1h"`, `"1d"`) |
+| `start_time` | `String` | Yes | Start of time range (ISO 8601) |
+
+[... see full docs for complete content]
+
+---
+title: "Chart Operations"
+description: "Generate charts as JSON or SVG format"
+last_updated: "2026-02-19T15:00:01-05:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/charts/overview"
+---
+
+# Chart Operations
+
+The Intuition GraphQL API provides chart generation operations to create visualizations of protocol data. These operations return chart data in either JSON or SVG format for flexible integration.
+
+## Available Operations
+
+| Operation | Description |
+|-----------|-------------|
+| [`getChartJson`](./chart-json) | Get chart data as structured JSON |
+| [`getChartRawJson`](./chart-raw-json) | Get raw chart JSON data |
+| [`getChartSvg`](./chart-svg) | Get chart rendered as SVG |
+| [`getChartRawSvg`](./chart-raw-svg) | Get raw SVG chart data |
+
+## Use Cases
+
+### Dashboard Integration
+
+Embed generated charts directly in dashboards:
+- SVG format for direct rendering
+- JSON format for custom chart libraries
+
+[... see full docs for complete content]
+
+---
+title: "Aggregate Events"
+description: "Aggregate statistics for blockchain events"
+last_updated: "2026-02-19T15:00:01-05:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/events/aggregate-events"
+---
+
+# Aggregate Events
+
+Query aggregate statistics for blockchain events.
+
+## Query Structure
+
+## Variables
+
+## Use Cases
+
+### Protocol Statistics
+
+### Daily Event Counts
+
+## Related
+
+- [List Events](./list-events) - Individual events
+- [Protocol Stats](/docs/graphql-api/queries/stats/protocol-stats) - Higher-level statistics
+
+---
+title: "List Events"
+description: "Query raw blockchain events with filtering"
+last_updated: "2026-02-19T15:00:01-05:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/events/list-events"
+---
+
+# List Events
+
+Query raw blockchain events with filtering, sorting, and pagination.
+
+## Query Structure
+
+## Variables
+
+## Response Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | `String` | Unique event identifier |
+| `type` | `String` | Event type |
+| `block_number` | `Int` | Block number |
+| `block_timestamp` | `DateTime` | Block timestamp |
+| `transaction_hash` | `String` | Transaction hash |
+| `atom_id` | `String` | Related atom ID (if applicable) |
+| `triple_id` | `String` | Related triple ID (if applicable) |
+| `sender_id` | `String` | Sender address |
+
+[... see full docs for complete content]
+
+---
+title: "Events Queries"
+description: "Query raw blockchain events from the Intuition protocol"
+last_updated: "2026-02-19T15:00:01-05:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/events/overview"
+---
+
+# Events Queries
+
+Query raw blockchain events emitted by the Intuition protocol contracts. Events provide low-level access to all protocol interactions.
+
+## Available Queries
+
+| Query | Description |
+|-------|-------------|
+| [`events`](./list-events) | Query events with filtering and pagination |
+| [`events_aggregate`](./aggregate-events) | Aggregate statistics for events |
+
+## What Are Events?
+
+Events are blockchain log entries emitted by smart contracts. The Intuition indexer captures:
+
+- **AtomCreated**: New atoms minted
+- **TripleCreated**: New triples created
+- **Deposited**: ETH staked on positions
+- **Redeemed**: ETH withdrawn from positions
+- **FeesTransferred**: Protocol fees collected
+
+## Quick Start
+
+## Event Types
+
+| Type | Description |
+
+[... see full docs for complete content]
+
+---
+title: "Account PnL Rank"
+description: "Query a single account's leaderboard rank and percentile"
+last_updated: "2026-02-19T15:00:01-05:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/leaderboard/account-rank"
+---
+
+# Account PnL Rank
+
+Look up a single account's leaderboard rank and percentile using `get_account_pnl_rank`. Returns `account_pnl_rank` rows.
+
+## Query Structure
+
+## Function Arguments
+
+| Argument | Type | Description |
+|----------|------|-------------|
+| `p_account_id` | `String` | Account address to look up |
+| `p_sort_by` | `String` | Ranking metric (e.g. `"total_pnl"`, `"pnl_pct"`, `"win_rate"`) |
+| `p_term_id` | `String` | Optional term filter |
+| `p_time_filter` | `String` | Optional time filter preset |
+
+## Response Fields (`account_pnl_rank`)
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `account_id` | `String` | Account address |
+| `account_label` | `String` | Display name |
+
+[... see full docs for complete content]
+
+---
+title: "Leaderboard Stats"
+description: "Query aggregate leaderboard statistics for the protocol"
+last_updated: "2026-02-19T15:00:01-05:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/leaderboard/leaderboard-stats"
+---
+
+# Leaderboard Stats
+
+Get aggregate protocol-level statistics using `get_pnl_leaderboard_stats`. Returns `pnl_leaderboard_stats` rows with metrics like total traders, average PnL, and profitability rates.
+
+## Query Structure
+
+## Function Arguments
+
+| Argument | Type | Description |
+|----------|------|-------------|
+| `p_term_id` | `String` | Optional term filter (null for protocol-wide) |
+| `p_time_filter` | `String` | Optional time filter preset |
+
+## Response Fields (`pnl_leaderboard_stats`)
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `total_traders` | `bigint` | Total number of traders |
+| `profitable_traders` | `bigint` | Number of traders with positive PnL |
+
+[... see full docs for complete content]
+
+---
+title: "Leaderboard Queries Overview"
+description: "Leaderboard queries for ranking accounts and vaults by PnL performance"
+last_updated: "2026-02-19T15:00:01-05:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/leaderboard/overview"
+---
+
+# Leaderboard Queries Overview
+
+# Leaderboard Queries
+
+The Intuition GraphQL API provides leaderboard queries for ranking accounts and vaults by PnL performance. These are exposed as Hasura SQL functions that return `pnl_leaderboard_entry` rows.
+
+## Available Leaderboard Operations
+
+### PnL Leaderboard
+
+| Operation | Description |
+|-----------|-------------|
+| [`get_pnl_leaderboard`](./pnl-leaderboard) | Full PnL leaderboard with filtering and sorting |
+| [`get_pnl_leaderboard_period`](./pnl-leaderboard#period-scoped) | Period-scoped PnL leaderboard with date range |
+
+### Vault Leaderboard
+
+| Operation | Description |
+|-----------|-------------|
+| [`get_vault_leaderboard`](./vault-leaderboard) | Vault-level leaderboard filtered by term and curve |
+| [`get_vault_leaderboard_period`](./vault-leaderboard#period-scoped) | Period-scoped vault leaderboard with date range |
+
+### Account Rank & Stats
+
+[... see full docs for complete content]
+
+---
+title: "PnL Leaderboard"
+description: "Query the PnL leaderboard to rank accounts by trading performance"
+last_updated: "2026-02-19T15:00:01-05:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/leaderboard/pnl-leaderboard"
+---
+
+# PnL Leaderboard
+
+Rank accounts by PnL performance using `get_pnl_leaderboard` and `get_pnl_leaderboard_period`. Both return `pnl_leaderboard_entry` rows.
+
+## Query Structure
+
+## Function Arguments
+
+| Argument | Type | Description |
+|----------|------|-------------|
+| `p_limit` | `Int` | Number of results to return |
+| `p_offset` | `Int` | Offset for pagination |
+| `p_sort_by` | `String` | Field to sort by (e.g. `"total_pnl"`, `"pnl_pct"`, `"win_rate"`) |
+| `p_sort_order` | `String` | Sort direction: `"asc"` or `"desc"` |
+| `p_term_id` | `String` | Filter to a specific term |
+| `p_time_filter` | `String` | Time filter preset |
+
+[... see full docs for complete content]
+
+---
+title: "Vault Leaderboard"
+description: "Query vault-level leaderboard rankings by PnL performance"
+last_updated: "2026-02-19T15:00:01-05:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/leaderboard/vault-leaderboard"
+---
+
+# Vault Leaderboard
+
+Rank accounts within specific vaults using `get_vault_leaderboard` and `get_vault_leaderboard_period`. Both return `pnl_leaderboard_entry` rows (same schema as the [PnL Leaderboard](./pnl-leaderboard)).
+
+## Query Structure
+
+## Function Arguments
+
+| Argument | Type | Description |
+|----------|------|-------------|
+| `p_term_id` | `String` | Term ID to filter by |
+| `p_curve_id` | `numeric` | Curve ID (bonding curve) to filter by |
+| `p_limit` | `Int` | Number of results to return |
+| `p_offset` | `Int` | Offset for pagination |
+| `p_sort_by` | `String` | Field to sort by |
+| `p_sort_order` | `String` | Sort direction: `"asc"` or `"desc"` |
+
+[... see full docs for complete content]
+
+---
+title: "Account PnL Chart"
+description: "Query historical Profit and Loss data for charting"
+last_updated: "2026-02-19T15:00:01-05:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/pnl/account-pnl-chart"
+---
+
+# Account PnL Chart
+
+Get historical Profit and Loss (PnL) time-series data for an account, suitable for charting portfolio performance over configurable intervals.
+
+## Query Structure
+
+## Variables
+
+The query takes a single `input` object:
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `account_id` | `String` | Yes | Account address to query |
+| `interval` | `String` | Yes | Time interval for data points (e.g. `"1h"`, `"1d"`, `"1w"`, `"1M"`) |
+| `start_time` | `String` | Yes | Start of the time range (ISO 8601 timestamp) |
+
+[... see full docs for complete content]
+
+---
+title: "Account PnL Current"
+description: "Query current Profit and Loss snapshot for an account"
+last_updated: "2026-02-19T15:00:01-05:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/pnl/account-pnl-current"
+---
+
+# Account PnL Current
+
+Get the current Profit and Loss (PnL) snapshot for an account, including equity value, net invested amount, and unrealized gains.
+
+## Query Structure
+
+## Variables
+
+The query takes a single `input` object:
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `account_id` | `String` | Yes | Account address to query |
+
+## Response Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `account_id` | `String` | The queried account address |
+| `equity_value` | `String` | Current total equity value (`shares_total * share_price / 1e18`) |
+
+[... see full docs for complete content]
+
+---
+title: "Account PnL Realized"
+description: "Query realized Profit and Loss data for an account"
+last_updated: "2026-02-19T15:00:01-05:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/pnl/account-pnl-realized"
+---
+
+# Account PnL Realized
+
+Get realized Profit and Loss (PnL) data for an account over a specified time range.
+
+## Query Structure
+
+## Variables
+
+The query takes a single `input` object:
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `account_id` | `String` | Yes | Account address to query |
+| `start_time` | `String` | Yes | Start of the time range (ISO 8601 timestamp) |
+| `end_time` | `String` | Yes | End of the time range (ISO 8601 timestamp) |
+
+## Response Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+
+[... see full docs for complete content]
+
+---
+title: "PnL Queries Overview"
+description: "Profit and Loss (PnL) queries for tracking account and position performance"
+last_updated: "2026-02-19T15:00:01-05:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/pnl/overview"
+---
+
+# PnL Queries Overview
+
+# Profit & Loss (PnL) Queries
+
+The Intuition GraphQL API provides Profit and Loss (PnL) queries to track portfolio performance, analyze realized gains, and visualize value changes over time. These queries are powered by the chart-api service and exposed through Hasura as GraphQL actions.
+
+## Available PnL Operations
+
+| Operation | Description |
+|-----------|-------------|
+| [`getAccountPnlCurrent`](./account-pnl-current) | Current account PnL snapshot with equity value, net invested, and unrealized gains |
+| [`getAccountPnlChart`](./account-pnl-chart) | Account PnL time-series data with configurable intervals |
+| [`getAccountPnlRealized`](./account-pnl-realized) | Realized PnL data for an account over a time range |
+
+[... see full docs for complete content]
+
+---
+title: "Position PnL Chart"
+description: "Query historical Profit and Loss data for a specific position"
+last_updated: "2026-02-19T15:00:01-05:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/pnl/position-pnl-chart"
+---
+
+# Position PnL Chart
+
+Get historical Profit and Loss (PnL) time-series data for a specific position, identified by account, term, and curve.
+
+## Query Structure
+
+## Variables
+
+The query takes a single `input` object:
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `account_id` | `String` | Yes | Account address owning the position |
+| `term_id` | `String` | Yes | Term ID identifying the position's atom or triple |
+| `curve_id` | `String` | Yes | Curve ID identifying the bonding curve |
+
+[... see full docs for complete content]
+
+---
+title: "Search Queries"
+description: "Search atoms, terms, and positions"
+last_updated: "2026-02-19T15:00:01-05:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/search/overview"
+---
+
+# Search Queries
+
+Search the Intuition knowledge graph for atoms, terms, and positions using text-based queries.
+
+## Available Queries
+
+| Query | Description |
+|-------|-------------|
+| [`search_term`](./search-term) | Search atoms and terms by text |
+| [`search_term_from_following`](./search-from-following) | Search within followed accounts' activity |
+| [`search_positions_on_subject`](./search-positions) | Find positions related to a subject |
+
+## Quick Start
+
+## Search Features
+
+- **Full-text search**: Search across atom labels and data
+- **Case-insensitive**: Searches ignore case
+- **Partial matching**: Find partial term matches
+- **Social filtering**: Search within your network
+
+## Related Documentation
+
+- [Search Term](./search-term) - Basic search
+
+[... see full docs for complete content]
+
+---
+title: "Search from Following"
+description: "Search within followed accounts' activity"
+last_updated: "2026-02-19T15:00:01-05:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/search/search-from-following"
+---
+
+# Search from Following
+
+Search for terms within the context of accounts you follow, prioritizing results from your social network.
+
+## Query Structure
+
+## Variables
+
+| Variable | Type | Required | Description |
+|----------|------|----------|-------------|
+| `address` | `String` | Yes | Account address whose following list to use |
+| `query` | `String` | Yes | Search query text |
+| `limit` | `Int` | No | Maximum results |
+
+## Use Cases
+
+### Network-Aware Search
+
+Search prioritizing content from your network:
+
+### React Social Search
+
+## Related
+
+- [Search Term](./search-term) - Global search
+- [Following](/docs/graphql-api/queries/accounts/following) - Following relationships
+
+---
+title: "Search Positions"
+description: "Search positions on a specific subject"
+last_updated: "2026-02-19T15:00:01-05:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/search/search-positions"
+---
+
+# Search Positions
+
+# Search Positions on Subject
+
+Search for positions (stakes) related to a specific subject. This function takes an array of addresses and a JSONB search fields object to filter positions.
+
+## Query Structure
+
+## Variables
+
+| Variable | Type | Required | Description |
+|----------|------|----------|-------------|
+| `addresses` | `_text` | Yes | PostgreSQL text array of account addresses to search |
+| `search_fields` | `jsonb` | Yes | JSONB object specifying search criteria |
+| `limit` | `Int` | No | Maximum results |
+
+[... see full docs for complete content]
+
+---
+title: "Search Term"
+description: "Search atoms and terms by text"
+last_updated: "2026-02-19T15:00:01-05:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/search/search-term"
+---
+
+# Search Term
+
+Search for atoms by their label or data content.
+
+## Query Structure
+
+## Variables
+
+| Variable | Type | Required | Description |
+|----------|------|----------|-------------|
+| `query` | `String` | Yes | Search query text |
+| `limit` | `Int` | No | Maximum results (default: 20) |
+| `offset` | `Int` | No | Pagination offset |
+
+## Response Fields
+
+The function returns `atoms` rows, so all atom fields are available:
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `term_id` | `String` | Unique atom identifier |
+| `label` | `String` | Human-readable label |
+
+[... see full docs for complete content]
+
+---
+title: "Aggregate Signals"
+description: "Aggregate statistics for signals"
+last_updated: "2026-02-19T15:00:01-05:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/signals/aggregate-signals"
+---
+
+# Aggregate Signals
+
+Query aggregate statistics for signals including counts, sums, and averages.
+
+## Query Structure
+
+## Variables
+
+## Response Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `count` | `Int` | Total number of signals |
+| `sum.delta` | `String` | Total amount in wei |
+| `sum.shares_delta` | `String` | Total shares |
+| `avg.delta` | `Float` | Average amount |
+| `max.delta` | `String` | Maximum amount |
+| `max.block_timestamp` | `DateTime` | Most recent signal |
+| `min.delta` | `String` | Minimum amount |
+| `min.block_timestamp` | `DateTime` | Oldest signal |
+
+## Expected Response
+
+[... see full docs for complete content]
+
+---
+title: "List Signals"
+description: "Query signals (deposits/redemptions) with filtering and pagination"
+last_updated: "2026-02-19T15:00:01-05:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/signals/list-signals"
+---
+
+# List Signals
+
+Query deposit and redemption signals with rich filtering, sorting, and pagination capabilities.
+
+## Query Structure
+
+## Variables
+
+| Variable | Type | Description |
+|----------|------|-------------|
+| `where` | `signals_bool_exp` | Filter conditions |
+| `order_by` | `[signals_order_by!]` | Sort order |
+| `limit` | `Int` | Maximum results (default: 20) |
+| `offset` | `Int` | Pagination offset |
+
+## Response Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | `String` | Unique signal identifier |
+| `signal_type` | `String` | `Deposit` or `Redemption` |
+| `delta` | `String` | Amount in wei |
+
+[... see full docs for complete content]
+
+---
+title: "Signals Queries"
+description: "Query deposit and redemption signals with rich context"
+last_updated: "2026-02-19T15:00:01-05:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/signals/overview"
+---
+
+# Signals Queries
+
+Signals represent deposit and redemption events in the Intuition protocol. Unlike raw blockchain events, signals include enriched context such as account labels, atom metadata, and related positions.
+
+## Available Queries
+
+| Query | Description |
+|-------|-------------|
+| [`signals`](./list-signals) | Query signals with filtering and pagination |
+| [`signals_aggregate`](./aggregate-signals) | Aggregate statistics for signals |
+| [`signals_from_following`](./signals-from-following) | Query signals from followed accounts |
+
+## What Are Signals?
+
+Signals are contextual representations of position changes:
+
+- **Deposits**: When an account stakes ETH on an atom or triple
+- **Redemptions**: When an account withdraws from a position
+
+Each signal includes:
+
+[... see full docs for complete content]
+
+---
+title: "Signals from Following"
+description: "Query signals from accounts you follow"
+last_updated: "2026-02-19T15:00:01-05:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/signals/signals-from-following"
+---
+
+# Signals from Following
+
+Query signals (deposits and redemptions) from accounts that a specific user follows. This enables building personalized social activity feeds.
+
+## Query Structure
+
+## Variables
+
+| Variable | Type | Required | Description |
+|----------|------|----------|-------------|
+| `account_id` | `String` | Yes | The account whose following list to use |
+| `limit` | `Int` | No | Maximum results (default: 20) |
+| `offset` | `Int` | No | Pagination offset |
+| `where` | `signals_from_following_bool_exp` | No | Additional filters |
+
+## Response Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | `String` | Signal identifier |
+
+[... see full docs for complete content]
+
+---
+title: "Fee Accruals"
+description: "Query protocol fee accrual records by epoch"
+last_updated: "2026-02-19T15:00:01-05:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/stats/fee-accruals"
+---
+
+# Fee Accruals
+
+Query protocol fee accrual records. Fee accruals track protocol fees accumulated per epoch, including the sender and transaction details.
+
+## Query Structure
+
+## Response Fields
+
+| Field | Type | Nullable | Description |
+|-------|------|----------|-------------|
+| `id` | `String` | No | Accrual record ID |
+| `amount` | `numeric` | No | Fee amount accrued (wei) |
+| `epoch` | `numeric` | No | Protocol epoch number |
+| `sender_id` | `String` | No | Account that generated the fee |
+| `block_number` | `numeric` | No | Block number |
+
+[... see full docs for complete content]
+
+---
+title: "Fee Transfers"
+description: "Query protocol fee transfer events"
+last_updated: "2026-02-19T15:00:01-05:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/stats/fee-transfers"
+---
+
+# Fee Transfers
+
+Query protocol fee transfers - the fees collected by the protocol on each transaction.
+
+## Query Structure
+
+## Variables
+
+## Response Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | `String` | Transfer identifier |
+| `amount` | `String` | Fee amount in wei |
+| `sender_id` | `String` | Account that paid the fee |
+| `sender` | `Account` | Sender account details |
+| `receiver_id` | `String` | Protocol fee receiver address |
+| `receiver` | `Account` | Receiver details |
+| `block_number` | `Int` | Block number |
+
+[... see full docs for complete content]
+
+---
+title: "Protocol Stats Queries"
+description: "Query protocol-wide statistics and fee transfers"
+last_updated: "2026-02-19T15:00:01-05:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/stats/overview"
+---
+
+# Protocol Stats Queries
+
+Query protocol-wide statistics including total value locked (TVL), fee transfers, and aggregate metrics.
+
+## Available Queries
+
+| Query | Description |
+|-------|-------------|
+| [`stats`](./protocol-stats) | Protocol-wide statistics and metrics |
+| [`fee_transfers`](./fee-transfers) | Protocol fee transfer events |
+| [`protocol_fee_accruals`](./fee-accruals) | Protocol fee accruals by epoch |
+
+## Quick Start
+
+## Key Metrics
+
+| Metric | Description |
+|--------|-------------|
+| `total_atoms` | Total atoms created |
+| `total_triples` | Total triples created |
+| `total_positions` | Total active positions |
+| `total_signals` | Total deposit/redemption signals |
+| `total_accounts` | Unique accounts interacted |
+
+[... see full docs for complete content]
+
+---
+title: "Protocol Statistics"
+description: "Query protocol-wide statistics and metrics"
+last_updated: "2026-02-19T15:00:01-05:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/stats/protocol-stats"
+---
+
+# Protocol Statistics
+
+Query aggregate statistics for the entire Intuition protocol.
+
+## Query Structure
+
+## Response Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | `String` | Stats record ID |
+| `total_atoms` | `Int` | Total atoms created |
+| `total_triples` | `Int` | Total triples created |
+| `total_positions` | `Int` | Total active positions |
+| `total_signals` | `Int` | Total signals (deposits + redemptions) |
+| `total_accounts` | `Int` | Unique accounts that have interacted |
+| `total_fees` | `String` | Total protocol fees in wei |
+
+[... see full docs for complete content]
+
+---
 title: "Counter Triples"
 description: "Query opposing triple positions"
 last_updated: "2026-01-05T17:16:01-08:00"
@@ -2057,6 +3209,80 @@ Fetch detailed information about a specific triple using its term ID.
 [... see full docs for complete content]
 
 ---
+title: "Subject Predicates"
+description: "Query subject-predicate relationship aggregates"
+last_updated: "2026-02-19T15:00:01-05:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/triples/subject-predicates"
+---
+
+# Subject Predicates
+
+Query aggregated subject-predicate pairs across the knowledge graph. Each record represents a unique (subject, predicate) combination with aggregate stats across all triples sharing that pair.
+
+## Query Structure
+
+## Response Fields
+
+| Field | Type | Nullable | Description |
+|-------|------|----------|-------------|
+| `subject_id` | `String` | No | Subject atom ID |
+| `predicate_id` | `String` | No | Predicate atom ID |
+| `triple_count` | `Int` | No | Number of triples with this subject-predicate pair |
+| `total_position_count` | `Int` | No | Total positions across all triples |
+
+[... see full docs for complete content]
+
+---
+title: "Triple Terms"
+description: "Query triple-term relationship data with aggregate stats"
+last_updated: "2026-02-19T15:00:01-05:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/triples/triple-terms"
+---
+
+# Triple Terms
+
+Query the `triple_term` view to get aggregate statistics for triple-term pairs. Each record links a triple's term to its counter-term with position and market cap data.
+
+## Query Structure
+
+## Response Fields
+
+| Field | Type | Nullable | Description |
+|-------|------|----------|-------------|
+| `term_id` | `String` | No | Term ID |
+| `counter_term_id` | `String` | No | Counter-term ID |
+| `total_assets` | `numeric` | No | Total assets across vaults |
+| `total_market_cap` | `numeric` | No | Combined market cap |
+| `total_position_count` | `bigint` | No | Total number of positions |
+
+[... see full docs for complete content]
+
+---
+title: "Triple Vaults"
+description: "Query vault-level data for triples including market cap and position counts"
+last_updated: "2026-02-19T15:00:01-05:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/triples/triple-vaults"
+---
+
+# Triple Vaults
+
+Query the `triple_vault` view to get vault-level data for triples, including market cap, position counts, shares, and asset totals per curve.
+
+## Query Structure
+
+## Response Fields
+
+| Field | Type | Nullable | Description |
+|-------|------|----------|-------------|
+| `term_id` | `String` | No | Term ID |
+| `counter_term_id` | `String` | No | Counter-term ID |
+| `curve_id` | `numeric` | No | Bonding curve ID |
+| `total_assets` | `numeric` | No | Total assets in the vault |
+| `total_shares` | `numeric` | No | Total shares issued |
+
+[... see full docs for complete content]
+
+---
 title: "Deposits & Redemptions"
 description: "Query deposit and redemption transaction history"
 last_updated: "2026-01-05T17:16:01-08:00"
@@ -2075,6 +3301,59 @@ Query transaction history for deposits and redemptions.
 2. **Order by created_at** for chronological history
 3. **Use limit** to paginate results
 4. **Combine deposits and redemptions** for full history
+
+---
+title: "Position Changes"
+description: "Track position change history with daily and hourly aggregates"
+last_updated: "2026-02-19T15:00:01-05:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/vaults/position-changes"
+---
+
+# Position Changes
+
+Track individual position changes and view pre-aggregated daily/hourly summaries. Position changes record every deposit and redemption event that modifies a position.
+
+## Individual Changes
+
+### Query Structure
+
+### Response Fields (`position_changes`)
+
+| Field | Type | Nullable | Description |
+|-------|------|----------|-------------|
+| `id` | `bigint` | No | Change record ID |
+| `account_id` | `String` | No | Account that made the change |
+| `term_id` | `String` | No | Term ID |
+| `curve_id` | `numeric` | No | Bonding curve ID |
+| `event_id` | `String` | No | Associated event ID |
+
+[... see full docs for complete content]
+
+---
+title: "Positions with Value"
+description: "Query positions enriched with computed PnL and value data"
+last_updated: "2026-02-19T15:00:01-05:00"
+source: "https://docs.intuition.systems/docs/graphql-api/queries/vaults/positions-with-value"
+---
+
+# Positions with Value
+
+Query positions enriched with computed value fields including PnL, redeemable assets, and theoretical value. This is a view that extends the base `positions` table with real-time calculations.
+
+## Query Structure
+
+## Response Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | `String` | Position identifier |
+| `account_id` | `String` | Account holding the position |
+| `term_id` | `String` | Term ID for the vault |
+| `curve_id` | `numeric` | Bonding curve ID |
+| `shares` | `numeric` | Number of shares held |
+| `redeemable_assets` | `numeric` | Current redeemable value in assets |
+
+[... see full docs for complete content]
 
 ---
 title: "Share Price Changes"
@@ -2231,7 +3510,7 @@ Fetch comprehensive vault statistics including shares, assets, price, and positi
 ---
 title: "Reads"
 description: "Guide to read data using GraphQL queries in the Intuition API"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-02-19T15:00:01-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/reads"
 ---
 
@@ -2250,7 +3529,7 @@ This documentation will be split into sections by primitive, such as `Atoms`, `T
 ---
 title: "Subscriptions Overview"
 description: "Real-time subscriptions with cursor-based streaming"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-02-19T15:00:01-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/subscriptions/overview"
 ---
 
@@ -2281,9 +3560,9 @@ The GraphQL API supports real-time subscriptions for live data updates using cur
 - Real-time updates aren't critical
 - Minimizing server connections
 
-## Best Practices
+## Available Streaming Subscriptions
 
-1. **Store last cursor** to resume after disconnection
+The API provides streaming subscriptions for all major entities:
 
 [... see full docs for complete content]
 
@@ -2375,29 +3654,33 @@ Select a use case above to see detailed step-by-step implementation guides.
 ---
 title: "Writes"
 description: "Guide to write data using GraphQL mutations in the Intuition API"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-02-19T15:00:01-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/writes"
 ---
 
 # Writes
 
-## GraphQL Mutations
+## Understanding Mutations vs Smart Contract Operations
 
-Our GraphQL API provides convenient mutations to help structure and publish Atom metadata following common schemas and best practices. While the protocol supports any URI scheme, these mutations offer an opinionated approach to creating well-structured, interoperable data.
+The Intuition GraphQL API provides mutations for **off-chain operations** like uploading metadata to IPFS. For **on-chain operations** like creating atoms, triples, and positions, you must use the [Intuition SDK](/docs/intuition-sdk/installation-and-setup) or interact directly with the smart contracts.
 
-## Current Schema Support
+**GraphQL mutations** handle:
+- Uploading metadata to IPFS (pinThing, pinPerson, pinOrganization)
 
-Our GraphQL API provides mutations for uploading structured metadata following common schemas. The primary mutation is `pinThing` which uploads metadata to IPFS following the **Thing schema**.
+**Smart contract operations** handle:
+- Creating atoms
+- Creating triples
+- Taking positions (depositing/redeeming)
+- All on-chain state changes
 
-### pinThing Mutation
+Use the [SDK](/docs/intuition-sdk/installation-and-setup) for smart contract interactions.
 
-### Example Usage
+## Available Mutations
 
-### Variables Example
+### IPFS & Metadata Mutations
 
-The mutation returns an IPFS URI that can be used when creating an Atom:
-
-## Advanced Mutation Examples
+| Mutation | Description | Documentation |
+|----------|-------------|---------------|
 
 [... see full docs for complete content]
 
@@ -5335,7 +6618,7 @@ A verifiable claim or statement made on-chain using triples. Attestations can be
 ---
 title: "Resources"
 description: "Additional resources and community support"
-last_updated: "2026-02-11T09:19:02-05:00"
+last_updated: "2026-02-19T15:00:01-05:00"
 source: "https://docs.intuition.systems/docs/resources"
 ---
 
@@ -5499,7 +6782,7 @@ This tutorial will cover:
 ---
 title: "Building Curated Lists with Community Ranking"
 description: "Create token-curated registries with signal-based ranking"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-02-19T15:00:01-05:00"
 source: "https://docs.intuition.systems/docs/tutorials/curated-lists"
 ---
 
@@ -5529,7 +6812,7 @@ A curated list system featuring:
 ---
 title: "Building a Fraud Detection System"
 description: "Community-driven scam flagging with weighted voting"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-02-19T15:00:01-05:00"
 source: "https://docs.intuition.systems/docs/tutorials/fraud-detection"
 ---
 
@@ -5604,7 +6887,7 @@ Create community-curated, ranked lists where stake determines ranking.
 ---
 title: "Building a Non-Resolving Prediction Market"
 description: "Create a forecasting platform with track records"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-02-19T15:00:01-05:00"
 source: "https://docs.intuition.systems/docs/tutorials/prediction-market"
 ---
 
@@ -5683,7 +6966,7 @@ Learn how to find and navigate related claims in the Intuition knowledge graph b
 ---
 title: "Finding Top Dapps on Coinbase"
 description: "Step-by-step guide to query and rank top decentralized applications"
-last_updated: "2026-02-11T14:23:51-05:00"
+last_updated: "2026-02-19T15:00:01-05:00"
 source: "https://docs.intuition.systems/docs/tutorials/queries/finding-top-dapps-on-coinbase"
 ---
 
@@ -5713,7 +6996,7 @@ This guide shows you how to progressively build queries to discover and rank the
 ---
 title: "Discovering Most Trusted Accounts"
 description: "Find and rank the ecosystem's most trusted accounts based on stake and activity"
-last_updated: "2026-02-11T14:23:51-05:00"
+last_updated: "2026-02-19T15:00:01-05:00"
 source: "https://docs.intuition.systems/docs/tutorials/queries/discovering-most-trusted-accounts"
 ---
 
@@ -5746,7 +7029,7 @@ Learn how to leverage the Intuition GraphQL API to find and rank the ecosystem's
 ---
 title: "Building a Reputation System"
 description: "Build a developer reputation platform with skills, endorsements, and verifiable credentials"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-02-19T15:00:01-05:00"
 source: "https://docs.intuition.systems/docs/tutorials/reputation-system"
 ---
 
@@ -5775,7 +7058,7 @@ A developer reputation platform with:
 ---
 title: "Building a Social Attestation Platform"
 description: "Create a decentralized LinkedIn with portable identity"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-02-19T15:00:01-05:00"
 source: "https://docs.intuition.systems/docs/tutorials/social-attestations"
 ---
 
