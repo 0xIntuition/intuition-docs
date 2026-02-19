@@ -17,11 +17,12 @@ Leverage time-series aggregation tables for efficient analytics.
 query GetPriceHistory($termId: String!) {
   share_price_changes(
     where: { term_id: { _eq: $termId } }
-    order_by: { created_at: asc }
+    order_by: { updated_at: asc }
   ) {
-    created_at
-    old_price
-    new_price
+    updated_at
+    share_price
+    total_assets
+    total_shares
   }
 }
 # Then computing daily aggregates in application code

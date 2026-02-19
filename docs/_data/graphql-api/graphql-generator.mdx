@@ -97,17 +97,15 @@ import { useCustomTriplesQuery } from 'graphql/generated/hooks'
 function MyComponent() {
   // Query triples based on your custom needs
   const { data: triples, isLoading: triplesLoading } = useCustomTriplesQuery({
-    query: 'query CustomQuery { ... }'
+    variables: { limit: 10 }
   })
 
   return (
     <div>
-
-
       <h2>Triples ({triples?.triples?.length || 0})</h2>
       {triples?.triples?.map(triple => (
-        <div key={triple.id}>
-          {triple.subject.uri} - {triple.predicate.uri} - {triple.object.uri}
+        <div key={triple.term_id}>
+          {triple.subject.label} - {triple.predicate.label} - {triple.object.label}
         </div>
       ))}
     </div>

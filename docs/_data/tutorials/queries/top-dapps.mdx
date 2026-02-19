@@ -177,7 +177,7 @@ Here's how to display the results in a React component:
 import { request, gql } from 'graphql-request'
 import { useEffect, useState } from 'react'
 
-const GRAPHQL_ENDPOINT = 'https://api.intuition.systems/graphql'
+const GRAPHQL_ENDPOINT = 'https://mainnet.intuition.sh/v1/graphql'
 
 const GET_TOP_DAPPS = gql`
   query GetTopDappsRanked($limit: Int = 10) {
@@ -345,4 +345,4 @@ async function getTrendingDapps(): Promise<DappMetrics[]> {
 
 - [GraphQL API Reference](/docs/graphql-api/overview)
 - [Schema Explorer](/docs/graphql-api/getting-started/schema-reference)
-- [GraphQL Playground](https://api.intuition.systems/graphql)
+- [GraphQL Playground](https://mainnet.intuition.sh/v1/graphql)

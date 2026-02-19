@@ -409,31 +409,32 @@ Now let's query the data to calculate reputation scores.
 ```typescript
 import { request, gql } from 'graphql-request'
 
-const GRAPHQL_ENDPOINT = 'https://api.intuition.systems/graphql'
+const GRAPHQL_ENDPOINT = 'https://mainnet.intuition.sh/v1/graphql'
 
 // Get all skills for a developer
 const GET_DEVELOPER_SKILLS = gql`
   query GetDeveloperSkills($address: String!) {
     triples(
       where: {
-        subject: { value: $address }
-        predicate: { value: "has_skill" }
+        subject: { data: { _eq: $address } }
+        predicate: { label: { _eq: "has_skill" } }
       }
     ) {
-      id
+      term_id
       object {
-        id
-        value
+        term_id
+        label
       }
-      vault {
-        totalShares
-        positionCount
-        currentSharePrice
-      }
-      signals {
-        accountId
-        delta
-        direction
+      term {
+        vaults(where: { curve_id: { _eq: "2" } }) {
+          total_shares
+          position_count
+          current_share_price
+          positions(order_by: { shares: desc }) {
+            account_id
+            shares
+          }
+        }
       }
     }
   }
@@ -460,16 +461,16 @@ interface SkillReputation {
 }
 
 function calculateSkillReputation(triple: any): SkillReputation {
-  const signals = triple.signals || []
+  const vault = triple.term?.vaults?.[0]
+  const positions = vault?.positions || []
 
-  // Sum all "for" signals
-  const forSignals = signals.filter((s: any) => s.direction === 'for')
-  const totalStake = forSignals.reduce(
-    (sum: bigint, s: any) => sum + BigInt(s.delta),
+  // Sum all position shares
+  const totalStake = positions.reduce(
+    (sum: bigint, p: any) => sum + BigInt(p.shares),
     BigInt(0)
   )
 
-  const endorsementCount = forSignals.length
+  const endorsementCount = positions.length
   const averageStake = endorsementCount > 0
     ? totalStake / BigInt(endorsementCount)
     : BigInt(0)
@@ -481,7 +482,7 @@ function calculateSkillReputation(triple: any): SkillReputation {
   const confidenceScore = stakeWeight * endorserWeight
 
   return {
-    skill: triple.object.value,
+    skill: triple.object.label,
     totalStake,
     endorsementCount,
     averageStake,
@@ -530,26 +531,26 @@ async function getEndorserTrustScore(address: string): Promise<number> {
 }
 
 async function calculateWeightedReputation(triple: any): Promise<SkillReputation> {
-  const signals = triple.signals || []
-  const forSignals = signals.filter((s: any) => s.direction === 'for')
+  const vault = triple.term?.vaults?.[0]
+  const positions = vault?.positions || []
 
   // Get trust scores for all endorsers
   const endorserWeights = await Promise.all(
-    forSignals.map(async (s: any) => ({
-      signal: s,
-      trustScore: await getEndorserTrustScore(s.accountId)
+    positions.map(async (p: any) => ({
+      position: p,
+      trustScore: await getEndorserTrustScore(p.account_id)
     }))
   )
 
   // Calculate weighted total
   let weightedStake = BigInt(0)
-  for (const { signal, trustScore } of endorserWeights) {
-    const stake = BigInt(signal.delta)
+  for (const { position, trustScore } of endorserWeights) {
+    const stake = BigInt(position.shares)
     const weight = Math.max(trustScore, 0.1) // Minimum 10% weight
     weightedStake += BigInt(Math.floor(Number(stake) * weight))
   }
 
-  const endorsementCount = forSignals.length
+  const endorsementCount = positions.length
   const averageStake = endorsementCount > 0
     ? weightedStake / BigInt(endorsementCount)
     : BigInt(0)
@@ -559,7 +560,7 @@ async function calculateWeightedReputation(triple: any): Promise<SkillReputation
   const confidenceScore = stakeWeight * endorserWeight
 
   return {
-    skill: triple.object.value,
+    skill: triple.object.label,
     totalStake: weightedStake,
     endorsementCount,
     averageStake,
@@ -740,28 +741,26 @@ export function SkillLeaderboard({ skillName }: { skillName: string }) {
         query GetSkillExperts($skill: String!) {
           triples(
             where: {
-              predicate: { value: "has_skill" }
-              object: { value: $skill }
+              predicate: { label: { _eq: "has_skill" } }
+              object: { label: { _eq: $skill } }
             }
+            order_by: [{ term: { vaults_aggregate: { max: { total_shares: desc } } } }]
+            limit: 10
           ) {
             subject {
-              value
+              label
             }
-            vault {
-              totalShares
+            term {
+              vaults(where: { curve_id: { _eq: "2" } }) {
+                total_shares
+              }
             }
           }
         }
       `
 
       const data = await request(GRAPHQL_ENDPOINT, query, { skill: skillName })
-
-      // Sort by total shares (endorsement)
-      const sorted = data.triples
-        .sort((a, b) => b.vault.totalShares - a.vault.totalShares)
-        .slice(0, 10)
-
-      setDevelopers(sorted)
+      setDevelopers(data.triples)
     }
 
     loadLeaderboard()
@@ -772,10 +771,10 @@ export function SkillLeaderboard({ skillName }: { skillName: string }) {
       <h3>Top {skillName} Developers</h3>
       <ol>
         {developers.map((dev, i) => (
-          <li key={dev.subject.value}>
+          <li key={dev.subject.label}>
             <span className="rank">#{i + 1}</span>
-            <span className="address">{dev.subject.value}</span>
-            <span className="shares">{dev.vault.totalShares} shares</span>
+            <span className="address">{dev.subject.label}</span>
+            <span className="shares">{dev.term?.vaults?.[0]?.total_shares} shares</span>
           </li>
         ))}
       </ol>
@@ -1006,29 +1005,30 @@ class ReputationSystem {
       query GetDeveloperSkills($address: String!) {
         triples(
           where: {
-            subject: { value: $address }
-            predicate: { value: "has_skill" }
+            subject: { data: { _eq: $address } }
+            predicate: { label: { _eq: "has_skill" } }
           }
         ) {
-          id
+          term_id
           object {
-            value
+            label
           }
-          vault {
-            totalShares
-            positionCount
-          }
-          signals {
-            accountId
-            delta
-            direction
+          term {
+            vaults(where: { curve_id: { _eq: "2" } }) {
+              total_shares
+              position_count
+              positions(order_by: { shares: desc }) {
+                account_id
+                shares
+              }
+            }
           }
         }
       }
     `
 
     const data = await request(
-      'https://api.intuition.systems/graphql',
+      'https://mainnet.intuition.sh/v1/graphql',
       query,
       { address: address.toLowerCase() }
     )

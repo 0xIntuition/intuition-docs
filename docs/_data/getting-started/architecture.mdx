@@ -571,17 +571,19 @@ The Subnet exposes multiple API interfaces:
 
 **GraphQL API**
 ```graphql
-query GetAtomWithTriples {
-  atom(id: "123") {
-    uri
-    vault {
-      totalStaked
-      sharePrice
+query GetAtomWithTriples($termId: String!) {
+  atom(term_id: $termId) {
+    label
+    image
+    term {
+      vaults(where: { curve_id: { _eq: "1" } }) {
+        total_shares
+        current_share_price
+      }
     }
-    triplesAsSubject {
-      predicate { uri }
-      object { uri }
-      signal
+    as_subject_triples(limit: 10) {
+      predicate { label }
+      object { label }
     }
   }
 }
@@ -614,12 +616,12 @@ WebSocket /ws/subscriptions
 }}>
 
 **Real-time Subscriptions**
-```typescript
-subscription OnAtomUpdate {
-  atomUpdated(id: "123") {
-    signal
-    lastActivity
-    vaultBalance
+```graphql
+subscription WatchPositions($cursor: [positions_stream_cursor_input]!) {
+  positions_stream(cursor: $cursor, batch_size: 10) {
+    id
+    shares
+    vault { current_share_price }
   }
 }
 ```
@@ -798,33 +800,35 @@ For developers building on Intuition, we recommend:
 ### Example: Creating and Querying Atoms
 
 ```typescript
-// Using the SDK to create an atom
-const atom = await intuition.createAtom({
-  uri: 'ipfs://QmXoypizjW3WknFiJnKLwHCnL72vedxjQkDDP1mXWo6uco'
-});
+import { createMultivaultClient } from '@0xintuition/sdk'
+import { GraphQLClient } from 'graphql-request'
+import { API_URL_PROD } from '@0xintuition/graphql'
 
-// Staking on the atom
-await intuition.stake(atom.id, parseEther('100'));
+// Using the SDK to create an atom
+const multivault = createMultivaultClient(walletClient)
+const { atomId } = await multivault.createAtom({
+  uri: 'ipfs://QmXoypizjW3WknFiJnKLwHCnL72vedxjQkDDP1mXWo6uco'
+})
 
 // Querying via GraphQL
-const query = gql`
-  query GetAtom($id: ID!) {
-    atom(id: $id) {
-      uri
-      creator
-      vault {
-        totalStaked
-        holders
+const graphqlClient = new GraphQLClient(API_URL_PROD)
+
+const data = await graphqlClient.request(`
+  query GetAtom($termId: String!) {
+    atom(term_id: $termId) {
+      label
+      image
+      creator { label }
+      term {
+        vaults(where: { curve_id: { _eq: "1" } }) {
+          total_shares
+          current_share_price
+          position_count
+        }
       }
-      signal
     }
   }
-`;
-
-const result = await client.query({
-  query,
-  variables: { id: atom.id }
-});
+`, { termId: atomId })
 ```
 
 ## Deployment Architecture
