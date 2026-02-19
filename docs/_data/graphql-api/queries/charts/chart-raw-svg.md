@@ -8,118 +8,54 @@ keywords: [graphql, chart, svg, raw, minimal]
 
 # Get Chart Raw SVG
 
-Retrieve a minimal SVG chart without additional styling or branding, ideal for custom post-processing.
+Retrieve a minimal SVG chart, suitable for custom post-processing or styling. Uses the same input type as `getChartSvg`.
 
 ## Query Structure
 
 ```graphql
-query GetChartRawSvg($input: ChartSvgInput!) {
-  getChartRawSvg(input: $input)
+query GetChartRawSvg($input: GetChartSvgInput!) {
+  getChartRawSvg(input: $input) {
+    svg
+  }
 }
 ```
 
 ## Variables
 
-| Variable | Type | Required | Description |
-|----------|------|----------|-------------|
-| `input.type` | `ChartType` | Yes | Type of chart |
-| `input.term_id` | `String` | Yes | Term ID to query |
-| `input.interval` | `ChartInterval` | No | Time interval |
-| `input.width` | `Int` | No | Chart width |
-| `input.height` | `Int` | No | Chart height |
+Same as [`getChartSvg`](./chart-svg) -- takes `GetChartSvgInput`:
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `term_id` | `String` | Yes | Term ID to query |
+| `curve_id` | `String` | Yes | Curve ID (bonding curve) |
+| `interval` | `String` | Yes | Time interval |
+| `start_time` | `String` | Yes | Start of time range (ISO 8601) |
+| `end_time` | `String` | Yes | End of time range (ISO 8601) |
+| `graph_type` | `String` | No | Type of graph data |
+| `width` | `Int` | No | Chart width in pixels |
+| `height` | `Int` | No | Chart height in pixels |
+| `background_color` | `String` | No | Background color |
+| `line_color` | `String` | No | Line color |
 
 ```json
 {
   "input": {
-    "type": "PRICE_HISTORY",
     "term_id": "0x57d94c116a33bb460428eced262b7ae2ec6f865e7aceef6357cec3d034e8ea21",
+    "curve_id": "1",
+    "interval": "1d",
+    "start_time": "2024-01-01T00:00:00Z",
+    "end_time": "2024-01-31T23:59:59Z",
     "width": 800,
     "height": 400
   }
 }
 ```
 
-## Expected Response
+## Response Fields (`ChartSvgOutput`)
 
-Returns a minimal SVG string without styling:
-
-```json
-{
-  "data": {
-    "getChartRawSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 800 400\"><path d=\"M0,300 L100,280 L200,250...\"/></svg>"
-  }
-}
-```
-
-## Differences from getChartSvg
-
-| Aspect | `getChartRawSvg` | `getChartSvg` |
-|--------|------------------|---------------|
-| Styling | Minimal | Fully styled |
-| Labels | None | Included |
-| Legend | None | Included |
-| Size | Smaller | Larger |
-| Use case | Post-processing | Direct display |
-
-## Use Cases
-
-### Custom Styling
-
-```typescript
-async function getCustomStyledChart(termId: string) {
-  const response = await client.request(GET_CHART_RAW_SVG, {
-    input: {
-      type: 'PRICE_HISTORY',
-      term_id: termId,
-      width: 800,
-      height: 400
-    }
-  })
-
-  // Add custom styling
-  const svg = response.getChartRawSvg
-  const styledSvg = svg.replace(
-    '<svg',
-    '<svg style="fill: none; stroke: #00ff00; stroke-width: 2"'
-  )
-
-  return styledSvg
-}
-```
-
-### Animation
-
-```typescript
-function AnimatedChart({ termId }: { termId: string }) {
-  const { data } = useQuery(GET_CHART_RAW_SVG, {
-    variables: {
-      input: { type: 'PRICE_HISTORY', term_id: termId }
-    }
-  })
-
-  // Add CSS animation to paths
-  const animatedSvg = data?.getChartRawSvg.replace(
-    /<path/g,
-    '<path class="animate-draw"'
-  )
-
-  return (
-    <>
-      <style>{`
-        .animate-draw {
-          stroke-dasharray: 1000;
-          stroke-dashoffset: 1000;
-          animation: draw 2s ease-in-out forwards;
-        }
-        @keyframes draw {
-          to { stroke-dashoffset: 0; }
-        }
-      `}</style>
-      <div dangerouslySetInnerHTML={{ __html: animatedSvg }} />
-    </>
-  )
-}
-```
+| Field | Type | Description |
+|-------|------|-------------|
+| `svg` | `String!` | Minimal SVG markup string |
 
 ## Related
 

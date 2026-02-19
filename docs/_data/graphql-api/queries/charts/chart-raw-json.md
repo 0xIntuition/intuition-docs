@@ -8,119 +8,63 @@ keywords: [graphql, chart, json, raw, data]
 
 # Get Chart Raw JSON
 
-Retrieve raw chart data in JSON format without formatting or styling, ideal for custom data processing.
+Retrieve raw chart data in JSON format. Uses the same input and output types as `getChartJson`.
 
 ## Query Structure
 
 ```graphql
-query GetChartRawJson($input: ChartInput!) {
-  getChartRawJson(input: $input)
+query GetChartRawJson($input: GetChartJsonInput!) {
+  getChartRawJson(input: $input) {
+    term_id
+    curve_id
+    graph_type
+    interval
+    count
+    data {
+      timestamp
+      value
+    }
+  }
 }
 ```
 
 ## Variables
 
-| Variable | Type | Required | Description |
-|----------|------|----------|-------------|
-| `input.type` | `ChartType` | Yes | Type of chart data |
-| `input.term_id` | `String` | Yes | Term ID to query |
-| `input.interval` | `ChartInterval` | No | Time interval |
-| `input.start_date` | `DateTime` | No | Start of date range |
-| `input.end_date` | `DateTime` | No | End of date range |
+Same as [`getChartJson`](./chart-json) -- takes `GetChartJsonInput`:
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `term_id` | `String` | Yes | Term ID to query |
+| `curve_id` | `String` | Yes | Curve ID (bonding curve) |
+| `interval` | `String` | Yes | Time interval (e.g. `"1h"`, `"1d"`) |
+| `start_time` | `String` | Yes | Start of time range (ISO 8601) |
+| `end_time` | `String` | Yes | End of time range (ISO 8601) |
+| `graph_type` | `String` | No | Type of graph data |
 
 ```json
 {
   "input": {
-    "type": "PRICE_HISTORY",
     "term_id": "0x57d94c116a33bb460428eced262b7ae2ec6f865e7aceef6357cec3d034e8ea21",
-    "interval": "DAY"
+    "curve_id": "1",
+    "interval": "1d",
+    "start_time": "2024-01-01T00:00:00Z",
+    "end_time": "2024-01-31T23:59:59Z"
   }
 }
 ```
 
-## Expected Response
+## Response Fields (`ChartDataOutput`)
 
-Returns a raw JSON string with unprocessed data:
-
-```json
-{
-  "data": {
-    "getChartRawJson": "{\"timestamps\":[1704067200,1704153600,1704240000],\"values\":[1.0,1.05,1.12],\"metadata\":{\"term_id\":\"0x57d...\",\"type\":\"PRICE_HISTORY\"}}"
-  }
-}
-```
-
-## Use Cases
-
-### Custom Data Processing
-
-```typescript
-async function processChartData(termId: string) {
-  const query = `
-    query GetChartRawJson($input: ChartInput!) {
-      getChartRawJson(input: $input)
-    }
-  `
-
-  const response = await client.request(query, {
-    input: {
-      type: 'PRICE_HISTORY',
-      term_id: termId,
-      interval: 'HOUR'
-    }
-  })
-
-  const rawData = JSON.parse(response.getChartRawJson)
-
-  // Custom processing
-  const movingAverage = calculateMA(rawData.values, 24)
-  const volatility = calculateVolatility(rawData.values)
-
-  return {
-    raw: rawData,
-    analysis: { movingAverage, volatility }
-  }
-}
-```
-
-### Data Export
-
-```typescript
-async function exportChartData(termId: string, format: 'csv' | 'json') {
-  const query = `
-    query GetChartRawJson($input: ChartInput!) {
-      getChartRawJson(input: $input)
-    }
-  `
-
-  const response = await client.request(query, {
-    input: {
-      type: 'PRICE_HISTORY',
-      term_id: termId,
-      interval: 'DAY'
-    }
-  })
-
-  const data = JSON.parse(response.getChartRawJson)
-
-  if (format === 'csv') {
-    return convertToCSV(data)
-  }
-
-  return data
-}
-```
-
-## Differences from getChartJson
-
-| Aspect | `getChartRawJson` | `getChartJson` |
-|--------|-------------------|----------------|
-| Format | Raw timestamps and values | Chart.js compatible |
-| Styling | None | Includes colors, options |
-| Size | Smaller | Larger with metadata |
-| Use case | Data processing | Direct rendering |
+| Field | Type | Description |
+|-------|------|-------------|
+| `term_id` | `String!` | Term ID for this chart |
+| `curve_id` | `String` | Curve ID used |
+| `graph_type` | `String!` | Type of graph |
+| `interval` | `String!` | Interval used |
+| `count` | `Int!` | Number of data points |
+| `data` | `[ChartDataPoint!]!` | Array of data points (`timestamp: String!`, `value: String!`) |
 
 ## Related
 
-- [Chart JSON](./chart-json) - Formatted chart data
+- [Chart JSON](./chart-json) - Formatted chart data (same types)
 - [Chart SVG](./chart-svg) - Pre-rendered charts

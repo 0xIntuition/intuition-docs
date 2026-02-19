@@ -2,55 +2,66 @@
 title: Upload Image
 sidebar_label: Upload Image
 sidebar_position: 2
-description: Upload a base64-encoded image to IPFS
-keywords: [graphql, mutation, ipfs, image, upload, base64]
+description: Upload a base64-encoded image via the API
+keywords: [graphql, mutation, image, upload, base64]
 ---
 
 import GraphQLPlaygroundCustom from '@site/src/components/GraphQLPlaygroundCustom';
 
 # Upload Image
 
-Upload a base64-encoded image to IPFS. This is useful when you have image data in memory or from a file input.
+Upload a base64-encoded image. The image is cached and a moderation check is performed. Returns a `CachedImage` with the hosted URL and safety score.
 
 ## Mutation Structure
 
 ```graphql
-mutation UploadImage($input: UploadImageInput!) {
-  uploadImage(input: $input) {
-    hash
-    url
-    size
-    mime_type
+mutation UploadImage($image: UploadImageInput!) {
+  uploadImage(image: $image) {
+    images {
+      url
+      original_url
+      safe
+      score
+      model
+      created_at
+    }
   }
 }
 ```
 
 ## Variables
 
-| Variable | Type | Required | Description |
-|----------|------|----------|-------------|
-| `input.data` | `String` | Yes | Base64-encoded image data |
-| `input.filename` | `String` | No | Original filename (for metadata) |
-| `input.mime_type` | `String` | No | MIME type (auto-detected if not provided) |
+The mutation takes an `image` argument with the `UploadImageInput` type:
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `data` | `String` | Yes | Base64-encoded image data |
+| `filename` | `String` | Yes | Filename with extension |
+| `contentType` | `String` | Yes | MIME type (e.g. `"image/png"`) |
 
 ```json
 {
-  "input": {
+  "image": {
     "data": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
     "filename": "pixel.png",
-    "mime_type": "image/png"
+    "contentType": "image/png"
   }
 }
 ```
 
 ## Response Fields
 
+Returns `UploadImageFromUrlOutput` containing an `images` array of `CachedImage` objects:
+
 | Field | Type | Description |
 |-------|------|-------------|
-| `hash` | `String` | IPFS content hash (CID) |
-| `url` | `String` | Full IPFS URL (`ipfs://<hash>`) |
-| `size` | `Int` | File size in bytes |
-| `mime_type` | `String` | Detected or provided MIME type |
+| `images` | `[CachedImage!]!` | Array of cached image results |
+| `images[].url` | `String!` | Hosted image URL |
+| `images[].original_url` | `String!` | Original source URL |
+| `images[].safe` | `Boolean!` | Whether the image passed moderation |
+| `images[].score` | `jsonb` | Moderation safety score details |
+| `images[].model` | `String` | Moderation model used |
+| `images[].created_at` | `timestamptz!` | Upload timestamp |
 
 ## Expected Response
 
@@ -58,10 +69,16 @@ mutation UploadImage($input: UploadImageInput!) {
 {
   "data": {
     "uploadImage": {
-      "hash": "QmXnnyufdzAWL5CqZ2RnSNgPbvCc1ALT73s6epPrRnZ1Xy",
-      "url": "ipfs://QmXnnyufdzAWL5CqZ2RnSNgPbvCc1ALT73s6epPrRnZ1Xy",
-      "size": 68,
-      "mime_type": "image/png"
+      "images": [
+        {
+          "url": "https://cdn.example.com/images/abc123.png",
+          "original_url": "https://cdn.example.com/images/abc123.png",
+          "safe": true,
+          "score": null,
+          "model": null,
+          "created_at": "2024-01-15T10:30:00Z"
+        }
+      ]
     }
   }
 }
@@ -74,133 +91,35 @@ mutation UploadImage($input: UploadImageInput!) {
 Handle file uploads from a form:
 
 ```typescript
+import { GraphQLClient } from 'graphql-request'
+import { API_URL_PROD } from '@0xintuition/graphql'
+
+const client = new GraphQLClient(API_URL_PROD)
+
 async function uploadFileInput(file: File) {
-  // Convert file to base64
   const buffer = await file.arrayBuffer()
   const base64 = btoa(String.fromCharCode(...new Uint8Array(buffer)))
 
   const mutation = `
-    mutation UploadImage($input: UploadImageInput!) {
-      uploadImage(input: $input) {
-        hash
-        url
-        size
-        mime_type
+    mutation UploadImage($image: UploadImageInput!) {
+      uploadImage(image: $image) {
+        images {
+          url
+          safe
+        }
       }
     }
   `
 
   const result = await client.request(mutation, {
-    input: {
+    image: {
       data: base64,
       filename: file.name,
-      mime_type: file.type
+      contentType: file.type
     }
   })
 
-  return result.uploadImage
-}
-```
-
-### React File Upload Component
-
-```tsx
-function ImageUploader({ onUpload }: { onUpload: (url: string) => void }) {
-  const [uploading, setUploading] = useState(false)
-  const [uploadImage] = useMutation(UPLOAD_IMAGE)
-
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (!file) return
-
-    setUploading(true)
-
-    try {
-      // Read file as base64
-      const reader = new FileReader()
-      reader.onload = async () => {
-        const base64 = (reader.result as string).split(',')[1]
-
-        const { data } = await uploadImage({
-          variables: {
-            input: {
-              data: base64,
-              filename: file.name,
-              mime_type: file.type
-            }
-          }
-        })
-
-        onUpload(data.uploadImage.url)
-      }
-      reader.readAsDataURL(file)
-    } finally {
-      setUploading(false)
-    }
-  }
-
-  return (
-    <div>
-      <input
-        type="file"
-        accept="image/*"
-        onChange={handleFileChange}
-        disabled={uploading}
-      />
-      {uploading && <span>Uploading...</span>}
-    </div>
-  )
-}
-```
-
-### Canvas to IPFS
-
-Upload a canvas element as an image:
-
-```typescript
-async function uploadCanvas(canvas: HTMLCanvasElement) {
-  const dataUrl = canvas.toDataURL('image/png')
-  const base64 = dataUrl.split(',')[1]
-
-  const result = await client.request(UPLOAD_IMAGE, {
-    input: {
-      data: base64,
-      mime_type: 'image/png'
-    }
-  })
-
-  return result.uploadImage.url
-}
-```
-
-## Size Limits
-
-- Maximum file size: **5 MB**
-- Larger files should use `uploadImageFromUrl`
-
-## Supported Formats
-
-| Format | MIME Type |
-|--------|-----------|
-| JPEG | `image/jpeg` |
-| PNG | `image/png` |
-| GIF | `image/gif` |
-| WebP | `image/webp` |
-| SVG | `image/svg+xml` |
-
-## Error Handling
-
-```typescript
-try {
-  const result = await uploadImage({
-    variables: { input: { data: base64 }}
-  })
-} catch (error) {
-  if (error.message.includes('File too large')) {
-    console.error('Image exceeds 5MB limit')
-  } else if (error.message.includes('Invalid image')) {
-    console.error('Unsupported image format')
-  }
+  return result.uploadImage.images[0]
 }
 ```
 
