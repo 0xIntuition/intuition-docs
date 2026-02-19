@@ -15,10 +15,6 @@ The Intuition GraphQL API provides mutations for **off-chain operations** like u
 :::info GraphQL vs Smart Contracts
 **GraphQL mutations** handle:
 - Uploading metadata to IPFS (pinThing, pinPerson, pinOrganization)
-- Uploading images (uploadImage, uploadImageFromUrl)
-- Uploading JSON data (uploadJsonToIpfs)
-- Generating charts (getChartJson, getChartSvg)
-- Fetching PnL data (getAccountPnlCurrent, etc.)
 
 **Smart contract operations** handle:
 - Creating atoms
@@ -42,23 +38,11 @@ Use the [SDK](/docs/intuition-sdk/installation-and-setup) for smart contract int
 | `uploadImageFromUrl` | Upload image from URL to IPFS | [Upload from URL](/docs/graphql-api/mutations/images/upload-image-from-url) |
 | `uploadJsonToIpfs` | Upload JSON metadata to IPFS | [Upload JSON](/docs/graphql-api/mutations/images/upload-json-to-ipfs) |
 
-### Chart & Analytics Mutations
-
-| Mutation | Description | Documentation |
-|----------|-------------|---------------|
-| `getChartJson` | Get chart data as JSON | [Chart JSON](/docs/graphql-api/mutations/charts/chart-json) |
-| `getChartSvg` | Get chart as SVG | [Chart SVG](/docs/graphql-api/mutations/charts/chart-svg) |
-| `getChartRawJson` | Get raw chart JSON | [Chart Raw JSON](/docs/graphql-api/mutations/charts/chart-raw-json) |
-| `getChartRawSvg` | Get raw chart SVG | [Chart Raw SVG](/docs/graphql-api/mutations/charts/chart-raw-svg) |
-
-### PnL (Profit & Loss) Operations
-
-| Operation | Description | Documentation |
-|-----------|-------------|---------------|
-| `getAccountPnlCurrent` | Current account PnL snapshot | [Account PnL Current](/docs/graphql-api/mutations/pnl/account-pnl-current) |
-| `getAccountPnlChart` | Account PnL over time | [Account PnL Chart](/docs/graphql-api/mutations/pnl/account-pnl-chart) |
-| `getAccountPnlRealized` | Realized PnL breakdown | [Account PnL Realized](/docs/graphql-api/mutations/pnl/account-pnl-realized) |
-| `getPositionPnlChart` | Position-level PnL | [Position PnL Chart](/docs/graphql-api/mutations/pnl/position-pnl-chart) |
+:::tip Read-Only Operations
+Chart and PnL operations are **queries**, not mutations. See:
+- [PnL Queries](/docs/graphql-api/queries/pnl/overview) - Profit & Loss tracking
+- [Chart Queries](/docs/graphql-api/queries/charts/overview) - Chart generation
+:::
 
 ## Pin Mutations
 
@@ -323,8 +307,7 @@ function CreateAtomForm() {
 
 ## Related Resources
 
-- [PnL Operations](/docs/graphql-api/mutations/pnl/overview) - Profit & Loss tracking
-- [Chart Operations](/docs/graphql-api/mutations/charts/overview) - Chart generation
-- [Image Operations](/docs/graphql-api/mutations/images/overview) - Image uploads
+- [PnL Queries](/docs/graphql-api/queries/pnl/overview) - Profit & Loss tracking
+- [Chart Queries](/docs/graphql-api/queries/charts/overview) - Chart generation
 - [SDK Documentation](/docs/intuition-sdk/installation-and-setup) - On-chain operations
 - [GraphQL Reads](/docs/graphql-api/reads) - Query documentation

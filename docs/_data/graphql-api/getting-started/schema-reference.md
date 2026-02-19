@@ -501,5 +501,5 @@ The API also exposes several database functions as queries:
 - [Query Triples](/docs/graphql-api/queries/triples/single-triple) - Learn triple query patterns
 - [Query Signals](/docs/graphql-api/queries/signals/overview) - Learn signal query patterns
 - [Query Accounts](/docs/graphql-api/queries/accounts/overview) - Learn account query patterns
-- [PnL Queries](/docs/graphql-api/mutations/pnl/overview) - Track profit and loss
+- [PnL Queries](/docs/graphql-api/queries/pnl/overview) - Track profit and loss
 - [Best Practices](/docs/graphql-api/best-practices/request-only-needed) - Optimize your queries
