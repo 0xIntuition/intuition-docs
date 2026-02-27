@@ -21,6 +21,8 @@
     "typecheck": "tsc",
     "spell-check": "npx cspell docs/**/*.mdx",
     "validate-links": "node scripts/validate-internal-links.js",
+    "validate-queries": "node scripts/validate-graphql-queries.js",
+    "update-schema": "node scripts/validate-graphql-queries.js --update-schema",
     "generate-llms": "node scripts/generate-llms-full.js",
     "generate-llms-full": "node scripts/generate-llms-full.js --full-only",
     "prepare": "husky"
@@ -121,6 +123,14 @@
     ]
   },
   "lint-staged": {
+    "docs/_data/graphql-api/**/*.{md,mdx}": [
+      "node scripts/validate-internal-links.js",
+      "node scripts/validate-graphql-queries.js"
+    ],
+    "docs/_data/tutorials/queries/**/*.{md,mdx}": [
+      "node scripts/validate-internal-links.js",
+      "node scripts/validate-graphql-queries.js"
+    ],
     "docs/_data/**/*.{md,mdx}": [
       "node scripts/validate-internal-links.js"
     ],
@@ -133,5 +143,6 @@
     "src/snippets/**/*.html": [
       "node scripts/validate-internal-links.js"
     ]
-  }
+  },
+  "packageManager": "yarn@1.22.19+sha1.4ba7fc5c6e704fce2066ecbfb0b0d8976fe62447"
 }
