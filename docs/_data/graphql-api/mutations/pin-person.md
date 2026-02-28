@@ -15,9 +15,7 @@ Pin a Person entity to IPFS for use in atom creation.
 ```graphql
 mutation PinPerson($person: PinPersonInput!) {
   pinPerson(person: $person) {
-    hash
-    name
-    size
+    uri
   }
 }
 ```

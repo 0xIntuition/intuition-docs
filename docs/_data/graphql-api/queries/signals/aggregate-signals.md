@@ -21,18 +21,17 @@ query GetSignalsAggregate($where: signals_bool_exp) {
       count
       sum {
         delta
-        shares_delta
       }
       avg {
         delta
       }
       max {
         delta
-        block_timestamp
+        created_at
       }
       min {
         delta
-        block_timestamp
+        created_at
       }
     }
   }
@@ -44,8 +43,7 @@ query GetSignalsAggregate($where: signals_bool_exp) {
 ```json
 {
   "where": {
-    "signal_type": { "_eq": "Deposit" },
-    "block_timestamp": { "_gte": "2024-01-01T00:00:00Z" }
+    "created_at": { "_gte": "2024-01-01T00:00:00Z" }
   }
 }
 ```
@@ -56,12 +54,11 @@ query GetSignalsAggregate($where: signals_bool_exp) {
 |-------|------|-------------|
 | `count` | `Int` | Total number of signals |
 | `sum.delta` | `String` | Total amount in wei |
-| `sum.shares_delta` | `String` | Total shares |
 | `avg.delta` | `Float` | Average amount |
 | `max.delta` | `String` | Maximum amount |
-| `max.block_timestamp` | `DateTime` | Most recent signal |
+| `max.created_at` | `DateTime` | Most recent signal |
 | `min.delta` | `String` | Minimum amount |
-| `min.block_timestamp` | `DateTime` | Oldest signal |
+| `min.created_at` | `DateTime` | Oldest signal |
 
 ## Expected Response
 
@@ -72,19 +69,18 @@ query GetSignalsAggregate($where: signals_bool_exp) {
       "aggregate": {
         "count": 1500,
         "sum": {
-          "delta": "150000000000000000000",
-          "shares_delta": "145000000000000000000"
+          "delta": "150000000000000000000"
         },
         "avg": {
           "delta": 100000000000000000
         },
         "max": {
           "delta": "10000000000000000000",
-          "block_timestamp": "2024-01-15T23:59:59Z"
+          "created_at": "2024-01-15T23:59:59Z"
         },
         "min": {
           "delta": "1000000000000000",
-          "block_timestamp": "2024-01-01T00:00:01Z"
+          "created_at": "2024-01-01T00:00:01Z"
         }
       }
     }
@@ -114,7 +110,7 @@ export const aggregateQueries = [
     id: 'deposits-stats',
     title: 'Deposit Statistics',
     query: `query GetDepositsAggregate {
-  signals_aggregate(where: { signal_type: { _eq: "Deposit" } }) {
+  signals_aggregate(where: { deposit_id: { _is_null: false } }) {
     aggregate {
       count
       sum {
@@ -134,7 +130,7 @@ export const aggregateQueries = [
     query: `query GetAccountStats($account_id: String!) {
   deposits: signals_aggregate(where: {
     account_id: { _eq: $account_id }
-    signal_type: { _eq: "Deposit" }
+    deposit_id: { _is_null: false }
   }) {
     aggregate {
       count
@@ -143,7 +139,7 @@ export const aggregateQueries = [
   }
   redemptions: signals_aggregate(where: {
     account_id: { _eq: $account_id }
-    signal_type: { _eq: "Redemption" }
+    redemption_id: { _is_null: false }
   }) {
     aggregate {
       count
@@ -169,13 +165,13 @@ Display overall protocol statistics:
 async function getProtocolStats() {
   const query = `
     query GetProtocolStats {
-      deposits: signals_aggregate(where: { signal_type: { _eq: "Deposit" } }) {
+      deposits: signals_aggregate(where: { deposit_id: { _is_null: false } }) {
         aggregate {
           count
           sum { delta }
         }
       }
-      redemptions: signals_aggregate(where: { signal_type: { _eq: "Redemption" } }) {
+      redemptions: signals_aggregate(where: { redemption_id: { _is_null: false } }) {
         aggregate {
           count
           sum { delta }
@@ -211,7 +207,7 @@ async function getAccountStats(accountId: string) {
     query GetAccountStats($account_id: String!) {
       deposits: signals_aggregate(where: {
         account_id: { _eq: $account_id }
-        signal_type: { _eq: "Deposit" }
+        deposit_id: { _is_null: false }
       }) {
         aggregate {
           count
@@ -221,7 +217,7 @@ async function getAccountStats(accountId: string) {
       }
       redemptions: signals_aggregate(where: {
         account_id: { _eq: $account_id }
-        signal_type: { _eq: "Redemption" }
+        redemption_id: { _is_null: false }
       }) {
         aggregate {
           count
@@ -258,7 +254,7 @@ async function getMonthlyStats(year: number, month: number) {
   const query = `
     query GetMonthlyStats($start: timestamptz!, $end: timestamptz!) {
       signals_aggregate(where: {
-        block_timestamp: { _gte: $start, _lte: $end }
+        created_at: { _gte: $start, _lte: $end }
       }) {
         aggregate {
           count
@@ -266,8 +262,8 @@ async function getMonthlyStats(year: number, month: number) {
         }
       }
       deposits: signals_aggregate(where: {
-        block_timestamp: { _gte: $start, _lte: $end }
-        signal_type: { _eq: "Deposit" }
+        created_at: { _gte: $start, _lte: $end }
+        deposit_id: { _is_null: false }
       }) {
         aggregate {
           count
@@ -296,8 +292,10 @@ query GetSignalsByAtom {
   ) {
     nodes {
       atom_id
-      atom {
-        label
+      term {
+        atom {
+          label
+        }
       }
     }
     aggregate {

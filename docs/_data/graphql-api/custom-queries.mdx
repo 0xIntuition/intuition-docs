@@ -25,8 +25,8 @@ This page provides practical examples of common GraphQL queries for the Intuitio
 Use the primary key lookup for fetching a single atom by its `term_id`:
 
 ```graphql
-query GetAtom($termId: String!) {
-  atom(term_id: $termId) {
+query GetAtom($term_id: String!) {
+  atom(term_id: $term_id) {
     term_id
     label
     image
@@ -109,13 +109,15 @@ Use the `search_term` database function for text search:
 ```graphql
 query SearchAtoms($query: String!, $limit: Int = 20) {
   search_term(args: { query: $query }, limit: $limit) {
-    term_id
-    label
-    image
+    id
     type
-    creator {
-      id
+    atom {
       label
+      image
+      creator {
+        id
+        label
+      }
     }
   }
 }
@@ -184,15 +186,15 @@ function useCustomAtomQuery(termId: string) {
   return useQuery({
     queryKey: ['atom', termId],
     queryFn: () => client.request(`
-      query GetAtom($termId: String!) {
-        atom(term_id: $termId) {
+      query GetAtom($term_id: String!) {
+        atom(term_id: $term_id) {
           term_id
           label
           image
           type
         }
       }
-    `, { termId }),
+    `, { term_id: termId }),
     enabled: !!termId
   })
 }

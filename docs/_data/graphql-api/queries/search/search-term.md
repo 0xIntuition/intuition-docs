@@ -25,16 +25,17 @@ query SearchTerm(
     limit: $limit
     offset: $offset
   ) {
-    term_id
-    label
-    image
-    emoji
+    id
     type
-    data
     created_at
-    creator {
+    atom {
       label
       image
+      creator {
+        id
+        label
+        image
+      }
     }
   }
 }
@@ -58,18 +59,17 @@ query SearchTerm(
 
 ## Response Fields
 
-The function returns `atoms` rows, so all atom fields are available:
+The function returns `terms` rows. Metadata fields like `label`, `image`, and `creator` are accessed via the `atom` relationship:
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `term_id` | `String` | Unique atom identifier |
-| `label` | `String` | Human-readable label |
-| `image` | `String` | Image URL (IPFS) |
-| `emoji` | `String` | Associated emoji |
-| `type` | `String` | Atom type (Thing, Person, Organization) |
-| `data` | `String` | IPFS data URI |
+| `id` | `String` | Unique term identifier |
+| `type` | `String` | Term type |
 | `created_at` | `DateTime` | Creation timestamp |
-| `creator` | `Account` | Creator account |
+| `atom` | `atoms` | Related atom with metadata (label, image, creator) |
+| `atom.label` | `String` | Human-readable label |
+| `atom.image` | `String` | Image URL (IPFS) |
+| `atom.creator` | `accounts` | Creator account (id, label, image) |
 
 ## Expected Response
 
@@ -78,16 +78,17 @@ The function returns `atoms` rows, so all atom fields are available:
   "data": {
     "search_term": [
       {
-        "term_id": "0x57d94c116a33bb460428eced262b7ae2ec6f865e7aceef6357cec3d034e8ea21",
-        "label": "Ethereum",
-        "image": "ipfs://QmXnnyufdzAWL5CqZ2RnSNgPbvCc1ALT73s6epPrRnZ1Xy",
-        "emoji": "⟠",
+        "id": "0x57d94c116a33bb460428eced262b7ae2ec6f865e7aceef6357cec3d034e8ea21",
         "type": "Thing",
-        "data": "ipfs://Qm...",
         "created_at": "2024-01-01T00:00:00Z",
-        "creator": {
-          "label": "vitalik.eth",
-          "image": "ipfs://Qm..."
+        "atom": {
+          "label": "Ethereum",
+          "image": "ipfs://QmXnnyufdzAWL5CqZ2RnSNgPbvCc1ALT73s6epPrRnZ1Xy",
+          "creator": {
+            "id": "0xd8da6bf26964af9d7eed9e03e53415d37aa96045",
+            "label": "vitalik.eth",
+            "image": "ipfs://Qm..."
+          }
         }
       }
     ]
@@ -103,10 +104,12 @@ export const searchQueries = [
     title: 'Basic Search',
     query: `query SearchTerm($query: String!, $limit: Int!) {
   search_term(args: { query: $query }, limit: $limit) {
-    term_id
-    label
-    image
+    id
     type
+    atom {
+      label
+      image
+    }
   }
 }`,
     variables: {
@@ -119,16 +122,18 @@ export const searchQueries = [
     title: 'Search with Creator Info',
     query: `query SearchTerm($query: String!, $limit: Int!) {
   search_term(args: { query: $query }, limit: $limit) {
-    term_id
-    label
-    image
+    id
     type
-    creator {
-      id
+    created_at
+    atom {
       label
       image
+      creator {
+        id
+        label
+        image
+      }
     }
-    created_at
   }
 }`,
     variables: {
@@ -155,10 +160,12 @@ async function searchAtoms(searchQuery: string, limit: number = 10) {
   const gqlQuery = `
     query SearchTerm($query: String!, $limit: Int!) {
       search_term(args: { query: $query }, limit: $limit) {
-        term_id
-        label
-        image
+        id
         type
+        atom {
+          label
+          image
+        }
       }
     }
   `
@@ -187,10 +194,12 @@ async function searchByType(
         where: { type: { _eq: $type } }
         limit: 20
       ) {
-        term_id
-        label
-        image
+        id
         type
+        atom {
+          label
+          image
+        }
       }
     }
   `

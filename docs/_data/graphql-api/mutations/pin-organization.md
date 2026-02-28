@@ -15,9 +15,7 @@ Pin an Organization entity to IPFS for use in atom creation.
 ```graphql
 mutation PinOrganization($organization: PinOrganizationInput!) {
   pinOrganization(organization: $organization) {
-    hash
-    name
-    size
+    uri
   }
 }
 ```

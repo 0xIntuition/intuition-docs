@@ -26,17 +26,8 @@ query GetFollowing(
     offset: $offset
   ) {
     id
-    follower_id
-    follower {
-      label
-      image
-    }
-    following_id
-    following {
-      label
-      image
-    }
-    created_at
+    label
+    image
   }
   following_aggregate(where: { follower_id: { _eq: $account_id } }) {
     aggregate {
@@ -60,12 +51,9 @@ query GetFollowing(
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `id` | `String` | Relationship identifier |
-| `follower_id` | `String` | Account doing the following |
-| `follower` | `Account` | Follower account details |
-| `following_id` | `String` | Account being followed |
-| `following` | `Account` | Followed account details |
-| `created_at` | `DateTime` | When the follow was created |
+| `id` | `String` | Account address |
+| `label` | `String` | Human-readable name |
+| `image` | `String` | Profile image URL |
 
 ## Expected Response
 
@@ -75,17 +63,14 @@ query GetFollowing(
     "following": [
       {
         "id": "0x123...",
-        "follower_id": "0xd8da6bf26964af9d7eed9e03e53415d37aa96045",
         "follower": {
           "label": "vitalik.eth",
           "image": "ipfs://Qm..."
         },
-        "following_id": "0xabc...",
         "following": {
           "label": "alice.eth",
           "image": "ipfs://Qm..."
-        },
-        "created_at": "2024-01-15T10:30:00Z"
+        }
       }
     ],
     "following_aggregate": {
@@ -107,14 +92,10 @@ export const followingQueries = [
   following(
     where: { follower_id: { _eq: $account_id } }
     limit: $limit
-    order_by: { created_at: desc }
   ) {
-    following {
-      id
-      label
-      image
-    }
-    created_at
+    id
+    label
+    image
   }
   following_aggregate(where: { follower_id: { _eq: $account_id } }) {
     aggregate {
@@ -134,14 +115,10 @@ export const followingQueries = [
   following(
     where: { following_id: { _eq: $account_id } }
     limit: $limit
-    order_by: { created_at: desc }
   ) {
-    follower {
-      id
-      label
-      image
-    }
-    created_at
+    id
+    label
+    image
   }
   following_aggregate(where: { following_id: { _eq: $account_id } }) {
     aggregate {
@@ -195,16 +172,12 @@ async function getFollowing(accountId: string, options: {
     query GetFollowing($account_id: String!, $limit: Int!, $offset: Int!) {
       following(
         where: { follower_id: { _eq: $account_id } }
-        order_by: { created_at: desc }
         limit: $limit
         offset: $offset
       ) {
-        following {
-          id
-          label
-          image
-        }
-        created_at
+        id
+        label
+        image
       }
       following_aggregate(where: { follower_id: { _eq: $account_id } }) {
         aggregate {
@@ -221,7 +194,7 @@ async function getFollowing(accountId: string, options: {
   })
 
   return {
-    accounts: data.following.map(f => f.following),
+    accounts: data.following,
     total: data.following_aggregate.aggregate.count
   }
 }
@@ -237,14 +210,10 @@ async function getFollowers(accountId: string) {
     query GetFollowers($account_id: String!) {
       following(
         where: { following_id: { _eq: $account_id } }
-        order_by: { created_at: desc }
       ) {
-        follower {
-          id
-          label
-          image
-        }
-        created_at
+        id
+        label
+        image
       }
       following_aggregate(where: { following_id: { _eq: $account_id } }) {
         aggregate {
@@ -257,7 +226,7 @@ async function getFollowers(accountId: string) {
   const data = await client.request(query, { account_id: accountId })
 
   return {
-    followers: data.following.map(f => f.follower),
+    followers: data.following,
     count: data.following_aggregate.aggregate.count
   }
 }

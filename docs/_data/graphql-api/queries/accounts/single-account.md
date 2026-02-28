@@ -27,8 +27,6 @@ query GetAccount($id: String!) {
       data
       type
     }
-    created_at
-    updated_at
   }
 }
 ```
@@ -51,8 +49,6 @@ query GetAccount($id: String!) {
 | `type` | `String` | Account type: `Default`, `AtomWallet`, `ProtocolVault` |
 | `atom_id` | `String` | Linked atom ID (if any) |
 | `atom` | `Atom` | Linked atom details |
-| `created_at` | `DateTime` | First interaction timestamp |
-| `updated_at` | `DateTime` | Last activity timestamp |
 
 ## Expected Response
 
@@ -69,9 +65,7 @@ query GetAccount($id: String!) {
         "term_id": "0x57d94c116a33bb460428eced262b7ae2ec6f865e7aceef6357cec3d034e8ea21",
         "data": "ipfs://Qm...",
         "type": "Person"
-      },
-      "created_at": "2024-01-01T00:00:00Z",
-      "updated_at": "2024-01-15T10:30:00Z"
+      }
     }
   }
 }
@@ -89,7 +83,6 @@ export const accountQueries = [
     label
     image
     type
-    created_at
   }
 }`,
     variables: {
@@ -140,7 +133,6 @@ async function getAccountProfile(address: string) {
           type
           data
         }
-        created_at
       }
     }
   `
@@ -171,7 +163,6 @@ function AccountProfile({ address }: { address: string }) {
       <h1>{account.label || truncateAddress(account.id)}</h1>
       <span className="type">{account.type}</span>
       <span className="address">{account.id}</span>
-      <time>Member since {formatDate(account.created_at)}</time>
     </div>
   )
 }

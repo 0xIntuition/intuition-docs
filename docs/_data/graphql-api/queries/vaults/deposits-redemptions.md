@@ -26,8 +26,8 @@ query GetTransactionHistory($termId: String!, $curveId: numeric!, $limit: Int!) 
   ) {
     id
     sender_id
-    assets_for_receiver
-    shares_for_receiver
+    assets_after_fees
+    shares
     created_at
   }
   redemptions(
@@ -40,8 +40,8 @@ query GetTransactionHistory($termId: String!, $curveId: numeric!, $limit: Int!) 
   ) {
     id
     receiver_id
-    assets_for_receiver
-    shares_from_receiver
+    assets
+    shares
     created_at
   }
 }

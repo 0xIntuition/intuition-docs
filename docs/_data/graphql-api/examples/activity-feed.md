@@ -24,9 +24,8 @@ export const activityQueries = [
     limit: $limit
   ) {
     id
-    event_type
     sender_id
-    assets_for_receiver
+    assets_after_fees
     created_at
     vault {
       term {
@@ -39,9 +38,8 @@ export const activityQueries = [
     limit: $limit
   ) {
     id
-    event_type
     receiver_id
-    assets_for_receiver
+    assets
     created_at
   }
 }`,

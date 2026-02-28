@@ -32,23 +32,22 @@ query GetPositionsFromFollowing(
       label
       image
     }
-    vault_id
     vault {
-      atom {
-        label
-        image
-      }
-      triple {
-        subject { label }
-        predicate { label }
-        object { label }
+      term {
+        atom {
+          label
+          image
+        }
+        triple {
+          subject { label }
+          predicate { label }
+          object { label }
+        }
       }
       current_share_price
       total_shares
     }
     shares
-    created_at
-    updated_at
   }
 }
 ```
@@ -70,11 +69,8 @@ query GetPositionsFromFollowing(
 | `id` | `String` | Position identifier |
 | `account_id` | `String` | Account holding the position |
 | `account` | `Account` | Account details |
-| `vault_id` | `String` | Vault ID for the position |
-| `vault` | `Vault` | Vault details with atom/triple |
+| `vault` | `Vault` | Vault details with term |
 | `shares` | `String` | Number of shares held |
-| `created_at` | `DateTime` | When position was opened |
-| `updated_at` | `DateTime` | Last position update |
 
 ## Expected Response
 
@@ -89,19 +85,18 @@ query GetPositionsFromFollowing(
           "label": "alice.eth",
           "image": "ipfs://Qm..."
         },
-        "vault_id": "0x456...",
         "vault": {
-          "atom": {
-            "label": "Ethereum",
-            "image": "ipfs://Qm..."
+          "term": {
+            "atom": {
+              "label": "Ethereum",
+              "image": "ipfs://Qm..."
+            },
+            "triple": null
           },
-          "triple": null,
           "current_share_price": "1.05",
           "total_shares": "1000000000000000000"
         },
-        "shares": "500000000000000000",
-        "created_at": "2024-01-15T10:30:00Z",
-        "updated_at": "2024-01-15T10:30:00Z"
+        "shares": "500000000000000000"
       }
     ]
   }
@@ -125,8 +120,10 @@ export const positionsQueries = [
       image
     }
     vault {
-      atom {
-        label
+      term {
+        atom {
+          label
+        }
       }
     }
     shares
@@ -147,10 +144,12 @@ export const positionsQueries = [
     limit: 20
   ) {
     vault {
-      atom {
-        term_id
-        label
-        image
+      term {
+        atom {
+          term_id
+          label
+          image
+        }
       }
     }
     shares
@@ -188,10 +187,12 @@ async function getSocialPortfolio(accountId: string) {
           image
         }
         vault {
-          atom {
-            term_id
-            label
-            image
+          term {
+            atom {
+              term_id
+              label
+              image
+            }
           }
           current_share_price
         }
@@ -204,12 +205,12 @@ async function getSocialPortfolio(accountId: string) {
 
   // Group by atom to find popular investments
   const byAtom = data.positions_from_following.reduce((acc, pos) => {
-    const atomId = pos.vault.atom?.term_id
+    const atomId = pos.vault.term?.atom?.term_id
     if (!atomId) return acc
 
     if (!acc[atomId]) {
       acc[atomId] = {
-        atom: pos.vault.atom,
+        atom: pos.vault.term.atom,
         holders: [],
         totalShares: BigInt(0)
       }
@@ -241,11 +242,13 @@ async function discoverFromNetwork(accountId: string) {
       ) {
         vault {
           id
-          atom {
-            term_id
-            label
-            image
-            type
+          term {
+            atom {
+              term_id
+              label
+              image
+              type
+            }
           }
         }
         account {
@@ -265,7 +268,7 @@ async function discoverFromNetwork(accountId: string) {
     const vaultId = pos.vault.id
     if (!vaultStats.has(vaultId)) {
       vaultStats.set(vaultId, {
-        atom: pos.vault.atom,
+        atom: pos.vault.term?.atom,
         holders: [],
         holderCount: 0
       })

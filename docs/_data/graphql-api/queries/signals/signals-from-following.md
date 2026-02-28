@@ -26,27 +26,24 @@ query GetSignalsFromFollowing(
     where: $where
     limit: $limit
     offset: $offset
-    order_by: { block_timestamp: desc }
+    order_by: { created_at: desc }
   ) {
     id
-    signal_type
     delta
     account {
       id
       label
       image
     }
-    atom {
-      term_id
-      label
-      image
+    term {
+      atom {
+        term_id
+        label
+        image
+      }
     }
-    triple {
-      subject { label }
-      predicate { label }
-      object { label }
-    }
-    block_timestamp
+    triple_id
+    created_at
   }
 }
 ```
@@ -73,12 +70,11 @@ query GetSignalsFromFollowing(
 | Field | Type | Description |
 |-------|------|-------------|
 | `id` | `String` | Signal identifier |
-| `signal_type` | `String` | `Deposit` or `Redemption` |
 | `delta` | `String` | Amount in wei |
 | `account` | `Account` | Account that made the signal |
-| `atom` | `Atom` | Related atom (if atom signal) |
-| `triple` | `Triple` | Related triple (if triple signal) |
-| `block_timestamp` | `DateTime` | Event timestamp |
+| `term` | `Term` | Related term (contains nested `atom` with label/image) |
+| `triple_id` | `String` | Related triple ID (if triple signal) |
+| `created_at` | `DateTime` | Event timestamp |
 
 ## Expected Response
 
@@ -88,20 +84,21 @@ query GetSignalsFromFollowing(
     "signals_from_following": [
       {
         "id": "0x123...-1",
-        "signal_type": "Deposit",
         "delta": "1000000000000000000",
         "account": {
           "id": "0xabc...",
           "label": "alice.eth",
           "image": "ipfs://Qm..."
         },
-        "atom": {
-          "term_id": "0x57d94c...",
-          "label": "Ethereum",
-          "image": "ipfs://Qm..."
+        "term": {
+          "atom": {
+            "id": "0x57d94c...",
+            "label": "Ethereum",
+            "image": "ipfs://Qm..."
+          }
         },
-        "triple": null,
-        "block_timestamp": "2024-01-15T10:30:00Z"
+        "triple_id": null,
+        "created_at": "2024-01-15T10:30:00Z"
       }
     ]
   }
@@ -118,19 +115,20 @@ export const followingQueries = [
   signals_from_following(
     args: { account_id: $account_id }
     limit: $limit
-    order_by: { block_timestamp: desc }
+    order_by: { created_at: desc }
   ) {
     id
-    signal_type
     delta
     account {
       label
       image
     }
-    atom {
-      label
+    term {
+      atom {
+        label
+      }
     }
-    block_timestamp
+    created_at
   }
 }`,
     variables: {
@@ -144,7 +142,7 @@ export const followingQueries = [
     query: `query GetDepositsFromFollowing($account_id: String!, $limit: Int!) {
   signals_from_following(
     args: { account_id: $account_id }
-    where: { signal_type: { _eq: "Deposit" } }
+    where: { deposit_id: { _is_null: false } }
     limit: $limit
     order_by: { delta: desc }
   ) {
@@ -153,10 +151,12 @@ export const followingQueries = [
     account {
       label
     }
-    atom {
-      label
+    term {
+      atom {
+        label
+      }
     }
-    block_timestamp
+    created_at
   }
 }`,
     variables: {
@@ -189,27 +189,23 @@ async function getSocialFeed(
         args: { account_id: $account_id }
         limit: $limit
         offset: $offset
-        order_by: { block_timestamp: desc }
+        order_by: { created_at: desc }
       ) {
         id
-        signal_type
         delta
         account {
           id
           label
           image
         }
-        atom {
-          label
-          image
-          type
+        term {
+          atom {
+            label
+            image
+          }
         }
-        triple {
-          subject { label }
-          predicate { label }
-          object { label }
-        }
-        block_timestamp
+        triple_id
+        created_at
       }
     }
   `
@@ -227,17 +223,11 @@ async function getSocialFeed(
 }
 
 function formatActivityMessage(signal: Signal): string {
-  const action = signal.signal_type === 'Deposit'
-    ? 'staked on'
-    : 'withdrew from'
-
-  const target = signal.atom
-    ? signal.atom.label
-    : formatTriple(signal.triple)
+  const target = signal.term?.atom?.label ?? `Triple ${signal.triple_id}`
 
   const amount = formatEther(signal.delta)
 
-  return `${signal.account.label} ${action} ${target} (${amount} ETH)`
+  return `${signal.account.label} signaled on ${target} (${amount} ETH)`
 }
 ```
 
@@ -284,30 +274,28 @@ function SocialFeed({ accountId }: { accountId: string }) {
 }
 
 function SignalCard({ signal }: { signal: Signal }) {
-  const isDeposit = signal.signal_type === 'Deposit'
-
   return (
     <div className="signal-card">
       <img src={signal.account.image} alt={signal.account.label} />
       <div className="content">
         <strong>{signal.account.label}</strong>
-        <span>{isDeposit ? 'staked on' : 'withdrew from'}</span>
+        <span>signaled on</span>
         <span className="target">
-          {signal.atom?.label || formatTriple(signal.triple)}
+          {signal.term?.atom?.label ?? `Triple ${signal.triple_id}`}
         </span>
       </div>
       <div className="amount">
         {formatEther(signal.delta)} ETH
       </div>
-      <time>{formatRelativeTime(signal.block_timestamp)}</time>
+      <time>{formatRelativeTime(signal.created_at)}</time>
     </div>
   )
 }
 ```
 
-### Filter by Signal Type
+### Filter by Deposits
 
-Show only deposits or redemptions from followed accounts:
+Show only deposit signals from followed accounts:
 
 ```typescript
 async function getDepositsFromFollowing(accountId: string) {
@@ -315,15 +303,17 @@ async function getDepositsFromFollowing(accountId: string) {
     query GetDepositsFromFollowing($account_id: String!) {
       signals_from_following(
         args: { account_id: $account_id }
-        where: { signal_type: { _eq: "Deposit" } }
+        where: { deposit_id: { _is_null: false } }
         order_by: { delta: desc }
         limit: 50
       ) {
         id
         delta
         account { label }
-        atom { label }
-        block_timestamp
+        term {
+          atom { label }
+        }
+        created_at
       }
     }
   `

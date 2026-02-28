@@ -25,8 +25,7 @@ query GetProtocolStats {
     total_accounts
     total_fees
     contract_balance
-    created_at
-    updated_at
+    last_updated
   }
 }
 ```
@@ -43,7 +42,7 @@ query GetProtocolStats {
 | `total_accounts` | `Int` | Unique accounts that have interacted |
 | `total_fees` | `String` | Total protocol fees in wei |
 | `contract_balance` | `String` | Current contract balance in wei |
-| `updated_at` | `DateTime` | Last update timestamp |
+| `last_updated` | `DateTime` | Last update timestamp |
 
 ## Expected Response
 
@@ -60,7 +59,7 @@ query GetProtocolStats {
         "total_accounts": 3200,
         "total_fees": "1500000000000000000",
         "contract_balance": "500000000000000000000",
-        "updated_at": "2024-01-15T10:30:00Z"
+        "last_updated": "2024-01-15T10:30:00Z"
       }
     ]
   }
@@ -81,7 +80,7 @@ export const statsQueries = [
     total_accounts
     total_fees
     contract_balance
-    updated_at
+    last_updated
   }
 }`,
     variables: {}
