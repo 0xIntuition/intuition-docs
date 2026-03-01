@@ -27,13 +27,16 @@ query SearchTermFromFollowing(
     }
     limit: $limit
   ) {
-    term_id
-    label
-    image
+    id
     type
-    creator {
+    atom {
       label
       image
+      creator {
+        id
+        label
+        image
+      }
     }
   }
 }
@@ -75,18 +78,22 @@ async function searchInNetwork(
         args: { address: $address, query: $query }
         limit: 10
       ) {
-        term_id
-        label
-        image
-        creator { label }
+        id
+        atom {
+          label
+          image
+          creator { id label }
+        }
       }
       global: search_term(
         args: { query: $query }
         limit: 10
       ) {
-        term_id
-        label
-        image
+        id
+        atom {
+          label
+          image
+        }
       }
     }
   `
@@ -124,8 +131,8 @@ function SocialSearch({ address }: { address: string }) {
 
       <div className="results">
         <h3>From Your Network</h3>
-        {data?.search_term_from_following.map(atom => (
-          <AtomCard key={atom.term_id} atom={atom} />
+        {data?.search_term_from_following.map(term => (
+          <AtomCard key={term.id} atom={term.atom} />
         ))}
       </div>
     </div>

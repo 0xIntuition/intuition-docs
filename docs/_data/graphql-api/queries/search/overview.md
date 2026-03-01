@@ -33,10 +33,12 @@ const query = `
       args: { search: $search }
       limit: $limit
     ) {
-      term_id
-      label
-      image
+      id
       type
+      atom {
+        label
+        image
+      }
     }
   }
 `

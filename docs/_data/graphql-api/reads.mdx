@@ -476,13 +476,15 @@ query GetVaults($limit: Int, $offset: Int) {
 ```graphql
 query SearchAtoms($query: String!, $limit: Int) {
   search_term(args: { query: $query }, limit: $limit) {
-    term_id
-    label
-    image
+    id
     type
-    creator {
-      id
+    atom {
       label
+      image
+      creator {
+        id
+        label
+      }
     }
   }
 }

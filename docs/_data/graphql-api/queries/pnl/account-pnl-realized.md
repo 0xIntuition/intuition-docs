@@ -19,7 +19,16 @@ query GetAccountPnlRealized($input: GetAccountPnlRealizedInput!) {
   getAccountPnlRealized(input: $input) {
     account_id
     count
-    data
+    data {
+      timestamp
+      realized_pnl
+      realized_pnl_pct
+      cost_basis
+      assets_out
+      shares_redeemed
+      term_id
+      curve_id
+    }
   }
 }
 ```
@@ -85,7 +94,16 @@ export const pnlRealizedQueries = [
   getAccountPnlRealized(input: $input) {
     account_id
     count
-    data
+    data {
+      timestamp
+      realized_pnl
+      realized_pnl_pct
+      cost_basis
+      assets_out
+      shares_redeemed
+      term_id
+      curve_id
+    }
   }
 }`,
     variables: {

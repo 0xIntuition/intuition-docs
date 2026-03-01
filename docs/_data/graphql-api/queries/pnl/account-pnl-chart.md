@@ -19,7 +19,13 @@ query GetAccountPnlChart($input: GetAccountPnlChartInput!) {
   getAccountPnlChart(input: $input) {
     account_id
     count
-    data
+    data {
+      timestamp
+      equity_value
+      net_invested
+      total_pnl
+      pnl_pct
+    }
     interval
   }
 }
@@ -96,7 +102,13 @@ export const pnlChartQueries = [
   getAccountPnlChart(input: $input) {
     account_id
     count
-    data
+    data {
+      timestamp
+      equity_value
+      net_invested
+      total_pnl
+      pnl_pct
+    }
     interval
   }
 }`,

@@ -38,9 +38,11 @@ query SearchPositionsOnSubject(
     created_at
     vault {
       term_id
-      triple {
-        predicate { label }
-        object { label }
+      term {
+        triple {
+          predicate { label }
+          object { label }
+        }
       }
     }
   }
@@ -104,9 +106,11 @@ async function getPositionsForAccounts(addresses: string[]) {
           image
         }
         vault {
-          triple {
-            predicate { label }
-            object { label }
+          term {
+            triple {
+              predicate { label }
+              object { label }
+            }
           }
         }
         shares

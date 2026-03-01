@@ -21,7 +21,15 @@ query GetPositionPnlChart($input: GetPositionPnlChartInput!) {
     term_id
     curve_id
     count
-    data
+    data {
+      timestamp
+      equity_value
+      net_invested
+      total_pnl
+      pnl_pct
+      share_price
+      shares_total
+    }
     interval
   }
 }
@@ -108,7 +116,15 @@ export const positionPnlQueries = [
     term_id
     curve_id
     count
-    data
+    data {
+      timestamp
+      equity_value
+      net_invested
+      total_pnl
+      pnl_pct
+      share_price
+      shares_total
+    }
     interval
   }
 }`,

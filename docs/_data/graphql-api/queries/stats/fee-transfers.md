@@ -38,7 +38,7 @@ query GetFeeTransfers(
       label
     }
     block_number
-    block_timestamp
+    created_at
     transaction_hash
   }
   fee_transfers_aggregate(where: $where) {
@@ -56,7 +56,7 @@ query GetFeeTransfers(
 
 ```json
 {
-  "order_by": [{ "block_timestamp": "desc" }],
+  "order_by": [{ "created_at": "desc" }],
   "limit": 20
 }
 ```
@@ -72,7 +72,7 @@ query GetFeeTransfers(
 | `receiver_id` | `String` | Protocol fee receiver address |
 | `receiver` | `Account` | Receiver details |
 | `block_number` | `Int` | Block number |
-| `block_timestamp` | `DateTime` | Transfer timestamp |
+| `created_at` | `DateTime` | Transfer timestamp |
 | `transaction_hash` | `String` | Transaction hash |
 
 ## Expected Response
@@ -93,7 +93,7 @@ query GetFeeTransfers(
           "label": "Intuition Protocol"
         },
         "block_number": 12345678,
-        "block_timestamp": "2024-01-15T10:30:00Z",
+        "created_at": "2024-01-15T10:30:00Z",
         "transaction_hash": "0xdef..."
       }
     ],
@@ -117,7 +117,7 @@ export const feeQueries = [
     title: 'Recent Fee Transfers',
     query: `query GetRecentFees($limit: Int!) {
   fee_transfers(
-    order_by: { block_timestamp: desc }
+    order_by: { created_at: desc }
     limit: $limit
   ) {
     id
@@ -125,7 +125,7 @@ export const feeQueries = [
     sender {
       label
     }
-    block_timestamp
+    created_at
   }
   fee_transfers_aggregate {
     aggregate {
@@ -151,7 +151,7 @@ export const feeQueries = [
     sender {
       label
     }
-    block_timestamp
+    created_at
     transaction_hash
   }
 }`,
@@ -175,7 +175,7 @@ async function getFeeRevenue(days: number = 30) {
   const query = `
     query GetFeeRevenue($start: timestamptz!) {
       fee_transfers_aggregate(where: {
-        block_timestamp: { _gte: $start }
+        created_at: { _gte: $start }
       }) {
         aggregate {
           count
@@ -224,7 +224,7 @@ async function getTopFeePayers(limit: number = 10) {
           label
           image
         }
-        block_timestamp
+        created_at
       }
     }
   `
@@ -239,7 +239,7 @@ async function getTopFeePayers(limit: number = 10) {
 
 ```graphql
 fee_transfers(where: {
-  block_timestamp: {
+  created_at: {
     _gte: "2024-01-01T00:00:00Z",
     _lte: "2024-01-31T23:59:59Z"
   }

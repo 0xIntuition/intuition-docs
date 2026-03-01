@@ -31,7 +31,6 @@ query GetAccounts(
     label
     image
     type
-    created_at
   }
   accounts_aggregate(where: $where) {
     aggregate {
@@ -48,7 +47,7 @@ query GetAccounts(
   "where": {
     "type": { "_eq": "AtomWallet" }
   },
-  "order_by": [{ "created_at": "desc" }],
+  "order_by": [{ "label": "asc" }],
   "limit": 20,
   "offset": 0
 }
@@ -62,7 +61,6 @@ query GetAccounts(
 | `label` | `String` | Human-readable name |
 | `image` | `String` | Profile image URL |
 | `type` | `String` | Account type |
-| `created_at` | `DateTime` | First interaction timestamp |
 
 ## Interactive Example
 
@@ -72,14 +70,12 @@ export const listQueries = [
     title: 'Recent Accounts',
     query: `query GetRecentAccounts($limit: Int!) {
   accounts(
-    order_by: { created_at: desc }
     limit: $limit
   ) {
     id
     label
     image
     type
-    created_at
   }
 }`,
     variables: { limit: 10 }
@@ -90,7 +86,6 @@ export const listQueries = [
     query: `query GetAtomWallets($limit: Int!) {
   accounts(
     where: { type: { _eq: "AtomWallet" } }
-    order_by: { created_at: desc }
     limit: $limit
   ) {
     id
@@ -166,7 +161,6 @@ async function getAccountsPaginated(page: number, pageSize: number = 20) {
   const query = `
     query GetAccountsPaginated($limit: Int!, $offset: Int!) {
       accounts(
-        order_by: { created_at: desc }
         limit: $limit
         offset: $offset
       ) {
@@ -174,7 +168,6 @@ async function getAccountsPaginated(page: number, pageSize: number = 20) {
         label
         image
         type
-        created_at
       }
       accounts_aggregate {
         aggregate {
@@ -221,20 +214,11 @@ accounts(where: { label: { _ilike: "%vitalik%" } })
 accounts(where: { label: { _eq: "vitalik.eth" } })
 ```
 
-### By Date
-
-```graphql
-# Accounts created after date
-accounts(where: {
-  created_at: { _gte: "2024-01-01T00:00:00Z" }
-})
-```
-
 ## Best Practices
 
 1. **Use pagination** - Always limit results for large datasets
 2. **Include aggregate** - Get total count for pagination UI
-3. **Use indexes** - Filter by indexed fields (type, created_at)
+3. **Use indexes** - Filter by indexed fields (type, label)
 4. **Case-insensitive search** - Use `_ilike` for label searches
 
 ## Related

@@ -30,13 +30,10 @@ query GetEvents(
     id
     type
     block_number
-    block_timestamp
+    created_at
     transaction_hash
     atom_id
     triple_id
-    sender_id
-    receiver_id
-    data
   }
 }
 ```
@@ -60,13 +57,10 @@ query GetEvents(
 | `id` | `String` | Unique event identifier |
 | `type` | `String` | Event type |
 | `block_number` | `Int` | Block number |
-| `block_timestamp` | `DateTime` | Block timestamp |
+| `created_at` | `timestamptz` | Event timestamp |
 | `transaction_hash` | `String` | Transaction hash |
 | `atom_id` | `String` | Related atom ID (if applicable) |
 | `triple_id` | `String` | Related triple ID (if applicable) |
-| `sender_id` | `String` | Sender address |
-| `receiver_id` | `String` | Receiver address |
-| `data` | `JSON` | Event-specific data |
 
 ## Interactive Example
 
@@ -82,7 +76,7 @@ export const eventQueries = [
     id
     type
     block_number
-    block_timestamp
+    created_at
     transaction_hash
   }
 }`,
@@ -99,9 +93,8 @@ export const eventQueries = [
   ) {
     id
     atom_id
-    sender_id
-    block_timestamp
-    data
+    created_at
+    transaction_hash
   }
 }`,
     variables: { limit: 10 }
@@ -116,11 +109,10 @@ export const eventQueries = [
     limit: $limit
   ) {
     id
-    sender_id
     atom_id
     triple_id
-    data
-    block_timestamp
+    created_at
+    transaction_hash
   }
 }`,
     variables: { limit: 10 }
@@ -149,15 +141,15 @@ async function getEventsByDateRange(
     ) {
       events(
         where: {
-          block_timestamp: { _gte: $start, _lte: $end }
+          created_at: { _gte: $start, _lte: $end }
           ${eventType ? 'type: { _eq: $type }' : ''}
         }
-        order_by: { block_timestamp: asc }
+        order_by: { created_at: asc }
       ) {
         id
         type
-        block_timestamp
-        data
+        created_at
+        transaction_hash
       }
     }
   `
@@ -186,8 +178,7 @@ async function getTransactionEvents(txHash: string) {
         type
         atom_id
         triple_id
-        sender_id
-        data
+        transaction_hash
       }
     }
   `
@@ -206,13 +197,6 @@ events(where: { type: { _eq: "AtomCreated" } })
 
 # Multiple types
 events(where: { type: { _in: ["Deposited", "Redeemed"] } })
-```
-
-### By Address
-
-```graphql
-# Events from specific sender
-events(where: { sender_id: { _eq: "0x..." } })
 ```
 
 ### By Block Range

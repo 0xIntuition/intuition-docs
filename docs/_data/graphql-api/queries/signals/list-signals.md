@@ -28,9 +28,7 @@ query GetSignals(
     offset: $offset
   ) {
     id
-    signal_type
     delta
-    shares_delta
     account_id
     account {
       id
@@ -38,21 +36,16 @@ query GetSignals(
       image
     }
     atom_id
-    atom {
-      term_id
-      label
-      image
-      type
+    term {
+      atom {
+        term_id
+        label
+        image
+      }
     }
     triple_id
-    triple {
-      id
-      subject { label }
-      predicate { label }
-      object { label }
-    }
     block_number
-    block_timestamp
+    created_at
     transaction_hash
   }
 }
@@ -69,10 +62,7 @@ query GetSignals(
 
 ```json
 {
-  "where": {
-    "signal_type": { "_eq": "Deposit" }
-  },
-  "order_by": [{ "block_timestamp": "desc" }],
+  "order_by": [{ "created_at": "desc" }],
   "limit": 20,
   "offset": 0
 }
@@ -83,17 +73,14 @@ query GetSignals(
 | Field | Type | Description |
 |-------|------|-------------|
 | `id` | `String` | Unique signal identifier |
-| `signal_type` | `String` | `Deposit` or `Redemption` |
 | `delta` | `String` | Amount in wei |
-| `shares_delta` | `String` | Shares minted or burned |
 | `account_id` | `String` | Account address |
 | `account` | `Account` | Account details with label/image |
 | `atom_id` | `String` | Related atom ID (if atom signal) |
-| `atom` | `Atom` | Atom details |
+| `term` | `Term` | Related term (contains nested `atom` with label/image) |
 | `triple_id` | `String` | Related triple ID (if triple signal) |
-| `triple` | `Triple` | Triple details |
 | `block_number` | `Int` | Block number |
-| `block_timestamp` | `DateTime` | Event timestamp |
+| `created_at` | `DateTime` | Event timestamp |
 | `transaction_hash` | `String` | Transaction hash |
 
 ## Expected Response
@@ -104,9 +91,7 @@ query GetSignals(
     "signals": [
       {
         "id": "0x123...-1",
-        "signal_type": "Deposit",
         "delta": "1000000000000000000",
-        "shares_delta": "1000000000000000000",
         "account_id": "0xd8da6bf26964af9d7eed9e03e53415d37aa96045",
         "account": {
           "id": "0xd8da6bf26964af9d7eed9e03e53415d37aa96045",
@@ -114,16 +99,16 @@ query GetSignals(
           "image": "ipfs://Qm..."
         },
         "atom_id": "0x57d94c116a33bb...",
-        "atom": {
-          "term_id": "0x57d94c116a33bb...",
-          "label": "Ethereum",
-          "image": "ipfs://Qm...",
-          "type": "Thing"
+        "term": {
+          "atom": {
+            "id": "0x57d94c116a33bb...",
+            "label": "Ethereum",
+            "image": "ipfs://Qm..."
+          }
         },
         "triple_id": null,
-        "triple": null,
         "block_number": 12345678,
-        "block_timestamp": "2024-01-15T10:30:00Z",
+        "created_at": "2024-01-15T10:30:00Z",
         "transaction_hash": "0xabc..."
       }
     ]
@@ -138,18 +123,19 @@ export const signalQueries = [
     id: 'recent-signals',
     title: 'Recent Signals',
     query: `query GetSignals($limit: Int!) {
-  signals(limit: $limit, order_by: { block_timestamp: desc }) {
+  signals(limit: $limit, order_by: { created_at: desc }) {
     id
-    signal_type
     delta
     account {
       label
       image
     }
-    atom {
-      label
+    term {
+      atom {
+        label
+      }
     }
-    block_timestamp
+    created_at
   }
 }`,
     variables: { limit: 10 }
@@ -160,21 +146,18 @@ export const signalQueries = [
     query: `query GetAccountSignals($account_id: String!, $limit: Int!) {
   signals(
     where: { account_id: { _eq: $account_id } }
-    order_by: { block_timestamp: desc }
+    order_by: { created_at: desc }
     limit: $limit
   ) {
     id
-    signal_type
     delta
-    atom {
-      label
+    term {
+      atom {
+        label
+      }
     }
-    triple {
-      subject { label }
-      predicate { label }
-      object { label }
-    }
-    block_timestamp
+    triple_id
+    created_at
   }
 }`,
     variables: {
@@ -187,7 +170,6 @@ export const signalQueries = [
     title: 'Deposits Only',
     query: `query GetDeposits($limit: Int!) {
   signals(
-    where: { signal_type: { _eq: "Deposit" } }
     order_by: { delta: desc }
     limit: $limit
   ) {
@@ -196,10 +178,12 @@ export const signalQueries = [
     account {
       label
     }
-    atom {
-      label
+    term {
+      atom {
+        label
+      }
     }
-    block_timestamp
+    created_at
   }
 }`,
     variables: { limit: 10 }
@@ -219,27 +203,24 @@ async function getActivityFeed(limit: number = 50) {
   const query = `
     query GetActivityFeed($limit: Int!) {
       signals(
-        order_by: { block_timestamp: desc }
+        order_by: { created_at: desc }
         limit: $limit
       ) {
         id
-        signal_type
         delta
         account {
           id
           label
           image
         }
-        atom {
-          label
-          image
+        term {
+          atom {
+            label
+            image
+          }
         }
-        triple {
-          subject { label }
-          predicate { label }
-          object { label }
-        }
-        block_timestamp
+        triple_id
+        created_at
       }
     }
   `
@@ -253,12 +234,9 @@ async function getActivityFeed(limit: number = 50) {
 }
 
 function formatSignalMessage(signal: Signal): string {
-  const action = signal.signal_type === 'Deposit' ? 'staked on' : 'withdrew from'
-  const target = signal.atom
-    ? signal.atom.label
-    : `${signal.triple.subject.label} ${signal.triple.predicate.label} ${signal.triple.object.label}`
+  const target = signal.term?.atom?.label ?? `Triple ${signal.triple_id}`
 
-  return `${signal.account.label} ${action} ${target}`
+  return `${signal.account.label} signaled on ${target}`
 }
 ```
 
@@ -279,21 +257,17 @@ async function getAccountHistory(
     ) {
       signals(
         where: { account_id: { _eq: $account_id } }
-        order_by: { block_timestamp: desc }
+        order_by: { created_at: desc }
         limit: $limit
         offset: $offset
       ) {
         id
-        signal_type
         delta
-        shares_delta
-        atom { label }
-        triple {
-          subject { label }
-          predicate { label }
-          object { label }
+        term {
+          atom { label }
         }
-        block_timestamp
+        triple_id
+        created_at
         transaction_hash
       }
       signals_aggregate(where: { account_id: { _eq: $account_id } }) {
@@ -328,15 +302,14 @@ async function getSignalsByDateRange(
     query GetSignalsByDate($start: timestamptz!, $end: timestamptz!) {
       signals(
         where: {
-          block_timestamp: { _gte: $start, _lte: $end }
+          created_at: { _gte: $start, _lte: $end }
         }
-        order_by: { block_timestamp: desc }
+        order_by: { created_at: desc }
       ) {
         id
-        signal_type
         delta
         account { label }
-        block_timestamp
+        created_at
       }
     }
   `
@@ -350,22 +323,11 @@ async function getSignalsByDateRange(
 
 ## Filtering Options
 
-### By Signal Type
-
-```graphql
-# Deposits only
-signals(where: { signal_type: { _eq: "Deposit" } })
-
-# Redemptions only
-signals(where: { signal_type: { _eq: "Redemption" } })
-```
-
 ### By Amount
 
 ```graphql
-# Large deposits (> 1 ETH)
+# Large signals (> 1 ETH)
 signals(where: {
-  signal_type: { _eq: "Deposit" },
   delta: { _gt: "1000000000000000000" }
 })
 ```

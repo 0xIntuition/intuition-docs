@@ -53,9 +53,7 @@ Pin a Thing entity to IPFS:
 ```graphql
 mutation PinThing($thing: PinThingInput!) {
   pinThing(thing: $thing) {
-    hash
-    name
-    size
+    uri
   }
 }
 ```
@@ -79,9 +77,7 @@ Pin a Person entity to IPFS:
 ```graphql
 mutation PinPerson($person: PinPersonInput!) {
   pinPerson(person: $person) {
-    hash
-    name
-    size
+    uri
   }
 }
 ```
@@ -107,9 +103,7 @@ Pin an Organization entity to IPFS:
 ```graphql
 mutation PinOrganization($organization: PinOrganizationInput!) {
   pinOrganization(organization: $organization) {
-    hash
-    name
-    size
+    uri
   }
 }
 ```
@@ -205,7 +199,7 @@ const imageResult = await graphqlClient.request(`
 const metadataResult = await graphqlClient.request(`
   mutation PinThing($thing: PinThingInput!) {
     pinThing(thing: $thing) {
-      hash
+      uri
     }
   }
 `, {
@@ -220,7 +214,7 @@ const metadataResult = await graphqlClient.request(`
 // Step 3: Create atom on-chain (via SDK)
 const multivault = createMultivaultClient(walletClient)
 const atomId = await multivault.createAtom({
-  uri: `ipfs://${metadataResult.pinThing.hash}`
+  uri: metadataResult.pinThing.uri
 })
 ```
 
@@ -304,8 +298,8 @@ function CreateAtomForm() {
       }
     })
 
-    // Use the IPFS hash for atom creation
-    const ipfsUri = `ipfs://${thingResult.data.pinThing.hash}`
+    // Use the IPFS URI for atom creation
+    const ipfsUri = thingResult.data.pinThing.uri
     // ... create atom via SDK
   }
 

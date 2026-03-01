@@ -25,10 +25,10 @@ subscription WatchPriceChanges(
   ) {
     term_id
     curve_id
-    old_price
-    new_price
-    price_change
-    created_at
+    share_price
+    block_timestamp
+    block_number
+    transaction_hash
   }
 }
 ```
@@ -37,5 +37,5 @@ subscription WatchPriceChanges(
 
 1. **Filter by term_id** for specific vault
 2. **Use batch_size** to control update frequency
-3. **Calculate percentage change** from old/new prices
+3. **Track price changes** using `share_price` and `block_timestamp`
 4. **Update charts** with new data points

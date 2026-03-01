@@ -21,13 +21,13 @@ query GetPriceHistory($termId: String!, $curveId: numeric!, $limit: Int!) {
       term_id: { _eq: $termId }
       curve_id: { _eq: $curveId }
     }
-    order_by: { created_at: desc }
+    order_by: { block_timestamp: desc }
     limit: $limit
   ) {
-    old_price
-    new_price
-    price_change
-    created_at
+    share_price
+    block_timestamp
+    block_number
+    transaction_hash
   }
 }
 ```
@@ -36,5 +36,5 @@ query GetPriceHistory($termId: String!, $curveId: numeric!, $limit: Int!) {
 
 1. **Use time-series tables** for aggregated data
 2. **Filter by term and curve** for specific vault
-3. **Calculate percentage change** from old and new price
+3. **Track price over time** using `share_price` and `block_timestamp`
 4. **Use daily/hourly stats** for charts

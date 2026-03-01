@@ -45,9 +45,8 @@ const query = `
       id
       type
       block_number
-      block_timestamp
+      created_at
       transaction_hash
-      data
     }
   }
 `

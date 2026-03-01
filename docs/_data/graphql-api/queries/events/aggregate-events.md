@@ -19,11 +19,11 @@ query GetEventsAggregate($where: events_bool_exp) {
       count
       max {
         block_number
-        block_timestamp
+        created_at
       }
       min {
         block_number
-        block_timestamp
+        created_at
       }
     }
   }
@@ -36,7 +36,7 @@ query GetEventsAggregate($where: events_bool_exp) {
 {
   "where": {
     "type": { "_eq": "AtomCreated" },
-    "block_timestamp": { "_gte": "2024-01-01T00:00:00Z" }
+    "created_at": { "_gte": "2024-01-01T00:00:00Z" }
   }
 }
 ```
@@ -88,7 +88,7 @@ async function getDailyEventCounts(date: Date) {
   const query = `
     query GetDailyEvents($start: timestamptz!, $end: timestamptz!) {
       events_aggregate(where: {
-        block_timestamp: { _gte: $start, _lte: $end }
+        created_at: { _gte: $start, _lte: $end }
       }) {
         aggregate {
           count

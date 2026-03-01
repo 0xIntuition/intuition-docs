@@ -255,7 +255,7 @@ function watchPositionPrices(
             batch_size: 1
             where: { vault_id: { _eq: $vault_id } }
           ) {
-            new_share_price
+            share_price
             block_timestamp
           }
         }
@@ -271,7 +271,7 @@ function watchPositionPrices(
     {
       next: (result) => {
         const changes = result.data?.share_price_changes_stream || []
-        changes.forEach(change => onPriceChange(change.new_share_price))
+        changes.forEach(change => onPriceChange(change.share_price))
       }
     }
   )
