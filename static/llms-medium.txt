@@ -636,7 +636,7 @@ Always use variables for dynamic values instead of hardcoding.
 ---
 title: "Custom Queries"
 description: "Common GraphQL query examples and patterns for the Intuition API"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/custom-queries"
 ---
 
@@ -669,7 +669,7 @@ Query triples with Hasura's `where` filtering:
 ---
 title: "Activity Feed"
 description: "Build real-time activity feed"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/examples/activity-feed"
 ---
 
@@ -689,9 +689,8 @@ Build an activity feed showing recent protocol activity.
     limit: $limit
   ) {
     id
-    event_type
     sender_id
-    assets_for_receiver
+    assets_after_fees
     created_at
     vault {
       term {
@@ -702,9 +701,8 @@ Build an activity feed showing recent protocol activity.
     limit: $limit
   ) {
     id
-    event_type
     receiver_id
-    assets_for_receiver
+    assets
     created_at
 
 }`,
@@ -1406,7 +1404,7 @@ Upload JSON metadata to IPFS for use in atom creation. Returns the IPFS hash, na
 ---
 title: "Pin Organization"
 description: "Pin Organization metadata to IPFS"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/mutations/pin-organization"
 ---
 
@@ -1430,7 +1428,7 @@ Pin an Organization entity to IPFS for use in atom creation.
 ---
 title: "Pin Person"
 description: "Pin Person metadata to IPFS"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/mutations/pin-person"
 ---
 
@@ -1454,7 +1452,7 @@ Pin a Person entity to IPFS for use in atom creation.
 ---
 title: "Pin Thing"
 description: "Pin Thing metadata to IPFS"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/mutations/pin-thing"
 ---
 
@@ -1473,15 +1471,15 @@ Pin a "Thing" object (general entity) to IPFS for use in atom creation.
 ## Workflow
 
 1. **Pin metadata** using `pinThing` mutation
-2. **Get IPFS hash** from response
-3. **Create atom on-chain** using the hash
+2. **Get IPFS URI** from response
+3. **Create atom on-chain** using the URI
 4. **Query the atom** via GraphQL API
 
 ## Best Practices
 
 1. **Upload images first** if needed using `uploadImage`
 2. **Include all metadata** fields for rich display
-3. **Store IPFS hash** for future reference
+3. **Store IPFS URI** for future reference
 4. **Wait for indexing** before querying the atom
 
 ---
@@ -1576,7 +1574,7 @@ There are a few ways to get started with this GraphQL API, depending on the leve
 ---
 title: "Following Query"
 description: "Query following relationships in the social graph"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/accounts/following"
 ---
 
@@ -1592,12 +1590,9 @@ Query the social graph to find who an account follows and who follows them.
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `id` | `String` | Relationship identifier |
-| `follower_id` | `String` | Account doing the following |
-| `follower` | `Account` | Follower account details |
-| `following_id` | `String` | Account being followed |
-| `following` | `Account` | Followed account details |
-| `created_at` | `DateTime` | When the follow was created |
+| `id` | `String` | Account address |
+| `label` | `String` | Human-readable name |
+| `image` | `String` | Profile image URL |
 
 ## Expected Response
 
@@ -1605,13 +1600,23 @@ Query the social graph to find who an account follows and who follows them.
 
     id: 'who-follows',
     title: 'Who Account Follows',
+    query: `query GetFollowing($account_id: String!, $limit: Int!) {
+  following(
+    where: { follower_id: { _eq: $account_id } }
+    limit: $limit
+  ) {
+    id
+    label
+    image
+
+  following_aggregate(where: { follower_id: { _eq: $account_id } }) {
 
 [... see full docs for complete content]
 
 ---
 title: "List Accounts"
 description: "Query multiple accounts with filtering and pagination"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/accounts/list-accounts"
 ---
 
@@ -1631,7 +1636,6 @@ Query multiple accounts with filtering, sorting, and pagination.
 | `label` | `String` | Human-readable name |
 | `image` | `String` | Profile image URL |
 | `type` | `String` | Account type |
-| `created_at` | `DateTime` | First interaction timestamp |
 
 ## Interactive Example
 
@@ -1639,17 +1643,21 @@ Query multiple accounts with filtering, sorting, and pagination.
     title: 'Recent Accounts',
     query: `query GetRecentAccounts($limit: Int!) {
   accounts(
-    order_by: { created_at: desc }
     limit: $limit
   ) {
     id
     label
     image
     type
-    created_at
 
 }`,
     variables: { limit: 10 }
+  },
+
+    id: 'atom-wallets',
+    title: 'Accounts with Linked Atoms',
+    query: `query GetAtomWallets($limit: Int!) {
+  accounts(
 
 [... see full docs for complete content]
 
@@ -1686,7 +1694,7 @@ Accounts represent Ethereum addresses that have interacted with the Intuition pr
 ---
 title: "Positions from Following"
 description: "Query positions held by accounts you follow"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/accounts/positions-from-following"
 ---
 
@@ -1705,16 +1713,22 @@ Query positions (stakes) held by accounts that a user follows. This enables buil
 | `id` | `String` | Position identifier |
 | `account_id` | `String` | Account holding the position |
 | `account` | `Account` | Account details |
-| `vault_id` | `String` | Vault ID for the position |
-| `vault` | `Vault` | Vault details with atom/triple |
+| `vault` | `Vault` | Vault details with term |
 | `shares` | `String` | Number of shares held |
+
+## Expected Response
+
+## Interactive Example
+
+    id: 'following-positions',
+    title: 'Positions from Following',
 
 [... see full docs for complete content]
 
 ---
 title: "Single Account Query"
 description: "Query individual account details by address"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/accounts/single-account"
 ---
 
@@ -1736,7 +1750,12 @@ Fetch detailed information about a specific account using its Ethereum address.
 | `type` | `String` | Account type: `Default`, `AtomWallet`, `ProtocolVault` |
 | `atom_id` | `String` | Linked atom ID (if any) |
 | `atom` | `Atom` | Linked atom details |
-| `created_at` | `DateTime` | First interaction timestamp |
+
+## Expected Response
+
+## Interactive Example
+
+    id: 'basic-account',
 
 [... see full docs for complete content]
 
@@ -2279,7 +2298,7 @@ Embed generated charts directly in dashboards:
 ---
 title: "Aggregate Events"
 description: "Aggregate statistics for blockchain events"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/events/aggregate-events"
 ---
 
@@ -2305,7 +2324,7 @@ Query aggregate statistics for blockchain events.
 ---
 title: "List Events"
 description: "Query raw blockchain events with filtering"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/events/list-events"
 ---
 
@@ -2324,18 +2343,22 @@ Query raw blockchain events with filtering, sorting, and pagination.
 | `id` | `String` | Unique event identifier |
 | `type` | `String` | Event type |
 | `block_number` | `Int` | Block number |
-| `block_timestamp` | `DateTime` | Block timestamp |
+| `created_at` | `timestamptz` | Event timestamp |
 | `transaction_hash` | `String` | Transaction hash |
 | `atom_id` | `String` | Related atom ID (if applicable) |
 | `triple_id` | `String` | Related triple ID (if applicable) |
-| `sender_id` | `String` | Sender address |
+
+## Interactive Example
+
+    id: 'recent-events',
+    title: 'Recent Events',
 
 [... see full docs for complete content]
 
 ---
 title: "Events Queries"
 description: "Query raw blockchain events from the Intuition protocol"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/events/overview"
 ---
 
@@ -2516,7 +2539,7 @@ Rank accounts within specific vaults using `get_vault_leaderboard` and `get_vaul
 ---
 title: "Account PnL Chart"
 description: "Query historical Profit and Loss data for charting"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/pnl/account-pnl-chart"
 ---
 
@@ -2571,7 +2594,7 @@ The query takes a single `input` object:
 ---
 title: "Account PnL Realized"
 description: "Query realized Profit and Loss data for an account"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/pnl/account-pnl-realized"
 ---
 
@@ -2624,7 +2647,7 @@ The Intuition GraphQL API provides Profit and Loss (PnL) queries to track portfo
 ---
 title: "Position PnL Chart"
 description: "Query historical Profit and Loss data for a specific position"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/pnl/position-pnl-chart"
 ---
 
@@ -2649,7 +2672,7 @@ The query takes a single `input` object:
 ---
 title: "Search Queries"
 description: "Search atoms, terms, and positions"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/search/overview"
 ---
 
@@ -2683,7 +2706,7 @@ Search the Intuition knowledge graph for atoms, terms, and positions using text-
 ---
 title: "Search from Following"
 description: "Search within followed accounts' activity"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/search/search-from-following"
 ---
 
@@ -2717,7 +2740,7 @@ Search prioritizing content from your network:
 ---
 title: "Search Positions"
 description: "Search positions on a specific subject"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/search/search-positions"
 ---
 
@@ -2742,7 +2765,7 @@ Search for positions (stakes) related to a specific subject. This function takes
 ---
 title: "Search Term"
 description: "Search atoms and terms by text"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/search/search-term"
 ---
 
@@ -2762,19 +2785,18 @@ Search for atoms by their label or data content.
 
 ## Response Fields
 
-The function returns `atoms` rows, so all atom fields are available:
+The function returns `terms` rows. Metadata fields like `label`, `image`, and `creator` are accessed via the `atom` relationship:
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `term_id` | `String` | Unique atom identifier |
-| `label` | `String` | Human-readable label |
+| `id` | `String` | Unique term identifier |
 
 [... see full docs for complete content]
 
 ---
 title: "Aggregate Signals"
 description: "Aggregate statistics for signals"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/signals/aggregate-signals"
 ---
 
@@ -2792,21 +2814,25 @@ Query aggregate statistics for signals including counts, sums, and averages.
 |-------|------|-------------|
 | `count` | `Int` | Total number of signals |
 | `sum.delta` | `String` | Total amount in wei |
-| `sum.shares_delta` | `String` | Total shares |
 | `avg.delta` | `Float` | Average amount |
 | `max.delta` | `String` | Maximum amount |
-| `max.block_timestamp` | `DateTime` | Most recent signal |
+| `max.created_at` | `DateTime` | Most recent signal |
 | `min.delta` | `String` | Minimum amount |
-| `min.block_timestamp` | `DateTime` | Oldest signal |
+| `min.created_at` | `DateTime` | Oldest signal |
 
 ## Expected Response
+
+## Interactive Example
+
+    id: 'total-stats',
+    title: 'Total Signal Statistics',
 
 [... see full docs for complete content]
 
 ---
 title: "List Signals"
 description: "Query signals (deposits/redemptions) with filtering and pagination"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/signals/list-signals"
 ---
 
@@ -2830,8 +2856,8 @@ Query deposit and redemption signals with rich filtering, sorting, and paginatio
 | Field | Type | Description |
 |-------|------|-------------|
 | `id` | `String` | Unique signal identifier |
-| `signal_type` | `String` | `Deposit` or `Redemption` |
 | `delta` | `String` | Amount in wei |
+| `account_id` | `String` | Account address |
 
 [... see full docs for complete content]
 
@@ -2868,7 +2894,7 @@ Each signal includes:
 ---
 title: "Signals from Following"
 description: "Query signals from accounts you follow"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/signals/signals-from-following"
 ---
 
@@ -2923,7 +2949,7 @@ Query protocol fee accrual records. Fee accruals track protocol fees accumulated
 ---
 title: "Fee Transfers"
 description: "Query protocol fee transfer events"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/stats/fee-transfers"
 ---
 
@@ -2985,7 +3011,7 @@ Query protocol-wide statistics including total value locked (TVL), fee transfers
 ---
 title: "Protocol Statistics"
 description: "Query protocol-wide statistics and metrics"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/stats/protocol-stats"
 ---
 
@@ -3285,7 +3311,7 @@ Query the `triple_vault` view to get vault-level data for triples, including mar
 ---
 title: "Deposits & Redemptions"
 description: "Query deposit and redemption transaction history"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/vaults/deposits-redemptions"
 ---
 
@@ -3358,7 +3384,7 @@ Query positions enriched with computed value fields including PnL, redeemable as
 ---
 title: "Share Price Changes"
 description: "Track share price changes over time"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/vaults/share-price-changes"
 ---
 
@@ -3372,7 +3398,7 @@ Track how share prices change over time.
 
 1. **Use time-series tables** for aggregated data
 2. **Filter by term and curve** for specific vault
-3. **Calculate percentage change** from old and new price
+3. **Track price over time** using `share_price` and `block_timestamp`
 4. **Use daily/hourly stats** for charts
 
 ---
@@ -3510,7 +3536,7 @@ Fetch comprehensive vault statistics including shares, assets, price, and positi
 ---
 title: "Reads"
 description: "Guide to read data using GraphQL queries in the Intuition API"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/reads"
 ---
 
@@ -3529,7 +3555,7 @@ This documentation will be split into sections by primitive, such as `Atoms`, `T
 ---
 title: "Subscriptions Overview"
 description: "Real-time subscriptions with cursor-based streaming"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/subscriptions/overview"
 ---
 
@@ -3569,7 +3595,7 @@ The API provides streaming subscriptions for all major entities:
 ---
 title: "Price Updates"
 description: "Subscribe to share price changes in real-time"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/subscriptions/price-updates"
 ---
 
@@ -3585,7 +3611,7 @@ Subscribe to real-time share price changes.
 
 1. **Filter by term_id** for specific vault
 2. **Use batch_size** to control update frequency
-3. **Calculate percentage change** from old/new prices
+3. **Track price changes** using `share_price` and `block_timestamp`
 4. **Update charts** with new data points
 
 ---
@@ -3654,7 +3680,7 @@ Select a use case above to see detailed step-by-step implementation guides.
 ---
 title: "Writes"
 description: "Guide to write data using GraphQL mutations in the Intuition API"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/writes"
 ---
 
