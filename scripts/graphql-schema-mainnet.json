@@ -212,6 +212,152 @@
         "kind": "SCALAR"
       }
     },
+    "PnlLeaderboardEntryOutput": {
+      "account_id": {
+        "type": "String",
+        "kind": "SCALAR"
+      },
+      "account_image": {
+        "type": "String",
+        "kind": "SCALAR"
+      },
+      "account_label": {
+        "type": "String",
+        "kind": "SCALAR"
+      },
+      "active_position_count": {
+        "type": "Int",
+        "kind": "SCALAR"
+      },
+      "best_trade_pnl_formatted": {
+        "type": "String",
+        "kind": "SCALAR"
+      },
+      "best_trade_pnl_raw": {
+        "type": "String",
+        "kind": "SCALAR"
+      },
+      "current_equity_value_formatted": {
+        "type": "String",
+        "kind": "SCALAR"
+      },
+      "current_equity_value_raw": {
+        "type": "String",
+        "kind": "SCALAR"
+      },
+      "first_position_at": {
+        "type": "String",
+        "kind": "SCALAR"
+      },
+      "last_activity_at": {
+        "type": "String",
+        "kind": "SCALAR"
+      },
+      "losing_positions": {
+        "type": "Int",
+        "kind": "SCALAR"
+      },
+      "pnl_change_formatted": {
+        "type": "String",
+        "kind": "SCALAR"
+      },
+      "pnl_change_raw": {
+        "type": "String",
+        "kind": "SCALAR"
+      },
+      "pnl_pct": {
+        "type": "String",
+        "kind": "SCALAR"
+      },
+      "rank": {
+        "type": "String",
+        "kind": "SCALAR"
+      },
+      "realized_pnl_formatted": {
+        "type": "String",
+        "kind": "SCALAR"
+      },
+      "realized_pnl_pct": {
+        "type": "String",
+        "kind": "SCALAR"
+      },
+      "realized_pnl_raw": {
+        "type": "String",
+        "kind": "SCALAR"
+      },
+      "redeemable_assets_formatted": {
+        "type": "String",
+        "kind": "SCALAR"
+      },
+      "redeemable_assets_raw": {
+        "type": "String",
+        "kind": "SCALAR"
+      },
+      "total_deposits_formatted": {
+        "type": "String",
+        "kind": "SCALAR"
+      },
+      "total_deposits_raw": {
+        "type": "String",
+        "kind": "SCALAR"
+      },
+      "total_pnl_formatted": {
+        "type": "String",
+        "kind": "SCALAR"
+      },
+      "total_pnl_raw": {
+        "type": "String",
+        "kind": "SCALAR"
+      },
+      "total_position_count": {
+        "type": "Int",
+        "kind": "SCALAR"
+      },
+      "total_redemptions_formatted": {
+        "type": "String",
+        "kind": "SCALAR"
+      },
+      "total_redemptions_raw": {
+        "type": "String",
+        "kind": "SCALAR"
+      },
+      "total_volume_formatted": {
+        "type": "String",
+        "kind": "SCALAR"
+      },
+      "total_volume_raw": {
+        "type": "String",
+        "kind": "SCALAR"
+      },
+      "unrealized_pnl_formatted": {
+        "type": "String",
+        "kind": "SCALAR"
+      },
+      "unrealized_pnl_pct": {
+        "type": "String",
+        "kind": "SCALAR"
+      },
+      "unrealized_pnl_raw": {
+        "type": "String",
+        "kind": "SCALAR"
+      },
+      "win_rate": {
+        "type": "String",
+        "kind": "SCALAR"
+      },
+      "winning_positions": {
+        "type": "Int",
+        "kind": "SCALAR"
+      },
+      "worst_trade_pnl_formatted": {
+        "type": "String",
+        "kind": "SCALAR"
+      },
+      "worst_trade_pnl_raw": {
+        "type": "String",
+        "kind": "SCALAR"
+      }
+    },
     "PositionPnlChartOutput": {
       "account_id": {
         "type": "String",
@@ -329,7 +475,11 @@
         "type": "bigint",
         "kind": "SCALAR"
       },
-      "total_pnl": {
+      "total_pnl_formatted": {
+        "type": "numeric",
+        "kind": "SCALAR"
+      },
+      "total_pnl_raw": {
         "type": "numeric",
         "kind": "SCALAR"
       },
@@ -337,7 +487,11 @@
         "type": "bigint",
         "kind": "SCALAR"
       },
-      "total_volume": {
+      "total_volume_formatted": {
+        "type": "numeric",
+        "kind": "SCALAR"
+      },
+      "total_volume_raw": {
         "type": "numeric",
         "kind": "SCALAR"
       },
@@ -419,7 +573,11 @@
         "type": "Float",
         "kind": "SCALAR"
       },
-      "total_pnl": {
+      "total_pnl_formatted": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "total_pnl_raw": {
         "type": "Float",
         "kind": "SCALAR"
       },
@@ -427,7 +585,11 @@
         "type": "Float",
         "kind": "SCALAR"
       },
-      "total_volume": {
+      "total_volume_formatted": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "total_volume_raw": {
         "type": "Float",
         "kind": "SCALAR"
       },
@@ -465,7 +627,11 @@
         "type": "bigint",
         "kind": "SCALAR"
       },
-      "total_pnl": {
+      "total_pnl_formatted": {
+        "type": "numeric",
+        "kind": "SCALAR"
+      },
+      "total_pnl_raw": {
         "type": "numeric",
         "kind": "SCALAR"
       },
@@ -473,7 +639,11 @@
         "type": "bigint",
         "kind": "SCALAR"
       },
-      "total_volume": {
+      "total_volume_formatted": {
+        "type": "numeric",
+        "kind": "SCALAR"
+      },
+      "total_volume_raw": {
         "type": "numeric",
         "kind": "SCALAR"
       },
@@ -511,7 +681,11 @@
         "type": "bigint",
         "kind": "SCALAR"
       },
-      "total_pnl": {
+      "total_pnl_formatted": {
+        "type": "numeric",
+        "kind": "SCALAR"
+      },
+      "total_pnl_raw": {
         "type": "numeric",
         "kind": "SCALAR"
       },
@@ -519,7 +693,11 @@
         "type": "bigint",
         "kind": "SCALAR"
       },
-      "total_volume": {
+      "total_volume_formatted": {
+        "type": "numeric",
+        "kind": "SCALAR"
+      },
+      "total_volume_raw": {
         "type": "numeric",
         "kind": "SCALAR"
       },
@@ -545,7 +723,11 @@
         "type": "Float",
         "kind": "SCALAR"
       },
-      "total_pnl": {
+      "total_pnl_formatted": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "total_pnl_raw": {
         "type": "Float",
         "kind": "SCALAR"
       },
@@ -553,7 +735,11 @@
         "type": "Float",
         "kind": "SCALAR"
       },
-      "total_volume": {
+      "total_volume_formatted": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "total_volume_raw": {
         "type": "Float",
         "kind": "SCALAR"
       },
@@ -579,7 +765,11 @@
         "type": "Float",
         "kind": "SCALAR"
       },
-      "total_pnl": {
+      "total_pnl_formatted": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "total_pnl_raw": {
         "type": "Float",
         "kind": "SCALAR"
       },
@@ -587,7 +777,11 @@
         "type": "Float",
         "kind": "SCALAR"
       },
-      "total_volume": {
+      "total_volume_formatted": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "total_volume_raw": {
         "type": "Float",
         "kind": "SCALAR"
       },
@@ -613,7 +807,11 @@
         "type": "Float",
         "kind": "SCALAR"
       },
-      "total_pnl": {
+      "total_pnl_formatted": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "total_pnl_raw": {
         "type": "Float",
         "kind": "SCALAR"
       },
@@ -621,7 +819,11 @@
         "type": "Float",
         "kind": "SCALAR"
       },
-      "total_volume": {
+      "total_volume_formatted": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "total_volume_raw": {
         "type": "Float",
         "kind": "SCALAR"
       },
@@ -647,7 +849,11 @@
         "type": "bigint",
         "kind": "SCALAR"
       },
-      "total_pnl": {
+      "total_pnl_formatted": {
+        "type": "numeric",
+        "kind": "SCALAR"
+      },
+      "total_pnl_raw": {
         "type": "numeric",
         "kind": "SCALAR"
       },
@@ -655,7 +861,11 @@
         "type": "bigint",
         "kind": "SCALAR"
       },
-      "total_volume": {
+      "total_volume_formatted": {
+        "type": "numeric",
+        "kind": "SCALAR"
+      },
+      "total_volume_raw": {
         "type": "numeric",
         "kind": "SCALAR"
       },
@@ -681,7 +891,11 @@
         "type": "Float",
         "kind": "SCALAR"
       },
-      "total_pnl": {
+      "total_pnl_formatted": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "total_pnl_raw": {
         "type": "Float",
         "kind": "SCALAR"
       },
@@ -689,7 +903,11 @@
         "type": "Float",
         "kind": "SCALAR"
       },
-      "total_volume": {
+      "total_volume_formatted": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "total_volume_raw": {
         "type": "Float",
         "kind": "SCALAR"
       },
@@ -715,7 +933,11 @@
         "type": "Float",
         "kind": "SCALAR"
       },
-      "total_pnl": {
+      "total_pnl_formatted": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "total_pnl_raw": {
         "type": "Float",
         "kind": "SCALAR"
       },
@@ -723,7 +945,11 @@
         "type": "Float",
         "kind": "SCALAR"
       },
-      "total_volume": {
+      "total_volume_formatted": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "total_volume_raw": {
         "type": "Float",
         "kind": "SCALAR"
       },
@@ -749,7 +975,11 @@
         "type": "Float",
         "kind": "SCALAR"
       },
-      "total_pnl": {
+      "total_pnl_formatted": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "total_pnl_raw": {
         "type": "Float",
         "kind": "SCALAR"
       },
@@ -757,7 +987,11 @@
         "type": "Float",
         "kind": "SCALAR"
       },
-      "total_volume": {
+      "total_volume_formatted": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "total_volume_raw": {
         "type": "Float",
         "kind": "SCALAR"
       },
@@ -845,6 +1079,14 @@
       },
       "redemptions_sent_aggregate": {
         "type": "redemptions_aggregate",
+        "kind": "OBJECT"
+      },
+      "season2_iq_ledger_entries": {
+        "type": "season2_iq_ledger_entries",
+        "kind": "OBJECT"
+      },
+      "season2_iq_ledger_entries_aggregate": {
+        "type": "season2_iq_ledger_entries_aggregate",
         "kind": "OBJECT"
       },
       "signals": {
@@ -3197,6 +3439,10 @@
         "type": "numeric",
         "kind": "SCALAR"
       },
+      "realized_pnl_pct": {
+        "type": "numeric",
+        "kind": "SCALAR"
+      },
       "realized_pnl_raw": {
         "type": "numeric",
         "kind": "SCALAR"
@@ -3246,6 +3492,10 @@
         "kind": "SCALAR"
       },
       "unrealized_pnl_formatted": {
+        "type": "numeric",
+        "kind": "SCALAR"
+      },
+      "unrealized_pnl_pct": {
         "type": "numeric",
         "kind": "SCALAR"
       },
@@ -3371,6 +3621,10 @@
         "type": "Float",
         "kind": "SCALAR"
       },
+      "realized_pnl_pct": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
       "realized_pnl_raw": {
         "type": "Float",
         "kind": "SCALAR"
@@ -3420,6 +3674,10 @@
         "kind": "SCALAR"
       },
       "unrealized_pnl_formatted": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "unrealized_pnl_pct": {
         "type": "Float",
         "kind": "SCALAR"
       },
@@ -3509,6 +3767,10 @@
         "type": "numeric",
         "kind": "SCALAR"
       },
+      "realized_pnl_pct": {
+        "type": "numeric",
+        "kind": "SCALAR"
+      },
       "realized_pnl_raw": {
         "type": "numeric",
         "kind": "SCALAR"
@@ -3558,6 +3820,10 @@
         "kind": "SCALAR"
       },
       "unrealized_pnl_formatted": {
+        "type": "numeric",
+        "kind": "SCALAR"
+      },
+      "unrealized_pnl_pct": {
         "type": "numeric",
         "kind": "SCALAR"
       },
@@ -3647,6 +3913,10 @@
         "type": "numeric",
         "kind": "SCALAR"
       },
+      "realized_pnl_pct": {
+        "type": "numeric",
+        "kind": "SCALAR"
+      },
       "realized_pnl_raw": {
         "type": "numeric",
         "kind": "SCALAR"
@@ -3696,6 +3966,10 @@
         "kind": "SCALAR"
       },
       "unrealized_pnl_formatted": {
+        "type": "numeric",
+        "kind": "SCALAR"
+      },
+      "unrealized_pnl_pct": {
         "type": "numeric",
         "kind": "SCALAR"
       },
@@ -3765,6 +4039,10 @@
         "type": "Float",
         "kind": "SCALAR"
       },
+      "realized_pnl_pct": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
       "realized_pnl_raw": {
         "type": "Float",
         "kind": "SCALAR"
@@ -3814,6 +4092,10 @@
         "kind": "SCALAR"
       },
       "unrealized_pnl_formatted": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "unrealized_pnl_pct": {
         "type": "Float",
         "kind": "SCALAR"
       },
@@ -3883,6 +4165,10 @@
         "type": "Float",
         "kind": "SCALAR"
       },
+      "realized_pnl_pct": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
       "realized_pnl_raw": {
         "type": "Float",
         "kind": "SCALAR"
@@ -3932,6 +4218,10 @@
         "kind": "SCALAR"
       },
       "unrealized_pnl_formatted": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "unrealized_pnl_pct": {
         "type": "Float",
         "kind": "SCALAR"
       },
@@ -4001,6 +4291,10 @@
         "type": "Float",
         "kind": "SCALAR"
       },
+      "realized_pnl_pct": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
       "realized_pnl_raw": {
         "type": "Float",
         "kind": "SCALAR"
@@ -4050,6 +4344,10 @@
         "kind": "SCALAR"
       },
       "unrealized_pnl_formatted": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "unrealized_pnl_pct": {
         "type": "Float",
         "kind": "SCALAR"
       },
@@ -4119,6 +4417,10 @@
         "type": "numeric",
         "kind": "SCALAR"
       },
+      "realized_pnl_pct": {
+        "type": "numeric",
+        "kind": "SCALAR"
+      },
       "realized_pnl_raw": {
         "type": "numeric",
         "kind": "SCALAR"
@@ -4168,6 +4470,10 @@
         "kind": "SCALAR"
       },
       "unrealized_pnl_formatted": {
+        "type": "numeric",
+        "kind": "SCALAR"
+      },
+      "unrealized_pnl_pct": {
         "type": "numeric",
         "kind": "SCALAR"
       },
@@ -4237,6 +4543,10 @@
         "type": "Float",
         "kind": "SCALAR"
       },
+      "realized_pnl_pct": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
       "realized_pnl_raw": {
         "type": "Float",
         "kind": "SCALAR"
@@ -4286,6 +4596,10 @@
         "kind": "SCALAR"
       },
       "unrealized_pnl_formatted": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "unrealized_pnl_pct": {
         "type": "Float",
         "kind": "SCALAR"
       },
@@ -4355,6 +4669,10 @@
         "type": "Float",
         "kind": "SCALAR"
       },
+      "realized_pnl_pct": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
       "realized_pnl_raw": {
         "type": "Float",
         "kind": "SCALAR"
@@ -4404,6 +4722,10 @@
         "kind": "SCALAR"
       },
       "unrealized_pnl_formatted": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "unrealized_pnl_pct": {
         "type": "Float",
         "kind": "SCALAR"
       },
@@ -4473,6 +4795,10 @@
         "type": "Float",
         "kind": "SCALAR"
       },
+      "realized_pnl_pct": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
       "realized_pnl_raw": {
         "type": "Float",
         "kind": "SCALAR"
@@ -4525,6 +4851,10 @@
         "type": "Float",
         "kind": "SCALAR"
       },
+      "unrealized_pnl_pct": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
       "unrealized_pnl_raw": {
         "type": "Float",
         "kind": "SCALAR"
@@ -4547,15 +4877,27 @@
       }
     },
     "pnl_leaderboard_stats": {
-      "avg_pnl": {
+      "avg_pnl_formatted": {
         "type": "numeric",
         "kind": "SCALAR"
       },
-      "avg_volume": {
+      "avg_pnl_raw": {
         "type": "numeric",
         "kind": "SCALAR"
       },
-      "median_pnl": {
+      "avg_volume_formatted": {
+        "type": "numeric",
+        "kind": "SCALAR"
+      },
+      "avg_volume_raw": {
+        "type": "numeric",
+        "kind": "SCALAR"
+      },
+      "median_pnl_formatted": {
+        "type": "numeric",
+        "kind": "SCALAR"
+      },
+      "median_pnl_raw": {
         "type": "numeric",
         "kind": "SCALAR"
       },
@@ -4567,7 +4909,11 @@
         "type": "bigint",
         "kind": "SCALAR"
       },
-      "total_pnl_sum": {
+      "total_pnl_sum_formatted": {
+        "type": "numeric",
+        "kind": "SCALAR"
+      },
+      "total_pnl_sum_raw": {
         "type": "numeric",
         "kind": "SCALAR"
       },
@@ -4575,7 +4921,11 @@
         "type": "bigint",
         "kind": "SCALAR"
       },
-      "total_volume": {
+      "total_volume_formatted": {
+        "type": "numeric",
+        "kind": "SCALAR"
+      },
+      "total_volume_raw": {
         "type": "numeric",
         "kind": "SCALAR"
       },
@@ -4641,15 +4991,27 @@
       }
     },
     "pnl_leaderboard_stats_avg_fields": {
-      "avg_pnl": {
+      "avg_pnl_formatted": {
         "type": "Float",
         "kind": "SCALAR"
       },
-      "avg_volume": {
+      "avg_pnl_raw": {
         "type": "Float",
         "kind": "SCALAR"
       },
-      "median_pnl": {
+      "avg_volume_formatted": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "avg_volume_raw": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "median_pnl_formatted": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "median_pnl_raw": {
         "type": "Float",
         "kind": "SCALAR"
       },
@@ -4661,7 +5023,11 @@
         "type": "Float",
         "kind": "SCALAR"
       },
-      "total_pnl_sum": {
+      "total_pnl_sum_formatted": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "total_pnl_sum_raw": {
         "type": "Float",
         "kind": "SCALAR"
       },
@@ -4669,7 +5035,11 @@
         "type": "Float",
         "kind": "SCALAR"
       },
-      "total_volume": {
+      "total_volume_formatted": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "total_volume_raw": {
         "type": "Float",
         "kind": "SCALAR"
       },
@@ -4679,15 +5049,27 @@
       }
     },
     "pnl_leaderboard_stats_max_fields": {
-      "avg_pnl": {
+      "avg_pnl_formatted": {
         "type": "numeric",
         "kind": "SCALAR"
       },
-      "avg_volume": {
+      "avg_pnl_raw": {
         "type": "numeric",
         "kind": "SCALAR"
       },
-      "median_pnl": {
+      "avg_volume_formatted": {
+        "type": "numeric",
+        "kind": "SCALAR"
+      },
+      "avg_volume_raw": {
+        "type": "numeric",
+        "kind": "SCALAR"
+      },
+      "median_pnl_formatted": {
+        "type": "numeric",
+        "kind": "SCALAR"
+      },
+      "median_pnl_raw": {
         "type": "numeric",
         "kind": "SCALAR"
       },
@@ -4699,7 +5081,11 @@
         "type": "bigint",
         "kind": "SCALAR"
       },
-      "total_pnl_sum": {
+      "total_pnl_sum_formatted": {
+        "type": "numeric",
+        "kind": "SCALAR"
+      },
+      "total_pnl_sum_raw": {
         "type": "numeric",
         "kind": "SCALAR"
       },
@@ -4707,7 +5093,11 @@
         "type": "bigint",
         "kind": "SCALAR"
       },
-      "total_volume": {
+      "total_volume_formatted": {
+        "type": "numeric",
+        "kind": "SCALAR"
+      },
+      "total_volume_raw": {
         "type": "numeric",
         "kind": "SCALAR"
       },
@@ -4717,15 +5107,27 @@
       }
     },
     "pnl_leaderboard_stats_min_fields": {
-      "avg_pnl": {
+      "avg_pnl_formatted": {
         "type": "numeric",
         "kind": "SCALAR"
       },
-      "avg_volume": {
+      "avg_pnl_raw": {
         "type": "numeric",
         "kind": "SCALAR"
       },
-      "median_pnl": {
+      "avg_volume_formatted": {
+        "type": "numeric",
+        "kind": "SCALAR"
+      },
+      "avg_volume_raw": {
+        "type": "numeric",
+        "kind": "SCALAR"
+      },
+      "median_pnl_formatted": {
+        "type": "numeric",
+        "kind": "SCALAR"
+      },
+      "median_pnl_raw": {
         "type": "numeric",
         "kind": "SCALAR"
       },
@@ -4737,7 +5139,11 @@
         "type": "bigint",
         "kind": "SCALAR"
       },
-      "total_pnl_sum": {
+      "total_pnl_sum_formatted": {
+        "type": "numeric",
+        "kind": "SCALAR"
+      },
+      "total_pnl_sum_raw": {
         "type": "numeric",
         "kind": "SCALAR"
       },
@@ -4745,7 +5151,11 @@
         "type": "bigint",
         "kind": "SCALAR"
       },
-      "total_volume": {
+      "total_volume_formatted": {
+        "type": "numeric",
+        "kind": "SCALAR"
+      },
+      "total_volume_raw": {
         "type": "numeric",
         "kind": "SCALAR"
       },
@@ -4755,15 +5165,27 @@
       }
     },
     "pnl_leaderboard_stats_stddev_fields": {
-      "avg_pnl": {
+      "avg_pnl_formatted": {
         "type": "Float",
         "kind": "SCALAR"
       },
-      "avg_volume": {
+      "avg_pnl_raw": {
         "type": "Float",
         "kind": "SCALAR"
       },
-      "median_pnl": {
+      "avg_volume_formatted": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "avg_volume_raw": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "median_pnl_formatted": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "median_pnl_raw": {
         "type": "Float",
         "kind": "SCALAR"
       },
@@ -4775,7 +5197,11 @@
         "type": "Float",
         "kind": "SCALAR"
       },
-      "total_pnl_sum": {
+      "total_pnl_sum_formatted": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "total_pnl_sum_raw": {
         "type": "Float",
         "kind": "SCALAR"
       },
@@ -4783,7 +5209,11 @@
         "type": "Float",
         "kind": "SCALAR"
       },
-      "total_volume": {
+      "total_volume_formatted": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "total_volume_raw": {
         "type": "Float",
         "kind": "SCALAR"
       },
@@ -4793,15 +5223,27 @@
       }
     },
     "pnl_leaderboard_stats_stddev_pop_fields": {
-      "avg_pnl": {
+      "avg_pnl_formatted": {
         "type": "Float",
         "kind": "SCALAR"
       },
-      "avg_volume": {
+      "avg_pnl_raw": {
         "type": "Float",
         "kind": "SCALAR"
       },
-      "median_pnl": {
+      "avg_volume_formatted": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "avg_volume_raw": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "median_pnl_formatted": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "median_pnl_raw": {
         "type": "Float",
         "kind": "SCALAR"
       },
@@ -4813,7 +5255,11 @@
         "type": "Float",
         "kind": "SCALAR"
       },
-      "total_pnl_sum": {
+      "total_pnl_sum_formatted": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "total_pnl_sum_raw": {
         "type": "Float",
         "kind": "SCALAR"
       },
@@ -4821,7 +5267,11 @@
         "type": "Float",
         "kind": "SCALAR"
       },
-      "total_volume": {
+      "total_volume_formatted": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "total_volume_raw": {
         "type": "Float",
         "kind": "SCALAR"
       },
@@ -4831,15 +5281,27 @@
       }
     },
     "pnl_leaderboard_stats_stddev_samp_fields": {
-      "avg_pnl": {
+      "avg_pnl_formatted": {
         "type": "Float",
         "kind": "SCALAR"
       },
-      "avg_volume": {
+      "avg_pnl_raw": {
         "type": "Float",
         "kind": "SCALAR"
       },
-      "median_pnl": {
+      "avg_volume_formatted": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "avg_volume_raw": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "median_pnl_formatted": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "median_pnl_raw": {
         "type": "Float",
         "kind": "SCALAR"
       },
@@ -4851,7 +5313,11 @@
         "type": "Float",
         "kind": "SCALAR"
       },
-      "total_pnl_sum": {
+      "total_pnl_sum_formatted": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "total_pnl_sum_raw": {
         "type": "Float",
         "kind": "SCALAR"
       },
@@ -4859,7 +5325,11 @@
         "type": "Float",
         "kind": "SCALAR"
       },
-      "total_volume": {
+      "total_volume_formatted": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "total_volume_raw": {
         "type": "Float",
         "kind": "SCALAR"
       },
@@ -4869,15 +5339,27 @@
       }
     },
     "pnl_leaderboard_stats_sum_fields": {
-      "avg_pnl": {
+      "avg_pnl_formatted": {
         "type": "numeric",
         "kind": "SCALAR"
       },
-      "avg_volume": {
+      "avg_pnl_raw": {
         "type": "numeric",
         "kind": "SCALAR"
       },
-      "median_pnl": {
+      "avg_volume_formatted": {
+        "type": "numeric",
+        "kind": "SCALAR"
+      },
+      "avg_volume_raw": {
+        "type": "numeric",
+        "kind": "SCALAR"
+      },
+      "median_pnl_formatted": {
+        "type": "numeric",
+        "kind": "SCALAR"
+      },
+      "median_pnl_raw": {
         "type": "numeric",
         "kind": "SCALAR"
       },
@@ -4889,7 +5371,11 @@
         "type": "bigint",
         "kind": "SCALAR"
       },
-      "total_pnl_sum": {
+      "total_pnl_sum_formatted": {
+        "type": "numeric",
+        "kind": "SCALAR"
+      },
+      "total_pnl_sum_raw": {
         "type": "numeric",
         "kind": "SCALAR"
       },
@@ -4897,7 +5383,11 @@
         "type": "bigint",
         "kind": "SCALAR"
       },
-      "total_volume": {
+      "total_volume_formatted": {
+        "type": "numeric",
+        "kind": "SCALAR"
+      },
+      "total_volume_raw": {
         "type": "numeric",
         "kind": "SCALAR"
       },
@@ -4907,15 +5397,27 @@
       }
     },
     "pnl_leaderboard_stats_var_pop_fields": {
-      "avg_pnl": {
+      "avg_pnl_formatted": {
         "type": "Float",
         "kind": "SCALAR"
       },
-      "avg_volume": {
+      "avg_pnl_raw": {
         "type": "Float",
         "kind": "SCALAR"
       },
-      "median_pnl": {
+      "avg_volume_formatted": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "avg_volume_raw": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "median_pnl_formatted": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "median_pnl_raw": {
         "type": "Float",
         "kind": "SCALAR"
       },
@@ -4927,7 +5429,11 @@
         "type": "Float",
         "kind": "SCALAR"
       },
-      "total_pnl_sum": {
+      "total_pnl_sum_formatted": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "total_pnl_sum_raw": {
         "type": "Float",
         "kind": "SCALAR"
       },
@@ -4935,7 +5441,11 @@
         "type": "Float",
         "kind": "SCALAR"
       },
-      "total_volume": {
+      "total_volume_formatted": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "total_volume_raw": {
         "type": "Float",
         "kind": "SCALAR"
       },
@@ -4945,15 +5455,27 @@
       }
     },
     "pnl_leaderboard_stats_var_samp_fields": {
-      "avg_pnl": {
+      "avg_pnl_formatted": {
         "type": "Float",
         "kind": "SCALAR"
       },
-      "avg_volume": {
+      "avg_pnl_raw": {
         "type": "Float",
         "kind": "SCALAR"
       },
-      "median_pnl": {
+      "avg_volume_formatted": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "avg_volume_raw": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "median_pnl_formatted": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "median_pnl_raw": {
         "type": "Float",
         "kind": "SCALAR"
       },
@@ -4965,7 +5487,11 @@
         "type": "Float",
         "kind": "SCALAR"
       },
-      "total_pnl_sum": {
+      "total_pnl_sum_formatted": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "total_pnl_sum_raw": {
         "type": "Float",
         "kind": "SCALAR"
       },
@@ -4973,7 +5499,11 @@
         "type": "Float",
         "kind": "SCALAR"
       },
-      "total_volume": {
+      "total_volume_formatted": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "total_volume_raw": {
         "type": "Float",
         "kind": "SCALAR"
       },
@@ -4983,15 +5513,27 @@
       }
     },
     "pnl_leaderboard_stats_variance_fields": {
-      "avg_pnl": {
+      "avg_pnl_formatted": {
         "type": "Float",
         "kind": "SCALAR"
       },
-      "avg_volume": {
+      "avg_pnl_raw": {
         "type": "Float",
         "kind": "SCALAR"
       },
-      "median_pnl": {
+      "avg_volume_formatted": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "avg_volume_raw": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "median_pnl_formatted": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "median_pnl_raw": {
         "type": "Float",
         "kind": "SCALAR"
       },
@@ -5003,7 +5545,11 @@
         "type": "Float",
         "kind": "SCALAR"
       },
-      "total_pnl_sum": {
+      "total_pnl_sum_formatted": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "total_pnl_sum_raw": {
         "type": "Float",
         "kind": "SCALAR"
       },
@@ -5011,7 +5557,11 @@
         "type": "Float",
         "kind": "SCALAR"
       },
-      "total_volume": {
+      "total_volume_formatted": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "total_volume_raw": {
         "type": "Float",
         "kind": "SCALAR"
       },
@@ -6707,12 +7257,20 @@
         "type": "String",
         "kind": "SCALAR"
       },
+      "opposer_count": {
+        "type": "bigint",
+        "kind": "SCALAR"
+      },
       "predicate": {
         "type": "atoms",
         "kind": "OBJECT"
       },
       "predicate_id": {
         "type": "String",
+        "kind": "SCALAR"
+      },
+      "supporter_count": {
+        "type": "bigint",
         "kind": "SCALAR"
       },
       "total_market_cap": {
@@ -6793,6 +7351,14 @@
       }
     },
     "predicate_objects_avg_fields": {
+      "opposer_count": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "supporter_count": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
       "total_market_cap": {
         "type": "Float",
         "kind": "SCALAR"
@@ -6811,8 +7377,16 @@
         "type": "String",
         "kind": "SCALAR"
       },
+      "opposer_count": {
+        "type": "bigint",
+        "kind": "SCALAR"
+      },
       "predicate_id": {
         "type": "String",
+        "kind": "SCALAR"
+      },
+      "supporter_count": {
+        "type": "bigint",
         "kind": "SCALAR"
       },
       "total_market_cap": {
@@ -6833,8 +7407,16 @@
         "type": "String",
         "kind": "SCALAR"
       },
+      "opposer_count": {
+        "type": "bigint",
+        "kind": "SCALAR"
+      },
       "predicate_id": {
         "type": "String",
+        "kind": "SCALAR"
+      },
+      "supporter_count": {
+        "type": "bigint",
         "kind": "SCALAR"
       },
       "total_market_cap": {
@@ -6851,6 +7433,14 @@
       }
     },
     "predicate_objects_stddev_fields": {
+      "opposer_count": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "supporter_count": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
       "total_market_cap": {
         "type": "Float",
         "kind": "SCALAR"
@@ -6865,6 +7455,14 @@
       }
     },
     "predicate_objects_stddev_pop_fields": {
+      "opposer_count": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "supporter_count": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
       "total_market_cap": {
         "type": "Float",
         "kind": "SCALAR"
@@ -6879,6 +7477,14 @@
       }
     },
     "predicate_objects_stddev_samp_fields": {
+      "opposer_count": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "supporter_count": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
       "total_market_cap": {
         "type": "Float",
         "kind": "SCALAR"
@@ -6893,6 +7499,14 @@
       }
     },
     "predicate_objects_sum_fields": {
+      "opposer_count": {
+        "type": "bigint",
+        "kind": "SCALAR"
+      },
+      "supporter_count": {
+        "type": "bigint",
+        "kind": "SCALAR"
+      },
       "total_market_cap": {
         "type": "numeric",
         "kind": "SCALAR"
@@ -6907,6 +7521,14 @@
       }
     },
     "predicate_objects_var_pop_fields": {
+      "opposer_count": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "supporter_count": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
       "total_market_cap": {
         "type": "Float",
         "kind": "SCALAR"
@@ -6921,6 +7543,14 @@
       }
     },
     "predicate_objects_var_samp_fields": {
+      "opposer_count": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "supporter_count": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
       "total_market_cap": {
         "type": "Float",
         "kind": "SCALAR"
@@ -6935,6 +7565,14 @@
       }
     },
     "predicate_objects_variance_fields": {
+      "opposer_count": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "supporter_count": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
       "total_market_cap": {
         "type": "Float",
         "kind": "SCALAR"
@@ -7400,11 +8038,11 @@
         "kind": "OBJECT"
       },
       "get_pnl_leaderboard_period": {
-        "type": "pnl_leaderboard_entry",
+        "type": "PnlLeaderboardEntryOutput",
         "kind": "OBJECT"
       },
-      "get_pnl_leaderboard_period_aggregate": {
-        "type": "pnl_leaderboard_entry_aggregate",
+      "get_pnl_leaderboard_period_min_threshold": {
+        "type": "PnlLeaderboardEntryOutput",
         "kind": "OBJECT"
       },
       "get_pnl_leaderboard_stats": {
@@ -7420,14 +8058,6 @@
         "kind": "OBJECT"
       },
       "get_vault_leaderboard_aggregate": {
-        "type": "pnl_leaderboard_entry_aggregate",
-        "kind": "OBJECT"
-      },
-      "get_vault_leaderboard_period": {
-        "type": "pnl_leaderboard_entry",
-        "kind": "OBJECT"
-      },
-      "get_vault_leaderboard_period_aggregate": {
         "type": "pnl_leaderboard_entry_aggregate",
         "kind": "OBJECT"
       },
@@ -7593,6 +8223,66 @@
       },
       "search_term_tsvector_aggregate": {
         "type": "terms_aggregate",
+        "kind": "OBJECT"
+      },
+      "season2_epoch": {
+        "type": "season2_epochs",
+        "kind": "OBJECT"
+      },
+      "season2_epoch_price": {
+        "type": "season2_epoch_prices",
+        "kind": "OBJECT"
+      },
+      "season2_epoch_prices": {
+        "type": "season2_epoch_prices",
+        "kind": "OBJECT"
+      },
+      "season2_epoch_prices_aggregate": {
+        "type": "season2_epoch_prices_aggregate",
+        "kind": "OBJECT"
+      },
+      "season2_epochs": {
+        "type": "season2_epochs",
+        "kind": "OBJECT"
+      },
+      "season2_epochs_aggregate": {
+        "type": "season2_epochs_aggregate",
+        "kind": "OBJECT"
+      },
+      "season2_iq_ledger": {
+        "type": "season2_iq_ledger_entries",
+        "kind": "OBJECT"
+      },
+      "season2_iq_ledger_entries": {
+        "type": "season2_iq_ledger_entries",
+        "kind": "OBJECT"
+      },
+      "season2_iq_ledger_entries_aggregate": {
+        "type": "season2_iq_ledger_entries_aggregate",
+        "kind": "OBJECT"
+      },
+      "season2_leaderboard_payout": {
+        "type": "season2_leaderboard_payouts",
+        "kind": "OBJECT"
+      },
+      "season2_leaderboard_payouts": {
+        "type": "season2_leaderboard_payouts",
+        "kind": "OBJECT"
+      },
+      "season2_leaderboard_payouts_aggregate": {
+        "type": "season2_leaderboard_payouts_aggregate",
+        "kind": "OBJECT"
+      },
+      "season2_trust_price_snapshot": {
+        "type": "season2_trust_price_snapshots",
+        "kind": "OBJECT"
+      },
+      "season2_trust_price_snapshots": {
+        "type": "season2_trust_price_snapshots",
+        "kind": "OBJECT"
+      },
+      "season2_trust_price_snapshots_aggregate": {
+        "type": "season2_trust_price_snapshots_aggregate",
         "kind": "OBJECT"
       },
       "share_price_change_stats_daily": {
@@ -8262,6 +8952,1104 @@
         "kind": "SCALAR"
       },
       "total_shares": {
+        "type": "Float",
+        "kind": "SCALAR"
+      }
+    },
+    "season2_epoch_prices": {
+      "average_price_usd": {
+        "type": "numeric",
+        "kind": "SCALAR"
+      },
+      "computed_at": {
+        "type": "timestamptz",
+        "kind": "SCALAR"
+      },
+      "epoch": {
+        "type": "Int",
+        "kind": "SCALAR"
+      },
+      "season2_epoch": {
+        "type": "season2_epochs",
+        "kind": "OBJECT"
+      },
+      "snapshot_count": {
+        "type": "Int",
+        "kind": "SCALAR"
+      },
+      "updated_at": {
+        "type": "timestamptz",
+        "kind": "SCALAR"
+      }
+    },
+    "season2_epoch_prices_aggregate": {
+      "aggregate": {
+        "type": "season2_epoch_prices_aggregate_fields",
+        "kind": "OBJECT"
+      },
+      "nodes": {
+        "type": "season2_epoch_prices",
+        "kind": "OBJECT"
+      }
+    },
+    "season2_epoch_prices_aggregate_fields": {
+      "avg": {
+        "type": "season2_epoch_prices_avg_fields",
+        "kind": "OBJECT"
+      },
+      "count": {
+        "type": "Int",
+        "kind": "SCALAR"
+      },
+      "max": {
+        "type": "season2_epoch_prices_max_fields",
+        "kind": "OBJECT"
+      },
+      "min": {
+        "type": "season2_epoch_prices_min_fields",
+        "kind": "OBJECT"
+      },
+      "stddev": {
+        "type": "season2_epoch_prices_stddev_fields",
+        "kind": "OBJECT"
+      },
+      "stddev_pop": {
+        "type": "season2_epoch_prices_stddev_pop_fields",
+        "kind": "OBJECT"
+      },
+      "stddev_samp": {
+        "type": "season2_epoch_prices_stddev_samp_fields",
+        "kind": "OBJECT"
+      },
+      "sum": {
+        "type": "season2_epoch_prices_sum_fields",
+        "kind": "OBJECT"
+      },
+      "var_pop": {
+        "type": "season2_epoch_prices_var_pop_fields",
+        "kind": "OBJECT"
+      },
+      "var_samp": {
+        "type": "season2_epoch_prices_var_samp_fields",
+        "kind": "OBJECT"
+      },
+      "variance": {
+        "type": "season2_epoch_prices_variance_fields",
+        "kind": "OBJECT"
+      }
+    },
+    "season2_epoch_prices_avg_fields": {
+      "average_price_usd": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "epoch": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "snapshot_count": {
+        "type": "Float",
+        "kind": "SCALAR"
+      }
+    },
+    "season2_epoch_prices_max_fields": {
+      "average_price_usd": {
+        "type": "numeric",
+        "kind": "SCALAR"
+      },
+      "computed_at": {
+        "type": "timestamptz",
+        "kind": "SCALAR"
+      },
+      "epoch": {
+        "type": "Int",
+        "kind": "SCALAR"
+      },
+      "snapshot_count": {
+        "type": "Int",
+        "kind": "SCALAR"
+      },
+      "updated_at": {
+        "type": "timestamptz",
+        "kind": "SCALAR"
+      }
+    },
+    "season2_epoch_prices_min_fields": {
+      "average_price_usd": {
+        "type": "numeric",
+        "kind": "SCALAR"
+      },
+      "computed_at": {
+        "type": "timestamptz",
+        "kind": "SCALAR"
+      },
+      "epoch": {
+        "type": "Int",
+        "kind": "SCALAR"
+      },
+      "snapshot_count": {
+        "type": "Int",
+        "kind": "SCALAR"
+      },
+      "updated_at": {
+        "type": "timestamptz",
+        "kind": "SCALAR"
+      }
+    },
+    "season2_epoch_prices_stddev_fields": {
+      "average_price_usd": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "epoch": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "snapshot_count": {
+        "type": "Float",
+        "kind": "SCALAR"
+      }
+    },
+    "season2_epoch_prices_stddev_pop_fields": {
+      "average_price_usd": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "epoch": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "snapshot_count": {
+        "type": "Float",
+        "kind": "SCALAR"
+      }
+    },
+    "season2_epoch_prices_stddev_samp_fields": {
+      "average_price_usd": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "epoch": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "snapshot_count": {
+        "type": "Float",
+        "kind": "SCALAR"
+      }
+    },
+    "season2_epoch_prices_sum_fields": {
+      "average_price_usd": {
+        "type": "numeric",
+        "kind": "SCALAR"
+      },
+      "epoch": {
+        "type": "Int",
+        "kind": "SCALAR"
+      },
+      "snapshot_count": {
+        "type": "Int",
+        "kind": "SCALAR"
+      }
+    },
+    "season2_epoch_prices_var_pop_fields": {
+      "average_price_usd": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "epoch": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "snapshot_count": {
+        "type": "Float",
+        "kind": "SCALAR"
+      }
+    },
+    "season2_epoch_prices_var_samp_fields": {
+      "average_price_usd": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "epoch": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "snapshot_count": {
+        "type": "Float",
+        "kind": "SCALAR"
+      }
+    },
+    "season2_epoch_prices_variance_fields": {
+      "average_price_usd": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "epoch": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "snapshot_count": {
+        "type": "Float",
+        "kind": "SCALAR"
+      }
+    },
+    "season2_epochs": {
+      "created_at": {
+        "type": "timestamptz",
+        "kind": "SCALAR"
+      },
+      "end_at": {
+        "type": "timestamptz",
+        "kind": "SCALAR"
+      },
+      "epoch": {
+        "type": "Int",
+        "kind": "SCALAR"
+      },
+      "epoch_price": {
+        "type": "season2_epoch_prices",
+        "kind": "OBJECT"
+      },
+      "epoch_price_aggregate": {
+        "type": "season2_epoch_prices_aggregate",
+        "kind": "OBJECT"
+      },
+      "finalized_at": {
+        "type": "timestamptz",
+        "kind": "SCALAR"
+      },
+      "iq_ledger_entries": {
+        "type": "season2_iq_ledger_entries",
+        "kind": "OBJECT"
+      },
+      "iq_ledger_entries_aggregate": {
+        "type": "season2_iq_ledger_entries_aggregate",
+        "kind": "OBJECT"
+      },
+      "is_final": {
+        "type": "Boolean",
+        "kind": "SCALAR"
+      },
+      "last_settlement_force": {
+        "type": "Boolean",
+        "kind": "SCALAR"
+      },
+      "settle_after": {
+        "type": "timestamptz",
+        "kind": "SCALAR"
+      },
+      "settled_at": {
+        "type": "timestamptz",
+        "kind": "SCALAR"
+      },
+      "start_at": {
+        "type": "timestamptz",
+        "kind": "SCALAR"
+      },
+      "updated_at": {
+        "type": "timestamptz",
+        "kind": "SCALAR"
+      }
+    },
+    "season2_epochs_aggregate": {
+      "aggregate": {
+        "type": "season2_epochs_aggregate_fields",
+        "kind": "OBJECT"
+      },
+      "nodes": {
+        "type": "season2_epochs",
+        "kind": "OBJECT"
+      }
+    },
+    "season2_epochs_aggregate_fields": {
+      "avg": {
+        "type": "season2_epochs_avg_fields",
+        "kind": "OBJECT"
+      },
+      "count": {
+        "type": "Int",
+        "kind": "SCALAR"
+      },
+      "max": {
+        "type": "season2_epochs_max_fields",
+        "kind": "OBJECT"
+      },
+      "min": {
+        "type": "season2_epochs_min_fields",
+        "kind": "OBJECT"
+      },
+      "stddev": {
+        "type": "season2_epochs_stddev_fields",
+        "kind": "OBJECT"
+      },
+      "stddev_pop": {
+        "type": "season2_epochs_stddev_pop_fields",
+        "kind": "OBJECT"
+      },
+      "stddev_samp": {
+        "type": "season2_epochs_stddev_samp_fields",
+        "kind": "OBJECT"
+      },
+      "sum": {
+        "type": "season2_epochs_sum_fields",
+        "kind": "OBJECT"
+      },
+      "var_pop": {
+        "type": "season2_epochs_var_pop_fields",
+        "kind": "OBJECT"
+      },
+      "var_samp": {
+        "type": "season2_epochs_var_samp_fields",
+        "kind": "OBJECT"
+      },
+      "variance": {
+        "type": "season2_epochs_variance_fields",
+        "kind": "OBJECT"
+      }
+    },
+    "season2_epochs_avg_fields": {
+      "epoch": {
+        "type": "Float",
+        "kind": "SCALAR"
+      }
+    },
+    "season2_epochs_max_fields": {
+      "created_at": {
+        "type": "timestamptz",
+        "kind": "SCALAR"
+      },
+      "end_at": {
+        "type": "timestamptz",
+        "kind": "SCALAR"
+      },
+      "epoch": {
+        "type": "Int",
+        "kind": "SCALAR"
+      },
+      "finalized_at": {
+        "type": "timestamptz",
+        "kind": "SCALAR"
+      },
+      "settle_after": {
+        "type": "timestamptz",
+        "kind": "SCALAR"
+      },
+      "settled_at": {
+        "type": "timestamptz",
+        "kind": "SCALAR"
+      },
+      "start_at": {
+        "type": "timestamptz",
+        "kind": "SCALAR"
+      },
+      "updated_at": {
+        "type": "timestamptz",
+        "kind": "SCALAR"
+      }
+    },
+    "season2_epochs_min_fields": {
+      "created_at": {
+        "type": "timestamptz",
+        "kind": "SCALAR"
+      },
+      "end_at": {
+        "type": "timestamptz",
+        "kind": "SCALAR"
+      },
+      "epoch": {
+        "type": "Int",
+        "kind": "SCALAR"
+      },
+      "finalized_at": {
+        "type": "timestamptz",
+        "kind": "SCALAR"
+      },
+      "settle_after": {
+        "type": "timestamptz",
+        "kind": "SCALAR"
+      },
+      "settled_at": {
+        "type": "timestamptz",
+        "kind": "SCALAR"
+      },
+      "start_at": {
+        "type": "timestamptz",
+        "kind": "SCALAR"
+      },
+      "updated_at": {
+        "type": "timestamptz",
+        "kind": "SCALAR"
+      }
+    },
+    "season2_epochs_stddev_fields": {
+      "epoch": {
+        "type": "Float",
+        "kind": "SCALAR"
+      }
+    },
+    "season2_epochs_stddev_pop_fields": {
+      "epoch": {
+        "type": "Float",
+        "kind": "SCALAR"
+      }
+    },
+    "season2_epochs_stddev_samp_fields": {
+      "epoch": {
+        "type": "Float",
+        "kind": "SCALAR"
+      }
+    },
+    "season2_epochs_sum_fields": {
+      "epoch": {
+        "type": "Int",
+        "kind": "SCALAR"
+      }
+    },
+    "season2_epochs_var_pop_fields": {
+      "epoch": {
+        "type": "Float",
+        "kind": "SCALAR"
+      }
+    },
+    "season2_epochs_var_samp_fields": {
+      "epoch": {
+        "type": "Float",
+        "kind": "SCALAR"
+      }
+    },
+    "season2_epochs_variance_fields": {
+      "epoch": {
+        "type": "Float",
+        "kind": "SCALAR"
+      }
+    },
+    "season2_iq_ledger_entries": {
+      "account": {
+        "type": "accounts",
+        "kind": "OBJECT"
+      },
+      "account_id": {
+        "type": "String",
+        "kind": "SCALAR"
+      },
+      "created_at": {
+        "type": "timestamptz",
+        "kind": "SCALAR"
+      },
+      "entry_type": {
+        "type": "String",
+        "kind": "SCALAR"
+      },
+      "epoch": {
+        "type": "Int",
+        "kind": "SCALAR"
+      },
+      "id": {
+        "type": "bigint",
+        "kind": "SCALAR"
+      },
+      "iq_points": {
+        "type": "numeric",
+        "kind": "SCALAR"
+      },
+      "metadata": {
+        "type": "jsonb",
+        "kind": "SCALAR"
+      },
+      "season2_epoch": {
+        "type": "season2_epochs",
+        "kind": "OBJECT"
+      },
+      "source_id": {
+        "type": "String",
+        "kind": "SCALAR"
+      },
+      "updated_at": {
+        "type": "timestamptz",
+        "kind": "SCALAR"
+      }
+    },
+    "season2_iq_ledger_entries_aggregate": {
+      "aggregate": {
+        "type": "season2_iq_ledger_entries_aggregate_fields",
+        "kind": "OBJECT"
+      },
+      "nodes": {
+        "type": "season2_iq_ledger_entries",
+        "kind": "OBJECT"
+      }
+    },
+    "season2_iq_ledger_entries_aggregate_fields": {
+      "avg": {
+        "type": "season2_iq_ledger_entries_avg_fields",
+        "kind": "OBJECT"
+      },
+      "count": {
+        "type": "Int",
+        "kind": "SCALAR"
+      },
+      "max": {
+        "type": "season2_iq_ledger_entries_max_fields",
+        "kind": "OBJECT"
+      },
+      "min": {
+        "type": "season2_iq_ledger_entries_min_fields",
+        "kind": "OBJECT"
+      },
+      "stddev": {
+        "type": "season2_iq_ledger_entries_stddev_fields",
+        "kind": "OBJECT"
+      },
+      "stddev_pop": {
+        "type": "season2_iq_ledger_entries_stddev_pop_fields",
+        "kind": "OBJECT"
+      },
+      "stddev_samp": {
+        "type": "season2_iq_ledger_entries_stddev_samp_fields",
+        "kind": "OBJECT"
+      },
+      "sum": {
+        "type": "season2_iq_ledger_entries_sum_fields",
+        "kind": "OBJECT"
+      },
+      "var_pop": {
+        "type": "season2_iq_ledger_entries_var_pop_fields",
+        "kind": "OBJECT"
+      },
+      "var_samp": {
+        "type": "season2_iq_ledger_entries_var_samp_fields",
+        "kind": "OBJECT"
+      },
+      "variance": {
+        "type": "season2_iq_ledger_entries_variance_fields",
+        "kind": "OBJECT"
+      }
+    },
+    "season2_iq_ledger_entries_avg_fields": {
+      "epoch": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "id": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "iq_points": {
+        "type": "Float",
+        "kind": "SCALAR"
+      }
+    },
+    "season2_iq_ledger_entries_max_fields": {
+      "account_id": {
+        "type": "String",
+        "kind": "SCALAR"
+      },
+      "created_at": {
+        "type": "timestamptz",
+        "kind": "SCALAR"
+      },
+      "entry_type": {
+        "type": "String",
+        "kind": "SCALAR"
+      },
+      "epoch": {
+        "type": "Int",
+        "kind": "SCALAR"
+      },
+      "id": {
+        "type": "bigint",
+        "kind": "SCALAR"
+      },
+      "iq_points": {
+        "type": "numeric",
+        "kind": "SCALAR"
+      },
+      "source_id": {
+        "type": "String",
+        "kind": "SCALAR"
+      },
+      "updated_at": {
+        "type": "timestamptz",
+        "kind": "SCALAR"
+      }
+    },
+    "season2_iq_ledger_entries_min_fields": {
+      "account_id": {
+        "type": "String",
+        "kind": "SCALAR"
+      },
+      "created_at": {
+        "type": "timestamptz",
+        "kind": "SCALAR"
+      },
+      "entry_type": {
+        "type": "String",
+        "kind": "SCALAR"
+      },
+      "epoch": {
+        "type": "Int",
+        "kind": "SCALAR"
+      },
+      "id": {
+        "type": "bigint",
+        "kind": "SCALAR"
+      },
+      "iq_points": {
+        "type": "numeric",
+        "kind": "SCALAR"
+      },
+      "source_id": {
+        "type": "String",
+        "kind": "SCALAR"
+      },
+      "updated_at": {
+        "type": "timestamptz",
+        "kind": "SCALAR"
+      }
+    },
+    "season2_iq_ledger_entries_stddev_fields": {
+      "epoch": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "id": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "iq_points": {
+        "type": "Float",
+        "kind": "SCALAR"
+      }
+    },
+    "season2_iq_ledger_entries_stddev_pop_fields": {
+      "epoch": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "id": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "iq_points": {
+        "type": "Float",
+        "kind": "SCALAR"
+      }
+    },
+    "season2_iq_ledger_entries_stddev_samp_fields": {
+      "epoch": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "id": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "iq_points": {
+        "type": "Float",
+        "kind": "SCALAR"
+      }
+    },
+    "season2_iq_ledger_entries_sum_fields": {
+      "epoch": {
+        "type": "Int",
+        "kind": "SCALAR"
+      },
+      "id": {
+        "type": "bigint",
+        "kind": "SCALAR"
+      },
+      "iq_points": {
+        "type": "numeric",
+        "kind": "SCALAR"
+      }
+    },
+    "season2_iq_ledger_entries_var_pop_fields": {
+      "epoch": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "id": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "iq_points": {
+        "type": "Float",
+        "kind": "SCALAR"
+      }
+    },
+    "season2_iq_ledger_entries_var_samp_fields": {
+      "epoch": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "id": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "iq_points": {
+        "type": "Float",
+        "kind": "SCALAR"
+      }
+    },
+    "season2_iq_ledger_entries_variance_fields": {
+      "epoch": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "id": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "iq_points": {
+        "type": "Float",
+        "kind": "SCALAR"
+      }
+    },
+    "season2_leaderboard_payouts": {
+      "iq_points": {
+        "type": "numeric",
+        "kind": "SCALAR"
+      },
+      "rank": {
+        "type": "Int",
+        "kind": "SCALAR"
+      }
+    },
+    "season2_leaderboard_payouts_aggregate": {
+      "aggregate": {
+        "type": "season2_leaderboard_payouts_aggregate_fields",
+        "kind": "OBJECT"
+      },
+      "nodes": {
+        "type": "season2_leaderboard_payouts",
+        "kind": "OBJECT"
+      }
+    },
+    "season2_leaderboard_payouts_aggregate_fields": {
+      "avg": {
+        "type": "season2_leaderboard_payouts_avg_fields",
+        "kind": "OBJECT"
+      },
+      "count": {
+        "type": "Int",
+        "kind": "SCALAR"
+      },
+      "max": {
+        "type": "season2_leaderboard_payouts_max_fields",
+        "kind": "OBJECT"
+      },
+      "min": {
+        "type": "season2_leaderboard_payouts_min_fields",
+        "kind": "OBJECT"
+      },
+      "stddev": {
+        "type": "season2_leaderboard_payouts_stddev_fields",
+        "kind": "OBJECT"
+      },
+      "stddev_pop": {
+        "type": "season2_leaderboard_payouts_stddev_pop_fields",
+        "kind": "OBJECT"
+      },
+      "stddev_samp": {
+        "type": "season2_leaderboard_payouts_stddev_samp_fields",
+        "kind": "OBJECT"
+      },
+      "sum": {
+        "type": "season2_leaderboard_payouts_sum_fields",
+        "kind": "OBJECT"
+      },
+      "var_pop": {
+        "type": "season2_leaderboard_payouts_var_pop_fields",
+        "kind": "OBJECT"
+      },
+      "var_samp": {
+        "type": "season2_leaderboard_payouts_var_samp_fields",
+        "kind": "OBJECT"
+      },
+      "variance": {
+        "type": "season2_leaderboard_payouts_variance_fields",
+        "kind": "OBJECT"
+      }
+    },
+    "season2_leaderboard_payouts_avg_fields": {
+      "iq_points": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "rank": {
+        "type": "Float",
+        "kind": "SCALAR"
+      }
+    },
+    "season2_leaderboard_payouts_max_fields": {
+      "iq_points": {
+        "type": "numeric",
+        "kind": "SCALAR"
+      },
+      "rank": {
+        "type": "Int",
+        "kind": "SCALAR"
+      }
+    },
+    "season2_leaderboard_payouts_min_fields": {
+      "iq_points": {
+        "type": "numeric",
+        "kind": "SCALAR"
+      },
+      "rank": {
+        "type": "Int",
+        "kind": "SCALAR"
+      }
+    },
+    "season2_leaderboard_payouts_stddev_fields": {
+      "iq_points": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "rank": {
+        "type": "Float",
+        "kind": "SCALAR"
+      }
+    },
+    "season2_leaderboard_payouts_stddev_pop_fields": {
+      "iq_points": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "rank": {
+        "type": "Float",
+        "kind": "SCALAR"
+      }
+    },
+    "season2_leaderboard_payouts_stddev_samp_fields": {
+      "iq_points": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "rank": {
+        "type": "Float",
+        "kind": "SCALAR"
+      }
+    },
+    "season2_leaderboard_payouts_sum_fields": {
+      "iq_points": {
+        "type": "numeric",
+        "kind": "SCALAR"
+      },
+      "rank": {
+        "type": "Int",
+        "kind": "SCALAR"
+      }
+    },
+    "season2_leaderboard_payouts_var_pop_fields": {
+      "iq_points": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "rank": {
+        "type": "Float",
+        "kind": "SCALAR"
+      }
+    },
+    "season2_leaderboard_payouts_var_samp_fields": {
+      "iq_points": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "rank": {
+        "type": "Float",
+        "kind": "SCALAR"
+      }
+    },
+    "season2_leaderboard_payouts_variance_fields": {
+      "iq_points": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "rank": {
+        "type": "Float",
+        "kind": "SCALAR"
+      }
+    },
+    "season2_trust_price_snapshots": {
+      "created_at": {
+        "type": "timestamptz",
+        "kind": "SCALAR"
+      },
+      "price_usd": {
+        "type": "numeric",
+        "kind": "SCALAR"
+      },
+      "snapshot_at": {
+        "type": "timestamptz",
+        "kind": "SCALAR"
+      },
+      "source": {
+        "type": "String",
+        "kind": "SCALAR"
+      },
+      "source_ref": {
+        "type": "String",
+        "kind": "SCALAR"
+      },
+      "updated_at": {
+        "type": "timestamptz",
+        "kind": "SCALAR"
+      }
+    },
+    "season2_trust_price_snapshots_aggregate": {
+      "aggregate": {
+        "type": "season2_trust_price_snapshots_aggregate_fields",
+        "kind": "OBJECT"
+      },
+      "nodes": {
+        "type": "season2_trust_price_snapshots",
+        "kind": "OBJECT"
+      }
+    },
+    "season2_trust_price_snapshots_aggregate_fields": {
+      "avg": {
+        "type": "season2_trust_price_snapshots_avg_fields",
+        "kind": "OBJECT"
+      },
+      "count": {
+        "type": "Int",
+        "kind": "SCALAR"
+      },
+      "max": {
+        "type": "season2_trust_price_snapshots_max_fields",
+        "kind": "OBJECT"
+      },
+      "min": {
+        "type": "season2_trust_price_snapshots_min_fields",
+        "kind": "OBJECT"
+      },
+      "stddev": {
+        "type": "season2_trust_price_snapshots_stddev_fields",
+        "kind": "OBJECT"
+      },
+      "stddev_pop": {
+        "type": "season2_trust_price_snapshots_stddev_pop_fields",
+        "kind": "OBJECT"
+      },
+      "stddev_samp": {
+        "type": "season2_trust_price_snapshots_stddev_samp_fields",
+        "kind": "OBJECT"
+      },
+      "sum": {
+        "type": "season2_trust_price_snapshots_sum_fields",
+        "kind": "OBJECT"
+      },
+      "var_pop": {
+        "type": "season2_trust_price_snapshots_var_pop_fields",
+        "kind": "OBJECT"
+      },
+      "var_samp": {
+        "type": "season2_trust_price_snapshots_var_samp_fields",
+        "kind": "OBJECT"
+      },
+      "variance": {
+        "type": "season2_trust_price_snapshots_variance_fields",
+        "kind": "OBJECT"
+      }
+    },
+    "season2_trust_price_snapshots_avg_fields": {
+      "price_usd": {
+        "type": "Float",
+        "kind": "SCALAR"
+      }
+    },
+    "season2_trust_price_snapshots_max_fields": {
+      "created_at": {
+        "type": "timestamptz",
+        "kind": "SCALAR"
+      },
+      "price_usd": {
+        "type": "numeric",
+        "kind": "SCALAR"
+      },
+      "snapshot_at": {
+        "type": "timestamptz",
+        "kind": "SCALAR"
+      },
+      "source": {
+        "type": "String",
+        "kind": "SCALAR"
+      },
+      "source_ref": {
+        "type": "String",
+        "kind": "SCALAR"
+      },
+      "updated_at": {
+        "type": "timestamptz",
+        "kind": "SCALAR"
+      }
+    },
+    "season2_trust_price_snapshots_min_fields": {
+      "created_at": {
+        "type": "timestamptz",
+        "kind": "SCALAR"
+      },
+      "price_usd": {
+        "type": "numeric",
+        "kind": "SCALAR"
+      },
+      "snapshot_at": {
+        "type": "timestamptz",
+        "kind": "SCALAR"
+      },
+      "source": {
+        "type": "String",
+        "kind": "SCALAR"
+      },
+      "source_ref": {
+        "type": "String",
+        "kind": "SCALAR"
+      },
+      "updated_at": {
+        "type": "timestamptz",
+        "kind": "SCALAR"
+      }
+    },
+    "season2_trust_price_snapshots_stddev_fields": {
+      "price_usd": {
+        "type": "Float",
+        "kind": "SCALAR"
+      }
+    },
+    "season2_trust_price_snapshots_stddev_pop_fields": {
+      "price_usd": {
+        "type": "Float",
+        "kind": "SCALAR"
+      }
+    },
+    "season2_trust_price_snapshots_stddev_samp_fields": {
+      "price_usd": {
+        "type": "Float",
+        "kind": "SCALAR"
+      }
+    },
+    "season2_trust_price_snapshots_sum_fields": {
+      "price_usd": {
+        "type": "numeric",
+        "kind": "SCALAR"
+      }
+    },
+    "season2_trust_price_snapshots_var_pop_fields": {
+      "price_usd": {
+        "type": "Float",
+        "kind": "SCALAR"
+      }
+    },
+    "season2_trust_price_snapshots_var_samp_fields": {
+      "price_usd": {
+        "type": "Float",
+        "kind": "SCALAR"
+      }
+    },
+    "season2_trust_price_snapshots_variance_fields": {
+      "price_usd": {
         "type": "Float",
         "kind": "SCALAR"
       }
@@ -9867,6 +11655,10 @@
       }
     },
     "subject_predicates": {
+      "opposer_count": {
+        "type": "bigint",
+        "kind": "SCALAR"
+      },
       "predicate": {
         "type": "atoms",
         "kind": "OBJECT"
@@ -9881,6 +11673,10 @@
       },
       "subject_id": {
         "type": "String",
+        "kind": "SCALAR"
+      },
+      "supporter_count": {
+        "type": "bigint",
         "kind": "SCALAR"
       },
       "total_market_cap": {
@@ -9961,6 +11757,14 @@
       }
     },
     "subject_predicates_avg_fields": {
+      "opposer_count": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "supporter_count": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
       "total_market_cap": {
         "type": "Float",
         "kind": "SCALAR"
@@ -9975,12 +11779,20 @@
       }
     },
     "subject_predicates_max_fields": {
+      "opposer_count": {
+        "type": "bigint",
+        "kind": "SCALAR"
+      },
       "predicate_id": {
         "type": "String",
         "kind": "SCALAR"
       },
       "subject_id": {
         "type": "String",
+        "kind": "SCALAR"
+      },
+      "supporter_count": {
+        "type": "bigint",
         "kind": "SCALAR"
       },
       "total_market_cap": {
@@ -9997,12 +11809,20 @@
       }
     },
     "subject_predicates_min_fields": {
+      "opposer_count": {
+        "type": "bigint",
+        "kind": "SCALAR"
+      },
       "predicate_id": {
         "type": "String",
         "kind": "SCALAR"
       },
       "subject_id": {
         "type": "String",
+        "kind": "SCALAR"
+      },
+      "supporter_count": {
+        "type": "bigint",
         "kind": "SCALAR"
       },
       "total_market_cap": {
@@ -10019,6 +11839,14 @@
       }
     },
     "subject_predicates_stddev_fields": {
+      "opposer_count": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "supporter_count": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
       "total_market_cap": {
         "type": "Float",
         "kind": "SCALAR"
@@ -10033,6 +11861,14 @@
       }
     },
     "subject_predicates_stddev_pop_fields": {
+      "opposer_count": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "supporter_count": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
       "total_market_cap": {
         "type": "Float",
         "kind": "SCALAR"
@@ -10047,6 +11883,14 @@
       }
     },
     "subject_predicates_stddev_samp_fields": {
+      "opposer_count": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "supporter_count": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
       "total_market_cap": {
         "type": "Float",
         "kind": "SCALAR"
@@ -10061,6 +11905,14 @@
       }
     },
     "subject_predicates_sum_fields": {
+      "opposer_count": {
+        "type": "bigint",
+        "kind": "SCALAR"
+      },
+      "supporter_count": {
+        "type": "bigint",
+        "kind": "SCALAR"
+      },
       "total_market_cap": {
         "type": "numeric",
         "kind": "SCALAR"
@@ -10075,6 +11927,14 @@
       }
     },
     "subject_predicates_var_pop_fields": {
+      "opposer_count": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "supporter_count": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
       "total_market_cap": {
         "type": "Float",
         "kind": "SCALAR"
@@ -10089,6 +11949,14 @@
       }
     },
     "subject_predicates_var_samp_fields": {
+      "opposer_count": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "supporter_count": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
       "total_market_cap": {
         "type": "Float",
         "kind": "SCALAR"
@@ -10103,6 +11971,14 @@
       }
     },
     "subject_predicates_variance_fields": {
+      "opposer_count": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
+      "supporter_count": {
+        "type": "Float",
+        "kind": "SCALAR"
+      },
       "total_market_cap": {
         "type": "Float",
         "kind": "SCALAR"
@@ -10321,14 +12197,6 @@
         "type": "pnl_leaderboard_entry_aggregate",
         "kind": "OBJECT"
       },
-      "get_pnl_leaderboard_period": {
-        "type": "pnl_leaderboard_entry",
-        "kind": "OBJECT"
-      },
-      "get_pnl_leaderboard_period_aggregate": {
-        "type": "pnl_leaderboard_entry_aggregate",
-        "kind": "OBJECT"
-      },
       "get_pnl_leaderboard_stats": {
         "type": "pnl_leaderboard_stats",
         "kind": "OBJECT"
@@ -10342,14 +12210,6 @@
         "kind": "OBJECT"
       },
       "get_vault_leaderboard_aggregate": {
-        "type": "pnl_leaderboard_entry_aggregate",
-        "kind": "OBJECT"
-      },
-      "get_vault_leaderboard_period": {
-        "type": "pnl_leaderboard_entry",
-        "kind": "OBJECT"
-      },
-      "get_vault_leaderboard_period_aggregate": {
         "type": "pnl_leaderboard_entry_aggregate",
         "kind": "OBJECT"
       },
@@ -10567,6 +12427,86 @@
       },
       "search_term_tsvector_aggregate": {
         "type": "terms_aggregate",
+        "kind": "OBJECT"
+      },
+      "season2_epoch": {
+        "type": "season2_epochs",
+        "kind": "OBJECT"
+      },
+      "season2_epoch_price": {
+        "type": "season2_epoch_prices",
+        "kind": "OBJECT"
+      },
+      "season2_epoch_prices": {
+        "type": "season2_epoch_prices",
+        "kind": "OBJECT"
+      },
+      "season2_epoch_prices_aggregate": {
+        "type": "season2_epoch_prices_aggregate",
+        "kind": "OBJECT"
+      },
+      "season2_epoch_prices_stream": {
+        "type": "season2_epoch_prices",
+        "kind": "OBJECT"
+      },
+      "season2_epochs": {
+        "type": "season2_epochs",
+        "kind": "OBJECT"
+      },
+      "season2_epochs_aggregate": {
+        "type": "season2_epochs_aggregate",
+        "kind": "OBJECT"
+      },
+      "season2_epochs_stream": {
+        "type": "season2_epochs",
+        "kind": "OBJECT"
+      },
+      "season2_iq_ledger": {
+        "type": "season2_iq_ledger_entries",
+        "kind": "OBJECT"
+      },
+      "season2_iq_ledger_entries": {
+        "type": "season2_iq_ledger_entries",
+        "kind": "OBJECT"
+      },
+      "season2_iq_ledger_entries_aggregate": {
+        "type": "season2_iq_ledger_entries_aggregate",
+        "kind": "OBJECT"
+      },
+      "season2_iq_ledger_entries_stream": {
+        "type": "season2_iq_ledger_entries",
+        "kind": "OBJECT"
+      },
+      "season2_leaderboard_payout": {
+        "type": "season2_leaderboard_payouts",
+        "kind": "OBJECT"
+      },
+      "season2_leaderboard_payouts": {
+        "type": "season2_leaderboard_payouts",
+        "kind": "OBJECT"
+      },
+      "season2_leaderboard_payouts_aggregate": {
+        "type": "season2_leaderboard_payouts_aggregate",
+        "kind": "OBJECT"
+      },
+      "season2_leaderboard_payouts_stream": {
+        "type": "season2_leaderboard_payouts",
+        "kind": "OBJECT"
+      },
+      "season2_trust_price_snapshot": {
+        "type": "season2_trust_price_snapshots",
+        "kind": "OBJECT"
+      },
+      "season2_trust_price_snapshots": {
+        "type": "season2_trust_price_snapshots",
+        "kind": "OBJECT"
+      },
+      "season2_trust_price_snapshots_aggregate": {
+        "type": "season2_trust_price_snapshots_aggregate",
+        "kind": "OBJECT"
+      },
+      "season2_trust_price_snapshots_stream": {
+        "type": "season2_trust_price_snapshots",
         "kind": "OBJECT"
       },
       "share_price_change_stats_daily": {
@@ -11463,6 +13403,14 @@
         "type": "String",
         "kind": "SCALAR"
       },
+      "opposer_count": {
+        "type": "bigint",
+        "kind": "SCALAR"
+      },
+      "supporter_count": {
+        "type": "bigint",
+        "kind": "SCALAR"
+      },
       "term": {
         "type": "terms",
         "kind": "OBJECT"
@@ -11579,6 +13527,10 @@
         "type": "String",
         "kind": "SCALAR"
       },
+      "object_term": {
+        "type": "terms",
+        "kind": "OBJECT"
+      },
       "positions": {
         "type": "positions",
         "kind": "OBJECT"
@@ -11595,6 +13547,10 @@
         "type": "String",
         "kind": "SCALAR"
       },
+      "predicate_term": {
+        "type": "terms",
+        "kind": "OBJECT"
+      },
       "subject": {
         "type": "atoms",
         "kind": "OBJECT"
@@ -11602,6 +13558,10 @@
       "subject_id": {
         "type": "String",
         "kind": "SCALAR"
+      },
+      "subject_term": {
+        "type": "terms",
+        "kind": "OBJECT"
       },
       "term": {
         "type": "terms",
