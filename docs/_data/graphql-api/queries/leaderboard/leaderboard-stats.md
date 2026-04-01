@@ -26,11 +26,11 @@ query GetPnlLeaderboardStats {
     profitable_traders
     unprofitable_traders
     profitable_pct
-    total_pnl_sum
-    avg_pnl
-    median_pnl
-    total_volume
-    avg_volume
+    total_pnl_sum_formatted
+    avg_pnl_formatted
+    median_pnl_formatted
+    total_volume_formatted
+    avg_volume_formatted
   }
 }
 ```
@@ -50,11 +50,16 @@ query GetPnlLeaderboardStats {
 | `profitable_traders` | `bigint` | Number of traders with positive PnL |
 | `unprofitable_traders` | `bigint` | Number of traders with negative PnL |
 | `profitable_pct` | `numeric` | Percentage of profitable traders |
-| `total_pnl_sum` | `numeric` | Sum of all PnL across traders |
-| `avg_pnl` | `numeric` | Average PnL per trader |
-| `median_pnl` | `numeric` | Median PnL across traders |
-| `total_volume` | `numeric` | Total trading volume across all traders |
-| `avg_volume` | `numeric` | Average volume per trader |
+| `total_pnl_sum_formatted` | `String` | Sum of all PnL across traders (formatted) |
+| `total_pnl_sum_raw` | `numeric` | Sum of all PnL across traders (raw) |
+| `avg_pnl_formatted` | `String` | Average PnL per trader (formatted) |
+| `avg_pnl_raw` | `numeric` | Average PnL per trader (raw) |
+| `median_pnl_formatted` | `String` | Median PnL across traders (formatted) |
+| `median_pnl_raw` | `numeric` | Median PnL across traders (raw) |
+| `total_volume_formatted` | `String` | Total trading volume across all traders (formatted) |
+| `total_volume_raw` | `numeric` | Total trading volume across all traders (raw) |
+| `avg_volume_formatted` | `String` | Average volume per trader (formatted) |
+| `avg_volume_raw` | `numeric` | Average volume per trader (raw) |
 
 ## Interactive Example
 
@@ -68,11 +73,11 @@ export const statsQueries = [
     profitable_traders
     unprofitable_traders
     profitable_pct
-    total_pnl_sum
-    avg_pnl
-    median_pnl
-    total_volume
-    avg_volume
+    total_pnl_sum_formatted
+    avg_pnl_formatted
+    median_pnl_formatted
+    total_volume_formatted
+    avg_volume_formatted
   }
 }`,
     variables: {}
@@ -99,9 +104,9 @@ async function getProtocolStats() {
       get_pnl_leaderboard_stats(args: {}) {
         total_traders
         profitable_pct
-        avg_pnl
-        median_pnl
-        total_volume
+        avg_pnl_formatted
+        median_pnl_formatted
+        total_volume_formatted
       }
     }
   `

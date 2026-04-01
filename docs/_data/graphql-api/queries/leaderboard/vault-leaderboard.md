@@ -10,7 +10,7 @@ import GraphQLPlaygroundCustom from '@site/src/components/GraphQLPlaygroundCusto
 
 # Vault Leaderboard
 
-Rank accounts within specific vaults using `get_vault_leaderboard` and `get_vault_leaderboard_period`. Both return `pnl_leaderboard_entry` rows (same schema as the [PnL Leaderboard](./pnl-leaderboard)).
+Rank accounts within specific vaults using `get_vault_leaderboard` and `get_pnl_leaderboard_period`. Both return `pnl_leaderboard_entry` rows (same schema as the [PnL Leaderboard](./pnl-leaderboard)).
 
 ## Query Structure
 
@@ -51,11 +51,11 @@ query GetVaultLeaderboard {
 
 ## Period-Scoped {#period-scoped}
 
-Use `get_vault_leaderboard_period` to scope results to a specific date range:
+Use `get_pnl_leaderboard_period` to scope results to a specific date range:
 
 ```graphql
 query GetVaultLeaderboardPeriod {
-  get_vault_leaderboard_period(
+  get_pnl_leaderboard_period(
     args: {
       p_term_id: "0x57d94c..."
       p_curve_id: 1

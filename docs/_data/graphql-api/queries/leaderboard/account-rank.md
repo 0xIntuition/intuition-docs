@@ -27,9 +27,9 @@ query GetAccountPnlRank {
     account_image
     rank
     percentile
-    total_pnl
+    total_pnl_formatted
     pnl_pct
-    total_volume
+    total_volume_formatted
     total_position_count
     win_rate
     total_accounts
@@ -55,9 +55,11 @@ query GetAccountPnlRank {
 | `account_image` | `String` | Profile image URL |
 | `rank` | `bigint` | Leaderboard rank position |
 | `percentile` | `numeric` | Percentile ranking (0-100) |
-| `total_pnl` | `numeric` | Total profit/loss |
+| `total_pnl_formatted` | `String` | Total profit/loss (formatted) |
+| `total_pnl_raw` | `numeric` | Total profit/loss (raw) |
 | `pnl_pct` | `numeric` | PnL percentage |
-| `total_volume` | `numeric` | Total trading volume |
+| `total_volume_formatted` | `String` | Total trading volume (formatted) |
+| `total_volume_raw` | `numeric` | Total trading volume (raw) |
 | `total_position_count` | `bigint` | Total number of positions |
 | `win_rate` | `numeric` | Win rate across positions |
 | `total_accounts` | `bigint` | Total accounts on the leaderboard |
@@ -79,7 +81,7 @@ export const rankQueries = [
     account_label
     rank
     percentile
-    total_pnl
+    total_pnl_formatted
     pnl_pct
     win_rate
     total_accounts
@@ -114,7 +116,7 @@ async function getAccountRank(accountId: string) {
       ) {
         rank
         percentile
-        total_pnl
+        total_pnl_formatted
         pnl_pct
         total_accounts
       }
