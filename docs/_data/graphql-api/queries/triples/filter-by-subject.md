@@ -47,7 +47,7 @@ export const subjectQueries = [
   }
 }`,
     variables: {
-      subjectId: '0xf12dba36ffebb8e05ae49d3f9220b1994295662ccdc573f44aff7b51f8ad8fd6',
+      subjectId: '0x906527aae4af914b1ac01ff9adfdda5dafde3b5e21f84045e0660b0a15c07769',
       limit: 20
     }
   }

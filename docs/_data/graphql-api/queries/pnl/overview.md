@@ -49,7 +49,7 @@ query GetAccountPnlCurrent($input: GetAccountPnlCurrentInput!) {
 ```json
 {
   "input": {
-    "account_id": "0xd8da6bf26964af9d7eed9e03e53415d37aa96045"
+    "account_id": "0x88D0aF73508452c1a453356b3Fac26525aEc23A2"
   }
 }
 ```

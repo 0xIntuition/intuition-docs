@@ -45,7 +45,7 @@ The query takes a single `input` object:
 ```json
 {
   "input": {
-    "account_id": "0xd8da6bf26964af9d7eed9e03e53415d37aa96045",
+    "account_id": "0x88D0aF73508452c1a453356b3Fac26525aEc23A2",
     "interval": "1d",
     "start_time": "2024-01-01T00:00:00Z",
     "end_time": "2024-01-31T23:59:59Z"
@@ -68,7 +68,7 @@ The query takes a single `input` object:
 {
   "data": {
     "getAccountPnlChart": {
-      "account_id": "0xd8da6bf26964af9d7eed9e03e53415d37aa96045",
+      "account_id": "0x88D0aF73508452c1a453356b3Fac26525aEc23A2",
       "count": 31,
       "data": [
         {
@@ -114,7 +114,7 @@ export const pnlChartQueries = [
 }`,
     variables: {
       input: {
-        account_id: '0xd8da6bf26964af9d7eed9e03e53415d37aa96045',
+        account_id: '0x88D0aF73508452c1a453356b3Fac26525aEc23A2',
         interval: '1d',
         start_time: '2024-01-01T00:00:00Z',
         end_time: '2024-01-31T23:59:59Z'

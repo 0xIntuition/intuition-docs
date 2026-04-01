@@ -41,7 +41,7 @@ The query takes a single `input` object:
 ```json
 {
   "input": {
-    "account_id": "0xd8da6bf26964af9d7eed9e03e53415d37aa96045"
+    "account_id": "0x88D0aF73508452c1a453356b3Fac26525aEc23A2"
   }
 }
 ```
@@ -66,7 +66,7 @@ The query takes a single `input` object:
 {
   "data": {
     "getAccountPnlCurrent": {
-      "account_id": "0xd8da6bf26964af9d7eed9e03e53415d37aa96045",
+      "account_id": "0x88D0aF73508452c1a453356b3Fac26525aEc23A2",
       "equity_value": "15.234567890123456789",
       "net_invested": "10.000000000000000000",
       "total_pnl": "5.234567890123456789",
@@ -101,7 +101,7 @@ export const pnlCurrentQueries = [
 }`,
     variables: {
       input: {
-        account_id: '0xd8da6bf26964af9d7eed9e03e53415d37aa96045'
+        account_id: '0x88D0aF73508452c1a453356b3Fac26525aEc23A2'
       }
     }
   }

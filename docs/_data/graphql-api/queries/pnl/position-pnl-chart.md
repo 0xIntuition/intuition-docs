@@ -51,8 +51,8 @@ The query takes a single `input` object:
 ```json
 {
   "input": {
-    "account_id": "0xd8da6bf26964af9d7eed9e03e53415d37aa96045",
-    "term_id": "0x57d94c116a33bb460428eced262b7ae2ec6f865e7aceef6357cec3d034e8ea21",
+    "account_id": "0x88D0aF73508452c1a453356b3Fac26525aEc23A2",
+    "term_id": "0x906527aae4af914b1ac01ff9adfdda5dafde3b5e21f84045e0660b0a15c07769",
     "curve_id": "1",
     "interval": "1d",
     "start_time": "2024-01-01T00:00:00Z",
@@ -78,8 +78,8 @@ The query takes a single `input` object:
 {
   "data": {
     "getPositionPnlChart": {
-      "account_id": "0xd8da6bf26964af9d7eed9e03e53415d37aa96045",
-      "term_id": "0x57d94c116a33bb460428eced262b7ae2ec6f865e7aceef6357cec3d034e8ea21",
+      "account_id": "0x88D0aF73508452c1a453356b3Fac26525aEc23A2",
+      "term_id": "0x906527aae4af914b1ac01ff9adfdda5dafde3b5e21f84045e0660b0a15c07769",
       "curve_id": "1",
       "count": 31,
       "data": [
@@ -130,8 +130,8 @@ export const positionPnlQueries = [
 }`,
     variables: {
       input: {
-        account_id: '0xd8da6bf26964af9d7eed9e03e53415d37aa96045',
-        term_id: '0x57d94c116a33bb460428eced262b7ae2ec6f865e7aceef6357cec3d034e8ea21',
+        account_id: '0x88D0aF73508452c1a453356b3Fac26525aEc23A2',
+        term_id: '0x906527aae4af914b1ac01ff9adfdda5dafde3b5e21f84045e0660b0a15c07769',
         curve_id: '1',
         interval: '1d',
         start_time: '2024-01-01T00:00:00Z',

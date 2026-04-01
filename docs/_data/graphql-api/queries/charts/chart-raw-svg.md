@@ -40,7 +40,7 @@ Same as [`getChartSvg`](./chart-svg) -- takes `GetChartSvgInput`:
 ```json
 {
   "input": {
-    "term_id": "0x57d94c116a33bb460428eced262b7ae2ec6f865e7aceef6357cec3d034e8ea21",
+    "term_id": "0x906527aae4af914b1ac01ff9adfdda5dafde3b5e21f84045e0660b0a15c07769",
     "curve_id": "1",
     "interval": "1d",
     "start_time": "2024-01-01T00:00:00Z",
