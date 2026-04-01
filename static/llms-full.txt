@@ -6515,7 +6515,7 @@ Try the Intuition GraphQL API straight from your browser! The playground below c
 ---
 title: "Following Query"
 description: "Query following relationships in the social graph"
-last_updated: "2026-02-28T21:52:51-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/accounts/following"
 ---
 
@@ -6552,7 +6552,7 @@ query GetFollowing(
 
 ```json
 {
-  "account_id": "0xd8da6bf26964af9d7eed9e03e53415d37aa96045",
+  "account_id": "0x88D0aF73508452c1a453356b3Fac26525aEc23A2",
   "limit": 20,
   "offset": 0
 }
@@ -6612,7 +6612,7 @@ query GetFollowing(
 
 }`,
     variables: {
-      account_id: '0xd8da6bf26964af9d7eed9e03e53415d37aa96045',
+      account_id: '0x88D0aF73508452c1a453356b3Fac26525aEc23A2',
       limit: 10
 
   },
@@ -6634,7 +6634,7 @@ query GetFollowing(
 
 }`,
     variables: {
-      account_id: '0xd8da6bf26964af9d7eed9e03e53415d37aa96045',
+      account_id: '0x88D0aF73508452c1a453356b3Fac26525aEc23A2',
       limit: 10
 
   },
@@ -6656,7 +6656,7 @@ query GetFollowing(
 
 }`,
     variables: {
-      account_a: '0xd8da6bf26964af9d7eed9e03e53415d37aa96045',
+      account_a: '0x88D0aF73508452c1a453356b3Fac26525aEc23A2',
       account_b: '0xabc...'
 
 ];
@@ -7059,7 +7059,7 @@ accounts(where: { label: { _eq: "vitalik.eth" } })
 ---
 title: "Account Queries"
 description: "Query account data, social relationships, and positions"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/accounts/overview"
 ---
 
@@ -7103,13 +7103,12 @@ const query = `
       image
       type
       atom_id
-      created_at
     }
   }
 `
 
 const data = await client.request(query, {
-  id: '0xd8da6bf26964af9d7eed9e03e53415d37aa96045'
+  id: '0x88D0aF73508452c1a453356b3Fac26525aEc23A2'
 })
 ```
 
@@ -7131,7 +7130,7 @@ const data = await client.request(query, {
 ---
 title: "Positions from Following"
 description: "Query positions held by accounts you follow"
-last_updated: "2026-02-28T21:52:51-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/accounts/positions-from-following"
 ---
 
@@ -7183,7 +7182,7 @@ query GetPositionsFromFollowing(
 
 ```json
 {
-  "account_id": "0xd8da6bf26964af9d7eed9e03e53415d37aa96045",
+  "account_id": "0x88D0aF73508452c1a453356b3Fac26525aEc23A2",
   "limit": 20,
   "offset": 0
 }
@@ -7253,7 +7252,7 @@ query GetPositionsFromFollowing(
 
 }`,
     variables: {
-      account_id: '0xd8da6bf26964af9d7eed9e03e53415d37aa96045',
+      account_id: '0x88D0aF73508452c1a453356b3Fac26525aEc23A2',
       limit: 10
 
   },
@@ -7279,7 +7278,7 @@ query GetPositionsFromFollowing(
 
 }`,
     variables: {
-      account_id: '0xd8da6bf26964af9d7eed9e03e53415d37aa96045'
+      account_id: '0x88D0aF73508452c1a453356b3Fac26525aEc23A2'
 
 ];
 
@@ -7482,7 +7481,7 @@ query GetNetworkStats($account_id: String!) {
 ---
 title: "Single Account Query"
 description: "Query individual account details by address"
-last_updated: "2026-02-28T21:52:51-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/accounts/single-account"
 ---
 
@@ -7513,7 +7512,7 @@ query GetAccount($id: String!) {
 
 ```json
 {
-  "id": "0xd8da6bf26964af9d7eed9e03e53415d37aa96045"
+  "id": "0x88D0aF73508452c1a453356b3Fac26525aEc23A2"
 }
 ```
 
@@ -7524,9 +7523,9 @@ query GetAccount($id: String!) {
 | `id` | `String` | Account address (primary key) |
 | `label` | `String` | Human-readable name (from atom or ENS) |
 | `image` | `String` | Profile image URL |
-| `type` | `String` | Account type: `Default`, `AtomWallet`, `ProtocolVault` |
+| `type` | `account_type` | Account type: `Default`, `AtomWallet`, `ProtocolVault` |
 | `atom_id` | `String` | Linked atom ID (if any) |
-| `atom` | `Atom` | Linked atom details |
+| `atom` | `atoms` | Linked atom details |
 
 ## Expected Response
 
@@ -7534,13 +7533,13 @@ query GetAccount($id: String!) {
 {
   "data": {
     "account": {
-      "id": "0xd8da6bf26964af9d7eed9e03e53415d37aa96045",
+      "id": "0x88D0aF73508452c1a453356b3Fac26525aEc23A2",
       "label": "vitalik.eth",
       "image": "ipfs://QmXnnyufdzAWL5CqZ2RnSNgPbvCc1ALT73s6epPrRnZ1Xy",
       "type": "AtomWallet",
-      "atom_id": "0x57d94c116a33bb460428eced262b7ae2ec6f865e7aceef6357cec3d034e8ea21",
+      "atom_id": "0x906527aae4af914b1ac01ff9adfdda5dafde3b5e21f84045e0660b0a15c07769",
       "atom": {
-        "term_id": "0x57d94c116a33bb460428eced262b7ae2ec6f865e7aceef6357cec3d034e8ea21",
+        "term_id": "0x906527aae4af914b1ac01ff9adfdda5dafde3b5e21f84045e0660b0a15c07769",
         "data": "ipfs://Qm...",
         "type": "Person"
       }
@@ -7562,7 +7561,7 @@ query GetAccount($id: String!) {
 
 }`,
     variables: {
-      id: '0xd8da6bf26964af9d7eed9e03e53415d37aa96045'
+      id: '0x88D0aF73508452c1a453356b3Fac26525aEc23A2'
 
   },
 
@@ -7582,7 +7581,7 @@ query GetAccount($id: String!) {
 
 }`,
     variables: {
-      id: '0xd8da6bf26964af9d7eed9e03e53415d37aa96045'
+      id: '0x88D0aF73508452c1a453356b3Fac26525aEc23A2'
 
 ];
 
@@ -7907,7 +7906,7 @@ query GetPredicateObjects($predicateId: String!, $limit: Int!) {
 ---
 title: "Time-Series Analysis"
 description: "Query pre-computed time-series aggregations for share prices, signals, and market state"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/advanced/time-series"
 ---
 
@@ -8097,7 +8096,7 @@ query GetStateChanges($termId: String!, $limit: Int!) {
 
 }`,
     variables: {
-      termId: '0x57d94c116a33bb460428eced262b7ae2ec6f865e7aceef6357cec3d034e8ea21',
+      termId: '0x906527aae4af914b1ac01ff9adfdda5dafde3b5e21f84045e0660b0a15c07769',
       curveId: '1',
       limit: 30
 
@@ -8120,7 +8119,7 @@ query GetStateChanges($termId: String!, $limit: Int!) {
 
 }`,
     variables: {
-      termId: '0x57d94c116a33bb460428eced262b7ae2ec6f865e7aceef6357cec3d034e8ea21',
+      termId: '0x906527aae4af914b1ac01ff9adfdda5dafde3b5e21f84045e0660b0a15c07769',
       curveId: '1',
       limit: 30
 
@@ -8152,7 +8151,7 @@ query GetStateChanges($termId: String!, $limit: Int!) {
 ---
 title: "List and Filter Atoms"
 description: "Filter atoms by type, creator, date, and other criteria"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/atoms/list-filter"
 ---
 
@@ -8229,7 +8228,7 @@ query GetAtomsByType($type: atom_type!, $limit: Int!) {
 
 }`,
     variables: {
-      creatorId: '0xd8da6bf26964af9d7eed9e03e53415d37aa96045',
+      creatorId: '0x88D0aF73508452c1a453356b3Fac26525aEc23A2',
       limit: 20
 
   },
@@ -8710,7 +8709,7 @@ const query = `
 ---
 title: "Single Atom Query"
 description: "Fetch individual atom details by term ID"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/atoms/single-atom"
 ---
 
@@ -8743,7 +8742,7 @@ query GetAtom($id: String!) {
 
 ```json
 {
-  "id": "0x57d94c116a33bb460428eced262b7ae2ec6f865e7aceef6357cec3d034e8ea21"
+  "id": "0x39ad516aba15924381204ce477cf4d2b5313200814691e5376961673866ba4e3"
 }
 ```
 
@@ -8753,17 +8752,17 @@ query GetAtom($id: String!) {
 {
   "data": {
     "atom": {
-      "term_id": "0x57d94c116a33bb460428eced262b7ae2ec6f865e7aceef6357cec3d034e8ea21",
-      "data": "ipfs://QmYx8C3kNN1sFSx5b...",
-      "label": "Ethereum",
-      "image": "ipfs://QmXnnyufdzAWL5CqZ2RnSNgPbvCc1ALT73s6epPrRnZ1Xy",
-      "emoji": "⟠",
+      "term_id": "0x39ad516aba15924381204ce477cf4d2b5313200814691e5376961673866ba4e3",
+      "data": "https://res.cloudinary.com/...",
+      "label": "Intuition",
+      "image": "https://res.cloudinary.com/dfpwy9nyv/image/upload/v1734057836/remix/l7ffhwwrbrrgrnqclvs1.png",
+      "emoji": "🧩",
       "type": "Thing",
-      "created_at": "2024-01-15T10:30:00Z",
+      "created_at": "2025-11-01T05:19:50+00:00",
       "creator": {
-        "id": "0xd8da6bf26964af9d7eed9e03e53415d37aa96045",
-        "label": "Alice",
-        "image": "ipfs://..."
+        "id": "0x774657D5fFb9d169D65ac5dCeEdD0f566d9E7853",
+        "label": "0x7746...7853",
+        "image": null
       }
     }
   }
@@ -8790,7 +8789,7 @@ query GetAtom($id: String!) {
 
 }`,
     variables: {
-      id: '0x57d94c116a33bb460428eced262b7ae2ec6f865e7aceef6357cec3d034e8ea21'
+      id: '0x39ad516aba15924381204ce477cf4d2b5313200814691e5376961673866ba4e3'
 
   },
 
@@ -8816,7 +8815,7 @@ query GetAtom($id: String!) {
 
 }`,
     variables: {
-      id: '0x57d94c116a33bb460428eced262b7ae2ec6f865e7aceef6357cec3d034e8ea21'
+      id: '0x39ad516aba15924381204ce477cf4d2b5313200814691e5376961673866ba4e3'
 
 ];
 
@@ -8930,7 +8929,7 @@ const query = `
 ---
 title: "Atom with Related Triples"
 description: "Find triples where an atom appears as subject, predicate, or object"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/atoms/with-triples"
 ---
 
@@ -8981,7 +8980,7 @@ query GetAtomWithTriples($atomId: String!, $limit: Int!) {
 
 }`,
     variables: {
-      atomId: '0xf12dba36ffebb8e05ae49d3f9220b1994295662ccdc573f44aff7b51f8ad8fd6',
+      atomId: '0x906527aae4af914b1ac01ff9adfdda5dafde3b5e21f84045e0660b0a15c07769',
       limit: 10
 
   },
@@ -9005,7 +9004,7 @@ query GetAtomWithTriples($atomId: String!, $limit: Int!) {
 
 }`,
     variables: {
-      atomId: '0xf12dba36ffebb8e05ae49d3f9220b1994295662ccdc573f44aff7b51f8ad8fd6',
+      atomId: '0x906527aae4af914b1ac01ff9adfdda5dafde3b5e21f84045e0660b0a15c07769',
       predicateId: '0x...',
       limit: 10
 
@@ -9083,7 +9082,7 @@ const query = `
 ---
 title: "Atom with Vault Details"
 description: "Query atoms with nested vault information and statistics"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/atoms/with-vault"
 ---
 
@@ -9123,7 +9122,7 @@ query GetAtomWithVault($atomId: String!, $curveId: numeric!) {
 
 ```json
 {
-  "atomId": "0x57d94c116a33bb460428eced262b7ae2ec6f865e7aceef6357cec3d034e8ea21",
+  "atomId": "0x906527aae4af914b1ac01ff9adfdda5dafde3b5e21f84045e0660b0a15c07769",
   "curveId": "1"
 }
 ```
@@ -9146,7 +9145,7 @@ query GetAtomWithVault($atomId: String!, $curveId: numeric!) {
 
 }`,
     variables: {
-      atomId: '0x57d94c116a33bb460428eced262b7ae2ec6f865e7aceef6357cec3d034e8ea21',
+      atomId: '0x906527aae4af914b1ac01ff9adfdda5dafde3b5e21f84045e0660b0a15c07769',
       curveId: '1'
 
   },
@@ -9171,7 +9170,7 @@ query GetAtomWithVault($atomId: String!, $curveId: numeric!) {
 
 }`,
     variables: {
-      atomId: '0x57d94c116a33bb460428eced262b7ae2ec6f865e7aceef6357cec3d034e8ea21',
+      atomId: '0x906527aae4af914b1ac01ff9adfdda5dafde3b5e21f84045e0660b0a15c07769',
       curveId: '1'
 
 ];
@@ -9283,7 +9282,7 @@ const query = `
 ---
 title: "Get Chart JSON"
 description: "Get chart data as structured JSON"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/charts/chart-json"
 ---
 
@@ -9325,7 +9324,7 @@ The query takes a single `input` object of type `GetChartJsonInput`:
 ```json
 {
   "input": {
-    "term_id": "0x57d94c116a33bb460428eced262b7ae2ec6f865e7aceef6357cec3d034e8ea21",
+    "term_id": "0x906527aae4af914b1ac01ff9adfdda5dafde3b5e21f84045e0660b0a15c07769",
     "curve_id": "1",
     "interval": "1d",
     "start_time": "2024-01-01T00:00:00Z",
@@ -9365,7 +9364,7 @@ The query takes a single `input` object of type `GetChartJsonInput`:
 }`,
     variables: {
       input: {
-        term_id: '0x57d94c116a33bb460428eced262b7ae2ec6f865e7aceef6357cec3d034e8ea21',
+        term_id: '0x906527aae4af914b1ac01ff9adfdda5dafde3b5e21f84045e0660b0a15c07769',
         curve_id: '1',
         interval: '1d',
         start_time: '2024-01-01T00:00:00Z',
@@ -9420,7 +9419,7 @@ async function getChartData(termId: string, curveId: string, days: number = 30) 
 ---
 title: "Get Chart Raw JSON"
 description: "Get raw chart data as JSON"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/charts/chart-raw-json"
 ---
 
@@ -9462,7 +9461,7 @@ Same as [`getChartJson`](./chart-json) -- takes `GetChartJsonInput`:
 ```json
 {
   "input": {
-    "term_id": "0x57d94c116a33bb460428eced262b7ae2ec6f865e7aceef6357cec3d034e8ea21",
+    "term_id": "0x906527aae4af914b1ac01ff9adfdda5dafde3b5e21f84045e0660b0a15c07769",
     "curve_id": "1",
     "interval": "1d",
     "start_time": "2024-01-01T00:00:00Z",
@@ -9490,7 +9489,7 @@ Same as [`getChartJson`](./chart-json) -- takes `GetChartJsonInput`:
 ---
 title: "Get Chart Raw SVG"
 description: "Get minimal raw SVG chart output"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/charts/chart-raw-svg"
 ---
 
@@ -9528,7 +9527,7 @@ Same as [`getChartSvg`](./chart-svg) -- takes `GetChartSvgInput`:
 ```json
 {
   "input": {
-    "term_id": "0x57d94c116a33bb460428eced262b7ae2ec6f865e7aceef6357cec3d034e8ea21",
+    "term_id": "0x906527aae4af914b1ac01ff9adfdda5dafde3b5e21f84045e0660b0a15c07769",
     "curve_id": "1",
     "interval": "1d",
     "start_time": "2024-01-01T00:00:00Z",
@@ -9553,7 +9552,7 @@ Same as [`getChartSvg`](./chart-svg) -- takes `GetChartSvgInput`:
 ---
 title: "Get Chart SVG"
 description: "Get chart rendered as SVG"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/charts/chart-svg"
 ---
 
@@ -9591,7 +9590,7 @@ The query takes a single `input` object of type `GetChartSvgInput`:
 ```json
 {
   "input": {
-    "term_id": "0x57d94c116a33bb460428eced262b7ae2ec6f865e7aceef6357cec3d034e8ea21",
+    "term_id": "0x906527aae4af914b1ac01ff9adfdda5dafde3b5e21f84045e0660b0a15c07769",
     "curve_id": "1",
     "interval": "1d",
     "start_time": "2024-01-01T00:00:00Z",
@@ -9631,7 +9630,7 @@ The query takes a single `input` object of type `GetChartSvgInput`:
 }`,
     variables: {
       input: {
-        term_id: '0x57d94c116a33bb460428eced262b7ae2ec6f865e7aceef6357cec3d034e8ea21',
+        term_id: '0x906527aae4af914b1ac01ff9adfdda5dafde3b5e21f84045e0660b0a15c07769',
         curve_id: '1',
         interval: '1d',
         start_time: '2024-01-01T00:00:00Z',
@@ -9878,7 +9877,7 @@ async function getDailyEventCounts(date: Date) {
 ---
 title: "List Events"
 description: "Query raw blockchain events with filtering"
-last_updated: "2026-02-28T21:52:51-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/events/list-events"
 ---
 
@@ -9929,8 +9928,8 @@ query GetEvents(
 | Field | Type | Description |
 |-------|------|-------------|
 | `id` | `String` | Unique event identifier |
-| `type` | `String` | Event type |
-| `block_number` | `Int` | Block number |
+| `type` | `event_type` | Event type (enum) |
+| `block_number` | `numeric` | Block number |
 | `created_at` | `timestamptz` | Event timestamp |
 | `transaction_hash` | `String` | Transaction hash |
 | `atom_id` | `String` | Related atom ID (if applicable) |
@@ -10171,7 +10170,7 @@ const data = await client.request(query, { limit: 20 })
 ---
 title: "Account PnL Rank"
 description: "Query a single account's leaderboard rank and percentile"
-last_updated: "2026-04-01T08:45:01-04:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/leaderboard/account-rank"
 ---
 
@@ -10185,7 +10184,7 @@ Look up a single account's leaderboard rank and percentile using `get_account_pn
 query GetAccountPnlRank {
   get_account_pnl_rank(
     args: {
-      p_account_id: "0xd8da6bf26964af9d7eed9e03e53415d37aa96045"
+      p_account_id: "0x88D0aF73508452c1a453356b3Fac26525aEc23A2"
       p_sort_by: "total_pnl"
     }
   ) {
@@ -10222,10 +10221,10 @@ query GetAccountPnlRank {
 | `account_image` | `String` | Profile image URL |
 | `rank` | `bigint` | Leaderboard rank position |
 | `percentile` | `numeric` | Percentile ranking (0-100) |
-| `total_pnl_formatted` | `String` | Total profit/loss (formatted) |
+| `total_pnl_formatted` | `numeric` | Total profit/loss (formatted) |
 | `total_pnl_raw` | `numeric` | Total profit/loss (raw) |
 | `pnl_pct` | `numeric` | PnL percentage |
-| `total_volume_formatted` | `String` | Total trading volume (formatted) |
+| `total_volume_formatted` | `numeric` | Total trading volume (formatted) |
 | `total_volume_raw` | `numeric` | Total trading volume (raw) |
 | `total_position_count` | `bigint` | Total number of positions |
 | `win_rate` | `numeric` | Win rate across positions |
@@ -10238,7 +10237,7 @@ query GetAccountPnlRank {
     query: `query GetAccountPnlRank {
   get_account_pnl_rank(
     args: {
-      p_account_id: "0xd8da6bf26964af9d7eed9e03e53415d37aa96045"
+      p_account_id: "0x88D0aF73508452c1a453356b3Fac26525aEc23A2"
       p_sort_by: "total_pnl"
 
   ) {
@@ -10300,7 +10299,7 @@ async function getAccountRank(accountId: string) {
 ---
 title: "Leaderboard Stats"
 description: "Query aggregate leaderboard statistics for the protocol"
-last_updated: "2026-04-01T08:45:01-04:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/leaderboard/leaderboard-stats"
 ---
 
@@ -10346,15 +10345,15 @@ query GetPnlLeaderboardStats {
 | `profitable_traders` | `bigint` | Number of traders with positive PnL |
 | `unprofitable_traders` | `bigint` | Number of traders with negative PnL |
 | `profitable_pct` | `numeric` | Percentage of profitable traders |
-| `total_pnl_sum_formatted` | `String` | Sum of all PnL across traders (formatted) |
+| `total_pnl_sum_formatted` | `numeric` | Sum of all PnL across traders (formatted) |
 | `total_pnl_sum_raw` | `numeric` | Sum of all PnL across traders (raw) |
-| `avg_pnl_formatted` | `String` | Average PnL per trader (formatted) |
+| `avg_pnl_formatted` | `numeric` | Average PnL per trader (formatted) |
 | `avg_pnl_raw` | `numeric` | Average PnL per trader (raw) |
-| `median_pnl_formatted` | `String` | Median PnL across traders (formatted) |
+| `median_pnl_formatted` | `numeric` | Median PnL across traders (formatted) |
 | `median_pnl_raw` | `numeric` | Median PnL across traders (raw) |
-| `total_volume_formatted` | `String` | Total trading volume across all traders (formatted) |
+| `total_volume_formatted` | `numeric` | Total trading volume across all traders (formatted) |
 | `total_volume_raw` | `numeric` | Total trading volume across all traders (raw) |
-| `avg_volume_formatted` | `String` | Average volume per trader (formatted) |
+| `avg_volume_formatted` | `numeric` | Average volume per trader (formatted) |
 | `avg_volume_raw` | `numeric` | Average volume per trader (raw) |
 
 ## Interactive Example
@@ -10417,7 +10416,7 @@ async function getProtocolStats() {
 ---
 title: "Leaderboard Queries Overview"
 description: "Leaderboard queries for ranking accounts and vaults by PnL performance"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/leaderboard/overview"
 ---
 
@@ -10441,7 +10440,7 @@ The Intuition GraphQL API provides leaderboard queries for ranking accounts and 
 | Operation | Description |
 |-----------|-------------|
 | [`get_vault_leaderboard`](./vault-leaderboard) | Vault-level leaderboard filtered by term and curve |
-| [`get_vault_leaderboard_period`](./vault-leaderboard#period-scoped) | Period-scoped vault leaderboard with date range |
+| [`get_pnl_leaderboard_period`](./vault-leaderboard#period-scoped) | Period-scoped leaderboard with date range (use `p_term_id`/`p_curve_id` for vault scoping) |
 
 ### Account Rank & Stats
 
@@ -10495,7 +10494,7 @@ query {
 ---
 title: "PnL Leaderboard"
 description: "Query the PnL leaderboard to rank accounts by trading performance"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/leaderboard/pnl-leaderboard"
 ---
 
@@ -10576,8 +10575,10 @@ query GetPnlLeaderboard {
 | `total_pnl_raw` | `numeric` | Total PnL (raw wei) |
 | `unrealized_pnl_formatted` | `numeric` | Unrealized PnL (formatted) |
 | `unrealized_pnl_raw` | `numeric` | Unrealized PnL (raw) |
+| `unrealized_pnl_pct` | `numeric` | Unrealized PnL percentage |
 | `realized_pnl_formatted` | `numeric` | Realized PnL (formatted) |
 | `realized_pnl_raw` | `numeric` | Realized PnL (raw) |
+| `realized_pnl_pct` | `numeric` | Realized PnL percentage |
 | `pnl_change_formatted` | `numeric` | PnL change (formatted) |
 | `pnl_change_raw` | `numeric` | PnL change (raw) |
 
@@ -10808,7 +10809,7 @@ Returns `pnl_leaderboard_entry` rows -- see the [full field reference](./pnl-lea
 ---
 title: "Account PnL Chart"
 description: "Query historical Profit and Loss data for charting"
-last_updated: "2026-02-28T21:52:51-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/pnl/account-pnl-chart"
 ---
 
@@ -10849,7 +10850,7 @@ The query takes a single `input` object:
 ```json
 {
   "input": {
-    "account_id": "0xd8da6bf26964af9d7eed9e03e53415d37aa96045",
+    "account_id": "0x88D0aF73508452c1a453356b3Fac26525aEc23A2",
     "interval": "1d",
     "start_time": "2024-01-01T00:00:00Z",
     "end_time": "2024-01-31T23:59:59Z"
@@ -10872,7 +10873,7 @@ The query takes a single `input` object:
 {
   "data": {
     "getAccountPnlChart": {
-      "account_id": "0xd8da6bf26964af9d7eed9e03e53415d37aa96045",
+      "account_id": "0x88D0aF73508452c1a453356b3Fac26525aEc23A2",
       "count": 31,
       "data": [
         {
@@ -10916,7 +10917,7 @@ The query takes a single `input` object:
 }`,
     variables: {
       input: {
-        account_id: '0xd8da6bf26964af9d7eed9e03e53415d37aa96045',
+        account_id: '0x88D0aF73508452c1a453356b3Fac26525aEc23A2',
         interval: '1d',
         start_time: '2024-01-01T00:00:00Z',
         end_time: '2024-01-31T23:59:59Z'
@@ -10979,7 +10980,7 @@ async function getPnlChartData(accountId: string, days: number = 30) {
 ---
 title: "Account PnL Current"
 description: "Query current Profit and Loss snapshot for an account"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/pnl/account-pnl-current"
 ---
 
@@ -11016,7 +11017,7 @@ The query takes a single `input` object:
 ```json
 {
   "input": {
-    "account_id": "0xd8da6bf26964af9d7eed9e03e53415d37aa96045"
+    "account_id": "0x88D0aF73508452c1a453356b3Fac26525aEc23A2"
   }
 }
 ```
@@ -11041,7 +11042,7 @@ The query takes a single `input` object:
 {
   "data": {
     "getAccountPnlCurrent": {
-      "account_id": "0xd8da6bf26964af9d7eed9e03e53415d37aa96045",
+      "account_id": "0x88D0aF73508452c1a453356b3Fac26525aEc23A2",
       "equity_value": "15.234567890123456789",
       "net_invested": "10.000000000000000000",
       "total_pnl": "5.234567890123456789",
@@ -11074,7 +11075,7 @@ The query takes a single `input` object:
 }`,
     variables: {
       input: {
-        account_id: '0xd8da6bf26964af9d7eed9e03e53415d37aa96045'
+        account_id: '0x88D0aF73508452c1a453356b3Fac26525aEc23A2'
 
 ];
 
@@ -11124,7 +11125,7 @@ console.log(`Total PnL: ${pnl.total_pnl} (${pnl.pnl_pct}%)`)
 ---
 title: "Account PnL Realized"
 description: "Query realized Profit and Loss data for an account"
-last_updated: "2026-02-28T21:52:51-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/pnl/account-pnl-realized"
 ---
 
@@ -11166,7 +11167,7 @@ The query takes a single `input` object:
 ```json
 {
   "input": {
-    "account_id": "0xd8da6bf26964af9d7eed9e03e53415d37aa96045",
+    "account_id": "0x88D0aF73508452c1a453356b3Fac26525aEc23A2",
     "start_time": "2024-01-01T00:00:00Z",
     "end_time": "2024-01-31T23:59:59Z"
   }
@@ -11187,7 +11188,7 @@ The query takes a single `input` object:
 {
   "data": {
     "getAccountPnlRealized": {
-      "account_id": "0xd8da6bf26964af9d7eed9e03e53415d37aa96045",
+      "account_id": "0x88D0aF73508452c1a453356b3Fac26525aEc23A2",
       "count": 5,
       "data": [
         {
@@ -11225,7 +11226,7 @@ The query takes a single `input` object:
 }`,
     variables: {
       input: {
-        account_id: '0xd8da6bf26964af9d7eed9e03e53415d37aa96045',
+        account_id: '0x88D0aF73508452c1a453356b3Fac26525aEc23A2',
         start_time: '2024-01-01T00:00:00Z',
         end_time: '2024-01-31T23:59:59Z'
 
@@ -11284,7 +11285,7 @@ async function getRealizedPnl(accountId: string, days: number = 30) {
 ---
 title: "PnL Queries Overview"
 description: "Profit and Loss (PnL) queries for tracking account and position performance"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/pnl/overview"
 ---
 
@@ -11333,7 +11334,7 @@ query GetAccountPnlCurrent($input: GetAccountPnlCurrentInput!) {
 ```json
 {
   "input": {
-    "account_id": "0xd8da6bf26964af9d7eed9e03e53415d37aa96045"
+    "account_id": "0x88D0aF73508452c1a453356b3Fac26525aEc23A2"
   }
 }
 ```
@@ -11369,7 +11370,7 @@ Generate performance reports with:
 ---
 title: "Position PnL Chart"
 description: "Query historical Profit and Loss data for a specific position"
-last_updated: "2026-02-28T21:52:51-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/pnl/position-pnl-chart"
 ---
 
@@ -11416,8 +11417,8 @@ The query takes a single `input` object:
 ```json
 {
   "input": {
-    "account_id": "0xd8da6bf26964af9d7eed9e03e53415d37aa96045",
-    "term_id": "0x57d94c116a33bb460428eced262b7ae2ec6f865e7aceef6357cec3d034e8ea21",
+    "account_id": "0x88D0aF73508452c1a453356b3Fac26525aEc23A2",
+    "term_id": "0x906527aae4af914b1ac01ff9adfdda5dafde3b5e21f84045e0660b0a15c07769",
     "curve_id": "1",
     "interval": "1d",
     "start_time": "2024-01-01T00:00:00Z",
@@ -11443,8 +11444,8 @@ The query takes a single `input` object:
 {
   "data": {
     "getPositionPnlChart": {
-      "account_id": "0xd8da6bf26964af9d7eed9e03e53415d37aa96045",
-      "term_id": "0x57d94c116a33bb460428eced262b7ae2ec6f865e7aceef6357cec3d034e8ea21",
+      "account_id": "0x88D0aF73508452c1a453356b3Fac26525aEc23A2",
+      "term_id": "0x906527aae4af914b1ac01ff9adfdda5dafde3b5e21f84045e0660b0a15c07769",
       "curve_id": "1",
       "count": 31,
       "data": [
@@ -11493,8 +11494,8 @@ The query takes a single `input` object:
 }`,
     variables: {
       input: {
-        account_id: '0xd8da6bf26964af9d7eed9e03e53415d37aa96045',
-        term_id: '0x57d94c116a33bb460428eced262b7ae2ec6f865e7aceef6357cec3d034e8ea21',
+        account_id: '0x88D0aF73508452c1a453356b3Fac26525aEc23A2',
+        term_id: '0x906527aae4af914b1ac01ff9adfdda5dafde3b5e21f84045e0660b0a15c07769',
         curve_id: '1',
         interval: '1d',
         start_time: '2024-01-01T00:00:00Z',
@@ -11567,7 +11568,7 @@ async function getPositionPerformance(
 ---
 title: "Search Queries"
 description: "Search atoms, terms, and positions"
-last_updated: "2026-02-28T21:52:51-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/search/overview"
 ---
 
@@ -11593,9 +11594,9 @@ const client = new GraphQLClient(API_URL_PROD)
 
 // Search for atoms
 const query = `
-  query SearchTerms($search: String!, $limit: Int!) {
+  query SearchTerms($query: String!, $limit: Int!) {
     search_term(
-      args: { search: $search }
+      args: { query: $query }
       limit: $limit
     ) {
       id
@@ -11630,7 +11631,7 @@ const data = await client.request(query, {
 ---
 title: "Search from Following"
 description: "Search within followed accounts' activity"
-last_updated: "2026-02-28T21:52:51-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/search/search-from-following"
 ---
 
@@ -11678,7 +11679,7 @@ query SearchTermFromFollowing(
 
 ```json
 {
-  "address": "0xd8da6bf26964af9d7eed9e03e53415d37aa96045",
+  "address": "0x88D0aF73508452c1a453356b3Fac26525aEc23A2",
   "query": "defi",
   "limit": 10
 }
@@ -11774,7 +11775,7 @@ function SocialSearch({ address }: { address: string }) {
 ---
 title: "Search Positions"
 description: "Search positions on a specific subject"
-last_updated: "2026-02-28T21:52:51-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/search/search-positions"
 ---
 
@@ -11831,7 +11832,7 @@ query SearchPositionsOnSubject(
 
 ```json
 {
-  "addresses": "{0xd8da6bf26964af9d7eed9e03e53415d37aa96045}",
+  "addresses": "{0x88D0aF73508452c1a453356b3Fac26525aEc23A2}",
   "searchFields": {},
   "limit": 20
 }
@@ -11915,7 +11916,7 @@ async function getPositionsForAccounts(addresses: string[]) {
 ---
 title: "Search Term"
 description: "Search atoms and terms by text"
-last_updated: "2026-02-28T21:52:51-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/search/search-term"
 ---
 
@@ -11975,8 +11976,8 @@ The function returns `terms` rows. Metadata fields like `label`, `image`, and `c
 | Field | Type | Description |
 |-------|------|-------------|
 | `id` | `String` | Unique term identifier |
-| `type` | `String` | Term type |
-| `created_at` | `DateTime` | Creation timestamp |
+| `type` | `term_type` | Term type |
+| `created_at` | `timestamptz` | Creation timestamp |
 | `atom` | `atoms` | Related atom with metadata (label, image, creator) |
 | `atom.label` | `String` | Human-readable label |
 | `atom.image` | `String` | Image URL (IPFS) |
@@ -11989,14 +11990,14 @@ The function returns `terms` rows. Metadata fields like `label`, `image`, and `c
   "data": {
     "search_term": [
       {
-        "id": "0x57d94c116a33bb460428eced262b7ae2ec6f865e7aceef6357cec3d034e8ea21",
+        "id": "0x906527aae4af914b1ac01ff9adfdda5dafde3b5e21f84045e0660b0a15c07769",
         "type": "Thing",
         "created_at": "2024-01-01T00:00:00Z",
         "atom": {
           "label": "Ethereum",
           "image": "ipfs://QmXnnyufdzAWL5CqZ2RnSNgPbvCc1ALT73s6epPrRnZ1Xy",
           "creator": {
-            "id": "0xd8da6bf26964af9d7eed9e03e53415d37aa96045",
+            "id": "0x88D0aF73508452c1a453356b3Fac26525aEc23A2",
             "label": "vitalik.eth",
             "image": "ipfs://Qm..."
           }
@@ -12134,7 +12135,7 @@ async function searchByType(
 ---
 title: "Aggregate Signals"
 description: "Aggregate statistics for signals"
-last_updated: "2026-02-28T21:52:51-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/signals/aggregate-signals"
 ---
 
@@ -12270,7 +12271,7 @@ query GetSignalsAggregate($where: signals_bool_exp) {
 
 }`,
     variables: {
-      account_id: '0xd8da6bf26964af9d7eed9e03e53415d37aa96045'
+      account_id: '0x88D0aF73508452c1a453356b3Fac26525aEc23A2'
 
 ];
 
@@ -12440,7 +12441,7 @@ query GetSignalsByAtom {
 ---
 title: "List Signals"
 description: "Query signals (deposits/redemptions) with filtering and pagination"
-last_updated: "2026-02-28T21:52:51-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/signals/list-signals"
 ---
 
@@ -12509,14 +12510,18 @@ query GetSignals(
 | Field | Type | Description |
 |-------|------|-------------|
 | `id` | `String` | Unique signal identifier |
-| `delta` | `String` | Amount in wei |
+| `delta` | `numeric` | Amount in wei |
 | `account_id` | `String` | Account address |
-| `account` | `Account` | Account details with label/image |
+| `account` | `accounts` | Account details with label/image |
 | `atom_id` | `String` | Related atom ID (if atom signal) |
-| `term` | `Term` | Related term (contains nested `atom` with label/image) |
+| `term` | `terms` | Related term (contains nested `atom` with label/image) |
+| `term_id` | `String` | Related term ID |
 | `triple_id` | `String` | Related triple ID (if triple signal) |
-| `block_number` | `Int` | Block number |
-| `created_at` | `DateTime` | Event timestamp |
+| `curve_id` | `numeric` | Bonding curve ID |
+| `deposit_id` | `String` | Related deposit ID (non-null for deposits) |
+| `redemption_id` | `String` | Related redemption ID (non-null for redemptions) |
+| `block_number` | `numeric` | Block number |
+| `created_at` | `timestamptz` | Event timestamp |
 | `transaction_hash` | `String` | Transaction hash |
 
 ## Expected Response
@@ -12528,9 +12533,9 @@ query GetSignals(
       {
         "id": "0x123...-1",
         "delta": "1000000000000000000",
-        "account_id": "0xd8da6bf26964af9d7eed9e03e53415d37aa96045",
+        "account_id": "0x88D0aF73508452c1a453356b3Fac26525aEc23A2",
         "account": {
-          "id": "0xd8da6bf26964af9d7eed9e03e53415d37aa96045",
+          "id": "0x88D0aF73508452c1a453356b3Fac26525aEc23A2",
           "label": "vitalik.eth",
           "image": "ipfs://Qm..."
         },
@@ -12593,7 +12598,7 @@ query GetSignals(
 
 }`,
     variables: {
-      account_id: '0xd8da6bf26964af9d7eed9e03e53415d37aa96045',
+      account_id: '0x88D0aF73508452c1a453356b3Fac26525aEc23A2',
       limit: 20
 
   },
@@ -12787,7 +12792,7 @@ signals(where: { triple_id: { _eq: "0x..." } })
 ---
 title: "Signals Queries"
 description: "Query deposit and redemption signals with rich context"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/signals/overview"
 ---
 
@@ -12828,18 +12833,21 @@ const client = new GraphQLClient(API_URL_PROD)
 // Get recent signals
 const query = `
   query GetSignals($limit: Int!) {
-    signals(limit: $limit, order_by: { block_timestamp: desc }) {
+    signals(limit: $limit, order_by: { created_at: desc }) {
       id
-      signal_type
       delta
       account {
         label
         image
       }
-      atom {
-        label
+      term {
+        atom {
+          label
+        }
       }
-      block_timestamp
+      deposit_id
+      redemption_id
+      created_at
     }
   }
 `
@@ -12849,16 +12857,21 @@ const data = await client.request(query, { limit: 20 })
 
 ## Signal Types
 
-| Type | Description |
-|------|-------------|
-| `Deposit` | Staking ETH on a position |
-| `Redemption` | Withdrawing from a position |
+Signals don't have an explicit `type` field. Instead, distinguish deposits from redemptions by checking which ID is present:
+
+| Condition | Meaning |
+|-----------|---------|
+| `deposit_id` is not null | Deposit — staking ETH on a position |
+| `redemption_id` is not null | Redemption — withdrawing from a position |
 
 ## Common Filters
 
 ```graphql
-# Filter by signal type
-signals(where: { signal_type: { _eq: "Deposit" } })
+# Filter for deposits only
+signals(where: { deposit_id: { _is_null: false } })
+
+# Filter for redemptions only
+signals(where: { redemption_id: { _is_null: false } })
 
 # Filter by account
 signals(where: { account_id: { _eq: "0x..." } })
@@ -12868,7 +12881,7 @@ signals(where: { atom_id: { _eq: "0x..." } })
 
 # Filter by date range
 signals(where: {
-  block_timestamp: {
+  created_at: {
     _gte: "2024-01-01T00:00:00Z",
     _lte: "2024-01-31T23:59:59Z"
   }
@@ -12885,7 +12898,7 @@ signals(where: {
 ---
 title: "Signals from Following"
 description: "Query signals from accounts you follow"
-last_updated: "2026-02-28T21:52:51-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/signals/signals-from-following"
 ---
 
@@ -12940,7 +12953,7 @@ query GetSignalsFromFollowing(
 
 ```json
 {
-  "account_id": "0xd8da6bf26964af9d7eed9e03e53415d37aa96045",
+  "account_id": "0x88D0aF73508452c1a453356b3Fac26525aEc23A2",
   "limit": 20,
   "offset": 0
 }
@@ -12951,11 +12964,11 @@ query GetSignalsFromFollowing(
 | Field | Type | Description |
 |-------|------|-------------|
 | `id` | `String` | Signal identifier |
-| `delta` | `String` | Amount in wei |
-| `account` | `Account` | Account that made the signal |
-| `term` | `Term` | Related term (contains nested `atom` with label/image) |
+| `delta` | `numeric` | Amount in wei |
+| `account` | `accounts` | Account that made the signal |
+| `term` | `terms` | Related term (contains nested `atom` with label/image) |
 | `triple_id` | `String` | Related triple ID (if triple signal) |
-| `created_at` | `DateTime` | Event timestamp |
+| `created_at` | `timestamptz` | Event timestamp |
 
 ## Expected Response
 
@@ -13010,7 +13023,7 @@ query GetSignalsFromFollowing(
 
 }`,
     variables: {
-      account_id: '0xd8da6bf26964af9d7eed9e03e53415d37aa96045',
+      account_id: '0x88D0aF73508452c1a453356b3Fac26525aEc23A2',
       limit: 10
 
   },
@@ -13037,7 +13050,7 @@ query GetSignalsFromFollowing(
 
 }`,
     variables: {
-      account_id: '0xd8da6bf26964af9d7eed9e03e53415d37aa96045',
+      account_id: '0x88D0aF73508452c1a453356b3Fac26525aEc23A2',
       limit: 10
 
 ];
@@ -13378,7 +13391,7 @@ protocol_fee_accruals(where: {
 ---
 title: "Fee Transfers"
 description: "Query protocol fee transfer events"
-last_updated: "2026-02-28T21:52:51-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/stats/fee-transfers"
 ---
 
@@ -13440,13 +13453,13 @@ query GetFeeTransfers(
 | Field | Type | Description |
 |-------|------|-------------|
 | `id` | `String` | Transfer identifier |
-| `amount` | `String` | Fee amount in wei |
+| `amount` | `numeric` | Fee amount in wei |
 | `sender_id` | `String` | Account that paid the fee |
-| `sender` | `Account` | Sender account details |
+| `sender` | `accounts` | Sender account details |
 | `receiver_id` | `String` | Protocol fee receiver address |
-| `receiver` | `Account` | Receiver details |
-| `block_number` | `Int` | Block number |
-| `created_at` | `DateTime` | Transfer timestamp |
+| `receiver` | `accounts` | Receiver details |
+| `block_number` | `numeric` | Block number |
+| `created_at` | `timestamptz` | Transfer timestamp |
 | `transaction_hash` | `String` | Transaction hash |
 
 ## Expected Response
@@ -13709,7 +13722,7 @@ const data = await client.request(query)
 ---
 title: "Protocol Statistics"
 description: "Query protocol-wide statistics and metrics"
-last_updated: "2026-02-28T21:52:51-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/stats/protocol-stats"
 ---
 
@@ -13739,15 +13752,17 @@ query GetProtocolStats {
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `id` | `String` | Stats record ID |
+| `id` | `Int` | Stats record ID |
 | `total_atoms` | `Int` | Total atoms created |
 | `total_triples` | `Int` | Total triples created |
 | `total_positions` | `Int` | Total active positions |
 | `total_signals` | `Int` | Total signals (deposits + redemptions) |
 | `total_accounts` | `Int` | Unique accounts that have interacted |
-| `total_fees` | `String` | Total protocol fees in wei |
-| `contract_balance` | `String` | Current contract balance in wei |
-| `last_updated` | `DateTime` | Last update timestamp |
+| `total_fees` | `numeric` | Total protocol fees in wei |
+| `contract_balance` | `numeric` | Current contract balance in wei |
+| `last_updated` | `timestamptz` | Last update timestamp |
+| `last_processed_block_number` | `numeric` | Last indexed block number |
+| `last_processed_block_timestamp` | `timestamptz` | Last indexed block timestamp |
 
 ## Expected Response
 
@@ -13881,7 +13896,7 @@ function ProtocolStats() {
 ---
 title: "Counter Triples"
 description: "Query opposing triple positions"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/triples/counter-triples"
 ---
 
@@ -13939,7 +13954,7 @@ query GetTripleWithCounter($id: String!, $curveId: numeric!) {
 
 }`,
     variables: {
-      id: '0xffb30efde2b49a7deadd920a7df684595ed4a291a582033c16b0795796965600',
+      id: '0xc39405b4f656ea919f9118c2b4abee33cdd7a7fb2e3811b282786ce7cf7ea913',
       curveId: '2'
 
 ];
@@ -14016,7 +14031,7 @@ query GetPredicateObjects($predicateId: String!, $limit: Int!) {
 ---
 title: "Filter Triples by Subject"
 description: "Find all triples with a specific atom as subject"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/triples/filter-by-subject"
 ---
 
@@ -14057,7 +14072,7 @@ query GetTriplesBySubject($subjectId: String!, $limit: Int!) {
 
 }`,
     variables: {
-      subjectId: '0xf12dba36ffebb8e05ae49d3f9220b1994295662ccdc573f44aff7b51f8ad8fd6',
+      subjectId: '0x906527aae4af914b1ac01ff9adfdda5dafde3b5e21f84045e0660b0a15c07769',
       limit: 20
 
 ];
@@ -14109,7 +14124,7 @@ query GetNestedTriples($subjectId: String!, $depth: Int!) {
 ---
 title: "Single Triple Query"
 description: "Fetch individual triple details by term ID"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/triples/single-triple"
 ---
 
@@ -14156,7 +14171,7 @@ query GetTriple($id: String!) {
 
 }`,
     variables: {
-      id: '0xffb30efde2b49a7deadd920a7df684595ed4a291a582033c16b0795796965600'
+      id: '0xc39405b4f656ea919f9118c2b4abee33cdd7a7fb2e3811b282786ce7cf7ea913'
 
   },
 
@@ -14181,7 +14196,7 @@ query GetTriple($id: String!) {
 
 }`,
     variables: {
-      id: '0xffb30efde2b49a7deadd920a7df684595ed4a291a582033c16b0795796965600',
+      id: '0xc39405b4f656ea919f9118c2b4abee33cdd7a7fb2e3811b282786ce7cf7ea913',
       curveId: '2'
 
 ];
@@ -14196,7 +14211,7 @@ query GetTriple($id: String!) {
 ---
 title: "Subject Predicates"
 description: "Query subject-predicate relationship aggregates"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/triples/subject-predicates"
 ---
 
@@ -14293,7 +14308,7 @@ query GetSubjectPredicate($subjectId: String!, $predicateId: String!) {
 
 }`,
     variables: {
-      subjectId: '0x57d94c116a33bb460428eced262b7ae2ec6f865e7aceef6357cec3d034e8ea21',
+      subjectId: '0x906527aae4af914b1ac01ff9adfdda5dafde3b5e21f84045e0660b0a15c07769',
       limit: 10
 
 ];
@@ -14606,7 +14621,7 @@ query GetTransactionHistory($termId: String!, $curveId: numeric!, $limit: Int!) 
 ---
 title: "Position Changes"
 description: "Track position change history with daily and hourly aggregates"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/vaults/position-changes"
 ---
 
@@ -14769,7 +14784,7 @@ The hourly view has the same fields as daily. The `transaction_count` type is `b
 
 }`,
     variables: {
-      accountId: '0xd8da6bf26964af9d7eed9e03e53415d37aa96045',
+      accountId: '0x88D0aF73508452c1a453356b3Fac26525aEc23A2',
       limit: 20
 
   },
@@ -14791,7 +14806,7 @@ The hourly view has the same fields as daily. The `transaction_count` type is `b
 
 }`,
     variables: {
-      accountId: '0xd8da6bf26964af9d7eed9e03e53415d37aa96045',
+      accountId: '0x88D0aF73508452c1a453356b3Fac26525aEc23A2',
       limit: 30
 
 ];
@@ -14849,7 +14864,7 @@ async function getPositionActivity(accountId: string, termId: string) {
 ---
 title: "Positions with Value"
 description: "Query positions enriched with computed PnL and value data"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/vaults/positions-with-value"
 ---
 
@@ -14934,7 +14949,7 @@ query GetPositionsWithValue($accountId: String!, $limit: Int!) {
 
 }`,
     variables: {
-      accountId: '0xd8da6bf26964af9d7eed9e03e53415d37aa96045',
+      accountId: '0x88D0aF73508452c1a453356b3Fac26525aEc23A2',
       limit: 10
 
 ];
@@ -15114,7 +15129,7 @@ query GetTopVaults($curveId: numeric!, $limit: Int!) {
 ---
 title: "User Positions"
 description: "Query user positions in vaults"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/vaults/user-positions"
 ---
 
@@ -15168,7 +15183,7 @@ query GetUserPositions($accountId: String!, $limit: Int!) {
 
 }`,
     variables: {
-      accountId: '0xd8da6bf26964af9d7eed9e03e53415d37aa96045',
+      accountId: '0x88D0aF73508452c1a453356b3Fac26525aEc23A2',
       limit: 20
 
 ];
@@ -15183,7 +15198,7 @@ query GetUserPositions($accountId: String!, $limit: Int!) {
 ---
 title: "Vault Details"
 description: "Query vault statistics and information"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/vaults/vault-details"
 ---
 
@@ -15228,7 +15243,7 @@ query GetVault($termId: String!, $curveId: numeric!) {
 
 }`,
     variables: {
-      termId: '0x57d94c116a33bb460428eced262b7ae2ec6f865e7aceef6357cec3d034e8ea21',
+      termId: '0x906527aae4af914b1ac01ff9adfdda5dafde3b5e21f84045e0660b0a15c07769',
       curveId: '1'
 
 ];

@@ -1574,7 +1574,7 @@ There are a few ways to get started with this GraphQL API, depending on the leve
 ---
 title: "Following Query"
 description: "Query following relationships in the social graph"
-last_updated: "2026-02-28T21:52:51-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/accounts/following"
 ---
 
@@ -1664,7 +1664,7 @@ Query multiple accounts with filtering, sorting, and pagination.
 ---
 title: "Account Queries"
 description: "Query account data, social relationships, and positions"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/accounts/overview"
 ---
 
@@ -1694,7 +1694,7 @@ Accounts represent Ethereum addresses that have interacted with the Intuition pr
 ---
 title: "Positions from Following"
 description: "Query positions held by accounts you follow"
-last_updated: "2026-02-28T21:52:51-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/accounts/positions-from-following"
 ---
 
@@ -1728,7 +1728,7 @@ Query positions (stakes) held by accounts that a user follows. This enables buil
 ---
 title: "Single Account Query"
 description: "Query individual account details by address"
-last_updated: "2026-02-28T21:52:51-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/accounts/single-account"
 ---
 
@@ -1747,9 +1747,9 @@ Fetch detailed information about a specific account using its Ethereum address.
 | `id` | `String` | Account address (primary key) |
 | `label` | `String` | Human-readable name (from atom or ENS) |
 | `image` | `String` | Profile image URL |
-| `type` | `String` | Account type: `Default`, `AtomWallet`, `ProtocolVault` |
+| `type` | `account_type` | Account type: `Default`, `AtomWallet`, `ProtocolVault` |
 | `atom_id` | `String` | Linked atom ID (if any) |
-| `atom` | `Atom` | Linked atom details |
+| `atom` | `atoms` | Linked atom details |
 
 ## Expected Response
 
@@ -1875,7 +1875,7 @@ Use the denormalized `predicate_objects` table for efficient collection queries.
 ---
 title: "Time-Series Analysis"
 description: "Query pre-computed time-series aggregations for share prices, signals, and market state"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/advanced/time-series"
 ---
 
@@ -1902,7 +1902,7 @@ Track share price movements over time for any term/curve combination.
 ---
 title: "List and Filter Atoms"
 description: "Filter atoms by type, creator, date, and other criteria"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/atoms/list-filter"
 ---
 
@@ -2007,7 +2007,7 @@ Search atoms using pattern matching and semantic search capabilities.
 ---
 title: "Single Atom Query"
 description: "Fetch individual atom details by term ID"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/atoms/single-atom"
 ---
 
@@ -2041,7 +2041,7 @@ Fetch detailed information about a specific atom using its term ID. This is the 
 
 }`,
     variables: {
-      id: '0x57d94c116a33bb460428eced262b7ae2ec6f865e7aceef6357cec3d034e8ea21'
+      id: '0x39ad516aba15924381204ce477cf4d2b5313200814691e5376961673866ba4e3'
 
   },
 
@@ -2070,7 +2070,7 @@ Fetch detailed information about a specific atom using its term ID. This is the 
 ---
 title: "Atom with Related Triples"
 description: "Find triples where an atom appears as subject, predicate, or object"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/atoms/with-triples"
 ---
 
@@ -2101,7 +2101,7 @@ Discover relationships by finding all triples where an atom appears as subject, 
 
 }`,
     variables: {
-      atomId: '0xf12dba36ffebb8e05ae49d3f9220b1994295662ccdc573f44aff7b51f8ad8fd6',
+      atomId: '0x906527aae4af914b1ac01ff9adfdda5dafde3b5e21f84045e0660b0a15c07769',
       limit: 10
 
   },
@@ -2116,7 +2116,7 @@ Discover relationships by finding all triples where an atom appears as subject, 
 ---
 title: "Atom with Vault Details"
 description: "Query atoms with nested vault information and statistics"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/atoms/with-vault"
 ---
 
@@ -2146,7 +2146,7 @@ Fetch atom data along with associated vault statistics, including total shares, 
 
 }`,
     variables: {
-      atomId: '0x57d94c116a33bb460428eced262b7ae2ec6f865e7aceef6357cec3d034e8ea21',
+      atomId: '0x906527aae4af914b1ac01ff9adfdda5dafde3b5e21f84045e0660b0a15c07769',
       curveId: '1'
 
   },
@@ -2164,7 +2164,7 @@ Fetch atom data along with associated vault statistics, including total shares, 
 ---
 title: "Get Chart JSON"
 description: "Get chart data as structured JSON"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/charts/chart-json"
 ---
 
@@ -2190,7 +2190,7 @@ The query takes a single `input` object of type `GetChartJsonInput`:
 ---
 title: "Get Chart Raw JSON"
 description: "Get raw chart data as JSON"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/charts/chart-raw-json"
 ---
 
@@ -2216,7 +2216,7 @@ Same as [`getChartJson`](./chart-json) -- takes `GetChartJsonInput`:
 ---
 title: "Get Chart Raw SVG"
 description: "Get minimal raw SVG chart output"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/charts/chart-raw-svg"
 ---
 
@@ -2242,7 +2242,7 @@ Same as [`getChartSvg`](./chart-svg) -- takes `GetChartSvgInput`:
 ---
 title: "Get Chart SVG"
 description: "Get chart rendered as SVG"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/charts/chart-svg"
 ---
 
@@ -2324,7 +2324,7 @@ Query aggregate statistics for blockchain events.
 ---
 title: "List Events"
 description: "Query raw blockchain events with filtering"
-last_updated: "2026-02-28T21:52:51-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/events/list-events"
 ---
 
@@ -2341,8 +2341,8 @@ Query raw blockchain events with filtering, sorting, and pagination.
 | Field | Type | Description |
 |-------|------|-------------|
 | `id` | `String` | Unique event identifier |
-| `type` | `String` | Event type |
-| `block_number` | `Int` | Block number |
+| `type` | `event_type` | Event type (enum) |
+| `block_number` | `numeric` | Block number |
 | `created_at` | `timestamptz` | Event timestamp |
 | `transaction_hash` | `String` | Transaction hash |
 | `atom_id` | `String` | Related atom ID (if applicable) |
@@ -2394,7 +2394,7 @@ Events are blockchain log entries emitted by smart contracts. The Intuition inde
 ---
 title: "Account PnL Rank"
 description: "Query a single account's leaderboard rank and percentile"
-last_updated: "2026-04-01T08:45:01-04:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/leaderboard/account-rank"
 ---
 
@@ -2425,7 +2425,7 @@ Look up a single account's leaderboard rank and percentile using `get_account_pn
 ---
 title: "Leaderboard Stats"
 description: "Query aggregate leaderboard statistics for the protocol"
-last_updated: "2026-04-01T08:45:01-04:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/leaderboard/leaderboard-stats"
 ---
 
@@ -2454,7 +2454,7 @@ Get aggregate protocol-level statistics using `get_pnl_leaderboard_stats`. Retur
 ---
 title: "Leaderboard Queries Overview"
 description: "Leaderboard queries for ranking accounts and vaults by PnL performance"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/leaderboard/overview"
 ---
 
@@ -2478,16 +2478,14 @@ The Intuition GraphQL API provides leaderboard queries for ranking accounts and 
 | Operation | Description |
 |-----------|-------------|
 | [`get_vault_leaderboard`](./vault-leaderboard) | Vault-level leaderboard filtered by term and curve |
-| [`get_vault_leaderboard_period`](./vault-leaderboard#period-scoped) | Period-scoped vault leaderboard with date range |
-
-### Account Rank & Stats
+| [`get_pnl_leaderboard_period`](./vault-leaderboard#period-scoped) | Period-scoped leaderboard with date range (use `p_term_id`/`p_curve_id` for vault scoping) |
 
 [... see full docs for complete content]
 
 ---
 title: "PnL Leaderboard"
 description: "Query the PnL leaderboard to rank accounts by trading performance"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/leaderboard/pnl-leaderboard"
 ---
 
@@ -2539,7 +2537,7 @@ Rank accounts within specific vaults using `get_vault_leaderboard` and `get_pnl_
 ---
 title: "Account PnL Chart"
 description: "Query historical Profit and Loss data for charting"
-last_updated: "2026-02-28T21:52:51-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/pnl/account-pnl-chart"
 ---
 
@@ -2564,7 +2562,7 @@ The query takes a single `input` object:
 ---
 title: "Account PnL Current"
 description: "Query current Profit and Loss snapshot for an account"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/pnl/account-pnl-current"
 ---
 
@@ -2594,7 +2592,7 @@ The query takes a single `input` object:
 ---
 title: "Account PnL Realized"
 description: "Query realized Profit and Loss data for an account"
-last_updated: "2026-02-28T21:52:51-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/pnl/account-pnl-realized"
 ---
 
@@ -2624,7 +2622,7 @@ The query takes a single `input` object:
 ---
 title: "PnL Queries Overview"
 description: "Profit and Loss (PnL) queries for tracking account and position performance"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/pnl/overview"
 ---
 
@@ -2647,7 +2645,7 @@ The Intuition GraphQL API provides Profit and Loss (PnL) queries to track portfo
 ---
 title: "Position PnL Chart"
 description: "Query historical Profit and Loss data for a specific position"
-last_updated: "2026-02-28T21:52:51-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/pnl/position-pnl-chart"
 ---
 
@@ -2672,7 +2670,7 @@ The query takes a single `input` object:
 ---
 title: "Search Queries"
 description: "Search atoms, terms, and positions"
-last_updated: "2026-02-28T21:52:51-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/search/overview"
 ---
 
@@ -2706,7 +2704,7 @@ Search the Intuition knowledge graph for atoms, terms, and positions using text-
 ---
 title: "Search from Following"
 description: "Search within followed accounts' activity"
-last_updated: "2026-02-28T21:52:51-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/search/search-from-following"
 ---
 
@@ -2740,7 +2738,7 @@ Search prioritizing content from your network:
 ---
 title: "Search Positions"
 description: "Search positions on a specific subject"
-last_updated: "2026-02-28T21:52:51-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/search/search-positions"
 ---
 
@@ -2765,7 +2763,7 @@ Search for positions (stakes) related to a specific subject. This function takes
 ---
 title: "Search Term"
 description: "Search atoms and terms by text"
-last_updated: "2026-02-28T21:52:51-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/search/search-term"
 ---
 
@@ -2796,7 +2794,7 @@ The function returns `terms` rows. Metadata fields like `label`, `image`, and `c
 ---
 title: "Aggregate Signals"
 description: "Aggregate statistics for signals"
-last_updated: "2026-02-28T21:52:51-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/signals/aggregate-signals"
 ---
 
@@ -2832,7 +2830,7 @@ Query aggregate statistics for signals including counts, sums, and averages.
 ---
 title: "List Signals"
 description: "Query signals (deposits/redemptions) with filtering and pagination"
-last_updated: "2026-02-28T21:52:51-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/signals/list-signals"
 ---
 
@@ -2856,7 +2854,7 @@ Query deposit and redemption signals with rich filtering, sorting, and paginatio
 | Field | Type | Description |
 |-------|------|-------------|
 | `id` | `String` | Unique signal identifier |
-| `delta` | `String` | Amount in wei |
+| `delta` | `numeric` | Amount in wei |
 | `account_id` | `String` | Account address |
 
 [... see full docs for complete content]
@@ -2864,7 +2862,7 @@ Query deposit and redemption signals with rich filtering, sorting, and paginatio
 ---
 title: "Signals Queries"
 description: "Query deposit and redemption signals with rich context"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/signals/overview"
 ---
 
@@ -2894,7 +2892,7 @@ Each signal includes:
 ---
 title: "Signals from Following"
 description: "Query signals from accounts you follow"
-last_updated: "2026-02-28T21:52:51-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/signals/signals-from-following"
 ---
 
@@ -2949,7 +2947,7 @@ Query protocol fee accrual records. Fee accruals track protocol fees accumulated
 ---
 title: "Fee Transfers"
 description: "Query protocol fee transfer events"
-last_updated: "2026-02-28T21:52:51-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/stats/fee-transfers"
 ---
 
@@ -2966,12 +2964,12 @@ Query protocol fee transfers - the fees collected by the protocol on each transa
 | Field | Type | Description |
 |-------|------|-------------|
 | `id` | `String` | Transfer identifier |
-| `amount` | `String` | Fee amount in wei |
+| `amount` | `numeric` | Fee amount in wei |
 | `sender_id` | `String` | Account that paid the fee |
-| `sender` | `Account` | Sender account details |
+| `sender` | `accounts` | Sender account details |
 | `receiver_id` | `String` | Protocol fee receiver address |
-| `receiver` | `Account` | Receiver details |
-| `block_number` | `Int` | Block number |
+| `receiver` | `accounts` | Receiver details |
+| `block_number` | `numeric` | Block number |
 
 [... see full docs for complete content]
 
@@ -3011,7 +3009,7 @@ Query protocol-wide statistics including total value locked (TVL), fee transfers
 ---
 title: "Protocol Statistics"
 description: "Query protocol-wide statistics and metrics"
-last_updated: "2026-02-28T21:52:51-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/stats/protocol-stats"
 ---
 
@@ -3025,20 +3023,20 @@ Query aggregate statistics for the entire Intuition protocol.
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `id` | `String` | Stats record ID |
+| `id` | `Int` | Stats record ID |
 | `total_atoms` | `Int` | Total atoms created |
 | `total_triples` | `Int` | Total triples created |
 | `total_positions` | `Int` | Total active positions |
 | `total_signals` | `Int` | Total signals (deposits + redemptions) |
 | `total_accounts` | `Int` | Unique accounts that have interacted |
-| `total_fees` | `String` | Total protocol fees in wei |
+| `total_fees` | `numeric` | Total protocol fees in wei |
 
 [... see full docs for complete content]
 
 ---
 title: "Counter Triples"
 description: "Query opposing triple positions"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/triples/counter-triples"
 ---
 
@@ -3073,7 +3071,7 @@ Query triples along with their counter (opposing) triples to see both sides of a
 
 }`,
     variables: {
-      id: '0xffb30efde2b49a7deadd920a7df684595ed4a291a582033c16b0795796965600',
+      id: '0xc39405b4f656ea919f9118c2b4abee33cdd7a7fb2e3811b282786ce7cf7ea913',
       curveId: '2'
 
 ];
@@ -3128,7 +3126,7 @@ Use the denormalized `predicate_objects` table to efficiently query pre-aggregat
 ---
 title: "Filter Triples by Subject"
 description: "Find all triples with a specific atom as subject"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/triples/filter-by-subject"
 ---
 
@@ -3155,7 +3153,7 @@ Query all triples where a specific atom is the subject.
 
 }`,
     variables: {
-      subjectId: '0xf12dba36ffebb8e05ae49d3f9220b1994295662ccdc573f44aff7b51f8ad8fd6',
+      subjectId: '0x906527aae4af914b1ac01ff9adfdda5dafde3b5e21f84045e0660b0a15c07769',
       limit: 20
 
 ];
@@ -3190,7 +3188,7 @@ Query triples with nested relationships to explore the knowledge graph.
 ---
 title: "Single Triple Query"
 description: "Fetch individual triple details by term ID"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/triples/single-triple"
 ---
 
@@ -3214,7 +3212,7 @@ Fetch detailed information about a specific triple using its term ID.
 
 }`,
     variables: {
-      id: '0xffb30efde2b49a7deadd920a7df684595ed4a291a582033c16b0795796965600'
+      id: '0xc39405b4f656ea919f9118c2b4abee33cdd7a7fb2e3811b282786ce7cf7ea913'
 
   },
 
@@ -3237,7 +3235,7 @@ Fetch detailed information about a specific triple using its term ID.
 ---
 title: "Subject Predicates"
 description: "Query subject-predicate relationship aggregates"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/triples/subject-predicates"
 ---
 
@@ -3331,7 +3329,7 @@ Query transaction history for deposits and redemptions.
 ---
 title: "Position Changes"
 description: "Track position change history with daily and hourly aggregates"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/vaults/position-changes"
 ---
 
@@ -3358,7 +3356,7 @@ Track individual position changes and view pre-aggregated daily/hourly summaries
 ---
 title: "Positions with Value"
 description: "Query positions enriched with computed PnL and value data"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/vaults/positions-with-value"
 ---
 
@@ -3447,7 +3445,7 @@ Query top vaults ranked by market cap, position count, or other metrics.
 ---
 title: "User Positions"
 description: "Query user positions in vaults"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/vaults/user-positions"
 ---
 
@@ -3476,7 +3474,7 @@ Query all positions held by a specific account.
 
 }`,
     variables: {
-      accountId: '0xd8da6bf26964af9d7eed9e03e53415d37aa96045',
+      accountId: '0x88D0aF73508452c1a453356b3Fac26525aEc23A2',
       limit: 20
 
 ];
@@ -3491,7 +3489,7 @@ Query all positions held by a specific account.
 ---
 title: "Vault Details"
 description: "Query vault statistics and information"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-04-01T11:08:48-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/vaults/vault-details"
 ---
 
@@ -3522,7 +3520,7 @@ Fetch comprehensive vault statistics including shares, assets, price, and positi
 
 }`,
     variables: {
-      termId: '0x57d94c116a33bb460428eced262b7ae2ec6f865e7aceef6357cec3d034e8ea21',
+      termId: '0x906527aae4af914b1ac01ff9adfdda5dafde3b5e21f84045e0660b0a15c07769',
       curveId: '1'
 
 ];
