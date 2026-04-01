@@ -78,7 +78,11 @@ query GetSignals(
 | `account` | `accounts` | Account details with label/image |
 | `atom_id` | `String` | Related atom ID (if atom signal) |
 | `term` | `terms` | Related term (contains nested `atom` with label/image) |
+| `term_id` | `String` | Related term ID |
 | `triple_id` | `String` | Related triple ID (if triple signal) |
+| `curve_id` | `numeric` | Bonding curve ID |
+| `deposit_id` | `String` | Related deposit ID (non-null for deposits) |
+| `redemption_id` | `String` | Related redemption ID (non-null for redemptions) |
 | `block_number` | `numeric` | Block number |
 | `created_at` | `timestamptz` | Event timestamp |
 | `transaction_hash` | `String` | Transaction hash |

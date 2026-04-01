@@ -85,8 +85,10 @@ query GetPnlLeaderboard {
 | `total_pnl_raw` | `numeric` | Total PnL (raw wei) |
 | `unrealized_pnl_formatted` | `numeric` | Unrealized PnL (formatted) |
 | `unrealized_pnl_raw` | `numeric` | Unrealized PnL (raw) |
+| `unrealized_pnl_pct` | `numeric` | Unrealized PnL percentage |
 | `realized_pnl_formatted` | `numeric` | Realized PnL (formatted) |
 | `realized_pnl_raw` | `numeric` | Realized PnL (raw) |
+| `realized_pnl_pct` | `numeric` | Realized PnL percentage |
 | `pnl_change_formatted` | `numeric` | PnL change (formatted) |
 | `pnl_change_raw` | `numeric` | PnL change (raw) |
 

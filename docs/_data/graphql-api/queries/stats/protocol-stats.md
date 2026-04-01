@@ -43,6 +43,8 @@ query GetProtocolStats {
 | `total_fees` | `numeric` | Total protocol fees in wei |
 | `contract_balance` | `numeric` | Current contract balance in wei |
 | `last_updated` | `timestamptz` | Last update timestamp |
+| `last_processed_block_number` | `numeric` | Last indexed block number |
+| `last_processed_block_timestamp` | `timestamptz` | Last indexed block timestamp |
 
 ## Expected Response
 
