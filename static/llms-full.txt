@@ -10171,7 +10171,7 @@ const data = await client.request(query, { limit: 20 })
 ---
 title: "Account PnL Rank"
 description: "Query a single account's leaderboard rank and percentile"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-04-01T08:45:01-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/leaderboard/account-rank"
 ---
 
@@ -10194,9 +10194,9 @@ query GetAccountPnlRank {
     account_image
     rank
     percentile
-    total_pnl
+    total_pnl_formatted
     pnl_pct
-    total_volume
+    total_volume_formatted
     total_position_count
     win_rate
     total_accounts
@@ -10222,9 +10222,11 @@ query GetAccountPnlRank {
 | `account_image` | `String` | Profile image URL |
 | `rank` | `bigint` | Leaderboard rank position |
 | `percentile` | `numeric` | Percentile ranking (0-100) |
-| `total_pnl` | `numeric` | Total profit/loss |
+| `total_pnl_formatted` | `String` | Total profit/loss (formatted) |
+| `total_pnl_raw` | `numeric` | Total profit/loss (raw) |
 | `pnl_pct` | `numeric` | PnL percentage |
-| `total_volume` | `numeric` | Total trading volume |
+| `total_volume_formatted` | `String` | Total trading volume (formatted) |
+| `total_volume_raw` | `numeric` | Total trading volume (raw) |
 | `total_position_count` | `bigint` | Total number of positions |
 | `win_rate` | `numeric` | Win rate across positions |
 | `total_accounts` | `bigint` | Total accounts on the leaderboard |
@@ -10244,7 +10246,7 @@ query GetAccountPnlRank {
     account_label
     rank
     percentile
-    total_pnl
+    total_pnl_formatted
     pnl_pct
     win_rate
     total_accounts
@@ -10277,7 +10279,7 @@ async function getAccountRank(accountId: string) {
       ) {
         rank
         percentile
-        total_pnl
+        total_pnl_formatted
         pnl_pct
         total_accounts
       }
@@ -10298,7 +10300,7 @@ async function getAccountRank(accountId: string) {
 ---
 title: "Leaderboard Stats"
 description: "Query aggregate leaderboard statistics for the protocol"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-04-01T08:45:01-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/leaderboard/leaderboard-stats"
 ---
 
@@ -10320,11 +10322,11 @@ query GetPnlLeaderboardStats {
     profitable_traders
     unprofitable_traders
     profitable_pct
-    total_pnl_sum
-    avg_pnl
-    median_pnl
-    total_volume
-    avg_volume
+    total_pnl_sum_formatted
+    avg_pnl_formatted
+    median_pnl_formatted
+    total_volume_formatted
+    avg_volume_formatted
   }
 }
 ```
@@ -10344,11 +10346,16 @@ query GetPnlLeaderboardStats {
 | `profitable_traders` | `bigint` | Number of traders with positive PnL |
 | `unprofitable_traders` | `bigint` | Number of traders with negative PnL |
 | `profitable_pct` | `numeric` | Percentage of profitable traders |
-| `total_pnl_sum` | `numeric` | Sum of all PnL across traders |
-| `avg_pnl` | `numeric` | Average PnL per trader |
-| `median_pnl` | `numeric` | Median PnL across traders |
-| `total_volume` | `numeric` | Total trading volume across all traders |
-| `avg_volume` | `numeric` | Average volume per trader |
+| `total_pnl_sum_formatted` | `String` | Sum of all PnL across traders (formatted) |
+| `total_pnl_sum_raw` | `numeric` | Sum of all PnL across traders (raw) |
+| `avg_pnl_formatted` | `String` | Average PnL per trader (formatted) |
+| `avg_pnl_raw` | `numeric` | Average PnL per trader (raw) |
+| `median_pnl_formatted` | `String` | Median PnL across traders (formatted) |
+| `median_pnl_raw` | `numeric` | Median PnL across traders (raw) |
+| `total_volume_formatted` | `String` | Total trading volume across all traders (formatted) |
+| `total_volume_raw` | `numeric` | Total trading volume across all traders (raw) |
+| `avg_volume_formatted` | `String` | Average volume per trader (formatted) |
+| `avg_volume_raw` | `numeric` | Average volume per trader (raw) |
 
 ## Interactive Example
 
@@ -10360,11 +10367,11 @@ query GetPnlLeaderboardStats {
     profitable_traders
     unprofitable_traders
     profitable_pct
-    total_pnl_sum
-    avg_pnl
-    median_pnl
-    total_volume
-    avg_volume
+    total_pnl_sum_formatted
+    avg_pnl_formatted
+    median_pnl_formatted
+    total_volume_formatted
+    avg_volume_formatted
 
 }`,
     variables: {}
@@ -10389,9 +10396,9 @@ async function getProtocolStats() {
       get_pnl_leaderboard_stats(args: {}) {
         total_traders
         profitable_pct
-        avg_pnl
-        median_pnl
-        total_volume
+        avg_pnl_formatted
+        median_pnl_formatted
+        total_volume_formatted
       }
     }
   `
@@ -10679,13 +10686,13 @@ query GetPnlLeaderboardPeriod {
 ---
 title: "Vault Leaderboard"
 description: "Query vault-level leaderboard rankings by PnL performance"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-04-01T08:45:01-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/leaderboard/vault-leaderboard"
 ---
 
 # Vault Leaderboard
 
-Rank accounts within specific vaults using `get_vault_leaderboard` and `get_vault_leaderboard_period`. Both return `pnl_leaderboard_entry` rows (same schema as the [PnL Leaderboard](./pnl-leaderboard)).
+Rank accounts within specific vaults using `get_vault_leaderboard` and `get_pnl_leaderboard_period`. Both return `pnl_leaderboard_entry` rows (same schema as the [PnL Leaderboard](./pnl-leaderboard)).
 
 ## Query Structure
 
@@ -10726,11 +10733,11 @@ query GetVaultLeaderboard {
 
 ## Period-Scoped {#period-scoped}
 
-Use `get_vault_leaderboard_period` to scope results to a specific date range:
+Use `get_pnl_leaderboard_period` to scope results to a specific date range:
 
 ```graphql
 query GetVaultLeaderboardPeriod {
-  get_vault_leaderboard_period(
+  get_pnl_leaderboard_period(
     args: {
       p_term_id: "0x57d94c..."
       p_curve_id: 1

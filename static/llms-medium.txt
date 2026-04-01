@@ -2394,7 +2394,7 @@ Events are blockchain log entries emitted by smart contracts. The Intuition inde
 ---
 title: "Account PnL Rank"
 description: "Query a single account's leaderboard rank and percentile"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-04-01T08:45:01-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/leaderboard/account-rank"
 ---
 
@@ -2425,7 +2425,7 @@ Look up a single account's leaderboard rank and percentile using `get_account_pn
 ---
 title: "Leaderboard Stats"
 description: "Query aggregate leaderboard statistics for the protocol"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-04-01T08:45:01-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/leaderboard/leaderboard-stats"
 ---
 
@@ -2513,13 +2513,13 @@ Rank accounts by PnL performance using `get_pnl_leaderboard` and `get_pnl_leader
 ---
 title: "Vault Leaderboard"
 description: "Query vault-level leaderboard rankings by PnL performance"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-04-01T08:45:01-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/leaderboard/vault-leaderboard"
 ---
 
 # Vault Leaderboard
 
-Rank accounts within specific vaults using `get_vault_leaderboard` and `get_vault_leaderboard_period`. Both return `pnl_leaderboard_entry` rows (same schema as the [PnL Leaderboard](./pnl-leaderboard)).
+Rank accounts within specific vaults using `get_vault_leaderboard` and `get_pnl_leaderboard_period`. Both return `pnl_leaderboard_entry` rows (same schema as the [PnL Leaderboard](./pnl-leaderboard)).
 
 ## Query Structure
 
