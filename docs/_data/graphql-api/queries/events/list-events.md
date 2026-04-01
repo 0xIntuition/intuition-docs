@@ -55,8 +55,8 @@ query GetEvents(
 | Field | Type | Description |
 |-------|------|-------------|
 | `id` | `String` | Unique event identifier |
-| `type` | `String` | Event type |
-| `block_number` | `Int` | Block number |
+| `type` | `event_type` | Event type (enum) |
+| `block_number` | `numeric` | Block number |
 | `created_at` | `timestamptz` | Event timestamp |
 | `transaction_hash` | `String` | Transaction hash |
 | `atom_id` | `String` | Related atom ID (if applicable) |

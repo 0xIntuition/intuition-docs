@@ -37,7 +37,7 @@ query GetAtom($id: String!) {
 
 ```json
 {
-  "id": "0x57d94c116a33bb460428eced262b7ae2ec6f865e7aceef6357cec3d034e8ea21"
+  "id": "0x39ad516aba15924381204ce477cf4d2b5313200814691e5376961673866ba4e3"
 }
 ```
 
@@ -47,17 +47,17 @@ query GetAtom($id: String!) {
 {
   "data": {
     "atom": {
-      "term_id": "0x57d94c116a33bb460428eced262b7ae2ec6f865e7aceef6357cec3d034e8ea21",
-      "data": "ipfs://QmYx8C3kNN1sFSx5b...",
-      "label": "Ethereum",
-      "image": "ipfs://QmXnnyufdzAWL5CqZ2RnSNgPbvCc1ALT73s6epPrRnZ1Xy",
-      "emoji": "⟠",
+      "term_id": "0x39ad516aba15924381204ce477cf4d2b5313200814691e5376961673866ba4e3",
+      "data": "https://res.cloudinary.com/...",
+      "label": "Intuition",
+      "image": "https://res.cloudinary.com/dfpwy9nyv/image/upload/v1734057836/remix/l7ffhwwrbrrgrnqclvs1.png",
+      "emoji": "🧩",
       "type": "Thing",
-      "created_at": "2024-01-15T10:30:00Z",
+      "created_at": "2025-11-01T05:19:50+00:00",
       "creator": {
-        "id": "0xd8da6bf26964af9d7eed9e03e53415d37aa96045",
-        "label": "Alice",
-        "image": "ipfs://..."
+        "id": "0x774657D5fFb9d169D65ac5dCeEdD0f566d9E7853",
+        "label": "0x7746...7853",
+        "image": null
       }
     }
   }
@@ -87,7 +87,7 @@ export const singleAtomQueries = [
   }
 }`,
     variables: {
-      id: '0x57d94c116a33bb460428eced262b7ae2ec6f865e7aceef6357cec3d034e8ea21'
+      id: '0x39ad516aba15924381204ce477cf4d2b5313200814691e5376961673866ba4e3'
     }
   },
   {
@@ -114,7 +114,7 @@ export const singleAtomQueries = [
   }
 }`,
     variables: {
-      id: '0x57d94c116a33bb460428eced262b7ae2ec6f865e7aceef6357cec3d034e8ea21'
+      id: '0x39ad516aba15924381204ce477cf4d2b5313200814691e5376961673866ba4e3'
     }
   }
 ];

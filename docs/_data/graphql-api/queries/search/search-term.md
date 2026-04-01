@@ -64,8 +64,8 @@ The function returns `terms` rows. Metadata fields like `label`, `image`, and `c
 | Field | Type | Description |
 |-------|------|-------------|
 | `id` | `String` | Unique term identifier |
-| `type` | `String` | Term type |
-| `created_at` | `DateTime` | Creation timestamp |
+| `type` | `term_type` | Term type |
+| `created_at` | `timestamptz` | Creation timestamp |
 | `atom` | `atoms` | Related atom with metadata (label, image, creator) |
 | `atom.label` | `String` | Human-readable label |
 | `atom.image` | `String` | Image URL (IPFS) |
@@ -78,14 +78,14 @@ The function returns `terms` rows. Metadata fields like `label`, `image`, and `c
   "data": {
     "search_term": [
       {
-        "id": "0x57d94c116a33bb460428eced262b7ae2ec6f865e7aceef6357cec3d034e8ea21",
+        "id": "0x906527aae4af914b1ac01ff9adfdda5dafde3b5e21f84045e0660b0a15c07769",
         "type": "Thing",
         "created_at": "2024-01-01T00:00:00Z",
         "atom": {
           "label": "Ethereum",
           "image": "ipfs://QmXnnyufdzAWL5CqZ2RnSNgPbvCc1ALT73s6epPrRnZ1Xy",
           "creator": {
-            "id": "0xd8da6bf26964af9d7eed9e03e53415d37aa96045",
+            "id": "0x88D0aF73508452c1a453356b3Fac26525aEc23A2",
             "label": "vitalik.eth",
             "image": "ipfs://Qm..."
           }

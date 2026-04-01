@@ -67,7 +67,7 @@ export const counterQueries = [
   }
 }`,
     variables: {
-      id: '0xffb30efde2b49a7deadd920a7df684595ed4a291a582033c16b0795796965600',
+      id: '0xc39405b4f656ea919f9118c2b4abee33cdd7a7fb2e3811b282786ce7cf7ea913',
       curveId: '2'
     }
   }

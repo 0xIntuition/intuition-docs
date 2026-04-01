@@ -34,15 +34,17 @@ query GetProtocolStats {
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `id` | `String` | Stats record ID |
+| `id` | `Int` | Stats record ID |
 | `total_atoms` | `Int` | Total atoms created |
 | `total_triples` | `Int` | Total triples created |
 | `total_positions` | `Int` | Total active positions |
 | `total_signals` | `Int` | Total signals (deposits + redemptions) |
 | `total_accounts` | `Int` | Unique accounts that have interacted |
-| `total_fees` | `String` | Total protocol fees in wei |
-| `contract_balance` | `String` | Current contract balance in wei |
-| `last_updated` | `DateTime` | Last update timestamp |
+| `total_fees` | `numeric` | Total protocol fees in wei |
+| `contract_balance` | `numeric` | Current contract balance in wei |
+| `last_updated` | `timestamptz` | Last update timestamp |
+| `last_processed_block_number` | `numeric` | Last indexed block number |
+| `last_processed_block_timestamp` | `timestamptz` | Last indexed block timestamp |
 
 ## Expected Response
 

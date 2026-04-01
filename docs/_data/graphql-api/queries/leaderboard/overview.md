@@ -24,7 +24,7 @@ The Intuition GraphQL API provides leaderboard queries for ranking accounts and 
 | Operation | Description |
 |-----------|-------------|
 | [`get_vault_leaderboard`](./vault-leaderboard) | Vault-level leaderboard filtered by term and curve |
-| [`get_vault_leaderboard_period`](./vault-leaderboard#period-scoped) | Period-scoped vault leaderboard with date range |
+| [`get_pnl_leaderboard_period`](./vault-leaderboard#period-scoped) | Period-scoped leaderboard with date range (use `p_term_id`/`p_curve_id` for vault scoping) |
 
 ### Account Rank & Stats
 

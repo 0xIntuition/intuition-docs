@@ -35,7 +35,7 @@ query GetAccount($id: String!) {
 
 ```json
 {
-  "id": "0xd8da6bf26964af9d7eed9e03e53415d37aa96045"
+  "id": "0x88D0aF73508452c1a453356b3Fac26525aEc23A2"
 }
 ```
 
@@ -46,9 +46,9 @@ query GetAccount($id: String!) {
 | `id` | `String` | Account address (primary key) |
 | `label` | `String` | Human-readable name (from atom or ENS) |
 | `image` | `String` | Profile image URL |
-| `type` | `String` | Account type: `Default`, `AtomWallet`, `ProtocolVault` |
+| `type` | `account_type` | Account type: `Default`, `AtomWallet`, `ProtocolVault` |
 | `atom_id` | `String` | Linked atom ID (if any) |
-| `atom` | `Atom` | Linked atom details |
+| `atom` | `atoms` | Linked atom details |
 
 ## Expected Response
 
@@ -56,13 +56,13 @@ query GetAccount($id: String!) {
 {
   "data": {
     "account": {
-      "id": "0xd8da6bf26964af9d7eed9e03e53415d37aa96045",
+      "id": "0x88D0aF73508452c1a453356b3Fac26525aEc23A2",
       "label": "vitalik.eth",
       "image": "ipfs://QmXnnyufdzAWL5CqZ2RnSNgPbvCc1ALT73s6epPrRnZ1Xy",
       "type": "AtomWallet",
-      "atom_id": "0x57d94c116a33bb460428eced262b7ae2ec6f865e7aceef6357cec3d034e8ea21",
+      "atom_id": "0x906527aae4af914b1ac01ff9adfdda5dafde3b5e21f84045e0660b0a15c07769",
       "atom": {
-        "term_id": "0x57d94c116a33bb460428eced262b7ae2ec6f865e7aceef6357cec3d034e8ea21",
+        "term_id": "0x906527aae4af914b1ac01ff9adfdda5dafde3b5e21f84045e0660b0a15c07769",
         "data": "ipfs://Qm...",
         "type": "Person"
       }
@@ -86,7 +86,7 @@ export const accountQueries = [
   }
 }`,
     variables: {
-      id: '0xd8da6bf26964af9d7eed9e03e53415d37aa96045'
+      id: '0x88D0aF73508452c1a453356b3Fac26525aEc23A2'
     }
   },
   {
@@ -107,7 +107,7 @@ export const accountQueries = [
   }
 }`,
     variables: {
-      id: '0xd8da6bf26964af9d7eed9e03e53415d37aa96045'
+      id: '0x88D0aF73508452c1a453356b3Fac26525aEc23A2'
     }
   }
 ];

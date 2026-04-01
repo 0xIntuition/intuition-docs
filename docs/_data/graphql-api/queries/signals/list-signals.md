@@ -73,14 +73,18 @@ query GetSignals(
 | Field | Type | Description |
 |-------|------|-------------|
 | `id` | `String` | Unique signal identifier |
-| `delta` | `String` | Amount in wei |
+| `delta` | `numeric` | Amount in wei |
 | `account_id` | `String` | Account address |
-| `account` | `Account` | Account details with label/image |
+| `account` | `accounts` | Account details with label/image |
 | `atom_id` | `String` | Related atom ID (if atom signal) |
-| `term` | `Term` | Related term (contains nested `atom` with label/image) |
+| `term` | `terms` | Related term (contains nested `atom` with label/image) |
+| `term_id` | `String` | Related term ID |
 | `triple_id` | `String` | Related triple ID (if triple signal) |
-| `block_number` | `Int` | Block number |
-| `created_at` | `DateTime` | Event timestamp |
+| `curve_id` | `numeric` | Bonding curve ID |
+| `deposit_id` | `String` | Related deposit ID (non-null for deposits) |
+| `redemption_id` | `String` | Related redemption ID (non-null for redemptions) |
+| `block_number` | `numeric` | Block number |
+| `created_at` | `timestamptz` | Event timestamp |
 | `transaction_hash` | `String` | Transaction hash |
 
 ## Expected Response
@@ -92,9 +96,9 @@ query GetSignals(
       {
         "id": "0x123...-1",
         "delta": "1000000000000000000",
-        "account_id": "0xd8da6bf26964af9d7eed9e03e53415d37aa96045",
+        "account_id": "0x88D0aF73508452c1a453356b3Fac26525aEc23A2",
         "account": {
-          "id": "0xd8da6bf26964af9d7eed9e03e53415d37aa96045",
+          "id": "0x88D0aF73508452c1a453356b3Fac26525aEc23A2",
           "label": "vitalik.eth",
           "image": "ipfs://Qm..."
         },
@@ -161,7 +165,7 @@ export const signalQueries = [
   }
 }`,
     variables: {
-      account_id: '0xd8da6bf26964af9d7eed9e03e53415d37aa96045',
+      account_id: '0x88D0aF73508452c1a453356b3Fac26525aEc23A2',
       limit: 20
     }
   },

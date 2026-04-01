@@ -50,15 +50,15 @@ query GetPnlLeaderboardStats {
 | `profitable_traders` | `bigint` | Number of traders with positive PnL |
 | `unprofitable_traders` | `bigint` | Number of traders with negative PnL |
 | `profitable_pct` | `numeric` | Percentage of profitable traders |
-| `total_pnl_sum_formatted` | `String` | Sum of all PnL across traders (formatted) |
+| `total_pnl_sum_formatted` | `numeric` | Sum of all PnL across traders (formatted) |
 | `total_pnl_sum_raw` | `numeric` | Sum of all PnL across traders (raw) |
-| `avg_pnl_formatted` | `String` | Average PnL per trader (formatted) |
+| `avg_pnl_formatted` | `numeric` | Average PnL per trader (formatted) |
 | `avg_pnl_raw` | `numeric` | Average PnL per trader (raw) |
-| `median_pnl_formatted` | `String` | Median PnL across traders (formatted) |
+| `median_pnl_formatted` | `numeric` | Median PnL across traders (formatted) |
 | `median_pnl_raw` | `numeric` | Median PnL across traders (raw) |
-| `total_volume_formatted` | `String` | Total trading volume across all traders (formatted) |
+| `total_volume_formatted` | `numeric` | Total trading volume across all traders (formatted) |
 | `total_volume_raw` | `numeric` | Total trading volume across all traders (raw) |
-| `avg_volume_formatted` | `String` | Average volume per trader (formatted) |
+| `avg_volume_formatted` | `numeric` | Average volume per trader (formatted) |
 | `avg_volume_raw` | `numeric` | Average volume per trader (raw) |
 
 ## Interactive Example
