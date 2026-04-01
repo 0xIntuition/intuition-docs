@@ -46,7 +46,6 @@ const query = `
       image
       type
       atom_id
-      created_at
     }
   }
 `

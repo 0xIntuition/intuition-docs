@@ -28,9 +28,9 @@ const client = new GraphQLClient(API_URL_PROD)
 
 // Search for atoms
 const query = `
-  query SearchTerms($search: String!, $limit: Int!) {
+  query SearchTerms($query: String!, $limit: Int!) {
     search_term(
-      args: { search: $search }
+      args: { query: $query }
       limit: $limit
     ) {
       id

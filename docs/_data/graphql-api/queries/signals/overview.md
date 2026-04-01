@@ -43,18 +43,21 @@ const client = new GraphQLClient(API_URL_PROD)
 // Get recent signals
 const query = `
   query GetSignals($limit: Int!) {
-    signals(limit: $limit, order_by: { block_timestamp: desc }) {
+    signals(limit: $limit, order_by: { created_at: desc }) {
       id
-      signal_type
       delta
       account {
         label
         image
       }
-      atom {
-        label
+      term {
+        atom {
+          label
+        }
       }
-      block_timestamp
+      deposit_id
+      redemption_id
+      created_at
     }
   }
 `
@@ -64,16 +67,21 @@ const data = await client.request(query, { limit: 20 })
 
 ## Signal Types
 
-| Type | Description |
-|------|-------------|
-| `Deposit` | Staking ETH on a position |
-| `Redemption` | Withdrawing from a position |
+Signals don't have an explicit `type` field. Instead, distinguish deposits from redemptions by checking which ID is present:
+
+| Condition | Meaning |
+|-----------|---------|
+| `deposit_id` is not null | Deposit — staking ETH on a position |
+| `redemption_id` is not null | Redemption — withdrawing from a position |
 
 ## Common Filters
 
 ```graphql
-# Filter by signal type
-signals(where: { signal_type: { _eq: "Deposit" } })
+# Filter for deposits only
+signals(where: { deposit_id: { _is_null: false } })
+
+# Filter for redemptions only
+signals(where: { redemption_id: { _is_null: false } })
 
 # Filter by account
 signals(where: { account_id: { _eq: "0x..." } })
@@ -83,7 +91,7 @@ signals(where: { atom_id: { _eq: "0x..." } })
 
 # Filter by date range
 signals(where: {
-  block_timestamp: {
+  created_at: {
     _gte: "2024-01-01T00:00:00Z",
     _lte: "2024-01-31T23:59:59Z"
   }
