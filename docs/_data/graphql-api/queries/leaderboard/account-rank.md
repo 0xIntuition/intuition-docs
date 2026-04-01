@@ -55,10 +55,10 @@ query GetAccountPnlRank {
 | `account_image` | `String` | Profile image URL |
 | `rank` | `bigint` | Leaderboard rank position |
 | `percentile` | `numeric` | Percentile ranking (0-100) |
-| `total_pnl_formatted` | `String` | Total profit/loss (formatted) |
+| `total_pnl_formatted` | `numeric` | Total profit/loss (formatted) |
 | `total_pnl_raw` | `numeric` | Total profit/loss (raw) |
 | `pnl_pct` | `numeric` | PnL percentage |
-| `total_volume_formatted` | `String` | Total trading volume (formatted) |
+| `total_volume_formatted` | `numeric` | Total trading volume (formatted) |
 | `total_volume_raw` | `numeric` | Total trading volume (raw) |
 | `total_position_count` | `bigint` | Total number of positions |
 | `win_rate` | `numeric` | Win rate across positions |

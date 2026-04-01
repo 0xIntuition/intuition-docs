@@ -46,9 +46,9 @@ query GetAccount($id: String!) {
 | `id` | `String` | Account address (primary key) |
 | `label` | `String` | Human-readable name (from atom or ENS) |
 | `image` | `String` | Profile image URL |
-| `type` | `String` | Account type: `Default`, `AtomWallet`, `ProtocolVault` |
+| `type` | `account_type` | Account type: `Default`, `AtomWallet`, `ProtocolVault` |
 | `atom_id` | `String` | Linked atom ID (if any) |
-| `atom` | `Atom` | Linked atom details |
+| `atom` | `atoms` | Linked atom details |
 
 ## Expected Response
 

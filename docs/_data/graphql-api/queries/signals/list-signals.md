@@ -73,14 +73,14 @@ query GetSignals(
 | Field | Type | Description |
 |-------|------|-------------|
 | `id` | `String` | Unique signal identifier |
-| `delta` | `String` | Amount in wei |
+| `delta` | `numeric` | Amount in wei |
 | `account_id` | `String` | Account address |
-| `account` | `Account` | Account details with label/image |
+| `account` | `accounts` | Account details with label/image |
 | `atom_id` | `String` | Related atom ID (if atom signal) |
-| `term` | `Term` | Related term (contains nested `atom` with label/image) |
+| `term` | `terms` | Related term (contains nested `atom` with label/image) |
 | `triple_id` | `String` | Related triple ID (if triple signal) |
-| `block_number` | `Int` | Block number |
-| `created_at` | `DateTime` | Event timestamp |
+| `block_number` | `numeric` | Block number |
+| `created_at` | `timestamptz` | Event timestamp |
 | `transaction_hash` | `String` | Transaction hash |
 
 ## Expected Response

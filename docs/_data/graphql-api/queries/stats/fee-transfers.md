@@ -66,13 +66,13 @@ query GetFeeTransfers(
 | Field | Type | Description |
 |-------|------|-------------|
 | `id` | `String` | Transfer identifier |
-| `amount` | `String` | Fee amount in wei |
+| `amount` | `numeric` | Fee amount in wei |
 | `sender_id` | `String` | Account that paid the fee |
-| `sender` | `Account` | Sender account details |
+| `sender` | `accounts` | Sender account details |
 | `receiver_id` | `String` | Protocol fee receiver address |
-| `receiver` | `Account` | Receiver details |
-| `block_number` | `Int` | Block number |
-| `created_at` | `DateTime` | Transfer timestamp |
+| `receiver` | `accounts` | Receiver details |
+| `block_number` | `numeric` | Block number |
+| `created_at` | `timestamptz` | Transfer timestamp |
 | `transaction_hash` | `String` | Transaction hash |
 
 ## Expected Response

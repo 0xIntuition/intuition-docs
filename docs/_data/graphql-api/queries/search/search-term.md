@@ -64,8 +64,8 @@ The function returns `terms` rows. Metadata fields like `label`, `image`, and `c
 | Field | Type | Description |
 |-------|------|-------------|
 | `id` | `String` | Unique term identifier |
-| `type` | `String` | Term type |
-| `created_at` | `DateTime` | Creation timestamp |
+| `type` | `term_type` | Term type |
+| `created_at` | `timestamptz` | Creation timestamp |
 | `atom` | `atoms` | Related atom with metadata (label, image, creator) |
 | `atom.label` | `String` | Human-readable label |
 | `atom.image` | `String` | Image URL (IPFS) |

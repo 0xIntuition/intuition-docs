@@ -70,11 +70,11 @@ query GetSignalsFromFollowing(
 | Field | Type | Description |
 |-------|------|-------------|
 | `id` | `String` | Signal identifier |
-| `delta` | `String` | Amount in wei |
-| `account` | `Account` | Account that made the signal |
-| `term` | `Term` | Related term (contains nested `atom` with label/image) |
+| `delta` | `numeric` | Amount in wei |
+| `account` | `accounts` | Account that made the signal |
+| `term` | `terms` | Related term (contains nested `atom` with label/image) |
 | `triple_id` | `String` | Related triple ID (if triple signal) |
-| `created_at` | `DateTime` | Event timestamp |
+| `created_at` | `timestamptz` | Event timestamp |
 
 ## Expected Response
 
