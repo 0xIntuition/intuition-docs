@@ -3431,7 +3431,7 @@ query GetAtomsByType($type: atom_type!) {
 ---
 title: "Custom Queries"
 description: "Common GraphQL query examples and patterns for the Intuition API"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/custom-queries"
 ---
 
@@ -3454,8 +3454,8 @@ This page provides practical examples of common GraphQL queries for the Intuitio
 Use the primary key lookup for fetching a single atom by its `term_id`:
 
 ```graphql
-query GetAtom($termId: String!) {
-  atom(term_id: $termId) {
+query GetAtom($term_id: String!) {
+  atom(term_id: $term_id) {
     term_id
     label
     image
@@ -3538,13 +3538,15 @@ Use the `search_term` database function for text search:
 ```graphql
 query SearchAtoms($query: String!, $limit: Int = 20) {
   search_term(args: { query: $query }, limit: $limit) {
-    term_id
-    label
-    image
+    id
     type
-    creator {
-      id
+    atom {
       label
+      image
+      creator {
+        id
+        label
+      }
     }
   }
 }
@@ -3613,15 +3615,15 @@ function useCustomAtomQuery(termId: string) {
   return useQuery({
     queryKey: ['atom', termId],
     queryFn: () => client.request(`
-      query GetAtom($termId: String!) {
-        atom(term_id: $termId) {
+      query GetAtom($term_id: String!) {
+        atom(term_id: $term_id) {
           term_id
           label
           image
           type
         }
       }
-    `, { termId }),
+    `, { term_id: termId }),
     enabled: !!termId
   })
 }
@@ -3630,7 +3632,7 @@ function useCustomAtomQuery(termId: string) {
 ---
 title: "Activity Feed"
 description: "Build real-time activity feed"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/examples/activity-feed"
 ---
 
@@ -3650,9 +3652,8 @@ Build an activity feed showing recent protocol activity.
     limit: $limit
   ) {
     id
-    event_type
     sender_id
-    assets_for_receiver
+    assets_after_fees
     created_at
     vault {
       term {
@@ -3663,9 +3664,8 @@ Build an activity feed showing recent protocol activity.
     limit: $limit
   ) {
     id
-    event_type
     receiver_id
-    assets_for_receiver
+    assets
     created_at
 
 }`,
@@ -6057,7 +6057,7 @@ async function prepareAtomMetadata(thing: {
 ---
 title: "Pin Organization"
 description: "Pin Organization metadata to IPFS"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/mutations/pin-organization"
 ---
 
@@ -6072,9 +6072,7 @@ Pin an Organization entity to IPFS for use in atom creation.
 ```graphql
 mutation PinOrganization($organization: PinOrganizationInput!) {
   pinOrganization(organization: $organization) {
-    hash
-    name
-    size
+    uri
   }
 }
 ```
@@ -6103,7 +6101,7 @@ mutation PinOrganization($organization: PinOrganizationInput!) {
 ---
 title: "Pin Person"
 description: "Pin Person metadata to IPFS"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/mutations/pin-person"
 ---
 
@@ -6118,9 +6116,7 @@ Pin a Person entity to IPFS for use in atom creation.
 ```graphql
 mutation PinPerson($person: PinPersonInput!) {
   pinPerson(person: $person) {
-    hash
-    name
-    size
+    uri
   }
 }
 ```
@@ -6150,7 +6146,7 @@ mutation PinPerson($person: PinPersonInput!) {
 ---
 title: "Pin Thing"
 description: "Pin Thing metadata to IPFS"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/mutations/pin-thing"
 ---
 
@@ -6165,9 +6161,7 @@ Pin a "Thing" object (general entity) to IPFS for use in atom creation.
 ```graphql
 mutation PinThing($thing: PinThingInput!) {
   pinThing(thing: $thing) {
-    hash
-    name
-    size
+    uri
   }
 }
 ```
@@ -6191,9 +6185,7 @@ mutation PinThing($thing: PinThingInput!) {
 {
   "data": {
     "pinThing": {
-      "hash": "QmYx8C3kNN1sFSx5b...",
-      "name": "thing.json",
-      "size": 256
+      "uri": "ipfs://QmYx8C3kNN1sFSx5b..."
     }
   }
 }
@@ -6202,15 +6194,15 @@ mutation PinThing($thing: PinThingInput!) {
 ## Workflow
 
 1. **Pin metadata** using `pinThing` mutation
-2. **Get IPFS hash** from response
-3. **Create atom on-chain** using the hash
+2. **Get IPFS URI** from response
+3. **Create atom on-chain** using the URI
 4. **Query the atom** via GraphQL API
 
 ## Best Practices
 
 1. **Upload images first** if needed using `uploadImage`
 2. **Include all metadata** fields for rich display
-3. **Store IPFS hash** for future reference
+3. **Store IPFS URI** for future reference
 4. **Wait for indexing** before querying the atom
 
 ---
@@ -6523,7 +6515,7 @@ Try the Intuition GraphQL API straight from your browser! The playground below c
 ---
 title: "Following Query"
 description: "Query following relationships in the social graph"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/accounts/following"
 ---
 
@@ -6545,17 +6537,8 @@ query GetFollowing(
     offset: $offset
   ) {
     id
-    follower_id
-    follower {
-      label
-      image
-    }
-    following_id
-    following {
-      label
-      image
-    }
-    created_at
+    label
+    image
   }
   following_aggregate(where: { follower_id: { _eq: $account_id } }) {
     aggregate {
@@ -6579,12 +6562,9 @@ query GetFollowing(
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `id` | `String` | Relationship identifier |
-| `follower_id` | `String` | Account doing the following |
-| `follower` | `Account` | Follower account details |
-| `following_id` | `String` | Account being followed |
-| `following` | `Account` | Followed account details |
-| `created_at` | `DateTime` | When the follow was created |
+| `id` | `String` | Account address |
+| `label` | `String` | Human-readable name |
+| `image` | `String` | Profile image URL |
 
 ## Expected Response
 
@@ -6594,17 +6574,14 @@ query GetFollowing(
     "following": [
       {
         "id": "0x123...",
-        "follower_id": "0xd8da6bf26964af9d7eed9e03e53415d37aa96045",
         "follower": {
           "label": "vitalik.eth",
           "image": "ipfs://Qm..."
         },
-        "following_id": "0xabc...",
         "following": {
           "label": "alice.eth",
           "image": "ipfs://Qm..."
-        },
-        "created_at": "2024-01-15T10:30:00Z"
+        }
       }
     ],
     "following_aggregate": {
@@ -6624,14 +6601,10 @@ query GetFollowing(
   following(
     where: { follower_id: { _eq: $account_id } }
     limit: $limit
-    order_by: { created_at: desc }
   ) {
-    following {
-      id
-      label
-      image
-
-    created_at
+    id
+    label
+    image
 
   following_aggregate(where: { follower_id: { _eq: $account_id } }) {
     aggregate {
@@ -6650,14 +6623,10 @@ query GetFollowing(
   following(
     where: { following_id: { _eq: $account_id } }
     limit: $limit
-    order_by: { created_at: desc }
   ) {
-    follower {
-      id
-      label
-      image
-
-    created_at
+    id
+    label
+    image
 
   following_aggregate(where: { following_id: { _eq: $account_id } }) {
     aggregate {
@@ -6707,16 +6676,12 @@ async function getFollowing(accountId: string, options: {
     query GetFollowing($account_id: String!, $limit: Int!, $offset: Int!) {
       following(
         where: { follower_id: { _eq: $account_id } }
-        order_by: { created_at: desc }
         limit: $limit
         offset: $offset
       ) {
-        following {
-          id
-          label
-          image
-        }
-        created_at
+        id
+        label
+        image
       }
       following_aggregate(where: { follower_id: { _eq: $account_id } }) {
         aggregate {
@@ -6733,7 +6698,7 @@ async function getFollowing(accountId: string, options: {
   })
 
   return {
-    accounts: data.following.map(f => f.following),
+    accounts: data.following,
     total: data.following_aggregate.aggregate.count
   }
 }
@@ -6749,14 +6714,10 @@ async function getFollowers(accountId: string) {
     query GetFollowers($account_id: String!) {
       following(
         where: { following_id: { _eq: $account_id } }
-        order_by: { created_at: desc }
       ) {
-        follower {
-          id
-          label
-          image
-        }
-        created_at
+        id
+        label
+        image
       }
       following_aggregate(where: { following_id: { _eq: $account_id } }) {
         aggregate {
@@ -6769,7 +6730,7 @@ async function getFollowers(accountId: string) {
   const data = await client.request(query, { account_id: accountId })
 
   return {
-    followers: data.following.map(f => f.follower),
+    followers: data.following,
     count: data.following_aggregate.aggregate.count
   }
 }
@@ -6878,7 +6839,7 @@ Following relationships are created through:
 ---
 title: "List Accounts"
 description: "Query multiple accounts with filtering and pagination"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/accounts/list-accounts"
 ---
 
@@ -6905,7 +6866,6 @@ query GetAccounts(
     label
     image
     type
-    created_at
   }
   accounts_aggregate(where: $where) {
     aggregate {
@@ -6922,7 +6882,7 @@ query GetAccounts(
   "where": {
     "type": { "_eq": "AtomWallet" }
   },
-  "order_by": [{ "created_at": "desc" }],
+  "order_by": [{ "label": "asc" }],
   "limit": 20,
   "offset": 0
 }
@@ -6936,7 +6896,6 @@ query GetAccounts(
 | `label` | `String` | Human-readable name |
 | `image` | `String` | Profile image URL |
 | `type` | `String` | Account type |
-| `created_at` | `DateTime` | First interaction timestamp |
 
 ## Interactive Example
 
@@ -6944,14 +6903,12 @@ query GetAccounts(
     title: 'Recent Accounts',
     query: `query GetRecentAccounts($limit: Int!) {
   accounts(
-    order_by: { created_at: desc }
     limit: $limit
   ) {
     id
     label
     image
     type
-    created_at
 
 }`,
     variables: { limit: 10 }
@@ -6962,7 +6919,6 @@ query GetAccounts(
     query: `query GetAtomWallets($limit: Int!) {
   accounts(
     where: { type: { _eq: "AtomWallet" } }
-    order_by: { created_at: desc }
     limit: $limit
   ) {
     id
@@ -7034,7 +6990,6 @@ async function getAccountsPaginated(page: number, pageSize: number = 20) {
   const query = `
     query GetAccountsPaginated($limit: Int!, $offset: Int!) {
       accounts(
-        order_by: { created_at: desc }
         limit: $limit
         offset: $offset
       ) {
@@ -7042,7 +6997,6 @@ async function getAccountsPaginated(page: number, pageSize: number = 20) {
         label
         image
         type
-        created_at
       }
       accounts_aggregate {
         aggregate {
@@ -7089,20 +7043,11 @@ accounts(where: { label: { _ilike: "%vitalik%" } })
 accounts(where: { label: { _eq: "vitalik.eth" } })
 ```
 
-### By Date
-
-```graphql
-# Accounts created after date
-accounts(where: {
-  created_at: { _gte: "2024-01-01T00:00:00Z" }
-})
-```
-
 ## Best Practices
 
 1. **Use pagination** - Always limit results for large datasets
 2. **Include aggregate** - Get total count for pagination UI
-3. **Use indexes** - Filter by indexed fields (type, created_at)
+3. **Use indexes** - Filter by indexed fields (type, label)
 4. **Case-insensitive search** - Use `_ilike` for label searches
 
 ## Related
@@ -7186,7 +7131,7 @@ const data = await client.request(query, {
 ---
 title: "Positions from Following"
 description: "Query positions held by accounts you follow"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/accounts/positions-from-following"
 ---
 
@@ -7214,23 +7159,22 @@ query GetPositionsFromFollowing(
       label
       image
     }
-    vault_id
     vault {
-      atom {
-        label
-        image
-      }
-      triple {
-        subject { label }
-        predicate { label }
-        object { label }
+      term {
+        atom {
+          label
+          image
+        }
+        triple {
+          subject { label }
+          predicate { label }
+          object { label }
+        }
       }
       current_share_price
       total_shares
     }
     shares
-    created_at
-    updated_at
   }
 }
 ```
@@ -7252,11 +7196,8 @@ query GetPositionsFromFollowing(
 | `id` | `String` | Position identifier |
 | `account_id` | `String` | Account holding the position |
 | `account` | `Account` | Account details |
-| `vault_id` | `String` | Vault ID for the position |
-| `vault` | `Vault` | Vault details with atom/triple |
+| `vault` | `Vault` | Vault details with term |
 | `shares` | `String` | Number of shares held |
-| `created_at` | `DateTime` | When position was opened |
-| `updated_at` | `DateTime` | Last position update |
 
 ## Expected Response
 
@@ -7271,19 +7212,18 @@ query GetPositionsFromFollowing(
           "label": "alice.eth",
           "image": "ipfs://Qm..."
         },
-        "vault_id": "0x456...",
         "vault": {
-          "atom": {
-            "label": "Ethereum",
-            "image": "ipfs://Qm..."
+          "term": {
+            "atom": {
+              "label": "Ethereum",
+              "image": "ipfs://Qm..."
+            },
+            "triple": null
           },
-          "triple": null,
           "current_share_price": "1.05",
           "total_shares": "1000000000000000000"
         },
-        "shares": "500000000000000000",
-        "created_at": "2024-01-15T10:30:00Z",
-        "updated_at": "2024-01-15T10:30:00Z"
+        "shares": "500000000000000000"
       }
     ]
   }
@@ -7305,8 +7245,9 @@ query GetPositionsFromFollowing(
       image
 
     vault {
-      atom {
-        label
+      term {
+        atom {
+          label
 
     shares
 
@@ -7326,10 +7267,11 @@ query GetPositionsFromFollowing(
     limit: 20
   ) {
     vault {
-      atom {
-        term_id
-        label
-        image
+      term {
+        atom {
+          term_id
+          label
+          image
 
     shares
     account {
@@ -7362,10 +7304,12 @@ async function getSocialPortfolio(accountId: string) {
           image
         }
         vault {
-          atom {
-            term_id
-            label
-            image
+          term {
+            atom {
+              term_id
+              label
+              image
+            }
           }
           current_share_price
         }
@@ -7378,12 +7322,12 @@ async function getSocialPortfolio(accountId: string) {
 
   // Group by atom to find popular investments
   const byAtom = data.positions_from_following.reduce((acc, pos) => {
-    const atomId = pos.vault.atom?.term_id
+    const atomId = pos.vault.term?.atom?.term_id
     if (!atomId) return acc
 
     if (!acc[atomId]) {
       acc[atomId] = {
-        atom: pos.vault.atom,
+        atom: pos.vault.term.atom,
         holders: [],
         totalShares: BigInt(0)
       }
@@ -7415,11 +7359,13 @@ async function discoverFromNetwork(accountId: string) {
       ) {
         vault {
           id
-          atom {
-            term_id
-            label
-            image
-            type
+          term {
+            atom {
+              term_id
+              label
+              image
+              type
+            }
           }
         }
         account {
@@ -7439,7 +7385,7 @@ async function discoverFromNetwork(accountId: string) {
     const vaultId = pos.vault.id
     if (!vaultStats.has(vaultId)) {
       vaultStats.set(vaultId, {
-        atom: pos.vault.atom,
+        atom: pos.vault.term?.atom,
         holders: [],
         holderCount: 0
       })
@@ -7536,7 +7482,7 @@ query GetNetworkStats($account_id: String!) {
 ---
 title: "Single Account Query"
 description: "Query individual account details by address"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/accounts/single-account"
 ---
 
@@ -7559,8 +7505,6 @@ query GetAccount($id: String!) {
       data
       type
     }
-    created_at
-    updated_at
   }
 }
 ```
@@ -7583,8 +7527,6 @@ query GetAccount($id: String!) {
 | `type` | `String` | Account type: `Default`, `AtomWallet`, `ProtocolVault` |
 | `atom_id` | `String` | Linked atom ID (if any) |
 | `atom` | `Atom` | Linked atom details |
-| `created_at` | `DateTime` | First interaction timestamp |
-| `updated_at` | `DateTime` | Last activity timestamp |
 
 ## Expected Response
 
@@ -7601,9 +7543,7 @@ query GetAccount($id: String!) {
         "term_id": "0x57d94c116a33bb460428eced262b7ae2ec6f865e7aceef6357cec3d034e8ea21",
         "data": "ipfs://Qm...",
         "type": "Person"
-      },
-      "created_at": "2024-01-01T00:00:00Z",
-      "updated_at": "2024-01-15T10:30:00Z"
+      }
     }
   }
 }
@@ -7619,7 +7559,6 @@ query GetAccount($id: String!) {
     label
     image
     type
-    created_at
 
 }`,
     variables: {
@@ -7666,7 +7605,6 @@ async function getAccountProfile(address: string) {
           type
           data
         }
-        created_at
       }
     }
   `
@@ -7697,7 +7635,6 @@ function AccountProfile({ address }: { address: string }) {
       <h1>{account.label || truncateAddress(account.id)}</h1>
       <span className="type">{account.type}</span>
       <span className="address">{account.id}</span>
-      <time>Member since {formatDate(account.created_at)}</time>
     </div>
   )
 }
@@ -9831,7 +9768,7 @@ document.getElementById('chart').innerHTML = svg.getChartSvg
 ---
 title: "Aggregate Events"
 description: "Aggregate statistics for blockchain events"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/events/aggregate-events"
 ---
 
@@ -9848,11 +9785,11 @@ query GetEventsAggregate($where: events_bool_exp) {
       count
       max {
         block_number
-        block_timestamp
+        created_at
       }
       min {
         block_number
-        block_timestamp
+        created_at
       }
     }
   }
@@ -9865,7 +9802,7 @@ query GetEventsAggregate($where: events_bool_exp) {
 {
   "where": {
     "type": { "_eq": "AtomCreated" },
-    "block_timestamp": { "_gte": "2024-01-01T00:00:00Z" }
+    "created_at": { "_gte": "2024-01-01T00:00:00Z" }
   }
 }
 ```
@@ -9917,7 +9854,7 @@ async function getDailyEventCounts(date: Date) {
   const query = `
     query GetDailyEvents($start: timestamptz!, $end: timestamptz!) {
       events_aggregate(where: {
-        block_timestamp: { _gte: $start, _lte: $end }
+        created_at: { _gte: $start, _lte: $end }
       }) {
         aggregate {
           count
@@ -9941,7 +9878,7 @@ async function getDailyEventCounts(date: Date) {
 ---
 title: "List Events"
 description: "Query raw blockchain events with filtering"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/events/list-events"
 ---
 
@@ -9967,13 +9904,10 @@ query GetEvents(
     id
     type
     block_number
-    block_timestamp
+    created_at
     transaction_hash
     atom_id
     triple_id
-    sender_id
-    receiver_id
-    data
   }
 }
 ```
@@ -9997,13 +9931,10 @@ query GetEvents(
 | `id` | `String` | Unique event identifier |
 | `type` | `String` | Event type |
 | `block_number` | `Int` | Block number |
-| `block_timestamp` | `DateTime` | Block timestamp |
+| `created_at` | `timestamptz` | Event timestamp |
 | `transaction_hash` | `String` | Transaction hash |
 | `atom_id` | `String` | Related atom ID (if applicable) |
 | `triple_id` | `String` | Related triple ID (if applicable) |
-| `sender_id` | `String` | Sender address |
-| `receiver_id` | `String` | Receiver address |
-| `data` | `JSON` | Event-specific data |
 
 ## Interactive Example
 
@@ -10017,7 +9948,7 @@ query GetEvents(
     id
     type
     block_number
-    block_timestamp
+    created_at
     transaction_hash
 
 }`,
@@ -10034,9 +9965,8 @@ query GetEvents(
   ) {
     id
     atom_id
-    sender_id
-    block_timestamp
-    data
+    created_at
+    transaction_hash
 
 }`,
     variables: { limit: 10 }
@@ -10051,11 +9981,10 @@ query GetEvents(
     limit: $limit
   ) {
     id
-    sender_id
     atom_id
     triple_id
-    data
-    block_timestamp
+    created_at
+    transaction_hash
 
 }`,
     variables: { limit: 10 }
@@ -10082,15 +10011,15 @@ async function getEventsByDateRange(
     ) {
       events(
         where: {
-          block_timestamp: { _gte: $start, _lte: $end }
+          created_at: { _gte: $start, _lte: $end }
           ${eventType ? 'type: { _eq: $type }' : ''}
         }
-        order_by: { block_timestamp: asc }
+        order_by: { created_at: asc }
       ) {
         id
         type
-        block_timestamp
-        data
+        created_at
+        transaction_hash
       }
     }
   `
@@ -10119,8 +10048,7 @@ async function getTransactionEvents(txHash: string) {
         type
         atom_id
         triple_id
-        sender_id
-        data
+        transaction_hash
       }
     }
   `
@@ -10139,13 +10067,6 @@ events(where: { type: { _eq: "AtomCreated" } })
 
 # Multiple types
 events(where: { type: { _in: ["Deposited", "Redeemed"] } })
-```
-
-### By Address
-
-```graphql
-# Events from specific sender
-events(where: { sender_id: { _eq: "0x..." } })
 ```
 
 ### By Block Range
@@ -10171,7 +10092,7 @@ events(where: {
 ---
 title: "Events Queries"
 description: "Query raw blockchain events from the Intuition protocol"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/events/overview"
 ---
 
@@ -10214,9 +10135,8 @@ const query = `
       id
       type
       block_number
-      block_timestamp
+      created_at
       transaction_hash
-      data
     }
   }
 `
@@ -10881,7 +10801,7 @@ Returns `pnl_leaderboard_entry` rows -- see the [full field reference](./pnl-lea
 ---
 title: "Account PnL Chart"
 description: "Query historical Profit and Loss data for charting"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/pnl/account-pnl-chart"
 ---
 
@@ -10896,7 +10816,13 @@ query GetAccountPnlChart($input: GetAccountPnlChartInput!) {
   getAccountPnlChart(input: $input) {
     account_id
     count
-    data
+    data {
+      timestamp
+      equity_value
+      net_invested
+      total_pnl
+      pnl_pct
+    }
     interval
   }
 }
@@ -10971,7 +10897,13 @@ The query takes a single `input` object:
   getAccountPnlChart(input: $input) {
     account_id
     count
-    data
+    data {
+      timestamp
+      equity_value
+      net_invested
+      total_pnl
+      pnl_pct
+
     interval
 
 }`,
@@ -11185,7 +11117,7 @@ console.log(`Total PnL: ${pnl.total_pnl} (${pnl.pnl_pct}%)`)
 ---
 title: "Account PnL Realized"
 description: "Query realized Profit and Loss data for an account"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/pnl/account-pnl-realized"
 ---
 
@@ -11200,7 +11132,16 @@ query GetAccountPnlRealized($input: GetAccountPnlRealizedInput!) {
   getAccountPnlRealized(input: $input) {
     account_id
     count
-    data
+    data {
+      timestamp
+      realized_pnl
+      realized_pnl_pct
+      cost_basis
+      assets_out
+      shares_redeemed
+      term_id
+      curve_id
+    }
   }
 }
 ```
@@ -11264,7 +11205,15 @@ The query takes a single `input` object:
   getAccountPnlRealized(input: $input) {
     account_id
     count
-    data
+    data {
+      timestamp
+      realized_pnl
+      realized_pnl_pct
+      cost_basis
+      assets_out
+      shares_redeemed
+      term_id
+      curve_id
 
 }`,
     variables: {
@@ -11413,7 +11362,7 @@ Generate performance reports with:
 ---
 title: "Position PnL Chart"
 description: "Query historical Profit and Loss data for a specific position"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/pnl/position-pnl-chart"
 ---
 
@@ -11430,7 +11379,15 @@ query GetPositionPnlChart($input: GetPositionPnlChartInput!) {
     term_id
     curve_id
     count
-    data
+    data {
+      timestamp
+      equity_value
+      net_invested
+      total_pnl
+      pnl_pct
+      share_price
+      shares_total
+    }
     interval
   }
 }
@@ -11515,7 +11472,15 @@ The query takes a single `input` object:
     term_id
     curve_id
     count
-    data
+    data {
+      timestamp
+      equity_value
+      net_invested
+      total_pnl
+      pnl_pct
+      share_price
+      shares_total
+
     interval
 
 }`,
@@ -11595,7 +11560,7 @@ async function getPositionPerformance(
 ---
 title: "Search Queries"
 description: "Search atoms, terms, and positions"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/search/overview"
 ---
 
@@ -11626,10 +11591,12 @@ const query = `
       args: { search: $search }
       limit: $limit
     ) {
-      term_id
-      label
-      image
+      id
       type
+      atom {
+        label
+        image
+      }
     }
   }
 `
@@ -11656,7 +11623,7 @@ const data = await client.request(query, {
 ---
 title: "Search from Following"
 description: "Search within followed accounts' activity"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/search/search-from-following"
 ---
 
@@ -11679,13 +11646,16 @@ query SearchTermFromFollowing(
     }
     limit: $limit
   ) {
-    term_id
-    label
-    image
+    id
     type
-    creator {
+    atom {
       label
       image
+      creator {
+        id
+        label
+        image
+      }
     }
   }
 }
@@ -11727,18 +11697,22 @@ async function searchInNetwork(
         args: { address: $address, query: $query }
         limit: 10
       ) {
-        term_id
-        label
-        image
-        creator { label }
+        id
+        atom {
+          label
+          image
+          creator { id label }
+        }
       }
       global: search_term(
         args: { query: $query }
         limit: 10
       ) {
-        term_id
-        label
-        image
+        id
+        atom {
+          label
+          image
+        }
       }
     }
   `
@@ -11776,8 +11750,8 @@ function SocialSearch({ address }: { address: string }) {
 
       <div className="results">
         <h3>From Your Network</h3>
-        {data?.search_term_from_following.map(atom => (
-          <AtomCard key={atom.term_id} atom={atom} />
+        {data?.search_term_from_following.map(term => (
+          <AtomCard key={term.id} atom={term.atom} />
         ))}
       </div>
     </div>
@@ -11793,7 +11767,7 @@ function SocialSearch({ address }: { address: string }) {
 ---
 title: "Search Positions"
 description: "Search positions on a specific subject"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/search/search-positions"
 ---
 
@@ -11829,9 +11803,11 @@ query SearchPositionsOnSubject(
     created_at
     vault {
       term_id
-      triple {
-        predicate { label }
-        object { label }
+      term {
+        triple {
+          predicate { label }
+          object { label }
+        }
       }
     }
   }
@@ -11893,9 +11869,11 @@ async function getPositionsForAccounts(addresses: string[]) {
           image
         }
         vault {
-          triple {
-            predicate { label }
-            object { label }
+          term {
+            triple {
+              predicate { label }
+              object { label }
+            }
           }
         }
         shares
@@ -11930,7 +11908,7 @@ async function getPositionsForAccounts(addresses: string[]) {
 ---
 title: "Search Term"
 description: "Search atoms and terms by text"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/search/search-term"
 ---
 
@@ -11951,16 +11929,17 @@ query SearchTerm(
     limit: $limit
     offset: $offset
   ) {
-    term_id
-    label
-    image
-    emoji
+    id
     type
-    data
     created_at
-    creator {
+    atom {
       label
       image
+      creator {
+        id
+        label
+        image
+      }
     }
   }
 }
@@ -11984,18 +11963,17 @@ query SearchTerm(
 
 ## Response Fields
 
-The function returns `atoms` rows, so all atom fields are available:
+The function returns `terms` rows. Metadata fields like `label`, `image`, and `creator` are accessed via the `atom` relationship:
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `term_id` | `String` | Unique atom identifier |
-| `label` | `String` | Human-readable label |
-| `image` | `String` | Image URL (IPFS) |
-| `emoji` | `String` | Associated emoji |
-| `type` | `String` | Atom type (Thing, Person, Organization) |
-| `data` | `String` | IPFS data URI |
+| `id` | `String` | Unique term identifier |
+| `type` | `String` | Term type |
 | `created_at` | `DateTime` | Creation timestamp |
-| `creator` | `Account` | Creator account |
+| `atom` | `atoms` | Related atom with metadata (label, image, creator) |
+| `atom.label` | `String` | Human-readable label |
+| `atom.image` | `String` | Image URL (IPFS) |
+| `atom.creator` | `accounts` | Creator account (id, label, image) |
 
 ## Expected Response
 
@@ -12004,16 +11982,17 @@ The function returns `atoms` rows, so all atom fields are available:
   "data": {
     "search_term": [
       {
-        "term_id": "0x57d94c116a33bb460428eced262b7ae2ec6f865e7aceef6357cec3d034e8ea21",
-        "label": "Ethereum",
-        "image": "ipfs://QmXnnyufdzAWL5CqZ2RnSNgPbvCc1ALT73s6epPrRnZ1Xy",
-        "emoji": "⟠",
+        "id": "0x57d94c116a33bb460428eced262b7ae2ec6f865e7aceef6357cec3d034e8ea21",
         "type": "Thing",
-        "data": "ipfs://Qm...",
         "created_at": "2024-01-01T00:00:00Z",
-        "creator": {
-          "label": "vitalik.eth",
-          "image": "ipfs://Qm..."
+        "atom": {
+          "label": "Ethereum",
+          "image": "ipfs://QmXnnyufdzAWL5CqZ2RnSNgPbvCc1ALT73s6epPrRnZ1Xy",
+          "creator": {
+            "id": "0xd8da6bf26964af9d7eed9e03e53415d37aa96045",
+            "label": "vitalik.eth",
+            "image": "ipfs://Qm..."
+          }
         }
       }
     ]
@@ -12027,10 +12006,11 @@ The function returns `atoms` rows, so all atom fields are available:
     title: 'Basic Search',
     query: `query SearchTerm($query: String!, $limit: Int!) {
   search_term(args: { query: $query }, limit: $limit) {
-    term_id
-    label
-    image
+    id
     type
+    atom {
+      label
+      image
 
 }`,
     variables: {
@@ -12043,16 +12023,16 @@ The function returns `atoms` rows, so all atom fields are available:
     title: 'Search with Creator Info',
     query: `query SearchTerm($query: String!, $limit: Int!) {
   search_term(args: { query: $query }, limit: $limit) {
-    term_id
-    label
-    image
+    id
     type
-    creator {
-      id
+    created_at
+    atom {
       label
       image
-
-    created_at
+      creator {
+        id
+        label
+        image
 
 }`,
     variables: {
@@ -12076,10 +12056,12 @@ async function searchAtoms(searchQuery: string, limit: number = 10) {
   const gqlQuery = `
     query SearchTerm($query: String!, $limit: Int!) {
       search_term(args: { query: $query }, limit: $limit) {
-        term_id
-        label
-        image
+        id
         type
+        atom {
+          label
+          image
+        }
       }
     }
   `
@@ -12108,10 +12090,12 @@ async function searchByType(
         where: { type: { _eq: $type } }
         limit: 20
       ) {
-        term_id
-        label
-        image
+        id
         type
+        atom {
+          label
+          image
+        }
       }
     }
   `
@@ -12143,7 +12127,7 @@ async function searchByType(
 ---
 title: "Aggregate Signals"
 description: "Aggregate statistics for signals"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/signals/aggregate-signals"
 ---
 
@@ -12160,18 +12144,17 @@ query GetSignalsAggregate($where: signals_bool_exp) {
       count
       sum {
         delta
-        shares_delta
       }
       avg {
         delta
       }
       max {
         delta
-        block_timestamp
+        created_at
       }
       min {
         delta
-        block_timestamp
+        created_at
       }
     }
   }
@@ -12183,8 +12166,7 @@ query GetSignalsAggregate($where: signals_bool_exp) {
 ```json
 {
   "where": {
-    "signal_type": { "_eq": "Deposit" },
-    "block_timestamp": { "_gte": "2024-01-01T00:00:00Z" }
+    "created_at": { "_gte": "2024-01-01T00:00:00Z" }
   }
 }
 ```
@@ -12195,12 +12177,11 @@ query GetSignalsAggregate($where: signals_bool_exp) {
 |-------|------|-------------|
 | `count` | `Int` | Total number of signals |
 | `sum.delta` | `String` | Total amount in wei |
-| `sum.shares_delta` | `String` | Total shares |
 | `avg.delta` | `Float` | Average amount |
 | `max.delta` | `String` | Maximum amount |
-| `max.block_timestamp` | `DateTime` | Most recent signal |
+| `max.created_at` | `DateTime` | Most recent signal |
 | `min.delta` | `String` | Minimum amount |
-| `min.block_timestamp` | `DateTime` | Oldest signal |
+| `min.created_at` | `DateTime` | Oldest signal |
 
 ## Expected Response
 
@@ -12211,19 +12192,18 @@ query GetSignalsAggregate($where: signals_bool_exp) {
       "aggregate": {
         "count": 1500,
         "sum": {
-          "delta": "150000000000000000000",
-          "shares_delta": "145000000000000000000"
+          "delta": "150000000000000000000"
         },
         "avg": {
           "delta": 100000000000000000
         },
         "max": {
           "delta": "10000000000000000000",
-          "block_timestamp": "2024-01-15T23:59:59Z"
+          "created_at": "2024-01-15T23:59:59Z"
         },
         "min": {
           "delta": "1000000000000000",
-          "block_timestamp": "2024-01-01T00:00:01Z"
+          "created_at": "2024-01-01T00:00:01Z"
         }
       }
     }
@@ -12249,7 +12229,7 @@ query GetSignalsAggregate($where: signals_bool_exp) {
     id: 'deposits-stats',
     title: 'Deposit Statistics',
     query: `query GetDepositsAggregate {
-  signals_aggregate(where: { signal_type: { _eq: "Deposit" } }) {
+  signals_aggregate(where: { deposit_id: { _is_null: false } }) {
     aggregate {
       count
       sum {
@@ -12267,7 +12247,7 @@ query GetSignalsAggregate($where: signals_bool_exp) {
     query: `query GetAccountStats($account_id: String!) {
   deposits: signals_aggregate(where: {
     account_id: { _eq: $account_id }
-    signal_type: { _eq: "Deposit" }
+    deposit_id: { _is_null: false }
   }) {
     aggregate {
       count
@@ -12275,7 +12255,7 @@ query GetSignalsAggregate($where: signals_bool_exp) {
 
   redemptions: signals_aggregate(where: {
     account_id: { _eq: $account_id }
-    signal_type: { _eq: "Redemption" }
+    redemption_id: { _is_null: false }
   }) {
     aggregate {
       count
@@ -12297,13 +12277,13 @@ Display overall protocol statistics:
 async function getProtocolStats() {
   const query = `
     query GetProtocolStats {
-      deposits: signals_aggregate(where: { signal_type: { _eq: "Deposit" } }) {
+      deposits: signals_aggregate(where: { deposit_id: { _is_null: false } }) {
         aggregate {
           count
           sum { delta }
         }
       }
-      redemptions: signals_aggregate(where: { signal_type: { _eq: "Redemption" } }) {
+      redemptions: signals_aggregate(where: { redemption_id: { _is_null: false } }) {
         aggregate {
           count
           sum { delta }
@@ -12339,7 +12319,7 @@ async function getAccountStats(accountId: string) {
     query GetAccountStats($account_id: String!) {
       deposits: signals_aggregate(where: {
         account_id: { _eq: $account_id }
-        signal_type: { _eq: "Deposit" }
+        deposit_id: { _is_null: false }
       }) {
         aggregate {
           count
@@ -12349,7 +12329,7 @@ async function getAccountStats(accountId: string) {
       }
       redemptions: signals_aggregate(where: {
         account_id: { _eq: $account_id }
-        signal_type: { _eq: "Redemption" }
+        redemption_id: { _is_null: false }
       }) {
         aggregate {
           count
@@ -12386,7 +12366,7 @@ async function getMonthlyStats(year: number, month: number) {
   const query = `
     query GetMonthlyStats($start: timestamptz!, $end: timestamptz!) {
       signals_aggregate(where: {
-        block_timestamp: { _gte: $start, _lte: $end }
+        created_at: { _gte: $start, _lte: $end }
       }) {
         aggregate {
           count
@@ -12394,8 +12374,8 @@ async function getMonthlyStats(year: number, month: number) {
         }
       }
       deposits: signals_aggregate(where: {
-        block_timestamp: { _gte: $start, _lte: $end }
-        signal_type: { _eq: "Deposit" }
+        created_at: { _gte: $start, _lte: $end }
+        deposit_id: { _is_null: false }
       }) {
         aggregate {
           count
@@ -12424,8 +12404,10 @@ query GetSignalsByAtom {
   ) {
     nodes {
       atom_id
-      atom {
-        label
+      term {
+        atom {
+          label
+        }
       }
     }
     aggregate {
@@ -12451,7 +12433,7 @@ query GetSignalsByAtom {
 ---
 title: "List Signals"
 description: "Query signals (deposits/redemptions) with filtering and pagination"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/signals/list-signals"
 ---
 
@@ -12475,9 +12457,7 @@ query GetSignals(
     offset: $offset
   ) {
     id
-    signal_type
     delta
-    shares_delta
     account_id
     account {
       id
@@ -12485,21 +12465,16 @@ query GetSignals(
       image
     }
     atom_id
-    atom {
-      term_id
-      label
-      image
-      type
+    term {
+      atom {
+        term_id
+        label
+        image
+      }
     }
     triple_id
-    triple {
-      id
-      subject { label }
-      predicate { label }
-      object { label }
-    }
     block_number
-    block_timestamp
+    created_at
     transaction_hash
   }
 }
@@ -12516,10 +12491,7 @@ query GetSignals(
 
 ```json
 {
-  "where": {
-    "signal_type": { "_eq": "Deposit" }
-  },
-  "order_by": [{ "block_timestamp": "desc" }],
+  "order_by": [{ "created_at": "desc" }],
   "limit": 20,
   "offset": 0
 }
@@ -12530,17 +12502,14 @@ query GetSignals(
 | Field | Type | Description |
 |-------|------|-------------|
 | `id` | `String` | Unique signal identifier |
-| `signal_type` | `String` | `Deposit` or `Redemption` |
 | `delta` | `String` | Amount in wei |
-| `shares_delta` | `String` | Shares minted or burned |
 | `account_id` | `String` | Account address |
 | `account` | `Account` | Account details with label/image |
 | `atom_id` | `String` | Related atom ID (if atom signal) |
-| `atom` | `Atom` | Atom details |
+| `term` | `Term` | Related term (contains nested `atom` with label/image) |
 | `triple_id` | `String` | Related triple ID (if triple signal) |
-| `triple` | `Triple` | Triple details |
 | `block_number` | `Int` | Block number |
-| `block_timestamp` | `DateTime` | Event timestamp |
+| `created_at` | `DateTime` | Event timestamp |
 | `transaction_hash` | `String` | Transaction hash |
 
 ## Expected Response
@@ -12551,9 +12520,7 @@ query GetSignals(
     "signals": [
       {
         "id": "0x123...-1",
-        "signal_type": "Deposit",
         "delta": "1000000000000000000",
-        "shares_delta": "1000000000000000000",
         "account_id": "0xd8da6bf26964af9d7eed9e03e53415d37aa96045",
         "account": {
           "id": "0xd8da6bf26964af9d7eed9e03e53415d37aa96045",
@@ -12561,16 +12528,16 @@ query GetSignals(
           "image": "ipfs://Qm..."
         },
         "atom_id": "0x57d94c116a33bb...",
-        "atom": {
-          "term_id": "0x57d94c116a33bb...",
-          "label": "Ethereum",
-          "image": "ipfs://Qm...",
-          "type": "Thing"
+        "term": {
+          "atom": {
+            "id": "0x57d94c116a33bb...",
+            "label": "Ethereum",
+            "image": "ipfs://Qm..."
+          }
         },
         "triple_id": null,
-        "triple": null,
         "block_number": 12345678,
-        "block_timestamp": "2024-01-15T10:30:00Z",
+        "created_at": "2024-01-15T10:30:00Z",
         "transaction_hash": "0xabc..."
       }
     ]
@@ -12583,18 +12550,18 @@ query GetSignals(
     id: 'recent-signals',
     title: 'Recent Signals',
     query: `query GetSignals($limit: Int!) {
-  signals(limit: $limit, order_by: { block_timestamp: desc }) {
+  signals(limit: $limit, order_by: { created_at: desc }) {
     id
-    signal_type
     delta
     account {
       label
       image
 
-    atom {
-      label
+    term {
+      atom {
+        label
 
-    block_timestamp
+    created_at
 
 }`,
     variables: { limit: 10 }
@@ -12605,21 +12572,17 @@ query GetSignals(
     query: `query GetAccountSignals($account_id: String!, $limit: Int!) {
   signals(
     where: { account_id: { _eq: $account_id } }
-    order_by: { block_timestamp: desc }
+    order_by: { created_at: desc }
     limit: $limit
   ) {
     id
-    signal_type
     delta
-    atom {
-      label
+    term {
+      atom {
+        label
 
-    triple {
-      subject { label }
-      predicate { label }
-      object { label }
-
-    block_timestamp
+    triple_id
+    created_at
 
 }`,
     variables: {
@@ -12632,7 +12595,6 @@ query GetSignals(
     title: 'Deposits Only',
     query: `query GetDeposits($limit: Int!) {
   signals(
-    where: { signal_type: { _eq: "Deposit" } }
     order_by: { delta: desc }
     limit: $limit
   ) {
@@ -12641,10 +12603,11 @@ query GetSignals(
     account {
       label
 
-    atom {
-      label
+    term {
+      atom {
+        label
 
-    block_timestamp
+    created_at
 
 }`,
     variables: { limit: 10 }
@@ -12662,27 +12625,24 @@ async function getActivityFeed(limit: number = 50) {
   const query = `
     query GetActivityFeed($limit: Int!) {
       signals(
-        order_by: { block_timestamp: desc }
+        order_by: { created_at: desc }
         limit: $limit
       ) {
         id
-        signal_type
         delta
         account {
           id
           label
           image
         }
-        atom {
-          label
-          image
+        term {
+          atom {
+            label
+            image
+          }
         }
-        triple {
-          subject { label }
-          predicate { label }
-          object { label }
-        }
-        block_timestamp
+        triple_id
+        created_at
       }
     }
   `
@@ -12696,12 +12656,9 @@ async function getActivityFeed(limit: number = 50) {
 }
 
 function formatSignalMessage(signal: Signal): string {
-  const action = signal.signal_type === 'Deposit' ? 'staked on' : 'withdrew from'
-  const target = signal.atom
-    ? signal.atom.label
-    : `${signal.triple.subject.label} ${signal.triple.predicate.label} ${signal.triple.object.label}`
+  const target = signal.term?.atom?.label ?? `Triple ${signal.triple_id}`
 
-  return `${signal.account.label} ${action} ${target}`
+  return `${signal.account.label} signaled on ${target}`
 }
 ```
 
@@ -12722,21 +12679,17 @@ async function getAccountHistory(
     ) {
       signals(
         where: { account_id: { _eq: $account_id } }
-        order_by: { block_timestamp: desc }
+        order_by: { created_at: desc }
         limit: $limit
         offset: $offset
       ) {
         id
-        signal_type
         delta
-        shares_delta
-        atom { label }
-        triple {
-          subject { label }
-          predicate { label }
-          object { label }
+        term {
+          atom { label }
         }
-        block_timestamp
+        triple_id
+        created_at
         transaction_hash
       }
       signals_aggregate(where: { account_id: { _eq: $account_id } }) {
@@ -12771,15 +12724,14 @@ async function getSignalsByDateRange(
     query GetSignalsByDate($start: timestamptz!, $end: timestamptz!) {
       signals(
         where: {
-          block_timestamp: { _gte: $start, _lte: $end }
+          created_at: { _gte: $start, _lte: $end }
         }
-        order_by: { block_timestamp: desc }
+        order_by: { created_at: desc }
       ) {
         id
-        signal_type
         delta
         account { label }
-        block_timestamp
+        created_at
       }
     }
   `
@@ -12793,22 +12745,11 @@ async function getSignalsByDateRange(
 
 ## Filtering Options
 
-### By Signal Type
-
-```graphql
-# Deposits only
-signals(where: { signal_type: { _eq: "Deposit" } })
-
-# Redemptions only
-signals(where: { signal_type: { _eq: "Redemption" } })
-```
-
 ### By Amount
 
 ```graphql
-# Large deposits (> 1 ETH)
+# Large signals (> 1 ETH)
 signals(where: {
-  signal_type: { _eq: "Deposit" },
   delta: { _gt: "1000000000000000000" }
 })
 ```
@@ -12937,7 +12878,7 @@ signals(where: {
 ---
 title: "Signals from Following"
 description: "Query signals from accounts you follow"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/signals/signals-from-following"
 ---
 
@@ -12959,27 +12900,24 @@ query GetSignalsFromFollowing(
     where: $where
     limit: $limit
     offset: $offset
-    order_by: { block_timestamp: desc }
+    order_by: { created_at: desc }
   ) {
     id
-    signal_type
     delta
     account {
       id
       label
       image
     }
-    atom {
-      term_id
-      label
-      image
+    term {
+      atom {
+        term_id
+        label
+        image
+      }
     }
-    triple {
-      subject { label }
-      predicate { label }
-      object { label }
-    }
-    block_timestamp
+    triple_id
+    created_at
   }
 }
 ```
@@ -13006,12 +12944,11 @@ query GetSignalsFromFollowing(
 | Field | Type | Description |
 |-------|------|-------------|
 | `id` | `String` | Signal identifier |
-| `signal_type` | `String` | `Deposit` or `Redemption` |
 | `delta` | `String` | Amount in wei |
 | `account` | `Account` | Account that made the signal |
-| `atom` | `Atom` | Related atom (if atom signal) |
-| `triple` | `Triple` | Related triple (if triple signal) |
-| `block_timestamp` | `DateTime` | Event timestamp |
+| `term` | `Term` | Related term (contains nested `atom` with label/image) |
+| `triple_id` | `String` | Related triple ID (if triple signal) |
+| `created_at` | `DateTime` | Event timestamp |
 
 ## Expected Response
 
@@ -13021,20 +12958,21 @@ query GetSignalsFromFollowing(
     "signals_from_following": [
       {
         "id": "0x123...-1",
-        "signal_type": "Deposit",
         "delta": "1000000000000000000",
         "account": {
           "id": "0xabc...",
           "label": "alice.eth",
           "image": "ipfs://Qm..."
         },
-        "atom": {
-          "term_id": "0x57d94c...",
-          "label": "Ethereum",
-          "image": "ipfs://Qm..."
+        "term": {
+          "atom": {
+            "id": "0x57d94c...",
+            "label": "Ethereum",
+            "image": "ipfs://Qm..."
+          }
         },
-        "triple": null,
-        "block_timestamp": "2024-01-15T10:30:00Z"
+        "triple_id": null,
+        "created_at": "2024-01-15T10:30:00Z"
       }
     ]
   }
@@ -13049,19 +12987,19 @@ query GetSignalsFromFollowing(
   signals_from_following(
     args: { account_id: $account_id }
     limit: $limit
-    order_by: { block_timestamp: desc }
+    order_by: { created_at: desc }
   ) {
     id
-    signal_type
     delta
     account {
       label
       image
 
-    atom {
-      label
+    term {
+      atom {
+        label
 
-    block_timestamp
+    created_at
 
 }`,
     variables: {
@@ -13075,7 +13013,7 @@ query GetSignalsFromFollowing(
     query: `query GetDepositsFromFollowing($account_id: String!, $limit: Int!) {
   signals_from_following(
     args: { account_id: $account_id }
-    where: { signal_type: { _eq: "Deposit" } }
+    where: { deposit_id: { _is_null: false } }
     limit: $limit
     order_by: { delta: desc }
   ) {
@@ -13084,10 +13022,11 @@ query GetSignalsFromFollowing(
     account {
       label
 
-    atom {
-      label
+    term {
+      atom {
+        label
 
-    block_timestamp
+    created_at
 
 }`,
     variables: {
@@ -13117,27 +13056,23 @@ async function getSocialFeed(
         args: { account_id: $account_id }
         limit: $limit
         offset: $offset
-        order_by: { block_timestamp: desc }
+        order_by: { created_at: desc }
       ) {
         id
-        signal_type
         delta
         account {
           id
           label
           image
         }
-        atom {
-          label
-          image
-          type
+        term {
+          atom {
+            label
+            image
+          }
         }
-        triple {
-          subject { label }
-          predicate { label }
-          object { label }
-        }
-        block_timestamp
+        triple_id
+        created_at
       }
     }
   `
@@ -13155,17 +13090,11 @@ async function getSocialFeed(
 }
 
 function formatActivityMessage(signal: Signal): string {
-  const action = signal.signal_type === 'Deposit'
-    ? 'staked on'
-    : 'withdrew from'
-
-  const target = signal.atom
-    ? signal.atom.label
-    : formatTriple(signal.triple)
+  const target = signal.term?.atom?.label ?? `Triple ${signal.triple_id}`
 
   const amount = formatEther(signal.delta)
 
-  return `${signal.account.label} ${action} ${target} (${amount} ETH)`
+  return `${signal.account.label} signaled on ${target} (${amount} ETH)`
 }
 ```
 
@@ -13212,30 +13141,28 @@ function SocialFeed({ accountId }: { accountId: string }) {
 }
 
 function SignalCard({ signal }: { signal: Signal }) {
-  const isDeposit = signal.signal_type === 'Deposit'
-
   return (
     <div className="signal-card">
       <img src={signal.account.image} alt={signal.account.label} />
       <div className="content">
         <strong>{signal.account.label}</strong>
-        <span>{isDeposit ? 'staked on' : 'withdrew from'}</span>
+        <span>signaled on</span>
         <span className="target">
-          {signal.atom?.label || formatTriple(signal.triple)}
+          {signal.term?.atom?.label ?? `Triple ${signal.triple_id}`}
         </span>
       </div>
       <div className="amount">
         {formatEther(signal.delta)} ETH
       </div>
-      <time>{formatRelativeTime(signal.block_timestamp)}</time>
+      <time>{formatRelativeTime(signal.created_at)}</time>
     </div>
   )
 }
 ```
 
-### Filter by Signal Type
+### Filter by Deposits
 
-Show only deposits or redemptions from followed accounts:
+Show only deposit signals from followed accounts:
 
 ```typescript
 async function getDepositsFromFollowing(accountId: string) {
@@ -13243,15 +13170,17 @@ async function getDepositsFromFollowing(accountId: string) {
     query GetDepositsFromFollowing($account_id: String!) {
       signals_from_following(
         args: { account_id: $account_id }
-        where: { signal_type: { _eq: "Deposit" } }
+        where: { deposit_id: { _is_null: false } }
         order_by: { delta: desc }
         limit: 50
       ) {
         id
         delta
         account { label }
-        atom { label }
-        block_timestamp
+        term {
+          atom { label }
+        }
+        created_at
       }
     }
   `
@@ -13442,7 +13371,7 @@ protocol_fee_accruals(where: {
 ---
 title: "Fee Transfers"
 description: "Query protocol fee transfer events"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/stats/fee-transfers"
 ---
 
@@ -13476,7 +13405,7 @@ query GetFeeTransfers(
       label
     }
     block_number
-    block_timestamp
+    created_at
     transaction_hash
   }
   fee_transfers_aggregate(where: $where) {
@@ -13494,7 +13423,7 @@ query GetFeeTransfers(
 
 ```json
 {
-  "order_by": [{ "block_timestamp": "desc" }],
+  "order_by": [{ "created_at": "desc" }],
   "limit": 20
 }
 ```
@@ -13510,7 +13439,7 @@ query GetFeeTransfers(
 | `receiver_id` | `String` | Protocol fee receiver address |
 | `receiver` | `Account` | Receiver details |
 | `block_number` | `Int` | Block number |
-| `block_timestamp` | `DateTime` | Transfer timestamp |
+| `created_at` | `DateTime` | Transfer timestamp |
 | `transaction_hash` | `String` | Transaction hash |
 
 ## Expected Response
@@ -13531,7 +13460,7 @@ query GetFeeTransfers(
           "label": "Intuition Protocol"
         },
         "block_number": 12345678,
-        "block_timestamp": "2024-01-15T10:30:00Z",
+        "created_at": "2024-01-15T10:30:00Z",
         "transaction_hash": "0xdef..."
       }
     ],
@@ -13553,7 +13482,7 @@ query GetFeeTransfers(
     title: 'Recent Fee Transfers',
     query: `query GetRecentFees($limit: Int!) {
   fee_transfers(
-    order_by: { block_timestamp: desc }
+    order_by: { created_at: desc }
     limit: $limit
   ) {
     id
@@ -13561,7 +13490,7 @@ query GetFeeTransfers(
     sender {
       label
 
-    block_timestamp
+    created_at
 
   fee_transfers_aggregate {
     aggregate {
@@ -13585,7 +13514,7 @@ query GetFeeTransfers(
     sender {
       label
 
-    block_timestamp
+    created_at
     transaction_hash
 
 }`,
@@ -13607,7 +13536,7 @@ async function getFeeRevenue(days: number = 30) {
   const query = `
     query GetFeeRevenue($start: timestamptz!) {
       fee_transfers_aggregate(where: {
-        block_timestamp: { _gte: $start }
+        created_at: { _gte: $start }
       }) {
         aggregate {
           count
@@ -13656,7 +13585,7 @@ async function getTopFeePayers(limit: number = 10) {
           label
           image
         }
-        block_timestamp
+        created_at
       }
     }
   `
@@ -13671,7 +13600,7 @@ async function getTopFeePayers(limit: number = 10) {
 
 ```graphql
 fee_transfers(where: {
-  block_timestamp: {
+  created_at: {
     _gte: "2024-01-01T00:00:00Z",
     _lte: "2024-01-31T23:59:59Z"
   }
@@ -13773,7 +13702,7 @@ const data = await client.request(query)
 ---
 title: "Protocol Statistics"
 description: "Query protocol-wide statistics and metrics"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/stats/protocol-stats"
 ---
 
@@ -13794,8 +13723,7 @@ query GetProtocolStats {
     total_accounts
     total_fees
     contract_balance
-    created_at
-    updated_at
+    last_updated
   }
 }
 ```
@@ -13812,7 +13740,7 @@ query GetProtocolStats {
 | `total_accounts` | `Int` | Unique accounts that have interacted |
 | `total_fees` | `String` | Total protocol fees in wei |
 | `contract_balance` | `String` | Current contract balance in wei |
-| `updated_at` | `DateTime` | Last update timestamp |
+| `last_updated` | `DateTime` | Last update timestamp |
 
 ## Expected Response
 
@@ -13829,7 +13757,7 @@ query GetProtocolStats {
         "total_accounts": 3200,
         "total_fees": "1500000000000000000",
         "contract_balance": "500000000000000000000",
-        "updated_at": "2024-01-15T10:30:00Z"
+        "last_updated": "2024-01-15T10:30:00Z"
       }
     ]
   }
@@ -13848,7 +13776,7 @@ query GetProtocolStats {
     total_accounts
     total_fees
     contract_balance
-    updated_at
+    last_updated
 
 }`,
     variables: {}
@@ -14618,7 +14546,7 @@ async function getTripleVaultPair(termId: string) {
 ---
 title: "Deposits & Redemptions"
 description: "Query deposit and redemption transaction history"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/vaults/deposits-redemptions"
 ---
 
@@ -14640,8 +14568,8 @@ query GetTransactionHistory($termId: String!, $curveId: numeric!, $limit: Int!) 
   ) {
     id
     sender_id
-    assets_for_receiver
-    shares_for_receiver
+    assets_after_fees
+    shares
     created_at
   }
   redemptions(
@@ -14654,8 +14582,8 @@ query GetTransactionHistory($termId: String!, $curveId: numeric!, $limit: Int!) 
   ) {
     id
     receiver_id
-    assets_for_receiver
-    shares_from_receiver
+    assets
+    shares
     created_at
   }
 }
@@ -15074,7 +15002,7 @@ async function getPortfolio(accountId: string) {
 ---
 title: "Share Price Changes"
 description: "Track share price changes over time"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/vaults/share-price-changes"
 ---
 
@@ -15091,13 +15019,13 @@ query GetPriceHistory($termId: String!, $curveId: numeric!, $limit: Int!) {
       term_id: { _eq: $termId }
       curve_id: { _eq: $curveId }
     }
-    order_by: { created_at: desc }
+    order_by: { block_timestamp: desc }
     limit: $limit
   ) {
-    old_price
-    new_price
-    price_change
-    created_at
+    share_price
+    block_timestamp
+    block_number
+    transaction_hash
   }
 }
 ```
@@ -15106,7 +15034,7 @@ query GetPriceHistory($termId: String!, $curveId: numeric!, $limit: Int!) {
 
 1. **Use time-series tables** for aggregated data
 2. **Filter by term and curve** for specific vault
-3. **Calculate percentage change** from old and new price
+3. **Track price over time** using `share_price` and `block_timestamp`
 4. **Use daily/hourly stats** for charts
 
 ---
@@ -15307,7 +15235,7 @@ query GetVault($termId: String!, $curveId: numeric!) {
 ---
 title: "Reads"
 description: "Guide to read data using GraphQL queries in the Intuition API"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/reads"
 ---
 
@@ -15771,13 +15699,15 @@ query GetVaults($limit: Int, $offset: Int) {
 ```graphql
 query SearchAtoms($query: String!, $limit: Int) {
   search_term(args: { query: $query }, limit: $limit) {
-    term_id
-    label
-    image
+    id
     type
-    creator {
-      id
+    atom {
       label
+      image
+      creator {
+        id
+        label
+      }
     }
   }
 }
@@ -15846,7 +15776,7 @@ function AtomList() {
 ---
 title: "Subscriptions Overview"
 description: "Real-time subscriptions with cursor-based streaming"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/subscriptions/overview"
 ---
 
@@ -16099,7 +16029,7 @@ function watchPositionPrices(
             batch_size: 1
             where: { vault_id: { _eq: $vault_id } }
           ) {
-            new_share_price
+            share_price
             block_timestamp
           }
         }
@@ -16115,7 +16045,7 @@ function watchPositionPrices(
     {
       next: (result) => {
         const changes = result.data?.share_price_changes_stream || []
-        changes.forEach(change => onPriceChange(change.new_share_price))
+        changes.forEach(change => onPriceChange(change.share_price))
       }
     }
   )
@@ -16140,7 +16070,7 @@ function watchPositionPrices(
 ---
 title: "Price Updates"
 description: "Subscribe to share price changes in real-time"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/subscriptions/price-updates"
 ---
 
@@ -16165,10 +16095,10 @@ subscription WatchPriceChanges(
   ) {
     term_id
     curve_id
-    old_price
-    new_price
-    price_change
-    created_at
+    share_price
+    block_timestamp
+    block_number
+    transaction_hash
   }
 }
 ```
@@ -16177,7 +16107,7 @@ subscription WatchPriceChanges(
 
 1. **Filter by term_id** for specific vault
 2. **Use batch_size** to control update frequency
-3. **Calculate percentage change** from old/new prices
+3. **Track price changes** using `share_price` and `block_timestamp`
 4. **Update charts** with new data points
 
 ---
@@ -16270,7 +16200,7 @@ Select a use case above to see detailed step-by-step implementation guides.
 ---
 title: "Writes"
 description: "Guide to write data using GraphQL mutations in the Intuition API"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-02-28T21:52:51-05:00"
 source: "https://docs.intuition.systems/docs/graphql-api/writes"
 ---
 
@@ -16317,9 +16247,7 @@ Pin a Thing entity to IPFS:
 ```graphql
 mutation PinThing($thing: PinThingInput!) {
   pinThing(thing: $thing) {
-    hash
-    name
-    size
+    uri
   }
 }
 ```
@@ -16343,9 +16271,7 @@ Pin a Person entity to IPFS:
 ```graphql
 mutation PinPerson($person: PinPersonInput!) {
   pinPerson(person: $person) {
-    hash
-    name
-    size
+    uri
   }
 }
 ```
@@ -16371,9 +16297,7 @@ Pin an Organization entity to IPFS:
 ```graphql
 mutation PinOrganization($organization: PinOrganizationInput!) {
   pinOrganization(organization: $organization) {
-    hash
-    name
-    size
+    uri
   }
 }
 ```
@@ -16469,7 +16393,7 @@ const imageResult = await graphqlClient.request(`
 const metadataResult = await graphqlClient.request(`
   mutation PinThing($thing: PinThingInput!) {
     pinThing(thing: $thing) {
-      hash
+      uri
     }
   }
 `, {
@@ -16484,7 +16408,7 @@ const metadataResult = await graphqlClient.request(`
 // Step 3: Create atom on-chain (via SDK)
 const multivault = createMultivaultClient(walletClient)
 const atomId = await multivault.createAtom({
-  uri: `ipfs://${metadataResult.pinThing.hash}`
+  uri: metadataResult.pinThing.uri
 })
 ```
 
@@ -16568,8 +16492,8 @@ function CreateAtomForm() {
       }
     })
 
-    // Use the IPFS hash for atom creation
-    const ipfsUri = `ipfs://${thingResult.data.pinThing.hash}`
+    // Use the IPFS URI for atom creation
+    const ipfsUri = thingResult.data.pinThing.uri
     // ... create atom via SDK
   }
 
