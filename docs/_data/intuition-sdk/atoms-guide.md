@@ -133,8 +133,9 @@ Before creating an atom, check if it already exists:
 
 ```typescript
 import { calculateAtomId, getAtomDetails } from '@0xintuition/sdk'
+import { toHex } from 'viem'
 
-const atomId = calculateAtomId('developer')
+const atomId = calculateAtomId(toHex('developer'))
 const exists = await getAtomDetails(atomId)
 
 if (exists) {
@@ -536,24 +537,25 @@ Calculate the atom ID from atom data without querying the blockchain.
 #### Function Signature
 
 ```typescript
-function calculateAtomId(atomData: string): Hex
+function calculateAtomId(atomData: Hex): Hex
 ```
 
 #### Basic Example
 
 ```typescript
 import { calculateAtomId } from '@0xintuition/sdk'
+import { toHex } from 'viem'
 
 // Calculate ID for a string atom
-const atomId = calculateAtomId('developer')
+const atomId = calculateAtomId(toHex('developer'))
 console.log('Atom ID:', atomId)
 
-// Calculate ID for an Ethereum address
-const addressAtomId = calculateAtomId('0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045')
+// Calculate ID for an Ethereum address (already hex, but toHex ensures proper encoding)
+const addressAtomId = calculateAtomId(toHex('0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045'))
 console.log('Address Atom ID:', addressAtomId)
 
 // Calculate ID for IPFS URI
-const ipfsAtomId = calculateAtomId('ipfs://bafkreib...')
+const ipfsAtomId = calculateAtomId(toHex('ipfs://bafkreib...'))
 console.log('IPFS Atom ID:', ipfsAtomId)
 ```
 
@@ -563,10 +565,11 @@ console.log('IPFS Atom ID:', ipfsAtomId)
 
 ```typescript
 import { calculateAtomId, getAtomDetails, createAtomFromString } from '@0xintuition/sdk'
+import { toHex } from 'viem'
 
 async function createAtomIfNotExists(data: string) {
-  // Calculate ID
-  const atomId = calculateAtomId(data)
+  // Calculate ID (convert string to hex first)
+  const atomId = calculateAtomId(toHex(data))
 
   try {
     // Check if exists
