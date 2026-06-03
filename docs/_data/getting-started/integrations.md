@@ -13,14 +13,16 @@ Intuition integrates with various platforms and tools to extend its capabilities
 
 Use Intuition's knowledge graph with AI systems and agents to create persistent, verifiable memory and context.
 
-- **AI Overview** - AI capabilities and use cases (Coming Soon)
-- **MCP Server** - Model Context Protocol integration (Coming Soon)
+- **[AI Skills](/docs/getting-started/ai-skills)** - Agent-facing protocol context for Claude Code, Codex, and compatible AI coding agents.
+- **[MCP Server](/docs/experimental-applications/mcp-server)** - Model Context Protocol tools for querying atoms, accounts, lists, and graph data.
+- **[Templates](/docs/getting-started/templates)** - Agent-ready starter apps with file maps, protocol paths, and `.agents/INSTRUCTIONS.md` guidance.
 
 **Use cases:**
 - **AI agents with persistent memory** - Store and retrieve agent knowledge on-chain
 - **LLM context enhancement** - Provide verified context to language models
 - **Knowledge graph reasoning** - Enable semantic reasoning over structured data
 - **Semantic search for AI** - Query knowledge graphs for relevant information
+- **AI-assisted app development** - Give coding agents canonical protocol context before they modify Intuition reads or writes
 
 ## Coming Soon
 
@@ -62,6 +64,9 @@ Bring attestations to DeFi and DAOs:
 
 Enhanced developer experience:
 
+- **[Learn Intuition](/docs/getting-started/learn-intuition)** - Interactive course for protocol onboarding inside Claude Code
+- **[AI Skills](/docs/getting-started/ai-skills)** - Canonical agent skills for protocol operations
+- **[Templates](/docs/getting-started/templates)** - Official starter apps for direct protocol exploration and production-style builds
 - **Hardhat Plugin** - Deploy and test Intuition contracts
 - **Foundry Integration** - Testing framework support
 - **Ethers.js Plugin** - Simplified SDK integration
@@ -90,6 +95,8 @@ Intuition's open architecture makes it easy to build custom integrations:
 1. **[SDK Overview](/docs/intuition-sdk/quick-start)** - Start with the TypeScript SDK
 2. **[Protocol Overview](/docs/protocol/getting-started/overview)** - Direct smart contract integration
 3. **[GraphQL API](/docs/graphql-api/overview)** - Query the knowledge graph
+4. **[Templates](/docs/getting-started/templates)** - Fork a working Intuition app
+5. **[AI Skills](/docs/getting-started/ai-skills)** - Equip your coding agent with canonical protocol context
 
 ## Examples
 

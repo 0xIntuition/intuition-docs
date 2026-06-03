@@ -66,7 +66,7 @@ const quickLinks = [
     title: 'Getting Started',
     description: 'Kits and repos to get started building',
     icon: Zap,
-    link: '/docs/getting-started/intuition-kits'
+    link: '/docs/getting-started/developer-resources'
   },
   {
     title: 'SDK',

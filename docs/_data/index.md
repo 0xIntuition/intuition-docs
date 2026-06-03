@@ -74,6 +74,7 @@ Whether you're building applications, contributing data, or exploring the knowle
 - [Quickstart](/docs/quick-start/using-the-sdk) — Get started building with Intuition
 - [Primitives](/docs/intuition-concepts/primitives) — Deep dive into Atoms, Triples, and Signals
 - [Developer Tools](/docs/getting-started/developer-stack) — Explore SDKs, APIs, and integration guides
+- [Developer Resources](/docs/getting-started/developer-resources) — Find Learn Intuition, AI skills, templates, and MCP resources
 - [Network](/docs/intuition-network) — Learn about the Intuition Network architecture
 - [Economics](/docs/intuition-concepts/economics) — Understand the cryptoeconomic incentive model
 
@@ -82,7 +83,8 @@ Whether you're building applications, contributing data, or exploring the knowle
 Intuition documentation is optimized for AI agent access:
 - [llms.txt](/llms.txt) — Concise documentation index for LLM consumption
 - [llms-full.txt](/llms-full.txt) — Complete documentation in LLM-friendly format
+- [AI Skills](/docs/getting-started/ai-skills) — Canonical protocol context for AI coding agents
+- [MCP Server](/docs/experimental-applications/mcp-server) — Runtime tools for AI applications querying Intuition data
 
 ---
 **Intuition transforms information from passive data into programmable, verifiable, and valuable attestations—building the trust layer for the decentralized web.**
-
