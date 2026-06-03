@@ -42,7 +42,7 @@ Once installed, call the skill from within your agent session:
 /intuition
 ```
 
-Agents can also call the skill on their own, without needing to invoke it from within an agent session, allowing for integration into AI features.
+Agents can also invoke the skill autonomously when their runtime supports skills, allowing Hermes-style agents and other AI features to use Intuition context without a manual slash command.
 
 ## Current Skill
 
