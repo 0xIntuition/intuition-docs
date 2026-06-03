@@ -108,6 +108,33 @@ The MetaMask Snap serves as a bridge between traditional Web3 wallet functionali
 [... see full docs for complete content]
 
 ---
+title: "AI Skills"
+description: "Install Intuition agent skills for Claude Code, Codex, and compatible AI coding agents"
+last_updated: "2026-06-03T14:13:55-04:00"
+source: "https://docs.intuition.systems/docs/getting-started/ai-skills"
+---
+
+# AI Skills
+
+The Intuition Agent Skills repository gives AI coding agents canonical protocol context. Use it when you want an agent to produce correct Intuition reads, writes, calldata, or unsigned transaction parameters.
+
+## What the Skills Solve
+
+General LLMs can miss Intuition-specific details, including:
+
+- L3 chain and deployment details that are not discoverable through Etherscan.
+- V2 contract interfaces and ABIs.
+- `bytes32` atom, triple, and term IDs.
+- Batch-only creation flows.
+- Bonding curve and value calculation requirements.
+
+The skills provide verified references so the agent can reason from canonical protocol context instead of guessing.
+
+## Install
+
+[... see full docs for complete content]
+
+---
 title: "Architecture"
 description: "Technical architecture of Intuition's three-layer system - Network, Protocol, and Subnet"
 last_updated: "2026-02-19T15:00:01-05:00"
@@ -135,7 +162,7 @@ Intuition's architecture is designed for **speed**, **scale**, and **interoperab
 ---
 title: "Choose Your Path"
 description: "Find the best way to get started with Intuition based on your goals"
-last_updated: "2026-02-11T09:19:02-05:00"
+last_updated: "2026-06-03T14:13:55-04:00"
 source: "https://docs.intuition.systems/docs/getting-started/choose-your-path"
 ---
 
@@ -168,9 +195,29 @@ Not sure where to start? Pick the path that matches your goal.
 [... see full docs for complete content]
 
 ---
+title: "Developer Resources"
+description: "Official learning materials, templates, and AI-agent resources for building with Intuition"
+last_updated: "2026-06-03T14:13:55-04:00"
+source: "https://docs.intuition.systems/docs/getting-started/developer-resources"
+---
+
+# Developer Resources
+
+Use these official resources when you want to learn the protocol, start from a working application, or hand Intuition-specific context to an AI coding agent.
+
+## Start Here
+
+| Resource | Use When | Link |
+| --- | --- | --- |
+| Learn Intuition | You want a guided course through atoms, triples, signals, reads, writes, and app building. | [Learn Intuition](/docs/getting-started/learn-intuition) |
+| Templates | You want to fork a working Intuition app instead of starting from a blank repository. | [Templates](/docs/getting-started/templates) |
+
+[... see full docs for complete content]
+
+---
 title: "Developer Stack"
-description: "Choose the right tool for building with Intuition"
-last_updated: "2026-01-05T17:16:01-08:00"
+description: "Choose the right tool or resource for building with Intuition"
+last_updated: "2026-06-03T14:13:55-04:00"
 source: "https://docs.intuition.systems/docs/getting-started/developer-stack"
 ---
 
@@ -180,44 +227,29 @@ source: "https://docs.intuition.systems/docs/getting-started/developer-stack"
 
 Choose the right tool for your use case.
 
-## SDK (Recommended for Most Developers)
+## Guided Learning and Starter Apps
 
-High-level TypeScript SDK with React integration.
+Use these resources when you are learning the protocol, starting a new app, or working with an AI coding agent.
 
-**Use when:**
-- Building web applications
-- Want simplicity and speed
-- Need React hooks
-- Prefer abstraction over low-level control
+### Learn Intuition
 
-**[→ SDK Overview](/docs/intuition-sdk/quick-start)**
-
-## Protocol Package
-
-Low-level contract interactions for advanced use cases.
+Interactive course that teaches atoms, triples, signals, protocol reads, protocol writes, and app building inside Claude Code.
 
 **Use when:**
-- Integrating with other smart contracts
-- Need maximum control and flexibility
-- Optimizing gas costs
-- Building on Solidity
+- You want a guided path through the protocol before building.
+- You are onboarding yourself or an AI-assisted workflow.
+- You want a course that ends with a template-based capstone.
 
-**[→ Protocol Overview](/docs/protocol/getting-started/overview)**
+**[Learn Intuition](/docs/getting-started/learn-intuition)**
 
-## GraphQL API
-
-Query the knowledge graph with GraphQL.
-
-**Use when:**
-- Read-only queries
-- Building analytics dashboards
+### Templates
 
 [... see full docs for complete content]
 
 ---
 title: "Integrations"
 description: "Integrate Intuition with various platforms and tools"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-06-03T14:13:55-04:00"
 source: "https://docs.intuition.systems/docs/getting-started/integrations"
 ---
 
@@ -229,41 +261,31 @@ Intuition integrates with various platforms and tools to extend its capabilities
 
 Use Intuition's knowledge graph with AI systems and agents to create persistent, verifiable memory and context.
 
-- **AI Overview** - AI capabilities and use cases (Coming Soon)
-- **MCP Server** - Model Context Protocol integration (Coming Soon)
+- **[AI Skills](/docs/getting-started/ai-skills)** - Agent-facing protocol context for Claude Code, Codex, and compatible AI coding agents.
+- **[MCP Server](/docs/experimental-applications/mcp-server)** - Model Context Protocol tools for querying atoms, accounts, lists, and graph data.
+- **[Templates](/docs/getting-started/templates)** - Agent-ready starter apps with file maps, protocol paths, and `.agents/INSTRUCTIONS.md` guidance.
 
 **Use cases:**
 - **AI agents with persistent memory** - Store and retrieve agent knowledge on-chain
-- **LLM context enhancement** - Provide verified context to language models
-- **Knowledge graph reasoning** - Enable semantic reasoning over structured data
 
 [... see full docs for complete content]
 
 ---
-title: "Intuition Kits"
-description: "Jump-start your development with our official Intuition kits and resources. These pre-configured templates and official tools provide everything you need to build Intuition-powered applications."
-last_updated: "2026-01-05T17:16:01-08:00"
-source: "https://docs.intuition.systems/docs/getting-started/intuition-kits"
+title: "Learn Intuition"
+description: "Run the interactive Learn Intuition course inside Claude Code"
+last_updated: "2026-06-03T14:13:55-04:00"
+source: "https://docs.intuition.systems/docs/getting-started/learn-intuition"
 ---
 
-# Intuition Kits
+# Learn Intuition
 
-Jump-start your development with our official Intuition kits and resources. These pre-configured templates and official tools provide everything you need to build Intuition-powered applications.
+Learn Intuition is an interactive course that teaches the Intuition protocol inside Claude Code. It is meant for builders who want guided context before writing production code or asking an AI agent to extend an Intuition app. We'll be extending to support Codex in the future, but this first iteration is focused on running the experience within Claude Code.
 
-## Official Kits
+## What You Learn
 
-### Core Development Tools
-
-| Resource | Description | Primary Use |
-|----------|-------------|-------------|
-| **[intuition-ts](https://github.com/0xIntuition/intuition-ts)** | TypeScript SDK and tools | Main SDK for application development |
-| **[intuition-contracts-v2](https://github.com/0xIntuition/intuition-contracts-v2)** | Smart contracts and protocol implementation | Core protocol and contract development |
-| **[intuition-rs](https://github.com/0xIntuition/intuition-rs)** | Rust implementation | High-performance applications and services |
-
-### Integration Tools
-
-| Resource | Description | Primary Use |
-|----------|-------------|-------------|
+| Part | Lessons | Focus |
+| --- | --- | --- |
+| Understanding the Knowledge Graph | 00-04 | Intuition, atoms, triples, signals, staking, conviction, and bonding curves. |
 
 [... see full docs for complete content]
 
@@ -287,6 +309,28 @@ Instead of information living as unstructured, siloed, minimally-attributable da
 The result is a Semantic Web of Trust, powered the world's first token-curated knowledge graph — a network where information isn't just stored, but structured, incentivized, and made usable for developers and AI systems alike — all while maintaining verifiable provenance and attribution.
 
 ---
+
+[... see full docs for complete content]
+
+---
+title: "Templates"
+description: "Fork official Intuition starter templates for protocol exploration and production-style apps"
+last_updated: "2026-06-03T14:13:55-04:00"
+source: "https://docs.intuition.systems/docs/getting-started/templates"
+---
+
+# Templates
+
+Our official templates give you working Intuition applications with protocol calls, wallet integration, and agent-readable project context already in place.
+
+## Choose a Template
+
+| Template | Best For | Stack | Repository |
+| --- | --- | --- | --- |
+| Basic Template | Learning protocol functions directly and exploring every operation as a form. | Vite, React, RainbowKit, wagmi, viem, Tailwind, shadcn/ui | [intuition-basic-template](https://github.com/0xIntuition/intuition-basic-template) |
+| Advanced Template | Building a production-style app with server reads, wallet writes, and auth. | Next.js App Router, GraphQL, RainbowKit, wagmi, viem, SIWE, Tailwind | [intuition-advanced-template](https://github.com/0xIntuition/intuition-advanced-template) |
+
+## Basic Template
 
 [... see full docs for complete content]
 
@@ -3711,7 +3755,7 @@ Use the [SDK](/docs/intuition-sdk/installation-and-setup) for smart contract int
 ---
 title: "Introduction"
 description: "Introduction to Intuition - the decentralized protocol for building the world's first open, semantic, and token-curated knowledge graph"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-06-03T14:13:55-04:00"
 source: "https://docs.intuition.systems/docs"
 ---
 
