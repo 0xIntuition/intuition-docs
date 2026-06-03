@@ -8,7 +8,7 @@ keywords: [learn intuition, course, Claude Code, atoms, triples, signals, tutori
 
 # Learn Intuition
 
-Learn Intuition is an interactive course that teaches the Intuition protocol inside Claude Code. It is meant for builders who want guided context before writing production code or asking an AI agent to extend an Intuition app.
+Learn Intuition is an interactive course that teaches the Intuition protocol inside Claude Code. It is meant for builders who want guided context before writing production code or asking an AI agent to extend an Intuition app. We'll be extending to support Codex in the future, but this first iteration is focused on running the experience within Claude Code.
 
 ## What You Learn
 
@@ -53,6 +53,7 @@ Then run the course command inside Claude Code:
 Use Learn Intuition when you want to:
 
 - Understand the protocol primitives before building.
+- Have a guided, AI-assisted interactive learning experience.
 - Learn the read path and write path together.
 - Practice with an AI coding agent in a controlled environment.
 - Prepare to fork the [basic or advanced template](/docs/getting-started/templates).

@@ -12,7 +12,7 @@ The Intuition Agent Skills repository gives AI coding agents canonical protocol 
 
 ## What the Skills Solve
 
-General-purpose LLMs can miss Intuition-specific details, including:
+General LLMs can miss Intuition-specific details, including:
 
 - L3 chain and deployment details that are not discoverable through Etherscan.
 - V2 contract interfaces and ABIs.
@@ -36,11 +36,13 @@ Install only the core Intuition protocol skill:
 npx skills add 0xintuition/agent-skills --skill intuition
 ```
 
-Once installed, invoke the skill from your agent session:
+Once installed, call the skill from within your agent session:
 
 ```text
 /intuition
 ```
+
+Agents can also call the skill on their own, without needing to invoke it from within an agent session, allowing for integration into AI features.
 
 ## Current Skill
 
@@ -59,7 +61,7 @@ The skills produce unsigned transaction parameters. Your application, wallet, or
 - Broadcasting the transaction.
 - Confirming and handling receipt data.
 
-Treat `main` as a moving branch. For production agent workflows, pin installs to a Git tag or commit SHA once a release is selected.
+Treat `main` as a moving branch. For production agent workflows, pin installs to a Git tag or commit SHA once a release is selected. You can find the latest version and release information in the [GitHub releases page](https://github.com/0xintuition/agent-skills/releases).
 
 ## When to Use AI Skills vs MCP
 
@@ -67,7 +69,7 @@ Use AI skills when an agent is writing or modifying code that interacts with the
 
 Use the [MCP Server](/docs/experimental-applications/mcp-server) when an AI application needs tools for querying atoms, accounts, social graph data, or lists at runtime.
 
-The two can be used together: skills help the coding agent implement correctly; MCP gives the finished AI application live graph tools.
+The two can be used together: skills help the coding agent implement correctly while MCP gives the finished AI application live graph tools.
 
 ## Pair With Templates
 

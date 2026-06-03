@@ -8,7 +8,7 @@ keywords: [intuition templates, starter app, React, Next.js, Vite, GraphQL, SIWE
 
 # Templates
 
-The official templates give you working Intuition applications with protocol calls, wallet integration, and agent-readable project context already in place.
+Our official templates give you working Intuition applications with protocol calls, wallet integration, and agent-readable project context already in place.
 
 ## Choose a Template
 
@@ -36,11 +36,11 @@ The basic template is intentionally direct:
 - No GraphQL, indexer, server components, auth layer, or wrapper abstractions.
 - Forms show the flow from wallet connection to protocol call to decoded onchain result.
 
-Use it to understand how each protocol operation works before designing a larger app.
+Use it for quick tests or to understand how each protocol operation works before designing a larger app.
 
 ## Advanced Template
 
-Use the advanced template when you want a realistic application pattern. It implements curated lists on the Intuition knowledge graph with GraphQL reads, protocol writes, and self-hosted Sign-In with Ethereum.
+Use the advanced template when you want a realistic application pattern. It implements curated lists on the Intuition knowledge graph with GraphQL reads, protocol writes, and self-hosted *Sign-In with Ethereum* for authentication.
 
 ```bash
 git clone https://github.com/0xIntuition/intuition-advanced-template.git
@@ -70,7 +70,7 @@ After a fresh clone, run the template's agentsync command if the symlinks need t
 bun run agents:apply
 ```
 
-Before asking an agent to change protocol behavior, install the [AI skills](/docs/getting-started/ai-skills) so it has the canonical Intuition contract context.
+Before asking an agent to change protocol behavior, we suggest installing the [AI skills](/docs/getting-started/ai-skills) so it has the canonical Intuition contract context.
 
 ## Next Steps
 
