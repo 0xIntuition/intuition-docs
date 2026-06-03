@@ -1,95 +1,48 @@
 ---
 sidebar_position: 5
-sidebar_label: Intuition Kits
-title: Intuition Kits
+sidebar_label: Developer Resources
+title: Developer Resources
+description: Official learning materials, templates, and AI-agent resources for building with Intuition
+keywords: [developer resources, learn intuition, templates, ai skills, agent skills, getting started]
 ---
 
-# Intuition Kits
+# Developer Resources
 
-Jump-start your development with our official Intuition kits and resources. These pre-configured templates and official tools provide everything you need to build Intuition-powered applications.
+Use these official resources when you want to learn the protocol, start from a working application, or hand Intuition-specific context to an AI coding agent.
 
-## Official Kits
+## Start Here
 
-### Core Development Tools
+| Resource | Use When | Link |
+| --- | --- | --- |
+| Learn Intuition | You want a guided course through atoms, triples, signals, reads, writes, and app building. | [Learn Intuition](/docs/getting-started/learn-intuition) |
+| Templates | You want to fork a working Intuition app instead of starting from a blank repository. | [Templates](/docs/getting-started/templates) |
+| AI Skills | You want Claude Code, Codex, or another agent to produce correct Intuition protocol operations. | [AI Skills](/docs/getting-started/ai-skills) |
+| MCP Server | You want an AI app to query Intuition through Model Context Protocol tools. | [MCP Server](/docs/experimental-applications/mcp-server) |
 
-| Resource | Description | Primary Use |
-|----------|-------------|-------------|
-| **[intuition-ts](https://github.com/0xIntuition/intuition-ts)** | TypeScript SDK and tools | Main SDK for application development |
-| **[intuition-contracts-v2](https://github.com/0xIntuition/intuition-contracts-v2)** | Smart contracts and protocol implementation | Core protocol and contract development |
-| **[intuition-rs](https://github.com/0xIntuition/intuition-rs)** | Rust implementation | High-performance applications and services |
+## Official Repositories
 
-### Integration Tools
+| Repository | Purpose |
+| --- | --- |
+| [learn-intuition](https://github.com/0xIntuition/learn-intuition) | Interactive Claude Code course for learning Intuition from primitives to a capstone app. |
+| [agent-skills](https://github.com/0xIntuition/agent-skills) | Agent-facing skills that provide canonical protocol context and unsigned transaction parameters. |
+| [intuition-basic-template](https://github.com/0xIntuition/intuition-basic-template) | Vite + React template that exposes protocol functions through direct forms. |
+| [intuition-advanced-template](https://github.com/0xIntuition/intuition-advanced-template) | Next.js template for curated lists with GraphQL reads, protocol writes, and SIWE auth. |
+| [intuition-mcp-server](https://github.com/0xIntuition/intuition-mcp-server) | Model Context Protocol server for querying and exploring Intuition data from AI clients. |
 
-| Resource | Description | Primary Use |
-|----------|-------------|-------------|
-| **[intuition-mcp-server](https://github.com/0xIntuition/intuition-mcp-server)** | MCP server implementation | AI integration and model context protocol |
+## Suggested Path
 
-### Documentation & Ecosystem
+1. Read [Choose Your Path](/docs/getting-started/choose-your-path) to pick the right building surface.
+2. Run [Learn Intuition](/docs/getting-started/learn-intuition) if you want guided protocol context.
+3. Fork the [basic or advanced template](/docs/getting-started/templates) that matches your application.
+4. Install the [AI skills](/docs/getting-started/ai-skills) before asking an agent to write Intuition protocol code.
+5. Use the [MCP Server](/docs/experimental-applications/mcp-server) when your AI application needs live graph tools.
 
-| Resource | Description |
-|----------|-------------|
-| **[intuition-docs](https://github.com/0xIntuition/intuition-docs)** | Documentation and guides |
+## Agent-Ready Development
 
-## Getting Started with Official Resources
+The course, templates, and skills are designed to work together:
 
-### TypeScript SDK (intuition-ts)
-The official TypeScript SDK provides the core functionality for interacting with the Intuition protocol:
+- Learn Intuition teaches the protocol and ends with a template-based capstone.
+- The templates include agent-facing instructions for Claude Code, Codex, Cursor, and compatible tools.
+- The AI skills fill in Intuition-specific details that general LLMs usually miss, including ABIs, bytes32 IDs, batch-only creation flows, bonding curve mechanics, and unsigned transaction parameter generation.
 
-```bash
-# Install the SDK
-npm install @0xintuition/sdk
-
-# Basic usage
-import { createAtomFromString } from '@0xintuition/sdk'
-
-const config = {
-  walletClient,
-  publicClient,
-  ethMultiVaultAddress
-}
-
-const result = await createAtomFromString(config, 'Hello World')
-```
-
-### Smart Contracts (intuition-contracts-v2)
-The protocol implementation includes all necessary smart contracts:
-
-```bash
-# Clone the contracts repository
-git clone https://github.com/0xIntuition/intuition-contracts-v2.git
-cd intuition-contracts-v2
-
-# Install dependencies
-npm install
-
-# Compile contracts
-npm run compile
-```
-
-
-## Community Kits
-
-### Coming Soon
-
-Community-built kits and templates will be available here soon. We're working on creating a platform for the Intuition community to share their starter kits, templates, and specialized solutions.
-
-Stay tuned for:
-- Community-contributed starter kits
-- Industry-specific templates
-- Specialized use case solutions
-- Community showcase and reviews
-
-## Development Workflow
-
-1. **Choose your starting point**: SDK, contracts, or ecosystem tools
-2. **Set up your environment**: Configure wallet connections and network settings
-3. **Build your application**: Use the SDK to create atoms, triples, and relationships
-4. **Test and deploy**: Use the provided testing frameworks and deployment scripts
-
-## Next Steps
-
-- Learn about [Smart Contracts](/docs/protocol/getting-started/overview) for advanced features
-- Check out the [GraphQL API](/docs/graphql-api/overview) for data integration
-- Explore the [SDK Guide](/docs/intuition-sdk/quick-start) for application development
-
-Start building with the official Intuition resources and join the community!
+For protocol concepts before implementation, start with [Primitives](/docs/intuition-concepts/primitives). For reads and queries, use the [GraphQL API](/docs/graphql-api/overview). For onchain writes, use the [SDK](/docs/intuition-sdk/quick-start) or [Protocol](/docs/protocol/getting-started/overview) docs.
