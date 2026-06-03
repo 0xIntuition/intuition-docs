@@ -2,8 +2,8 @@
 title: Developer Stack
 sidebar_label: Developer Stack
 sidebar_position: 2
-description: Choose the right tool for building with Intuition
-keywords: [developer tools, sdk, protocol, graphql, smart contracts, getting started, comparison]
+description: Choose the right tool or resource for building with Intuition
+keywords: [developer tools, sdk, protocol, graphql, smart contracts, templates, ai skills, learn intuition, getting started, comparison]
 ---
 
 
@@ -11,7 +11,46 @@ keywords: [developer tools, sdk, protocol, graphql, smart contracts, getting sta
 
 Choose the right tool for your use case.
 
-## SDK (Recommended for Most Developers)
+## Guided Learning and Starter Apps
+
+Use these resources when you are learning the protocol, starting a new app, or working with an AI coding agent.
+
+### Learn Intuition
+
+Interactive course that teaches atoms, triples, signals, protocol reads, protocol writes, and app building inside Claude Code.
+
+**Use when:**
+- You want a guided path through the protocol before building.
+- You are onboarding yourself or an AI-assisted workflow.
+- You want a course that ends with a template-based capstone.
+
+**[Learn Intuition](/docs/getting-started/learn-intuition)**
+
+### Templates
+
+Official starter apps for direct protocol exploration and production-style application patterns.
+
+**Use when:**
+- You want a working app instead of a blank repository.
+- You need wallet, protocol, GraphQL, or SIWE patterns already wired.
+- You want agent-readable project context included from the start.
+
+**[Templates](/docs/getting-started/templates)**
+
+### AI Skills
+
+Agent-facing protocol context for Claude Code, Codex, and compatible AI coding agents.
+
+**Use when:**
+- You are asking an agent to write or modify Intuition protocol code.
+- You need canonical ABIs, addresses, value calculations, and unsigned transaction parameters.
+- You want to reduce LLM mistakes around bytes32 IDs, batch-only creation, and bonding curves.
+
+**[AI Skills](/docs/getting-started/ai-skills)**
+
+## Core Building Surfaces
+
+### SDK (Recommended for Most Developers)
 
 High-level TypeScript SDK with React integration.
 
@@ -23,7 +62,7 @@ High-level TypeScript SDK with React integration.
 
 **[→ SDK Overview](/docs/intuition-sdk/quick-start)**
 
-## Protocol Package
+### Protocol Package
 
 Low-level contract interactions for advanced use cases.
 
@@ -35,7 +74,7 @@ Low-level contract interactions for advanced use cases.
 
 **[→ Protocol Overview](/docs/protocol/getting-started/overview)**
 
-## GraphQL API
+### GraphQL API
 
 Query the knowledge graph with GraphQL.
 
@@ -47,7 +86,7 @@ Query the knowledge graph with GraphQL.
 
 **[→ GraphQL Overview](/docs/graphql-api/overview)**
 
-## Smart Contracts
+### Smart Contracts
 
 Direct contract interactions and ABIs.
 
@@ -72,4 +111,4 @@ Direct contract interactions and ABIs.
 
 ## Still Unsure?
 
-See [Choose Your Path](/docs/getting-started/choose-your-path) for a decision tree.
+See [Choose Your Path](/docs/getting-started/choose-your-path) for a decision tree, or use the [Developer Resources](/docs/getting-started/intuition-kits) index for courses, templates, and AI-agent resources.
