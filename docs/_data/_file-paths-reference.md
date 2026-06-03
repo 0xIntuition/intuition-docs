@@ -37,7 +37,7 @@ All documentation files are located under `docs/_data/`.
 | `getting-started/choose-your-path.md` | `/getting-started/choose-your-path` |
 | `getting-started/developer-stack.md` | `/getting-started/developer-stack` |
 | `getting-started/integrations.md` | `/getting-started/integrations` |
-| `getting-started/intuition-kits.md` | `/getting-started/intuition-kits` |
+| `getting-started/developer-resources.md` | `/getting-started/developer-resources` |
 | `getting-started/use-cases.md` | `/getting-started/use-cases` |
 
 ### Quick Start (`/quick-start/`)

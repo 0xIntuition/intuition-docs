@@ -85,7 +85,11 @@ const plugins = [
         */
         {
           from: '/docs/quickstart/intuition-kits',
-          to: '/docs/getting-started/intuition-kits',
+          to: '/docs/getting-started/developer-resources',
+        },
+        {
+          from: '/docs/getting-started/intuition-kits',
+          to: '/docs/getting-started/developer-resources',
         },
 
         // Commented out redirects to pages that don't exist yet (will be added in future weeks)

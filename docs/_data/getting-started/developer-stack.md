@@ -111,4 +111,4 @@ Direct contract interactions and ABIs.
 
 ## Still Unsure?
 
-See [Choose Your Path](/docs/getting-started/choose-your-path) for a decision tree, or use the [Developer Resources](/docs/getting-started/intuition-kits) index for courses, templates, and AI-agent resources.
+See [Choose Your Path](/docs/getting-started/choose-your-path) for a decision tree, or use the [Developer Resources](/docs/getting-started/developer-resources) index for courses, templates, and AI-agent resources.

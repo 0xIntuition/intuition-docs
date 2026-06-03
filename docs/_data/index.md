@@ -74,7 +74,7 @@ Whether you're building applications, contributing data, or exploring the knowle
 - [Quickstart](/docs/quick-start/using-the-sdk) — Get started building with Intuition
 - [Primitives](/docs/intuition-concepts/primitives) — Deep dive into Atoms, Triples, and Signals
 - [Developer Tools](/docs/getting-started/developer-stack) — Explore SDKs, APIs, and integration guides
-- [Developer Resources](/docs/getting-started/intuition-kits) — Find Learn Intuition, AI skills, templates, and MCP resources
+- [Developer Resources](/docs/getting-started/developer-resources) — Find Learn Intuition, AI skills, templates, and MCP resources
 - [Network](/docs/intuition-network) — Learn about the Intuition Network architecture
 - [Economics](/docs/intuition-concepts/economics) — Understand the cryptoeconomic incentive model
 
