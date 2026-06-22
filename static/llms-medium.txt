@@ -4348,7 +4348,7 @@ Direct attestations through staking:
 ---
 title: "Intuition Network"
 description: "Intuition Network architecture and infrastructure"
-last_updated: "2026-02-11T09:19:02-05:00"
+last_updated: "2026-06-22T14:32:12-04:00"
 source: "https://docs.intuition.systems/docs/intuition-network"
 ---
 
@@ -4376,14 +4376,14 @@ Intuition leverages a multi-layer architecture designed for performance, cost-ef
 
 ---
 title: "Intuition Mainnet"
-description: "Welcome to the Intuition Mainnet - your development and testing environment for building on the Intuition Network."
-last_updated: "2026-01-05T17:16:01-08:00"
+description: "Welcome to the Intuition Mainnet — the live Intuition network for building on the knowledge graph."
+last_updated: "2026-06-22T14:32:12-04:00"
 source: "https://docs.intuition.systems/docs/intuition-network/mainnet"
 ---
 
 # Intuition Mainnet
 
-Welcome to the Intuition Mainnet - your development and testing environment for building on the Intuition Network.
+Welcome to the Intuition Mainnet — the live Intuition network for building on the knowledge graph.
 
 Intuition leverages **Caldera's Metalayer** infrastructure to provide seamless cross-chain bridging capabilities. As part of Caldera's **Internet of Chains**, we benefit from a robust, interconnected ecosystem of blockchain networks.
 
@@ -4399,6 +4399,7 @@ Intuition leverages **Caldera's Metalayer** infrastructure to provide seamless c
 | **Block Explorer** | [https://explorer.intuition.systems](https://explorer.intuition.systems) |
 
 ## Bridging & Hub
+Visit the Intuition Mainnet Hub at:
 
 [... see full docs for complete content]
 
