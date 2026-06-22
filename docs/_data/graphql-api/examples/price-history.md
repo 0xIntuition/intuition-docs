@@ -35,7 +35,7 @@ export const priceHistoryQueries = [
   }
 }`,
     variables: {
-      termId: '0x57d94c116a33bb460428eced262b7ae2ec6f865e7aceef6357cec3d034e8ea21',
+      termId: '0x91815a7b50440bb9ff022f5d02c8b8d41154a71eb473b45ca4bf4e1f833d7512',
       curveId: '1',
       days: 30
     }

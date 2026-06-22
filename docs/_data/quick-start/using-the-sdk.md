@@ -268,7 +268,7 @@ Retrieve detailed information about an atom using its ID:
 import { getAtomDetails } from '@0xintuition/sdk'
 
 const atomData = await getAtomDetails(
-  '0x57d94c116a33bb460428eced262b7ae2ec6f865e7aceef6357cec3d034e8ea21'
+  '0x906527aae4af914b1ac01ff9adfdda5dafde3b5e21f84045e0660b0a15c07769'
 )
 
 console.log('Atom data:', atomData)
@@ -283,7 +283,7 @@ Retrieve information about a triple relationship:
 import { getTripleDetails } from '@0xintuition/sdk'
 
 const tripleData = await getTripleDetails(
-  '0x4957d3f442acc301ad71e73f26efd6af78647f57dacf2b3a686d91fa773fe0b6'
+  '0xc4e64dbc3d69293d28259653d9b15d2ab3f6aa1aa0b1a489e5250974cd089730'
 )
 
 console.log('Triple data:', tripleData)
