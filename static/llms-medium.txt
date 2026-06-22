@@ -758,7 +758,7 @@ Build an activity feed showing recent protocol activity.
 ---
 title: "Atom with Vault"
 description: "Fetch atom details with vault statistics"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-06-22T14:26:07-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/examples/atom-with-vault"
 ---
 
@@ -798,7 +798,7 @@ Display atom information with market data on a detail page.
 
 }`,
     variables: {
-      atomId: '0x57d94c116a33bb460428eced262b7ae2ec6f865e7aceef6357cec3d034e8ea21',
+      atomId: '0x906527aae4af914b1ac01ff9adfdda5dafde3b5e21f84045e0660b0a15c07769',
       curveId: '1'
 
 ];
@@ -873,7 +873,7 @@ Use the Intuition GraphQL API across different programming languages.
 ---
 title: "Price History"
 description: "Analyze price trends over time"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-06-22T14:26:07-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/examples/price-history"
 ---
 
@@ -904,7 +904,7 @@ Analyze share price trends using time-series data.
 
 }`,
     variables: {
-      termId: '0x57d94c116a33bb460428eced262b7ae2ec6f865e7aceef6357cec3d034e8ea21',
+      termId: '0x91815a7b50440bb9ff022f5d02c8b8d41154a71eb473b45ca4bf4e1f833d7512',
       curveId: '1',
       days: 30
 
@@ -5010,7 +5010,7 @@ Full React component with TanStack Query:
 ---
 title: "SDK Migration V1 to V2"
 description: "Migrating SDK from v1.5 to v2.0"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-06-22T14:26:07-04:00"
 source: "https://docs.intuition.systems/docs/intuition-sdk/migration-guide"
 ---
 
@@ -6583,7 +6583,7 @@ If you have any questions visit the [Intuition Discord](https://discord.gg/RgBen
 ---
 title: "Using the SDK"
 description: "Get started building with Intuition in minutes."
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-06-22T14:26:07-04:00"
 source: "https://docs.intuition.systems/docs/quick-start/using-the-sdk"
 ---
 
@@ -7009,7 +7009,7 @@ Learn how to create personalized, real-time activity feeds that track user inter
 ---
 title: "Finding Related Claims"
 description: "A step-by-step guide to discover related triples and relationship patterns"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-06-22T14:26:07-04:00"
 source: "https://docs.intuition.systems/docs/tutorials/queries/finding-related-claims"
 ---
 
