@@ -48,7 +48,14 @@ The Intuition testnet is currently active for development and testing.
 
 ### Mainnet
 
-> Coming soon! Testnet is currently active for development.
+The Intuition mainnet is live.
+
+- **Chain ID:** 1155
+- **RPC URL:** https://rpc.intuition.systems
+- **Explorer:** https://explorer.intuition.systems
+- **Currency:** $TRUST
+
+See the [Mainnet page](/docs/intuition-network/mainnet) for hub, bridge, explorer, and RPC details.
 
 ## Running a Node
 

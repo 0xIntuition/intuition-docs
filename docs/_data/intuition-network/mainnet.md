@@ -6,7 +6,7 @@ sidebar_position: 0
 
 # Intuition Mainnet
 
-Welcome to the Intuition Mainnet - your development and testing environment for building on the Intuition Network.
+Welcome to the Intuition Mainnet — the live Intuition network for building on the knowledge graph.
 
 Intuition leverages **Caldera's Metalayer** infrastructure to provide seamless cross-chain bridging capabilities. As part of Caldera's **Internet of Chains**, we benefit from a robust, interconnected ecosystem of blockchain networks.
 
@@ -23,7 +23,7 @@ Intuition leverages **Caldera's Metalayer** infrastructure to provide seamless c
 
 
 ## Bridging & Hub
-Vist the Intuition Testnet Hub at: 
+Visit the Intuition Mainnet Hub at: 
 - [https://hub.intuition.systems](https://hub.intuition.systems)
 - [https://intuition.hub.caldera.xyz/](https://intuition.hub.caldera.xyz)
 
@@ -33,14 +33,14 @@ The hub creates essential information about the network plus actions like easily
 
 ## Explorer
 
-Access the Intuition Testnet Explorer directly at: 
+Access the Intuition Mainnet Explorer directly at: 
 - [https://explorer.intuition.systems](https://explorer.intuition.systems)
 
-The Intuition Explorer is a comprehensive blockchain explorer built on Blockscout, providing detailed insights into all network activity on the Intuition testnet. Monitor transactions, explore blocks, and analyze network performance with this powerful exploration tool.
+The Intuition Explorer is a comprehensive blockchain explorer built on Blockscout, providing detailed insights into all network activity on the Intuition mainnet. Monitor transactions, explore blocks, and analyze network performance with this powerful exploration tool.
 
 ## RPC
 
-Access the Intuition Testnet RPC directly at: 
+Access the Intuition Mainnet RPC directly at: 
 - [https://rpc.intuition.systems/http](https://rpc.intuition.systems/http)
 
 The Intuition RPC accepts JSON-RPC requests and returns JSON-RPC responses. It provides programmatic access to the Intuition network.
