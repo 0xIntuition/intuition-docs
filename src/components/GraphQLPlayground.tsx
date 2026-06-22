@@ -233,7 +233,7 @@ const QUERY_EXAMPLES: QueryExample[] = [
   }
 }`,
     variables: {
-      termId: '0xf12dba36ffebb8e05ae49d3f9220b1994295662ccdc573f44aff7b51f8ad8fd6',
+      termId: '0x906527aae4af914b1ac01ff9adfdda5dafde3b5e21f84045e0660b0a15c07769',
     },
   },
   {
@@ -279,7 +279,7 @@ const QUERY_EXAMPLES: QueryExample[] = [
   }
 }`,
     variables: {
-      termId: '0xffb30efde2b49a7deadd920a7df684595ed4a291a582033c16b0795796965600',
+      termId: '0xc4e64dbc3d69293d28259653d9b15d2ab3f6aa1aa0b1a489e5250974cd089730',
     },
   },
  
