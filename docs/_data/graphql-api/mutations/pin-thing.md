@@ -6,11 +6,19 @@ description: Pin Thing metadata to IPFS
 keywords: [graphql, mutation, ipfs, pin, thing, metadata]
 ---
 
-import GraphQLPlaygroundCustom from '@site/src/components/GraphQLPlaygroundCustom';
-
 # Pin Thing Mutation
 
 Pin a "Thing" object (general entity) to IPFS for use in atom creation.
+
+## Endpoint and Auth
+
+Use the public gated pinning endpoint and send your Intuition pin API key in an `apikey` header:
+
+```text
+https://pin.intuition.systems/v1/graphql
+```
+
+Keep the key in a trusted server runtime. Do not pass it in the URL or expose it in public browser environment variables.
 
 ## Mutation Structure
 

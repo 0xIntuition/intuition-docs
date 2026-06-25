@@ -6,11 +6,13 @@ description: Upload an image from a URL
 keywords: [graphql, mutation, image, upload, url]
 ---
 
-import GraphQLPlaygroundCustom from '@site/src/components/GraphQLPlaygroundCustom';
-
 # Upload Image from URL
 
 Upload an image by providing its URL. The server fetches, caches, and moderates the image. Returns a `CachedImage` with the hosted URL and safety score.
+
+## Endpoint and Auth
+
+Use the public gated endpoint, `https://pin.intuition.systems/v1/graphql`, with an `apikey` request header. Keep the key in a trusted server runtime.
 
 ## Mutation Structure
 
@@ -33,9 +35,9 @@ mutation UploadImageFromUrl($image: UploadImageFromUrlInput!) {
 
 The mutation takes an `image` argument with the `UploadImageFromUrlInput` type:
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `url` | `String` | Yes | URL of the image to upload |
+| Field | Type     | Required | Description                |
+| ----- | -------- | -------- | -------------------------- |
+| `url` | `String` | Yes      | URL of the image to upload |
 
 ```json
 {
@@ -49,15 +51,15 @@ The mutation takes an `image` argument with the `UploadImageFromUrlInput` type:
 
 Returns `UploadImageFromUrlOutput` containing an `images` array of `CachedImage` objects:
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `images` | `[CachedImage!]!` | Array of cached image results |
-| `images[].url` | `String!` | Hosted image URL |
-| `images[].original_url` | `String!` | Original source URL |
-| `images[].safe` | `Boolean!` | Whether the image passed moderation |
-| `images[].score` | `jsonb` | Moderation safety score details |
-| `images[].model` | `String` | Moderation model used |
-| `images[].created_at` | `timestamptz!` | Upload timestamp |
+| Field                   | Type              | Description                         |
+| ----------------------- | ----------------- | ----------------------------------- |
+| `images`                | `[CachedImage!]!` | Array of cached image results       |
+| `images[].url`          | `String!`         | Hosted image URL                    |
+| `images[].original_url` | `String!`         | Original source URL                 |
+| `images[].safe`         | `Boolean!`        | Whether the image passed moderation |
+| `images[].score`        | `jsonb`           | Moderation safety score details     |
+| `images[].model`        | `String`          | Moderation model used               |
+| `images[].created_at`   | `timestamptz!`    | Upload timestamp                    |
 
 ## Expected Response
 
@@ -80,40 +82,19 @@ Returns `UploadImageFromUrlOutput` containing an `images` array of `CachedImage`
 }
 ```
 
-## Interactive Example
-
-export const uploadUrlQueries = [
-  {
-    id: 'upload-from-url',
-    title: 'Upload Image from URL',
-    query: `mutation UploadImageFromUrl($image: UploadImageFromUrlInput!) {
-  uploadImageFromUrl(image: $image) {
-    images {
-      url
-      original_url
-      safe
-    }
-  }
-}`,
-    variables: {
-      image: {
-        url: 'https://avatars.githubusercontent.com/u/1234567'
-      }
-    }
-  }
-];
-
-<GraphQLPlaygroundCustom queries={uploadUrlQueries} />
-
 ## Use Cases
 
 ### Import External Images
 
 ```typescript
-import { GraphQLClient } from 'graphql-request'
-import { API_URL_PROD } from '@0xintuition/graphql'
+import { GraphQLClient } from 'graphql-request';
+import { PIN_API_URL } from '@0xintuition/graphql';
 
-const client = new GraphQLClient(API_URL_PROD)
+const client = new GraphQLClient(PIN_API_URL, {
+  headers: {
+    apikey: process.env.INTUITION_PIN_API_KEY!,
+  },
+});
 
 async function importExternalImage(imageUrl: string) {
   const mutation = `
@@ -125,17 +106,21 @@ async function importExternalImage(imageUrl: string) {
         }
       }
     }
-  `
+  `;
 
   const result = await client.request(mutation, {
-    image: { url: imageUrl }
-  })
+    image: { url: imageUrl },
+  });
 
-  const cached = result.uploadImageFromUrl.images[0]
-  if (!cached.safe) {
-    throw new Error('Image failed moderation check')
+  const cached = result.uploadImageFromUrl.images[0];
+  if (!cached) {
+    throw new Error('Image host could not be fetched');
   }
-  return cached.url
+
+  if (!cached.safe) {
+    throw new Error('Image failed moderation check');
+  }
+  return cached.url;
 }
 ```
 

@@ -8,15 +8,19 @@ keywords: [graphql, mutation, ipfs, image, upload, json]
 
 # Image & IPFS Operations
 
-The Intuition GraphQL API provides mutations for uploading images and JSON data to IPFS (InterPlanetary File System). These operations return IPFS hashes that can be used in atom creation.
+The Intuition GraphQL API provides mutations for uploading images and JSON data to IPFS (InterPlanetary File System). Image uploads return cached image URLs, while JSON uploads return IPFS hashes that can be used in atom creation.
+
+:::important Pinning endpoint and API key
+Image and JSON upload mutations use the public gated pinning endpoint, `https://pin.intuition.systems/v1/graphql`, and require an `apikey` request header. Keep the API key server-side.
+:::
 
 ## Available Operations
 
-| Operation | Description |
-|-----------|-------------|
-| [`uploadImage`](./upload-image) | Upload a base64-encoded image to IPFS |
-| [`uploadImageFromUrl`](./upload-image-from-url) | Upload an image from a URL to IPFS |
-| [`uploadJsonToIpfs`](./upload-json-to-ipfs) | Upload JSON metadata to IPFS |
+| Operation                                       | Description                           |
+| ----------------------------------------------- | ------------------------------------- |
+| [`uploadImage`](./upload-image)                 | Upload a base64-encoded image to IPFS |
+| [`uploadImageFromUrl`](./upload-image-from-url) | Upload an image from a URL to IPFS    |
+| [`uploadJsonToIpfs`](./upload-json-to-ipfs)     | Upload JSON metadata to IPFS          |
 
 ## Use Cases
 
@@ -26,11 +30,12 @@ When creating atoms with images or metadata:
 
 1. Upload image using `uploadImage` or `uploadImageFromUrl`
 2. Upload JSON metadata using `uploadJsonToIpfs`
-3. Use returned IPFS hashes in atom creation
+3. Use the returned image URL and metadata IPFS hash in atom creation
 
 ### Profile Images
 
 Upload profile images for accounts:
+
 - Avatar images
 - Banner images
 - Organization logos
@@ -38,6 +43,7 @@ Upload profile images for accounts:
 ### Metadata Storage
 
 Store structured metadata on IPFS:
+
 - Thing descriptions
 - Organization details
 - Person profiles
@@ -45,68 +51,79 @@ Store structured metadata on IPFS:
 ## Quick Start
 
 ```typescript
-import { GraphQLClient } from 'graphql-request'
-import { API_URL_PROD } from '@0xintuition/graphql'
+import { GraphQLClient } from 'graphql-request';
+import { PIN_API_URL } from '@0xintuition/graphql';
 
-const client = new GraphQLClient(API_URL_PROD)
+const client = new GraphQLClient(PIN_API_URL, {
+  headers: {
+    apikey: process.env.INTUITION_PIN_API_KEY!,
+  },
+});
 
 // Upload an image from URL
-const imageResult = await client.request(`
-  mutation UploadImageFromUrl($url: String!) {
-    uploadImageFromUrl(url: $url) {
+const imageResult = await client.request(
+  `
+  mutation UploadImageFromUrl($image: UploadImageFromUrlInput!) {
+    uploadImageFromUrl(image: $image) {
+      images {
+        url
+        safe
+      }
+    }
+  }
+`,
+  {
+    image: { url: 'https://example.com/image.png' },
+  },
+);
+
+// Upload JSON metadata
+const jsonResult = await client.request(
+  `
+  mutation UploadJsonToIpfs($json: jsonb!) {
+    uploadJsonToIpfs(json: $json) {
       hash
-      url
+      name
       size
     }
   }
-`, {
-  url: 'https://example.com/image.png'
-})
+`,
+  {
+    json: {
+      name: 'My Atom',
+      description: 'Description here',
+      image: imageResult.uploadImageFromUrl.images[0].url,
+    },
+  },
+);
 
-// Upload JSON metadata
-const jsonResult = await client.request(`
-  mutation UploadJsonToIpfs($json: JSON!) {
-    uploadJsonToIpfs(json: $json) {
-      hash
-      url
-    }
-  }
-`, {
-  json: {
-    name: 'My Atom',
-    description: 'Description here',
-    image: imageResult.uploadImageFromUrl.url
-  }
-})
-
-console.log('Metadata URL:', jsonResult.uploadJsonToIpfs.url)
-// Use this URL when creating the atom
+console.log('Metadata URI:', `ipfs://${jsonResult.uploadJsonToIpfs.hash}`);
+// Use this URI when creating the atom
 ```
 
-## IPFS URL Format
+## IPFS Response Format
 
-All uploaded content is accessible via IPFS:
+Uploaded JSON content is accessible via IPFS:
 
 ```
 ipfs://<hash>
 ```
 
-The API returns both the raw hash and a gateway URL:
+The exact response shape depends on the mutation. JSON uploads return the raw hash, which you can convert to an IPFS URI:
 
 ```json
 {
-  "hash": "QmXnnyufdzAWL5CqZ2RnSNgPbvCc1ALT73s6epPrRnZ1Xy",
-  "url": "ipfs://QmXnnyufdzAWL5CqZ2RnSNgPbvCc1ALT73s6epPrRnZ1Xy"
+  "hash": "QmXnnyufdzAWL5CqZ2RnSNgPbvCc1ALT73s6epPrRnZ1Xy"
 }
 ```
 
 ## File Size Limits
 
-| Upload Type | Maximum Size |
-|-------------|--------------|
-| Image (base64) | 5 MB |
-| Image from URL | 10 MB |
-| JSON | 1 MB |
+| Upload Type    | Maximum Size |
+| -------------- | ------------ |
+| Image (base64) | 5 MB         |
+| Image from URL | 10 MB        |
+| JSON           | 1 MB         |
 
 ## Supported Image Formats
 
