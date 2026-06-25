@@ -411,7 +411,7 @@ Use backend functions for complex queries instead of client-side filtering.
 
 - `following`: Get accounts a user follows
 - `positions_from_following`: Social feed of positions
-- `search_term`: Semantic search
+- `search_term`: Text search
 - `signals_from_following`: Activity from followed accounts
 
 ## Benefits
@@ -1856,7 +1856,7 @@ Get positions from followed accounts:
 
 ### search_term
 
-Semantic search:
+Text search:
 
 ### search_positions_on_subject
 
@@ -1992,20 +1992,18 @@ Query multiple atoms with filtering, sorting, and pagination to find specific en
 
 ---
 title: "Atom Search"
-description: "Full-text and semantic search for atoms"
+description: "Full-text and pattern matching search for atoms"
 last_updated: "2026-01-05T17:16:01-08:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/atoms/search"
 ---
 
 # Atom Search
 
-Search atoms using pattern matching and semantic search capabilities.
+Search atoms using pattern matching and full-text query patterns.
 
 ## Query Structure
 
 ### Pattern Matching Search
-
-### Semantic Search
 
 ## Interactive Examples
 
@@ -2032,16 +2030,23 @@ Search atoms using pattern matching and semantic search capabilities.
       search: '%ethereum%',
       limit: 20
 
-  },
+];
 
-    id: 'semantic-search',
-    title: 'Semantic Search',
-    query: `query SemanticSearch($query: String!, $limit: Int!) {
-  search_term(args: { query: $query }, limit: $limit) {
-    atom {
-      term_id
-      label
-      type
+## Search Patterns
+
+### Case-Insensitive Search
+
+### Multi-Field Search
+
+### Filter Search by Type
+
+## Use Cases
+
+### Autocomplete
+
+### Global Search
+
+## Performance Considerations
 
 [... see full docs for complete content]
 
@@ -5048,7 +5053,7 @@ source: "https://docs.intuition.systems/docs/intuition-sdk/search-guide"
 
 # Search and Discovery
 
-Discover atoms, triples, accounts, and collections using powerful search capabilities including full-text search, semantic search, and batch entity lookups.
+Discover atoms, triples, accounts, and collections using search, filters, and batch entity lookups.
 
 ## Table of Contents
 
@@ -5077,6 +5082,10 @@ Search across all entity types (atoms, accounts, triples, collections) with a si
 ### Basic Example
 
 ### Advanced Example
+
+Search with custom limits:
+
+### Common Use Cases
 
 [... see full docs for complete content]
 

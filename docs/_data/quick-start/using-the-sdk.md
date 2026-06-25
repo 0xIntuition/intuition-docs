@@ -307,21 +307,6 @@ const results = await globalSearch('ethereum', {
 console.log('Search results:', results)
 ```
 
-### Semantic Search
-
-Use AI-powered semantic search to find relevant atoms:
-
-```typescript
-import { semanticSearch } from '@0xintuition/sdk'
-
-const results = await semanticSearch(
-  'decentralized identity protocols',
-  { limit: 5 }
-)
-
-console.log('Semantic search results:', results)
-```
-
 ### Read On-Chain Atom Data
 
 Read atom data directly from the smart contract:

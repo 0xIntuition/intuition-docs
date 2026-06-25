@@ -305,7 +305,6 @@ Now that you've created your first atom and triple, explore:
 
 ### Search & Discovery
 - [**Global Search**](../search/global-search.md) - Search across all entities
-- [**Semantic Search**](../search/advanced-queries.md) - Find similar content
 
 ## Common Issues
 

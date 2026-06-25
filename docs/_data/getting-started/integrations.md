@@ -21,7 +21,6 @@ Use Intuition's knowledge graph with AI systems and agents to create persistent,
 - **AI agents with persistent memory** - Store and retrieve agent knowledge on-chain
 - **LLM context enhancement** - Provide verified context to language models
 - **Knowledge graph reasoning** - Enable semantic reasoning over structured data
-- **Semantic search for AI** - Query knowledge graphs for relevant information
 - **AI-assisted app development** - Give coding agents canonical protocol context before they modify Intuition reads or writes
 
 ## Coming Soon

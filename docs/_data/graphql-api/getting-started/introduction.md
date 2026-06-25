@@ -95,7 +95,7 @@ Subscribe to real-time updates using cursor-based streaming for live data feeds.
 
 ### Database Functions
 
-Leverage backend functions for complex queries like social graph traversal, semantic search, and position filtering.
+Leverage backend functions for complex queries like social graph traversal, text search, and position filtering.
 
 ## Use Cases
 

@@ -2,15 +2,15 @@
 title: Atom Search
 sidebar_label: Search
 sidebar_position: 5
-description: Full-text and semantic search for atoms
-keywords: [graphql, atom, search, full-text, semantic, ilike]
+description: Full-text and pattern matching search for atoms
+keywords: [graphql, atom, search, full-text, ilike]
 ---
 
 import GraphQLPlaygroundCustom from '@site/src/components/GraphQLPlaygroundCustom';
 
 # Atom Search
 
-Search atoms using pattern matching and semantic search capabilities.
+Search atoms using pattern matching and full-text query patterns.
 
 ## Query Structure
 
@@ -31,21 +31,6 @@ query SearchAtoms($search: String!, $limit: Int!) {
     label
     image
     type
-  }
-}
-```
-
-### Semantic Search
-
-```graphql
-query SemanticSearch($query: String!, $limit: Int) {
-  search_term(args: { query: $query }, limit: $limit) {
-    atom {
-      term_id
-      label
-      type
-      image
-    }
   }
 }
 ```
@@ -75,24 +60,6 @@ export const searchQueries = [
 }`,
     variables: {
       search: '%ethereum%',
-      limit: 20
-    }
-  },
-  {
-    id: 'semantic-search',
-    title: 'Semantic Search',
-    query: `query SemanticSearch($query: String!, $limit: Int!) {
-  search_term(args: { query: $query }, limit: $limit) {
-    atom {
-      term_id
-      label
-      type
-      image
-    }
-  }
-}`,
-    variables: {
-      query: 'blockchain technology',
       limit: 20
     }
   }
@@ -193,7 +160,6 @@ const query = `
 
 - **Use wildcards sparingly**: `%term%` is slower than `term%`
 - **Limit results**: Always include limit
-- **Consider semantic search**: For natural language queries
 
 ## Related Patterns
 

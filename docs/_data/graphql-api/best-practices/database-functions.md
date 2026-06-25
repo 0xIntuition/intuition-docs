@@ -47,7 +47,7 @@ query GetFollowingEfficiently($address: String!) {
 
 - `following`: Get accounts a user follows
 - `positions_from_following`: Social feed of positions
-- `search_term`: Semantic search
+- `search_term`: Text search
 - `signals_from_following`: Activity from followed accounts
 
 ## Benefits
