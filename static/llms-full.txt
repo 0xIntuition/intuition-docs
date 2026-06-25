@@ -6358,6 +6358,19 @@ Use the public gated pinning endpoint and send your Intuition pin API key in an 
 https://pin.intuition.systems/v1/graphql
 ```
 
+Create an authenticated client before sending the mutation:
+
+```typescript
+import { GraphQLClient } from 'graphql-request';
+import { PIN_API_URL } from '@0xintuition/graphql';
+
+const client = new GraphQLClient(PIN_API_URL, {
+  headers: {
+    apikey: process.env.INTUITION_PIN_API_KEY!,
+  },
+});
+```
+
 `pinOrganization` is available as a raw GraphQL mutation. The SDK currently exposes a `pinThing` helper, but not a first-class `pinOrganization` helper.
 
 ## Mutation Structure
@@ -6410,6 +6423,19 @@ Use the public gated pinning endpoint and send your Intuition pin API key in an 
 
 ```text
 https://pin.intuition.systems/v1/graphql
+```
+
+Create an authenticated client before sending the mutation:
+
+```typescript
+import { GraphQLClient } from 'graphql-request';
+import { PIN_API_URL } from '@0xintuition/graphql';
+
+const client = new GraphQLClient(PIN_API_URL, {
+  headers: {
+    apikey: process.env.INTUITION_PIN_API_KEY!,
+  },
+});
 ```
 
 `pinPerson` is available as a raw GraphQL mutation. The SDK currently exposes a `pinThing` helper, but not a first-class `pinPerson` helper.
@@ -6468,6 +6494,19 @@ https://pin.intuition.systems/v1/graphql
 ```
 
 Keep the key in a trusted server runtime. Do not pass it in the URL or expose it in public browser environment variables.
+
+Create an authenticated client before sending the mutation:
+
+```typescript
+import { GraphQLClient } from 'graphql-request';
+import { PIN_API_URL } from '@0xintuition/graphql';
+
+const client = new GraphQLClient(PIN_API_URL, {
+  headers: {
+    apikey: process.env.INTUITION_PIN_API_KEY!,
+  },
+});
+```
 
 ## Mutation Structure
 
@@ -16599,6 +16638,52 @@ source: "https://docs.intuition.systems/docs/graphql-api/writes"
 The Intuition GraphQL API provides mutations for **off-chain operations** like uploading metadata to IPFS. For **on-chain operations** like creating atoms, triples, and positions, you must use the [Intuition SDK](/docs/intuition-sdk/installation-and-setup) or interact directly with the smart contracts.
 
 Pinning mutations are served from the public gated endpoint, `https://pin.intuition.systems/v1/graphql`, not the read endpoint. Send your Intuition pin API key in an `apikey` request header from a trusted server runtime.
+
+## Authenticated Pinning Client
+
+With `graphql-request`, create a client with the `apikey` header:
+
+```typescript
+import { GraphQLClient } from 'graphql-request';
+import { PIN_API_URL } from '@0xintuition/graphql';
+
+const pinClient = new GraphQLClient(PIN_API_URL, {
+  headers: {
+    apikey: process.env.INTUITION_PIN_API_KEY!,
+  },
+});
+```
+
+Without a GraphQL client, send the same header with `fetch`:
+
+```typescript
+import { PIN_API_URL } from '@0xintuition/graphql';
+
+const response = await fetch(PIN_API_URL, {
+  method: 'POST',
+  headers: {
+    'content-type': 'application/json',
+    apikey: process.env.INTUITION_PIN_API_KEY!,
+  },
+  body: JSON.stringify({
+    query: `
+      mutation PinThing($thing: PinThingInput!) {
+        pinThing(thing: $thing) {
+          uri
+        }
+      }
+    `,
+    variables: {
+      thing: {
+        name: 'My Project',
+        description: 'Description of my project',
+        image: 'ipfs://...',
+        url: 'https://example.com',
+      },
+    },
+  }),
+});
+```
 
 **GraphQL mutations** handle:
 
