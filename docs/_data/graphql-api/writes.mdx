@@ -190,7 +190,7 @@ Here's how to prepare metadata for atom creation:
 ```typescript
 import { GraphQLClient } from 'graphql-request';
 import { PIN_API_URL } from '@0xintuition/graphql';
-import { createMultivaultClient } from '@0xintuition/sdk';
+import { createAtomFromIpfsUri } from '@0xintuition/sdk';
 
 const pinClient = new GraphQLClient(PIN_API_URL, {
   headers: {
@@ -232,10 +232,10 @@ const metadataResult = await pinClient.request(
 );
 
 // Step 3: Create atom on-chain (via SDK)
-const multivault = createMultivaultClient(walletClient);
-const atomId = await multivault.createAtom({
-  uri: metadataResult.pinThing.uri,
-});
+const atom = await createAtomFromIpfsUri(
+  { walletClient, publicClient, address },
+  metadataResult.pinThing.uri,
+);
 ```
 
 ## Best Practices

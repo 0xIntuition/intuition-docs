@@ -59,10 +59,6 @@ async function main() {
   console.log('\n=== Pinning to IPFS ===');
   const ipfsUri = await pinThing(project);
 
-  if (!ipfsUri) {
-    throw new Error('Failed to pin to IPFS');
-  }
-
   console.log('✓ Pinned to IPFS:', ipfsUri);
 
   // 2. Create atom with Thing (auto-pins and creates atom)
