@@ -10,6 +10,16 @@ keywords: [graphql, mutation, ipfs, pin, organization, metadata]
 
 Pin an Organization entity to IPFS for use in atom creation.
 
+## Endpoint and Auth
+
+Use the public gated pinning endpoint and send your Intuition pin API key in an `apikey` header:
+
+```text
+https://pin.intuition.systems/v1/graphql
+```
+
+`pinOrganization` is available as a raw GraphQL mutation. The SDK currently exposes a `pinThing` helper, but not a first-class `pinOrganization` helper.
+
 ## Mutation Structure
 
 ```graphql

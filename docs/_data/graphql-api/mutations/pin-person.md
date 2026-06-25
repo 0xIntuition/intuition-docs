@@ -10,6 +10,16 @@ keywords: [graphql, mutation, ipfs, pin, person, metadata]
 
 Pin a Person entity to IPFS for use in atom creation.
 
+## Endpoint and Auth
+
+Use the public gated pinning endpoint and send your Intuition pin API key in an `apikey` header:
+
+```text
+https://pin.intuition.systems/v1/graphql
+```
+
+`pinPerson` is available as a raw GraphQL mutation. The SDK currently exposes a `pinThing` helper, but not a first-class `pinPerson` helper.
+
 ## Mutation Structure
 
 ```graphql

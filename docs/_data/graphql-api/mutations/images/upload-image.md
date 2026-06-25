@@ -6,11 +6,13 @@ description: Upload a base64-encoded image via the API
 keywords: [graphql, mutation, image, upload, base64]
 ---
 
-import GraphQLPlaygroundCustom from '@site/src/components/GraphQLPlaygroundCustom';
-
 # Upload Image
 
 Upload a base64-encoded image. The image is cached and a moderation check is performed. Returns a `CachedImage` with the hosted URL and safety score.
+
+## Endpoint and Auth
+
+Use the public gated endpoint, `https://pin.intuition.systems/v1/graphql`, with an `apikey` request header. Keep the key in a trusted server runtime.
 
 ## Mutation Structure
 
@@ -33,11 +35,11 @@ mutation UploadImage($image: UploadImageInput!) {
 
 The mutation takes an `image` argument with the `UploadImageInput` type:
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `data` | `String` | Yes | Base64-encoded image data |
-| `filename` | `String` | Yes | Filename with extension |
-| `contentType` | `String` | Yes | MIME type (e.g. `"image/png"`) |
+| Field         | Type     | Required | Description                    |
+| ------------- | -------- | -------- | ------------------------------ |
+| `data`        | `String` | Yes      | Base64-encoded image data      |
+| `filename`    | `String` | Yes      | Filename with extension        |
+| `contentType` | `String` | Yes      | MIME type (e.g. `"image/png"`) |
 
 ```json
 {
@@ -53,15 +55,15 @@ The mutation takes an `image` argument with the `UploadImageInput` type:
 
 Returns `UploadImageFromUrlOutput` containing an `images` array of `CachedImage` objects:
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `images` | `[CachedImage!]!` | Array of cached image results |
-| `images[].url` | `String!` | Hosted image URL |
-| `images[].original_url` | `String!` | Original source URL |
-| `images[].safe` | `Boolean!` | Whether the image passed moderation |
-| `images[].score` | `jsonb` | Moderation safety score details |
-| `images[].model` | `String` | Moderation model used |
-| `images[].created_at` | `timestamptz!` | Upload timestamp |
+| Field                   | Type              | Description                         |
+| ----------------------- | ----------------- | ----------------------------------- |
+| `images`                | `[CachedImage!]!` | Array of cached image results       |
+| `images[].url`          | `String!`         | Hosted image URL                    |
+| `images[].original_url` | `String!`         | Original source URL                 |
+| `images[].safe`         | `Boolean!`        | Whether the image passed moderation |
+| `images[].score`        | `jsonb`           | Moderation safety score details     |
+| `images[].model`        | `String`          | Moderation model used               |
+| `images[].created_at`   | `timestamptz!`    | Upload timestamp                    |
 
 ## Expected Response
 
@@ -91,14 +93,18 @@ Returns `UploadImageFromUrlOutput` containing an `images` array of `CachedImage`
 Handle file uploads from a form:
 
 ```typescript
-import { GraphQLClient } from 'graphql-request'
-import { API_URL_PROD } from '@0xintuition/graphql'
+import { GraphQLClient } from 'graphql-request';
+import { PIN_API_URL } from '@0xintuition/graphql';
 
-const client = new GraphQLClient(API_URL_PROD)
+const client = new GraphQLClient(PIN_API_URL, {
+  headers: {
+    apikey: process.env.INTUITION_PIN_API_KEY!,
+  },
+});
 
 async function uploadFileInput(file: File) {
-  const buffer = await file.arrayBuffer()
-  const base64 = btoa(String.fromCharCode(...new Uint8Array(buffer)))
+  const buffer = await file.arrayBuffer();
+  const base64 = btoa(String.fromCharCode(...new Uint8Array(buffer)));
 
   const mutation = `
     mutation UploadImage($image: UploadImageInput!) {
@@ -109,17 +115,17 @@ async function uploadFileInput(file: File) {
         }
       }
     }
-  `
+  `;
 
   const result = await client.request(mutation, {
     image: {
       data: base64,
       filename: file.name,
-      contentType: file.type
-    }
-  })
+      contentType: file.type,
+    },
+  });
 
-  return result.uploadImage.images[0]
+  return result.uploadImage.images[0];
 }
 ```
 

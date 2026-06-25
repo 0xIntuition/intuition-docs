@@ -1,0 +1,92 @@
+{
+  "typeMap": {
+    "CachedImage": {
+      "created_at": {
+        "type": "timestamptz",
+        "kind": "SCALAR"
+      },
+      "model": {
+        "type": "String",
+        "kind": "SCALAR"
+      },
+      "original_url": {
+        "type": "String",
+        "kind": "SCALAR"
+      },
+      "safe": {
+        "type": "Boolean",
+        "kind": "SCALAR"
+      },
+      "score": {
+        "type": "jsonb",
+        "kind": "SCALAR"
+      },
+      "url": {
+        "type": "String",
+        "kind": "SCALAR"
+      }
+    },
+    "PinOutput": {
+      "uri": {
+        "type": "String",
+        "kind": "SCALAR"
+      }
+    },
+    "UploadImageFromUrlOutput": {
+      "images": {
+        "type": "CachedImage",
+        "kind": "OBJECT"
+      }
+    },
+    "UploadJsonToIpfsOutput": {
+      "hash": {
+        "type": "String",
+        "kind": "SCALAR"
+      },
+      "name": {
+        "type": "String",
+        "kind": "SCALAR"
+      },
+      "size": {
+        "type": "String",
+        "kind": "SCALAR"
+      }
+    },
+    "mutation_root": {
+      "pinOrganization": {
+        "type": "PinOutput",
+        "kind": "OBJECT"
+      },
+      "pinPerson": {
+        "type": "PinOutput",
+        "kind": "OBJECT"
+      },
+      "pinThing": {
+        "type": "PinOutput",
+        "kind": "OBJECT"
+      },
+      "uploadImage": {
+        "type": "UploadImageFromUrlOutput",
+        "kind": "OBJECT"
+      },
+      "uploadImageFromUrl": {
+        "type": "UploadImageFromUrlOutput",
+        "kind": "OBJECT"
+      },
+      "uploadJsonToIpfs": {
+        "type": "UploadJsonToIpfsOutput",
+        "kind": "OBJECT"
+      }
+    },
+    "query_root": {
+      "no_queries_available": {
+        "type": "String",
+        "kind": "SCALAR"
+      }
+    }
+  },
+  "rootTypes": {
+    "query": "query_root",
+    "mutation": "mutation_root"
+  }
+}

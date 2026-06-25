@@ -1,215 +1,217 @@
 ---
-title: Pinata IPFS Integration
-sidebar_label: Pinata IPFS
+title: IPFS Pinning
+sidebar_label: IPFS Pinning
 sidebar_position: 1
-description: Upload and pin content to IPFS using Pinata integration
+description: Pin metadata to IPFS using the Intuition pinning service or direct Pinata uploads
 keywords: [sdk, ipfs, pinata, upload, pin, thing, metadata]
 ---
 
-# Pinata IPFS Integration
+# IPFS Pinning
 
-Upload and pin content to IPFS using Pinata or the Intuition API.
+The SDK supports two IPFS paths:
+
+| Path                      | Use for                                                         | Credential                          |
+| ------------------------- | --------------------------------------------------------------- | ----------------------------------- |
+| Intuition pinning service | `pinThing`, `createAtomFromThing`, `batchCreateAtomsFromThings` | Intuition pin API key (`pinApiKey`) |
+| Direct Pinata upload      | `uploadJsonToPinata`, `createAtomFromIpfsUpload`                | Pinata API JWT (`pinataApiJWT`)     |
+
+`pinThing` does not require a Pinata account, but it does require an Intuition pin API key. Keep API keys in a trusted server runtime and do not expose them in public browser environment variables.
+
+## Intuition Pin API Key
+
+Configure the SDK once before calling `pinThing` or any SDK helper that auto-pins Thing metadata:
+
+```typescript
+import { configureSdk } from '@0xintuition/sdk';
+
+configureSdk({
+  pinApiKey: process.env.INTUITION_PIN_API_KEY,
+});
+```
+
+You can also pass the key per call:
+
+```typescript
+const uri = await pinThing(thing, {
+  pinApiKey: process.env.INTUITION_PIN_API_KEY,
+});
+```
 
 ## pinThing
 
-Pin a Thing object to IPFS via the Intuition API (no Pinata key required).
+Pin a Thing object to IPFS via the Intuition pinning service.
+
+SDK helpers accept the Thing fields directly (`name`, `description`, `image`, `url`). Raw GraphQL mutation requests use the GraphQL `thing` input wrapper.
 
 ### Function Signature
 
 ```typescript
 function pinThing(
-  variables: PinThingMutationVariables
-): Promise<string | null>
+  variables: PinThingMutationVariables,
+  options?: PinThingOptions,
+): Promise<string>;
 ```
 
 ### Basic Example
 
 ```typescript
-import { pinThing } from '@0xintuition/sdk'
+import { configureSdk, pinThing } from '@0xintuition/sdk';
+
+configureSdk({
+  pinApiKey: process.env.INTUITION_PIN_API_KEY,
+});
 
 const uri = await pinThing({
-  thing: {
-    url: 'https://example.com',
-    name: 'Example Project',
-    description: 'A great project',
-    image: 'https://example.com/logo.png',
-    tags: ['blockchain', 'defi'],
-  }
-})
+  url: 'https://example.com',
+  name: 'Example Project',
+  description: 'A great project',
+  image: 'https://example.com/logo.png',
+});
 
-if (uri) {
-  console.log('Pinned to IPFS:', uri) // ipfs://bafkreib...
-}
+console.log('Pinned to IPFS:', uri); // ipfs://bafkreib...
 ```
 
-## uploadJsonToPinata
+### Pin Thing and Create Atom
 
-Upload JSON directly to Pinata (requires Pinata API JWT).
+Use `createAtomFromThing` when you want the SDK to pin the Thing metadata and create the atom in one flow:
 
-### Function Signature
+```typescript
+import { configureSdk, createAtomFromThing } from '@0xintuition/sdk';
+import { parseEther } from 'viem';
+
+configureSdk({
+  pinApiKey: process.env.INTUITION_PIN_API_KEY,
+});
+
+const atom = await createAtomFromThing(
+  { walletClient, publicClient, address },
+  {
+    url: 'https://myproject.com',
+    name: 'My Project',
+    description: 'A blockchain project',
+    image: 'https://myproject.com/logo.png',
+  },
+  { depositAmount: parseEther('0.05') },
+);
+
+console.log('Atom created:', atom.state.termId);
+console.log('IPFS URI:', atom.uri);
+```
+
+## Direct Pinata Uploads
+
+Use direct Pinata uploads when you want to bring your own Pinata account. These paths do not use the Intuition pin API key.
+
+### uploadJsonToPinata
+
+Upload JSON directly to Pinata.
+
+#### Function Signature
 
 ```typescript
 function uploadJsonToPinata(
   pinataApiJWT: string,
-  data: object
-): Promise<PinataUploadResult>
+  data: object,
+): Promise<PinataUploadResult>;
 ```
 
-### Basic Example
+#### Basic Example
 
 ```typescript
-import { uploadJsonToPinata } from '@0xintuition/sdk'
+import { uploadJsonToPinata } from '@0xintuition/sdk';
 
-const result = await uploadJsonToPinata(
-  'your-pinata-jwt-token',
-  {
-    name: 'My Data',
-    description: 'Some metadata',
-    properties: {
-      key: 'value'
-    }
-  }
-)
+const result = await uploadJsonToPinata(process.env.PINATA_API_JWT!, {
+  name: 'My Data',
+  description: 'Some metadata',
+  properties: {
+    key: 'value',
+  },
+});
 
-console.log('IPFS Hash:', result.IpfsHash)
-console.log('Size:', result.PinSize, 'bytes')
-console.log('URI:', `ipfs://${result.IpfsHash}`)
+console.log('IPFS Hash:', result.IpfsHash);
+console.log('Size:', result.PinSize, 'bytes');
+console.log('URI:', `ipfs://${result.IpfsHash}`);
 ```
 
 ### Return Type
 
 ```typescript
 type PinataUploadResult = {
-  IpfsHash: string
-  PinSize: number
-  Timestamp: string
-}
+  IpfsHash: string;
+  PinSize: number;
+  Timestamp: string;
+};
 ```
 
 ## Getting a Pinata API Key
 
+Direct Pinata upload paths require a Pinata API JWT:
+
 1. Sign up at [pinata.cloud](https://pinata.cloud)
-2. Go to API Keys section
+2. Go to API Keys
 3. Create a new API key
 4. Copy the JWT token
-5. Store securely in environment variables
+5. Store it securely in environment variables
 
 ```bash title=".env"
 PINATA_API_JWT=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 ```
 
-## Common Use Cases
-
-### Pin Thing and Create Atom
+## Batch Pin Multiple Items
 
 ```typescript
-import { pinThing, createAtomFromIpfsUri } from '@0xintuition/sdk'
-import { parseEther } from 'viem'
+import { configureSdk, pinThing } from '@0xintuition/sdk';
 
-const thing = {
-  url: 'https://myproject.com',
-  name: 'My Project',
-  description: 'A blockchain project',
-  tags: ['defi', 'web3'],
-}
-
-// Pin to IPFS
-const uri = await pinThing({ thing })
-
-if (uri) {
-  // Create atom with IPFS URI
-  const atom = await createAtomFromIpfsUri(
-    config,
-    uri,
-    parseEther('0.05')
-  )
-
-  console.log('Atom created:', atom.state.termId)
-}
-```
-
-### Upload Custom Metadata
-
-```typescript
-import { uploadJsonToPinata } from '@0xintuition/sdk'
-
-const metadata = {
-  title: 'NFT #1',
-  description: 'Unique digital asset',
-  image: 'https://example.com/nft1.png',
-  attributes: [
-    { trait_type: 'Rarity', value: 'Legendary' },
-    { trait_type: 'Power', value: 100 },
-  ]
-}
-
-const result = await uploadJsonToPinata(
-  process.env.PINATA_API_JWT,
-  metadata
-)
-
-console.log('Metadata URI:', `ipfs://${result.IpfsHash}`)
-```
-
-### Batch Pin Multiple Items
-
-```typescript
-import { pinThing } from '@0xintuition/sdk'
+configureSdk({
+  pinApiKey: process.env.INTUITION_PIN_API_KEY,
+});
 
 async function batchPin(things: any[]) {
-  const uris = await Promise.all(
-    things.map(thing => pinThing({ thing }))
-  )
-
-  return uris.filter(uri => uri !== null)
+  return Promise.all(things.map((thing) => pinThing(thing)));
 }
 
-// Usage
 const projects = [
-  { name: 'Project A', url: 'https://a.com' },
-  { name: 'Project B', url: 'https://b.com' },
-]
+  {
+    name: 'Project A',
+    description: 'Project A metadata',
+    image: 'https://a.com/logo.png',
+    url: 'https://a.com',
+  },
+  {
+    name: 'Project B',
+    description: 'Project B metadata',
+    image: 'https://b.com/logo.png',
+    url: 'https://b.com',
+  },
+];
 
-const ipfsUris = await batchPin(projects)
-console.log('Pinned', ipfsUris.length, 'items to IPFS')
+const ipfsUris = await batchPin(projects);
+console.log('Pinned', ipfsUris.length, 'items to IPFS');
 ```
 
 ## Error Handling
 
 ```typescript
-import { pinThing } from '@0xintuition/sdk'
+import { pinThing } from '@0xintuition/sdk';
 
 async function safePinThing(thing: any) {
   try {
-    const uri = await pinThing({ thing })
-
-    if (!uri) {
-      throw new Error('Pinning returned null')
-    }
-
-    return { success: true, uri }
-
+    const uri = await pinThing(thing);
+    return { success: true, uri };
   } catch (error) {
-    console.error('Failed to pin:', error)
-    return { success: false, error: error.message }
+    console.error('Failed to pin:', error);
+    return { success: false, error: error.message };
   }
-}
-
-// Usage
-const result = await safePinThing({ name: 'Test', url: 'https://test.com' })
-
-if (result.success) {
-  console.log('Pinned:', result.uri)
-} else {
-  console.error('Error:', result.error)
 }
 ```
 
+Common causes include a missing `pinApiKey`, an invalid API key, missing metadata fields, or image URLs that cannot be fetched by the pinning service.
+
 ## Related Functions
 
-- [**createAtomFromThing**](../atoms/create-from-thing.md) - Create atom with auto-pinning
-- [**createAtomFromIpfsUri**](../atoms/create-from-ipfs.md) - Create from IPFS URI
-- [**createAtomFromIpfsUpload**](../atoms/create-from-ipfs.md#createatomfromipfsupload) - Upload and create
+- [**createAtomFromThing**](../atoms-guide.md#creating-from-thing) - Create atom with auto-pinning
+- [**createAtomFromIpfsUri**](../atoms-guide.md#createatomfromipfsuri) - Create from IPFS URI
+- [**createAtomFromIpfsUpload**](../atoms-guide.md#createatomfromipfsupload) - Upload directly to Pinata and create
 
 ## See Also
 

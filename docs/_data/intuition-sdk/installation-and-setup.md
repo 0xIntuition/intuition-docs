@@ -3,7 +3,22 @@ title: Installation & Setup
 sidebar_label: Installation & Setup
 sidebar_position: 0
 description: Install the Intuition SDK and configure your development environment
-keywords: [sdk, installation, npm, pnpm, bun, viem, dependencies, setup, configuration, wallet, network, testnet, mainnet]
+keywords:
+  [
+    sdk,
+    installation,
+    npm,
+    pnpm,
+    bun,
+    viem,
+    dependencies,
+    setup,
+    configuration,
+    wallet,
+    network,
+    testnet,
+    mainnet,
+  ]
 ---
 
 # Installation & Setup
@@ -76,11 +91,14 @@ Create a test file to verify everything is working:
 import {
   intuitionTestnet,
   getMultiVaultAddressFromChainId,
-} from '@0xintuition/sdk'
+} from '@0xintuition/sdk';
 
-console.log('Network:', intuitionTestnet.name)
-console.log('Chain ID:', intuitionTestnet.id)
-console.log('MultiVault:', getMultiVaultAddressFromChainId(intuitionTestnet.id))
+console.log('Network:', intuitionTestnet.name);
+console.log('Chain ID:', intuitionTestnet.id);
+console.log(
+  'MultiVault:',
+  getMultiVaultAddressFromChainId(intuitionTestnet.id),
+);
 ```
 
 Run it with `npx tsx test-install.ts` or your preferred TypeScript runner.
@@ -91,10 +109,10 @@ Run it with `npx tsx test-install.ts` or your preferred TypeScript runner.
 
 The SDK uses [Viem](https://viem.sh) clients for blockchain interactions. You need two types:
 
-| Client Type | Purpose | Required For |
-|-------------|---------|--------------|
-| **Public Client** | Read-only operations | Querying data, checking balances |
-| **Wallet Client** | Write operations | Creating atoms, triples, deposits |
+| Client Type       | Purpose              | Required For                      |
+| ----------------- | -------------------- | --------------------------------- |
+| **Public Client** | Read-only operations | Querying data, checking balances  |
+| **Wallet Client** | Write operations     | Creating atoms, triples, deposits |
 
 ### Basic Setup
 
@@ -102,28 +120,28 @@ The SDK uses [Viem](https://viem.sh) clients for blockchain interactions. You ne
 import {
   intuitionTestnet,
   getMultiVaultAddressFromChainId,
-} from '@0xintuition/sdk'
-import { createPublicClient, createWalletClient, http } from 'viem'
-import { privateKeyToAccount } from 'viem/accounts'
+} from '@0xintuition/sdk';
+import { createPublicClient, createWalletClient, http } from 'viem';
+import { privateKeyToAccount } from 'viem/accounts';
 
 // 1. Create account from private key
-const account = privateKeyToAccount('0xYOUR_PRIVATE_KEY')
+const account = privateKeyToAccount('0xYOUR_PRIVATE_KEY');
 
 // 2. Create public client (for reading data)
 const publicClient = createPublicClient({
   chain: intuitionTestnet,
   transport: http(),
-})
+});
 
 // 3. Create wallet client (for transactions)
 const walletClient = createWalletClient({
   chain: intuitionTestnet,
   transport: http(),
   account,
-})
+});
 
 // 4. Get contract address
-const address = getMultiVaultAddressFromChainId(intuitionTestnet.id)
+const address = getMultiVaultAddressFromChainId(intuitionTestnet.id);
 ```
 
 ### Configuration Object
@@ -131,13 +149,13 @@ const address = getMultiVaultAddressFromChainId(intuitionTestnet.id)
 Most SDK functions accept a configuration object:
 
 ```typescript
-import type { WriteConfig } from '@0xintuition/sdk'
+import type { WriteConfig } from '@0xintuition/sdk';
 
 const config: WriteConfig = {
-  address,        // MultiVault contract address
-  publicClient,   // For reading blockchain data
-  walletClient,   // For sending transactions
-}
+  address, // MultiVault contract address
+  publicClient, // For reading blockchain data
+  walletClient, // For sending transactions
+};
 ```
 
 ---
@@ -148,23 +166,23 @@ The SDK supports multiple networks with built-in chain definitions.
 
 ### Supported Networks
 
-| Network | Chain ID | Type | Status |
-|---------|----------|------|--------|
-| Intuition Mainnet | 1155 | Production | ✅ Active |
-| Intuition Testnet | 13579 | Development | ✅ Active |
-| Base Mainnet | 8453 | Production | ✅ Active |
-| Base Sepolia | 84532 | Development | ✅ Active |
+| Network           | Chain ID | Type        | Status    |
+| ----------------- | -------- | ----------- | --------- |
+| Intuition Mainnet | 1155     | Production  | ✅ Active |
+| Intuition Testnet | 13579    | Development | ✅ Active |
+| Base Mainnet      | 8453     | Production  | ✅ Active |
+| Base Sepolia      | 84532    | Development | ✅ Active |
 
 ### Testnet Configuration
 
 ```typescript
-import { intuitionTestnet } from '@0xintuition/sdk'
-import { createPublicClient, http } from 'viem'
+import { intuitionTestnet } from '@0xintuition/sdk';
+import { createPublicClient, http } from 'viem';
 
 const publicClient = createPublicClient({
   chain: intuitionTestnet,
   transport: http(),
-})
+});
 
 // Network details available:
 // Chain ID: 13579
@@ -176,13 +194,13 @@ const publicClient = createPublicClient({
 ### Mainnet Configuration
 
 ```typescript
-import { intuitionMainnet } from '@0xintuition/sdk'
-import { createPublicClient, http } from 'viem'
+import { intuitionMainnet } from '@0xintuition/sdk';
+import { createPublicClient, http } from 'viem';
 
 const publicClient = createPublicClient({
   chain: intuitionMainnet,
   transport: http(),
-})
+});
 
 // Network details available:
 // Chain ID: 1155
@@ -202,14 +220,14 @@ import {
   getMultiVaultAddressFromChainId,
   getContractAddressFromChainId,
   intuitionDeployments,
-} from '@0xintuition/sdk'
+} from '@0xintuition/sdk';
 
 // Get MultiVault address (most commonly used)
-const multiVaultAddress = getMultiVaultAddressFromChainId(chainId)
+const multiVaultAddress = getMultiVaultAddressFromChainId(chainId);
 
 // Get other contract addresses
-const trustBonding = getContractAddressFromChainId('TrustBonding', chainId)
-const wrappedTrust = getContractAddressFromChainId('WrappedTrust', chainId)
+const trustBonding = getContractAddressFromChainId('TrustBonding', chainId);
+const wrappedTrust = getContractAddressFromChainId('WrappedTrust', chainId);
 ```
 
 ---
@@ -219,31 +237,29 @@ const wrappedTrust = getContractAddressFromChainId('WrappedTrust', chainId)
 ### Private Key
 
 ```typescript
-import { privateKeyToAccount } from 'viem/accounts'
+import { privateKeyToAccount } from 'viem/accounts';
 
-const account = privateKeyToAccount('0xYOUR_PRIVATE_KEY')
+const account = privateKeyToAccount('0xYOUR_PRIVATE_KEY');
 ```
 
 ### Mnemonic Phrase
 
 ```typescript
-import { mnemonicToAccount } from 'viem/accounts'
+import { mnemonicToAccount } from 'viem/accounts';
 
-const account = mnemonicToAccount(
-  'your twelve word mnemonic phrase goes here'
-)
+const account = mnemonicToAccount('your twelve word mnemonic phrase goes here');
 ```
 
 ### Browser Wallet (MetaMask, etc.)
 
 ```typescript
-import { createWalletClient, custom } from 'viem'
-import { intuitionTestnet } from '@0xintuition/sdk'
+import { createWalletClient, custom } from 'viem';
+import { intuitionTestnet } from '@0xintuition/sdk';
 
 const walletClient = createWalletClient({
   chain: intuitionTestnet,
   transport: custom(window.ethereum),
-})
+});
 ```
 
 ---
@@ -254,14 +270,19 @@ Store sensitive data in environment variables:
 
 ```bash title=".env"
 PRIVATE_KEY=0xYOUR_PRIVATE_KEY
+INTUITION_PIN_API_KEY=your-intuition-pin-api-key
 PINATA_API_JWT=your-pinata-jwt-token
 ```
 
 ```typescript title="config.ts"
-import { privateKeyToAccount } from 'viem/accounts'
+import { configureSdk } from '@0xintuition/sdk';
+import { privateKeyToAccount } from 'viem/accounts';
 
-const account = privateKeyToAccount(process.env.PRIVATE_KEY as `0x${string}`)
-const pinataApiJWT = process.env.PINATA_API_JWT
+const account = privateKeyToAccount(process.env.PRIVATE_KEY as `0x${string}`);
+
+configureSdk({
+  pinApiKey: process.env.INTUITION_PIN_API_KEY,
+});
 ```
 
 ---
@@ -295,7 +316,7 @@ For optimal TypeScript support:
 const publicClient = createPublicClient({
   chain: intuitionTestnet,
   transport: http('https://your-custom-rpc-endpoint.com'),
-})
+});
 ```
 
 ### Fallback Transports
@@ -303,7 +324,7 @@ const publicClient = createPublicClient({
 Configure backup RPC endpoints for reliability:
 
 ```typescript
-import { fallback, http } from 'viem'
+import { fallback, http } from 'viem';
 
 const publicClient = createPublicClient({
   chain: intuitionTestnet,
@@ -311,7 +332,7 @@ const publicClient = createPublicClient({
     http('https://testnet.rpc.intuition.systems/http'),
     http('https://backup-rpc.example.com'),
   ]),
-})
+});
 ```
 
 ### Batch Requests (Multicall)
@@ -325,7 +346,7 @@ const publicClient = createPublicClient({
   batch: {
     multicall: true,
   },
-})
+});
 ```
 
 ---
@@ -334,20 +355,21 @@ const publicClient = createPublicClient({
 
 ```typescript title="intuition-client.ts"
 import {
+  configureSdk,
   intuitionTestnet,
   getMultiVaultAddressFromChainId,
-} from '@0xintuition/sdk'
-import type { WriteConfig } from '@0xintuition/sdk'
-import {
-  createPublicClient,
-  createWalletClient,
-  http,
-  fallback,
-} from 'viem'
-import { privateKeyToAccount } from 'viem/accounts'
+} from '@0xintuition/sdk';
+import type { WriteConfig } from '@0xintuition/sdk';
+import { createPublicClient, createWalletClient, http, fallback } from 'viem';
+import { privateKeyToAccount } from 'viem/accounts';
 
 // Account
-const account = privateKeyToAccount(process.env.PRIVATE_KEY as `0x${string}`)
+const account = privateKeyToAccount(process.env.PRIVATE_KEY as `0x${string}`);
+
+// Intuition pinning service
+configureSdk({
+  pinApiKey: process.env.INTUITION_PIN_API_KEY,
+});
 
 // Public client with fallback and batching
 const publicClient = createPublicClient({
@@ -359,39 +381,38 @@ const publicClient = createPublicClient({
   batch: {
     multicall: true,
   },
-})
+});
 
 // Wallet client
 const walletClient = createWalletClient({
   chain: intuitionTestnet,
   transport: http('https://testnet.rpc.intuition.systems/http'),
   account,
-})
+});
 
 // Contract address
-const address = getMultiVaultAddressFromChainId(intuitionTestnet.id)
+const address = getMultiVaultAddressFromChainId(intuitionTestnet.id);
 
 // Export configuration
 export const config: WriteConfig = {
   address,
   publicClient,
   walletClient,
-  pinataApiJWT: process.env.PINATA_API_JWT,
-}
+};
 ```
 
 ---
 
 ## Optional: Pinata for IPFS
 
-For IPFS operations (uploading metadata), you'll need a Pinata API token:
+For direct Pinata upload operations, you'll need a Pinata API token:
 
 1. Sign up at [pinata.cloud](https://pinata.cloud)
 2. Create an API key and get your JWT token
-3. Pass it in the config when using IPFS upload functions
+3. Pass it in the config when using direct Pinata upload functions
 
 ```typescript
-import { createAtomFromIpfsUpload } from '@0xintuition/sdk'
+import { createAtomFromIpfsUpload } from '@0xintuition/sdk';
 
 const atom = await createAtomFromIpfsUpload(
   {
@@ -403,8 +424,8 @@ const atom = await createAtomFromIpfsUpload(
   {
     name: 'My Project',
     description: 'A blockchain project',
-  }
-)
+  },
+);
 ```
 
 ---

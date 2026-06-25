@@ -128,9 +128,9 @@ bun add @0xintuition/protocol@latest @0xintuition/graphql@latest
 
 :::info Version Compatibility
 This guide uses the v2 contract architecture and requires the following package versions:
-- [`@0xintuition/sdk@^2.0.0`](https://www.npmjs.com/package/@0xintuition/sdk)
+- [`@0xintuition/sdk@^3.0.0`](https://www.npmjs.com/package/@0xintuition/sdk)
 - [`@0xintuition/protocol@^2.0.0`](https://www.npmjs.com/package/@0xintuition/protocol)
-- [`@0xintuition/graphql@^2.0.0`](https://www.npmjs.com/package/@0xintuition/graphql)
+- [`@0xintuition/graphql@^3.0.0`](https://www.npmjs.com/package/@0xintuition/graphql)
 :::
 
 ### Setup A Public and Wallet Provider

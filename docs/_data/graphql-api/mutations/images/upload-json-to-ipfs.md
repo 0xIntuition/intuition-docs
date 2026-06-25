@@ -6,11 +6,13 @@ description: Upload JSON metadata to IPFS
 keywords: [graphql, mutation, ipfs, json, metadata, upload]
 ---
 
-import GraphQLPlaygroundCustom from '@site/src/components/GraphQLPlaygroundCustom';
-
 # Upload JSON to IPFS
 
 Upload JSON metadata to IPFS for use in atom creation. Returns the IPFS hash, name, and size.
+
+## Endpoint and Auth
+
+Use the public gated endpoint, `https://pin.intuition.systems/v1/graphql`, with an `apikey` request header. Keep the key in a trusted server runtime.
 
 ## Mutation Structure
 
@@ -26,9 +28,9 @@ mutation UploadJsonToIpfs($json: jsonb!) {
 
 ## Variables
 
-| Variable | Type | Required | Description |
-|----------|------|----------|-------------|
-| `json` | `jsonb` | Yes | JSON object to upload |
+| Variable | Type    | Required | Description           |
+| -------- | ------- | -------- | --------------------- |
+| `json`   | `jsonb` | Yes      | JSON object to upload |
 
 ```json
 {
@@ -44,11 +46,11 @@ mutation UploadJsonToIpfs($json: jsonb!) {
 
 ## Response Fields
 
-| Field | Type | Description |
-|-------|------|-------------|
+| Field  | Type      | Description             |
+| ------ | --------- | ----------------------- |
 | `hash` | `String!` | IPFS content hash (CID) |
-| `name` | `String!` | Filename on IPFS |
-| `size` | `String!` | File size |
+| `name` | `String!` | Filename on IPFS        |
+| `size` | `String!` | File size               |
 
 ## Expected Response
 
@@ -63,32 +65,6 @@ mutation UploadJsonToIpfs($json: jsonb!) {
   }
 }
 ```
-
-## Interactive Example
-
-export const uploadJsonQueries = [
-  {
-    id: 'upload-thing-metadata',
-    title: 'Upload Thing Metadata',
-    query: `mutation UploadJsonToIpfs($json: jsonb!) {
-  uploadJsonToIpfs(json: $json) {
-    hash
-    name
-    size
-  }
-}`,
-    variables: {
-      json: {
-        name: 'Ethereum',
-        description: 'A decentralized blockchain platform',
-        image: 'ipfs://QmXnnyufdzAWL5CqZ2RnSNgPbvCc1ALT73s6epPrRnZ1Xy',
-        url: 'https://ethereum.org'
-      }
-    }
-  }
-];
-
-<GraphQLPlaygroundCustom queries={uploadJsonQueries} />
 
 ## Common Metadata Schemas
 
@@ -135,16 +111,20 @@ export const uploadJsonQueries = [
 Upload metadata and use the IPFS hash for atom creation:
 
 ```typescript
-import { GraphQLClient } from 'graphql-request'
-import { API_URL_PROD } from '@0xintuition/graphql'
+import { GraphQLClient } from 'graphql-request';
+import { PIN_API_URL } from '@0xintuition/graphql';
 
-const client = new GraphQLClient(API_URL_PROD)
+const client = new GraphQLClient(PIN_API_URL, {
+  headers: {
+    apikey: process.env.INTUITION_PIN_API_KEY!,
+  },
+});
 
 async function prepareAtomMetadata(thing: {
-  name: string
-  description: string
-  image: string
-  url?: string
+  name: string;
+  description: string;
+  image: string;
+  url?: string;
 }) {
   const mutation = `
     mutation UploadJsonToIpfs($json: jsonb!) {
@@ -154,10 +134,10 @@ async function prepareAtomMetadata(thing: {
         size
       }
     }
-  `
+  `;
 
-  const result = await client.request(mutation, { json: thing })
-  return result.uploadJsonToIpfs.hash
+  const result = await client.request(mutation, { json: thing });
+  return result.uploadJsonToIpfs.hash;
 }
 ```
 
