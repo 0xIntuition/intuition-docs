@@ -2317,7 +2317,7 @@ See [Choose Your Path](/docs/getting-started/choose-your-path) for a decision tr
 ---
 title: "Integrations"
 description: "Integrate Intuition with various platforms and tools"
-last_updated: "2026-06-03T14:13:55-04:00"
+last_updated: "2026-06-25T17:11:24-04:00"
 source: "https://docs.intuition.systems/docs/getting-started/integrations"
 ---
 
@@ -3071,7 +3071,7 @@ query GetAccount($address: String!) {
 ---
 title: "Use Database Functions"
 description: "Leverage backend functions for complex queries"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-06-25T17:11:24-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/best-practices/database-functions"
 ---
 
@@ -4857,7 +4857,7 @@ try {
 ---
 title: "Introduction"
 description: "Introduction to the Intuition GraphQL API and its capabilities"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-06-25T17:11:24-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/getting-started/introduction"
 ---
 
@@ -8122,7 +8122,7 @@ query GetPositionStatistics($accountId: String!) {
 ---
 title: "Database Functions"
 description: "Use backend functions for complex queries"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-06-25T17:11:24-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/advanced/database-functions"
 ---
 
@@ -8908,7 +8908,7 @@ const query = `
 ---
 title: "Atom Search"
 description: "Full-text and pattern matching search for atoms"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-06-25T17:11:24-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/atoms/search"
 ---
 
@@ -20324,7 +20324,7 @@ Create personalized trust lenses:
 ---
 title: "Intuition Network"
 description: "Intuition Network architecture and infrastructure"
-last_updated: "2026-06-22T14:32:12-04:00"
+last_updated: "2026-06-25T17:11:24-04:00"
 source: "https://docs.intuition.systems/docs/intuition-network"
 ---
 
@@ -24928,7 +24928,7 @@ Take your time with the migration and test thoroughly. The new API is more power
 ---
 title: "Quick Start"
 description: "Create your first atom and triple with the Intuition SDK in minutes"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-06-25T17:11:24-04:00"
 source: "https://docs.intuition.systems/docs/intuition-sdk/quick-start"
 ---
 
@@ -25268,7 +25268,7 @@ console.log('Chain ID:', intuitionTestnet.id)
 ---
 title: "Search and Discovery"
 description: "Search atoms, triples, and perform advanced queries"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-06-25T17:11:24-04:00"
 source: "https://docs.intuition.systems/docs/intuition-sdk/search-guide"
 ---
 
@@ -34058,7 +34058,7 @@ If you have any questions visit the [Intuition Discord](https://discord.gg/RgBen
 ---
 title: "Using the SDK"
 description: "Get started building with Intuition in minutes."
-last_updated: "2026-06-25T15:48:40-04:00"
+last_updated: "2026-06-25T17:11:24-04:00"
 source: "https://docs.intuition.systems/docs/quick-start/using-the-sdk"
 ---
 

@@ -249,7 +249,7 @@ Interactive course that teaches atoms, triples, signals, protocol reads, protoco
 ---
 title: "Integrations"
 description: "Integrate Intuition with various platforms and tools"
-last_updated: "2026-06-03T14:13:55-04:00"
+last_updated: "2026-06-25T17:11:24-04:00"
 source: "https://docs.intuition.systems/docs/getting-started/integrations"
 ---
 
@@ -395,7 +395,7 @@ Use the right comparison operator for better performance.
 ---
 title: "Use Database Functions"
 description: "Leverage backend functions for complex queries"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-06-25T17:11:24-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/best-practices/database-functions"
 ---
 
@@ -1195,7 +1195,7 @@ Simple and lightweight GraphQL client:
 ---
 title: "Introduction"
 description: "Introduction to the Intuition GraphQL API and its capabilities"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-06-25T17:11:24-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/getting-started/introduction"
 ---
 
@@ -1836,7 +1836,7 @@ Compute statistical aggregations without fetching all nodes.
 ---
 title: "Database Functions"
 description: "Use backend functions for complex queries"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-06-25T17:11:24-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/advanced/database-functions"
 ---
 
@@ -1993,7 +1993,7 @@ Query multiple atoms with filtering, sorting, and pagination to find specific en
 ---
 title: "Atom Search"
 description: "Full-text and pattern matching search for atoms"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-06-25T17:11:24-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/atoms/search"
 ---
 
@@ -4344,7 +4344,7 @@ Direct attestations through staking:
 ---
 title: "Intuition Network"
 description: "Intuition Network architecture and infrastructure"
-last_updated: "2026-06-22T14:32:12-04:00"
+last_updated: "2026-06-25T17:11:24-04:00"
 source: "https://docs.intuition.systems/docs/intuition-network"
 ---
 
@@ -5011,7 +5011,7 @@ The core smart contract has been upgraded from `EthMultiVault` to `MultiVault`, 
 ---
 title: "Quick Start"
 description: "Create your first atom and triple with the Intuition SDK in minutes"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-06-25T17:11:24-04:00"
 source: "https://docs.intuition.systems/docs/intuition-sdk/quick-start"
 ---
 
@@ -5047,7 +5047,7 @@ In this quick start guide, you'll:
 ---
 title: "Search and Discovery"
 description: "Search atoms, triples, and perform advanced queries"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-06-25T17:11:24-04:00"
 source: "https://docs.intuition.systems/docs/intuition-sdk/search-guide"
 ---
 
@@ -6562,7 +6562,7 @@ If you have any questions visit the [Intuition Discord](https://discord.gg/RgBen
 ---
 title: "Using the SDK"
 description: "Get started building with Intuition in minutes."
-last_updated: "2026-06-25T15:48:40-04:00"
+last_updated: "2026-06-25T17:11:24-04:00"
 source: "https://docs.intuition.systems/docs/quick-start/using-the-sdk"
 ---
 
