@@ -5785,21 +5785,23 @@ query GetAtom($termId: String!) {
 ---
 title: "Image & IPFS Operations"
 description: "Upload images and JSON data to IPFS"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-06-25T15:48:40-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/mutations/images/overview"
 ---
 
 # Image & IPFS Operations
 
-The Intuition GraphQL API provides mutations for uploading images and JSON data to IPFS (InterPlanetary File System). These operations return IPFS hashes that can be used in atom creation.
+The Intuition GraphQL API provides mutations for uploading images and JSON data to IPFS (InterPlanetary File System). Image uploads return cached image URLs, while JSON uploads return IPFS hashes that can be used in atom creation.
+
+Image and JSON upload mutations use the public gated pinning endpoint, `https://pin.intuition.systems/v1/graphql`, and require an `apikey` request header. Keep the API key server-side.
 
 ## Available Operations
 
-| Operation | Description |
-|-----------|-------------|
-| [`uploadImage`](./upload-image) | Upload a base64-encoded image to IPFS |
-| [`uploadImageFromUrl`](./upload-image-from-url) | Upload an image from a URL to IPFS |
-| [`uploadJsonToIpfs`](./upload-json-to-ipfs) | Upload JSON metadata to IPFS |
+| Operation                                       | Description                           |
+| ----------------------------------------------- | ------------------------------------- |
+| [`uploadImage`](./upload-image)                 | Upload a base64-encoded image to IPFS |
+| [`uploadImageFromUrl`](./upload-image-from-url) | Upload an image from a URL to IPFS    |
+| [`uploadJsonToIpfs`](./upload-json-to-ipfs)     | Upload JSON metadata to IPFS          |
 
 ## Use Cases
 
@@ -5809,11 +5811,12 @@ When creating atoms with images or metadata:
 
 1. Upload image using `uploadImage` or `uploadImageFromUrl`
 2. Upload JSON metadata using `uploadJsonToIpfs`
-3. Use returned IPFS hashes in atom creation
+3. Use the returned image URL and metadata IPFS hash in atom creation
 
 ### Profile Images
 
 Upload profile images for accounts:
+
 - Avatar images
 - Banner images
 - Organization logos
@@ -5821,6 +5824,7 @@ Upload profile images for accounts:
 ### Metadata Storage
 
 Store structured metadata on IPFS:
+
 - Thing descriptions
 - Organization details
 - Person profiles
@@ -5828,68 +5832,79 @@ Store structured metadata on IPFS:
 ## Quick Start
 
 ```typescript
-import { GraphQLClient } from 'graphql-request'
-import { API_URL_PROD } from '@0xintuition/graphql'
+import { GraphQLClient } from 'graphql-request';
+import { PIN_API_URL } from '@0xintuition/graphql';
 
-const client = new GraphQLClient(API_URL_PROD)
+const client = new GraphQLClient(PIN_API_URL, {
+  headers: {
+    apikey: process.env.INTUITION_PIN_API_KEY!,
+  },
+});
 
 // Upload an image from URL
-const imageResult = await client.request(`
-  mutation UploadImageFromUrl($url: String!) {
-    uploadImageFromUrl(url: $url) {
+const imageResult = await client.request(
+  `
+  mutation UploadImageFromUrl($image: UploadImageFromUrlInput!) {
+    uploadImageFromUrl(image: $image) {
+      images {
+        url
+        safe
+      }
+    }
+  }
+`,
+  {
+    image: { url: 'https://example.com/image.png' },
+  },
+);
+
+// Upload JSON metadata
+const jsonResult = await client.request(
+  `
+  mutation UploadJsonToIpfs($json: jsonb!) {
+    uploadJsonToIpfs(json: $json) {
       hash
-      url
+      name
       size
     }
   }
-`, {
-  url: 'https://example.com/image.png'
-})
+`,
+  {
+    json: {
+      name: 'My Atom',
+      description: 'Description here',
+      image: imageResult.uploadImageFromUrl.images[0].url,
+    },
+  },
+);
 
-// Upload JSON metadata
-const jsonResult = await client.request(`
-  mutation UploadJsonToIpfs($json: JSON!) {
-    uploadJsonToIpfs(json: $json) {
-      hash
-      url
-    }
-  }
-`, {
-  json: {
-    name: 'My Atom',
-    description: 'Description here',
-    image: imageResult.uploadImageFromUrl.url
-  }
-})
-
-console.log('Metadata URL:', jsonResult.uploadJsonToIpfs.url)
-// Use this URL when creating the atom
+console.log('Metadata URI:', `ipfs://${jsonResult.uploadJsonToIpfs.hash}`);
+// Use this URI when creating the atom
 ```
 
-## IPFS URL Format
+## IPFS Response Format
 
-All uploaded content is accessible via IPFS:
+Uploaded JSON content is accessible via IPFS:
 
 ```
 ipfs://<hash>
 ```
 
-The API returns both the raw hash and a gateway URL:
+The exact response shape depends on the mutation. JSON uploads return the raw hash, which you can convert to an IPFS URI:
 
 ```json
 {
-  "hash": "QmXnnyufdzAWL5CqZ2RnSNgPbvCc1ALT73s6epPrRnZ1Xy",
-  "url": "ipfs://QmXnnyufdzAWL5CqZ2RnSNgPbvCc1ALT73s6epPrRnZ1Xy"
+  "hash": "QmXnnyufdzAWL5CqZ2RnSNgPbvCc1ALT73s6epPrRnZ1Xy"
 }
 ```
 
 ## File Size Limits
 
-| Upload Type | Maximum Size |
-|-------------|--------------|
-| Image (base64) | 5 MB |
-| Image from URL | 10 MB |
-| JSON | 1 MB |
+| Upload Type    | Maximum Size |
+| -------------- | ------------ |
+| Image (base64) | 5 MB         |
+| Image from URL | 10 MB        |
+| JSON           | 1 MB         |
 
 ## Supported Image Formats
 
@@ -5909,13 +5924,17 @@ The API returns both the raw hash and a gateway URL:
 ---
 title: "Upload Image from URL"
 description: "Upload an image from a URL"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-06-25T15:48:40-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/mutations/images/upload-image-from-url"
 ---
 
 # Upload Image from URL
 
 Upload an image by providing its URL. The server fetches, caches, and moderates the image. Returns a `CachedImage` with the hosted URL and safety score.
+
+## Endpoint and Auth
+
+Use the public gated endpoint, `https://pin.intuition.systems/v1/graphql`, with an `apikey` request header. Keep the key in a trusted server runtime.
 
 ## Mutation Structure
 
@@ -5938,9 +5957,9 @@ mutation UploadImageFromUrl($image: UploadImageFromUrlInput!) {
 
 The mutation takes an `image` argument with the `UploadImageFromUrlInput` type:
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `url` | `String` | Yes | URL of the image to upload |
+| Field | Type     | Required | Description                |
+| ----- | -------- | -------- | -------------------------- |
+| `url` | `String` | Yes      | URL of the image to upload |
 
 ```json
 {
@@ -5954,15 +5973,15 @@ The mutation takes an `image` argument with the `UploadImageFromUrlInput` type:
 
 Returns `UploadImageFromUrlOutput` containing an `images` array of `CachedImage` objects:
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `images` | `[CachedImage!]!` | Array of cached image results |
-| `images[].url` | `String!` | Hosted image URL |
-| `images[].original_url` | `String!` | Original source URL |
-| `images[].safe` | `Boolean!` | Whether the image passed moderation |
-| `images[].score` | `jsonb` | Moderation safety score details |
-| `images[].model` | `String` | Moderation model used |
-| `images[].created_at` | `timestamptz!` | Upload timestamp |
+| Field                   | Type              | Description                         |
+| ----------------------- | ----------------- | ----------------------------------- |
+| `images`                | `[CachedImage!]!` | Array of cached image results       |
+| `images[].url`          | `String!`         | Hosted image URL                    |
+| `images[].original_url` | `String!`         | Original source URL                 |
+| `images[].safe`         | `Boolean!`        | Whether the image passed moderation |
+| `images[].score`        | `jsonb`           | Moderation safety score details     |
+| `images[].model`        | `String`          | Moderation model used               |
+| `images[].created_at`   | `timestamptz!`    | Upload timestamp                    |
 
 ## Expected Response
 
@@ -5985,33 +6004,19 @@ Returns `UploadImageFromUrlOutput` containing an `images` array of `CachedImage`
 }
 ```
 
-## Interactive Example
-
-    id: 'upload-from-url',
-    title: 'Upload Image from URL',
-    query: `mutation UploadImageFromUrl($image: UploadImageFromUrlInput!) {
-  uploadImageFromUrl(image: $image) {
-    images {
-      url
-      original_url
-      safe
-
-}`,
-    variables: {
-      image: {
-        url: 'https://avatars.githubusercontent.com/u/1234567'
-
-];
-
 ## Use Cases
 
 ### Import External Images
 
 ```typescript
-import { GraphQLClient } from 'graphql-request'
-import { API_URL_PROD } from '@0xintuition/graphql'
+import { GraphQLClient } from 'graphql-request';
+import { PIN_API_URL } from '@0xintuition/graphql';
 
-const client = new GraphQLClient(API_URL_PROD)
+const client = new GraphQLClient(PIN_API_URL, {
+  headers: {
+    apikey: process.env.INTUITION_PIN_API_KEY!,
+  },
+});
 
 async function importExternalImage(imageUrl: string) {
   const mutation = `
@@ -6023,17 +6028,21 @@ async function importExternalImage(imageUrl: string) {
         }
       }
     }
-  `
+  `;
 
   const result = await client.request(mutation, {
-    image: { url: imageUrl }
-  })
+    image: { url: imageUrl },
+  });
 
-  const cached = result.uploadImageFromUrl.images[0]
-  if (!cached.safe) {
-    throw new Error('Image failed moderation check')
+  const cached = result.uploadImageFromUrl.images[0];
+  if (!cached) {
+    throw new Error('Image host could not be fetched');
   }
-  return cached.url
+
+  if (!cached.safe) {
+    throw new Error('Image failed moderation check');
+  }
+  return cached.url;
 }
 ```
 
@@ -6046,13 +6055,17 @@ async function importExternalImage(imageUrl: string) {
 ---
 title: "Upload Image"
 description: "Upload a base64-encoded image via the API"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-06-25T15:48:40-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/mutations/images/upload-image"
 ---
 
 # Upload Image
 
 Upload a base64-encoded image. The image is cached and a moderation check is performed. Returns a `CachedImage` with the hosted URL and safety score.
+
+## Endpoint and Auth
+
+Use the public gated endpoint, `https://pin.intuition.systems/v1/graphql`, with an `apikey` request header. Keep the key in a trusted server runtime.
 
 ## Mutation Structure
 
@@ -6075,11 +6088,11 @@ mutation UploadImage($image: UploadImageInput!) {
 
 The mutation takes an `image` argument with the `UploadImageInput` type:
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `data` | `String` | Yes | Base64-encoded image data |
-| `filename` | `String` | Yes | Filename with extension |
-| `contentType` | `String` | Yes | MIME type (e.g. `"image/png"`) |
+| Field         | Type     | Required | Description                    |
+| ------------- | -------- | -------- | ------------------------------ |
+| `data`        | `String` | Yes      | Base64-encoded image data      |
+| `filename`    | `String` | Yes      | Filename with extension        |
+| `contentType` | `String` | Yes      | MIME type (e.g. `"image/png"`) |
 
 ```json
 {
@@ -6095,15 +6108,15 @@ The mutation takes an `image` argument with the `UploadImageInput` type:
 
 Returns `UploadImageFromUrlOutput` containing an `images` array of `CachedImage` objects:
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `images` | `[CachedImage!]!` | Array of cached image results |
-| `images[].url` | `String!` | Hosted image URL |
-| `images[].original_url` | `String!` | Original source URL |
-| `images[].safe` | `Boolean!` | Whether the image passed moderation |
-| `images[].score` | `jsonb` | Moderation safety score details |
-| `images[].model` | `String` | Moderation model used |
-| `images[].created_at` | `timestamptz!` | Upload timestamp |
+| Field                   | Type              | Description                         |
+| ----------------------- | ----------------- | ----------------------------------- |
+| `images`                | `[CachedImage!]!` | Array of cached image results       |
+| `images[].url`          | `String!`         | Hosted image URL                    |
+| `images[].original_url` | `String!`         | Original source URL                 |
+| `images[].safe`         | `Boolean!`        | Whether the image passed moderation |
+| `images[].score`        | `jsonb`           | Moderation safety score details     |
+| `images[].model`        | `String`          | Moderation model used               |
+| `images[].created_at`   | `timestamptz!`    | Upload timestamp                    |
 
 ## Expected Response
 
@@ -6133,14 +6146,18 @@ Returns `UploadImageFromUrlOutput` containing an `images` array of `CachedImage`
 Handle file uploads from a form:
 
 ```typescript
-import { GraphQLClient } from 'graphql-request'
-import { API_URL_PROD } from '@0xintuition/graphql'
+import { GraphQLClient } from 'graphql-request';
+import { PIN_API_URL } from '@0xintuition/graphql';
 
-const client = new GraphQLClient(API_URL_PROD)
+const client = new GraphQLClient(PIN_API_URL, {
+  headers: {
+    apikey: process.env.INTUITION_PIN_API_KEY!,
+  },
+});
 
 async function uploadFileInput(file: File) {
-  const buffer = await file.arrayBuffer()
-  const base64 = btoa(String.fromCharCode(...new Uint8Array(buffer)))
+  const buffer = await file.arrayBuffer();
+  const base64 = btoa(String.fromCharCode(...new Uint8Array(buffer)));
 
   const mutation = `
     mutation UploadImage($image: UploadImageInput!) {
@@ -6151,17 +6168,17 @@ async function uploadFileInput(file: File) {
         }
       }
     }
-  `
+  `;
 
   const result = await client.request(mutation, {
     image: {
       data: base64,
       filename: file.name,
-      contentType: file.type
-    }
-  })
+      contentType: file.type,
+    },
+  });
 
-  return result.uploadImage.images[0]
+  return result.uploadImage.images[0];
 }
 ```
 
@@ -6174,13 +6191,17 @@ async function uploadFileInput(file: File) {
 ---
 title: "Upload JSON to IPFS"
 description: "Upload JSON metadata to IPFS"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-06-25T15:48:40-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/mutations/images/upload-json-to-ipfs"
 ---
 
 # Upload JSON to IPFS
 
 Upload JSON metadata to IPFS for use in atom creation. Returns the IPFS hash, name, and size.
+
+## Endpoint and Auth
+
+Use the public gated endpoint, `https://pin.intuition.systems/v1/graphql`, with an `apikey` request header. Keep the key in a trusted server runtime.
 
 ## Mutation Structure
 
@@ -6196,9 +6217,9 @@ mutation UploadJsonToIpfs($json: jsonb!) {
 
 ## Variables
 
-| Variable | Type | Required | Description |
-|----------|------|----------|-------------|
-| `json` | `jsonb` | Yes | JSON object to upload |
+| Variable | Type    | Required | Description           |
+| -------- | ------- | -------- | --------------------- |
+| `json`   | `jsonb` | Yes      | JSON object to upload |
 
 ```json
 {
@@ -6214,11 +6235,11 @@ mutation UploadJsonToIpfs($json: jsonb!) {
 
 ## Response Fields
 
-| Field | Type | Description |
-|-------|------|-------------|
+| Field  | Type      | Description             |
+| ------ | --------- | ----------------------- |
 | `hash` | `String!` | IPFS content hash (CID) |
-| `name` | `String!` | Filename on IPFS |
-| `size` | `String!` | File size |
+| `name` | `String!` | Filename on IPFS        |
+| `size` | `String!` | File size               |
 
 ## Expected Response
 
@@ -6233,26 +6254,6 @@ mutation UploadJsonToIpfs($json: jsonb!) {
   }
 }
 ```
-
-## Interactive Example
-
-    id: 'upload-thing-metadata',
-    title: 'Upload Thing Metadata',
-    query: `mutation UploadJsonToIpfs($json: jsonb!) {
-  uploadJsonToIpfs(json: $json) {
-    hash
-    name
-    size
-
-}`,
-    variables: {
-      json: {
-        name: 'Ethereum',
-        description: 'A decentralized blockchain platform',
-        image: 'ipfs://QmXnnyufdzAWL5CqZ2RnSNgPbvCc1ALT73s6epPrRnZ1Xy',
-        url: 'https://ethereum.org'
-
-];
 
 ## Common Metadata Schemas
 
@@ -6299,16 +6300,20 @@ mutation UploadJsonToIpfs($json: jsonb!) {
 Upload metadata and use the IPFS hash for atom creation:
 
 ```typescript
-import { GraphQLClient } from 'graphql-request'
-import { API_URL_PROD } from '@0xintuition/graphql'
+import { GraphQLClient } from 'graphql-request';
+import { PIN_API_URL } from '@0xintuition/graphql';
 
-const client = new GraphQLClient(API_URL_PROD)
+const client = new GraphQLClient(PIN_API_URL, {
+  headers: {
+    apikey: process.env.INTUITION_PIN_API_KEY!,
+  },
+});
 
 async function prepareAtomMetadata(thing: {
-  name: string
-  description: string
-  image: string
-  url?: string
+  name: string;
+  description: string;
+  image: string;
+  url?: string;
 }) {
   const mutation = `
     mutation UploadJsonToIpfs($json: jsonb!) {
@@ -6318,10 +6323,10 @@ async function prepareAtomMetadata(thing: {
         size
       }
     }
-  `
+  `;
 
-  const result = await client.request(mutation, { json: thing })
-  return result.uploadJsonToIpfs.hash
+  const result = await client.request(mutation, { json: thing });
+  return result.uploadJsonToIpfs.hash;
 }
 ```
 
@@ -6336,7 +6341,7 @@ async function prepareAtomMetadata(thing: {
 ---
 title: "Pin Organization"
 description: "Pin Organization metadata to IPFS"
-last_updated: "2026-02-28T21:52:51-05:00"
+last_updated: "2026-06-25T15:48:40-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/mutations/pin-organization"
 ---
 
@@ -6345,6 +6350,16 @@ source: "https://docs.intuition.systems/docs/graphql-api/mutations/pin-organizat
 # Pin Organization Mutation
 
 Pin an Organization entity to IPFS for use in atom creation.
+
+## Endpoint and Auth
+
+Use the public gated pinning endpoint and send your Intuition pin API key in an `apikey` header:
+
+```text
+https://pin.intuition.systems/v1/graphql
+```
+
+`pinOrganization` is available as a raw GraphQL mutation. The SDK currently exposes a `pinThing` helper, but not a first-class `pinOrganization` helper.
 
 ## Mutation Structure
 
@@ -6380,7 +6395,7 @@ mutation PinOrganization($organization: PinOrganizationInput!) {
 ---
 title: "Pin Person"
 description: "Pin Person metadata to IPFS"
-last_updated: "2026-02-28T21:52:51-05:00"
+last_updated: "2026-06-25T15:48:40-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/mutations/pin-person"
 ---
 
@@ -6389,6 +6404,16 @@ source: "https://docs.intuition.systems/docs/graphql-api/mutations/pin-person"
 # Pin Person Mutation
 
 Pin a Person entity to IPFS for use in atom creation.
+
+## Endpoint and Auth
+
+Use the public gated pinning endpoint and send your Intuition pin API key in an `apikey` header:
+
+```text
+https://pin.intuition.systems/v1/graphql
+```
+
+`pinPerson` is available as a raw GraphQL mutation. The SDK currently exposes a `pinThing` helper, but not a first-class `pinPerson` helper.
 
 ## Mutation Structure
 
@@ -6425,7 +6450,7 @@ mutation PinPerson($person: PinPersonInput!) {
 ---
 title: "Pin Thing"
 description: "Pin Thing metadata to IPFS"
-last_updated: "2026-02-28T21:52:51-05:00"
+last_updated: "2026-06-25T15:48:40-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/mutations/pin-thing"
 ---
 
@@ -6434,6 +6459,16 @@ source: "https://docs.intuition.systems/docs/graphql-api/mutations/pin-thing"
 # Pin Thing Mutation
 
 Pin a "Thing" object (general entity) to IPFS for use in atom creation.
+
+## Endpoint and Auth
+
+Use the public gated pinning endpoint and send your Intuition pin API key in an `apikey` header:
+
+```text
+https://pin.intuition.systems/v1/graphql
+```
+
+Keep the key in a trusted server runtime. Do not pass it in the URL or expose it in public browser environment variables.
 
 ## Mutation Structure
 
@@ -6487,7 +6522,7 @@ mutation PinThing($thing: PinThingInput!) {
 ---
 title: "GraphQL NPM Package"
 description: "Comprehensive guide to use the Intuition GraphQL NPM package"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-06-25T15:48:40-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/npm-package"
 ---
 
@@ -6516,35 +6551,55 @@ Install the package using your preferred package manager:
 Configure the GraphQL client at the root of your application:
 
 ```tsx
-import { configureClient, API_URL_DEV, API_URL_PROD, API_URL_LOCAL } from '@0xintuition/graphql'
+import {
+  configureClient,
+  API_URL_DEV,
+  API_URL_PROD,
+  API_URL_LOCAL,
+  PIN_API_URL,
+} from '@0xintuition/graphql';
 
 // Configure the GraphQL client with desired API URL
 configureClient({
   apiUrl: API_URL_LOCAL, // For local development
-})
+});
 ```
 
 **Available API URLs:**
-- `API_URL_PROD`: `https://testnet.intuition.sh/v1/graphql` (default)
+
+- `API_URL_PROD`: `https://mainnet.intuition.sh/v1/graphql` (default)
 - `API_URL_DEV`: `https://testnet.intuition.sh/v1/graphql`
 - `API_URL_LOCAL`: `http://localhost:8080/v1/graphql`
+- `PIN_API_URL`: `https://pin.intuition.systems/v1/graphql`
 
 If you omit this configuration, the package defaults to `API_URL_PROD`.
+
+Pinning mutations use the public gated pinning endpoint and require an Intuition pin API key. Configure the key from a trusted server runtime before calling generated pinning fetchers or pinning helpers:
+
+```typescript
+import { configureClient } from '@0xintuition/graphql';
+
+configureClient({
+  pinApiKey: process.env.INTUITION_PIN_API_KEY,
+});
+```
+
+Do not expose `INTUITION_PIN_API_KEY` in public browser environment variables.
 
 ### 2. Server Client Usage
 
 For server-side operations:
 
 ```typescript
-import { createServerClient } from '@0xintuition/graphql'
+import { createServerClient } from '@0xintuition/graphql';
 
 // Basic usage (most common)
-const client = createServerClient({})
+const client = createServerClient({});
 
 // With optional authentication token (rarely needed)
 const clientWithAuth = createServerClient({
-  token: 'your-auth-token'
-})
+  token: 'your-auth-token',
+});
 ```
 
 ### 3. Using Generated Hooks
@@ -6565,128 +6620,194 @@ function StatsComponent() {
 ```
 
 ```tsx
-import { useAtomsQuery, useTriplesQuery, useUserPositionsQuery } from '@0xintuition/graphql'
+import {
+  useAtomsQuery,
+  useTriplesQuery,
+  useUserPositionsQuery,
+} from '@0xintuition/graphql';
 
 function MyComponent() {
   // Query atoms
   const { data: atoms, isLoading: atomsLoading } = useAtomsQuery({
-    variables: { limit: 10 }
-  })
+    variables: { limit: 10 },
+  });
 
   // Query triples
   const { data: triples, isLoading: triplesLoading } = useTriplesQuery({
-    variables: { limit: 10 }
-  })
+    variables: { limit: 10 },
+  });
 
   // Query user positions
   const { data: positions } = useUserPositionsQuery({
-    variables: { userAddress: '0x742d35Cc6634C0532925a3b8D4C9db96C4b4d8b6' }
-  })
+    variables: { userAddress: '0x742d35Cc6634C0532925a3b8D4C9db96C4b4d8b6' },
+  });
 
   if (atomsLoading || triplesLoading) {
-    return <div>Loading...</div>
+    return <div>Loading...</div>;
   }
 
   return (
     <div>
       <h2>Atoms ({atoms?.atoms?.length || 0})</h2>
-      {atoms?.atoms?.map(atom => (
+      {atoms?.atoms?.map((atom) => (
         <div key={atom.term_id}>
           <strong>{atom.label}</strong> - {atom.type}
         </div>
       ))}
 
       <h2>Triples ({triples?.triples?.length || 0})</h2>
-      {triples?.triples?.map(triple => (
+      {triples?.triples?.map((triple) => (
         <div key={triple.term_id}>
-          {triple.subject.label} - {triple.predicate.label} - {triple.object.label}
+          {triple.subject.label} - {triple.predicate.label} -{' '}
+          {triple.object.label}
         </div>
       ))}
     </div>
-  )
+  );
 }
 ```
 
 ## Available React Hooks
+
 The following groups correspond to the query documents in the `src/queries` subdirectory of the package. Hook names are generated from each document and follow the `use<Name>Query` convention. The complete and canonical list may be found in the directory: [`packages/graphql/src/queries`](https://github.com/0xIntuition/intuition-ts/tree/main/packages/graphql/src/queries)
 
 ### Accounts
 
     <h4>Get by ID</h4>
 
+        useAccountByIdQuery
+
     <h4>Search &amp; Filter</h4>
+
+        useAccountsQuery
 
 ### Atoms
 
     <h4>Get by ID</h4>
 
+        useAtomByIdQuery
+
+        useGetAtomQuery
+
     <h4>Search &amp; Filter</h4>
+
+        useAtomsQuery
+
+        useGetAtomsQuery
 
 ### Claims
 
     <h4>Get by ID</h4>
 
+        useClaimByIdQuery
+
     <h4>Search &amp; Filter</h4>
+
+        useClaimsQuery
 
 ### Events
 
     <h4>Get by ID</h4>
 
+        useEventByIdQuery
+
     <h4>Search &amp; Filter</h4>
+
+        useEventsQuery
 
 ### Follows
 
     <h4>Get by ID</h4>
 
+        useFollowByIdQuery
+
     <h4>Search &amp; Filter</h4>
+
+        useFollowsQuery
 
 ### Lists
 
     <h4>Get by ID</h4>
 
+        useListByIdQuery
+
     <h4>Search &amp; Filter</h4>
+
+        useListsQuery
 
 ### Points
 
     <h4>Get by ID</h4>
 
+        usePointByIdQuery
+
     <h4>Search &amp; Filter</h4>
+
+        usePointsQuery
 
 ### Positions
 
     <h4>Get by ID</h4>
 
+        usePositionByIdQuery
+
     <h4>Search &amp; Filter</h4>
+
+        usePositionsQuery
+
+        useUserPositionsQuery
 
 ### Signals
 
     <h4>Get by ID</h4>
 
+        useSignalByIdQuery
+
     <h4>Search &amp; Filter</h4>
+
+        useSignalsQuery
+
+        useGetSignalsQuery
 
 ### Stats
 
     <h4>Get</h4>
 
+        useGetStatsQuery
+
     <h4>Search &amp; Filter</h4>
+
+        useStatsQuery
 
 ### Tags
 
     <h4>Get by ID</h4>
 
+        useTagByIdQuery
+
     <h4>Search &amp; Filter</h4>
+
+        useTagsQuery
 
 ### Triples
 
     <h4>Get by ID</h4>
 
+        useTripleByIdQuery
+
     <h4>Search &amp; Filter</h4>
+
+        useTriplesQuery
 
 ### Vaults
 
     <h4>Get by ID</h4>
 
+        useVaultByIdQuery
+
     <h4>Search &amp; Filter</h4>
+
+        useVaultsQuery
 
 These hooks are generated via GraphQL Code Generator and may expand over time as new documents are added. See the package source below for the current and authoritative list.
 
@@ -16501,7 +16622,7 @@ Select a use case above to see detailed step-by-step implementation guides.
 ---
 title: "Writes"
 description: "Guide to write data using GraphQL mutations in the Intuition API"
-last_updated: "2026-02-28T21:52:51-05:00"
+last_updated: "2026-06-25T15:48:40-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/writes"
 ---
 
@@ -16511,10 +16632,14 @@ source: "https://docs.intuition.systems/docs/graphql-api/writes"
 
 The Intuition GraphQL API provides mutations for **off-chain operations** like uploading metadata to IPFS. For **on-chain operations** like creating atoms, triples, and positions, you must use the [Intuition SDK](/docs/intuition-sdk/installation-and-setup) or interact directly with the smart contracts.
 
+Pinning mutations are served from the public gated endpoint, `https://pin.intuition.systems/v1/graphql`, not the read endpoint. Send your Intuition pin API key in an `apikey` request header from a trusted server runtime.
+
 **GraphQL mutations** handle:
+
 - Uploading metadata to IPFS (pinThing, pinPerson, pinOrganization)
 
 **Smart contract operations** handle:
+
 - Creating atoms
 - Creating triples
 - Taking positions (depositing/redeeming)
@@ -16526,18 +16651,20 @@ Use the [SDK](/docs/intuition-sdk/installation-and-setup) for smart contract int
 
 ### IPFS & Metadata Mutations
 
-| Mutation | Description | Documentation |
-|----------|-------------|---------------|
-| `pinThing` | Pin Thing metadata to IPFS | [Pin Thing](/docs/graphql-api/mutations/pin-thing) |
-| `pinPerson` | Pin Person metadata to IPFS | [Pin Person](/docs/graphql-api/mutations/pin-person) |
-| `pinOrganization` | Pin Organization metadata to IPFS | [Pin Organization](/docs/graphql-api/mutations/pin-organization) |
-| `uploadImage` | Upload base64 image to IPFS | [Upload Image](/docs/graphql-api/mutations/images/upload-image) |
-| `uploadImageFromUrl` | Upload image from URL to IPFS | [Upload from URL](/docs/graphql-api/mutations/images/upload-image-from-url) |
-| `uploadJsonToIpfs` | Upload JSON metadata to IPFS | [Upload JSON](/docs/graphql-api/mutations/images/upload-json-to-ipfs) |
+| Mutation             | Description                       | Documentation                                                               |
+| -------------------- | --------------------------------- | --------------------------------------------------------------------------- |
+| `pinThing`           | Pin Thing metadata to IPFS        | [Pin Thing](/docs/graphql-api/mutations/pin-thing)                          |
+| `pinPerson`          | Pin Person metadata to IPFS       | [Pin Person](/docs/graphql-api/mutations/pin-person)                        |
+| `pinOrganization`    | Pin Organization metadata to IPFS | [Pin Organization](/docs/graphql-api/mutations/pin-organization)            |
+| `uploadImage`        | Upload base64 image to IPFS       | [Upload Image](/docs/graphql-api/mutations/images/upload-image)             |
+| `uploadImageFromUrl` | Upload image from URL to IPFS     | [Upload from URL](/docs/graphql-api/mutations/images/upload-image-from-url) |
+| `uploadJsonToIpfs`   | Upload JSON metadata to IPFS      | [Upload JSON](/docs/graphql-api/mutations/images/upload-json-to-ipfs)       |
 
 Chart and PnL operations are **queries**, not mutations. See:
+
 - [PnL Queries](/docs/graphql-api/queries/pnl/overview) - Profit & Loss tracking
 - [Chart Queries](/docs/graphql-api/queries/charts/overview) - Chart generation
+  :::
 
 ## Pin Mutations
 
@@ -16554,6 +16681,7 @@ mutation PinThing($thing: PinThingInput!) {
 ```
 
 **Variables:**
+
 ```json
 {
   "thing": {
@@ -16578,6 +16706,7 @@ mutation PinPerson($person: PinPersonInput!) {
 ```
 
 **Variables:**
+
 ```json
 {
   "person": {
@@ -16604,6 +16733,7 @@ mutation PinOrganization($organization: PinOrganizationInput!) {
 ```
 
 **Variables:**
+
 ```json
 {
   "organization": {
@@ -16673,14 +16803,19 @@ mutation UploadJsonToIpfs($json: jsonb!) {
 Here's how to prepare metadata for atom creation:
 
 ```typescript
-import { GraphQLClient } from 'graphql-request'
-import { API_URL_PROD } from '@0xintuition/graphql'
-import { createMultivaultClient } from '@0xintuition/sdk'
+import { GraphQLClient } from 'graphql-request';
+import { PIN_API_URL } from '@0xintuition/graphql';
+import { createAtomFromIpfsUri } from '@0xintuition/sdk';
 
-const graphqlClient = new GraphQLClient(API_URL_PROD)
+const pinClient = new GraphQLClient(PIN_API_URL, {
+  headers: {
+    apikey: process.env.INTUITION_PIN_API_KEY!,
+  },
+});
 
 // Step 1: Upload image to IPFS (via GraphQL)
-const imageResult = await graphqlClient.request(`
+const imageResult = await pinClient.request(
+  `
   mutation UploadImageFromUrl($image: UploadImageFromUrlInput!) {
     uploadImageFromUrl(image: $image) {
       images {
@@ -16688,119 +16823,108 @@ const imageResult = await graphqlClient.request(`
       }
     }
   }
-`, { image: { url: 'https://example.com/logo.png' } })
+`,
+  { image: { url: 'https://example.com/logo.png' } },
+);
 
 // Step 2: Upload metadata to IPFS (via GraphQL)
-const metadataResult = await graphqlClient.request(`
+const metadataResult = await pinClient.request(
+  `
   mutation PinThing($thing: PinThingInput!) {
     pinThing(thing: $thing) {
       uri
     }
   }
-`, {
-  thing: {
-    name: 'My Project',
-    description: 'Description of my project',
-    image: imageResult.uploadImageFromUrl.images[0].url,
-    url: 'https://example.com'
-  }
-})
+`,
+  {
+    thing: {
+      name: 'My Project',
+      description: 'Description of my project',
+      image: imageResult.uploadImageFromUrl.images[0].url,
+      url: 'https://example.com',
+    },
+  },
+);
 
 // Step 3: Create atom on-chain (via SDK)
-const multivault = createMultivaultClient(walletClient)
-const atomId = await multivault.createAtom({
-  uri: metadataResult.pinThing.uri
-})
+const atom = await createAtomFromIpfsUri(
+  { walletClient, publicClient, address },
+  metadataResult.pinThing.uri,
+);
 ```
 
 ## Best Practices
 
 ### 1. Complete Metadata
-Provide comprehensive metadata for better discoverability:
+
+Provide all required metadata fields for better discoverability:
 
 ```typescript
 const thing = {
-  name: 'Project Name',           // Required
-  description: 'Full description', // Recommended
-  image: 'ipfs://...',            // Recommended
-  url: 'https://...'              // Optional
-}
+  name: 'Project Name', // Required
+  description: 'Full description', // Required
+  image: 'ipfs://...', // Required
+  url: 'https://...', // Required
+};
 ```
 
 ### 2. Use IPFS URLs
+
 Always reference images using IPFS URLs for permanence:
 
 ```typescript
 // Good - permanent
-image: 'ipfs://QmXnnyufdzAWL5CqZ2RnSNgPbvCc1ALT73s6epPrRnZ1Xy'
+image: 'ipfs://QmXnnyufdzAWL5CqZ2RnSNgPbvCc1ALT73s6epPrRnZ1Xy';
 
 // Avoid - may change
-image: 'https://example.com/image.png'
+image: 'https://example.com/image.png';
 ```
 
 ### 3. Error Handling
 
 ```typescript
 try {
-  const result = await graphqlClient.request(UPLOAD_IMAGE, { image: input })
-  console.log('Uploaded:', result.uploadImage.images[0].url)
+  const result = await pinClient.request(UPLOAD_IMAGE, { image: input });
+  console.log('Uploaded:', result.uploadImage.images[0].url);
 } catch (error) {
   if (error.message.includes('File too large')) {
-    console.error('Image exceeds size limit')
+    console.error('Image exceeds size limit');
   } else if (error.message.includes('Invalid')) {
-    console.error('Invalid image format')
+    console.error('Invalid image format');
   }
 }
 ```
 
 ### 4. Size Limits
 
-| Upload Type | Maximum Size |
-|-------------|--------------|
-| Image (base64) | 5 MB |
-| Image from URL | 10 MB |
-| JSON | 1 MB |
+| Upload Type    | Maximum Size |
+| -------------- | ------------ |
+| Image (base64) | 5 MB         |
+| Image from URL | 10 MB        |
+| JSON           | 1 MB         |
 
 ## TypeScript Integration
 
-Use the `@0xintuition/graphql` package for type-safe mutations:
+Use the `@0xintuition/graphql` package for type-safe pinning on the server:
+
+`requestPinThing` accepts the generated package variable shape directly (`name`, `description`, `image`, `url`). Raw GraphQL requests use the `thing` input wrapper shown in the mutation examples above.
 
 ```typescript
-import {
-  usePinThingMutation,
-  useUploadImageFromUrlMutation
-} from '@0xintuition/graphql'
+import { configureClient, requestPinThing } from '@0xintuition/graphql';
 
-function CreateAtomForm() {
-  const [pinThing] = usePinThingMutation()
-  const [uploadImage] = useUploadImageFromUrlMutation()
+configureClient({
+  pinApiKey: process.env.INTUITION_PIN_API_KEY,
+});
 
-  const handleSubmit = async (data: FormData) => {
-    // Upload image first
-    const imageResult = await uploadImage({
-      variables: { image: { url: data.imageUrl } }
-    })
-
-    // Then pin metadata
-    const thingResult = await pinThing({
-      variables: {
-        thing: {
-          name: data.name,
-          description: data.description,
-          image: imageResult.data.uploadImageFromUrl.images[0].url,
-          url: data.url
-        }
-      }
-    })
-
-    // Use the IPFS URI for atom creation
-    const ipfsUri = thingResult.data.pinThing.uri
-    // ... create atom via SDK
-  }
-
-  return <form onSubmit={handleSubmit}>...</form>
-}
+const ipfsUri = await requestPinThing({
+  name: 'My Project',
+  description: 'Description of my project',
+  image: 'https://example.com/logo.png',
+  url: 'https://example.com',
+});
 ```
+
+For browser apps, proxy pinning through a server route so the API key is not exposed to users.
 
 ## Related Resources
 
@@ -21324,7 +21448,7 @@ Security: Memory safety is crucial when handling financial transactions and user
 ---
 title: "Working with Atoms"
 description: "Create and query atoms using the SDK"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-06-25T15:48:40-04:00"
 source: "https://docs.intuition.systems/docs/intuition-sdk/atoms-guide"
 ---
 
@@ -21356,17 +21480,17 @@ The simplest way to create an atom is from a plain string.
 function createAtomFromString(
   config: WriteConfig,
   data: string,
-  deposit?: bigint
-): Promise<AtomCreationResult>
+  deposit?: bigint,
+): Promise<AtomCreationResult>;
 ```
 
 ### Parameters
 
-| Parameter | Type | Description | Required |
-|-----------|------|-------------|----------|
-| `config` | `WriteConfig` | Client configuration with wallet, public client, and contract address | Yes |
-| `data` | `string` | The text string to create an atom from | Yes |
-| `deposit` | `bigint` | Optional initial deposit amount in wei | No |
+| Parameter | Type          | Description                                                           | Required |
+| --------- | ------------- | --------------------------------------------------------------------- | -------- |
+| `config`  | `WriteConfig` | Client configuration with wallet, public client, and contract address | Yes      |
+| `data`    | `string`      | The text string to create an atom from                                | Yes      |
+| `deposit` | `bigint`      | Optional initial deposit amount in wei                                | No       |
 
 ### Basic Example
 
@@ -21375,32 +21499,32 @@ import {
   createAtomFromString,
   getMultiVaultAddressFromChainId,
   intuitionTestnet,
-} from '@0xintuition/sdk'
-import { createPublicClient, createWalletClient, http, parseEther } from 'viem'
-import { privateKeyToAccount } from 'viem/accounts'
+} from '@0xintuition/sdk';
+import { createPublicClient, createWalletClient, http, parseEther } from 'viem';
+import { privateKeyToAccount } from 'viem/accounts';
 
 // Setup clients
-const account = privateKeyToAccount('0x...')
+const account = privateKeyToAccount('0x...');
 const publicClient = createPublicClient({
   chain: intuitionTestnet,
   transport: http(),
-})
+});
 const walletClient = createWalletClient({
   chain: intuitionTestnet,
   transport: http(),
   account,
-})
-const address = getMultiVaultAddressFromChainId(intuitionTestnet.id)
+});
+const address = getMultiVaultAddressFromChainId(intuitionTestnet.id);
 
 // Create atom
 const atom = await createAtomFromString(
   { walletClient, publicClient, address },
   'developer',
-  parseEther('0.01') // Optional: 0.01 TRUST initial deposit
-)
+  parseEther('0.01'), // Optional: 0.01 TRUST initial deposit
+);
 
-console.log('Atom ID:', atom.state.termId)
-console.log('Transaction:', atom.transactionHash)
+console.log('Atom ID:', atom.state.termId);
+console.log('Transaction:', atom.transactionHash);
 ```
 
 ### Common Use Cases
@@ -21410,8 +21534,8 @@ console.log('Transaction:', atom.transactionHash)
 ```typescript
 const tag = await createAtomFromString(
   { walletClient, publicClient, address },
-  'blockchain'
-)
+  'blockchain',
+);
 ```
 
 #### Creating Simple Identifiers
@@ -21419,8 +21543,8 @@ const tag = await createAtomFromString(
 ```typescript
 const identifier = await createAtomFromString(
   { walletClient, publicClient, address },
-  'user-role-admin'
-)
+  'user-role-admin',
+);
 ```
 
 #### Creating Predicates for Triples
@@ -21429,13 +21553,13 @@ const identifier = await createAtomFromString(
 // Create predicate atoms for relationships
 const hasSkill = await createAtomFromString(
   { walletClient, publicClient, address },
-  'hasSkill'
-)
+  'hasSkill',
+);
 
 const worksOn = await createAtomFromString(
   { walletClient, publicClient, address },
-  'worksOn'
-)
+  'worksOn',
+);
 ```
 
 ### Best Practices
@@ -21444,10 +21568,10 @@ const worksOn = await createAtomFromString(
 
 ```typescript
 // Good - clear and descriptive
-await createAtomFromString(config, 'JavaScript Developer')
+await createAtomFromString(config, 'JavaScript Developer');
 
 // Avoid - too vague
-await createAtomFromString(config, 'dev')
+await createAtomFromString(config, 'dev');
 ```
 
 #### 2. Check for Existing Atoms
@@ -21455,15 +21579,15 @@ await createAtomFromString(config, 'dev')
 Before creating an atom, check if it already exists:
 
 ```typescript
-import { calculateAtomId, getAtomDetails } from '@0xintuition/sdk'
+import { calculateAtomId, getAtomDetails } from '@0xintuition/sdk';
 
-const atomId = calculateAtomId('developer')
-const exists = await getAtomDetails(atomId)
+const atomId = calculateAtomId('developer');
+const exists = await getAtomDetails(atomId);
 
 if (exists) {
-  console.log('Atom already exists:', atomId)
+  console.log('Atom already exists:', atomId);
 } else {
-  const atom = await createAtomFromString(config, 'developer')
+  const atom = await createAtomFromString(config, 'developer');
 }
 ```
 
@@ -21478,35 +21602,36 @@ Create atoms from structured JSON-LD objects for rich metadata.
 ```typescript
 function createAtomFromThing(
   config: WriteConfig,
-  thing: PinThingMutationVariables['thing'],
-  deposit?: bigint
-): Promise<AtomCreationResult>
+  data: PinThingMutationVariables,
+  options?: CreateAtomFromThingOptions | bigint,
+): Promise<AtomCreationResult>;
 ```
 
 ### Thing Object Structure
 
 ```typescript
 type Thing = {
-  url?: string          // Primary URL/website
-  name?: string         // Display name
-  description?: string  // Detailed description
-  image?: string        // Image URL
-  tags?: string[]       // Category tags
-  twitter?: string      // Twitter/X profile
-  github?: string       // GitHub repository
-  // Additional schema.org Thing properties supported
-}
+  name: string; // Display name
+  description: string; // Detailed description
+  image: string; // Image URL
+  url: string; // Primary URL/website
+};
 ```
 
 ### Basic Example
 
 ```typescript
 import {
+  configureSdk,
   createAtomFromThing,
   getMultiVaultAddressFromChainId,
   intuitionTestnet,
-} from '@0xintuition/sdk'
-import { parseEther } from 'viem'
+} from '@0xintuition/sdk';
+import { parseEther } from 'viem';
+
+configureSdk({
+  pinApiKey: process.env.INTUITION_PIN_API_KEY,
+});
 
 // Create atom from Thing
 const atom = await createAtomFromThing(
@@ -21516,13 +21641,12 @@ const atom = await createAtomFromThing(
     name: 'Example Project',
     description: 'A great Web3 project',
     image: 'https://example.com/logo.png',
-    tags: ['web3', 'defi', 'blockchain'],
   },
-  parseEther('0.05')
-)
+  { depositAmount: parseEther('0.05') },
+);
 
-console.log('Atom ID:', atom.state.termId)
-console.log('IPFS URI:', atom.uri) // ipfs://bafkrei...
+console.log('Atom ID:', atom.state.termId);
+console.log('IPFS URI:', atom.uri); // ipfs://bafkrei...
 ```
 
 ### Common Use Cases
@@ -21537,9 +21661,8 @@ const organization = await createAtomFromThing(
     description: 'Leading blockchain solutions provider',
     url: 'https://acme.com',
     image: 'https://acme.com/brand.png',
-    twitter: 'https://twitter.com/acmecorp',
-  }
-)
+  },
+);
 ```
 
 #### Creating Person Atoms
@@ -21551,15 +21674,14 @@ const person = await createAtomFromThing(
     name: 'Alice Johnson',
     description: 'Blockchain developer and researcher',
     image: 'https://example.com/alice.jpg',
-    twitter: 'https://twitter.com/alicecodes',
-    github: 'github.com/alice',
-  }
-)
+    url: 'https://example.com/alice',
+  },
+);
 ```
 
 ### How It Works
 
-1. **Pin to IPFS**: The Thing object is automatically pinned to IPFS via the Intuition API
+1. **Pin to IPFS**: The Thing object is automatically pinned to IPFS via the Intuition pinning service using your configured `pinApiKey`
 2. **Generate URI**: An IPFS URI is generated (e.g., `ipfs://bafkrei...`)
 3. **Create Atom**: The atom is created with the IPFS URI as its data
 4. **Return**: Returns the atom details with the IPFS URI
@@ -21576,8 +21698,8 @@ Create atoms representing Ethereum wallet addresses.
 function createAtomFromEthereumAccount(
   config: WriteConfig,
   address: Address,
-  deposit?: bigint
-): Promise<AtomCreationResult>
+  deposit?: bigint,
+): Promise<AtomCreationResult>;
 ```
 
 ### Basic Example
@@ -21587,18 +21709,18 @@ import {
   createAtomFromEthereumAccount,
   getMultiVaultAddressFromChainId,
   intuitionTestnet,
-} from '@0xintuition/sdk'
-import { parseEther } from 'viem'
+} from '@0xintuition/sdk';
+import { parseEther } from 'viem';
 
 // Create atom from Ethereum address
 const atom = await createAtomFromEthereumAccount(
   { walletClient, publicClient, address },
   '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045',
-  parseEther('0.01')
-)
+  parseEther('0.01'),
+);
 
-console.log('Identity Atom ID:', atom.state.termId)
-console.log('Address:', atom.uri)
+console.log('Identity Atom ID:', atom.state.termId);
+console.log('Address:', atom.uri);
 ```
 
 ### Common Use Cases
@@ -21609,26 +21731,20 @@ console.log('Address:', atom.uri)
 // Create atom for user's wallet
 const userAtom = await createAtomFromEthereumAccount(
   { walletClient, publicClient, address },
-  walletClient.account.address
-)
+  walletClient.account.address,
+);
 ```
 
 #### Building Social Graphs
 
 ```typescript
 // Create atoms for follower relationships
-const alice = await createAtomFromEthereumAccount(
-  config,
-  '0xAlice...'
-)
+const alice = await createAtomFromEthereumAccount(config, '0xAlice...');
 
-const bob = await createAtomFromEthereumAccount(
-  config,
-  '0xBob...'
-)
+const bob = await createAtomFromEthereumAccount(config, '0xBob...');
 
 // Then create a "follows" triple
-const follows = await createAtomFromString(config, 'follows')
+const follows = await createAtomFromString(config, 'follows');
 const triple = await createTripleStatement(config, {
   args: [
     [alice.state.termId],
@@ -21637,7 +21753,7 @@ const triple = await createTripleStatement(config, {
     [parseEther('0.1')],
   ],
   value: parseEther('0.1'),
-})
+});
 ```
 
 ---
@@ -21652,8 +21768,8 @@ Create atoms representing smart contract addresses.
 function createAtomFromSmartContract(
   config: WriteConfig,
   contractAddress: Address,
-  deposit?: bigint
-): Promise<AtomCreationResult>
+  deposit?: bigint,
+): Promise<AtomCreationResult>;
 ```
 
 ### Basic Example
@@ -21663,17 +21779,17 @@ import {
   createAtomFromSmartContract,
   getMultiVaultAddressFromChainId,
   intuitionTestnet,
-} from '@0xintuition/sdk'
-import { parseEther } from 'viem'
+} from '@0xintuition/sdk';
+import { parseEther } from 'viem';
 
 // Create atom for Uniswap contract
 const uniswap = await createAtomFromSmartContract(
   { walletClient, publicClient, address },
   '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984', // UNI token
-  parseEther('0.01')
-)
+  parseEther('0.01'),
+);
 
-console.log('Contract Atom ID:', uniswap.state.termId)
+console.log('Contract Atom ID:', uniswap.state.termId);
 ```
 
 ### Common Use Cases
@@ -21684,13 +21800,13 @@ console.log('Contract Atom ID:', uniswap.state.termId)
 // Create atoms for DeFi protocols
 const aave = await createAtomFromSmartContract(
   config,
-  '0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9' // AAVE token
-)
+  '0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9', // AAVE token
+);
 
 const compound = await createAtomFromSmartContract(
   config,
-  '0xc00e94Cb662C3520282E6f5717214004A7f26888' // COMP token
-)
+  '0xc00e94Cb662C3520282E6f5717214004A7f26888', // COMP token
+);
 ```
 
 ---
@@ -21709,8 +21825,8 @@ Create an atom from an existing IPFS URI.
 function createAtomFromIpfsUri(
   config: WriteConfig,
   ipfsUri: string,
-  deposit?: bigint
-): Promise<AtomCreationResult>
+  deposit?: bigint,
+): Promise<AtomCreationResult>;
 ```
 
 #### Basic Example
@@ -21720,16 +21836,16 @@ import {
   createAtomFromIpfsUri,
   getMultiVaultAddressFromChainId,
   intuitionTestnet,
-} from '@0xintuition/sdk'
-import { parseEther } from 'viem'
+} from '@0xintuition/sdk';
+import { parseEther } from 'viem';
 
 const atom = await createAtomFromIpfsUri(
   { walletClient, publicClient, address },
   'ipfs://bafkreib7534cszxn2c6qwoviv43sqh244yfrxomjbealjdwntd6a7atq6u',
-  parseEther('0.01')
-)
+  parseEther('0.01'),
+);
 
-console.log('IPFS Atom ID:', atom.state.termId)
+console.log('IPFS Atom ID:', atom.state.termId);
 ```
 
 ### createAtomFromIpfsUpload
@@ -21742,15 +21858,15 @@ Upload JSON data to Pinata and create an atom with the resulting IPFS URI.
 function createAtomFromIpfsUpload(
   config: WriteConfig & { pinataApiJWT: string },
   data: object,
-  deposit?: bigint
-): Promise<AtomCreationResult>
+  deposit?: bigint,
+): Promise<AtomCreationResult>;
 ```
 
 #### Basic Example
 
 ```typescript
-import { createAtomFromIpfsUpload } from '@0xintuition/sdk'
-import { parseEther } from 'viem'
+import { createAtomFromIpfsUpload } from '@0xintuition/sdk';
+import { parseEther } from 'viem';
 
 const atom = await createAtomFromIpfsUpload(
   {
@@ -21764,11 +21880,11 @@ const atom = await createAtomFromIpfsUpload(
     description: 'A blockchain project',
     url: 'https://myproject.com',
   },
-  parseEther('0.05')
-)
+  parseEther('0.05'),
+);
 
-console.log('Atom ID:', atom.state.termId)
-console.log('IPFS URI:', atom.uri) // ipfs://bafkrei...
+console.log('Atom ID:', atom.state.termId);
+console.log('IPFS URI:', atom.uri); // ipfs://bafkrei...
 ```
 
 ---
@@ -21791,36 +21907,39 @@ import {
   batchCreateAtomsFromEthereumAccounts,
   getMultiVaultAddressFromChainId,
   intuitionTestnet,
-} from '@0xintuition/sdk'
-import { parseEther } from 'viem'
+} from '@0xintuition/sdk';
+import { parseEther } from 'viem';
 
 const addresses = [
   '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045',
   '0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb',
   '0x1234567890123456789012345678901234567890',
-]
+];
 
 const result = await batchCreateAtomsFromEthereumAccounts(
   { walletClient, publicClient, address },
   addresses,
-  parseEther('0.01') // 0.01 TRUST per atom
-)
+  parseEther('0.01'), // 0.01 TRUST per atom
+);
 
-console.log('Created', result.state.length, 'atoms')
-console.log('Atom IDs:', result.state.map(s => s.termId))
-console.log('Single transaction:', result.transactionHash)
+console.log('Created', result.state.length, 'atoms');
+console.log(
+  'Atom IDs:',
+  result.state.map((s) => s.termId),
+);
+console.log('Single transaction:', result.transactionHash);
 ```
 
 ### Gas Savings
 
 Batch creation saves significant gas compared to individual transactions:
 
-| Atoms | Individual Txs | Batch Tx | Savings |
-|-------|---------------|----------|---------|
-| 1 | ~150k gas | ~150k gas | 0% |
-| 5 | ~750k gas | ~300k gas | 60% |
-| 10 | ~1.5M gas | ~450k gas | 70% |
-| 50 | ~7.5M gas | ~1.5M gas | 80% |
+| Atoms | Individual Txs | Batch Tx  | Savings |
+| ----- | -------------- | --------- | ------- |
+| 1     | ~150k gas      | ~150k gas | 0%      |
+| 5     | ~750k gas      | ~300k gas | 60%     |
+| 10    | ~1.5M gas      | ~450k gas | 70%     |
+| 50    | ~7.5M gas      | ~1.5M gas | 80%     |
 
 ---
 
@@ -21835,21 +21954,21 @@ Fetch comprehensive atom details from the Intuition API.
 #### Function Signature
 
 ```typescript
-function getAtomDetails(atomId: string): Promise<AtomDetails>
+function getAtomDetails(atomId: string): Promise<AtomDetails>;
 ```
 
 #### Basic Example
 
 ```typescript
-import { getAtomDetails } from '@0xintuition/sdk'
+import { getAtomDetails } from '@0xintuition/sdk';
 
-const atomId = '0x1234567890abcdef...'
-const details = await getAtomDetails(atomId)
+const atomId = '0x1234567890abcdef...';
+const details = await getAtomDetails(atomId);
 
-console.log('Atom Label:', details.label)
-console.log('Creator:', details.creator)
-console.log('Vault Shares:', details.vault.totalShares)
-console.log('Share Price:', details.vault.currentSharePrice)
+console.log('Atom Label:', details.label);
+console.log('Creator:', details.creator);
+console.log('Vault Shares:', details.vault.totalShares);
+console.log('Share Price:', details.vault.currentSharePrice);
 ```
 
 ### calculateAtomId
@@ -21859,25 +21978,27 @@ Calculate the atom ID from atom data without querying the blockchain.
 #### Function Signature
 
 ```typescript
-function calculateAtomId(atomData: string): Hex
+function calculateAtomId(atomData: string): Hex;
 ```
 
 #### Basic Example
 
 ```typescript
-import { calculateAtomId } from '@0xintuition/sdk'
+import { calculateAtomId } from '@0xintuition/sdk';
 
 // Calculate ID for a string atom
-const atomId = calculateAtomId('developer')
-console.log('Atom ID:', atomId)
+const atomId = calculateAtomId('developer');
+console.log('Atom ID:', atomId);
 
 // Calculate ID for an Ethereum address
-const addressAtomId = calculateAtomId('0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045')
-console.log('Address Atom ID:', addressAtomId)
+const addressAtomId = calculateAtomId(
+  '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045',
+);
+console.log('Address Atom ID:', addressAtomId);
 
 // Calculate ID for IPFS URI
-const ipfsAtomId = calculateAtomId('ipfs://bafkreib...')
-console.log('IPFS Atom ID:', ipfsAtomId)
+const ipfsAtomId = calculateAtomId('ipfs://bafkreib...');
+console.log('IPFS Atom ID:', ipfsAtomId);
 ```
 
 ### Use Cases
@@ -21885,22 +22006,26 @@ console.log('IPFS Atom ID:', ipfsAtomId)
 #### Check if Atom Exists Before Creating
 
 ```typescript
-import { calculateAtomId, getAtomDetails, createAtomFromString } from '@0xintuition/sdk'
+import {
+  calculateAtomId,
+  getAtomDetails,
+  createAtomFromString,
+} from '@0xintuition/sdk';
 
 async function createAtomIfNotExists(data: string) {
   // Calculate ID
-  const atomId = calculateAtomId(data)
+  const atomId = calculateAtomId(data);
 
   try {
     // Check if exists
-    const existing = await getAtomDetails(atomId)
-    console.log('Atom already exists:', atomId)
-    return existing
+    const existing = await getAtomDetails(atomId);
+    console.log('Atom already exists:', atomId);
+    return existing;
   } catch (error) {
     // Doesn't exist, create it
-    console.log('Creating new atom')
-    const atom = await createAtomFromString(config, data)
-    return atom
+    console.log('Creating new atom');
+    const atom = await createAtomFromString(config, data);
+    return atom;
   }
 }
 ```
@@ -21908,18 +22033,16 @@ async function createAtomIfNotExists(data: string) {
 #### Batch Query Multiple Atoms
 
 ```typescript
-import { getAtomDetails } from '@0xintuition/sdk'
+import { getAtomDetails } from '@0xintuition/sdk';
 
 async function getMultipleAtoms(atomIds: string[]) {
-  const atoms = await Promise.all(
-    atomIds.map(id => getAtomDetails(id))
-  )
+  const atoms = await Promise.all(atomIds.map((id) => getAtomDetails(id)));
 
-  atoms.forEach(atom => {
-    console.log(`${atom.label}: ${atom.vault.totalShares} shares`)
-  })
+  atoms.forEach((atom) => {
+    console.log(`${atom.label}: ${atom.vault.totalShares} shares`);
+  });
 
-  return atoms
+  return atoms;
 }
 ```
 
@@ -21931,26 +22054,26 @@ After successfully creating an atom, the SDK returns a data object with transact
 
 ```typescript
 type AtomCreationResult = {
-  uri: string                    // The atom's data URI (IPFS or raw data)
-  transactionHash: `0x${string}` // Transaction hash on chain
+  uri: string; // The atom's data URI (IPFS or raw data)
+  transactionHash: `0x${string}`; // Transaction hash on chain
   state: {
-    creator: Address             // Address that created the atom
-    termId: Hex                  // Unique atom identifier
-    atomData: Hex                // Encoded atom data
-    atomWallet: Address          // Associated vault wallet address
-  }
-}
+    creator: Address; // Address that created the atom
+    termId: Hex; // Unique atom identifier
+    atomData: Hex; // Encoded atom data
+    atomWallet: Address; // Associated vault wallet address
+  };
+};
 ```
 
 ### Example Usage
 
 ```typescript
-const result = await createAtomFromString(config, 'developer')
+const result = await createAtomFromString(config, 'developer');
 
-console.log('Transaction:', result.transactionHash)
-console.log('Atom ID:', result.state.termId)
-console.log('Creator:', result.state.creator)
-console.log('Vault Wallet:', result.state.atomWallet)
+console.log('Transaction:', result.transactionHash);
+console.log('Atom ID:', result.state.termId);
+console.log('Creator:', result.state.creator);
+console.log('Vault Wallet:', result.state.atomWallet);
 ```
 
 ---
@@ -22803,7 +22926,7 @@ main()
 ---
 title: "Example: Thing IPFS Pinning"
 description: "Create rich entities with JSON-LD and automatic IPFS pinning"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-06-25T15:48:40-04:00"
 source: "https://docs.intuition.systems/docs/intuition-sdk/examples/thing-ipfs-pinning"
 ---
 
@@ -22815,107 +22938,100 @@ This example demonstrates creating a rich entity (Thing) with automatic IPFS pin
 
 ```typescript
 import {
+  configureSdk,
   intuitionTestnet,
   getMultiVaultAddressFromChainId,
   createAtomFromThing,
   pinThing,
   getAtomDetails,
   wait,
-} from '@0xintuition/sdk'
-import { createPublicClient, createWalletClient, http, parseEther } from 'viem'
-import { privateKeyToAccount } from 'viem/accounts'
+} from '@0xintuition/sdk';
+import { createPublicClient, createWalletClient, http, parseEther } from 'viem';
+import { privateKeyToAccount } from 'viem/accounts';
 
 async function main() {
   // Setup
-  const account = privateKeyToAccount(process.env.PRIVATE_KEY as `0x${string}`)
+  const account = privateKeyToAccount(process.env.PRIVATE_KEY as `0x${string}`);
+  configureSdk({
+    pinApiKey: process.env.INTUITION_PIN_API_KEY,
+  });
+
   const publicClient = createPublicClient({
     chain: intuitionTestnet,
     transport: http(),
-  })
+  });
   const walletClient = createWalletClient({
     chain: intuitionTestnet,
     transport: http(),
     account,
-  })
-  const address = getMultiVaultAddressFromChainId(intuitionTestnet.id)
+  });
+  const address = getMultiVaultAddressFromChainId(intuitionTestnet.id);
 
   // Define rich entity
   const project = {
     url: 'https://github.com/myorg/awesome-project',
     name: 'Awesome DeFi Protocol',
-    description: 'A groundbreaking decentralized finance protocol built on Intuition',
+    description:
+      'A groundbreaking decentralized finance protocol built on Intuition',
     image: 'https://myproject.com/logo.png',
-    tags: [
-      'defi',
-      'protocol',
-      'typescript',
-      'smart-contracts',
-      'intuition'
-    ],
-    twitter: 'https://twitter.com/awesomedefi',
-    github: 'github.com/myorg/awesome-project',
-  }
+  };
 
-  console.log('=== Project Metadata ===')
-  console.log(JSON.stringify(project, null, 2))
+  console.log('=== Project Metadata ===');
+  console.log(JSON.stringify(project, null, 2));
 
   // 1. Pin to IPFS (without creating atom)
-  console.log('\n=== Pinning to IPFS ===')
-  const ipfsUri = await pinThing({ thing: project })
+  console.log('\n=== Pinning to IPFS ===');
+  const ipfsUri = await pinThing(project);
 
-  if (!ipfsUri) {
-    throw new Error('Failed to pin to IPFS')
-  }
-
-  console.log('✓ Pinned to IPFS:', ipfsUri)
+  console.log('✓ Pinned to IPFS:', ipfsUri);
 
   // 2. Create atom with Thing (auto-pins and creates atom)
-  console.log('\n=== Creating Atom ===')
+  console.log('\n=== Creating Atom ===');
   const atom = await createAtomFromThing(
     { walletClient, publicClient, address },
     project,
-    parseEther('0.1')
-  )
+    { depositAmount: parseEther('0.1') },
+  );
 
-  console.log('✓ Atom created!')
-  console.log('  Atom ID:', atom.state.termId)
-  console.log('  IPFS URI:', atom.uri)
-  console.log('  Transaction:', atom.transactionHash)
+  console.log('✓ Atom created!');
+  console.log('  Atom ID:', atom.state.termId);
+  console.log('  IPFS URI:', atom.uri);
+  console.log('  Transaction:', atom.transactionHash);
 
   // 3. Wait for indexing
-  console.log('\nWaiting for indexing...')
-  await wait(atom.transactionHash)
+  console.log('\nWaiting for indexing...');
+  await wait(atom.transactionHash);
 
   // 4. Query details
-  const details = await getAtomDetails(atom.state.termId)
+  const details = await getAtomDetails(atom.state.termId);
 
-  console.log('\n=== Atom Details ===')
-  console.log('Label:', details.label)
-  console.log('Creator:', details.creator)
-  console.log('Vault ID:', details.vault.id)
-  console.log('Total Shares:', details.vault.totalShares)
+  console.log('\n=== Atom Details ===');
+  console.log('Label:', details.label);
+  console.log('Creator:', details.creator);
+  console.log('Vault ID:', details.vault.id);
+  console.log('Total Shares:', details.vault.totalShares);
 
-  console.log('\nSuccess!')
+  console.log('\nSuccess!');
 }
 
 main()
   .then(() => process.exit(0))
   .catch((error) => {
-    console.error('Error:', error)
-    process.exit(1)
-  })
+    console.error('Error:', error);
+    process.exit(1);
+  });
 ```
 
 ## See Also
 
-- [createAtomFromThing](../atoms/create-from-thing.md)
+- [createAtomFromThing](../atoms-guide.md#creating-from-thing)
 - [pinThing](../integrations/pinata-ipfs.md)
 - [IPFS Integration](../integrations/pinata-ipfs.md)
 
 ---
 title: "Installation & Setup"
 description: "Install the Intuition SDK and configure your development environment"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-06-25T15:48:40-04:00"
 source: "https://docs.intuition.systems/docs/intuition-sdk/installation-and-setup"
 ---
 
@@ -22960,11 +23076,14 @@ Create a test file to verify everything is working:
 import {
   intuitionTestnet,
   getMultiVaultAddressFromChainId,
-} from '@0xintuition/sdk'
+} from '@0xintuition/sdk';
 
-console.log('Network:', intuitionTestnet.name)
-console.log('Chain ID:', intuitionTestnet.id)
-console.log('MultiVault:', getMultiVaultAddressFromChainId(intuitionTestnet.id))
+console.log('Network:', intuitionTestnet.name);
+console.log('Chain ID:', intuitionTestnet.id);
+console.log(
+  'MultiVault:',
+  getMultiVaultAddressFromChainId(intuitionTestnet.id),
+);
 ```
 
 Run it with `npx tsx test-install.ts` or your preferred TypeScript runner.
@@ -22975,10 +23094,10 @@ Run it with `npx tsx test-install.ts` or your preferred TypeScript runner.
 
 The SDK uses [Viem](https://viem.sh) clients for blockchain interactions. You need two types:
 
-| Client Type | Purpose | Required For |
-|-------------|---------|--------------|
-| **Public Client** | Read-only operations | Querying data, checking balances |
-| **Wallet Client** | Write operations | Creating atoms, triples, deposits |
+| Client Type       | Purpose              | Required For                      |
+| ----------------- | -------------------- | --------------------------------- |
+| **Public Client** | Read-only operations | Querying data, checking balances  |
+| **Wallet Client** | Write operations     | Creating atoms, triples, deposits |
 
 ### Basic Setup
 
@@ -22986,28 +23105,28 @@ The SDK uses [Viem](https://viem.sh) clients for blockchain interactions. You ne
 import {
   intuitionTestnet,
   getMultiVaultAddressFromChainId,
-} from '@0xintuition/sdk'
-import { createPublicClient, createWalletClient, http } from 'viem'
-import { privateKeyToAccount } from 'viem/accounts'
+} from '@0xintuition/sdk';
+import { createPublicClient, createWalletClient, http } from 'viem';
+import { privateKeyToAccount } from 'viem/accounts';
 
 // 1. Create account from private key
-const account = privateKeyToAccount('0xYOUR_PRIVATE_KEY')
+const account = privateKeyToAccount('0xYOUR_PRIVATE_KEY');
 
 // 2. Create public client (for reading data)
 const publicClient = createPublicClient({
   chain: intuitionTestnet,
   transport: http(),
-})
+});
 
 // 3. Create wallet client (for transactions)
 const walletClient = createWalletClient({
   chain: intuitionTestnet,
   transport: http(),
   account,
-})
+});
 
 // 4. Get contract address
-const address = getMultiVaultAddressFromChainId(intuitionTestnet.id)
+const address = getMultiVaultAddressFromChainId(intuitionTestnet.id);
 ```
 
 ### Configuration Object
@@ -23015,13 +23134,13 @@ const address = getMultiVaultAddressFromChainId(intuitionTestnet.id)
 Most SDK functions accept a configuration object:
 
 ```typescript
-import type { WriteConfig } from '@0xintuition/sdk'
+import type { WriteConfig } from '@0xintuition/sdk';
 
 const config: WriteConfig = {
-  address,        // MultiVault contract address
-  publicClient,   // For reading blockchain data
-  walletClient,   // For sending transactions
-}
+  address, // MultiVault contract address
+  publicClient, // For reading blockchain data
+  walletClient, // For sending transactions
+};
 ```
 
 ---
@@ -23032,23 +23151,23 @@ The SDK supports multiple networks with built-in chain definitions.
 
 ### Supported Networks
 
-| Network | Chain ID | Type | Status |
-|---------|----------|------|--------|
-| Intuition Mainnet | 1155 | Production | ✅ Active |
-| Intuition Testnet | 13579 | Development | ✅ Active |
-| Base Mainnet | 8453 | Production | ✅ Active |
-| Base Sepolia | 84532 | Development | ✅ Active |
+| Network           | Chain ID | Type        | Status    |
+| ----------------- | -------- | ----------- | --------- |
+| Intuition Mainnet | 1155     | Production  | ✅ Active |
+| Intuition Testnet | 13579    | Development | ✅ Active |
+| Base Mainnet      | 8453     | Production  | ✅ Active |
+| Base Sepolia      | 84532    | Development | ✅ Active |
 
 ### Testnet Configuration
 
 ```typescript
-import { intuitionTestnet } from '@0xintuition/sdk'
-import { createPublicClient, http } from 'viem'
+import { intuitionTestnet } from '@0xintuition/sdk';
+import { createPublicClient, http } from 'viem';
 
 const publicClient = createPublicClient({
   chain: intuitionTestnet,
   transport: http(),
-})
+});
 
 // Network details available:
 // Chain ID: 13579
@@ -23060,13 +23179,13 @@ const publicClient = createPublicClient({
 ### Mainnet Configuration
 
 ```typescript
-import { intuitionMainnet } from '@0xintuition/sdk'
-import { createPublicClient, http } from 'viem'
+import { intuitionMainnet } from '@0xintuition/sdk';
+import { createPublicClient, http } from 'viem';
 
 const publicClient = createPublicClient({
   chain: intuitionMainnet,
   transport: http(),
-})
+});
 
 // Network details available:
 // Chain ID: 1155
@@ -23086,14 +23205,14 @@ import {
   getMultiVaultAddressFromChainId,
   getContractAddressFromChainId,
   intuitionDeployments,
-} from '@0xintuition/sdk'
+} from '@0xintuition/sdk';
 
 // Get MultiVault address (most commonly used)
-const multiVaultAddress = getMultiVaultAddressFromChainId(chainId)
+const multiVaultAddress = getMultiVaultAddressFromChainId(chainId);
 
 // Get other contract addresses
-const trustBonding = getContractAddressFromChainId('TrustBonding', chainId)
-const wrappedTrust = getContractAddressFromChainId('WrappedTrust', chainId)
+const trustBonding = getContractAddressFromChainId('TrustBonding', chainId);
+const wrappedTrust = getContractAddressFromChainId('WrappedTrust', chainId);
 ```
 
 ---
@@ -23103,31 +23222,29 @@ const wrappedTrust = getContractAddressFromChainId('WrappedTrust', chainId)
 ### Private Key
 
 ```typescript
-import { privateKeyToAccount } from 'viem/accounts'
+import { privateKeyToAccount } from 'viem/accounts';
 
-const account = privateKeyToAccount('0xYOUR_PRIVATE_KEY')
+const account = privateKeyToAccount('0xYOUR_PRIVATE_KEY');
 ```
 
 ### Mnemonic Phrase
 
 ```typescript
-import { mnemonicToAccount } from 'viem/accounts'
+import { mnemonicToAccount } from 'viem/accounts';
 
-const account = mnemonicToAccount(
-  'your twelve word mnemonic phrase goes here'
-)
+const account = mnemonicToAccount('your twelve word mnemonic phrase goes here');
 ```
 
 ### Browser Wallet (MetaMask, etc.)
 
 ```typescript
-import { createWalletClient, custom } from 'viem'
-import { intuitionTestnet } from '@0xintuition/sdk'
+import { createWalletClient, custom } from 'viem';
+import { intuitionTestnet } from '@0xintuition/sdk';
 
 const walletClient = createWalletClient({
   chain: intuitionTestnet,
   transport: custom(window.ethereum),
-})
+});
 ```
 
 ---
@@ -23138,14 +23255,19 @@ Store sensitive data in environment variables:
 
 ```bash title=".env"
 PRIVATE_KEY=0xYOUR_PRIVATE_KEY
+INTUITION_PIN_API_KEY=your-intuition-pin-api-key
 PINATA_API_JWT=your-pinata-jwt-token
 ```
 
 ```typescript title="config.ts"
-import { privateKeyToAccount } from 'viem/accounts'
+import { configureSdk } from '@0xintuition/sdk';
+import { privateKeyToAccount } from 'viem/accounts';
 
-const account = privateKeyToAccount(process.env.PRIVATE_KEY as `0x${string}`)
-const pinataApiJWT = process.env.PINATA_API_JWT
+const account = privateKeyToAccount(process.env.PRIVATE_KEY as `0x${string}`);
+
+configureSdk({
+  pinApiKey: process.env.INTUITION_PIN_API_KEY,
+});
 ```
 
 ---
@@ -23179,7 +23301,7 @@ For optimal TypeScript support:
 const publicClient = createPublicClient({
   chain: intuitionTestnet,
   transport: http('https://your-custom-rpc-endpoint.com'),
-})
+});
 ```
 
 ### Fallback Transports
@@ -23187,7 +23309,7 @@ const publicClient = createPublicClient({
 Configure backup RPC endpoints for reliability:
 
 ```typescript
-import { fallback, http } from 'viem'
+import { fallback, http } from 'viem';
 
 const publicClient = createPublicClient({
   chain: intuitionTestnet,
@@ -23195,7 +23317,7 @@ const publicClient = createPublicClient({
     http('https://testnet.rpc.intuition.systems/http'),
     http('https://backup-rpc.example.com'),
   ]),
-})
+});
 ```
 
 ### Batch Requests (Multicall)
@@ -23209,7 +23331,7 @@ const publicClient = createPublicClient({
   batch: {
     multicall: true,
   },
-})
+});
 ```
 
 ---
@@ -23218,20 +23340,21 @@ const publicClient = createPublicClient({
 
 ```typescript title="intuition-client.ts"
 import {
+  configureSdk,
   intuitionTestnet,
   getMultiVaultAddressFromChainId,
-} from '@0xintuition/sdk'
-import type { WriteConfig } from '@0xintuition/sdk'
-import {
-  createPublicClient,
-  createWalletClient,
-  http,
-  fallback,
-} from 'viem'
-import { privateKeyToAccount } from 'viem/accounts'
+} from '@0xintuition/sdk';
+import type { WriteConfig } from '@0xintuition/sdk';
+import { createPublicClient, createWalletClient, http, fallback } from 'viem';
+import { privateKeyToAccount } from 'viem/accounts';
 
 // Account
-const account = privateKeyToAccount(process.env.PRIVATE_KEY as `0x${string}`)
+const account = privateKeyToAccount(process.env.PRIVATE_KEY as `0x${string}`);
+
+// Intuition pinning service
+configureSdk({
+  pinApiKey: process.env.INTUITION_PIN_API_KEY,
+});
 
 // Public client with fallback and batching
 const publicClient = createPublicClient({
@@ -23243,39 +23366,38 @@ const publicClient = createPublicClient({
   batch: {
     multicall: true,
   },
-})
+});
 
 // Wallet client
 const walletClient = createWalletClient({
   chain: intuitionTestnet,
   transport: http('https://testnet.rpc.intuition.systems/http'),
   account,
-})
+});
 
 // Contract address
-const address = getMultiVaultAddressFromChainId(intuitionTestnet.id)
+const address = getMultiVaultAddressFromChainId(intuitionTestnet.id);
 
 // Export configuration
 export const config: WriteConfig = {
   address,
   publicClient,
   walletClient,
-  pinataApiJWT: process.env.PINATA_API_JWT,
-}
+};
 ```
 
 ---
 
 ## Optional: Pinata for IPFS
 
-For IPFS operations (uploading metadata), you'll need a Pinata API token:
+For direct Pinata upload operations, you'll need a Pinata API token:
 
 1. Sign up at [pinata.cloud](https://pinata.cloud)
 2. Create an API key and get your JWT token
-3. Pass it in the config when using IPFS upload functions
+3. Pass it in the config when using direct Pinata upload functions
 
 ```typescript
-import { createAtomFromIpfsUpload } from '@0xintuition/sdk'
+import { createAtomFromIpfsUpload } from '@0xintuition/sdk';
 
 const atom = await createAtomFromIpfsUpload(
   {
@@ -23287,8 +23409,8 @@ const atom = await createAtomFromIpfsUpload(
   {
     name: 'My Project',
     description: 'A blockchain project',
-  }
-)
+  },
+);
 ```
 
 ---
@@ -23341,216 +23463,218 @@ npm install
 - [GraphQL API](/docs/graphql-api/overview) - Query protocol data
 
 ---
-title: "Pinata IPFS Integration"
-description: "Upload and pin content to IPFS using Pinata integration"
-last_updated: "2026-01-05T17:16:01-08:00"
+title: "IPFS Pinning"
+description: "Pin metadata to IPFS using the Intuition pinning service or direct Pinata uploads"
+last_updated: "2026-06-25T15:48:40-04:00"
 source: "https://docs.intuition.systems/docs/intuition-sdk/integrations/pinata-ipfs"
 ---
 
-# Pinata IPFS Integration
+# IPFS Pinning
 
-Upload and pin content to IPFS using Pinata or the Intuition API.
+The SDK supports two IPFS paths:
+
+| Path                      | Use for                                                         | Credential                          |
+| ------------------------- | --------------------------------------------------------------- | ----------------------------------- |
+| Intuition pinning service | `pinThing`, `createAtomFromThing`, `batchCreateAtomsFromThings` | Intuition pin API key (`pinApiKey`) |
+| Direct Pinata upload      | `uploadJsonToPinata`, `createAtomFromIpfsUpload`                | Pinata API JWT (`pinataApiJWT`)     |
+
+`pinThing` does not require a Pinata account, but it does require an Intuition pin API key. Keep API keys in a trusted server runtime and do not expose them in public browser environment variables.
+
+## Intuition Pin API Key
+
+Configure the SDK once before calling `pinThing` or any SDK helper that auto-pins Thing metadata:
+
+```typescript
+import { configureSdk } from '@0xintuition/sdk';
+
+configureSdk({
+  pinApiKey: process.env.INTUITION_PIN_API_KEY,
+});
+```
+
+You can also pass the key per call:
+
+```typescript
+const uri = await pinThing(thing, {
+  pinApiKey: process.env.INTUITION_PIN_API_KEY,
+});
+```
 
 ## pinThing
 
-Pin a Thing object to IPFS via the Intuition API (no Pinata key required).
+Pin a Thing object to IPFS via the Intuition pinning service.
+
+SDK helpers accept the Thing fields directly (`name`, `description`, `image`, `url`). Raw GraphQL mutation requests use the GraphQL `thing` input wrapper.
 
 ### Function Signature
 
 ```typescript
 function pinThing(
-  variables: PinThingMutationVariables
-): Promise<string | null>
+  variables: PinThingMutationVariables,
+  options?: PinThingOptions,
+): Promise<string>;
 ```
 
 ### Basic Example
 
 ```typescript
-import { pinThing } from '@0xintuition/sdk'
+import { configureSdk, pinThing } from '@0xintuition/sdk';
+
+configureSdk({
+  pinApiKey: process.env.INTUITION_PIN_API_KEY,
+});
 
 const uri = await pinThing({
-  thing: {
-    url: 'https://example.com',
-    name: 'Example Project',
-    description: 'A great project',
-    image: 'https://example.com/logo.png',
-    tags: ['blockchain', 'defi'],
-  }
-})
+  url: 'https://example.com',
+  name: 'Example Project',
+  description: 'A great project',
+  image: 'https://example.com/logo.png',
+});
 
-if (uri) {
-  console.log('Pinned to IPFS:', uri) // ipfs://bafkreib...
-}
+console.log('Pinned to IPFS:', uri); // ipfs://bafkreib...
 ```
 
-## uploadJsonToPinata
+### Pin Thing and Create Atom
 
-Upload JSON directly to Pinata (requires Pinata API JWT).
+Use `createAtomFromThing` when you want the SDK to pin the Thing metadata and create the atom in one flow:
 
-### Function Signature
+```typescript
+import { configureSdk, createAtomFromThing } from '@0xintuition/sdk';
+import { parseEther } from 'viem';
+
+configureSdk({
+  pinApiKey: process.env.INTUITION_PIN_API_KEY,
+});
+
+const atom = await createAtomFromThing(
+  { walletClient, publicClient, address },
+  {
+    url: 'https://myproject.com',
+    name: 'My Project',
+    description: 'A blockchain project',
+    image: 'https://myproject.com/logo.png',
+  },
+  { depositAmount: parseEther('0.05') },
+);
+
+console.log('Atom created:', atom.state.termId);
+console.log('IPFS URI:', atom.uri);
+```
+
+## Direct Pinata Uploads
+
+Use direct Pinata uploads when you want to bring your own Pinata account. These paths do not use the Intuition pin API key.
+
+### uploadJsonToPinata
+
+Upload JSON directly to Pinata.
+
+#### Function Signature
 
 ```typescript
 function uploadJsonToPinata(
   pinataApiJWT: string,
-  data: object
-): Promise<PinataUploadResult>
+  data: object,
+): Promise<PinataUploadResult>;
 ```
 
-### Basic Example
+#### Basic Example
 
 ```typescript
-import { uploadJsonToPinata } from '@0xintuition/sdk'
+import { uploadJsonToPinata } from '@0xintuition/sdk';
 
-const result = await uploadJsonToPinata(
-  'your-pinata-jwt-token',
-  {
-    name: 'My Data',
-    description: 'Some metadata',
-    properties: {
-      key: 'value'
-    }
-  }
-)
+const result = await uploadJsonToPinata(process.env.PINATA_API_JWT!, {
+  name: 'My Data',
+  description: 'Some metadata',
+  properties: {
+    key: 'value',
+  },
+});
 
-console.log('IPFS Hash:', result.IpfsHash)
-console.log('Size:', result.PinSize, 'bytes')
-console.log('URI:', `ipfs://${result.IpfsHash}`)
+console.log('IPFS Hash:', result.IpfsHash);
+console.log('Size:', result.PinSize, 'bytes');
+console.log('URI:', `ipfs://${result.IpfsHash}`);
 ```
 
 ### Return Type
 
 ```typescript
 type PinataUploadResult = {
-  IpfsHash: string
-  PinSize: number
-  Timestamp: string
-}
+  IpfsHash: string;
+  PinSize: number;
+  Timestamp: string;
+};
 ```
 
 ## Getting a Pinata API Key
 
+Direct Pinata upload paths require a Pinata API JWT:
+
 1. Sign up at [pinata.cloud](https://pinata.cloud)
-2. Go to API Keys section
+2. Go to API Keys
 3. Create a new API key
 4. Copy the JWT token
-5. Store securely in environment variables
+5. Store it securely in environment variables
 
 ```bash title=".env"
 PINATA_API_JWT=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 ```
 
-## Common Use Cases
-
-### Pin Thing and Create Atom
+## Batch Pin Multiple Items
 
 ```typescript
-import { pinThing, createAtomFromIpfsUri } from '@0xintuition/sdk'
-import { parseEther } from 'viem'
+import { configureSdk, pinThing } from '@0xintuition/sdk';
 
-const thing = {
-  url: 'https://myproject.com',
-  name: 'My Project',
-  description: 'A blockchain project',
-  tags: ['defi', 'web3'],
-}
-
-// Pin to IPFS
-const uri = await pinThing({ thing })
-
-if (uri) {
-  // Create atom with IPFS URI
-  const atom = await createAtomFromIpfsUri(
-    config,
-    uri,
-    parseEther('0.05')
-  )
-
-  console.log('Atom created:', atom.state.termId)
-}
-```
-
-### Upload Custom Metadata
-
-```typescript
-import { uploadJsonToPinata } from '@0xintuition/sdk'
-
-const metadata = {
-  title: 'NFT #1',
-  description: 'Unique digital asset',
-  image: 'https://example.com/nft1.png',
-  attributes: [
-    { trait_type: 'Rarity', value: 'Legendary' },
-    { trait_type: 'Power', value: 100 },
-  ]
-}
-
-const result = await uploadJsonToPinata(
-  process.env.PINATA_API_JWT,
-  metadata
-)
-
-console.log('Metadata URI:', `ipfs://${result.IpfsHash}`)
-```
-
-### Batch Pin Multiple Items
-
-```typescript
-import { pinThing } from '@0xintuition/sdk'
+configureSdk({
+  pinApiKey: process.env.INTUITION_PIN_API_KEY,
+});
 
 async function batchPin(things: any[]) {
-  const uris = await Promise.all(
-    things.map(thing => pinThing({ thing }))
-  )
-
-  return uris.filter(uri => uri !== null)
+  return Promise.all(things.map((thing) => pinThing(thing)));
 }
 
-// Usage
 const projects = [
-  { name: 'Project A', url: 'https://a.com' },
-  { name: 'Project B', url: 'https://b.com' },
-]
+  {
+    name: 'Project A',
+    description: 'Project A metadata',
+    image: 'https://a.com/logo.png',
+    url: 'https://a.com',
+  },
+  {
+    name: 'Project B',
+    description: 'Project B metadata',
+    image: 'https://b.com/logo.png',
+    url: 'https://b.com',
+  },
+];
 
-const ipfsUris = await batchPin(projects)
-console.log('Pinned', ipfsUris.length, 'items to IPFS')
+const ipfsUris = await batchPin(projects);
+console.log('Pinned', ipfsUris.length, 'items to IPFS');
 ```
 
 ## Error Handling
 
 ```typescript
-import { pinThing } from '@0xintuition/sdk'
+import { pinThing } from '@0xintuition/sdk';
 
 async function safePinThing(thing: any) {
   try {
-    const uri = await pinThing({ thing })
-
-    if (!uri) {
-      throw new Error('Pinning returned null')
-    }
-
-    return { success: true, uri }
-
+    const uri = await pinThing(thing);
+    return { success: true, uri };
   } catch (error) {
-    console.error('Failed to pin:', error)
-    return { success: false, error: error.message }
+    console.error('Failed to pin:', error);
+    return { success: false, error: error.message };
   }
-}
-
-// Usage
-const result = await safePinThing({ name: 'Test', url: 'https://test.com' })
-
-if (result.success) {
-  console.log('Pinned:', result.uri)
-} else {
-  console.error('Error:', result.error)
 }
 ```
 
+Common causes include a missing `pinApiKey`, an invalid API key, missing metadata fields, or image URLs that cannot be fetched by the pinning service.
+
 ## Related Functions
 
-- [**createAtomFromThing**](../atoms/create-from-thing.md) - Create atom with auto-pinning
-- [**createAtomFromIpfsUri**](../atoms/create-from-ipfs.md) - Create from IPFS URI
-- [**createAtomFromIpfsUpload**](../atoms/create-from-ipfs.md#createatomfromipfsupload) - Upload and create
+- [**createAtomFromThing**](../atoms-guide.md#creating-from-thing) - Create atom with auto-pinning
+- [**createAtomFromIpfsUri**](../atoms-guide.md#createatomfromipfsuri) - Create from IPFS URI
+- [**createAtomFromIpfsUpload**](../atoms-guide.md#createatomfromipfsupload) - Upload directly to Pinata and create
 
 ## See Also
 
@@ -33999,7 +34123,7 @@ If you have any questions visit the [Intuition Discord](https://discord.gg/RgBen
 ---
 title: "Using the SDK"
 description: "Get started building with Intuition in minutes."
-last_updated: "2026-06-22T14:26:07-04:00"
+last_updated: "2026-06-25T15:48:40-04:00"
 source: "https://docs.intuition.systems/docs/quick-start/using-the-sdk"
 ---
 
@@ -34033,9 +34157,9 @@ If you need to interact with the Intuition contracts directly, you will need to 
 - Basic knowledge of React and TypeScript
 
 This guide uses the v2 contract architecture and requires the following package versions:
-- [`@0xintuition/sdk@^2.0.0`](https://www.npmjs.com/package/@0xintuition/sdk)
+- [`@0xintuition/sdk@^3.0.0`](https://www.npmjs.com/package/@0xintuition/sdk)
 - [`@0xintuition/protocol@^2.0.0`](https://www.npmjs.com/package/@0xintuition/protocol)
-- [`@0xintuition/graphql@^2.0.0`](https://www.npmjs.com/package/@0xintuition/graphql)
+- [`@0xintuition/graphql@^3.0.0`](https://www.npmjs.com/package/@0xintuition/graphql)
 
 ### Setup A Public and Wallet Provider
 The Intuition SDK is designed to work with the [viem](https://viem.sh/) library. You will need to setup a public client and a wallet client to interact with the Intuition contracts via the `@0xintuition/sdk` and `@0xintuition/protocol` packages.

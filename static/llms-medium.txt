@@ -1321,37 +1321,29 @@ source: "https://docs.intuition.systems/docs/graphql-api/migration-guide"
 ---
 title: "Image & IPFS Operations"
 description: "Upload images and JSON data to IPFS"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-06-25T15:48:40-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/mutations/images/overview"
 ---
 
 # Image & IPFS Operations
 
-The Intuition GraphQL API provides mutations for uploading images and JSON data to IPFS (InterPlanetary File System). These operations return IPFS hashes that can be used in atom creation.
+The Intuition GraphQL API provides mutations for uploading images and JSON data to IPFS (InterPlanetary File System). Image uploads return cached image URLs, while JSON uploads return IPFS hashes that can be used in atom creation.
+
+Image and JSON upload mutations use the public gated pinning endpoint, `https://pin.intuition.systems/v1/graphql`, and require an `apikey` request header. Keep the API key server-side.
 
 ## Available Operations
 
-| Operation | Description |
-|-----------|-------------|
-| [`uploadImage`](./upload-image) | Upload a base64-encoded image to IPFS |
-| [`uploadImageFromUrl`](./upload-image-from-url) | Upload an image from a URL to IPFS |
-| [`uploadJsonToIpfs`](./upload-json-to-ipfs) | Upload JSON metadata to IPFS |
-
-## Use Cases
-
-### Atom Creation Workflow
-
-When creating atoms with images or metadata:
-
-1. Upload image using `uploadImage` or `uploadImageFromUrl`
-2. Upload JSON metadata using `uploadJsonToIpfs`
+| Operation                                       | Description                           |
+| ----------------------------------------------- | ------------------------------------- |
+| [`uploadImage`](./upload-image)                 | Upload a base64-encoded image to IPFS |
+| [`uploadImageFromUrl`](./upload-image-from-url) | Upload an image from a URL to IPFS    |
 
 [... see full docs for complete content]
 
 ---
 title: "Upload Image from URL"
 description: "Upload an image from a URL"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-06-25T15:48:40-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/mutations/images/upload-image-from-url"
 ---
 
@@ -1359,30 +1351,28 @@ source: "https://docs.intuition.systems/docs/graphql-api/mutations/images/upload
 
 Upload an image by providing its URL. The server fetches, caches, and moderates the image. Returns a `CachedImage` with the hosted URL and safety score.
 
+## Endpoint and Auth
+
+Use the public gated endpoint, `https://pin.intuition.systems/v1/graphql`, with an `apikey` request header. Keep the key in a trusted server runtime.
+
 ## Mutation Structure
 
 ## Variables
 
 The mutation takes an `image` argument with the `UploadImageFromUrlInput` type:
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `url` | `String` | Yes | URL of the image to upload |
+| Field | Type     | Required | Description                |
+| ----- | -------- | -------- | -------------------------- |
+| `url` | `String` | Yes      | URL of the image to upload |
 
 ## Response Fields
-
-Returns `UploadImageFromUrlOutput` containing an `images` array of `CachedImage` objects:
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `images` | `[CachedImage!]!` | Array of cached image results |
 
 [... see full docs for complete content]
 
 ---
 title: "Upload Image"
 description: "Upload a base64-encoded image via the API"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-06-25T15:48:40-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/mutations/images/upload-image"
 ---
 
@@ -1390,28 +1380,26 @@ source: "https://docs.intuition.systems/docs/graphql-api/mutations/images/upload
 
 Upload a base64-encoded image. The image is cached and a moderation check is performed. Returns a `CachedImage` with the hosted URL and safety score.
 
+## Endpoint and Auth
+
+Use the public gated endpoint, `https://pin.intuition.systems/v1/graphql`, with an `apikey` request header. Keep the key in a trusted server runtime.
+
 ## Mutation Structure
 
 ## Variables
 
 The mutation takes an `image` argument with the `UploadImageInput` type:
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `data` | `String` | Yes | Base64-encoded image data |
-| `filename` | `String` | Yes | Filename with extension |
-| `contentType` | `String` | Yes | MIME type (e.g. `"image/png"`) |
-
-## Response Fields
-
-Returns `UploadImageFromUrlOutput` containing an `images` array of `CachedImage` objects:
+| Field         | Type     | Required | Description                    |
+| ------------- | -------- | -------- | ------------------------------ |
+| `data`        | `String` | Yes      | Base64-encoded image data      |
 
 [... see full docs for complete content]
 
 ---
 title: "Upload JSON to IPFS"
 description: "Upload JSON metadata to IPFS"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-06-25T15:48:40-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/mutations/images/upload-json-to-ipfs"
 ---
 
@@ -1419,36 +1407,29 @@ source: "https://docs.intuition.systems/docs/graphql-api/mutations/images/upload
 
 Upload JSON metadata to IPFS for use in atom creation. Returns the IPFS hash, name, and size.
 
+## Endpoint and Auth
+
+Use the public gated endpoint, `https://pin.intuition.systems/v1/graphql`, with an `apikey` request header. Keep the key in a trusted server runtime.
+
 ## Mutation Structure
 
 ## Variables
 
-| Variable | Type | Required | Description |
-|----------|------|----------|-------------|
-| `json` | `jsonb` | Yes | JSON object to upload |
+| Variable | Type    | Required | Description           |
+| -------- | ------- | -------- | --------------------- |
+| `json`   | `jsonb` | Yes      | JSON object to upload |
 
 ## Response Fields
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `hash` | `String!` | IPFS content hash (CID) |
-| `name` | `String!` | Filename on IPFS |
-| `size` | `String!` | File size |
-
-## Expected Response
-
-## Interactive Example
-
-    id: 'upload-thing-metadata',
-    title: 'Upload Thing Metadata',
-    query: `mutation UploadJsonToIpfs($json: jsonb!) {
+| Field  | Type      | Description             |
+| ------ | --------- | ----------------------- |
 
 [... see full docs for complete content]
 
 ---
 title: "Pin Organization"
 description: "Pin Organization metadata to IPFS"
-last_updated: "2026-02-28T21:52:51-05:00"
+last_updated: "2026-06-25T15:48:40-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/mutations/pin-organization"
 ---
 
@@ -1457,6 +1438,12 @@ source: "https://docs.intuition.systems/docs/graphql-api/mutations/pin-organizat
 # Pin Organization Mutation
 
 Pin an Organization entity to IPFS for use in atom creation.
+
+## Endpoint and Auth
+
+Use the public gated pinning endpoint and send your Intuition pin API key in an `apikey` header:
+
+`pinOrganization` is available as a raw GraphQL mutation. The SDK currently exposes a `pinThing` helper, but not a first-class `pinOrganization` helper.
 
 ## Mutation Structure
 
@@ -1472,7 +1459,7 @@ Pin an Organization entity to IPFS for use in atom creation.
 ---
 title: "Pin Person"
 description: "Pin Person metadata to IPFS"
-last_updated: "2026-02-28T21:52:51-05:00"
+last_updated: "2026-06-25T15:48:40-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/mutations/pin-person"
 ---
 
@@ -1481,6 +1468,12 @@ source: "https://docs.intuition.systems/docs/graphql-api/mutations/pin-person"
 # Pin Person Mutation
 
 Pin a Person entity to IPFS for use in atom creation.
+
+## Endpoint and Auth
+
+Use the public gated pinning endpoint and send your Intuition pin API key in an `apikey` header:
+
+`pinPerson` is available as a raw GraphQL mutation. The SDK currently exposes a `pinThing` helper, but not a first-class `pinPerson` helper.
 
 ## Mutation Structure
 
@@ -1496,7 +1489,7 @@ Pin a Person entity to IPFS for use in atom creation.
 ---
 title: "Pin Thing"
 description: "Pin Thing metadata to IPFS"
-last_updated: "2026-02-28T21:52:51-05:00"
+last_updated: "2026-06-25T15:48:40-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/mutations/pin-thing"
 ---
 
@@ -1505,6 +1498,12 @@ source: "https://docs.intuition.systems/docs/graphql-api/mutations/pin-thing"
 # Pin Thing Mutation
 
 Pin a "Thing" object (general entity) to IPFS for use in atom creation.
+
+## Endpoint and Auth
+
+Use the public gated pinning endpoint and send your Intuition pin API key in an `apikey` header:
+
+Keep the key in a trusted server runtime. Do not pass it in the URL or expose it in public browser environment variables.
 
 ## Mutation Structure
 
@@ -1521,15 +1520,12 @@ Pin a "Thing" object (general entity) to IPFS for use in atom creation.
 
 ## Best Practices
 
-1. **Upload images first** if needed using `uploadImage`
-2. **Include all metadata** fields for rich display
-3. **Store IPFS URI** for future reference
-4. **Wait for indexing** before querying the atom
+[... see full docs for complete content]
 
 ---
 title: "GraphQL NPM Package"
 description: "Comprehensive guide to use the Intuition GraphQL NPM package"
-last_updated: "2026-02-19T15:00:01-05:00"
+last_updated: "2026-06-25T15:48:40-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/npm-package"
 ---
 
@@ -1558,7 +1554,8 @@ Install the package using your preferred package manager:
 Configure the GraphQL client at the root of your application:
 
 **Available API URLs:**
-- `API_URL_PROD`: `https://testnet.intuition.sh/v1/graphql` (default)
+
+- `API_URL_PROD`: `https://mainnet.intuition.sh/v1/graphql` (default)
 
 [... see full docs for complete content]
 
@@ -3722,7 +3719,7 @@ Select a use case above to see detailed step-by-step implementation guides.
 ---
 title: "Writes"
 description: "Guide to write data using GraphQL mutations in the Intuition API"
-last_updated: "2026-02-28T21:52:51-05:00"
+last_updated: "2026-06-25T15:48:40-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/writes"
 ---
 
@@ -3732,23 +3729,17 @@ source: "https://docs.intuition.systems/docs/graphql-api/writes"
 
 The Intuition GraphQL API provides mutations for **off-chain operations** like uploading metadata to IPFS. For **on-chain operations** like creating atoms, triples, and positions, you must use the [Intuition SDK](/docs/intuition-sdk/installation-and-setup) or interact directly with the smart contracts.
 
+Pinning mutations are served from the public gated endpoint, `https://pin.intuition.systems/v1/graphql`, not the read endpoint. Send your Intuition pin API key in an `apikey` request header from a trusted server runtime.
+
 **GraphQL mutations** handle:
+
 - Uploading metadata to IPFS (pinThing, pinPerson, pinOrganization)
 
 **Smart contract operations** handle:
+
 - Creating atoms
 - Creating triples
 - Taking positions (depositing/redeeming)
-- All on-chain state changes
-
-Use the [SDK](/docs/intuition-sdk/installation-and-setup) for smart contract interactions.
-
-## Available Mutations
-
-### IPFS & Metadata Mutations
-
-| Mutation | Description | Documentation |
-|----------|-------------|---------------|
 
 [... see full docs for complete content]
 
@@ -4647,7 +4638,7 @@ The workspace is structured into logical layers:
 ---
 title: "Working with Atoms"
 description: "Create and query atoms using the SDK"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-06-25T15:48:40-04:00"
 source: "https://docs.intuition.systems/docs/intuition-sdk/atoms-guide"
 ---
 
@@ -4677,8 +4668,7 @@ The simplest way to create an atom is from a plain string.
 
 ### Parameters
 
-| Parameter | Type | Description | Required |
-|-----------|------|-------------|----------|
+| Parameter | Type          | Description                                                           | Required |
 
 [... see full docs for complete content]
 
@@ -4823,7 +4813,7 @@ This example demonstrates using global search to find entities across the Intuit
 ---
 title: "Example: Thing IPFS Pinning"
 description: "Create rich entities with JSON-LD and automatic IPFS pinning"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-06-25T15:48:40-04:00"
 source: "https://docs.intuition.systems/docs/intuition-sdk/examples/thing-ipfs-pinning"
 ---
 
@@ -4835,14 +4825,14 @@ This example demonstrates creating a rich entity (Thing) with automatic IPFS pin
 
 ## See Also
 
-- [createAtomFromThing](../atoms/create-from-thing.md)
+- [createAtomFromThing](../atoms-guide.md#creating-from-thing)
 - [pinThing](../integrations/pinata-ipfs.md)
 - [IPFS Integration](../integrations/pinata-ipfs.md)
 
 ---
 title: "Installation & Setup"
 description: "Install the Intuition SDK and configure your development environment"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-06-25T15:48:40-04:00"
 source: "https://docs.intuition.systems/docs/intuition-sdk/installation-and-setup"
 ---
 
@@ -4871,45 +4861,24 @@ For a complete list of `0xintuition/protocol` functions and interfaces, see the 
 [... see full docs for complete content]
 
 ---
-title: "Pinata IPFS Integration"
-description: "Upload and pin content to IPFS using Pinata integration"
-last_updated: "2026-01-05T17:16:01-08:00"
+title: "IPFS Pinning"
+description: "Pin metadata to IPFS using the Intuition pinning service or direct Pinata uploads"
+last_updated: "2026-06-25T15:48:40-04:00"
 source: "https://docs.intuition.systems/docs/intuition-sdk/integrations/pinata-ipfs"
 ---
 
-# Pinata IPFS Integration
+# IPFS Pinning
 
-Upload and pin content to IPFS using Pinata or the Intuition API.
+The SDK supports two IPFS paths:
 
-## pinThing
+| Path                      | Use for                                                         | Credential                          |
+| ------------------------- | --------------------------------------------------------------- | ----------------------------------- |
+| Intuition pinning service | `pinThing`, `createAtomFromThing`, `batchCreateAtomsFromThings` | Intuition pin API key (`pinApiKey`) |
+| Direct Pinata upload      | `uploadJsonToPinata`, `createAtomFromIpfsUpload`                | Pinata API JWT (`pinataApiJWT`)     |
 
-Pin a Thing object to IPFS via the Intuition API (no Pinata key required).
+`pinThing` does not require a Pinata account, but it does require an Intuition pin API key. Keep API keys in a trusted server runtime and do not expose them in public browser environment variables.
 
-### Function Signature
-
-### Basic Example
-
-## uploadJsonToPinata
-
-Upload JSON directly to Pinata (requires Pinata API JWT).
-
-### Function Signature
-
-### Basic Example
-
-### Return Type
-
-## Getting a Pinata API Key
-
-1. Sign up at [pinata.cloud](https://pinata.cloud)
-2. Go to API Keys section
-3. Create a new API key
-4. Copy the JWT token
-5. Store securely in environment variables
-
-## Common Use Cases
-
-### Pin Thing and Create Atom
+## Intuition Pin API Key
 
 [... see full docs for complete content]
 
@@ -6584,7 +6553,7 @@ If you have any questions visit the [Intuition Discord](https://discord.gg/RgBen
 ---
 title: "Using the SDK"
 description: "Get started building with Intuition in minutes."
-last_updated: "2026-06-22T14:26:07-04:00"
+last_updated: "2026-06-25T15:48:40-04:00"
 source: "https://docs.intuition.systems/docs/quick-start/using-the-sdk"
 ---
 
