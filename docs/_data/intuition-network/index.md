@@ -86,7 +86,7 @@ The Rust-based indexing subnet provides:
 - **Fast queries** - Optimized database for knowledge graph traversal
 - **GraphQL API** - Flexible query language for complex graph operations
 - **Real-time updates** - Live data synchronization
-- **Semantic search** - Full-text search across atoms and triples
+- **Search APIs** - Query atoms, triples, and indexed graph data
 
 Learn more: [GraphQL API](/docs/graphql-api/overview)
 

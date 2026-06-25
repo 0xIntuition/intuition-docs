@@ -2337,7 +2337,6 @@ Use Intuition's knowledge graph with AI systems and agents to create persistent,
 - **AI agents with persistent memory** - Store and retrieve agent knowledge on-chain
 - **LLM context enhancement** - Provide verified context to language models
 - **Knowledge graph reasoning** - Enable semantic reasoning over structured data
-- **Semantic search for AI** - Query knowledge graphs for relevant information
 - **AI-assisted app development** - Give coding agents canonical protocol context before they modify Intuition reads or writes
 
 ## Coming Soon
@@ -3117,7 +3116,7 @@ query GetFollowingEfficiently($address: String!) {
 
 - `following`: Get accounts a user follows
 - `positions_from_following`: Social feed of positions
-- `search_term`: Semantic search
+- `search_term`: Text search
 - `signals_from_following`: Activity from followed accounts
 
 ## Benefits
@@ -4953,7 +4952,7 @@ Subscribe to real-time updates using cursor-based streaming for live data feeds.
 
 ### Database Functions
 
-Leverage backend functions for complex queries like social graph traversal, semantic search, and position filtering.
+Leverage backend functions for complex queries like social graph traversal, text search, and position filtering.
 
 ## Use Cases
 
@@ -8172,10 +8171,10 @@ query GetPositionsFromFollowing($address: String!, $limit: Int!) {
 
 ### search_term
 
-Semantic search:
+Text search:
 
 ```graphql
-query SemanticSearch($query: String!, $limit: Int!) {
+query SearchTerms($query: String!, $limit: Int!) {
   search_term(args: { query: $query }, limit: $limit) {
     atom {
       term_id
@@ -8908,14 +8907,14 @@ const query = `
 
 ---
 title: "Atom Search"
-description: "Full-text and semantic search for atoms"
+description: "Full-text and pattern matching search for atoms"
 last_updated: "2026-01-05T17:16:01-08:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/atoms/search"
 ---
 
 # Atom Search
 
-Search atoms using pattern matching and semantic search capabilities.
+Search atoms using pattern matching and full-text query patterns.
 
 ## Query Structure
 
@@ -8936,21 +8935,6 @@ query SearchAtoms($search: String!, $limit: Int!) {
     label
     image
     type
-  }
-}
-```
-
-### Semantic Search
-
-```graphql
-query SemanticSearch($query: String!, $limit: Int) {
-  search_term(args: { query: $query }, limit: $limit) {
-    atom {
-      term_id
-      label
-      type
-      image
-    }
   }
 }
 ```
@@ -8978,23 +8962,6 @@ query SemanticSearch($query: String!, $limit: Int) {
 }`,
     variables: {
       search: '%ethereum%',
-      limit: 20
-
-  },
-
-    id: 'semantic-search',
-    title: 'Semantic Search',
-    query: `query SemanticSearch($query: String!, $limit: Int!) {
-  search_term(args: { query: $query }, limit: $limit) {
-    atom {
-      term_id
-      label
-      type
-      image
-
-}`,
-    variables: {
-      query: 'blockchain technology',
       limit: 20
 
 ];
@@ -9092,7 +9059,6 @@ const query = `
 
 - **Use wildcards sparingly**: `%term%` is slower than `term%`
 - **Limit results**: Always include limit
-- **Consider semantic search**: For natural language queries
 
 ## Related Patterns
 
@@ -20442,7 +20408,7 @@ The Rust-based indexing subnet provides:
 - **Fast queries** - Optimized database for knowledge graph traversal
 - **GraphQL API** - Flexible query language for complex graph operations
 - **Real-time updates** - Live data synchronization
-- **Semantic search** - Full-text search across atoms and triples
+- **Search APIs** - Query atoms, triples, and indexed graph data
 
 Learn more: [GraphQL API](/docs/graphql-api/overview)
 
@@ -25265,7 +25231,6 @@ Now that you've created your first atom and triple, explore:
 
 ### Search & Discovery
 - [**Global Search**](../search/global-search.md) - Search across all entities
-- [**Semantic Search**](../search/advanced-queries.md) - Find similar content
 
 ## Common Issues
 
@@ -25309,7 +25274,7 @@ source: "https://docs.intuition.systems/docs/intuition-sdk/search-guide"
 
 # Search and Discovery
 
-Discover atoms, triples, accounts, and collections using powerful search capabilities including full-text search, semantic search, and batch entity lookups.
+Discover atoms, triples, accounts, and collections using search, filters, and batch entity lookups.
 
 ## Table of Contents
 
@@ -25614,37 +25579,7 @@ triples.forEach(triple => {
 
 ## Advanced Queries
 
-Advanced search capabilities including semantic search and batch entity lookups.
-
-### semanticSearch
-
-Search using vector embeddings for semantically similar content.
-
-#### Function Signature
-
-```typescript
-function semanticSearch(
-  query: string,
-  options?: { limit?: number }
-): Promise<SemanticSearchResults | null>
-```
-
-#### Basic Example
-
-```typescript
-import { semanticSearch } from '@0xintuition/sdk'
-
-const results = await semanticSearch('decentralized knowledge graph', {
-  limit: 10,
-})
-
-if (results) {
-  console.log('Semantically similar atoms:', results.length)
-  results.forEach(result => {
-    console.log(`- ${result.label} (similarity: ${result.score})`)
-  })
-}
-```
+Advanced search helpers include batch entity lookup functions.
 
 ### findAtomIds
 
@@ -34333,21 +34268,6 @@ const results = await globalSearch('ethereum', {
 })
 
 console.log('Search results:', results)
-```
-
-### Semantic Search
-
-Use AI-powered semantic search to find relevant atoms:
-
-```typescript
-import { semanticSearch } from '@0xintuition/sdk'
-
-const results = await semanticSearch(
-  'decentralized identity protocols',
-  { limit: 5 }
-)
-
-console.log('Semantic search results:', results)
 ```
 
 ### Read On-Chain Atom Data

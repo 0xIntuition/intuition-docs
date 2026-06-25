@@ -53,10 +53,10 @@ query GetPositionsFromFollowing($address: String!, $limit: Int!) {
 
 ### search_term
 
-Semantic search:
+Text search:
 
 ```graphql
-query SemanticSearch($query: String!, $limit: Int!) {
+query SearchTerms($query: String!, $limit: Int!) {
   search_term(args: { query: $query }, limit: $limit) {
     atom {
       term_id

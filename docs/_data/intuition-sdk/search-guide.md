@@ -7,7 +7,7 @@ description: Search atoms, triples, and perform advanced queries
 
 # Search and Discovery
 
-Discover atoms, triples, accounts, and collections using powerful search capabilities including full-text search, semantic search, and batch entity lookups.
+Discover atoms, triples, accounts, and collections using search, filters, and batch entity lookups.
 
 ## Table of Contents
 
@@ -312,37 +312,7 @@ triples.forEach(triple => {
 
 ## Advanced Queries
 
-Advanced search capabilities including semantic search and batch entity lookups.
-
-### semanticSearch
-
-Search using vector embeddings for semantically similar content.
-
-#### Function Signature
-
-```typescript
-function semanticSearch(
-  query: string,
-  options?: { limit?: number }
-): Promise<SemanticSearchResults | null>
-```
-
-#### Basic Example
-
-```typescript
-import { semanticSearch } from '@0xintuition/sdk'
-
-const results = await semanticSearch('decentralized knowledge graph', {
-  limit: 10,
-})
-
-if (results) {
-  console.log('Semantically similar atoms:', results.length)
-  results.forEach(result => {
-    console.log(`- ${result.label} (similarity: ${result.score})`)
-  })
-}
-```
+Advanced search helpers include batch entity lookup functions.
 
 ### findAtomIds
 
