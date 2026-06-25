@@ -43,12 +43,25 @@ const PLAYGROUND_FILE = path.join(
 const ENDPOINTS = {
   mainnet: 'https://mainnet.intuition.sh/v1/graphql',
   testnet: 'https://testnet.intuition.sh/v1/graphql',
+  pin: 'https://pin.intuition.systems/v1/graphql',
 };
 
 const SCHEMA_FILES = {
   mainnet: path.join(SCRIPTS_DIR, 'graphql-schema-mainnet.json'),
   testnet: path.join(SCRIPTS_DIR, 'graphql-schema-testnet.json'),
+  pin: path.join(SCRIPTS_DIR, 'graphql-schema-pin.json'),
 };
+
+const READ_ENDPOINTS = ['mainnet', 'testnet'];
+const PIN_ENDPOINT = 'pin';
+const PINNING_MUTATION_FIELDS = new Set([
+  'pinOrganization',
+  'pinPerson',
+  'pinThing',
+  'uploadImage',
+  'uploadImageFromUrl',
+  'uploadJsonToIpfs',
+]);
 
 // ---------------------------------------------------------------------------
 // CLI argument parsing
@@ -58,7 +71,7 @@ function parseArgs(argv) {
   const args = {
     updateSchema: false,
     dryRun: false,
-    endpoint: null, // null = both
+    endpoint: null, // null = all routed endpoints
     files: [],
   };
 
@@ -72,7 +85,9 @@ function parseArgs(argv) {
       i++;
       if (!argv[i] || !ENDPOINTS[argv[i]]) {
         console.error(
-          `Error: --endpoint requires "mainnet" or "testnet", got "${argv[i]}"`
+          `Error: --endpoint requires ${Object.keys(ENDPOINTS)
+            .map((endpoint) => `"${endpoint}"`)
+            .join(' or ')}, got "${argv[i]}"`
         );
         process.exit(1);
       }
@@ -131,7 +146,7 @@ const INTROSPECTION_QUERY = `
  * HTTP POST with JSON body, returns parsed JSON response.
  * Uses only Node.js built-ins (https/http).
  */
-function httpPost(url, body) {
+function httpPost(url, body, headers = {}) {
   return new Promise((resolve, reject) => {
     const data = JSON.stringify(body);
     const mod = url.startsWith('https') ? https : require('http');
@@ -146,6 +161,7 @@ function httpPost(url, body) {
         headers: {
           'Content-Type': 'application/json',
           'Content-Length': Buffer.byteLength(data),
+          ...headers,
         },
       },
       (res) => {
@@ -169,6 +185,15 @@ function httpPost(url, body) {
     req.write(data);
     req.end();
   });
+}
+
+function getPinApiKey() {
+  return (
+    process.env.INTUITION_PIN_API_KEY ||
+    process.env.PIN_API_KEY ||
+    process.env.PIN_APIKEY ||
+    null
+  );
 }
 
 /**
@@ -218,7 +243,16 @@ function buildTypeMap(introspectionResult) {
  */
 async function introspectEndpoint(name, url) {
   console.log(`  Introspecting ${name}: ${url}`);
-  const result = await httpPost(url, { query: INTROSPECTION_QUERY });
+  const headers = {};
+  if (name === PIN_ENDPOINT) {
+    const apiKey = getPinApiKey();
+    if (!apiKey) {
+      throw new Error('Pin endpoint introspection requires INTUITION_PIN_API_KEY');
+    }
+    headers.apikey = apiKey;
+  }
+
+  const result = await httpPost(url, { query: INTROSPECTION_QUERY }, headers);
 
   if (result.errors) {
     throw new Error(
@@ -907,6 +941,60 @@ function validateQueries(queries, schema, endpointName) {
   return allErrors;
 }
 
+function getOperationType(query) {
+  const stripped = query.replace(/^\s*(#[^\n]*\n\s*)*/g, '').trim();
+  if (stripped.startsWith('{')) {
+    return 'query';
+  }
+
+  const match = stripped.match(/^(query|mutation|subscription)\b/i);
+  return match ? match[1].toLowerCase() : null;
+}
+
+function isPinningMutation(query) {
+  if (getOperationType(query) !== 'mutation') {
+    return false;
+  }
+
+  for (const fieldName of PINNING_MUTATION_FIELDS) {
+    const fieldPattern = new RegExp(`\\b${fieldName}\\b\\s*[:({]`);
+    if (fieldPattern.test(query)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+function getTargetEndpointsForQuery(query, endpointsToCheck) {
+  if (isPinningMutation(query)) {
+    return endpointsToCheck.includes(PIN_ENDPOINT) ? [PIN_ENDPOINT] : [];
+  }
+
+  return endpointsToCheck.filter((endpoint) =>
+    READ_ENDPOINTS.includes(endpoint)
+  );
+}
+
+function groupQueriesByEndpoint(queries, endpointsToCheck) {
+  const grouped = Object.fromEntries(
+    endpointsToCheck.map((endpoint) => [endpoint, []])
+  );
+
+  for (const query of queries) {
+    const targetEndpoints = getTargetEndpointsForQuery(
+      query.query,
+      endpointsToCheck
+    );
+
+    for (const endpoint of targetEndpoints) {
+      grouped[endpoint].push(query);
+    }
+  }
+
+  return grouped;
+}
+
 function formatError(err) {
   const location = `${err.file}:${err.line}`;
   const query = err.queryTitle ? ` [${err.queryTitle}]` : '';
@@ -918,7 +1006,7 @@ async function main() {
   const args = parseArgs(process.argv);
   const endpointsToCheck = args.endpoint
     ? [args.endpoint]
-    : ['mainnet', 'testnet'];
+    : Object.keys(ENDPOINTS);
 
   // --update-schema: introspect live endpoints and save snapshots
   if (args.updateSchema) {
@@ -926,6 +1014,18 @@ async function main() {
     const schemas = {};
 
     for (const ep of endpointsToCheck) {
+      if (ep === PIN_ENDPOINT && !getPinApiKey()) {
+        const message =
+          'Pin endpoint introspection requires INTUITION_PIN_API_KEY';
+        if (args.endpoint === PIN_ENDPOINT) {
+          console.error(`  Failed to introspect ${ep}: ${message}`);
+          process.exit(1);
+        }
+        console.warn(`  Skipping ${ep}: ${message}`);
+        schemas[ep] = loadSchema(ep);
+        continue;
+      }
+
       try {
         schemas[ep] = await introspectEndpoint(ep, ENDPOINTS[ep]);
         saveSchema(ep, schemas[ep]);
@@ -978,6 +1078,11 @@ async function main() {
     return;
   }
 
+  const queriesByEndpoint = groupQueriesByEndpoint(
+    queries,
+    endpointsToCheck
+  );
+
   // --dry-run: just list extracted queries
   if (args.dryRun) {
     console.log(`Found ${queries.length} GraphQL queries:\n`);
@@ -986,57 +1091,73 @@ async function main() {
       // Show first line of query
       const firstLine = q.query.split('\n')[0].trim();
       console.log(`    ${firstLine}`);
+      const targetEndpoints = getTargetEndpointsForQuery(
+        q.query,
+        endpointsToCheck
+      );
+      console.log(
+        `    targets: ${targetEndpoints.join(', ') || 'none'}`
+      );
       console.log();
     }
     return;
   }
 
   // Validate
-  console.log(
-    `Validating ${queries.length} queries against ${endpointsToCheck.join(' + ')} schemas...\n`
+  const routeSummary = endpointsToCheck
+    .map(
+      (endpoint) =>
+        `${endpoint} (${queriesByEndpoint[endpoint]?.length || 0})`
+    )
+    .join(' + ');
+  const routedValidationCount = endpointsToCheck.reduce(
+    (count, endpoint) => count + (queriesByEndpoint[endpoint]?.length || 0),
+    0
   );
 
-  let mainnetErrors = [];
-  let testnetErrors = [];
+  console.log(
+    `Validating ${queries.length} extracted queries (${routedValidationCount} routed validations) against schemas: ${routeSummary}...\n`
+  );
+
+  const errorsByEndpoint = {};
 
   for (const ep of endpointsToCheck) {
-    const errors = validateQueries(queries, schemas[ep], ep);
-    if (ep === 'mainnet') mainnetErrors = errors;
-    else testnetErrors = errors;
+    const endpointQueries = queriesByEndpoint[ep] || [];
+    errorsByEndpoint[ep] = validateQueries(endpointQueries, schemas[ep], ep);
   }
 
   // Report
-  const hasMainnetErrors = mainnetErrors.length > 0;
-  const hasTestnetErrors = testnetErrors.length > 0;
+  const fatalEndpoints = new Set(['mainnet', PIN_ENDPOINT]);
+  let hasFatalErrors = false;
+  let hasAnyErrors = false;
 
-  if (hasMainnetErrors) {
+  for (const ep of endpointsToCheck) {
+    const errors = errorsByEndpoint[ep] || [];
+    if (errors.length === 0) {
+      continue;
+    }
+
+    hasAnyErrors = true;
+    const isFatal = fatalEndpoints.has(ep);
+    hasFatalErrors = hasFatalErrors || isFatal;
+
     console.log(
-      `❌ ${mainnetErrors.length} mainnet error(s):\n`
+      `${isFatal ? '❌' : '⚠'} ${errors.length} ${ep}${
+        isFatal ? '' : '-only warning'
+      } error(s):\n`
     );
-    for (const err of mainnetErrors) {
+    for (const err of errors) {
       console.log(formatError(err));
     }
     console.log();
   }
 
-  if (hasTestnetErrors) {
-    console.log(
-      `⚠ ${testnetErrors.length} testnet-only warning(s):\n`
-    );
-    for (const err of testnetErrors) {
-      console.log(formatError(err));
-    }
-    console.log();
+  if (!hasAnyErrors) {
+    console.log('✓ All routed queries valid against their target schemas.');
   }
 
-  if (!hasMainnetErrors && !hasTestnetErrors) {
-    console.log(
-      `✓ All ${queries.length} queries valid against ${endpointsToCheck.join(' + ')} schemas.`
-    );
-  }
-
-  // Exit code: mainnet errors = failure, testnet-only = success with warnings
-  if (hasMainnetErrors) {
+  // Exit code: mainnet and pin endpoint errors fail; testnet-only errors warn.
+  if (hasFatalErrors) {
     process.exit(1);
   }
 }

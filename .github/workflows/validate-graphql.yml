@@ -57,6 +57,8 @@ jobs:
           fi
 
       - name: Fetch fresh schema snapshots
+        env:
+          INTUITION_PIN_API_KEY: ${{ secrets.INTUITION_PIN_API_KEY }}
         run: node scripts/validate-graphql-queries.js --update-schema
 
       - name: Check for schema changes
