@@ -20,6 +20,19 @@ https://pin.intuition.systems/v1/graphql
 
 Keep the key in a trusted server runtime. Do not pass it in the URL or expose it in public browser environment variables.
 
+Create an authenticated client before sending the mutation:
+
+```typescript
+import { GraphQLClient } from 'graphql-request';
+import { PIN_API_URL } from '@0xintuition/graphql';
+
+const client = new GraphQLClient(PIN_API_URL, {
+  headers: {
+    apikey: process.env.INTUITION_PIN_API_KEY!,
+  },
+});
+```
+
 ## Mutation Structure
 
 ```graphql

@@ -1443,6 +1443,8 @@ Pin an Organization entity to IPFS for use in atom creation.
 
 Use the public gated pinning endpoint and send your Intuition pin API key in an `apikey` header:
 
+Create an authenticated client before sending the mutation:
+
 `pinOrganization` is available as a raw GraphQL mutation. The SDK currently exposes a `pinThing` helper, but not a first-class `pinOrganization` helper.
 
 ## Mutation Structure
@@ -1472,6 +1474,8 @@ Pin a Person entity to IPFS for use in atom creation.
 ## Endpoint and Auth
 
 Use the public gated pinning endpoint and send your Intuition pin API key in an `apikey` header:
+
+Create an authenticated client before sending the mutation:
 
 `pinPerson` is available as a raw GraphQL mutation. The SDK currently exposes a `pinThing` helper, but not a first-class `pinPerson` helper.
 
@@ -1505,6 +1509,8 @@ Use the public gated pinning endpoint and send your Intuition pin API key in an 
 
 Keep the key in a trusted server runtime. Do not pass it in the URL or expose it in public browser environment variables.
 
+Create an authenticated client before sending the mutation:
+
 ## Mutation Structure
 
 ## Variables
@@ -1516,9 +1522,6 @@ Keep the key in a trusted server runtime. Do not pass it in the URL or expose it
 1. **Pin metadata** using `pinThing` mutation
 2. **Get IPFS URI** from response
 3. **Create atom on-chain** using the URI
-4. **Query the atom** via GraphQL API
-
-## Best Practices
 
 [... see full docs for complete content]
 
@@ -3736,15 +3739,13 @@ The Intuition GraphQL API provides mutations for **off-chain operations** like u
 
 Pinning mutations are served from the public gated endpoint, `https://pin.intuition.systems/v1/graphql`, not the read endpoint. Send your Intuition pin API key in an `apikey` request header from a trusted server runtime.
 
+## Authenticated Pinning Client
+
+With `graphql-request`, create a client with the `apikey` header:
+
+Without a GraphQL client, send the same header with `fetch`:
+
 **GraphQL mutations** handle:
-
-- Uploading metadata to IPFS (pinThing, pinPerson, pinOrganization)
-
-**Smart contract operations** handle:
-
-- Creating atoms
-- Creating triples
-- Taking positions (depositing/redeeming)
 
 [... see full docs for complete content]
 
