@@ -327,4 +327,4 @@ function AtomWithTriples({ atomId }: { atomId: string }) {
 ## See Also
 
 - [Wagmi Hooks](https://wagmi.sh)
-- [SDK Query Functions](../search/global-search.md)
+- [SDK Query Functions](/docs/intuition-sdk/search-guide)

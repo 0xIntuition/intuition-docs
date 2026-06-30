@@ -340,6 +340,6 @@ Before creating an Atom, verify:
 
 ## Next Steps
 
-- [Triple Fundamentals](../triples/fundamentals) - Learn how to connect Atoms into meaningful relationships
-- [Signal Fundamentals](../signals/fundamentals) - Understand how to build trust in your Atoms
+- [Triple Fundamentals](../Triples/fundamentals) - Learn how to connect Atoms into meaningful relationships
+- [Signal Fundamentals](../Signals/fundamentals) - Understand how to build trust in your Atoms
 - [Atom Structuring](./structuring) - Review advanced structuring techniques

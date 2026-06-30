@@ -279,5 +279,5 @@ Now that you understand Atom fundamentals, explore:
 
 - [Atom Structuring](./structuring) - Learn advanced techniques for structuring Atoms effectively
 - [Atom Best Practices](./best-practices) - Discover patterns and guidelines for creating high-quality Atoms
-- [Triple Fundamentals](../triples/fundamentals) - Learn how Atoms combine to form relationships
-- [Signal Fundamentals](../signals/fundamentals) - Understand how users interact with Atoms through signaling
+- [Triple Fundamentals](../Triples/fundamentals) - Learn how Atoms combine to form relationships
+- [Signal Fundamentals](../Signals/fundamentals) - Understand how users interact with Atoms through signaling

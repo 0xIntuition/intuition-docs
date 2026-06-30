@@ -237,5 +237,5 @@ Ensure your atoms follow these validation rules:
 ## Next Steps
 
 - [Atom Best Practices](./best-practices) - Detailed guidelines for effective Atom design
-- [Triple Fundamentals](../triples/fundamentals) - Learn how to connect Atoms into relationships
-- [Signal Fundamentals](../signals/fundamentals) - Understand how to measure Atom usage and relevance
+- [Triple Fundamentals](../Triples/fundamentals) - Learn how to connect Atoms into relationships
+- [Signal Fundamentals](../Signals/fundamentals) - Understand how to measure Atom usage and relevance

@@ -112,6 +112,6 @@ main()
 
 ## See Also
 
-- [deposit](../vaults/deposits.md)
-- [Vault Queries](../vaults/queries.md)
-- [Vault Previews](../vaults/previews.md)
+- [deposit](/docs/intuition-sdk/vaults-guide)
+- [Vault Queries](/docs/intuition-sdk/vaults-guide)
+- [Vault Previews](/docs/intuition-sdk/vaults-guide)

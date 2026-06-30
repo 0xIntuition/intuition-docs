@@ -163,6 +163,6 @@ Create personalized trust lenses:
 
 ## Next Steps
 
-- [Signal Fundamentals](../primitives/signals/fundamentals) - How trust is expressed
-- [Architecture Overview](../architecture/system-design) - System design for trust
-- [Economics](../economics/bonding-curves) - Economic trust incentives
+- [Signal Fundamentals](/docs/intuition-concepts/primitives/Signals/fundamentals) - How trust is expressed
+- [Architecture Overview](/docs/intuition-concepts/architecture) - System design for trust
+- [Economics](/docs/intuition-concepts/economics/bonding-curves) - Economic trust incentives

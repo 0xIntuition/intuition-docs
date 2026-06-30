@@ -69,5 +69,5 @@ Each ID carries with it not just data, but the entire graph of relationships, ev
 
 ## Next Steps
 
-- [Signal Fundamentals](../signals/fundamentals) - Learn how the community validates nested claims
+- [Signal Fundamentals](../Signals/fundamentals) - Learn how the community validates nested claims
 - [Triple Structuring](./structuring) - Review best practices for Triple design

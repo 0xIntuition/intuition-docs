@@ -133,5 +133,5 @@ npx tsx bulk-sync-example.ts --execute
 
 ## See Also
 
-- [sync Function (Experimental)](/Users/simonas/dev/0xIntuition/intuition-ts/packages/sdk/README.md#sync)
-- [Batch Creation](../atoms/batch-creation.md)
+- sync Function (Experimental)
+- [Batch Creation](/docs/intuition-sdk/atoms-guide)

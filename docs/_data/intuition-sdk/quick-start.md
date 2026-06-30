@@ -38,7 +38,7 @@ In this quick start guide, you'll:
 
 ## Prerequisites
 
-- [Installed the SDK](./installation.md)
+- [Installed the SDK](/docs/intuition-sdk/installation-and-setup)
 - Have a wallet with testnet TRUST tokens ([get testnet tokens](https://testnet.faucet.intuition.systems))
 - Your wallet private key
 
@@ -291,20 +291,20 @@ Each atom and triple has a vault for deposits:
 Now that you've created your first atom and triple, explore:
 
 ### Atom Operations
-- [**Create from Thing**](../atoms/create-from-thing.md) - Create rich entities with metadata
-- [**Create from Ethereum Account**](../atoms/create-from-ethereum-account.md) - Create identity atoms
-- [**Batch Creation**](../atoms/batch-creation.md) - Create multiple atoms efficiently
+- [**Create from Thing**](/docs/intuition-sdk/atoms-guide) - Create rich entities with metadata
+- [**Create from Ethereum Account**](/docs/intuition-sdk/atoms-guide) - Create identity atoms
+- [**Batch Creation**](/docs/intuition-sdk/atoms-guide) - Create multiple atoms efficiently
 
 ### Triple Operations
-- [**Querying Triples**](../triples/querying.md) - Fetch triple details
-- [**Counter Triples**](../triples/counter-triples.md) - Work with opposing positions
+- [**Querying Triples**](/docs/intuition-sdk/triples-guide) - Fetch triple details
+- [**Counter Triples**](/docs/intuition-sdk/triples-guide) - Work with opposing positions
 
 ### Vault Operations
-- [**Deposits**](../vaults/deposits.md) - Deposit into vaults
-- [**Redemptions**](../vaults/redemptions.md) - Redeem shares
+- [**Deposits**](/docs/intuition-sdk/vaults-guide) - Deposit into vaults
+- [**Redemptions**](/docs/intuition-sdk/vaults-guide) - Redeem shares
 
 ### Search & Discovery
-- [**Global Search**](../search/global-search.md) - Search across all entities
+- [**Global Search**](/docs/intuition-sdk/search-guide) - Search across all entities
 
 ## Common Issues
 
@@ -335,6 +335,6 @@ console.log('Chain ID:', intuitionTestnet.id)
 
 ## See Also
 
-- [Core Concepts](../../../core-concepts/primitives/overview.md) - Understand atoms and triples
-- [SDK Examples](../examples/create-atom-from-string.md) - More detailed examples
-- [GraphQL Queries](../../graphql-api/queries/atoms/single-atom.md) - Query protocol data
+- [Core Concepts](/docs/intuition-concepts/primitives) - Understand atoms and triples
+- [SDK Examples](/docs/intuition-sdk/examples/create-atom-from-string) - More detailed examples
+- [GraphQL Queries](/docs/graphql-api/queries/atoms/single-atom) - Query protocol data
