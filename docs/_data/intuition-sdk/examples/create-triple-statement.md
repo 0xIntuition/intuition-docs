@@ -108,5 +108,5 @@ main()
 
 ## See Also
 
-- [createTripleStatement](../triples/create-triple.md)
+- [createTripleStatement](/docs/intuition-sdk/triples-guide)
 - [Create Atom Example](./create-atom-from-string.md)

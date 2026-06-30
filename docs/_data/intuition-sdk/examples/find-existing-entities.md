@@ -146,7 +146,7 @@ main()
 
 ## See Also
 
-- [findAtomIds](../search/advanced-queries.md#findatomids)
-- [findTripleIds](../search/advanced-queries.md#findtripleids)
-- [calculateAtomId](../atoms/querying.md#calculateatomid)
-- [calculateTripleId](../triples/querying.md#calculatetripleid)
+- [findAtomIds](/docs/intuition-sdk/search-guide)
+- [findTripleIds](/docs/intuition-sdk/search-guide)
+- [calculateAtomId](/docs/intuition-sdk/atoms-guide)
+- [calculateTripleId](/docs/intuition-sdk/triples-guide)

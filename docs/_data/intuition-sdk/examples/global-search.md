@@ -81,5 +81,5 @@ main()
 
 ## See Also
 
-- [globalSearch](../search/global-search.md)
-- [getAtomDetails](../atoms/querying.md)
+- [globalSearch](/docs/intuition-sdk/search-guide)
+- [getAtomDetails](/docs/intuition-sdk/atoms-guide)

@@ -131,5 +131,5 @@ This creates an economy where:
 ## Next Steps
 
 - [Economics Overview](../../economics/bonding-curves) - Deep dive into bonding curve mechanics
-- [Fees & Rewards](../../economics/fees-rewards) - Detailed fee structure
+- [Fees & Rewards](../../economics/fees-and-rewards) - Detailed fee structure
 - [Signal Fundamentals](./fundamentals) - Review signal basics

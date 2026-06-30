@@ -5,7 +5,7 @@
  * Generate llms-full.txt and llms-medium.txt from all docs/_data/ markdown files.
  *
  * Produces structured text files with cleaned content, correct canonical
- * Docusaurus URLs (frontmatter-aware), and per-section metadata.
+ * Docusaurus URLs (frontmatter-aware), and metadata where appropriate.
  *
  * Usage:
  *   node scripts/generate-llms-full.js              # generate both output files
@@ -53,6 +53,128 @@ function normalizeDocPath(docPath) {
     normalized = normalized.slice(0, -1);
   }
   return normalized;
+}
+
+function absolutizeUrl(href, pageUrl = BASE_URL) {
+  const trimmed = String(href || '').trim();
+  if (!trimmed) return href;
+  if (/^(?:[a-z][a-z0-9+.-]*:|\/\/)/i.test(trimmed)) {
+    return trimmed;
+  }
+
+  try {
+    return new URL(trimmed, pageUrl || BASE_URL).toString();
+  } catch {
+    return href;
+  }
+}
+
+function splitLinkTarget(href) {
+  const match = String(href || '').match(/^([^?#]*)([?#][\s\S]*)?$/);
+  return {
+    pathPart: match ? match[1] : String(href || ''),
+    suffix: match?.[2] || '',
+  };
+}
+
+function normalizeRoutePath(routePath) {
+  let normalized = normalizeDocPath(routePath);
+  normalized = normalized.replace(/\.(md|mdx)$/i, '');
+  return normalized;
+}
+
+function resolveDocRoutePath(routePath, routeMaps) {
+  const normalized = normalizeRoutePath(routePath);
+  if (routeMaps.validRoutes.has(normalized)) {
+    return normalized;
+  }
+
+  const lowerMatch = routeMaps.routeByLowerCase.get(normalized.toLowerCase());
+  if (lowerMatch) {
+    return lowerMatch;
+  }
+
+  return null;
+}
+
+function resolveSourceRelativeDocRoute(hrefPath, sourceFile, routeMaps) {
+  if (!sourceFile || !hrefPath) return null;
+
+  const targetPath = path.resolve(path.dirname(sourceFile), hrefPath);
+  const rel = path.relative(DOCS_DIR, targetPath);
+  if (rel.startsWith('..') || path.isAbsolute(rel)) {
+    return null;
+  }
+
+  const relWithoutExt = rel
+    .replace(/\.(md|mdx)$/i, '')
+    .split(path.sep)
+    .join('/');
+
+  const route = routeMaps.routeBySourcePath.get(relWithoutExt);
+  if (route) {
+    return route;
+  }
+
+  return routeMaps.routeByLowerSourcePath.get(relWithoutExt.toLowerCase()) || null;
+}
+
+function resolveContentUrl(href, { pageUrl = BASE_URL, sourceFile = '', routeMaps = null } = {}) {
+  const trimmed = String(href || '').trim();
+  if (!trimmed) return href;
+  if (/^(?:[a-z][a-z0-9+.-]*:|\/\/)/i.test(trimmed)) {
+    return trimmed;
+  }
+
+  const { pathPart, suffix } = splitLinkTarget(trimmed);
+
+  if (trimmed.startsWith('#')) {
+    return `${pageUrl}${trimmed}`;
+  }
+
+  if (pathPart.startsWith('/docs') && routeMaps) {
+    const route = resolveDocRoutePath(pathPart, routeMaps);
+    return route ? `${BASE_URL}${route}${suffix}` : null;
+  }
+
+  if (/^\.{1,2}\//.test(pathPart) && routeMaps) {
+    const route = resolveSourceRelativeDocRoute(pathPart, sourceFile, routeMaps);
+    if (route) {
+      return `${BASE_URL}${route}${suffix}`;
+    }
+
+    if (!path.extname(pathPart) || /\.(md|mdx)$/i.test(pathPart)) {
+      return null;
+    }
+  }
+
+  return absolutizeUrl(trimmed, pageUrl);
+}
+
+function getHtmlAttribute(attrs, name) {
+  const quoted = attrs.match(new RegExp(`\\b${name}\\s*=\\s*["']([^"']+)["']`, 'i'));
+  if (quoted) return quoted[1];
+
+  const braced = attrs.match(new RegExp(`\\b${name}\\s*=\\s*\\{["']([^"']+)["']\\}`, 'i'));
+  if (braced) return braced[1];
+
+  return '';
+}
+
+function textFromHtml(value) {
+  return String(value || '')
+    .replace(/\{\/\*[\s\S]*?\*\/\}/g, '')
+    .replace(/<[^>]+>/g, '')
+    .replace(/\{[^}]*\}/g, '')
+    .replace(/(^|\s)#{1,6}\s+/g, '$1')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/\s+/g, ' ')
+    .trim();
 }
 
 function parseFrontMatter(content) {
@@ -115,13 +237,29 @@ function resolveDocRoute({ dirPath, basename, frontMatter }) {
 // ---------------------------------------------------------------------------
 
 function extractTitle(frontMatter, body, filePath) {
-  if (frontMatter.title) {
-    return frontMatter.title;
+  const h1Match = body.match(/^#\s+(.+)$/m);
+  const bodyTitle = h1Match ? h1Match[1].trim() : '';
+  const frontMatterTitle = frontMatter.title ? String(frontMatter.title).trim() : '';
+
+  if (frontMatterTitle && bodyTitle) {
+    const normalizedFrontMatter = normalizeTitleText(frontMatterTitle);
+    const normalizedBody = normalizeTitleText(bodyTitle);
+
+    if (normalizedFrontMatter.includes(normalizedBody)) {
+      return frontMatterTitle;
+    }
+    if (normalizedBody.includes(normalizedFrontMatter)) {
+      return bodyTitle;
+    }
+    return frontMatterTitle;
   }
 
-  const h1Match = body.match(/^#\s+(.+)$/m);
+  if (frontMatterTitle) {
+    return frontMatterTitle;
+  }
+
   if (h1Match) {
-    return h1Match[1].trim();
+    return bodyTitle;
   }
 
   const basename = path.basename(filePath, path.extname(filePath));
@@ -130,6 +268,13 @@ function extractTitle(frontMatter, body, filePath) {
     return titleCase(parentDir);
   }
   return titleCase(basename);
+}
+
+function normalizeTitleText(str) {
+  return String(str || '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
 }
 
 function extractDescription(frontMatter, body) {
@@ -213,12 +358,65 @@ function getLastUpdatedMap() {
 // Content cleaning — multi-pass JSX/MDX stripping
 // ---------------------------------------------------------------------------
 
-function cleanContent(body, title, { stripCodeBlocks = false } = {}) {
+function qualifyGenericReferenceHeadings(content, pageTitle) {
+  const genericHeadings = new Set([
+    'Parameters',
+    'Returns',
+    'Example',
+    'Query Structure',
+  ]);
+  const headingStack = new Map();
+  if (pageTitle) {
+    headingStack.set(1, pageTitle);
+  }
+
+  return content
+    .split('\n')
+    .map((line) => {
+      const match = line.match(/^(#{1,6})\s+(.+?)\s*$/);
+      if (!match) return line;
+
+      const level = match[1].length;
+      const heading = match[2].trim();
+
+      for (const existingLevel of [...headingStack.keys()]) {
+        if (existingLevel >= level) {
+          headingStack.delete(existingLevel);
+        }
+      }
+
+      if (!genericHeadings.has(heading)) {
+        headingStack.set(level, heading);
+        return line;
+      }
+
+      let parent = '';
+      for (let parentLevel = level - 1; parentLevel >= 1; parentLevel--) {
+        const candidate = headingStack.get(parentLevel);
+        if (candidate && !genericHeadings.has(candidate)) {
+          parent = candidate;
+          break;
+        }
+      }
+
+      const qualified = parent ? `${parent} - ${heading}` : heading;
+      headingStack.set(level, qualified);
+      return `${match[1]} ${qualified}`;
+    })
+    .join('\n');
+}
+
+function cleanContent(
+  body,
+  title,
+  { stripCodeBlocks = false, pageUrl = BASE_URL, sourceFile = '', routeMaps = null } = {}
+) {
   let content = body;
+  const linkContext = { pageUrl, sourceFile, routeMaps };
 
   // Pass 0: Handle fenced code blocks
   const codeBlocks = [];
-  content = content.replace(/^(```[\s\S]*?^```)/gm, (match) => {
+  content = content.replace(/^([ \t]*```[\s\S]*?^[ \t]*```)/gm, (match) => {
     if (stripCodeBlocks) {
       return ''; // Remove entirely for medium output
     }
@@ -236,13 +434,70 @@ function cleanContent(body, title, { stripCodeBlocks = false } = {}) {
   // Pass 3: Remove HTML comments
   content = content.replace(/<!--[\s\S]*?-->/g, '');
 
-  // Pass 4: Remove self-closing JSX components: <Component ... />
+  // Pass 4: Remove markdown horizontal rules from exported body content.
+  content = content.replace(/^[ \t]*---[ \t]*$/gm, '');
+
+  // Pass 5: Convert simple HTML/MDX elements to markdown where the text matters.
+  content = content.replace(
+    /^[ \t]*<h([1-6])\b[^>]*>\s*\r?\n([^\n]+?)\r?\n[ \t]*<\/h\1>[ \t]*$/gim,
+    (_, level, text) => {
+      const heading = textFromHtml(text);
+      return heading ? `${'#'.repeat(Number(level))} ${heading}` : '';
+    }
+  );
+  content = content.replace(
+    /^[ \t]*<h([1-6])\b[^>]*>(.*?)<\/h\1>[ \t]*$/gim,
+    (_, level, text) => {
+      const heading = textFromHtml(text);
+      return heading ? `${'#'.repeat(Number(level))} ${heading}` : '';
+    }
+  );
+  content = content.replace(
+    /^[ \t]*<img\b([^>]*)\/?>[ \t]*$/gim,
+    (_, attrs) => {
+      const src = getHtmlAttribute(attrs, 'src');
+      if (!src) return '';
+      const alt = textFromHtml(getHtmlAttribute(attrs, 'alt'));
+      const resolved = resolveContentUrl(src, linkContext);
+      return resolved ? `![${alt}](${resolved})` : alt;
+    }
+  );
+  content = content.replace(
+    /<a\b([^>]*)>([\s\S]*?)<\/a>/gim,
+    (_, attrs, text) => {
+      const href = getHtmlAttribute(attrs, 'href');
+      const label = textFromHtml(text);
+      if (!href) return label;
+      const resolved = resolveContentUrl(href, linkContext);
+      if (!resolved) return label;
+      return label ? `[${label}](${resolved})` : '';
+    }
+  );
+  content = content.replace(/<br\s*\/?>/gi, '\n');
+
+  // Pass 6: Drop decorative SVG markup before generic tag stripping.
+  content = content.replace(/^[ \t]*<svg\b[\s\S]*?<\/svg>[ \t]*$/gim, '');
+  content = content.replace(/^[ \t]*<(?:svg|path)\b[^>]*\/?>[ \t]*$/gim, '');
+
+  // Pass 7: Absolutize markdown links and images outside code fences.
+  content = content.replace(
+    /(!?)\[([^\]\n]*)\]\(((?:\/(?!\/)|\.{1,2}\/|#)[^)\s]*)\)/g,
+    (match, imagePrefix, label, href) => {
+      const resolved = resolveContentUrl(href, linkContext);
+      if (!resolved) {
+        return imagePrefix ? label : label;
+      }
+      return `${imagePrefix}[${label}](${resolved})`;
+    }
+  );
+
+  // Pass 8: Remove self-closing JSX components: <Component ... />
   content = content.replace(
     /^[ \t]*<[A-Z][A-Za-z]*\b[^>]*\/>\s*$/gm,
     ''
   );
 
-  // Pass 5: Remove multi-line JSX blocks (opening + children + closing)
+  // Pass 9: Remove multi-line JSX blocks (opening + children + closing)
   for (let i = 0; i < 5; i++) {
     const before = content;
     content = content.replace(
@@ -252,45 +507,38 @@ function cleanContent(body, title, { stripCodeBlocks = false } = {}) {
     if (content === before) break;
   }
 
-  // Pass 6: Remove inline style objects: style={{ ... }}
+  // Pass 10: Remove inline style objects: style={{ ... }}
   content = content.replace(/style=\{\{[\s\S]*?\}\}/g, '');
 
-  // Pass 7: Remove JSX event handlers and React-specific attributes
+  // Pass 11: Remove JSX event handlers and React-specific attributes
   content = content.replace(/\s+(onClick|onChange|onSubmit|onError|onLoad|className|htmlFor|tabIndex|aria-\w+)=\{[^}]*\}/g, '');
   content = content.replace(/\s+(onClick|onChange|onSubmit|onError|onLoad|className|htmlFor)="[^"]*"/g, '');
 
-  // Pass 8: Remove lines that are clearly JSX/React artifacts
+  // Pass 12: Remove lines that are clearly JSX/React artifacts
   content = content.replace(
-    /^[ \t]*(className=|<div|<\/div>|<span|<\/span>|<button|<\/button>|<p[ >]|<\/p>|<br\s*\/?>|<img\b|<a\s|<\/a>|<ul|<\/ul>|<li|<\/li>|<table|<\/table>|<thead|<\/thead>|<tbody|<\/tbody>|<tr|<\/tr>|<th|<\/th>|<td|<\/td>).*$/gm,
+    /^[ \t]*(className=|<div|<\/div>|<span|<\/span>|<button|<\/button>|<input\b|<\/input>|<p[ >]|<\/p>|<a\s|<\/a>|<ul|<\/ul>|<li|<\/li>|<table|<\/table>|<thead|<\/thead>|<tbody|<\/tbody>|<tr|<\/tr>|<th|<\/th>|<td|<\/td>).*$/gm,
     ''
   );
 
-  // Pass 9: Remove Docusaurus/MDX admonition wrappers (keep content)
+  // Pass 13: Remove Docusaurus/MDX admonition wrappers (keep content)
   content = content.replace(/^:::.*$/gm, '');
 
-  // Pass 10: Remove remaining inline HTML tags but keep text content
-  content = content.replace(/<\/?(?:div|span|p|br|img|a|ul|ol|li|table|thead|tbody|tr|th|td|strong|em|b|i|code|pre|blockquote|section|article|header|footer|nav|main|aside|details|summary|figure|figcaption|sup|sub|mark|small|del|ins|abbr|cite|q|dfn|kbd|samp|var|time|ruby|rt|rp|bdi|bdo|wbr|hr)\b[^>]*\/?>/gi, '');
+  // Pass 14: Remove remaining inline HTML tags but keep text content.
+  content = content.replace(/<\/?(?:div|span|p|br|img|a|ul|ol|li|table|thead|tbody|tr|th|td|strong|em|b|i|code|pre|blockquote|section|article|header|footer|nav|main|aside|details|summary|figure|figcaption|sup|sub|mark|small|del|ins|abbr|cite|q|dfn|kbd|samp|var|time|ruby|rt|rp|bdi|bdo|wbr|hr|h[1-6])\b[^>]*\/?>/gi, '');
 
-  // Pass 11: Remove empty JSX fragments and closings
+  // Pass 15: Remove empty JSX fragments and closings
   content = content.replace(/^[ \t]*[<>{}()]+[ \t]*$/gm, '');
 
-  // Pass 12: Remove lines with only Docusaurus CSS variables
+  // Pass 16: Remove lines with only Docusaurus CSS variables
   content = content.replace(/^.*var\(--ifm[^)]*\).*$/gm, '');
 
-  // Pass 12.5: Strip markdown links that point to local filesystem paths.
+  // Pass 17: Strip markdown links that point to local filesystem paths.
   content = content.replace(
     /\[([^\]]+)\]\((\/Users\/[^)\s]+|[A-Za-z]:[\\/][^)]+|file:\/\/[^)\s]+)\)/g,
     '$1'
   );
 
-  // Pass 13: Restore preserved code blocks
-  if (!stripCodeBlocks) {
-    content = content.replace(/__CODE_BLOCK_(\d+)__/g, (_, idx) => {
-      return codeBlocks[parseInt(idx, 10)];
-    });
-  }
-
-  // Pass 14: Collapse excessive blank lines (3+ → 2)
+  // Pass 18: Collapse excessive blank lines (3+ -> 2)
   content = content.replace(/\n{3,}/g, '\n\n');
 
   // Trim leading/trailing whitespace
@@ -300,10 +548,31 @@ function cleanContent(body, title, { stripCodeBlocks = false } = {}) {
   if (title) {
     const h1Pattern = /^#\s+(.+)\n*/;
     const h1Match = content.match(h1Pattern);
-    if (h1Match && h1Match[1].trim() === title.trim()) {
+    if (
+      h1Match &&
+      (
+        normalizeTitleText(h1Match[1]).includes(normalizeTitleText(title)) ||
+        normalizeTitleText(title).includes(normalizeTitleText(h1Match[1]))
+      )
+    ) {
       content = content.slice(h1Match[0].length).trim();
     }
   }
+
+  // Preserve a single page-level H1 emitted by the formatter; demote any
+  // remaining body H1s so heading-based chunkers don't treat them as page starts.
+  content = content.replace(/^#\s+/gm, '## ');
+
+  content = qualifyGenericReferenceHeadings(content, title);
+
+  // Pass 19: Restore preserved code blocks
+  if (!stripCodeBlocks) {
+    content = content.replace(/__CODE_BLOCK_(\d+)__/g, (_, idx) => {
+      return codeBlocks[parseInt(idx, 10)];
+    });
+  }
+
+  content = content.replace(/\n{3,}/g, '\n\n').trim();
 
   return content;
 }
@@ -311,6 +580,49 @@ function cleanContent(body, title, { stripCodeBlocks = false } = {}) {
 // ---------------------------------------------------------------------------
 // Section parsing — shared across output formats
 // ---------------------------------------------------------------------------
+
+function buildDocRouteMaps(docFiles) {
+  const routeByFile = new Map();
+  const routeBySourcePath = new Map();
+  const routeByLowerSourcePath = new Map();
+  const routeByLowerCase = new Map();
+  const validRoutes = new Set(['/docs']);
+
+  for (const file of docFiles) {
+    const rel = path.relative(DOCS_DIR, file);
+    const basename = path.basename(rel);
+    const ext = path.extname(rel).toLowerCase();
+    if (ext !== '.md' && ext !== '.mdx') continue;
+    if (basename.startsWith('_')) continue;
+
+    const withoutExt = rel.replace(/\.(md|mdx)$/i, '');
+    const parts = withoutExt.split(path.sep);
+    const dirPath = parts.slice(0, -1).join('/');
+    const baseNameNoExt = parts[parts.length - 1];
+    const content = fs.readFileSync(file, 'utf-8');
+    const { attributes: frontMatter } = parseFrontMatter(content);
+    const route = resolveDocRoute({
+      dirPath,
+      basename: baseNameNoExt,
+      frontMatter,
+    });
+    const sourcePath = withoutExt.split(path.sep).join('/');
+
+    routeByFile.set(file, route);
+    routeBySourcePath.set(sourcePath, route);
+    routeByLowerSourcePath.set(sourcePath.toLowerCase(), route);
+    routeByLowerCase.set(route.toLowerCase(), route);
+    validRoutes.add(route);
+  }
+
+  return {
+    routeByFile,
+    routeBySourcePath,
+    routeByLowerSourcePath,
+    routeByLowerCase,
+    validRoutes,
+  };
+}
 
 function parseSections() {
   const lastUpdatedMap = getLastUpdatedMap();
@@ -327,6 +639,7 @@ function parseSections() {
     })
     .sort();
 
+  const routeMaps = buildDocRouteMaps(docFiles);
   const sections = [];
 
   for (const file of docFiles) {
@@ -339,7 +652,7 @@ function parseSections() {
     const dirPath = parts.slice(0, -1).join('/');
     const baseNameNoExt = parts[parts.length - 1];
 
-    const route = resolveDocRoute({
+    const route = routeMaps.routeByFile.get(file) || resolveDocRoute({
       dirPath,
       basename: baseNameNoExt,
       frontMatter,
@@ -354,10 +667,19 @@ function parseSections() {
     const lastUpdated = lastUpdatedMap.get(gitKey) || '';
 
     // Clean content (full version — preserves code blocks)
-    const cleanedFull = cleanContent(body, title);
+    const cleanedFull = cleanContent(body, title, {
+      pageUrl: url,
+      sourceFile: file,
+      routeMaps,
+    });
 
     // Clean content (medium version — strips code blocks)
-    const cleanedMedium = cleanContent(body, title, { stripCodeBlocks: true });
+    const cleanedMedium = cleanContent(body, title, {
+      stripCodeBlocks: true,
+      pageUrl: url,
+      sourceFile: file,
+      routeMaps,
+    });
 
     // Skip files with very little content
     const nonEmptyLines = cleanedFull
@@ -414,22 +736,21 @@ Intuition is a permissionless protocol for creating verifiable, tokenized attest
 
 ## Routing Guide
 
-- SDK docs: /docs/intuition-sdk/…
-- GraphQL API: /docs/graphql-api/…
-- Smart Contracts: /docs/intuition-smart-contracts/…
-- Protocol package: /docs/protocol/…
-- Tutorials: /docs/tutorials/…
-- Core concepts: /docs/intuition-concepts/…
+- SDK docs: ${BASE_URL}/docs/intuition-sdk/
+- GraphQL API: ${BASE_URL}/docs/graphql-api/
+- Smart Contracts: ${BASE_URL}/docs/intuition-smart-contracts/
+- Protocol package: ${BASE_URL}/docs/protocol/
+- Tutorials: ${BASE_URL}/docs/tutorials/
+- Core concepts: ${BASE_URL}/docs/intuition-concepts/
 
 For a curated index of the most important pages, see: ${BASE_URL}/llms.txt
 
-Because this file is large, agents should prefer ${BASE_URL}/llms.txt first, then fetch specific pages or chunk this file by \`Source:\` sections.
+Because this file is large, agents should prefer ${BASE_URL}/llms.txt first, then fetch specific pages or chunk this file by page sections. Each page section starts with a single H1 followed by a \`Source:\` line.
 `;
 
   const body = sections
     .map((s) => {
-      const meta = formatMetadataBlock(s);
-      return `${meta}\n\n# ${s.title}\n\n${s.contentFull}`;
+      return `# ${s.title}\n\nSource: ${s.url}\n\n${s.contentFull}`;
     })
     .join('\n\n');
 

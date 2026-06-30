@@ -122,4 +122,4 @@ const result = await createTripleStatement(
 ## Next Steps
 
 - [Nested Triples](./nested-triples) - Learn how to create meta-claims and context
-- [Signal Fundamentals](../signals/fundamentals) - Understand how to validate Triples
+- [Signal Fundamentals](../Signals/fundamentals) - Understand how to validate Triples

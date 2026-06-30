@@ -133,4 +133,4 @@ With Atoms as the words in our global dictionary and Triples as the sentences we
 
 - [Triple Structuring](./structuring) - Learn advanced techniques for creating effective Triples
 - [Nested Triples](./nested-triples) - Understand how to build complex, layered claims
-- [Signal Fundamentals](../signals/fundamentals) - Discover how the community validates Triples
+- [Signal Fundamentals](../Signals/fundamentals) - Discover how the community validates Triples

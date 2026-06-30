@@ -297,7 +297,7 @@ export function AtomManager() {
 
 - [TanStack Query Integration](./tanstack-query.md)
 - [Wagmi Documentation](https://wagmi.sh)
-- [SDK Quick Start](../getting-started/quick-start.md)
+- [SDK Quick Start](/docs/intuition-sdk/quick-start)
 
 ## See Also
 

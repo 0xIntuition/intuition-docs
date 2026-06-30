@@ -112,5 +112,5 @@ Creating an Atom or Triple is distinctly different from taking a position on the
 
 - [Capturing Signal](./capturing) - Learn advanced techniques for signal capture
 - [Signal Rewards](./rewards) - Understand the economic incentives and reward distribution
-- [Atom Fundamentals](../atoms/fundamentals) - Review Atom basics
-- [Triple Fundamentals](../triples/fundamentals) - Review Triple basics
+- [Atom Fundamentals](../Atoms/fundamentals) - Review Atom basics
+- [Triple Fundamentals](../Triples/fundamentals) - Review Triple basics

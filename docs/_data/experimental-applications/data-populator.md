@@ -515,7 +515,7 @@ The Data Populator is part of the Intuition ecosystem and follows the same devel
 
 For support with the Data Populator:
 
-- Check the [Intuition documentation](/guides) for detailed guides
+- Check the [Intuition documentation](/docs) for detailed guides
 - Visit the [GitHub repository](https://github.com/0xIntuition) for technical details
 - Join the [community discussions](https://discord.gg/RgBenkX4mx) for user support
 - Review the [API documentation](/docs/getting-started/developer-stack) for integration help
@@ -619,4 +619,4 @@ For support with the Data Populator:
 
 </div>
 
-</div> 
+</div>

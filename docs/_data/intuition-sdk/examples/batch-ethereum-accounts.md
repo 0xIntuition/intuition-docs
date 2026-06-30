@@ -81,5 +81,5 @@ main()
 
 ## See Also
 
-- [batchCreateAtomsFromEthereumAccounts](../atoms/batch-creation.md)
-- [Batch Creation Guide](../atoms/batch-creation.md)
+- [batchCreateAtomsFromEthereumAccounts](/docs/intuition-sdk/atoms-guide)
+- [Batch Creation Guide](/docs/intuition-sdk/atoms-guide)

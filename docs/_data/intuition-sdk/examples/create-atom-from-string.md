@@ -140,6 +140,6 @@ Success!
 
 ## See Also
 
-- [createAtomFromString](../atoms/create-from-string.md)
-- [getAtomDetails](../atoms/querying.md)
-- [Quick Start Guide](../getting-started/quick-start.md)
+- [createAtomFromString](/docs/intuition-sdk/atoms-guide)
+- [getAtomDetails](/docs/intuition-sdk/atoms-guide)
+- [Quick Start Guide](/docs/intuition-sdk/quick-start)
