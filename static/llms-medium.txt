@@ -27,7 +27,7 @@ If you need any help, feel free to reach out to [@0xintuition](https://twitter.c
 ---
 title: "Data Populator (Deprecated)"
 description: "Documentation for the Intuition Data Populator application"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-06-30T11:21:44-04:00"
 source: "https://docs.intuition.systems/docs/experimental-applications/data-populator"
 ---
 
@@ -3612,7 +3612,7 @@ Subscribe to position changes for live portfolio tracking.
 ---
 title: "GraphQL API Use Cases"
 description: "Real-world examples and step-by-step tutorials to use the Intuition GraphQL API"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-06-30T11:21:44-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/use-cases/overview"
 ---
 
@@ -3964,7 +3964,7 @@ The $TRUST token serves as the fundamental economic unit within Intuition, enabl
 ---
 title: "Atom Best Practices"
 description: "Patterns and guidelines for creating high-quality, reusable Atoms in the Intuition ecosystem"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-06-30T11:21:44-04:00"
 source: "https://docs.intuition.systems/docs/intuition-concepts/primitives/Atoms/best-practices"
 ---
 
@@ -3996,7 +3996,7 @@ Before creating new Atoms, search for existing canonical Atoms:
 ---
 title: "Atom Fundamentals"
 description: "Understanding Atoms - the fundamental units of data in the Intuition knowledge graph"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-06-30T11:21:44-04:00"
 source: "https://docs.intuition.systems/docs/intuition-concepts/primitives/Atoms/fundamentals"
 ---
 
@@ -4015,7 +4015,7 @@ A system facilitating the arrival at social consensus around globally persistent
 ---
 title: "Atom Structuring"
 description: "Advanced techniques for structuring Atoms effectively in the Intuition knowledge graph"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-06-30T11:21:44-04:00"
 source: "https://docs.intuition.systems/docs/intuition-concepts/primitives/Atoms/structuring"
 ---
 
@@ -4073,7 +4073,7 @@ Higher TVL generally indicates:
 ---
 title: "Signal Fundamentals"
 description: "Understanding Signals - the trust and consensus layer of the knowledge graph"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-06-30T11:21:44-04:00"
 source: "https://docs.intuition.systems/docs/intuition-concepts/primitives/Signals/fundamentals"
 ---
 
@@ -4090,7 +4090,7 @@ Signal, in the context of Intuition, refers to any action or indication that exp
 ---
 title: "Signal Rewards"
 description: "Understanding fee structures and reward distribution for signal participants"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-06-30T11:21:44-04:00"
 source: "https://docs.intuition.systems/docs/intuition-concepts/primitives/Signals/rewards"
 ---
 
@@ -4123,7 +4123,7 @@ A portion of fees goes to:
 ---
 title: "Triple Fundamentals"
 description: "Understanding Triples - semantic relationships that form the knowledge graph"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-06-30T11:21:44-04:00"
 source: "https://docs.intuition.systems/docs/intuition-concepts/primitives/Triples/fundamentals"
 ---
 
@@ -4140,7 +4140,7 @@ A Triple is a fundamental data structure that expresses relationships between At
 ---
 title: "Nested Triples: Meta-Claims & Context"
 description: "Creating meta-claims and context through nested Triple structures"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-06-30T11:21:44-04:00"
 source: "https://docs.intuition.systems/docs/intuition-concepts/primitives/Triples/nested-triples"
 ---
 
@@ -4157,7 +4157,7 @@ Think of it as linguistic compression—instead of repeatedly expressing complex
 ---
 title: "Triple Structuring"
 description: "Advanced techniques for structuring effective Triples in the knowledge graph"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-06-30T11:21:44-04:00"
 source: "https://docs.intuition.systems/docs/intuition-concepts/primitives/Triples/structuring"
 ---
 
@@ -4216,7 +4216,7 @@ The basic entities or identifiers - unique decentralized identifiers for everyth
 ---
 title: "Trust Mechanisms Overview"
 description: "Understanding how trust and attestation work in the Intuition ecosystem"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-06-30T11:21:44-04:00"
 source: "https://docs.intuition.systems/docs/intuition-concepts/trust-mechanisms"
 ---
 
@@ -4577,7 +4577,7 @@ The simplest way to create an atom is from a plain string.
 ---
 title: "Example: Batch Create Ethereum Accounts"
 description: "Create multiple identity atoms from Ethereum addresses in one transaction"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-06-30T11:21:44-04:00"
 source: "https://docs.intuition.systems/docs/intuition-sdk/examples/batch-ethereum-accounts"
 ---
 
@@ -4597,7 +4597,7 @@ This example demonstrates creating multiple identity atoms from Ethereum address
 ---
 title: "Example: Bulk Sync with Cost Estimation"
 description: "Use the experimental sync function to estimate costs for bulk operations"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-06-30T11:21:44-04:00"
 source: "https://docs.intuition.systems/docs/intuition-sdk/examples/bulk-sync-cost-estimation"
 ---
 
@@ -4617,7 +4617,7 @@ This example demonstrates using the experimental `sync` function to estimate cos
 ---
 title: "Example: Create Atom from String"
 description: "Complete example of creating an atom from a text string"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-06-30T11:21:44-04:00"
 source: "https://docs.intuition.systems/docs/intuition-sdk/examples/create-atom-from-string"
 ---
 
@@ -4640,7 +4640,7 @@ This example demonstrates creating an atom from a plain text string, including s
 ---
 title: "Example: Create Triple Statement"
 description: "Complete example of creating a subject-predicate-object triple"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-06-30T11:21:44-04:00"
 source: "https://docs.intuition.systems/docs/intuition-sdk/examples/create-triple-statement"
 ---
 
@@ -4658,7 +4658,7 @@ This example demonstrates creating a complete triple (subject-predicate-object s
 ---
 title: "Example: Deposit into Vault"
 description: "Deposit assets into an atom vault and receive shares"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-06-30T11:21:44-04:00"
 source: "https://docs.intuition.systems/docs/intuition-sdk/examples/deposit-into-vault"
 ---
 
@@ -4677,7 +4677,7 @@ This example demonstrates depositing assets into a vault and tracking share bala
 ---
 title: "Example: Find Existing Entities"
 description: "Search for existing atoms and triples before creating new ones"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-06-30T11:21:44-04:00"
 source: "https://docs.intuition.systems/docs/intuition-sdk/examples/find-existing-entities"
 ---
 
@@ -4697,7 +4697,7 @@ This example demonstrates how to find existing atoms and triples to avoid creati
 ---
 title: "Example: Global Search"
 description: "Search across atoms, accounts, triples, and collections"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-06-30T11:21:44-04:00"
 source: "https://docs.intuition.systems/docs/intuition-sdk/examples/global-search"
 ---
 
@@ -4787,7 +4787,7 @@ The SDK supports two IPFS paths:
 ---
 title: "React Integration"
 description: "Integrate the Intuition SDK with React applications using Wagmi hooks"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-06-30T11:21:44-04:00"
 source: "https://docs.intuition.systems/docs/intuition-sdk/integrations/react"
 ---
 
@@ -4833,7 +4833,7 @@ Full-featured React component:
 ---
 title: "TanStack Query Integration"
 description: "Use the Intuition SDK with TanStack Query for optimized data fetching and caching"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-06-30T11:21:44-04:00"
 source: "https://docs.intuition.systems/docs/intuition-sdk/integrations/tanstack-query"
 ---
 
@@ -4908,7 +4908,7 @@ The core smart contract has been upgraded from `EthMultiVault` to `MultiVault`, 
 ---
 title: "Quick Start"
 description: "Create your first atom and triple with the Intuition SDK in minutes"
-last_updated: "2026-06-25T17:11:24-04:00"
+last_updated: "2026-06-30T11:21:44-04:00"
 source: "https://docs.intuition.systems/docs/intuition-sdk/quick-start"
 ---
 
