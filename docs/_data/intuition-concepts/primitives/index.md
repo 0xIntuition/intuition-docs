@@ -32,7 +32,7 @@ Structured relationships or claims linking entities together in Subject-Predicat
 <div className="uniform-card">
 <h2 className="uniform-card-title">Signals</h2>
 <p className="uniform-card-content">
-The weight of Atoms and Triples, derived from the total amount of ETH deposited in Atom and Triple Vaults. These represent the <strong>edge weights</strong> in the graph, or 'who is saying what about what, with what level of conviction'. The weight of trust or consensus behind each entity or claim, determined by community staking.
+The weight of Atoms and Triples, derived from the total amount of TRUST deposited in Atom and Triple Vaults. These represent the <strong>edge weights</strong> in the graph, or 'who is saying what about what, with what level of conviction'. The weight of trust or consensus behind each entity or claim, determined by community staking.
 </p>
 </div>
 

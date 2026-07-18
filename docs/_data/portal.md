@@ -60,7 +60,7 @@ Identities, also known as **Atoms**, are the fundamental building blocks in the 
 1. **Click the "Create" action button** in the bottom left section of the menu panel
 2. **Select "Create Identity"** from the dropdown menu
 3. **Input data** to describe the Identity you are creating
-4. **Optionally deposit ETH** to stake on your newly created Identity
+4. **Optionally deposit TRUST** to stake on your newly created Identity
 
 </div>
 
@@ -125,7 +125,7 @@ When you create an Identity, the data is uploaded to IPFS, generating an IPFS CI
   margin: '1.5rem 0'
 }}>
 
-**What is Staking?** Staking in Intuition allows you to signal what is important or what you believe to be true by staking ETH on Identities (Atoms) or Claims (Triples). This process contributes to a **Token Curated Registry (TCR)**, where the most relevant information rises to the top.
+**What is Staking?** Staking in Intuition allows you to signal what is important or what you believe to be true by staking TRUST on Identities (Atoms) or Claims (Triples). This process contributes to a **Token Curated Registry (TCR)**, where the most relevant information rises to the top.
 
 ### **Staking on an Identity:**
 
@@ -159,7 +159,7 @@ When you create an Identity, the data is uploaded to IPFS, generating an IPFS CI
 
 ### **Unstaking:**
 
-You can unstake your ETH at any time to retrieve your deposit (minus fees).
+You can unstake your TRUST at any time to retrieve your deposit (minus fees).
 
 ### **Staking Economics:**
 
@@ -236,7 +236,7 @@ Staking grants you shares that provide a proportionate amount of fee revenue acc
 }}>
 
 - Use the **"Add to list"** and **"Save list"** buttons to manage your Lists
-- Lists are **Token Curated Registries (TCR)**, where you can stake ETH to order entries within a List
+- Lists are **Token Curated Registries (TCR)**, where you can stake TRUST to order entries within a List
 
 </div>
 
@@ -264,8 +264,8 @@ Staking grants you shares that provide a proportionate amount of fee revenue acc
   margin: '1rem 0'
 }}>
 
-- **To follow**: Click on a user's profile and select "Follow," then optionally stake ETH
-- **To unfollow**: Click "Following" on the user's profile and select "Unfollow." Unfollowing also redeems your staked ETH
+- **To follow**: Click on a user's profile and select "Follow," then optionally stake TRUST
+- **To unfollow**: Click "Following" on the user's profile and select "Unfollow." Unfollowing also redeems your staked TRUST
 
 </div>
 

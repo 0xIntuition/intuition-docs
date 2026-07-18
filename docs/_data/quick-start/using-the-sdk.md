@@ -357,7 +357,7 @@ const triple = await createTripleStatement(
       predicate.state.termId,
       object.state.termId
     ],
-    value: 1000000000000000000n, // 1 ETH deposit in wei
+    value: 1000000000000000000n, // 1 TRUST deposit in wei
   }
 )
 
@@ -456,7 +456,7 @@ function IntuitionQuickstart() {
   const signalAtom = async () => {
     if (!atomId) return
 
-    const depositAmount = 100000000000000000n // 0.1 ETH
+    const depositAmount = 100000000000000000n // 0.1 TRUST
     await deposit(
       { walletClient, publicClient, address },
       {
@@ -513,7 +513,7 @@ const atomData = [
 const result = await batchCreateAtomsFromThings(
   { walletClient, publicClient, address },
   atomData,
-  1000000000000000000n // Optional: 1 ETH deposit per atom
+  1000000000000000000n // Optional: 1 TRUST deposit per atom
 )
 
 console.log('Created atoms:', result.state)
@@ -537,7 +537,7 @@ const tripleData = [
 const result = await batchCreateTripleStatements(
   { walletClient, publicClient, address },
   tripleData,
-  1000000000000000000n // Optional: 1 ETH deposit
+  1000000000000000000n // Optional: 1 TRUST deposit
 )
 
 console.log('Created triples:', result.state)

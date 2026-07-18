@@ -23,8 +23,8 @@ Events are blockchain log entries emitted by smart contracts. The Intuition inde
 
 - **AtomCreated**: New atoms minted
 - **TripleCreated**: New triples created
-- **Deposited**: ETH staked on positions
-- **Redeemed**: ETH withdrawn from positions
+- **Deposited**: TRUST staked on positions
+- **Redeemed**: TRUST withdrawn from positions
 - **FeesTransferred**: Protocol fees collected
 
 ## Quick Start

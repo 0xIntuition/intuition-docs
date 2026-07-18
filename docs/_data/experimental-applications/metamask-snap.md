@@ -81,7 +81,7 @@ The MetaMask Snap serves as a bridge between traditional Web3 wallet functionali
 
 ### 💰 **Staking Operations**
 
-- Deposit ETH into atom and triple vaults
+- Deposit TRUST into atom and triple vaults
 - Withdraw staked amounts and earned fees
 - View staking history and performance metrics
 - Monitor vault share prices and market dynamics
@@ -150,7 +150,7 @@ The MetaMask Snap serves as a bridge between traditional Web3 wallet functionali
 
 1. **Create Your First Identity** - Use the Snap to create your first atom (identity)
 2. **Make Your First Claim** - Create a triple to make an assertion about something
-3. **Stake on Content** - Deposit ETH to signal agreement with existing claims
+3. **Stake on Content** - Deposit TRUST to signal agreement with existing claims
 4. **Build Your Network** - Follow other users and build your trust network
 
 ### Basic Workflow

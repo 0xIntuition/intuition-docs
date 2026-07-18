@@ -15,8 +15,8 @@ Intuition's smart contracts are central to the user experience, handling critica
 The MultiVault contract is the core component of Intuition's architecture, responsible for managing the creation of Atoms/Triples and handling deposits, redemptions, and share distributions. It supports multiple bonding curve implementations through a registry system.
 
 - **Creation**: Users can create Atoms and Triples
-- **Deposits**: Users can deposit ETH to receive shares in atoms/triples
-- **Redemptions**: Users can redeem shares for ETH
+- **Deposits**: Users can deposit TRUST to receive shares in atoms/triples
+- **Redemptions**: Users can redeem shares for TRUST
 - **Multi-Vault**: Supports multiple bonding curve implementations
 - **Share Distribution**: Manages the minting and burning of shares
 - **Fee Collection**: Collects small fees to maintain the system
