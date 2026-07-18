@@ -8,7 +8,7 @@
   answer: |
     1. Install the Protocol Package using npm:
        ```bash
-       npm install @intuition/protocol
+       npm install @0xintuition/protocol
        ```
     2. Create an account
     3. Start building with our guides and documentation
