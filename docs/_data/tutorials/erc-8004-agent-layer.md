@@ -108,7 +108,7 @@ Reputation scores change. Risk levels move. Freshness windows close. If every sc
 
 The mainnet pattern resolves this with a stable graph shell that points to mutable partner-owned JSON. The shell never changes. The JSON does.
 
-:::danger
+:::warning
 
 **Anti-pattern: do not write mutable scores as direct Triples.** Creating a new `(agent, has score, 87)` Triple every time a score updates fragments the staking surface and forces consumers to migrate support from old Triples to new ones. Use the `pinThing` + JSON pattern below.
 
