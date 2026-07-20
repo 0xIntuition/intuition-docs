@@ -11,11 +11,27 @@ Learn by building real applications with Intuition. Each tutorial is a complete,
 
 ## Building Applications
 
+### [ERC-8004 Agent Layer Partner Guide](/docs/tutorials/erc-8004-agent-layer)
+
+Integrate a trust provider with ERC-8004 agents through Intuition's knowledge graph.
+
+**You'll learn:**
+
+- Resolving canonical ERC-8004 agent identities
+- Publishing provider-owned mutable assessments
+- Writing and verifying the four-Triple trust pattern
+- Querying trust surfaces and provider credibility
+
+**Time:** 1-2 hours | **Level:** Advanced
+
+---
+
 ### [Reputation System](/docs/tutorials/reputation-system)
 
 Build a developer reputation platform with skills, endorsements, and verifiable credentials.
 
 **You'll learn:**
+
 - Creating identity atoms from Ethereum addresses
 - Skill attestations with triples
 - Weighted endorsements with signals
@@ -30,6 +46,7 @@ Build a developer reputation platform with skills, endorsements, and verifiable 
 Create community-curated, ranked lists where stake determines ranking.
 
 **You'll learn:**
+
 - Token-curated registries (TCRs)
 - Signal-based ranking algorithms
 - List management and curation
@@ -44,6 +61,7 @@ Create community-curated, ranked lists where stake determines ranking.
 Build a decentralized professional network with portable identity.
 
 **You'll learn:**
+
 - Professional profiles as atoms
 - Connection and recommendation triples
 - Experience verification
@@ -58,6 +76,7 @@ Build a decentralized professional network with portable identity.
 Create a community-driven scam flagging system.
 
 **You'll learn:**
+
 - Safety claim triples
 - Expert-weighted signals
 - Alert and notification systems
@@ -72,6 +91,7 @@ Create a community-driven scam flagging system.
 Build a non-resolving forecasting platform.
 
 **You'll learn:**
+
 - Event and prediction atoms
 - Track record calculation
 - Confidence signals
