@@ -1,6 +1,6 @@
 ---
 title: ERC-8004 Agent Layer Partner Guide
-sidebar_label: ERC-8004 Agent Layer
+sidebar_label: 🤖 ERC-8004 Agent Layer
 sidebar_position: 11.5
 slug: /tutorials/erc-8004-agent-layer
 description: Integrate an ERC-8004 trust provider and publish mutable agent assessments through Intuition's knowledge graph.
