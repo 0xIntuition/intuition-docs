@@ -14,10 +14,12 @@ Intuition integrates with various platforms and tools to extend its capabilities
 Use Intuition's knowledge graph with AI systems and agents to create persistent, verifiable memory and context.
 
 - **[AI Skills](/docs/getting-started/ai-skills)** - Agent-facing protocol context for Claude Code, Codex, and compatible AI coding agents.
+- **[ERC-8004 Agent Layer](/docs/erc-8004-agent-layer)** - Publish and query provider-owned trust assessments for ERC-8004 agents.
 - **[MCP Server](/docs/experimental-applications/mcp-server)** - Model Context Protocol tools for querying atoms, accounts, lists, and graph data.
 - **[Templates](/docs/getting-started/templates)** - Agent-ready starter apps with file maps, protocol paths, and `.agents/INSTRUCTIONS.md` guidance.
 
 **Use cases:**
+
 - **AI agents with persistent memory** - Store and retrieve agent knowledge on-chain
 - **LLM context enhancement** - Provide verified context to language models
 - **Knowledge graph reasoning** - Enable semantic reasoning over structured data
@@ -83,6 +85,7 @@ Connect off-chain data to the knowledge graph:
 Have an integration idea? We'd love to hear from you!
 
 **Ways to get involved:**
+
 - **[Community Forum](https://atlas.discourse.group)** - Propose and discuss integrations
 - **[Discord](https://discord.gg/RgBenkX4mx)** - Chat with the team and community
 - **[GitHub](https://github.com/0xIntuition)** - Submit integration proposals
