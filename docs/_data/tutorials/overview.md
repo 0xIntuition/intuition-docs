@@ -11,7 +11,7 @@ Learn by building real applications with Intuition. Each tutorial is a complete,
 
 ## Building Applications
 
-### [ERC-8004 Agent Layer Partner Guide](/docs/tutorials/erc-8004-agent-layer)
+### [ERC-8004 Agent Layer Partner Guide](/docs/erc-8004-agent-layer)
 
 Integrate a trust provider with ERC-8004 agents through Intuition's knowledge graph.
 

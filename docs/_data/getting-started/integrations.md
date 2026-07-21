@@ -14,7 +14,7 @@ Intuition integrates with various platforms and tools to extend its capabilities
 Use Intuition's knowledge graph with AI systems and agents to create persistent, verifiable memory and context.
 
 - **[AI Skills](/docs/getting-started/ai-skills)** - Agent-facing protocol context for Claude Code, Codex, and compatible AI coding agents.
-- **[ERC-8004 Agent Layer](/docs/tutorials/erc-8004-agent-layer)** - Publish and query provider-owned trust assessments for ERC-8004 agents.
+- **[ERC-8004 Agent Layer](/docs/erc-8004-agent-layer)** - Publish and query provider-owned trust assessments for ERC-8004 agents.
 - **[MCP Server](/docs/experimental-applications/mcp-server)** - Model Context Protocol tools for querying atoms, accounts, lists, and graph data.
 - **[Templates](/docs/getting-started/templates)** - Agent-ready starter apps with file maps, protocol paths, and `.agents/INSTRUCTIONS.md` guidance.
 
