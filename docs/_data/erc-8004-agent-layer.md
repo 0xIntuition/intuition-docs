@@ -128,18 +128,7 @@ Every assessment you publish has the same four-edge shape — we call it the **t
 
 Visualized:
 
-```mermaid
-flowchart LR
-  agent[Agent]
-  provider[Trust provider]
-  source[Assessment source]
-  sourceType[Trust Assessment Source]
-
-  agent -->|has trust provider| provider
-  agent -->|has trust assessment| source
-  source -->|provided by| provider
-  source -->|has type| sourceType
-```
+![The four-Triple trust pattern — the agent links out to a trust provider and an assessment source; the assessment source links back to the provider (provided by) and to its type marker (has type)](/img/erc-8004-trust-pattern.png)
 
 **What each edge does:**
 
