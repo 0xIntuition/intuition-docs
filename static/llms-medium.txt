@@ -25,6 +25,21 @@ If you need any help, feel free to reach out to [@0xintuition](https://twitter.c
 [... see full docs for complete content]
 
 ---
+title: "ERC-8004 Agent Layer Partner Guide"
+description: "Integrate an ERC-8004 trust provider and publish mutable agent assessments through Intuition's knowledge graph."
+last_updated: "2026-07-21T10:00:33-04:00"
+source: "https://docs.intuition.systems/docs/erc-8004-agent-layer"
+---
+
+# ERC-8004 Agent Layer Partner Guide
+
+## Integrating with the ERC-8004 Agent Layer on Intuition
+
+Intuition is the curation layer for ERC-8004 reputation: where the feedback agents post on 8004 gets weighted and aggregated into a signal consumers can trust. The ERC-8004 V1 agent layer is live on Intuition mainnet today, and the reputation-ranked agents from the top-100 snapshot are already queryable as Atoms — each linked to its on-chain ERC-8004 identity by a `same as` attestation, with further attestations covering capability, category, tag, endpoint, and trust-surface.
+
+[... see full docs for complete content]
+
+---
 title: "Data Populator (Deprecated)"
 description: "Documentation for the Intuition Data Populator application"
 last_updated: "2026-06-30T11:21:44-04:00"
@@ -246,7 +261,7 @@ Interactive course that teaches atoms, triples, signals, protocol reads, protoco
 ---
 title: "Integrations"
 description: "Integrate Intuition with various platforms and tools"
-last_updated: "2026-06-25T17:11:24-04:00"
+last_updated: "2026-07-21T10:00:33-04:00"
 source: "https://docs.intuition.systems/docs/getting-started/integrations"
 ---
 
@@ -259,11 +274,11 @@ Intuition integrates with various platforms and tools to extend its capabilities
 Use Intuition's knowledge graph with AI systems and agents to create persistent, verifiable memory and context.
 
 - **[AI Skills](https://docs.intuition.systems/docs/getting-started/ai-skills)** - Agent-facing protocol context for Claude Code, Codex, and compatible AI coding agents.
+- **[ERC-8004 Agent Layer](https://docs.intuition.systems/docs/erc-8004-agent-layer)** - Publish and query provider-owned trust assessments for ERC-8004 agents.
 - **[MCP Server](https://docs.intuition.systems/docs/experimental-applications/mcp-server)** - Model Context Protocol tools for querying atoms, accounts, lists, and graph data.
 - **[Templates](https://docs.intuition.systems/docs/getting-started/templates)** - Agent-ready starter apps with file maps, protocol paths, and `.agents/INSTRUCTIONS.md` guidance.
 
 **Use cases:**
-- **AI agents with persistent memory** - Store and retrieve agent knowledge on-chain
 
 [... see full docs for complete content]
 
@@ -6692,7 +6707,7 @@ This creates a decentralized, community-curated database of known scams and safe
 ---
 title: "Tutorials"
 description: "Learn by building real applications with Intuition"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-07-21T10:00:33-04:00"
 source: "https://docs.intuition.systems/docs/tutorials/overview"
 ---
 
@@ -6702,27 +6717,27 @@ Learn by building real applications with Intuition. Each tutorial is a complete,
 
 ## Building Applications
 
+### [ERC-8004 Agent Layer Partner Guide](https://docs.intuition.systems/docs/erc-8004-agent-layer)
+
+Integrate a trust provider with ERC-8004 agents through Intuition's knowledge graph.
+
+**You'll learn:**
+
+- Resolving canonical ERC-8004 agent identities
+- Publishing provider-owned mutable assessments
+- Writing and verifying the four-Triple trust pattern
+- Querying trust surfaces and provider credibility
+
+**Time:** 1-2 hours | **Level:** Advanced
+
 ### [Reputation System](https://docs.intuition.systems/docs/tutorials/reputation-system)
 
 Build a developer reputation platform with skills, endorsements, and verifiable credentials.
 
 **You'll learn:**
+
 - Creating identity atoms from Ethereum addresses
 - Skill attestations with triples
-- Weighted endorsements with signals
-- Querying and displaying reputation data
-
-**Time:** 2-3 hours | **Level:** Intermediate
-
-### [Curated Lists](https://docs.intuition.systems/docs/tutorials/curated-lists)
-
-Create community-curated, ranked lists where stake determines ranking.
-
-**You'll learn:**
-- Token-curated registries (TCRs)
-- Signal-based ranking algorithms
-- List management and curation
-- Dispute resolution mechanisms
 
 [... see full docs for complete content]
 
