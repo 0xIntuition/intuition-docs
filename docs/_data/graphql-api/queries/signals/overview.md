@@ -22,7 +22,7 @@ Signals represent deposit and redemption events in the Intuition protocol. Unlik
 
 Signals are contextual representations of position changes:
 
-- **Deposits**: When an account stakes ETH on an atom or triple
+- **Deposits**: When an account stakes TRUST on an atom or triple
 - **Redemptions**: When an account withdraws from a position
 
 Each signal includes:
@@ -71,7 +71,7 @@ Signals don't have an explicit `type` field. Instead, distinguish deposits from 
 
 | Condition | Meaning |
 |-----------|---------|
-| `deposit_id` is not null | Deposit — staking ETH on a position |
+| `deposit_id` is not null | Deposit — staking TRUST on a position |
 | `redemption_id` is not null | Redemption — withdrawing from a position |
 
 ## Common Filters
