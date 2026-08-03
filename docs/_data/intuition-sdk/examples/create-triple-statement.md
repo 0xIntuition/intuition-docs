@@ -10,10 +10,13 @@ keywords: [sdk, example, triple, statement, relationship]
 
 This example demonstrates creating a complete triple (subject-predicate-object statement).
 
+SDK reads default to the mainnet GraphQL API. This example configures the testnet API before querying the triple it creates on Intuition Testnet.
+
 ## Complete Code
 
 ```typescript
 import {
+  configureSdk,
   intuitionTestnet,
   getMultiVaultAddressFromChainId,
   createAtomFromString,
@@ -21,12 +24,16 @@ import {
   getTripleDetails,
   wait,
 } from '@0xintuition/sdk'
+import { API_URL_DEV } from '@0xintuition/graphql'
 import { createPublicClient, createWalletClient, http, parseEther } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
 
 async function main() {
   // Setup
   const account = privateKeyToAccount(process.env.PRIVATE_KEY as `0x${string}`)
+  // SDK reads default to mainnet; keep reads paired with the testnet write chain.
+  configureSdk({ apiUrl: API_URL_DEV })
+
   const publicClient = createPublicClient({
     chain: intuitionTestnet,
     transport: http(),
@@ -77,7 +84,7 @@ async function main() {
     }
   )
 
-  const tripleId = triple.state[0].args.tripleId
+  const tripleId = triple.state[0].args.termId
   console.log('✓ Triple created!')
   console.log('  Triple ID:', tripleId)
   console.log('  Transaction:', triple.transactionHash)
@@ -87,13 +94,17 @@ async function main() {
   await wait(triple.transactionHash)
 
   const details = await getTripleDetails(tripleId)
+  if (!details) throw new Error('Created triple was not found on the testnet API')
+
+  const forVault = details.term?.vaults[0]
+  const againstVault = details.counter_term?.vaults[0]
 
   console.log('\n=== Triple Details ===')
-  console.log('Subject:', details.subject.label)
-  console.log('Predicate:', details.predicate.label)
-  console.log('Object:', details.object.label)
-  console.log('\nFOR Position Shares:', details.vault.totalShares)
-  console.log('AGAINST Position Shares:', details.counterVault.totalShares)
+  console.log('Subject:', details.subject?.label)
+  console.log('Predicate:', details.predicate?.label)
+  console.log('Object:', details.object?.label)
+  console.log('\nFOR Position Shares:', forVault?.total_shares)
+  console.log('AGAINST Position Shares:', againstVault?.total_shares)
 
   console.log('\nSuccess!')
 }

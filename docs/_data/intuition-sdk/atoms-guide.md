@@ -11,6 +11,19 @@ description: Create and query atoms using the SDK
 
 Atoms are unique identifiers for any entity—people, concepts, smart contracts, or data. This guide covers all ways to create and query atoms using the SDK.
 
+:::info Match SDK reads to your network
+SDK read helpers use the mainnet GraphQL API by default. The write examples on this page use Intuition Testnet, so configure reads once before calling a read helper:
+
+```typescript
+import { configureSdk } from '@0xintuition/sdk';
+import { API_URL_DEV } from '@0xintuition/graphql';
+
+configureSdk({ apiUrl: API_URL_DEV });
+```
+:::
+
+Atom creation helpers dynamically fetch and forward the required atom base cost. Their optional amount is an additional TRUST/tTRUST deposit (signal), not the required base cost.
+
 ## Table of Contents
 
 - [Creating from Strings](#creating-from-strings)
@@ -33,7 +46,7 @@ The simplest way to create an atom is from a plain string.
 function createAtomFromString(
   config: WriteConfig,
   data: string,
-  deposit?: bigint,
+  depositAmount?: bigint,
 ): Promise<AtomCreationResult>;
 ```
 
@@ -43,7 +56,7 @@ function createAtomFromString(
 | --------- | ------------- | --------------------------------------------------------------------- | -------- |
 | `config`  | `WriteConfig` | Client configuration with wallet, public client, and contract address | Yes      |
 | `data`    | `string`      | The text string to create an atom from                                | Yes      |
-| `deposit` | `bigint`      | Optional initial deposit amount in wei                                | No       |
+| `depositAmount` | `bigint` | Optional additional deposit/signal amount in wei                 | No       |
 
 ### Basic Example
 
@@ -73,7 +86,7 @@ const address = getMultiVaultAddressFromChainId(intuitionTestnet.id);
 const atom = await createAtomFromString(
   { walletClient, publicClient, address },
   'developer',
-  parseEther('0.01'), // Optional: 0.01 TRUST initial deposit
+  parseEther('0.01'), // Optional: additional 0.01 tTRUST signal
 );
 
 console.log('Atom ID:', atom.state.termId);

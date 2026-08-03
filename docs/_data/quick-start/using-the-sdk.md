@@ -191,6 +191,19 @@ export const walletClient = createWalletClient({
 })
 ```
 
+### Pair SDK Reads with the Selected Network
+
+SDK read helpers use the mainnet GraphQL API by default. Because the examples below write to Intuition Testnet, configure the testnet read endpoint once during application startup so newly created data is queried from the same network:
+
+```typescript
+import { configureSdk } from '@0xintuition/sdk'
+import { API_URL_DEV } from '@0xintuition/graphql'
+
+configureSdk({ apiUrl: API_URL_DEV })
+```
+
+Use `API_URL_PROD` instead when your public and wallet clients target `intuitionMainnet`.
+
 # Adding Data to the Knowledge Graph
 Data in the Intuition protocol is represented as atoms and triples. As a developer you will help users create atoms and triples in the protocol via onchain smart contracts, and retrieving data from the knowledge graph via offchain services.
 
@@ -199,6 +212,8 @@ Data in the Intuition protocol is represented as atoms and triples. As a develop
 Atoms are the foundational building blocks of Intuition's knowledge graph – the words in our global dictionary. Think of Intuition as a vast, collaborative dictionary where anyone can create a new word, and each word has its own globally persistent, unique digital identifier that can be used to reference it across the entire internet!
 
 [Learn more about Atoms →](/docs/intuition-concepts/primitives/Atoms/fundamentals)
+
+The SDK dynamically fetches and forwards the required atom base cost. Any optional amount passed to `createAtomFromString` or its sibling helpers is an additional TRUST/tTRUST deposit (signal), not the required base cost.
 
 ### Create an Atom from a String
 
@@ -513,7 +528,7 @@ const atomData = [
 const result = await batchCreateAtomsFromThings(
   { walletClient, publicClient, address },
   atomData,
-  1000000000000000000n // Optional: 1 TRUST deposit per atom
+  1000000000000000000n // Optional: additional 1 TRUST signal per atom
 )
 
 console.log('Created atoms:', result.state)

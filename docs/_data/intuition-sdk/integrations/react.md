@@ -18,6 +18,17 @@ Install required dependencies:
 npm install wagmi viem @tanstack/react-query
 ```
 
+SDK read helpers use the mainnet GraphQL API by default. Because this guide configures Wagmi for Intuition Testnet, initialize the SDK read endpoint once during application startup:
+
+```typescript title="sdk-config.ts"
+import { configureSdk } from '@0xintuition/sdk'
+import { API_URL_DEV } from '@0xintuition/graphql'
+
+configureSdk({ apiUrl: API_URL_DEV })
+```
+
+Import this configuration module before components call SDK read helpers. Use `API_URL_PROD` when your Wagmi chains target `intuitionMainnet`.
+
 ## Wagmi Configuration
 
 Set up Wagmi provider in your app:
@@ -57,6 +68,8 @@ function App() {
 ## Creating Atoms
 
 Use SDK functions with Wagmi hooks:
+
+`createAtomFromString` fetches and forwards the required atom base cost. The optional amount in these examples is an additional TRUST/tTRUST deposit (signal).
 
 ```typescript title="CreateAtomButton.tsx"
 import { usePublicClient, useWalletClient, useChainId } from 'wagmi'

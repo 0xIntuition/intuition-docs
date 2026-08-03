@@ -11,6 +11,17 @@ description: Create and query triples using the SDK
 
 Triples are subject-predicate-object statements that connect three atoms to form relationships in the knowledge graph. This guide covers all ways to create and query triples using the SDK.
 
+:::info Match SDK reads to your network
+SDK read helpers use the mainnet GraphQL API by default. The write examples on this page use Intuition Testnet, so configure reads once before calling a read helper:
+
+```typescript
+import { configureSdk } from '@0xintuition/sdk'
+import { API_URL_DEV } from '@0xintuition/graphql'
+
+configureSdk({ apiUrl: API_URL_DEV })
+```
+:::
+
 ## Table of Contents
 
 - [Creating Triples](#creating-triples)
@@ -27,6 +38,9 @@ Create a triple (subject-predicate-object statement) connecting three atoms in a
 ### Function Signature
 
 ```typescript
+import type { WriteConfig } from '@0xintuition/sdk'
+import type { Hex } from 'viem'
+
 function createTripleStatement(
   config: WriteConfig,
   args: {
@@ -55,16 +69,17 @@ function createTripleStatement(
 ### Returns
 
 ```typescript
+import type { Address, Hex } from 'viem'
+
 type TripleCreationResult = {
   transactionHash: `0x${string}`
   state: Array<{
     args: {
-      tripleId: Hex
+      creator: Address
+      termId: Hex
       subjectId: Hex
       predicateId: Hex
       objectId: Hex
-      counterVaultId: Hex
-      // Additional event fields
     }
     eventName: 'TripleCreated'
   }>
@@ -97,6 +112,7 @@ const walletClient = createWalletClient({
   account,
 })
 const address = getMultiVaultAddressFromChainId(intuitionTestnet.id)
+const config = { walletClient, publicClient, address }
 
 // Create atoms
 const alice = await createAtomFromString(config, 'Alice')
@@ -105,7 +121,7 @@ const bob = await createAtomFromString(config, 'Bob')
 
 // Create triple: Alice follows Bob
 const triple = await createTripleStatement(
-  { walletClient, publicClient, address },
+  config,
   {
     args: [
       [alice.state.termId],    // subjects
@@ -117,7 +133,7 @@ const triple = await createTripleStatement(
   }
 )
 
-console.log('Triple ID:', triple.state[0].args.tripleId)
+console.log('Triple ID:', triple.state[0].args.termId)
 console.log('Transaction:', triple.transactionHash)
 ```
 
@@ -183,13 +199,22 @@ A triple consists of three atoms:
 Each triple automatically has a counter-triple representing the opposing position:
 
 ```typescript
-const triple = await createTripleStatement(config, args)
+import {
+  calculateCounterTripleId,
+  createTripleStatement,
+} from '@0xintuition/sdk'
 
-// The main triple vault (FOR position)
-const tripleId = triple.state[0].args.tripleId
+function getPositionIds(
+  triple: Awaited<ReturnType<typeof createTripleStatement>>,
+) {
+  // The main triple vault (FOR position)
+  const tripleId = triple.state[0].args.termId
 
-// The counter vault (AGAINST position)
-const counterVaultId = triple.state[0].args.counterVaultId
+  // Derive the counter triple vault (AGAINST position)
+  const counterTripleId = calculateCounterTripleId(tripleId)
+
+  return { tripleId, counterTripleId }
+}
 ```
 
 ### Best Practices
@@ -261,13 +286,28 @@ Create multiple triples in a single transaction for improved efficiency and redu
 ### Function Signature
 
 ```typescript
+import type { WriteConfig } from '@0xintuition/sdk'
+import type { Address, Hex } from 'viem'
+
 function batchCreateTripleStatements(
   config: WriteConfig,
-  subjects: Hex[],
-  predicates: Hex[],
-  objects: Hex[],
-  deposits: bigint[]
-): Promise<TripleCreationResult>
+  data: [
+    subjects: Hex[],
+    predicates: Hex[],
+    objects: Hex[],
+    assets: bigint[],
+  ],
+  depositAmount?: bigint,
+): Promise<{
+  transactionHash: Hex
+  state: Array<{
+    creator: Address
+    termId: Hex
+    subjectId: Hex
+    predicateId: Hex
+    objectId: Hex
+  }>
+}>
 ```
 
 ### Parameters
@@ -275,10 +315,11 @@ function batchCreateTripleStatements(
 | Parameter | Type | Description | Required |
 |-----------|------|-------------|----------|
 | `config` | `WriteConfig` | Client configuration | Yes |
-| `subjects` | `Hex[]` | Array of subject atom IDs | Yes |
-| `predicates` | `Hex[]` | Array of predicate atom IDs | Yes |
-| `objects` | `Hex[]` | Array of object atom IDs | Yes |
-| `deposits` | `bigint[]` | Array of deposit amounts | Yes |
+| `data[0]` | `Hex[]` | Array of subject atom IDs | Yes |
+| `data[1]` | `Hex[]` | Array of predicate atom IDs | Yes |
+| `data[2]` | `Hex[]` | Array of object atom IDs | Yes |
+| `data[3]` | `bigint[]` | Array of asset amounts | Yes |
+| `depositAmount` | `bigint` | Optional additional transaction deposit | No |
 
 All arrays must be the same length.
 
@@ -288,26 +329,31 @@ All arrays must be the same length.
 import {
   batchCreateTripleStatements,
   createAtomFromString,
+  type WriteConfig,
 } from '@0xintuition/sdk'
 import { parseEther } from 'viem'
 
-// Create atoms
-const alice = await createAtomFromString(config, 'Alice')
-const bob = await createAtomFromString(config, 'Bob')
-const charlie = await createAtomFromString(config, 'Charlie')
-const follows = await createAtomFromString(config, 'follows')
+async function createFollowTriples(config: WriteConfig) {
+  const alice = await createAtomFromString(config, 'Alice')
+  const bob = await createAtomFromString(config, 'Bob')
+  const charlie = await createAtomFromString(config, 'Charlie')
+  const follows = await createAtomFromString(config, 'follows')
 
-// Batch create: Alice follows Bob, Bob follows Charlie
-const result = await batchCreateTripleStatements(
-  config,
-  [alice.state.termId, bob.state.termId],      // subjects
-  [follows.state.termId, follows.state.termId], // predicates
-  [bob.state.termId, charlie.state.termId],     // objects
-  [parseEther('0.1'), parseEther('0.1')]        // deposits
-)
+  // Batch create: Alice follows Bob, Bob follows Charlie
+  const result = await batchCreateTripleStatements(
+    config,
+    [
+      [alice.state.termId, bob.state.termId],       // subjects
+      [follows.state.termId, follows.state.termId], // predicates
+      [bob.state.termId, charlie.state.termId],     // objects
+      [parseEther('0.1'), parseEther('0.1')],        // assets
+    ],
+    parseEther('0.2'), // Optional additional transaction deposit
+  )
 
-console.log('Created', result.state.length, 'triples')
-console.log('Triple IDs:', result.state.map(s => s.args.tripleId))
+  console.log('Created', result.state.length, 'triples')
+  console.log('Triple IDs:', result.state.map(s => s.termId))
+}
 ```
 
 ### Advanced Example
@@ -513,35 +559,43 @@ import {
   createTripleStatement,
   calculateCounterTripleId,
   deposit,
+  type WriteConfig,
 } from '@0xintuition/sdk'
-import { parseEther } from 'viem'
+import { parseEther, type Hex } from 'viem'
 
-// Create triple: Alice follows Bob
-const triple = await createTripleStatement(config, {
-  args: [[aliceId], [followsId], [bobId], [parseEther('0.1')]],
-  value: parseEther('0.1'),
-})
+async function createAndSignalCounter(
+  config: WriteConfig,
+  aliceId: Hex,
+  followsId: Hex,
+  bobId: Hex,
+) {
+  // Create triple: Alice follows Bob
+  const triple = await createTripleStatement(config, {
+    args: [[aliceId], [followsId], [bobId], [parseEther('0.1')]],
+    value: parseEther('0.1'),
+  })
 
-const tripleId = triple.state[0].args.tripleId
-const counterTripleId = calculateCounterTripleId(tripleId)
+  const tripleId = triple.state[0].args.termId
+  const counterTripleId = calculateCounterTripleId(tripleId)
 
-// Deposit into FOR vault
-await deposit(config, [
-  walletClient.account.address,
-  tripleId,
-  1n,
-  parseEther('1'),
-  0n,
-])
+  // Deposit into FOR vault
+  await deposit(config, [
+    config.walletClient.account.address,
+    tripleId,
+    1n,
+    parseEther('1'),
+    0n,
+  ])
 
-// Deposit into AGAINST vault
-await deposit(config, [
-  walletClient.account.address,
-  counterTripleId,
-  1n,
-  parseEther('1'),
-  0n,
-])
+  // Deposit into AGAINST vault
+  await deposit(config, [
+    config.walletClient.account.address,
+    counterTripleId,
+    1n,
+    parseEther('1'),
+    0n,
+  ])
+}
 ```
 
 ### Use Cases
@@ -549,33 +603,57 @@ await deposit(config, [
 #### Building Prediction Markets
 
 ```typescript
-// Create prediction: "Price will go up"
-const prediction = await createTripleStatement(config, {
-  args: [[priceId], [willId], [goUpId], [parseEther('1')]],
-  value: parseEther('1'),
-})
+import {
+  calculateCounterTripleId,
+  createTripleStatement,
+  type WriteConfig,
+} from '@0xintuition/sdk'
+import { parseEther, type Hex } from 'viem'
 
-const forId = prediction.state[0].args.tripleId
-const againstId = calculateCounterTripleId(forId)
+async function getPredictionVaults(
+  config: WriteConfig,
+  priceId: Hex,
+  willId: Hex,
+  goUpId: Hex,
+) {
+  const prediction = await createTripleStatement(config, {
+    args: [[priceId], [willId], [goUpId], [parseEther('1')]],
+    value: parseEther('1'),
+  })
 
-// Users can deposit into either position
-console.log('FOR vault:', forId)
-console.log('AGAINST vault:', againstId)
+  const forId = prediction.state[0].args.termId
+  const againstId = calculateCounterTripleId(forId)
+
+  return { forId, againstId }
+}
 ```
 
 #### Governance Voting
 
 ```typescript
-// Proposal: "Accept proposal #42"
-const proposal = await createTripleStatement(config, {
-  args: [[communityId], [acceptsId], [proposal42Id], [parseEther('10')]],
-  value: parseEther('10'),
-})
+import {
+  calculateCounterTripleId,
+  createTripleStatement,
+  type WriteConfig,
+} from '@0xintuition/sdk'
+import { parseEther, type Hex } from 'viem'
 
-const yesVoteVault = proposal.state[0].args.tripleId
-const noVoteVault = calculateCounterTripleId(yesVoteVault)
+async function getProposalVaults(
+  config: WriteConfig,
+  communityId: Hex,
+  acceptsId: Hex,
+  proposal42Id: Hex,
+) {
+  const proposal = await createTripleStatement(config, {
+    args: [[communityId], [acceptsId], [proposal42Id], [parseEther('10')]],
+    value: parseEther('10'),
+  })
 
-// Voting is done via deposits
+  const yesVoteVault = proposal.state[0].args.termId
+  const noVoteVault = calculateCounterTripleId(yesVoteVault)
+
+  return { yesVoteVault, noVoteVault }
+}
 ```
 
 ### Querying Counter Vault Details

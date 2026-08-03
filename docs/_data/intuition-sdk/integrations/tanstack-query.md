@@ -30,6 +30,17 @@ function App() {
 }
 ```
 
+SDK read helpers use the mainnet GraphQL API by default. If the mutation hooks below write to Intuition Testnet, initialize the testnet read endpoint once before rendering the application:
+
+```typescript title="sdk-config.ts"
+import { configureSdk } from '@0xintuition/sdk'
+import { API_URL_DEV } from '@0xintuition/graphql'
+
+configureSdk({ apiUrl: API_URL_DEV })
+```
+
+Use `API_URL_PROD` instead when the write clients target `intuitionMainnet`. Atom creation helpers fetch and forward the required base cost; an optional amount is an additional TRUST/tTRUST deposit (signal).
+
 ## Query Hooks
 
 Create reusable query hooks for SDK functions:

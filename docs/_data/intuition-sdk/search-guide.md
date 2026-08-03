@@ -9,6 +9,17 @@ description: Search atoms, triples, and perform advanced queries
 
 Discover atoms, triples, accounts, and collections using search, filters, and batch entity lookups.
 
+:::info Choose the GraphQL network explicitly
+SDK reads use mainnet by default. Configure the endpoint once at startup; use `API_URL_DEV` for Intuition Testnet or `API_URL_PROD` for Mainnet:
+
+```typescript
+import { configureSdk } from '@0xintuition/sdk'
+import { API_URL_DEV } from '@0xintuition/graphql'
+
+configureSdk({ apiUrl: API_URL_DEV })
+```
+:::
+
 ## Table of Contents
 
 - [Global Search](#global-search)

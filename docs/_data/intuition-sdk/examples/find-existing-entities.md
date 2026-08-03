@@ -10,10 +10,13 @@ keywords: [sdk, example, search, find, atoms, triples, exists]
 
 This example demonstrates how to find existing atoms and triples to avoid creating duplicates.
 
+SDK reads default to the mainnet GraphQL API. This flow both reads and writes on Intuition Testnet, so it configures the testnet API before its first lookup; optional atom amounts are additional tTRUST signal because the SDK fetches the required base cost automatically.
+
 ## Complete Code
 
 ```typescript
 import {
+  configureSdk,
   intuitionTestnet,
   getMultiVaultAddressFromChainId,
   findAtomIds,
@@ -23,6 +26,7 @@ import {
   createAtomFromString,
   createTripleStatement,
 } from '@0xintuition/sdk'
+import { API_URL_DEV } from '@0xintuition/graphql'
 import { createPublicClient, createWalletClient, http, parseEther } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
 import type { Hex } from 'viem'
@@ -30,6 +34,9 @@ import type { Hex } from 'viem'
 async function main() {
   // Setup
   const account = privateKeyToAccount(process.env.PRIVATE_KEY as `0x${string}`)
+  // SDK reads default to mainnet; keep reads paired with the testnet write chain.
+  configureSdk({ apiUrl: API_URL_DEV })
+
   const publicClient = createPublicClient({
     chain: intuitionTestnet,
     transport: http(),
@@ -121,7 +128,7 @@ async function main() {
       }
     )
 
-    console.log('✓ Triple created:', triple.state[0].args.tripleId)
+    console.log('✓ Triple created:', triple.state[0].args.termId)
   }
 
   // 4. Calculate IDs offline
