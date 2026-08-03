@@ -22,7 +22,7 @@ export default function Home() {
                 <a href="/docs/quick-start/using-the-sdk">Quick Start</a>
               </li>
               <li>
-                <a href="/docs/intuition-concepts">Concepts</a>
+                <a href="/docs/intuition-concepts/primitives">Concepts</a>
               </li>
               <li>
                 <a href="/docs/intuition-sdk/installation-and-setup">SDK</a>
@@ -53,8 +53,9 @@ export default function Home() {
                 documentation.
               </li>
               <li>
-                <a href="/llms-medium.txt">llms-medium.txt</a> — a balanced
-                documentation set with additional context.
+                <a href="/llms-medium.txt">llms-medium.txt</a> — condensed
+                prose summaries of every page, without code samples, sized to
+                fit in a model context window.
               </li>
               <li>
                 <a href="/llms-full.txt">llms-full.txt</a> — the complete
