@@ -1,0 +1,32 @@
+name: Validate SDK Examples
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'docs/_data/intuition-sdk/**'
+      - 'docs/_data/quick-start/using-the-sdk.md'
+      - 'scripts/validate-sdk-examples.js'
+      - 'scripts/sdk-examples.config.json'
+      - 'scripts/__fixtures__/sdk-examples/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/validate-sdk-examples.yml'
+
+jobs:
+  validate-sdk-examples:
+    name: Validate SDK examples
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Typecheck SDK documentation examples
+        run: npm run validate-sdk-examples

@@ -1,0 +1,114 @@
+{
+  "include": [
+    "docs/_data/intuition-sdk/**",
+    "docs/_data/quick-start/using-the-sdk.md"
+  ],
+  "skipComment": "<!-- docs-typecheck: skip -->",
+  "skipConvention": "Place the skip comment on the line immediately before an intentional partial or pseudocode TypeScript fence.",
+  "ratchetPolicy": "knownFailing groups exact source fence lines by file. Every listed fence is still typechecked. Its diagnostics are reported but do not fail CI. Passing or missing fence entries fail CI so these arrays must shrink when documentation fixes or docs-typecheck skip annotations merge.",
+  "knownFailing": [
+    {
+      "file": "docs/_data/intuition-sdk/atoms-guide.md",
+      "fences": [134, 176, 260, 330, 387, 420, 458, 515, 539, 561, 588],
+      "reason": "Current examples mix omitted setup variables with stale Hex argument and GraphQL result shapes, including removed atom vault fields."
+    },
+    {
+      "file": "docs/_data/intuition-sdk/examples/batch-ethereum-accounts.md",
+      "fences": [15],
+      "reason": "The example passes string addresses where SDK 3.0.1 requires Hex-address arrays."
+    },
+    {
+      "file": "docs/_data/intuition-sdk/examples/bulk-sync-cost-estimation.md",
+      "fences": [15],
+      "reason": "The example reads cost fields without narrowing the SDK 3.0.1 boolean-or-CostEstimation result and uses a number where bigint is required."
+    },
+    {
+      "file": "docs/_data/intuition-sdk/examples/create-atom-from-string.md",
+      "fences": [15],
+      "reason": "The example assumes a non-null atom details result and removed vault, currentSharePrice, and positionCount fields."
+    },
+    {
+      "file": "docs/_data/intuition-sdk/examples/create-triple-statement.md",
+      "fences": [15],
+      "reason": "The TripleCreated result uses stale args.tripleId instead of args.termId and reads removed vault and counterVault detail fields without null guards."
+    },
+    {
+      "file": "docs/_data/intuition-sdk/examples/deposit-into-vault.md",
+      "fences": [15],
+      "reason": "The example uses stale WriteConfig and deposit ABI tuple shapes against SDK 3.0.1."
+    },
+    {
+      "file": "docs/_data/intuition-sdk/examples/find-existing-entities.md",
+      "fences": [15],
+      "reason": "The example uses stale TripleCreated args.tripleId and supplies plain strings where SDK 3.0.1 requires Hex values."
+    },
+    {
+      "file": "docs/_data/intuition-sdk/examples/global-search.md",
+      "fences": [15],
+      "reason": "The example uses stale id and vault result fields and omits required null handling for GraphQL search results."
+    },
+    {
+      "file": "docs/_data/intuition-sdk/examples/thing-ipfs-pinning.md",
+      "fences": [15],
+      "reason": "The example uses stale atom details vault fields and result assumptions against SDK and GraphQL 3.0.1."
+    },
+    {
+      "file": "docs/_data/intuition-sdk/installation-and-setup.md",
+      "fences": [151, 218, 255, 414],
+      "reason": "These partial setup examples omit surrounding clients or use stale SDK configuration and create-atom signatures."
+    },
+    {
+      "file": "docs/_data/intuition-sdk/integrations/pinata-ipfs.md",
+      "fences": [78, 194],
+      "reason": "These integration snippets use stale createAtomFromThing or pinThing configuration shapes and omitted setup values."
+    },
+    {
+      "file": "docs/_data/intuition-sdk/integrations/react.md",
+      "fences": [25, 61, 119, 177, 212],
+      "reason": "These React snippets omit surrounding setup and use stale SDK configuration or atom vault result fields."
+    },
+    {
+      "file": "docs/_data/intuition-sdk/integrations/tanstack-query.md",
+      "fences": [55, 78, 120],
+      "reason": "These query snippets omit surrounding setup and use stale SDK input and GraphQL result shapes."
+    },
+    {
+      "file": "docs/_data/intuition-sdk/migration-guide.mdx",
+      "fences": [
+        115, 234, 253, 280, 298, 329, 350, 374, 385, 398, 406, 416, 425, 504,
+        528, 539
+      ],
+      "reason": "The migration comparison deliberately contains removed v1 APIs and partial before/after fragments that do not compile independently against the pinned v3 packages."
+    },
+    {
+      "file": "docs/_data/intuition-sdk/quick-start.md",
+      "fences": [165],
+      "reason": "The end-to-end example uses stale TripleCreated args.tripleId and other pre-v3 result/configuration shapes."
+    },
+    {
+      "file": "docs/_data/intuition-sdk/search-guide.md",
+      "fences": [54, 71, 151, 225, 271, 291, 351, 403, 430],
+      "reason": "These search snippets use stale id and vault fields, outdated call signatures, omitted context, and insufficient nullable-result guards."
+    },
+    {
+      "file": "docs/_data/intuition-sdk/triples-guide.md",
+      "fences": [78, 219, 287, 317, 402, 443, 511, 583],
+      "reason": "These examples include omitted setup plus stale TripleCreated tripleId, triple vault/counterVault fields, and pre-v3 calculation or batch-call shapes."
+    },
+    {
+      "file": "docs/_data/intuition-sdk/vaults-guide.md",
+      "fences": [
+        58, 88, 158, 181, 198, 217, 245, 316, 347, 410, 432, 475, 531, 557, 584,
+        617, 646, 664, 691
+      ],
+      "reason": "These partial examples omit clients and use stale TripleCreated tripleId, vault identifiers, WriteConfig, ABI tuple, and preview/share return shapes."
+    },
+    {
+      "file": "docs/_data/quick-start/using-the-sdk.md",
+      "fences": [
+        167, 182, 205, 233, 249, 314, 332, 375, 396, 419, 433, 488, 527, 550
+      ],
+      "reason": "These snippets omit browser/client context and reference stale protocol exports, SDK batch exports, input tuples, and pre-v3 result shapes."
+    }
+  ]
+}
