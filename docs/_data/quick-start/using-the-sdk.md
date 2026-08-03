@@ -160,34 +160,38 @@ export const publicClient = createPublicClient({
 ```
 
 ### Setup a Wallet Client
-If you are using wagmi, you can use the `useWalletClient` hook to get the wallet client. And won't need to setup a wallet client manually. The code snippets below are for reference if you are not using wagmi.
+If you are using wagmi, you can use the `useWalletClient` hook and do not need to set up a wallet client manually. The snippets below show Node/server clients using an RPC transport and a local account.
 
-#### Testnet
-When developing an application us the `intuitionTestnet` chain.
+Use only a disposable development key in a literal placeholder like this; never hardcode or commit a real private key. Production applications should load signing credentials from a secure secret manager.
+
+#### Testnet (Node/server)
+When developing an application use the `intuitionTestnet` chain.
 ```typescript
 import { intuitionTestnet } from '@0xintuition/sdk' // or `@0xintuition/protocol`
-import { createWalletClient, custom } from 'viem'
+import { createWalletClient, http } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
 
 const account = privateKeyToAccount('0x...')
 export const walletClient = createWalletClient({
   chain: intuitionTestnet,
-  transport: custom(window.ethereum!)
+  account,
+  transport: http(),
 })
 ```
 
-#### Mainnet
+#### Mainnet (Node/server)
 When deploying to production remember to use the `intuitionMainnet` chain.
 
 ```typescript
 import { intuitionMainnet } from '@0xintuition/sdk' // or `@0xintuition/protocol`
-import { createWalletClient, custom } from 'viem'
+import { createWalletClient, http } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
 
 const account = privateKeyToAccount('0x...')
 export const walletClient = createWalletClient({
   chain: intuitionMainnet,
-  transport: custom(window.ethereum!),
+  account,
+  transport: http(),
 })
 ```
 

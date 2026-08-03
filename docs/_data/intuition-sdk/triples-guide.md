@@ -450,10 +450,14 @@ import { getTripleDetails } from '@0xintuition/sdk'
 
 const tripleId = '0x4957d3f442acc301...'
 const details = await getTripleDetails(tripleId)
+if (!details) throw new Error('Triple not found')
 
-console.log('Triple:', details.subject.label, details.predicate.label, details.object.label)
-console.log('For Position Shares:', details.vault.totalShares)
-console.log('Against Position Shares:', details.counterVault.totalShares)
+const forVault = details.term?.vaults[0]
+const againstVault = details.counter_term?.vaults[0]
+
+console.log('Triple:', details.subject?.label, details.predicate?.label, details.object?.label)
+console.log('For Position Shares:', forVault?.total_shares)
+console.log('Against Position Shares:', againstVault?.total_shares)
 ```
 
 ### calculateTripleId
@@ -659,25 +663,31 @@ async function getProposalVaults(
 ### Querying Counter Vault Details
 
 ```typescript
-import { getTripleDetails, calculateCounterTripleId } from '@0xintuition/sdk'
+import { getTripleDetails } from '@0xintuition/sdk'
+import type { Hex } from 'viem'
 
 async function comparePositions(tripleId: Hex) {
   const details = await getTripleDetails(tripleId)
+  if (!details) throw new Error('Triple not found')
+
+  const forVault = details.term?.vaults[0]
+  const againstVault = details.counter_term?.vaults[0]
+  if (!forVault || !againstVault) throw new Error('Triple vaults not found')
 
   console.log('=== Triple ===')
-  console.log(`${details.subject.label} ${details.predicate.label} ${details.object.label}`)
+  console.log(`${details.subject?.label} ${details.predicate?.label} ${details.object?.label}`)
   console.log('')
   console.log('FOR Position:')
-  console.log('  Shares:', details.vault.totalShares)
-  console.log('  Positions:', details.vault.positionCount)
+  console.log('  Shares:', forVault.total_shares)
+  console.log('  Positions:', forVault.allPositions.aggregate?.count ?? 0)
   console.log('')
   console.log('AGAINST Position:')
-  console.log('  Shares:', details.counterVault.totalShares)
-  console.log('  Positions:', details.counterVault.positionCount)
+  console.log('  Shares:', againstVault.total_shares)
+  console.log('  Positions:', againstVault.allPositions.aggregate?.count ?? 0)
 
   // Determine which position has more support
-  const forShares = BigInt(details.vault.totalShares)
-  const againstShares = BigInt(details.counterVault.totalShares)
+  const forShares = BigInt(forVault.total_shares)
+  const againstShares = BigInt(againstVault.total_shares)
 
   if (forShares > againstShares) {
     console.log('\nMajority supports FOR')

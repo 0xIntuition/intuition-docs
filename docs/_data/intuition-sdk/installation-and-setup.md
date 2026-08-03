@@ -252,6 +252,8 @@ const account = mnemonicToAccount('your twelve word mnemonic phrase goes here');
 
 ### Browser Wallet (MetaMask, etc.)
 
+Browser-only: this flow requires an injected wallet extension that exposes `window.ethereum`.
+
 ```typescript
 import { createWalletClient, custom } from 'viem';
 import { intuitionTestnet } from '@0xintuition/sdk';

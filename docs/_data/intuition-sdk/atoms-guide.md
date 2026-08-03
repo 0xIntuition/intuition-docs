@@ -530,11 +530,14 @@ import { getAtomDetails } from '@0xintuition/sdk';
 
 const atomId = '0x1234567890abcdef...';
 const details = await getAtomDetails(atomId);
+if (!details) throw new Error('Atom not found');
+
+const vault = details.term?.vaults[0];
 
 console.log('Atom Label:', details.label);
-console.log('Creator:', details.creator);
-console.log('Vault Shares:', details.vault.totalShares);
-console.log('Share Price:', details.vault.currentSharePrice);
+console.log('Creator:', details.creator?.label ?? details.creator_id);
+console.log('Vault Shares:', vault?.total_shares);
+console.log('Share Price:', vault?.current_share_price);
 ```
 
 ### calculateAtomId

@@ -172,11 +172,18 @@ async function searchAndDisplay(query: string) {
 
   // Get detailed information for first atom
   const firstAtom = results.atoms[0]
-  const details = await getAtomDetails(firstAtom.id)
+  const details = await getAtomDetails(firstAtom.term_id)
+
+  if (!details) {
+    console.log('Atom details were not found')
+    return
+  }
+
+  const vault = details.term?.vaults[0]
 
   console.log('First result:', firstAtom.label)
-  console.log('Creator:', details.creator)
-  console.log('Vault shares:', details.vault.totalShares)
+  console.log('Creator:', details.creator?.label ?? details.creator_id)
+  console.log('Vault shares:', vault?.total_shares)
 }
 ```
 

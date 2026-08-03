@@ -118,11 +118,14 @@ await new Promise(resolve => setTimeout(resolve, 2000))
 
 // Query atom details
 const details = await getAtomDetails(atom.state.termId)
+if (!details) throw new Error('Created atom was not found on the testnet API')
+
+const vault = details.term?.vaults[0]
 
 console.log('Atom Details:')
 console.log('- Label:', details.label)
-console.log('- Creator:', details.creator)
-console.log('- Vault Assets:', details.vault.totalShares)
+console.log('- Creator:', details.creator?.label ?? details.creator_id)
+console.log('- Vault Shares:', vault?.total_shares)
 ```
 
 ## Step 4: Create a Triple
