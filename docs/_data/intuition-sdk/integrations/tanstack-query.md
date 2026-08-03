@@ -18,6 +18,7 @@ npm install @tanstack/react-query
 
 ```typescript title="App.tsx"
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import './sdk-config'
 
 const queryClient = new QueryClient()
 
@@ -190,6 +191,7 @@ Full React component with TanStack Query:
 ```typescript title="AtomExplorer.tsx"
 import { useState } from 'react'
 import { useCreateAtom, useGlobalSearch, useAtomDetails } from './hooks'
+import './sdk-config'
 
 export function AtomExplorer() {
   const [searchQuery, setSearchQuery] = useState('')
@@ -271,8 +273,8 @@ export function AtomExplorer() {
           {atomDetails.data && (
             <div>
               <p>Label: {atomDetails.data.label}</p>
-              <p>Creator: {atomDetails.data.creator}</p>
-              <p>Shares: {atomDetails.data.vault.totalShares}</p>
+              <p>Creator: {atomDetails.data.creator?.label ?? atomDetails.data.creator_id}</p>
+              <p>Shares: {atomDetails.data.term?.vaults[0]?.total_shares ?? 'Unavailable'}</p>
             </div>
           )}
         </div>

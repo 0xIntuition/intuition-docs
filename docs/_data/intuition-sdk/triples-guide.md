@@ -246,9 +246,8 @@ import { getAtomDetails } from '@0xintuition/sdk'
 
 async function verifyAtoms(ids: Hex[]) {
   for (const id of ids) {
-    try {
-      await getAtomDetails(id)
-    } catch {
+    const atom = await getAtomDetails(id)
+    if (atom === null) {
       console.error('Atom does not exist:', id)
       throw new Error(`Invalid atom ID: ${id}`)
     }
@@ -426,20 +425,15 @@ function getTripleDetails(tripleId: string): Promise<TripleDetails>
 
 ```typescript
 type TripleDetails = {
-  id: string
-  subject: { id: string, label: string }
-  predicate: { id: string, label: string }
-  object: { id: string, label: string }
-  vault: {
-    totalShares: string
-    positionCount: number
-  }
-  counterVault: {
-    totalShares: string
-    positionCount: number
-  }
-  creator: Address
-  // Additional fields
+  subject?: { label?: string | null } | null
+  predicate?: { label?: string | null } | null
+  object?: { label?: string | null } | null
+  term?: {
+    vaults: Array<{ total_shares: string }>
+  } | null
+  counter_term?: {
+    vaults: Array<{ total_shares: string }>
+  } | null
 }
 ```
 
@@ -499,13 +493,8 @@ async function tripleExists(
   objectId: Hex
 ): Promise<boolean> {
   const tripleId = calculateTripleId(subjectId, predicateId, objectId)
-
-  try {
-    await getTripleDetails(tripleId)
-    return true
-  } catch {
-    return false
-  }
+  const triple = await getTripleDetails(tripleId)
+  return triple !== null
 }
 ```
 

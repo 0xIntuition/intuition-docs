@@ -145,7 +145,15 @@ await createAtomFromString(config, 'dev');
 Before creating an atom, check if it already exists:
 
 ```typescript
-import { calculateAtomId, getAtomDetails } from '@0xintuition/sdk';
+import {
+  calculateAtomId,
+  configureSdk,
+  createAtomFromString,
+  getAtomDetails,
+} from '@0xintuition/sdk';
+import { API_URL_DEV } from '@0xintuition/graphql';
+
+configureSdk({ apiUrl: API_URL_DEV });
 
 const atomId = calculateAtomId('developer');
 const exists = await getAtomDetails(atomId);
@@ -577,25 +585,29 @@ console.log('IPFS Atom ID:', ipfsAtomId);
 ```typescript
 import {
   calculateAtomId,
+  configureSdk,
   getAtomDetails,
   createAtomFromString,
 } from '@0xintuition/sdk';
+import { API_URL_DEV } from '@0xintuition/graphql';
+
+configureSdk({ apiUrl: API_URL_DEV });
 
 async function createAtomIfNotExists(data: string) {
   // Calculate ID
   const atomId = calculateAtomId(data);
 
-  try {
-    // Check if exists
-    const existing = await getAtomDetails(atomId);
+  // Check if exists
+  const existing = await getAtomDetails(atomId);
+  if (existing !== null) {
     console.log('Atom already exists:', atomId);
     return existing;
-  } catch (error) {
-    // Doesn't exist, create it
-    console.log('Creating new atom');
-    const atom = await createAtomFromString(config, data);
-    return atom;
   }
+
+  // Doesn't exist, create it
+  console.log('Creating new atom');
+  const atom = await createAtomFromString(config, data);
+  return atom;
 }
 ```
 
@@ -608,7 +620,15 @@ async function getMultipleAtoms(atomIds: string[]) {
   const atoms = await Promise.all(atomIds.map((id) => getAtomDetails(id)));
 
   atoms.forEach((atom) => {
-    console.log(`${atom.label}: ${atom.vault.totalShares} shares`);
+    if (atom === null) return;
+
+    const vault = atom.term?.vaults[0];
+    if (!vault) {
+      console.log(`${atom.label}: no vault data`);
+      return;
+    }
+
+    console.log(`${atom.label}: ${vault.total_shares} shares`);
   });
 
   return atoms;

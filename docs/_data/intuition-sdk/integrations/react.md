@@ -51,6 +51,7 @@ export const config = createConfig({
 import { WagmiProvider } from 'wagmi'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { config } from './wagmi-config'
+import './sdk-config'
 
 const queryClient = new QueryClient()
 
@@ -208,11 +209,13 @@ function AtomDisplay({ atomId }: { atomId: string }) {
   if (error) return <div>Error loading atom</div>
   if (!atom) return null
 
+  const vault = atom.term?.vaults[0]
+
   return (
     <div>
       <h3>{atom.label}</h3>
-      <p>Creator: {atom.creator}</p>
-      <p>Shares: {atom.vault.totalShares}</p>
+      <p>Creator: {atom.creator?.label ?? atom.creator_id}</p>
+      <p>Shares: {vault?.total_shares ?? 'Unavailable'}</p>
     </div>
   )
 }
@@ -226,6 +229,7 @@ Full-featured React component:
 import { useState } from 'react'
 import { useAccount, usePublicClient, useWalletClient, useChainId } from 'wagmi'
 import { useQuery, useMutation } from '@tanstack/react-query'
+import './sdk-config'
 import {
   createAtomFromString,
   getAtomDetails,

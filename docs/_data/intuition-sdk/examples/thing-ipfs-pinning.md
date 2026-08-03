@@ -91,7 +91,6 @@ async function main() {
   console.log('\n=== Atom Details ===');
   console.log('Label:', details.label);
   console.log('Creator:', details.creator?.label ?? details.creator_id);
-  console.log('Vault ID:', vault?.term_id);
   console.log('Total Shares:', vault?.total_shares);
 
   console.log('\nSuccess!');
