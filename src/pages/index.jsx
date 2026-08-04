@@ -54,8 +54,8 @@ export default function Home() {
               </li>
               <li>
                 <a href="/llms-medium.txt">llms-medium.txt</a> — condensed
-                prose summaries of every page, without code samples, sized to
-                fit in a model context window.
+                summaries of every page, a fraction of the size of the full
+                corpus.
               </li>
               <li>
                 <a href="/llms-full.txt">llms-full.txt</a> — the complete
