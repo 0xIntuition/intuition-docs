@@ -331,8 +331,21 @@ function extractExamplesFromSource(relativeFile, source, skipComment) {
     index = closingIndex;
   }
 
-  const contentCounts = new Map();
+  const extractedCandidates = [];
   for (const candidate of candidates) {
+    if (candidate.skipped) {
+      coverage.skippedByAnnotation++;
+    } else if (IMPORT_PATTERN.test(candidate.code)) {
+      extractedCandidates.push(candidate);
+    } else {
+      coverage.excludedByCriterion++;
+    }
+  }
+
+  // Ordinals count extracted fences only: a skipped or excluded neighbor with
+  // an identical body must never shift a tracked fence's identity.
+  const contentCounts = new Map();
+  for (const candidate of extractedCandidates) {
     contentCounts.set(
       candidate.contentHash,
       (contentCounts.get(candidate.contentHash) || 0) + 1,
@@ -340,27 +353,19 @@ function extractExamplesFromSource(relativeFile, source, skipComment) {
   }
 
   const contentOrdinals = new Map();
-  for (const candidate of candidates) {
+  for (const candidate of extractedCandidates) {
     const ordinal = (contentOrdinals.get(candidate.contentHash) || 0) + 1;
     contentOrdinals.set(candidate.contentHash, ordinal);
-
-    if (candidate.skipped) {
-      coverage.skippedByAnnotation++;
-    } else if (IMPORT_PATTERN.test(candidate.code)) {
-      const duplicateCount = contentCounts.get(candidate.contentHash);
-      examples.push({
-        id: fenceIdentity(relativeFile, candidate.contentHash, ordinal),
-        sourceFile: relativeFile,
-        fenceLine: candidate.fenceLine,
-        code: candidate.code,
-        contentHash: candidate.contentHash,
-        contentOrdinal: ordinal,
-        duplicateCount,
-      });
-      coverage.extracted++;
-    } else {
-      coverage.excludedByCriterion++;
-    }
+    examples.push({
+      id: fenceIdentity(relativeFile, candidate.contentHash, ordinal),
+      sourceFile: relativeFile,
+      fenceLine: candidate.fenceLine,
+      code: candidate.code,
+      contentHash: candidate.contentHash,
+      contentOrdinal: ordinal,
+      duplicateCount: contentCounts.get(candidate.contentHash),
+    });
+    coverage.extracted++;
   }
 
   return { examples, coverage };
@@ -856,6 +861,45 @@ function runSelfTest(config) {
     );
   }
 
+  const skipCrossedBefore = `${ratchetedSource}${config.skipComment}\n${ratchetedSource}`;
+  const skipCrossedAfter = `${config.skipComment}\n${ratchetedSource}\n${ratchetedSource}`;
+  const skipBeforeExtraction = extractExamplesFromSource(
+    ratcheted.sourceFile,
+    skipCrossedBefore,
+    config.skipComment,
+  );
+  const skipAfterExtraction = extractExamplesFromSource(
+    ratcheted.sourceFile,
+    skipCrossedAfter,
+    config.skipComment,
+  );
+  const skipBeforeTracked = skipBeforeExtraction.examples[0];
+  const skipAfterTracked = skipAfterExtraction.examples[0];
+  const skipCrossedResult = typecheckExamples([skipAfterTracked]);
+  const skipCrossedComparison = compareRatchet(
+    skipCrossedResult.diagnostics,
+    attachExamples([fixtureRatchet], [skipAfterTracked]),
+  );
+
+  if (
+    skipBeforeExtraction.examples.length !== 1 ||
+    skipAfterExtraction.examples.length !== 1 ||
+    skipBeforeExtraction.coverage.skippedByAnnotation !== 1 ||
+    skipAfterExtraction.coverage.skippedByAnnotation !== 1 ||
+    !skipBeforeTracked ||
+    !skipAfterTracked ||
+    skipBeforeTracked.id !== ratcheted.id ||
+    skipAfterTracked.id !== ratcheted.id ||
+    skipAfterTracked.contentOrdinal !== 1 ||
+    skipCrossedResult.unparsed.length > 0 ||
+    skipCrossedComparison.unexpectedDiagnostics.length > 0 ||
+    skipCrossedComparison.mismatches.length > 0
+  ) {
+    throw new Error(
+      'Skip-crossed fixture did not keep a tracked fence identity stable across an identical skipped fence',
+    );
+  }
+
   console.log(`  ${formatCoverage(coverage)}`);
   console.log(`  PASS known-good fixture: ${displayFence(good)}`);
   console.log('  PASS immediately-preceding skip comment excluded skipped.md');
@@ -875,13 +919,16 @@ function runSelfTest(config) {
     `  PASS duplicate-fence ordinals: identical failing fences at L${duplicates[0].fenceLine} and L${duplicates[1].fenceLine} received ordinals 1 and 2; both ratcheted and validation PASS.`,
   );
   console.log(
+    `  PASS skip-crossed: tracked fence kept identity ${ratcheted.id.split('#').slice(1).join('#')} after moving across an identical skipped fence; validation PASS with NO ratchet update needed.`,
+  );
+  console.log(
     `  PASS known-bad fixture failed with ${badDiagnostics.length} diagnostics:`,
   );
   for (const diagnostic of badDiagnostics) {
     console.log(`    ${formatDiagnostic(diagnostic)}`);
   }
   console.log(
-    'Self-test PASS: good passed; known-bad failed; TSX extracted; moved content stayed ratcheted; edited content failed; duplicate ordinals validated.\n',
+    'Self-test PASS: good passed; known-bad failed; TSX extracted; moved content stayed ratcheted; edited content failed; duplicate ordinals validated; skip-crossed identity stable.\n',
   );
 }
 
