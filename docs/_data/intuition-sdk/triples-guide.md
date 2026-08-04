@@ -39,9 +39,23 @@ Create a triple (subject-predicate-object statement) connecting three atoms in a
 
 ```typescript
 import type { WriteConfig } from '@0xintuition/sdk'
-import type { Hex } from 'viem'
+import type { Address, Hex } from 'viem'
 
-function createTripleStatement(
+type TripleCreationResult = {
+  transactionHash: Hex
+  state: Array<{
+    args: {
+      creator: Address
+      termId: Hex
+      subjectId: Hex
+      predicateId: Hex
+      objectId: Hex
+    }
+    eventName: 'TripleCreated'
+  }>
+}
+
+declare function createTripleStatement(
   config: WriteConfig,
   args: {
     args: [
@@ -242,7 +256,12 @@ const triple = await createTripleStatement(config, {
 #### 2. Verify Atom IDs
 
 ```typescript
-import { getAtomDetails } from '@0xintuition/sdk'
+import {
+  createTripleStatement,
+  getAtomDetails,
+  type WriteConfig,
+} from '@0xintuition/sdk'
+import { parseEther, type Hex } from 'viem'
 
 async function verifyAtoms(ids: Hex[]) {
   for (const id of ids) {
@@ -254,9 +273,20 @@ async function verifyAtoms(ids: Hex[]) {
   }
 }
 
-// Use before creating triple
-await verifyAtoms([subjectId, predicateId, objectId])
-const triple = await createTripleStatement(config, args)
+async function createVerifiedTriple(
+  config: WriteConfig,
+  subjectId: Hex,
+  predicateId: Hex,
+  objectId: Hex,
+) {
+  await verifyAtoms([subjectId, predicateId, objectId])
+  const deposit = parseEther('0.1')
+
+  return createTripleStatement(config, {
+    args: [[subjectId], [predicateId], [objectId], [deposit]],
+    value: deposit,
+  })
+}
 ```
 
 #### 3. Handle Transaction Value Correctly
@@ -288,7 +318,7 @@ Create multiple triples in a single transaction for improved efficiency and redu
 import type { WriteConfig } from '@0xintuition/sdk'
 import type { Address, Hex } from 'viem'
 
-function batchCreateTripleStatements(
+declare function batchCreateTripleStatements(
   config: WriteConfig,
   data: [
     subjects: Hex[],
@@ -360,10 +390,14 @@ async function createFollowTriples(config: WriteConfig) {
 Build a complete knowledge graph:
 
 ```typescript
-import { batchCreateTripleStatements } from '@0xintuition/sdk'
+import {
+  batchCreateTripleStatements,
+  createAtomFromString,
+  type WriteConfig,
+} from '@0xintuition/sdk'
 import { parseEther } from 'viem'
 
-async function buildKnowledgeGraph() {
+async function buildKnowledgeGraph(config: WriteConfig) {
   // Create base atoms
   const ts = await createAtomFromString(config, 'TypeScript')
   const js = await createAtomFromString(config, 'JavaScript')
@@ -378,10 +412,13 @@ async function buildKnowledgeGraph() {
   // Batch create relationships
   const result = await batchCreateTripleStatements(
     config,
-    [ts.state.termId, js.state.termId, ts.state.termId],
-    [isA.state.termId, isA.state.termId, usedFor.state.termId],
-    [language.state.termId, language.state.termId, web3.state.termId],
-    [parseEther('0.1'), parseEther('0.1'), parseEther('0.1')]
+    [
+      [ts.state.termId, js.state.termId, ts.state.termId],
+      [isA.state.termId, isA.state.termId, usedFor.state.termId],
+      [language.state.termId, language.state.termId, web3.state.termId],
+      [parseEther('0.1'), parseEther('0.1'), parseEther('0.1')],
+    ],
+    parseEther('0.3'),
   )
 
   console.log('Knowledge graph created:', result.state.length, 'relationships')
@@ -486,6 +523,7 @@ console.log('Triple ID:', tripleId)
 
 ```typescript
 import { calculateTripleId, getTripleDetails } from '@0xintuition/sdk'
+import type { Hex } from 'viem'
 
 async function tripleExists(
   subjectId: Hex,
@@ -547,6 +585,9 @@ Example: "Alice follows Bob"
 
 ### Depositing into Counter Vaults
 
+The payable `deposit` wrapper is pending the post-publish SDK resync, so this end-to-end deposit flow is excluded from copy-paste typechecking until that package shape is available.
+
+<!-- docs-typecheck: skip -->
 ```typescript
 import {
   createTripleStatement,

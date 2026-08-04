@@ -73,6 +73,10 @@ async function main() {
     knowledgeGraph
   )
 
+  if (typeof estimation === 'boolean') {
+    throw new Error('Expected a cost estimation from the dry run')
+  }
+
   console.log('\n=== Cost Summary ===')
   console.log('Atoms to create:', estimation.atomCount)
   console.log('Triples to create:', estimation.tripleCount)
@@ -97,7 +101,7 @@ async function main() {
       return
     }
 
-    const result = await sync(
+    const completed = await sync(
       {
         address,
         publicClient,
@@ -108,8 +112,12 @@ async function main() {
       knowledgeGraph
     )
 
+    if (typeof completed !== 'boolean' || !completed) {
+      throw new Error('Sync did not complete successfully')
+    }
+
     console.log('\n✓ Sync completed!')
-    console.log('Final cost:', formatEther(result.totalCost), 'tTRUST')
+    console.log('Estimated cost:', formatEther(estimation.totalCost), 'tTRUST')
 
   } else {
     console.log('\n✗ Insufficient balance for sync operation')

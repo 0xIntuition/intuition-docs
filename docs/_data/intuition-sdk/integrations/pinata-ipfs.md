@@ -76,26 +76,33 @@ console.log('Pinned to IPFS:', uri); // ipfs://bafkreib...
 Use `createAtomFromThing` when you want the SDK to pin the Thing metadata and create the atom in one flow:
 
 ```typescript
-import { configureSdk, createAtomFromThing } from '@0xintuition/sdk';
+import {
+  configureSdk,
+  createAtomFromThing,
+  type WriteConfig,
+} from '@0xintuition/sdk';
 import { parseEther } from 'viem';
 
 configureSdk({
   pinApiKey: process.env.INTUITION_PIN_API_KEY,
 });
 
-const atom = await createAtomFromThing(
-  { walletClient, publicClient, address },
-  {
-    url: 'https://myproject.com',
-    name: 'My Project',
-    description: 'A blockchain project',
-    image: 'https://myproject.com/logo.png',
-  },
-  { depositAmount: parseEther('0.05') },
-);
+async function createProjectAtom(config: WriteConfig) {
+  const atom = await createAtomFromThing(
+    config,
+    {
+      url: 'https://myproject.com',
+      name: 'My Project',
+      description: 'A blockchain project',
+      image: 'https://myproject.com/logo.png',
+    },
+    { depositAmount: parseEther('0.05') },
+  );
 
-console.log('Atom created:', atom.state.termId);
-console.log('IPFS URI:', atom.uri);
+  console.log('Atom created:', atom.state.termId);
+  console.log('IPFS URI:', atom.uri);
+  return atom;
+}
 ```
 
 ## Direct Pinata Uploads
@@ -200,7 +207,10 @@ async function safePinThing(thing: any) {
     return { success: true, uri };
   } catch (error) {
     console.error('Failed to pin:', error);
-    return { success: false, error: error.message };
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : String(error),
+    };
   }
 }
 ```

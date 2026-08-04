@@ -18,7 +18,14 @@ import {
   getMultiVaultAddressFromChainId,
   batchCreateAtomsFromEthereumAccounts,
 } from '@0xintuition/sdk'
-import { createPublicClient, createWalletClient, http, parseEther, formatEther } from 'viem'
+import {
+  createPublicClient,
+  createWalletClient,
+  http,
+  parseEther,
+  formatEther,
+  type Address,
+} from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
 
 async function main() {
@@ -36,7 +43,7 @@ async function main() {
   const address = getMultiVaultAddressFromChainId(intuitionTestnet.id)
 
   // List of Ethereum addresses
-  const addresses = [
+  const addresses: Address[] = [
     '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045',
     '0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb',
     '0x1234567890123456789012345678901234567890',

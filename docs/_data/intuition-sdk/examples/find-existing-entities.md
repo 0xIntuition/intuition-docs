@@ -27,7 +27,7 @@ import {
   createTripleStatement,
 } from '@0xintuition/sdk'
 import { API_URL_DEV } from '@0xintuition/graphql'
-import { createPublicClient, createWalletClient, http, parseEther } from 'viem'
+import { createPublicClient, createWalletClient, http, parseEther, toHex } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
 import type { Hex } from 'viem'
 
@@ -134,7 +134,7 @@ async function main() {
   // 4. Calculate IDs offline
   console.log('\n=== Offline ID Calculation ===\n')
 
-  const calculatedAtomId = calculateAtomId('NewAtom')
+  const calculatedAtomId = calculateAtomId(toHex('NewAtom'))
   console.log('Predicted atom ID for "NewAtom":', calculatedAtomId)
 
   const calculatedTripleId = calculateTripleId(tsId, compilesTo.state.termId, jsId)

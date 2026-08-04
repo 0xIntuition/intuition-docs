@@ -38,7 +38,7 @@ Search across all entity types (atoms, accounts, triples, collections) with a si
 ```typescript
 function globalSearch(
   query: string,
-  options?: GlobalSearchOptions
+  options: GlobalSearchOptions
 ): Promise<GlobalSearchResults | null>
 ```
 
@@ -47,7 +47,7 @@ function globalSearch(
 | Parameter | Type | Description | Required |
 |-----------|------|-------------|----------|
 | `query` | `string` | Search query text | Yes |
-| `options` | `GlobalSearchOptions` | Search limits per type | No |
+| `options` | `GlobalSearchOptions` | Search limits per type | Yes |
 
 ### GlobalSearchOptions
 
@@ -65,7 +65,7 @@ type GlobalSearchOptions = {
 ```typescript
 import { globalSearch } from '@0xintuition/sdk'
 
-const results = await globalSearch('ethereum')
+const results = await globalSearch('ethereum', {})
 
 if (results) {
   console.log('Atoms:', results.atoms.length)
@@ -98,14 +98,16 @@ async function searchWithLimits(query: string) {
   // Display atoms
   console.log('\n=== Atoms ===')
   results.atoms.forEach(atom => {
-    console.log(`${atom.label} (ID: ${atom.id})`)
+    console.log(`${atom.label ?? 'Unnamed atom'} (ID: ${atom.term_id})`)
   })
 
   // Display triples
   console.log('\n=== Triples ===')
   results.triples.forEach(triple => {
     console.log(
-      `${triple.subject.label} ${triple.predicate.label} ${triple.object.label}`
+      `${triple.subject?.label ?? 'Unknown subject'} ` +
+      `${triple.predicate?.label ?? 'Unknown predicate'} ` +
+      `${triple.object?.label ?? 'Unknown object'}`
     )
   })
 
@@ -128,6 +130,8 @@ const results = await globalSearch('defi', {
   triplesLimit: 0,
   collectionsLimit: 0,
 })
+
+if (!results) throw new Error('Search failed')
 
 console.log('DeFi atoms:', results.atoms)
 ```
@@ -221,7 +225,7 @@ type GlobalSearchResults = {
 The function returns `null` on error:
 
 ```typescript
-const results = await globalSearch('query')
+const results = await globalSearch('query', {})
 
 if (!results) {
   console.error('Search failed')
@@ -250,9 +254,11 @@ const results = await globalSearch('blockchain', {
   collectionsLimit: 0, // Skip collections
 })
 
+if (!results) throw new Error('Search failed')
+
 console.log('Found atoms:', results.atoms.length)
 results.atoms.forEach(atom => {
-  console.log(`- ${atom.label} (${atom.id})`)
+  console.log(`- ${atom.label ?? 'Unnamed atom'} (${atom.term_id})`)
 })
 ```
 
@@ -296,9 +302,15 @@ const results = await globalSearch('follows', {
   collectionsLimit: 0,
 })
 
+if (!results) throw new Error('Search failed')
+
 console.log('Found triples:', results.triples.length)
 results.triples.forEach(triple => {
-  console.log(`${triple.subject.label} ${triple.predicate.label} ${triple.object.label}`)
+  console.log(
+    `${triple.subject?.label ?? 'Unknown subject'} ` +
+    `${triple.predicate?.label ?? 'Unknown predicate'} ` +
+    `${triple.object?.label ?? 'Unknown object'}`
+  )
 })
 ```
 
@@ -308,14 +320,24 @@ Find triple IDs for specific atom combinations.
 
 ```typescript
 import { findTripleIds } from '@0xintuition/sdk'
+import type { Address, Hex } from 'viem'
 
-const tripleCombinations = [
-  ['0xsubject1', '0xpredicate1', '0xobject1'],
-  ['0xsubject2', '0xpredicate2', '0xobject2'],
+const walletAddress: Address = '0x1111111111111111111111111111111111111111'
+const tripleCombinations: Array<[Hex, Hex, Hex]> = [
+  [
+    '0x1111111111111111111111111111111111111111111111111111111111111111',
+    '0x2222222222222222222222222222222222222222222222222222222222222222',
+    '0x3333333333333333333333333333333333333333333333333333333333333333',
+  ],
+  [
+    '0x4444444444444444444444444444444444444444444444444444444444444444',
+    '0x5555555555555555555555555555555555555555555555555555555555555555',
+    '0x6666666666666666666666666666666666666666666666666666666666666666',
+  ],
 ]
 
 const triples = await findTripleIds(
-  walletClient.account.address,
+  walletAddress,
   tripleCombinations
 )
 
@@ -367,10 +389,14 @@ atoms.forEach(atom => {
 Check existence before creating:
 
 ```typescript
-import { findAtomIds, createAtomFromString } from '@0xintuition/sdk'
+import {
+  findAtomIds,
+  createAtomFromString,
+  type WriteConfig,
+} from '@0xintuition/sdk'
 import { parseEther } from 'viem'
 
-async function createMissingAtoms(atomData: string[]) {
+async function createMissingAtoms(config: WriteConfig, atomData: string[]) {
   // Find existing atoms
   const atoms = await findAtomIds(atomData)
 
@@ -397,10 +423,6 @@ async function createMissingAtoms(atomData: string[]) {
 
   return atoms
 }
-
-// Usage
-const atomData = ['developer', 'blockchain', 'web3']
-const atoms = await createMissingAtoms(atomData)
 ```
 
 ### findTripleIds
@@ -420,14 +442,24 @@ function findTripleIds(
 
 ```typescript
 import { findTripleIds } from '@0xintuition/sdk'
+import type { Address, Hex } from 'viem'
 
-const combinations = [
-  ['0xsubject1', '0xpredicate1', '0xobject1'],
-  ['0xsubject2', '0xpredicate2', '0xobject2'],
+const walletAddress: Address = '0x1111111111111111111111111111111111111111'
+const combinations: Array<[Hex, Hex, Hex]> = [
+  [
+    '0x1111111111111111111111111111111111111111111111111111111111111111',
+    '0x2222222222222222222222222222222222222222222222222222222222222222',
+    '0x3333333333333333333333333333333333333333333333333333333333333333',
+  ],
+  [
+    '0x4444444444444444444444444444444444444444444444444444444444444444',
+    '0x5555555555555555555555555555555555555555555555555555555555555555',
+    '0x6666666666666666666666666666666666666666666666666666666666666666',
+  ],
 ]
 
 const triples = await findTripleIds(
-  walletClient.account.address,
+  walletAddress,
   combinations
 )
 
@@ -449,16 +481,20 @@ Check and create triples:
 import {
   findTripleIds,
   createTripleStatement,
-  calculateTripleId,
+  type WriteConfig,
 } from '@0xintuition/sdk'
-import { parseEther } from 'viem'
+import { parseEther, type Hex } from 'viem'
 
 async function ensureTriples(
+  config: WriteConfig,
   combinations: Array<[Hex, Hex, Hex]>
 ) {
+  const account = config.walletClient.account
+  if (!account) throw new Error('Wallet client account is required')
+
   // Check which triples exist
   const found = await findTripleIds(
-    walletClient.account.address,
+    account.address,
     combinations
   )
 
