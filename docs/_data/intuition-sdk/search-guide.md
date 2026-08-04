@@ -276,12 +276,14 @@ const atomData = ['TypeScript', 'JavaScript', 'Python']
 const atoms = await findAtomIds(atomData)
 
 atoms.forEach(atom => {
-  if (atom.term_id) {
-    console.log(`${atom.data}: ${atom.term_id}`)
-  } else {
-    console.log(`${atom.data}: not found`)
-  }
+  console.log(`${atom.data}: ${atom.term_id}`)
 })
+
+atomData
+  .filter(data => !atoms.some(atom => atom.data === data))
+  .forEach(data => {
+    console.log(`${data}: not found`)
+  })
 ```
 
 ---
@@ -319,20 +321,21 @@ results.triples.forEach(triple => {
 Find triple IDs for specific atom combinations.
 
 ```typescript
-import { findTripleIds } from '@0xintuition/sdk'
-import type { Address, Hex } from 'viem'
+import { calculateAtomId, findTripleIds } from '@0xintuition/sdk'
+import { toHex, type Address, type Hex } from 'viem'
 
+// Replace this illustrative address with the wallet whose positions you want returned.
 const walletAddress: Address = '0x1111111111111111111111111111111111111111'
 const tripleCombinations: Array<[Hex, Hex, Hex]> = [
   [
-    '0x1111111111111111111111111111111111111111111111111111111111111111',
-    '0x2222222222222222222222222222222222222222222222222222222222222222',
-    '0x3333333333333333333333333333333333333333333333333333333333333333',
+    calculateAtomId(toHex('TypeScript')),
+    calculateAtomId(toHex('isA')),
+    calculateAtomId(toHex('Programming Language')),
   ],
   [
-    '0x4444444444444444444444444444444444444444444444444444444444444444',
-    '0x5555555555555555555555555555555555555555555555555555555555555555',
-    '0x6666666666666666666666666666666666666666666666666666666666666666',
+    calculateAtomId(toHex('Python')),
+    calculateAtomId(toHex('isA')),
+    calculateAtomId(toHex('Programming Language')),
   ],
 ]
 
@@ -342,9 +345,7 @@ const triples = await findTripleIds(
 )
 
 triples.forEach(triple => {
-  if (triple.term_id) {
-    console.log('Found triple:', triple.term_id)
-  }
+  console.log('Found triple:', triple.term_id)
 })
 ```
 
@@ -363,7 +364,7 @@ Find atom IDs for a batch of atom data strings.
 ```typescript
 function findAtomIds(
   atomDataArray: string[]
-): Promise<Array<{ data: string, term_id?: string }>>
+): Promise<Array<{ data: string, term_id: string }>>
 ```
 
 #### Basic Example
@@ -376,12 +377,14 @@ const data = ['TypeScript', 'JavaScript', 'Python', 'Rust', 'Go']
 const atoms = await findAtomIds(data)
 
 atoms.forEach(atom => {
-  if (atom.term_id) {
-    console.log(`Found ${atom.data}: ${atom.term_id}`)
-  } else {
-    console.log(`Missing ${atom.data}: not found`)
-  }
+  console.log(`Found ${atom.data}: ${atom.term_id}`)
 })
+
+data
+  .filter(item => !atoms.some(atom => atom.data === item))
+  .forEach(item => {
+    console.log(`Missing ${item}: not found`)
+  })
 ```
 
 #### Advanced Example
@@ -400,8 +403,10 @@ async function createMissingAtoms(config: WriteConfig, atomData: string[]) {
   // Find existing atoms
   const atoms = await findAtomIds(atomData)
 
-  // Filter missing atoms
-  const missing = atoms.filter(a => !a.term_id)
+  // findAtomIds returns only matches, so diff the inputs against their data.
+  const missing = atomData.filter(
+    data => !atoms.some(atom => atom.data === data)
+  )
 
   if (missing.length === 0) {
     console.log('All atoms already exist')
@@ -411,14 +416,14 @@ async function createMissingAtoms(config: WriteConfig, atomData: string[]) {
   console.log(`Creating ${missing.length} missing atoms...`)
 
   // Create missing atoms
-  for (const atom of missing) {
+  for (const data of missing) {
     const created = await createAtomFromString(
       config,
-      atom.data,
+      data,
       parseEther('0.01')
     )
-    atom.term_id = created.state.termId
-    console.log(`Created: ${atom.data}`)
+    atoms.push({ data, term_id: created.state.termId })
+    console.log(`Created: ${data}`)
   }
 
   return atoms
@@ -441,20 +446,21 @@ function findTripleIds(
 #### Basic Example
 
 ```typescript
-import { findTripleIds } from '@0xintuition/sdk'
-import type { Address, Hex } from 'viem'
+import { calculateAtomId, findTripleIds } from '@0xintuition/sdk'
+import { toHex, type Address, type Hex } from 'viem'
 
+// Replace this illustrative address with the wallet whose positions you want returned.
 const walletAddress: Address = '0x1111111111111111111111111111111111111111'
 const combinations: Array<[Hex, Hex, Hex]> = [
   [
-    '0x1111111111111111111111111111111111111111111111111111111111111111',
-    '0x2222222222222222222222222222222222222222222222222222222222222222',
-    '0x3333333333333333333333333333333333333333333333333333333333333333',
+    calculateAtomId(toHex('TypeScript')),
+    calculateAtomId(toHex('isA')),
+    calculateAtomId(toHex('Programming Language')),
   ],
   [
-    '0x4444444444444444444444444444444444444444444444444444444444444444',
-    '0x5555555555555555555555555555555555555555555555555555555555555555',
-    '0x6666666666666666666666666666666666666666666666666666666666666666',
+    calculateAtomId(toHex('Python')),
+    calculateAtomId(toHex('isA')),
+    calculateAtomId(toHex('Programming Language')),
   ],
 ]
 
@@ -464,12 +470,8 @@ const triples = await findTripleIds(
 )
 
 triples.forEach(triple => {
-  if (triple.term_id) {
-    console.log('Found triple:', triple.term_id)
-    console.log('  Positions:', triple.positions?.length || 0)
-  } else {
-    console.log('Triple does not exist')
-  }
+  console.log('Found triple:', triple.term_id)
+  console.log('  Positions:', triple.positions.length)
 })
 ```
 
@@ -501,8 +503,14 @@ async function ensureTriples(
   // Create missing triples
   for (let i = 0; i < combinations.length; i++) {
     const [subject, predicate, object] = combinations[i]
+    const existing = found.find(
+      triple =>
+        triple.subject_id === subject &&
+        triple.predicate_id === predicate &&
+        triple.object_id === object
+    )
 
-    if (!found[i]?.term_id) {
+    if (!existing) {
       console.log(`Creating triple: ${subject.slice(0, 10)}...`)
 
       await createTripleStatement(config, {
@@ -517,7 +525,7 @@ async function ensureTriples(
 
       console.log('Created')
     } else {
-      console.log('Already exists:', found[i].term_id)
+      console.log('Already exists:', existing.term_id)
     }
   }
 }

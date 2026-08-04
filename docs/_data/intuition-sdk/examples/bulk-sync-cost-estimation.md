@@ -101,7 +101,7 @@ async function main() {
       return
     }
 
-    const completed = await sync(
+    const completion = await sync(
       {
         address,
         publicClient,
@@ -112,12 +112,15 @@ async function main() {
       knowledgeGraph
     )
 
-    if (typeof completed !== 'boolean' || !completed) {
-      throw new Error('Sync did not complete successfully')
+    // SDK 3.0.1 declares a boolean union but returns the cost estimation after
+    // successful live execution; failures reject by throwing.
+    if (typeof completion === 'boolean') {
+      throw new Error('Unexpected boolean result from sync')
     }
 
     console.log('\n✓ Sync completed!')
     console.log('Estimated cost:', formatEther(estimation.totalCost), 'tTRUST')
+    console.log('Actual sync cost:', formatEther(completion.totalCost), 'tTRUST')
 
   } else {
     console.log('\n✗ Insufficient balance for sync operation')

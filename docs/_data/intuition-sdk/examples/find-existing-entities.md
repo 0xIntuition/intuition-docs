@@ -54,30 +54,30 @@ async function main() {
   const atomData = ['TypeScript', 'JavaScript', 'Python', 'Rust']
 
   const atoms = await findAtomIds(atomData)
+  const missingAtomData = atomData.filter(
+    data => !atoms.some(atom => atom.data === data)
+  )
 
   console.log('Results:')
   atoms.forEach(atom => {
-    if (atom.term_id) {
-      console.log(`✓ ${atom.data}: ${atom.term_id}`)
-    } else {
-      console.log(`✗ ${atom.data}: not found`)
-    }
+    console.log(`✓ ${atom.data}: ${atom.term_id}`)
+  })
+  missingAtomData.forEach(data => {
+    console.log(`✗ ${data}: not found`)
   })
 
   // 2. Create missing atoms
-  const missingAtoms = atoms.filter(a => !a.term_id)
+  if (missingAtomData.length > 0) {
+    console.log(`\n=== Creating ${missingAtomData.length} Missing Atoms ===\n`)
 
-  if (missingAtoms.length > 0) {
-    console.log(`\n=== Creating ${missingAtoms.length} Missing Atoms ===\n`)
-
-    for (const atom of missingAtoms) {
+    for (const data of missingAtomData) {
       const created = await createAtomFromString(
         { walletClient, publicClient, address },
-        atom.data,
+        data,
         parseEther('0.01')
       )
-      atom.term_id = created.state.termId
-      console.log(`✓ Created: ${atom.data}`)
+      atoms.push({ data, term_id: created.state.termId })
+      console.log(`✓ Created: ${data}`)
     }
   }
 

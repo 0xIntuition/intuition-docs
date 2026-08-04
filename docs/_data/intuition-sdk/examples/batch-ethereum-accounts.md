@@ -17,6 +17,7 @@ import {
   intuitionTestnet,
   getMultiVaultAddressFromChainId,
   batchCreateAtomsFromEthereumAccounts,
+  multiVaultGetAtomCost,
 } from '@0xintuition/sdk'
 import {
   createPublicClient,
@@ -54,8 +55,11 @@ async function main() {
   console.log(`Creating ${addresses.length} identity atoms...\n`)
 
   const depositPerAtom = parseEther('0.01')
-  const totalCost = depositPerAtom * BigInt(addresses.length)
+  const atomCost = await multiVaultGetAtomCost({ publicClient, address })
+  const totalCost =
+    (atomCost + depositPerAtom) * BigInt(addresses.length)
 
+  console.log('Base cost per atom:', formatEther(atomCost), 'tTRUST')
   console.log('Deposit per atom:', formatEther(depositPerAtom), 'tTRUST')
   console.log('Total cost:', formatEther(totalCost), 'tTRUST\n')
 
