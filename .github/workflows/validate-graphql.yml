@@ -22,6 +22,10 @@ on:
   # Manual trigger
   workflow_dispatch:
 
+# Read-only by default; the schema-drift job elevates itself to push its branch and manage its PR.
+permissions:
+  contents: read
+
 jobs:
   # -----------------------------------------------------------------------
   # Job 1: PR check — validate queries against committed snapshots
@@ -43,6 +47,9 @@ jobs:
     name: Detect schema drift
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
       - uses: actions/checkout@v4
         with:

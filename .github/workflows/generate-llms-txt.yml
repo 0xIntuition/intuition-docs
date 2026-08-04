@@ -14,6 +14,11 @@ on:
       - '.github/workflows/generate-llms-txt.yml'
   workflow_dispatch: # Allow manual trigger
 
+# Least-privilege token: push the fixed regeneration branch and manage its PR, nothing else.
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   generate-llms-txt:
     runs-on: ubuntu-latest

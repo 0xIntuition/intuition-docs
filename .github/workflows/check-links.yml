@@ -16,6 +16,9 @@ on:
       - 'scripts/generate-llms-full.js'
       - '.github/workflows/generate-llms-txt.yml'
 
+permissions:
+  contents: read
+
 jobs:
   validate-links:
     name: Validate internal links
