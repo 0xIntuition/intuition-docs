@@ -12,6 +12,10 @@ import GraphQLPlaygroundCustom from '@site/src/components/GraphQLPlaygroundCusto
 
 Fetch user positions with aggregate statistics.
 
+This example uses a live-verified account with populated positions; position counts and values change over time.
+
+Account IDs are stored in EIP-55 checksummed form and `_eq` comparisons are case-sensitive — pass the address exactly as checksummed (as shown below), or the query silently returns empty results.
+
 ## Query
 
 export const userPositionQueries = [
@@ -43,7 +47,7 @@ export const userPositionQueries = [
   }
 }`,
     variables: {
-      accountId: '0xd8da6bf26964af9d7eed9e03e53415d37aa96045',
+      accountId: '0x88D0aF73508452c1a453356b3Fac26525aEc23A2',
       limit: 20
     }
   }

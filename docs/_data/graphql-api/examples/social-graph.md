@@ -46,7 +46,7 @@ export const socialQueries = [
   }
 }`,
     variables: {
-      address: '0xd8da6bf26964af9d7eed9e03e53415d37aa96045',
+      address: '0x88D0aF73508452c1a453356b3Fac26525aEc23A2',
       limit: 20
     }
   }
