@@ -2374,7 +2374,7 @@ const claimFrame = {
 
 - [Portal](https://docs.intuition.systems/docs/portal) - Main web interface for Intuition
 - [MetaMask Snap](https://docs.intuition.systems/docs/experimental-applications/metamask-snap) - MetaMask integration
-- [Browser Extension](https://docs.intuition.systems/docs/experimental-applications/metamask-snap) - Chrome extension
+- [Browser Extension](https://github.com/0xIntuition/chrome-extension) - Chrome extension
 - [Developer Tools](https://docs.intuition.systems/docs/getting-started/developer-stack) - Programmatic access
 - [API Documentation](https://docs.intuition.systems/docs/graphql-api/overview) - Technical guides
 - [Community](https://discord.gg/0xintuition) - Join the Intuition community
@@ -2627,7 +2627,7 @@ The MetaMask Snap serves as a bridge between traditional Web3 wallet functionali
 
 ### 💰 **Staking Operations**
 
-- Deposit ETH into atom and triple vaults
+- Deposit TRUST into atom and triple vaults
 - Withdraw staked amounts and earned fees
 - View staking history and performance metrics
 - Monitor vault share prices and market dynamics
@@ -2662,7 +2662,7 @@ The MetaMask Snap serves as a bridge between traditional Web3 wallet functionali
 
 1. **Create Your First Identity** - Use the Snap to create your first atom (identity)
 2. **Make Your First Claim** - Create a triple to make an assertion about something
-3. **Stake on Content** - Deposit ETH to signal agreement with existing claims
+3. **Stake on Content** - Deposit TRUST to signal agreement with existing claims
 4. **Build Your Network** - Follow other users and build your trust network
 
 ### Basic Workflow
@@ -2800,7 +2800,7 @@ The MetaMask Snap is open source and welcomes contributions:
 ## Related Resources
 
 - [Portal](https://docs.intuition.systems/docs/portal) - Main web interface for Intuition
-- [Browser Extension](https://docs.intuition.systems/docs/experimental-applications/metamask-snap) - Chrome extension for web browsing
+- [Browser Extension](https://github.com/0xIntuition/chrome-extension) - Chrome extension for web browsing
 - [Developer Tools](https://docs.intuition.systems/docs/getting-started/developer-stack) - Programmatic access and integration
 - [API Documentation](https://docs.intuition.systems/docs/graphql-api/overview) - Technical integration guides
 - [Community](https://discord.gg/0xintuition) - Join the Intuition community
@@ -5661,7 +5661,7 @@ Build a social activity feed from followed accounts.
 
 }`,
     variables: {
-      address: '0xd8da6bf26964af9d7eed9e03e53415d37aa96045',
+      address: '0x88D0aF73508452c1a453356b3Fac26525aEc23A2',
       limit: 20
 
 ];
@@ -5701,7 +5701,7 @@ Implement real-time position monitoring with subscriptions.
         initial_value: { created_at: '2024-12-01T00:00:00Z' },
         ordering: 'ASC'
       }],
-      accountId: '0xd8da6bf26964af9d7eed9e03e53415d37aa96045',
+      accountId: '0x88D0aF73508452c1a453356b3Fac26525aEc23A2',
       batchSize: 10
 
 ];
@@ -5812,6 +5812,10 @@ Source: https://docs.intuition.systems/docs/graphql-api/examples/user-positions
 
 Fetch user positions with aggregate statistics.
 
+This example uses a live-verified account with populated positions; position counts and values change over time.
+
+Account IDs are stored in EIP-55 checksummed form and `_eq` comparisons are case-sensitive — pass the address exactly as checksummed (as shown below), or the query silently returns empty results.
+
 ## Query
 
     id: 'user-positions',
@@ -5838,7 +5842,7 @@ Fetch user positions with aggregate statistics.
 
 }`,
     variables: {
-      accountId: '0xd8da6bf26964af9d7eed9e03e53415d37aa96045',
+      accountId: '0x88D0aF73508452c1a453356b3Fac26525aEc23A2',
       limit: 20
 
 ];
@@ -11650,8 +11654,8 @@ Events are blockchain log entries emitted by smart contracts. The Intuition inde
 
 - **AtomCreated**: New atoms minted
 - **TripleCreated**: New triples created
-- **Deposited**: ETH staked on positions
-- **Redeemed**: ETH withdrawn from positions
+- **Deposited**: TRUST staked on positions
+- **Redeemed**: TRUST withdrawn from positions
 - **FeesTransferred**: Protocol fees collected
 
 ## Quick Start
@@ -14261,7 +14265,7 @@ Signals represent deposit and redemption events in the Intuition protocol. Unlik
 
 Signals are contextual representations of position changes:
 
-- **Deposits**: When an account stakes ETH on an atom or triple
+- **Deposits**: When an account stakes TRUST on an atom or triple
 - **Redemptions**: When an account withdraws from a position
 
 Each signal includes:
@@ -14310,7 +14314,7 @@ Signals don't have an explicit `type` field. Instead, distinguish deposits from 
 
 | Condition | Meaning |
 |-----------|---------|
-| `deposit_id` is not null | Deposit — staking ETH on a position |
+| `deposit_id` is not null | Deposit — staking TRUST on a position |
 | `redemption_id` is not null | Redemption — withdrawing from a position |
 
 ## Common Filters
@@ -17966,148 +17970,98 @@ Intuition documentation is optimized for AI agent access:
 
 Source: https://docs.intuition.systems/docs/interaction-guide/create-atom
 
-Creating atoms in the Intuition protocol involves interacting with the EthMultiVault contract to establish new entities in the knowledge graph. This process includes creating the atom itself and managing its associated vault.
+Atoms are created through the deployed `MultiVault.createAtoms` entry point. Although the contract function accepts arrays, the same function is used for both single and batch creation.
 
 ## Prerequisites
 
-This implementation guide assumes that you've completed the setup steps in the [Overview](https://docs.intuition.systems/docs/interaction-guide/overview) guide. Steps for creating the `createMultivaultContract` and the `publicClient` referenced in this implementation example can be found in the overview.
+Complete the client and contract-address setup in the [Overview](https://docs.intuition.systems/docs/interaction-guide/overview) guide. The examples below expect a `publicClient`, a connected `walletClient`, and the deployed MultiVault `address` for the selected Intuition network.
+
+## Cost Semantics
+
+Read the current atom base cost immediately before creating an atom. The protocol can change this value, so it must not be hardcoded or treated as a fixed fee.
+
+The value assigned to one atom is:
+
+```text
+assets = current atom base cost + optional additional deposit
+```
+
+The optional amount is an additional TRUST/tTRUST deposit (signal). It does not replace the required base cost. Both the per-atom `assets` entry and transaction `value` must include the full amount.
 
 ## Implementation
 
-We recommend creating a `multivault.ts` that includes the following atom creation functionality:
+Use the protocol helpers to read the cost, simulate and submit `createAtoms`, and parse the resulting `AtomCreated` event:
 
-### Core Atom Creation Pattern
+```typescript title="multivault.ts"
+import {
+  eventParseAtomCreated,
+  multiVaultCreateAtoms,
+  multiVaultGetAtomCost,
+  type WriteConfig,
+} from '@0xintuition/protocol'
+import { toHex } from 'viem'
 
-{`// Create atom with initial deposit
-const createAtomConfig = {
-  ...multiVaultContract,
-  functionName: 'createAtom',
-  args: [atomData, initialDeposit],
-
-// Execute transaction
-const hash = await walletClient.writeContract(createAtomConfig)
-
-// Wait for confirmation
-const receipt = await publicClient.waitForTransactionReceipt({ hash })`}
-
-## Complete Example
-
-Here is a full example of the atom creation pattern used in the `createAtom` function:
-
-### Full Implementation
-
-{`export async function createAtom(
-  contract: string,
+export async function createAtom(
+  config: WriteConfig,
   atomData: string,
-  initialDeposit: bigint,
-  walletClient: WalletClient,
-  publicClient: PublicClient
+  additionalDeposit = 0n,
 ) {
-  const multiVaultContract = createMultiVaultContract(contract)
+  const { address, publicClient } = config
 
-  // Prepare atom creation transaction
-  const createAtomConfig = {
-    ...multiVaultContract,
-    functionName: 'createAtom',
-    args: [atomData, initialDeposit],
+  // Fetch the live protocol requirement instead of hardcoding it.
+  const atomBaseCost = await multiVaultGetAtomCost({ address, publicClient })
+  const assets = atomBaseCost + additionalDeposit
 
-  try {
-    // Execute the transaction
-    const hash = await walletClient.writeContract(createAtomConfig)
-    
-    // Wait for transaction confirmation
-    const receipt = await publicClient.waitForTransactionReceipt({ hash })
-    
-    // Parse events to get atom ID
-    const atomCreatedEvent = receipt.logs.find(
-      log => log.eventName === 'AtomCreated'
+  const transactionHash = await multiVaultCreateAtoms(config, {
+    args: [[toHex(atomData)], [assets]],
+    value: assets,
+  })
 
-    
-    if (!atomCreatedEvent) {
-      throw new Error('Atom creation event not found')
+  const [created] = await eventParseAtomCreated(publicClient, transactionHash)
+  if (!created) {
+    throw new Error(`No AtomCreated event found for ${transactionHash}`)
+  }
 
-    
-    const atomId = atomCreatedEvent.args.atomId
-    const vaultId = atomCreatedEvent.args.vaultId
-    
-    return {
-      success: true,
-      atomId,
-      vaultId,
-      transactionHash: hash,
-      receipt
-
-  } catch (error) {
-    return {
-      success: false,
-      error: error.message
-
-}`}
-
-## Key Functions
-
-We use this pattern to create atoms and manage their lifecycle:
-
-#### createAtom
-
-Creates a new atom with optional initial deposit and returns atom/vault IDs.
-
-#### validateAtomData
-
-Validates atom data format and ensures it meets protocol requirements.
-
-#### estimateAtomCost
-
-Estimates the cost of creating an atom including fees and gas costs.
+  return {
+    transactionHash,
+    termId: created.args.termId,
+    atomWallet: created.args.atomWallet,
+  }
+}
+```
 
 ## Usage Example
 
-### Basic Atom Creation
+Pass `0n` or omit the third argument to create the atom with only its current base cost. Pass an amount to add signal at creation time:
 
-{`// Create a new atom
-const atomData = "did:ethr:mainnet:0x1234567890abcdef"
-const initialDeposit = parseEther("0.1")
+```typescript
+import type { WriteConfig } from '@0xintuition/protocol'
+import { parseEther } from 'viem'
+import { createAtom } from './multivault'
 
-const result = await createAtom(
-  MULTIVAULT_CONTRACT_ADDRESS,
-  atomData,
-  initialDeposit,
-  walletClient,
-  publicClient
+async function createExample(config: WriteConfig) {
+  const created = await createAtom(
+    config,
+    'did:ethr:mainnet:0x1234567890abcdef',
+    parseEther('0.1'), // Optional additional TRUST/tTRUST signal
+  )
 
-if (result.success) {
-  console.log({
-    atomId: result.atomId,
-    vaultId: result.vaultId,
-    transactionHash: result.transactionHash
+  console.log('Atom term ID:', created.termId)
+  console.log('Atom wallet:', created.atomWallet)
+  console.log('Transaction:', created.transactionHash)
+}
+```
 
-} else {
-  console.error('Atom creation failed:', result.error)
-}`}
-
-## Error Handling
-
-### Common Error Scenarios
-
-#### Insufficient Funds
-
-Ensure wallet has sufficient ETH for gas and deposit amount.
-
-#### Invalid Atom Data
-
-Validate atom data format before submission.
-
-#### Network Issues
-
-Handle RPC failures and network connectivity issues.
+For the higher-level SDK equivalent, `createAtomFromString` and its sibling atom helpers perform the same dynamic base-cost read internally.
 
 ## Best Practices
 
-- Always validate atom data before submission
-- Estimate costs before executing transactions
-- Implement proper error handling and user feedback
-- Use multicall patterns for batch operations
-- Monitor transaction status and provide confirmation feedback
+- Fetch the base cost immediately before submitting the transaction.
+- Keep `args[1][0]` and `value` equal for a single atom.
+- Treat an optional amount as additional signal, not as the base cost.
+- Display amounts in TRUST on Mainnet and tTRUST on Intuition Testnet.
+- Parse `AtomCreated.termId`; the current event does not return legacy `atomId` or `vaultId` fields.
+- Surface simulation, insufficient-balance, RPC, and reverted-transaction errors to the user.
 
 ## Next Steps
 
@@ -20760,7 +20714,7 @@ Structured relationships or claims linking entities together in Subject-Predicat
 
 ## Signals
 
-The weight of Atoms and Triples, derived from the total amount of ETH deposited in Atom and Triple Vaults. These represent the edge weights in the graph, or 'who is saying what about what, with what level of conviction'. The weight of trust or consensus behind each entity or claim, determined by community staking.
+The weight of Atoms and Triples, derived from the total amount of TRUST deposited in Atom and Triple Vaults. These represent the edge weights in the graph, or 'who is saying what about what, with what level of conviction'. The weight of trust or consensus behind each entity or claim, determined by community staking.
 
 ## The Three Primitives Explained
 
@@ -22159,6 +22113,17 @@ Source: https://docs.intuition.systems/docs/intuition-sdk/atoms-guide
 
 Atoms are unique identifiers for any entity—people, concepts, smart contracts, or data. This guide covers all ways to create and query atoms using the SDK.
 
+SDK read helpers use the mainnet GraphQL API by default. The write examples on this page use Intuition Testnet, so configure reads once before calling a read helper:
+
+```typescript
+import { configureSdk } from '@0xintuition/sdk';
+import { API_URL_DEV } from '@0xintuition/graphql';
+
+configureSdk({ apiUrl: API_URL_DEV });
+```
+
+Atom creation helpers dynamically fetch and forward the required atom base cost. Their optional amount is an additional TRUST/tTRUST deposit (signal), not the required base cost.
+
 ## Table of Contents
 
 - [Creating from Strings](https://docs.intuition.systems/docs/intuition-sdk/atoms-guide#creating-from-strings)
@@ -22179,7 +22144,7 @@ The simplest way to create an atom is from a plain string.
 function createAtomFromString(
   config: WriteConfig,
   data: string,
-  deposit?: bigint,
+  depositAmount?: bigint,
 ): Promise<AtomCreationResult>;
 ```
 
@@ -22189,7 +22154,7 @@ function createAtomFromString(
 | --------- | ------------- | --------------------------------------------------------------------- | -------- |
 | `config`  | `WriteConfig` | Client configuration with wallet, public client, and contract address | Yes      |
 | `data`    | `string`      | The text string to create an atom from                                | Yes      |
-| `deposit` | `bigint`      | Optional initial deposit amount in wei                                | No       |
+| `depositAmount` | `bigint` | Optional additional deposit/signal amount in wei                 | No       |
 
 ### Basic Example
 
@@ -22219,7 +22184,7 @@ const address = getMultiVaultAddressFromChainId(intuitionTestnet.id);
 const atom = await createAtomFromString(
   { walletClient, publicClient, address },
   'developer',
-  parseEther('0.01'), // Optional: 0.01 TRUST initial deposit
+  parseEther('0.01'), // Optional: additional 0.01 tTRUST signal
 );
 
 console.log('Atom ID:', atom.state.termId);
@@ -22278,7 +22243,15 @@ await createAtomFromString(config, 'dev');
 Before creating an atom, check if it already exists:
 
 ```typescript
-import { calculateAtomId, getAtomDetails } from '@0xintuition/sdk';
+import {
+  calculateAtomId,
+  configureSdk,
+  createAtomFromString,
+  getAtomDetails,
+} from '@0xintuition/sdk';
+import { API_URL_DEV } from '@0xintuition/graphql';
+
+configureSdk({ apiUrl: API_URL_DEV });
 
 const atomId = calculateAtomId('developer');
 const exists = await getAtomDetails(atomId);
@@ -22641,7 +22614,7 @@ Fetch comprehensive atom details from the Intuition API.
 #### Function Signature
 
 ```typescript
-function getAtomDetails(atomId: string): Promise<AtomDetails>;
+function getAtomDetails(atomId: string): Promise<AtomDetails | null>;
 ```
 
 #### Basic Example
@@ -22651,11 +22624,14 @@ import { getAtomDetails } from '@0xintuition/sdk';
 
 const atomId = '0x1234567890abcdef...';
 const details = await getAtomDetails(atomId);
+if (!details) throw new Error('Atom not found');
+
+const vault = details.term?.vaults[0];
 
 console.log('Atom Label:', details.label);
-console.log('Creator:', details.creator);
-console.log('Vault Shares:', details.vault.totalShares);
-console.log('Share Price:', details.vault.currentSharePrice);
+console.log('Creator:', details.creator?.label ?? details.creator_id);
+console.log('Vault Shares:', vault?.total_shares);
+console.log('Share Price:', vault?.current_share_price);
 ```
 
 ### calculateAtomId
@@ -22695,25 +22671,29 @@ console.log('IPFS Atom ID:', ipfsAtomId);
 ```typescript
 import {
   calculateAtomId,
+  configureSdk,
   getAtomDetails,
   createAtomFromString,
 } from '@0xintuition/sdk';
+import { API_URL_DEV } from '@0xintuition/graphql';
+
+configureSdk({ apiUrl: API_URL_DEV });
 
 async function createAtomIfNotExists(data: string) {
   // Calculate ID
   const atomId = calculateAtomId(data);
 
-  try {
-    // Check if exists
-    const existing = await getAtomDetails(atomId);
+  // Check if exists
+  const existing = await getAtomDetails(atomId);
+  if (existing !== null) {
     console.log('Atom already exists:', atomId);
     return existing;
-  } catch (error) {
-    // Doesn't exist, create it
-    console.log('Creating new atom');
-    const atom = await createAtomFromString(config, data);
-    return atom;
   }
+
+  // Doesn't exist, create it
+  console.log('Creating new atom');
+  const atom = await createAtomFromString(config, data);
+  return atom;
 }
 ```
 
@@ -22726,7 +22706,15 @@ async function getMultipleAtoms(atomIds: string[]) {
   const atoms = await Promise.all(atomIds.map((id) => getAtomDetails(id)));
 
   atoms.forEach((atom) => {
-    console.log(`${atom.label}: ${atom.vault.totalShares} shares`);
+    if (atom === null) return;
+
+    const vault = atom.term?.vaults[0];
+    if (!vault) {
+      console.log(`${atom.label}: no vault data`);
+      return;
+    }
+
+    console.log(`${atom.label}: ${vault.total_shares} shares`);
   });
 
   return atoms;
@@ -22863,15 +22851,19 @@ This example demonstrates using the experimental `sync` function to estimate cos
 
 ```typescript
 import {
+  configureSdk,
   intuitionTestnet,
   getMultiVaultAddressFromChainId,
   sync,
 } from '@0xintuition/sdk'
+import { API_URL_DEV } from '@0xintuition/graphql'
 import { createPublicClient, createWalletClient, http, formatEther } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
 
 async function main() {
-  // Setup
+  // Setup — sync() reads existing atoms/triples via GraphQL, which defaults
+  // to mainnet; pair its reads with the testnet write chain.
+  configureSdk({ apiUrl: API_URL_DEV })
   const account = privateKeyToAccount(process.env.PRIVATE_KEY as `0x${string}`)
   const publicClient = createPublicClient({
     chain: intuitionTestnet,
@@ -22991,22 +22983,28 @@ Source: https://docs.intuition.systems/docs/intuition-sdk/examples/create-atom-f
 
 This example demonstrates creating an atom from a plain text string, including setup, error handling, and querying the result.
 
+SDK reads default to the mainnet GraphQL API, so the example explicitly selects the testnet API to match its write chain. `createAtomFromString` fetches and forwards the required atom base cost; `additionalDeposit` is extra tTRUST signal, not the base cost.
+
 ## Complete Code
 
 ```typescript
 import {
+  configureSdk,
   intuitionTestnet,
   getMultiVaultAddressFromChainId,
   createAtomFromString,
   getAtomDetails,
   wait,
 } from '@0xintuition/sdk'
+import { API_URL_DEV } from '@0xintuition/graphql'
 import { createPublicClient, createWalletClient, http, parseEther, formatEther } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
 
 async function main() {
   // 1. Setup account and clients
   const account = privateKeyToAccount(process.env.PRIVATE_KEY as `0x${string}`)
+  // SDK reads default to mainnet; keep reads paired with the testnet write chain.
+  configureSdk({ apiUrl: API_URL_DEV })
 
   const publicClient = createPublicClient({
     chain: intuitionTestnet,
@@ -23034,15 +23032,15 @@ async function main() {
 
   // 3. Create atom
   const atomData = 'TypeScript'
-  const depositAmount = parseEther('0.01')
+  const additionalDeposit = parseEther('0.01')
 
   console.log(`\nCreating atom: "${atomData}"`)
-  console.log('Deposit:', formatEther(depositAmount), 'tTRUST')
+  console.log('Additional signal:', formatEther(additionalDeposit), 'tTRUST')
 
   const atom = await createAtomFromString(
     { walletClient, publicClient, address },
     atomData,
-    depositAmount
+    additionalDeposit
   )
 
   console.log('\n✓ Atom created successfully!')
@@ -23061,13 +23059,16 @@ async function main() {
   // 5. Query atom details
   console.log('Fetching atom details...')
   const details = await getAtomDetails(atom.state.termId)
+  if (!details) throw new Error('Created atom was not found on the testnet API')
+
+  const vault = details.term?.vaults[0]
 
   console.log('\n✓ Atom Details:')
   console.log('  Label:', details.label)
-  console.log('  Creator:', details.creator)
-  console.log('  Total Shares:', details.vault.totalShares)
-  console.log('  Share Price:', details.vault.currentSharePrice)
-  console.log('  Positions:', details.vault.positionCount)
+  console.log('  Creator:', details.creator?.label ?? details.creator_id)
+  console.log('  Total Shares:', vault?.total_shares)
+  console.log('  Share Price:', vault?.current_share_price)
+  console.log('  Positions:', vault?.position_count)
 
   console.log('\nSuccess!')
 }
@@ -23098,7 +23099,7 @@ Account: 0xYourAddress
 Balance: 10.5 tTRUST
 
 Creating atom: "TypeScript"
-Deposit: 0.01 tTRUST
+Additional signal: 0.01 tTRUST
 
 ✓ Atom created successfully!
   Atom ID: 0x1234567890abcdef...
@@ -23131,10 +23132,13 @@ Source: https://docs.intuition.systems/docs/intuition-sdk/examples/create-triple
 
 This example demonstrates creating a complete triple (subject-predicate-object statement).
 
+SDK reads default to the mainnet GraphQL API. This example configures the testnet API before querying the triple it creates on Intuition Testnet.
+
 ## Complete Code
 
 ```typescript
 import {
+  configureSdk,
   intuitionTestnet,
   getMultiVaultAddressFromChainId,
   createAtomFromString,
@@ -23142,12 +23146,16 @@ import {
   getTripleDetails,
   wait,
 } from '@0xintuition/sdk'
+import { API_URL_DEV } from '@0xintuition/graphql'
 import { createPublicClient, createWalletClient, http, parseEther } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
 
 async function main() {
   // Setup
   const account = privateKeyToAccount(process.env.PRIVATE_KEY as `0x${string}`)
+  // SDK reads default to mainnet; keep reads paired with the testnet write chain.
+  configureSdk({ apiUrl: API_URL_DEV })
+
   const publicClient = createPublicClient({
     chain: intuitionTestnet,
     transport: http(),
@@ -23198,7 +23206,7 @@ async function main() {
     }
   )
 
-  const tripleId = triple.state[0].args.tripleId
+  const tripleId = triple.state[0].args.termId
   console.log('✓ Triple created!')
   console.log('  Triple ID:', tripleId)
   console.log('  Transaction:', triple.transactionHash)
@@ -23208,13 +23216,17 @@ async function main() {
   await wait(triple.transactionHash)
 
   const details = await getTripleDetails(tripleId)
+  if (!details) throw new Error('Created triple was not found on the testnet API')
+
+  const forVault = details.term?.vaults[0]
+  const againstVault = details.counter_term?.vaults[0]
 
   console.log('\n=== Triple Details ===')
-  console.log('Subject:', details.subject.label)
-  console.log('Predicate:', details.predicate.label)
-  console.log('Object:', details.object.label)
-  console.log('\nFOR Position Shares:', details.vault.totalShares)
-  console.log('AGAINST Position Shares:', details.counterVault.totalShares)
+  console.log('Subject:', details.subject?.label)
+  console.log('Predicate:', details.predicate?.label)
+  console.log('Object:', details.object?.label)
+  console.log('\nFOR Position Shares:', forVault?.total_shares)
+  console.log('AGAINST Position Shares:', againstVault?.total_shares)
 
   console.log('\nSuccess!')
 }
@@ -23350,10 +23362,13 @@ Source: https://docs.intuition.systems/docs/intuition-sdk/examples/find-existing
 
 This example demonstrates how to find existing atoms and triples to avoid creating duplicates.
 
+SDK reads default to the mainnet GraphQL API. This flow both reads and writes on Intuition Testnet, so it configures the testnet API before its first lookup; optional atom amounts are additional tTRUST signal because the SDK fetches the required base cost automatically.
+
 ## Complete Code
 
 ```typescript
 import {
+  configureSdk,
   intuitionTestnet,
   getMultiVaultAddressFromChainId,
   findAtomIds,
@@ -23363,6 +23378,7 @@ import {
   createAtomFromString,
   createTripleStatement,
 } from '@0xintuition/sdk'
+import { API_URL_DEV } from '@0xintuition/graphql'
 import { createPublicClient, createWalletClient, http, parseEther } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
 import type { Hex } from 'viem'
@@ -23370,6 +23386,9 @@ import type { Hex } from 'viem'
 async function main() {
   // Setup
   const account = privateKeyToAccount(process.env.PRIVATE_KEY as `0x${string}`)
+  // SDK reads default to mainnet; keep reads paired with the testnet write chain.
+  configureSdk({ apiUrl: API_URL_DEV })
+
   const publicClient = createPublicClient({
     chain: intuitionTestnet,
     transport: http(),
@@ -23461,7 +23480,7 @@ async function main() {
       }
     )
 
-    console.log('✓ Triple created:', triple.state[0].args.tripleId)
+    console.log('✓ Triple created:', triple.state[0].args.termId)
   }
 
   // 4. Calculate IDs offline
@@ -23497,12 +23516,18 @@ Source: https://docs.intuition.systems/docs/intuition-sdk/examples/global-search
 
 This example demonstrates using global search to find entities across the Intuition protocol.
 
+SDK reads use the mainnet GraphQL API by default. The example selects `API_URL_DEV` for testnet data; use `API_URL_PROD` instead for Mainnet.
+
 ## Complete Code
 
 ```typescript
-import { globalSearch, getAtomDetails } from '@0xintuition/sdk'
+import { configureSdk, globalSearch, getAtomDetails } from '@0xintuition/sdk'
+import { API_URL_DEV } from '@0xintuition/graphql'
 
 async function main() {
+  // Reads default to mainnet. Select API_URL_DEV for testnet data.
+  configureSdk({ apiUrl: API_URL_DEV })
+
   const searchQuery = 'ethereum'
 
   console.log(`Searching for: "${searchQuery}"\n`)
@@ -23525,7 +23550,7 @@ async function main() {
   console.log(`Found ${results.atoms.length} atoms:\n`)
   results.atoms.forEach((atom, i) => {
     console.log(`${i + 1}. ${atom.label}`)
-    console.log(`   ID: ${atom.id}`)
+    console.log(`   ID: ${atom.term_id}`)
   })
 
   // Display accounts
@@ -23540,19 +23565,22 @@ async function main() {
   console.log('\n=== Triples ===')
   console.log(`Found ${results.triples.length} triples:\n`)
   results.triples.forEach((triple, i) => {
-    console.log(`${i + 1}. ${triple.subject.label} ${triple.predicate.label} ${triple.object.label}`)
-    console.log(`   ID: ${triple.id}`)
+    console.log(`${i + 1}. ${triple.subject?.label} ${triple.predicate?.label} ${triple.object?.label}`)
+    console.log(`   ID: ${triple.term_id}`)
   })
 
   // Get details for first atom
   if (results.atoms.length > 0) {
     console.log('\n=== First Atom Details ===')
-    const details = await getAtomDetails(results.atoms[0].id)
+    const details = await getAtomDetails(results.atoms[0].term_id)
+    if (!details) throw new Error('Selected atom was not found on the testnet API')
+
+    const vault = details.term?.vaults[0]
 
     console.log('Label:', details.label)
-    console.log('Creator:', details.creator)
-    console.log('Total Shares:', details.vault.totalShares)
-    console.log('Positions:', details.vault.positionCount)
+    console.log('Creator:', details.creator?.label ?? details.creator_id)
+    console.log('Total Shares:', vault?.total_shares)
+    console.log('Positions:', vault?.position_count)
   }
 
   console.log('\nSuccess!')
@@ -23577,6 +23605,8 @@ Source: https://docs.intuition.systems/docs/intuition-sdk/examples/thing-ipfs-pi
 
 This example demonstrates creating a rich entity (Thing) with automatic IPFS pinning.
 
+SDK reads default to the mainnet GraphQL API, so this testnet write-and-read flow sets `API_URL_DEV` alongside its pinning configuration. `createAtomFromThing` fetches the required atom base cost; `depositAmount` is an additional tTRUST signal.
+
 ## Complete Code
 
 ```typescript
@@ -23589,6 +23619,7 @@ import {
   getAtomDetails,
   wait,
 } from '@0xintuition/sdk';
+import { API_URL_DEV } from '@0xintuition/graphql';
 import { createPublicClient, createWalletClient, http, parseEther } from 'viem';
 import { privateKeyToAccount } from 'viem/accounts';
 
@@ -23596,6 +23627,7 @@ async function main() {
   // Setup
   const account = privateKeyToAccount(process.env.PRIVATE_KEY as `0x${string}`);
   configureSdk({
+    apiUrl: API_URL_DEV,
     pinApiKey: process.env.INTUITION_PIN_API_KEY,
   });
 
@@ -23647,12 +23679,14 @@ async function main() {
 
   // 4. Query details
   const details = await getAtomDetails(atom.state.termId);
+  if (!details) throw new Error('Created atom was not found on the testnet API');
+
+  const vault = details.term?.vaults[0];
 
   console.log('\n=== Atom Details ===');
   console.log('Label:', details.label);
-  console.log('Creator:', details.creator);
-  console.log('Vault ID:', details.vault.id);
-  console.log('Total Shares:', details.vault.totalShares);
+  console.log('Creator:', details.creator?.label ?? details.creator_id);
+  console.log('Total Shares:', vault?.total_shares);
 
   console.log('\nSuccess!');
 }
@@ -23867,6 +23901,8 @@ const account = mnemonicToAccount('your twelve word mnemonic phrase goes here');
 
 ### Browser Wallet (MetaMask, etc.)
 
+Browser-only: this flow requires an injected wallet extension that exposes `window.ethereum`.
+
 ```typescript
 import { createWalletClient, custom } from 'viem';
 import { intuitionTestnet } from '@0xintuition/sdk';
@@ -23967,14 +24003,16 @@ import {
   getMultiVaultAddressFromChainId,
 } from '@0xintuition/sdk';
 import type { WriteConfig } from '@0xintuition/sdk';
+import { API_URL_DEV } from '@0xintuition/graphql';
 import { createPublicClient, createWalletClient, http, fallback } from 'viem';
 import { privateKeyToAccount } from 'viem/accounts';
 
 // Account
 const account = privateKeyToAccount(process.env.PRIVATE_KEY as `0x${string}`);
 
-// Intuition pinning service
+// Pinning service + testnet reads (SDK reads default to mainnet otherwise)
 configureSdk({
+  apiUrl: API_URL_DEV,
   pinApiKey: process.env.INTUITION_PIN_API_KEY,
 });
 
@@ -24303,6 +24341,17 @@ Install required dependencies:
 npm install wagmi viem @tanstack/react-query
 ```
 
+SDK read helpers use the mainnet GraphQL API by default. Because this guide configures Wagmi for Intuition Testnet, initialize the SDK read endpoint once during application startup:
+
+```typescript title="sdk-config.ts"
+import { configureSdk } from '@0xintuition/sdk'
+import { API_URL_DEV } from '@0xintuition/graphql'
+
+configureSdk({ apiUrl: API_URL_DEV })
+```
+
+Import this configuration module before components call SDK read helpers. Use `API_URL_PROD` when your Wagmi chains target `intuitionMainnet`.
+
 ## Wagmi Configuration
 
 Set up Wagmi provider in your app:
@@ -24325,6 +24374,7 @@ export const config = createConfig({
 import { WagmiProvider } from 'wagmi'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { config } from './wagmi-config'
+import './sdk-config'
 
 const queryClient = new QueryClient()
 
@@ -24342,6 +24392,8 @@ function App() {
 ## Creating Atoms
 
 Use SDK functions with Wagmi hooks:
+
+`createAtomFromString` fetches and forwards the required atom base cost. The optional amount in these examples is an additional TRUST/tTRUST deposit (signal).
 
 ```typescript title="CreateAtomButton.tsx"
 import { usePublicClient, useWalletClient, useChainId } from 'wagmi'
@@ -24480,11 +24532,13 @@ function AtomDisplay({ atomId }: { atomId: string }) {
   if (error) return <div>Error loading atom</div>
   if (!atom) return null
 
+  const vault = atom.term?.vaults[0]
+
   return (
     <div>
       <h3>{atom.label}</h3>
-      <p>Creator: {atom.creator}</p>
-      <p>Shares: {atom.vault.totalShares}</p>
+      <p>Creator: {atom.creator?.label ?? atom.creator_id}</p>
+      <p>Shares: {vault?.total_shares ?? 'Unavailable'}</p>
     </div>
   )
 }
@@ -24498,6 +24552,7 @@ Full-featured React component:
 import { useState } from 'react'
 import { useAccount, usePublicClient, useWalletClient, useChainId } from 'wagmi'
 import { useQuery, useMutation } from '@tanstack/react-query'
+import './sdk-config'
 import {
   createAtomFromString,
   getAtomDetails,
@@ -24603,6 +24658,7 @@ npm install @tanstack/react-query
 
 ```typescript title="App.tsx"
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import './sdk-config'
 
 const queryClient = new QueryClient()
 
@@ -24614,6 +24670,17 @@ function App() {
   )
 }
 ```
+
+SDK read helpers use the mainnet GraphQL API by default. If the mutation hooks below write to Intuition Testnet, initialize the testnet read endpoint once before rendering the application:
+
+```typescript title="sdk-config.ts"
+import { configureSdk } from '@0xintuition/sdk'
+import { API_URL_DEV } from '@0xintuition/graphql'
+
+configureSdk({ apiUrl: API_URL_DEV })
+```
+
+Use `API_URL_PROD` instead when the write clients target `intuitionMainnet`. Atom creation helpers fetch and forward the required base cost; an optional amount is an additional TRUST/tTRUST deposit (signal).
 
 ## Query Hooks
 
@@ -24764,6 +24831,7 @@ Full React component with TanStack Query:
 ```typescript title="AtomExplorer.tsx"
 import { useState } from 'react'
 import { useCreateAtom, useGlobalSearch, useAtomDetails } from './hooks'
+import './sdk-config'
 
 export function AtomExplorer() {
   const [searchQuery, setSearchQuery] = useState('')
@@ -24845,8 +24913,8 @@ export function AtomExplorer() {
           {atomDetails.data && (
             <div>
               <p>Label: {atomDetails.data.label}</p>
-              <p>Creator: {atomDetails.data.creator}</p>
-              <p>Shares: {atomDetails.data.vault.totalShares}</p>
+              <p>Creator: {atomDetails.data.creator?.label ?? atomDetails.data.creator_id}</p>
+              <p>Shares: {atomDetails.data.term?.vaults[0]?.total_shares ?? 'Unavailable'}</p>
             </div>
           )}
         </div>
@@ -25409,6 +25477,17 @@ const assets = await multiVault.redeem(receiver, termId, curveId, shares, minAss
 
 ## 3. SDK Package Changes (`@0xintuition/sdk`)
 
+SDK read helpers use the mainnet GraphQL API by default. Configure the endpoint once before the migrated read examples; use `API_URL_DEV` for Intuition Testnet or `API_URL_PROD` for Mainnet:
+
+```typescript
+import { configureSdk } from '@0xintuition/sdk'
+import { API_URL_DEV } from '@0xintuition/graphql'
+
+configureSdk({ apiUrl: API_URL_DEV })
+```
+
+SDK atom creation helpers dynamically fetch and forward the required atom base cost. Any optional amount is an additional TRUST/tTRUST deposit (signal), not the base cost itself.
+
 ### API Function Renaming
 
 **Before:**
@@ -25595,17 +25674,22 @@ Create a new file and set up your Viem clients:
 
 ```typescript title="quickstart.ts"
 import {
+  configureSdk,
   intuitionTestnet,
   getMultiVaultAddressFromChainId,
   createAtomFromString,
   createTripleStatement,
   getAtomDetails,
 } from '@0xintuition/sdk'
+import { API_URL_DEV } from '@0xintuition/graphql'
 import { createPublicClient, createWalletClient, http, parseEther } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
 
 // Setup account and clients
 const account = privateKeyToAccount('0xYOUR_PRIVATE_KEY')
+
+// SDK reads default to mainnet; keep reads paired with the testnet write chain.
+configureSdk({ apiUrl: API_URL_DEV })
 
 const publicClient = createPublicClient({
   chain: intuitionTestnet,
@@ -25621,6 +25705,8 @@ const walletClient = createWalletClient({
 const address = getMultiVaultAddressFromChainId(intuitionTestnet.id)
 ```
 
+`configureSdk` controls the GraphQL endpoint used by SDK read helpers. Use `API_URL_PROD` instead when the Viem clients target `intuitionMainnet`.
+
 ## Step 2: Create Your First Atom
 
 Create an atom from a simple string:
@@ -25630,7 +25716,7 @@ Create an atom from a simple string:
 const atom = await createAtomFromString(
   { walletClient, publicClient, address },
   'TypeScript',
-  parseEther('0.01') // Optional: initial deposit of 0.01 TRUST
+  parseEther('0.01') // Optional: additional 0.01 tTRUST signal
 )
 
 console.log('Created atom!')
@@ -25658,11 +25744,14 @@ await new Promise(resolve => setTimeout(resolve, 2000))
 
 // Query atom details
 const details = await getAtomDetails(atom.state.termId)
+if (!details) throw new Error('Created atom was not found on the testnet API')
+
+const vault = details.term?.vaults[0]
 
 console.log('Atom Details:')
 console.log('- Label:', details.label)
-console.log('- Creator:', details.creator)
-console.log('- Vault Assets:', details.vault.totalShares)
+console.log('- Creator:', details.creator?.label ?? details.creator_id)
+console.log('- Vault Shares:', vault?.total_shares)
 ```
 
 ## Step 4: Create a Triple
@@ -25701,7 +25790,7 @@ const triple = await createTripleStatement(
 )
 
 console.log('Created triple!')
-console.log('Triple ID:', triple.state[0].args.tripleId)
+console.log('Triple ID:', triple.state[0].args.termId)
 console.log('Transaction:', triple.transactionHash)
 ```
 
@@ -25711,18 +25800,23 @@ Here's the complete quick start script:
 
 ```typescript title="quickstart.ts"
 import {
+  configureSdk,
   intuitionTestnet,
   getMultiVaultAddressFromChainId,
   createAtomFromString,
   createTripleStatement,
   getAtomDetails,
 } from '@0xintuition/sdk'
+import { API_URL_DEV } from '@0xintuition/graphql'
 import { createPublicClient, createWalletClient, http, parseEther } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
 
 async function main() {
   // Setup
   const account = privateKeyToAccount(process.env.PRIVATE_KEY as `0x${string}`)
+
+  // SDK reads default to mainnet; keep reads paired with the testnet write chain.
+  configureSdk({ apiUrl: API_URL_DEV })
 
   const publicClient = createPublicClient({
     chain: intuitionTestnet,
@@ -25752,6 +25846,7 @@ async function main() {
 
   // Query details
   const details = await getAtomDetails(atom.state.termId)
+  if (!details) throw new Error('Created atom was not found on the testnet API')
   console.log('✓ Atom label:', details.label)
 
   // Create three atoms for a triple
@@ -25784,7 +25879,7 @@ async function main() {
     }
   )
 
-  console.log('✓ Triple created:', triple.state[0].args.tripleId)
+  console.log('✓ Triple created:', triple.state[0].args.termId)
   console.log('\nSuccess! You created your first atom and triple.')
 }
 
@@ -25891,6 +25986,15 @@ console.log('Chain ID:', intuitionTestnet.id)
 Source: https://docs.intuition.systems/docs/intuition-sdk/search-guide
 
 Discover atoms, triples, accounts, and collections using search, filters, and batch entity lookups.
+
+SDK reads use mainnet by default. Configure the endpoint once at startup; use `API_URL_DEV` for Intuition Testnet or `API_URL_PROD` for Mainnet:
+
+```typescript
+import { configureSdk } from '@0xintuition/sdk'
+import { API_URL_DEV } from '@0xintuition/graphql'
+
+configureSdk({ apiUrl: API_URL_DEV })
+```
 
 ## Table of Contents
 
@@ -26042,11 +26146,18 @@ async function searchAndDisplay(query: string) {
 
   // Get detailed information for first atom
   const firstAtom = results.atoms[0]
-  const details = await getAtomDetails(firstAtom.id)
+  const details = await getAtomDetails(firstAtom.term_id)
+
+  if (!details) {
+    console.log('Atom details were not found')
+    return
+  }
+
+  const vault = details.term?.vaults[0]
 
   console.log('First result:', firstAtom.label)
-  console.log('Creator:', details.creator)
-  console.log('Vault shares:', details.vault.totalShares)
+  console.log('Creator:', details.creator?.label ?? details.creator_id)
+  console.log('Vault shares:', vault?.total_shares)
 }
 ```
 
@@ -26389,6 +26500,15 @@ Source: https://docs.intuition.systems/docs/intuition-sdk/triples-guide
 
 Triples are subject-predicate-object statements that connect three atoms to form relationships in the knowledge graph. This guide covers all ways to create and query triples using the SDK.
 
+SDK read helpers use the mainnet GraphQL API by default. The write examples on this page use Intuition Testnet, so configure reads once before calling a read helper:
+
+```typescript
+import { configureSdk } from '@0xintuition/sdk'
+import { API_URL_DEV } from '@0xintuition/graphql'
+
+configureSdk({ apiUrl: API_URL_DEV })
+```
+
 ## Table of Contents
 
 - [Creating Triples](https://docs.intuition.systems/docs/intuition-sdk/triples-guide#creating-triples)
@@ -26403,6 +26523,9 @@ Create a triple (subject-predicate-object statement) connecting three atoms in a
 ### Function Signature
 
 ```typescript
+import type { WriteConfig } from '@0xintuition/sdk'
+import type { Hex } from 'viem'
+
 function createTripleStatement(
   config: WriteConfig,
   args: {
@@ -26431,16 +26554,17 @@ function createTripleStatement(
 ### Creating Triples - Returns
 
 ```typescript
+import type { Address, Hex } from 'viem'
+
 type TripleCreationResult = {
   transactionHash: `0x${string}`
   state: Array<{
     args: {
-      tripleId: Hex
+      creator: Address
+      termId: Hex
       subjectId: Hex
       predicateId: Hex
       objectId: Hex
-      counterVaultId: Hex
-      // Additional event fields
     }
     eventName: 'TripleCreated'
   }>
@@ -26473,6 +26597,7 @@ const walletClient = createWalletClient({
   account,
 })
 const address = getMultiVaultAddressFromChainId(intuitionTestnet.id)
+const config = { walletClient, publicClient, address }
 
 // Create atoms
 const alice = await createAtomFromString(config, 'Alice')
@@ -26481,7 +26606,7 @@ const bob = await createAtomFromString(config, 'Bob')
 
 // Create triple: Alice follows Bob
 const triple = await createTripleStatement(
-  { walletClient, publicClient, address },
+  config,
   {
     args: [
       [alice.state.termId],    // subjects
@@ -26493,7 +26618,7 @@ const triple = await createTripleStatement(
   }
 )
 
-console.log('Triple ID:', triple.state[0].args.tripleId)
+console.log('Triple ID:', triple.state[0].args.termId)
 console.log('Transaction:', triple.transactionHash)
 ```
 
@@ -26559,13 +26684,22 @@ A triple consists of three atoms:
 Each triple automatically has a counter-triple representing the opposing position:
 
 ```typescript
-const triple = await createTripleStatement(config, args)
+import {
+  calculateCounterTripleId,
+  createTripleStatement,
+} from '@0xintuition/sdk'
 
-// The main triple vault (FOR position)
-const tripleId = triple.state[0].args.tripleId
+function getPositionIds(
+  triple: Awaited<ReturnType<typeof createTripleStatement>>,
+) {
+  // The main triple vault (FOR position)
+  const tripleId = triple.state[0].args.termId
 
-// The counter vault (AGAINST position)
-const counterVaultId = triple.state[0].args.counterVaultId
+  // Derive the counter triple vault (AGAINST position)
+  const counterTripleId = calculateCounterTripleId(tripleId)
+
+  return { tripleId, counterTripleId }
+}
 ```
 
 ### Best Practices
@@ -26597,9 +26731,8 @@ import { getAtomDetails } from '@0xintuition/sdk'
 
 async function verifyAtoms(ids: Hex[]) {
   for (const id of ids) {
-    try {
-      await getAtomDetails(id)
-    } catch {
+    const atom = await getAtomDetails(id)
+    if (atom === null) {
       console.error('Atom does not exist:', id)
       throw new Error(`Invalid atom ID: ${id}`)
     }
@@ -26635,13 +26768,28 @@ Create multiple triples in a single transaction for improved efficiency and redu
 ### Function Signature
 
 ```typescript
+import type { WriteConfig } from '@0xintuition/sdk'
+import type { Address, Hex } from 'viem'
+
 function batchCreateTripleStatements(
   config: WriteConfig,
-  subjects: Hex[],
-  predicates: Hex[],
-  objects: Hex[],
-  deposits: bigint[]
-): Promise<TripleCreationResult>
+  data: [
+    subjects: Hex[],
+    predicates: Hex[],
+    objects: Hex[],
+    assets: bigint[],
+  ],
+  depositAmount?: bigint,
+): Promise<{
+  transactionHash: Hex
+  state: Array<{
+    creator: Address
+    termId: Hex
+    subjectId: Hex
+    predicateId: Hex
+    objectId: Hex
+  }>
+}>
 ```
 
 ### Batch Creation - Parameters
@@ -26649,10 +26797,11 @@ function batchCreateTripleStatements(
 | Parameter | Type | Description | Required |
 |-----------|------|-------------|----------|
 | `config` | `WriteConfig` | Client configuration | Yes |
-| `subjects` | `Hex[]` | Array of subject atom IDs | Yes |
-| `predicates` | `Hex[]` | Array of predicate atom IDs | Yes |
-| `objects` | `Hex[]` | Array of object atom IDs | Yes |
-| `deposits` | `bigint[]` | Array of deposit amounts | Yes |
+| `data[0]` | `Hex[]` | Array of subject atom IDs | Yes |
+| `data[1]` | `Hex[]` | Array of predicate atom IDs | Yes |
+| `data[2]` | `Hex[]` | Array of object atom IDs | Yes |
+| `data[3]` | `bigint[]` | Array of asset amounts | Yes |
+| `depositAmount` | `bigint` | Optional additional transaction deposit | No |
 
 All arrays must be the same length.
 
@@ -26662,26 +26811,31 @@ All arrays must be the same length.
 import {
   batchCreateTripleStatements,
   createAtomFromString,
+  type WriteConfig,
 } from '@0xintuition/sdk'
 import { parseEther } from 'viem'
 
-// Create atoms
-const alice = await createAtomFromString(config, 'Alice')
-const bob = await createAtomFromString(config, 'Bob')
-const charlie = await createAtomFromString(config, 'Charlie')
-const follows = await createAtomFromString(config, 'follows')
+async function createFollowTriples(config: WriteConfig) {
+  const alice = await createAtomFromString(config, 'Alice')
+  const bob = await createAtomFromString(config, 'Bob')
+  const charlie = await createAtomFromString(config, 'Charlie')
+  const follows = await createAtomFromString(config, 'follows')
 
-// Batch create: Alice follows Bob, Bob follows Charlie
-const result = await batchCreateTripleStatements(
-  config,
-  [alice.state.termId, bob.state.termId],      // subjects
-  [follows.state.termId, follows.state.termId], // predicates
-  [bob.state.termId, charlie.state.termId],     // objects
-  [parseEther('0.1'), parseEther('0.1')]        // deposits
-)
+  // Batch create: Alice follows Bob, Bob follows Charlie
+  const result = await batchCreateTripleStatements(
+    config,
+    [
+      [alice.state.termId, bob.state.termId],       // subjects
+      [follows.state.termId, follows.state.termId], // predicates
+      [bob.state.termId, charlie.state.termId],     // objects
+      [parseEther('0.1'), parseEther('0.1')],        // assets
+    ],
+    parseEther('0.2'), // Optional additional transaction deposit
+  )
 
-console.log('Created', result.state.length, 'triples')
-console.log('Triple IDs:', result.state.map(s => s.args.tripleId))
+  console.log('Created', result.state.length, 'triples')
+  console.log('Triple IDs:', result.state.map(s => s.termId))
+}
 ```
 
 ### Advanced Example
@@ -26739,7 +26893,7 @@ Fetch comprehensive triple details from the Intuition API.
 #### Function Signature
 
 ```typescript
-function getTripleDetails(tripleId: string): Promise<TripleDetails>
+function getTripleDetails(tripleId: string): Promise<TripleDetails | null>
 ```
 
 #### getTripleDetails - Parameters
@@ -26752,20 +26906,15 @@ function getTripleDetails(tripleId: string): Promise<TripleDetails>
 
 ```typescript
 type TripleDetails = {
-  id: string
-  subject: { id: string, label: string }
-  predicate: { id: string, label: string }
-  object: { id: string, label: string }
-  vault: {
-    totalShares: string
-    positionCount: number
-  }
-  counterVault: {
-    totalShares: string
-    positionCount: number
-  }
-  creator: Address
-  // Additional fields
+  subject?: { label?: string | null } | null
+  predicate?: { label?: string | null } | null
+  object?: { label?: string | null } | null
+  term?: {
+    vaults: Array<{ total_shares: string }>
+  } | null
+  counter_term?: {
+    vaults: Array<{ total_shares: string }>
+  } | null
 }
 ```
 
@@ -26776,10 +26925,14 @@ import { getTripleDetails } from '@0xintuition/sdk'
 
 const tripleId = '0x4957d3f442acc301...'
 const details = await getTripleDetails(tripleId)
+if (!details) throw new Error('Triple not found')
 
-console.log('Triple:', details.subject.label, details.predicate.label, details.object.label)
-console.log('For Position Shares:', details.vault.totalShares)
-console.log('Against Position Shares:', details.counterVault.totalShares)
+const forVault = details.term?.vaults[0]
+const againstVault = details.counter_term?.vaults[0]
+
+console.log('Triple:', details.subject?.label, details.predicate?.label, details.object?.label)
+console.log('For Position Shares:', forVault?.total_shares)
+console.log('Against Position Shares:', againstVault?.total_shares)
 ```
 
 ### calculateTripleId
@@ -26821,13 +26974,8 @@ async function tripleExists(
   objectId: Hex
 ): Promise<boolean> {
   const tripleId = calculateTripleId(subjectId, predicateId, objectId)
-
-  try {
-    await getTripleDetails(tripleId)
-    return true
-  } catch {
-    return false
-  }
+  const triple = await getTripleDetails(tripleId)
+  return triple !== null
 }
 ```
 
@@ -26883,35 +27031,43 @@ import {
   createTripleStatement,
   calculateCounterTripleId,
   deposit,
+  type WriteConfig,
 } from '@0xintuition/sdk'
-import { parseEther } from 'viem'
+import { parseEther, type Hex } from 'viem'
 
-// Create triple: Alice follows Bob
-const triple = await createTripleStatement(config, {
-  args: [[aliceId], [followsId], [bobId], [parseEther('0.1')]],
-  value: parseEther('0.1'),
-})
+async function createAndSignalCounter(
+  config: WriteConfig,
+  aliceId: Hex,
+  followsId: Hex,
+  bobId: Hex,
+) {
+  // Create triple: Alice follows Bob
+  const triple = await createTripleStatement(config, {
+    args: [[aliceId], [followsId], [bobId], [parseEther('0.1')]],
+    value: parseEther('0.1'),
+  })
 
-const tripleId = triple.state[0].args.tripleId
-const counterTripleId = calculateCounterTripleId(tripleId)
+  const tripleId = triple.state[0].args.termId
+  const counterTripleId = calculateCounterTripleId(tripleId)
 
-// Deposit into FOR vault
-await deposit(config, [
-  walletClient.account.address,
-  tripleId,
-  1n,
-  parseEther('1'),
-  0n,
-])
+  // Deposit into FOR vault
+  await deposit(config, [
+    config.walletClient.account.address,
+    tripleId,
+    1n,
+    parseEther('1'),
+    0n,
+  ])
 
-// Deposit into AGAINST vault
-await deposit(config, [
-  walletClient.account.address,
-  counterTripleId,
-  1n,
-  parseEther('1'),
-  0n,
-])
+  // Deposit into AGAINST vault
+  await deposit(config, [
+    config.walletClient.account.address,
+    counterTripleId,
+    1n,
+    parseEther('1'),
+    0n,
+  ])
+}
 ```
 
 ### Use Cases
@@ -26919,57 +27075,87 @@ await deposit(config, [
 #### Building Prediction Markets
 
 ```typescript
-// Create prediction: "Price will go up"
-const prediction = await createTripleStatement(config, {
-  args: [[priceId], [willId], [goUpId], [parseEther('1')]],
-  value: parseEther('1'),
-})
+import {
+  calculateCounterTripleId,
+  createTripleStatement,
+  type WriteConfig,
+} from '@0xintuition/sdk'
+import { parseEther, type Hex } from 'viem'
 
-const forId = prediction.state[0].args.tripleId
-const againstId = calculateCounterTripleId(forId)
+async function getPredictionVaults(
+  config: WriteConfig,
+  priceId: Hex,
+  willId: Hex,
+  goUpId: Hex,
+) {
+  const prediction = await createTripleStatement(config, {
+    args: [[priceId], [willId], [goUpId], [parseEther('1')]],
+    value: parseEther('1'),
+  })
 
-// Users can deposit into either position
-console.log('FOR vault:', forId)
-console.log('AGAINST vault:', againstId)
+  const forId = prediction.state[0].args.termId
+  const againstId = calculateCounterTripleId(forId)
+
+  return { forId, againstId }
+}
 ```
 
 #### Governance Voting
 
 ```typescript
-// Proposal: "Accept proposal #42"
-const proposal = await createTripleStatement(config, {
-  args: [[communityId], [acceptsId], [proposal42Id], [parseEther('10')]],
-  value: parseEther('10'),
-})
+import {
+  calculateCounterTripleId,
+  createTripleStatement,
+  type WriteConfig,
+} from '@0xintuition/sdk'
+import { parseEther, type Hex } from 'viem'
 
-const yesVoteVault = proposal.state[0].args.tripleId
-const noVoteVault = calculateCounterTripleId(yesVoteVault)
+async function getProposalVaults(
+  config: WriteConfig,
+  communityId: Hex,
+  acceptsId: Hex,
+  proposal42Id: Hex,
+) {
+  const proposal = await createTripleStatement(config, {
+    args: [[communityId], [acceptsId], [proposal42Id], [parseEther('10')]],
+    value: parseEther('10'),
+  })
 
-// Voting is done via deposits
+  const yesVoteVault = proposal.state[0].args.termId
+  const noVoteVault = calculateCounterTripleId(yesVoteVault)
+
+  return { yesVoteVault, noVoteVault }
+}
 ```
 
 ### Querying Counter Vault Details
 
 ```typescript
-import { getTripleDetails, calculateCounterTripleId } from '@0xintuition/sdk'
+import { getTripleDetails } from '@0xintuition/sdk'
+import type { Hex } from 'viem'
 
 async function comparePositions(tripleId: Hex) {
   const details = await getTripleDetails(tripleId)
+  if (!details) throw new Error('Triple not found')
+
+  const forVault = details.term?.vaults[0]
+  const againstVault = details.counter_term?.vaults[0]
+  if (!forVault || !againstVault) throw new Error('Triple vaults not found')
 
   console.log('=== Triple ===')
-  console.log(`${details.subject.label} ${details.predicate.label} ${details.object.label}`)
+  console.log(`${details.subject?.label} ${details.predicate?.label} ${details.object?.label}`)
   console.log('')
   console.log('FOR Position:')
-  console.log('  Shares:', details.vault.totalShares)
-  console.log('  Positions:', details.vault.positionCount)
+  console.log('  Shares:', forVault.total_shares)
+  console.log('  Positions:', forVault.allPositions.aggregate?.count ?? 0)
   console.log('')
   console.log('AGAINST Position:')
-  console.log('  Shares:', details.counterVault.totalShares)
-  console.log('  Positions:', details.counterVault.positionCount)
+  console.log('  Shares:', againstVault.total_shares)
+  console.log('  Positions:', againstVault.allPositions.aggregate?.count ?? 0)
 
   // Determine which position has more support
-  const forShares = BigInt(details.vault.totalShares)
-  const againstShares = BigInt(details.counterVault.totalShares)
+  const forShares = BigInt(forVault.total_shares)
+  const againstShares = BigInt(againstVault.total_shares)
 
   if (forShares > againstShares) {
     console.log('\nMajority supports FOR')
@@ -27182,20 +27368,29 @@ await deposit(config, [
 #### Deposit into Triple Vault (FOR position)
 
 ```typescript
-import { createTripleStatement, deposit } from '@0xintuition/sdk'
+import {
+  createTripleStatement,
+  deposit,
+  type WriteConfig,
+} from '@0xintuition/sdk'
 import { parseEther } from 'viem'
 
-const triple = await createTripleStatement(config, tripleArgs)
-const tripleId = triple.state[0].args.tripleId
+async function createAndSignalTriple(
+  config: WriteConfig,
+  tripleArgs: Parameters<typeof createTripleStatement>[1],
+) {
+  const triple = await createTripleStatement(config, tripleArgs)
+  const tripleId = triple.state[0].args.termId
 
-// Deposit into FOR vault
-await deposit(config, [
-  walletClient.account.address,
-  tripleId,
-  1n,
-  parseEther('1'),
-  0n,
-])
+  // Deposit into FOR vault
+  await deposit(config, [
+    config.walletClient.account.address,
+    tripleId,
+    1n,
+    parseEther('1'),
+    0n,
+  ])
+}
 ```
 
 #### Deposit into Counter Vault (AGAINST position)
@@ -27858,14 +28053,14 @@ The Intuition protocol contracts are deployed on both the Base Mainnet and the I
 ### Intuition Mainnet Configuration
 - **Chain ID**: 1155
 - **RPC URL**: `https://rpc.intuition.systems`
-- **WebSocket**: `wss://rpc.intuition.systems`
+- **WebSocket**: `wss://rpc.intuition.systems/ws`
 - **Explorer**: `https://explorer.intuition.systems/`
 - **Native Token**: $TRUST
 
 ### Intuition Testnet Configuration
 - **Chain ID**: 13579
 - **RPC URL**: `https://testnet.rpc.intuition.systems`
-- **WebSocket**: `wss://testnet.rpc.intuition.systems`
+- **WebSocket**: `wss://testnet.rpc.intuition.systems/ws`
 - **Explorer**: `https://testnet.explorer.intuition.systems/`
 - **Native Token**: $tTRUST
 
@@ -27903,8 +28098,8 @@ Intuition's smart contracts are central to the user experience, handling critica
 The MultiVault contract is the core component of Intuition's architecture, responsible for managing the creation of Atoms/Triples and handling deposits, redemptions, and share distributions. It supports multiple bonding curve implementations through a registry system.
 
 - **Creation**: Users can create Atoms and Triples
-- **Deposits**: Users can deposit ETH to receive shares in atoms/triples
-- **Redemptions**: Users can redeem shares for ETH
+- **Deposits**: Users can deposit TRUST to receive shares in atoms/triples
+- **Redemptions**: Users can redeem shares for TRUST
 - **Multi-Vault**: Supports multiple bonding curve implementations
 - **Share Distribution**: Manages the minting and burning of shares
 - **Fee Collection**: Collects small fees to maintain the system
@@ -28423,7 +28618,7 @@ Identities, also known as **Atoms**, are the fundamental building blocks in the 
 1. **Click the "Create" action button** in the bottom left section of the menu panel
 2. **Select "Create Identity"** from the dropdown menu
 3. **Input data** to describe the Identity you are creating
-4. **Optionally deposit ETH** to stake on your newly created Identity
+4. **Optionally deposit TRUST** to stake on your newly created Identity
 
 ### **What Happens After Creation?**
 
@@ -28446,7 +28641,7 @@ When you create an Identity, the data is uploaded to IPFS, generating an IPFS CI
 
 ## 3. Staking (Signal Conviction)
 
-**What is Staking?** Staking in Intuition allows you to signal what is important or what you believe to be true by staking ETH on Identities (Atoms) or Claims (Triples). This process contributes to a **Token Curated Registry (TCR)**, where the most relevant information rises to the top.
+**What is Staking?** Staking in Intuition allows you to signal what is important or what you believe to be true by staking TRUST on Identities (Atoms) or Claims (Triples). This process contributes to a **Token Curated Registry (TCR)**, where the most relevant information rises to the top.
 
 ### **Staking on an Identity:**
 
@@ -28460,7 +28655,7 @@ When you create an Identity, the data is uploaded to IPFS, generating an IPFS CI
 
 ### **Unstaking:**
 
-You can unstake your ETH at any time to retrieve your deposit (minus fees).
+You can unstake your TRUST at any time to retrieve your deposit (minus fees).
 
 ### **Staking Economics:**
 
@@ -28489,7 +28684,7 @@ Staking grants you shares that provide a proportionate amount of fee revenue acc
 ### **Adding to and Managing Lists:**
 
 - Use the **"Add to list"** and **"Save list"** buttons to manage your Lists
-- Lists are **Token Curated Registries (TCR)**, where you can stake ETH to order entries within a List
+- Lists are **Token Curated Registries (TCR)**, where you can stake TRUST to order entries within a List
 
 ## 6. Following Users
 
@@ -28497,8 +28692,8 @@ Staking grants you shares that provide a proportionate amount of fee revenue acc
 
 ### **How to Follow/Unfollow:**
 
-- **To follow**: Click on a user's profile and select "Follow," then optionally stake ETH
-- **To unfollow**: Click "Following" on the user's profile and select "Unfollow." Unfollowing also redeems your staked ETH
+- **To follow**: Click on a user's profile and select "Follow," then optionally stake TRUST
+- **To unfollow**: Click "Following" on the user's profile and select "Unfollow." Unfollowing also redeems your staked TRUST
 
 ## Getting Started
 
@@ -34151,14 +34346,14 @@ The Intuition protocol contracts are deployed on both the Base Mainnet and the I
 ### Intuition Mainnet Configuration
 - **Chain ID**: 1155
 - **RPC URL**: `https://rpc.intuition.systems`
-- **WebSocket**: `wss://rpc.intuition.systems`
+- **WebSocket**: `wss://rpc.intuition.systems/ws`
 - **Explorer**: `https://explorer.intuition.systems/`
 - **Native Token**: $TRUST
 
 ### Intuition Testnet Configuration
 - **Chain ID**: 13579
 - **RPC URL**: `https://testnet.rpc.intuition.systems`
-- **WebSocket**: `wss://testnet.rpc.intuition.systems`
+- **WebSocket**: `wss://testnet.rpc.intuition.systems/ws`
 - **Explorer**: `https://testnet.explorer.intuition.systems/`
 - **Native Token**: $tTRUST
 
@@ -34223,14 +34418,14 @@ You can visit the [Intuition Testnet faucet](https://testnet.hub.intuition.syste
 ### Intuition Mainnet Configuration
 - **Chain ID**: 1155
 - **RPC URL**: `https://rpc.intuition.systems`
-- **WebSocket**: `wss://rpc.intuition.systems`
+- **WebSocket**: `wss://rpc.intuition.systems/ws`
 - **Explorer**: `https://explorer.intuition.systems/`
 - **Native Token**: $TRUST
 
 ### Intuition Testnet Configuration
 - **Chain ID**: 13579
 - **RPC URL**: `https://testnet.rpc.intuition.systems`
-- **WebSocket**: `wss://testnet.rpc.intuition.systems`
+- **WebSocket**: `wss://testnet.rpc.intuition.systems/ws`
 - **Explorer**: `https://testnet.explorer.intuition.systems/`
 - **Native Token**: $tTRUST
 
@@ -34323,36 +34518,53 @@ export const publicClient = createPublicClient({
 ```
 
 ### Setup a Wallet Client
-If you are using wagmi, you can use the `useWalletClient` hook to get the wallet client. And won't need to setup a wallet client manually. The code snippets below are for reference if you are not using wagmi.
+If you are using wagmi, you can use the `useWalletClient` hook and do not need to set up a wallet client manually. The snippets below show Node/server clients using an RPC transport and a local account.
 
-#### Testnet
-When developing an application us the `intuitionTestnet` chain.
+Use only a disposable development key in a literal placeholder like this; never hardcode or commit a real private key. Production applications should load signing credentials from a secure secret manager.
+
+#### Testnet (Node/server)
+When developing an application use the `intuitionTestnet` chain.
 ```typescript
 import { intuitionTestnet } from '@0xintuition/sdk' // or `@0xintuition/protocol`
-import { createWalletClient, custom } from 'viem'
+import { createWalletClient, http } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
 
 const account = privateKeyToAccount('0x...')
 export const walletClient = createWalletClient({
   chain: intuitionTestnet,
-  transport: custom(window.ethereum!)
+  account,
+  transport: http(),
 })
 ```
 
-#### Mainnet
+#### Mainnet (Node/server)
 When deploying to production remember to use the `intuitionMainnet` chain.
 
 ```typescript
 import { intuitionMainnet } from '@0xintuition/sdk' // or `@0xintuition/protocol`
-import { createWalletClient, custom } from 'viem'
+import { createWalletClient, http } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
 
 const account = privateKeyToAccount('0x...')
 export const walletClient = createWalletClient({
   chain: intuitionMainnet,
-  transport: custom(window.ethereum!),
+  account,
+  transport: http(),
 })
 ```
+
+### Pair SDK Reads with the Selected Network
+
+SDK read helpers use the mainnet GraphQL API by default. Because the examples below write to Intuition Testnet, configure the testnet read endpoint once during application startup so newly created data is queried from the same network:
+
+```typescript
+import { configureSdk } from '@0xintuition/sdk'
+import { API_URL_DEV } from '@0xintuition/graphql'
+
+configureSdk({ apiUrl: API_URL_DEV })
+```
+
+Use `API_URL_PROD` instead when your public and wallet clients target `intuitionMainnet`.
 
 ## Adding Data to the Knowledge Graph
 Data in the Intuition protocol is represented as atoms and triples. As a developer you will help users create atoms and triples in the protocol via onchain smart contracts, and retrieving data from the knowledge graph via offchain services.
@@ -34362,6 +34574,8 @@ Data in the Intuition protocol is represented as atoms and triples. As a develop
 Atoms are the foundational building blocks of Intuition's knowledge graph – the words in our global dictionary. Think of Intuition as a vast, collaborative dictionary where anyone can create a new word, and each word has its own globally persistent, unique digital identifier that can be used to reference it across the entire internet!
 
 [Learn more about Atoms →](https://docs.intuition.systems/docs/intuition-concepts/primitives/Atoms/fundamentals)
+
+The SDK dynamically fetches and forwards the required atom base cost. Any optional amount passed to `createAtomFromString` or its sibling helpers is an additional TRUST/tTRUST deposit (signal), not the required base cost.
 
 ### Create an Atom from a String
 
@@ -34520,7 +34734,7 @@ const triple = await createTripleStatement(
       predicate.state.termId,
       object.state.termId
     ],
-    value: 1000000000000000000n, // 1 ETH deposit in wei
+    value: 1000000000000000000n, // 1 TRUST deposit in wei
   }
 )
 
@@ -34596,8 +34810,16 @@ console.log('Assets you will receive:', assetsToReceive)
 ```typescript
 import { useState } from 'react'
 import { useWalletClient, usePublicClient, useChainId } from 'wagmi'
-import { createAtomFromString, createTripleStatement } from '@0xintuition/sdk'
+import {
+  configureSdk,
+  createAtomFromString,
+  createTripleStatement,
+} from '@0xintuition/sdk'
+import { API_URL_DEV } from '@0xintuition/graphql'
 import { getMultiVaultAddressFromChainId, deposit } from '@0xintuition/protocol'
+
+// SDK reads default to mainnet; pair reads with the testnet write chain.
+configureSdk({ apiUrl: API_URL_DEV })
 
 function IntuitionQuickstart() {
   const chainId = useChainId()
@@ -34619,7 +34841,7 @@ function IntuitionQuickstart() {
   const signalAtom = async () => {
     if (!atomId) return
 
-    const depositAmount = 100000000000000000n // 0.1 ETH
+    const depositAmount = 100000000000000000n // 0.1 TRUST
     await deposit(
       { walletClient, publicClient, address },
       {
@@ -34676,7 +34898,7 @@ const atomData = [
 const result = await batchCreateAtomsFromThings(
   { walletClient, publicClient, address },
   atomData,
-  1000000000000000000n // Optional: 1 ETH deposit per atom
+  1000000000000000000n // Optional: additional 1 TRUST signal per atom
 )
 
 console.log('Created atoms:', result.state)
@@ -34700,7 +34922,7 @@ const tripleData = [
 const result = await batchCreateTripleStatements(
   { walletClient, publicClient, address },
   tripleData,
-  1000000000000000000n // Optional: 1 ETH deposit
+  1000000000000000000n // Optional: 1 TRUST deposit
 )
 
 console.log('Created triples:', result.state)

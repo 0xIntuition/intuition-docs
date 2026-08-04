@@ -59,7 +59,7 @@ Do you have a large amount of data you want to add to the Intuition System, but 
 ---
 title: "Farcaster Frames"
 description: "Documentation for the Intuition Farcaster Frames integration"
-last_updated: "2026-02-11T09:19:02-05:00"
+last_updated: "2026-07-29T16:15:00+01:00"
 source: "https://docs.intuition.systems/docs/experimental-applications/farcaster-frames"
 ---
 
@@ -102,7 +102,7 @@ The Intuition MCP Server acts as a bridge between AI applications and the Intuit
 ---
 title: "MetaMask Snap"
 description: "Documentation for the Intuition MetaMask Snap"
-last_updated: "2026-02-11T09:19:02-05:00"
+last_updated: "2026-07-29T16:33:04+01:00"
 source: "https://docs.intuition.systems/docs/experimental-applications/metamask-snap"
 ---
 
@@ -915,7 +915,7 @@ Analyze share price trends using time-series data.
 ---
 title: "Example: Social Graph"
 description: "Build social feed from followed accounts"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-08-04T11:56:09-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/examples/social-graph"
 ---
 
@@ -952,7 +952,7 @@ Build a social activity feed from followed accounts.
 
 }`,
     variables: {
-      address: '0xd8da6bf26964af9d7eed9e03e53415d37aa96045',
+      address: '0x88D0aF73508452c1a453356b3Fac26525aEc23A2',
       limit: 20
 
 ];
@@ -960,7 +960,7 @@ Build a social activity feed from followed accounts.
 ---
 title: "Example: Real-Time Subscriptions"
 description: "Implement real-time updates with subscriptions"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-08-04T11:56:09-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/examples/subscriptions"
 ---
 
@@ -997,7 +997,7 @@ Implement real-time position monitoring with subscriptions.
         initial_value: { created_at: '2024-12-01T00:00:00Z' },
         ordering: 'ASC'
       }],
-      accountId: '0xd8da6bf26964af9d7eed9e03e53415d37aa96045',
+      accountId: '0x88D0aF73508452c1a453356b3Fac26525aEc23A2',
       batchSize: 10
 
 ];
@@ -1084,13 +1084,17 @@ Paginate through triples with total count for UI.
 ---
 title: "Example: User Positions"
 description: "Fetch all positions for a user with aggregates"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-08-04T11:56:09-04:00"
 source: "https://docs.intuition.systems/docs/graphql-api/examples/user-positions"
 ---
 
 # Example: User Positions
 
 Fetch user positions with aggregate statistics.
+
+This example uses a live-verified account with populated positions; position counts and values change over time.
+
+Account IDs are stored in EIP-55 checksummed form and `_eq` comparisons are case-sensitive — pass the address exactly as checksummed (as shown below), or the query silently returns empty results.
 
 ## Query
 
@@ -1106,22 +1110,8 @@ Fetch user positions with aggregate statistics.
     where: { account_id: { _eq: $accountId } }
     order_by: { shares: desc }
     limit: $limit
-  ) {
-    id
-    shares
-    vault {
-      term_id
-      current_share_price
-      market_cap
-      term {
-        atom { label image }
 
-}`,
-    variables: {
-      accountId: '0xd8da6bf26964af9d7eed9e03e53415d37aa96045',
-      limit: 20
-
-];
+[... see full docs for complete content]
 
 ---
 title: "Client Setup"
@@ -2356,7 +2346,7 @@ Query raw blockchain events with filtering, sorting, and pagination.
 ---
 title: "Events Queries"
 description: "Query raw blockchain events from the Intuition protocol"
-last_updated: "2026-02-28T21:52:51-05:00"
+last_updated: "2026-07-29T16:33:04+01:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/events/overview"
 ---
 
@@ -2377,8 +2367,8 @@ Events are blockchain log entries emitted by smart contracts. The Intuition inde
 
 - **AtomCreated**: New atoms minted
 - **TripleCreated**: New triples created
-- **Deposited**: ETH staked on positions
-- **Redeemed**: ETH withdrawn from positions
+- **Deposited**: TRUST staked on positions
+- **Redeemed**: TRUST withdrawn from positions
 - **FeesTransferred**: Protocol fees collected
 
 ## Quick Start
@@ -2855,7 +2845,7 @@ Query deposit and redemption signals with rich filtering, sorting, and paginatio
 ---
 title: "Signals Queries"
 description: "Query deposit and redemption signals with rich context"
-last_updated: "2026-04-01T11:08:48-04:00"
+last_updated: "2026-07-29T16:33:04+01:00"
 source: "https://docs.intuition.systems/docs/graphql-api/queries/signals/overview"
 ---
 
@@ -2875,7 +2865,7 @@ Signals represent deposit and redemption events in the Intuition protocol. Unlik
 
 Signals are contextual representations of position changes:
 
-- **Deposits**: When an account stakes ETH on an atom or triple
+- **Deposits**: When an account stakes TRUST on an atom or triple
 - **Redemptions**: When an account withdraws from a position
 
 Each signal includes:
@@ -3693,28 +3683,23 @@ While blockchains have historically decentralized money, **Intuition decentraliz
 ---
 title: "Create Atom"
 description: "Learn how to create atoms and manage their associated vaults"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-08-04T11:57:57-04:00"
 source: "https://docs.intuition.systems/docs/interaction-guide/create-atom"
 ---
 
 # Create Atom
 
-Creating atoms in the Intuition protocol involves interacting with the EthMultiVault contract to establish new entities in the knowledge graph. This process includes creating the atom itself and managing its associated vault.
+Atoms are created through the deployed `MultiVault.createAtoms` entry point. Although the contract function accepts arrays, the same function is used for both single and batch creation.
 
 ## Prerequisites
 
-This implementation guide assumes that you've completed the setup steps in the [Overview](https://docs.intuition.systems/docs/interaction-guide/overview) guide. Steps for creating the `createMultivaultContract` and the `publicClient` referenced in this implementation example can be found in the overview.
+Complete the client and contract-address setup in the [Overview](https://docs.intuition.systems/docs/interaction-guide/overview) guide. The examples below expect a `publicClient`, a connected `walletClient`, and the deployed MultiVault `address` for the selected Intuition network.
 
-## Implementation
+## Cost Semantics
 
-We recommend creating a `multivault.ts` that includes the following atom creation functionality:
+Read the current atom base cost immediately before creating an atom. The protocol can change this value, so it must not be hardcoded or treated as a fixed fee.
 
-### Core Atom Creation Pattern
-
-{`// Create atom with initial deposit
-const createAtomConfig = {
-  ...multiVaultContract,
-  functionName: 'createAtom',
+The value assigned to one atom is:
 
 [... see full docs for complete content]
 
@@ -4212,7 +4197,7 @@ Establish hierarchical or categorical relationships.
 ---
 title: "Primitives Overview"
 description: "Understanding Intuition's core primitives - Atoms, Triples, and Signals - the building blocks of a decentralized knowledge graph"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-07-29T16:33:04+01:00"
 source: "https://docs.intuition.systems/docs/intuition-concepts/primitives"
 ---
 
@@ -4557,7 +4542,7 @@ The workspace is structured into logical layers:
 ---
 title: "Working with Atoms"
 description: "Create and query atoms using the SDK"
-last_updated: "2026-06-25T15:48:40-04:00"
+last_updated: "2026-08-04T11:57:57-04:00"
 source: "https://docs.intuition.systems/docs/intuition-sdk/atoms-guide"
 ---
 
@@ -4567,25 +4552,14 @@ source: "https://docs.intuition.systems/docs/intuition-sdk/atoms-guide"
 
 Atoms are unique identifiers for any entity—people, concepts, smart contracts, or data. This guide covers all ways to create and query atoms using the SDK.
 
+SDK read helpers use the mainnet GraphQL API by default. The write examples on this page use Intuition Testnet, so configure reads once before calling a read helper:
+
+Atom creation helpers dynamically fetch and forward the required atom base cost. Their optional amount is an additional TRUST/tTRUST deposit (signal), not the required base cost.
+
 ## Table of Contents
 
 - [Creating from Strings](https://docs.intuition.systems/docs/intuition-sdk/atoms-guide#creating-from-strings)
 - [Creating from Thing (JSON-LD)](https://docs.intuition.systems/docs/intuition-sdk/atoms-guide#creating-from-thing)
-- [Creating from Ethereum Accounts](https://docs.intuition.systems/docs/intuition-sdk/atoms-guide#creating-from-ethereum-accounts)
-- [Creating from Smart Contracts](https://docs.intuition.systems/docs/intuition-sdk/atoms-guide#creating-from-smart-contracts)
-- [Creating from IPFS](https://docs.intuition.systems/docs/intuition-sdk/atoms-guide#creating-from-ipfs)
-- [Batch Creation](https://docs.intuition.systems/docs/intuition-sdk/atoms-guide#batch-creation)
-- [Querying Atoms](https://docs.intuition.systems/docs/intuition-sdk/atoms-guide#querying-atoms)
-
-## Creating from Strings
-
-The simplest way to create an atom is from a plain string.
-
-### Function Signature
-
-### Creating from Strings - Parameters
-
-| Parameter | Type          | Description                                                           | Required |
 
 [... see full docs for complete content]
 
@@ -4612,7 +4586,7 @@ This example demonstrates creating multiple identity atoms from Ethereum address
 ---
 title: "Example: Bulk Sync with Cost Estimation"
 description: "Use the experimental sync function to estimate costs for bulk operations"
-last_updated: "2026-06-30T11:21:44-04:00"
+last_updated: "2026-08-04T11:57:57-04:00"
 source: "https://docs.intuition.systems/docs/intuition-sdk/examples/bulk-sync-cost-estimation"
 ---
 
@@ -4632,13 +4606,15 @@ This example demonstrates using the experimental `sync` function to estimate cos
 ---
 title: "Example: Create Atom from String"
 description: "Complete example of creating an atom from a text string"
-last_updated: "2026-06-30T11:21:44-04:00"
+last_updated: "2026-08-04T11:57:57-04:00"
 source: "https://docs.intuition.systems/docs/intuition-sdk/examples/create-atom-from-string"
 ---
 
 # Example: Create Atom from String
 
 This example demonstrates creating an atom from a plain text string, including setup, error handling, and querying the result.
+
+SDK reads default to the mainnet GraphQL API, so the example explicitly selects the testnet API to match its write chain. `createAtomFromString` fetches and forwards the required atom base cost; `additionalDeposit` is extra tTRUST signal, not the base cost.
 
 ## Complete Code
 
@@ -4655,13 +4631,15 @@ This example demonstrates creating an atom from a plain text string, including s
 ---
 title: "Example: Create Triple Statement"
 description: "Complete example of creating a subject-predicate-object triple"
-last_updated: "2026-06-30T11:21:44-04:00"
+last_updated: "2026-08-04T11:57:57-04:00"
 source: "https://docs.intuition.systems/docs/intuition-sdk/examples/create-triple-statement"
 ---
 
 # Example: Create Triple Statement
 
 This example demonstrates creating a complete triple (subject-predicate-object statement).
+
+SDK reads default to the mainnet GraphQL API. This example configures the testnet API before querying the triple it creates on Intuition Testnet.
 
 ## Complete Code
 
@@ -4692,13 +4670,15 @@ This example demonstrates depositing assets into a vault and tracking share bala
 ---
 title: "Example: Find Existing Entities"
 description: "Search for existing atoms and triples before creating new ones"
-last_updated: "2026-06-30T11:21:44-04:00"
+last_updated: "2026-08-04T11:57:57-04:00"
 source: "https://docs.intuition.systems/docs/intuition-sdk/examples/find-existing-entities"
 ---
 
 # Example: Find Existing Entities
 
 This example demonstrates how to find existing atoms and triples to avoid creating duplicates.
+
+SDK reads default to the mainnet GraphQL API. This flow both reads and writes on Intuition Testnet, so it configures the testnet API before its first lookup; optional atom amounts are additional tTRUST signal because the SDK fetches the required base cost automatically.
 
 ## Complete Code
 
@@ -4712,13 +4692,15 @@ This example demonstrates how to find existing atoms and triples to avoid creati
 ---
 title: "Example: Global Search"
 description: "Search across atoms, accounts, triples, and collections"
-last_updated: "2026-06-30T11:21:44-04:00"
+last_updated: "2026-08-04T11:57:57-04:00"
 source: "https://docs.intuition.systems/docs/intuition-sdk/examples/global-search"
 ---
 
 # Example: Global Search
 
 This example demonstrates using global search to find entities across the Intuition protocol.
+
+SDK reads use the mainnet GraphQL API by default. The example selects `API_URL_DEV` for testnet data; use `API_URL_PROD` instead for Mainnet.
 
 ## Complete Code
 
@@ -4730,13 +4712,15 @@ This example demonstrates using global search to find entities across the Intuit
 ---
 title: "Example: Thing IPFS Pinning"
 description: "Create rich entities with JSON-LD and automatic IPFS pinning"
-last_updated: "2026-06-25T15:48:40-04:00"
+last_updated: "2026-08-04T11:57:57-04:00"
 source: "https://docs.intuition.systems/docs/intuition-sdk/examples/thing-ipfs-pinning"
 ---
 
 # Example: Thing IPFS Pinning
 
 This example demonstrates creating a rich entity (Thing) with automatic IPFS pinning.
+
+SDK reads default to the mainnet GraphQL API, so this testnet write-and-read flow sets `API_URL_DEV` alongside its pinning configuration. `createAtomFromThing` fetches the required atom base cost; `depositAmount` is an additional tTRUST signal.
 
 ## Complete Code
 
@@ -4749,7 +4733,7 @@ This example demonstrates creating a rich entity (Thing) with automatic IPFS pin
 ---
 title: "Installation & Setup"
 description: "Install the Intuition SDK and configure your development environment"
-last_updated: "2026-06-25T15:48:40-04:00"
+last_updated: "2026-08-04T11:57:57-04:00"
 source: "https://docs.intuition.systems/docs/intuition-sdk/installation-and-setup"
 ---
 
@@ -4802,7 +4786,7 @@ The SDK supports two IPFS paths:
 ---
 title: "React Integration"
 description: "Integrate the Intuition SDK with React applications using Wagmi hooks"
-last_updated: "2026-06-30T11:21:44-04:00"
+last_updated: "2026-08-04T11:57:57-04:00"
 source: "https://docs.intuition.systems/docs/intuition-sdk/integrations/react"
 ---
 
@@ -4814,6 +4798,10 @@ Use the Intuition SDK with React applications via Wagmi hooks for wallet connect
 
 Install required dependencies:
 
+SDK read helpers use the mainnet GraphQL API by default. Because this guide configures Wagmi for Intuition Testnet, initialize the SDK read endpoint once during application startup:
+
+Import this configuration module before components call SDK read helpers. Use `API_URL_PROD` when your Wagmi chains target `intuitionMainnet`.
+
 ## Wagmi Configuration
 
 Set up Wagmi provider in your app:
@@ -4822,33 +4810,12 @@ Set up Wagmi provider in your app:
 
 Use SDK functions with Wagmi hooks:
 
-## Custom Hooks
-
-Create reusable hooks for SDK operations:
-
-## Query Hooks
-
-Fetch data with React Query:
-
-## Complete Example
-
-Full-featured React component:
-
-## Related Resources
-
-- [TanStack Query Integration](https://docs.intuition.systems/docs/intuition-sdk/integrations/tanstack-query)
-- [Wagmi Documentation](https://wagmi.sh)
-- [SDK Quick Start](https://docs.intuition.systems/docs/intuition-sdk/quick-start)
-
-## See Also
-
-- [Wagmi Hooks Reference](https://wagmi.sh/react/hooks)
-- [TanStack Query](https://tanstack.com/query)
+[... see full docs for complete content]
 
 ---
 title: "TanStack Query Integration"
 description: "Use the Intuition SDK with TanStack Query for optimized data fetching and caching"
-last_updated: "2026-06-30T11:21:44-04:00"
+last_updated: "2026-08-04T11:57:57-04:00"
 source: "https://docs.intuition.systems/docs/intuition-sdk/integrations/tanstack-query"
 ---
 
@@ -4857,6 +4824,10 @@ source: "https://docs.intuition.systems/docs/intuition-sdk/integrations/tanstack
 Integrate the Intuition SDK with TanStack Query (React Query) for powerful data fetching, caching, and synchronization.
 
 ## Setup
+
+SDK read helpers use the mainnet GraphQL API by default. If the mutation hooks below write to Intuition Testnet, initialize the testnet read endpoint once before rendering the application:
+
+Use `API_URL_PROD` instead when the write clients target `intuitionMainnet`. Atom creation helpers fetch and forward the required base cost; an optional amount is an additional TRUST/tTRUST deposit (signal).
 
 ## Query Hooks
 
@@ -4872,32 +4843,12 @@ Create mutation hooks for write operations:
 
 ### useCreateAtom
 
-### useCreateTriple
-
-## Complete Example
-
-Full React component with TanStack Query:
-
-## Advanced Patterns
-
-### Optimistic Updates
-
-### Dependent Queries
-
-## Related Resources
-
-- [React Integration](https://docs.intuition.systems/docs/intuition-sdk/integrations/react)
-- [TanStack Query Documentation](https://tanstack.com/query)
-
-## See Also
-
-- [Wagmi Hooks](https://wagmi.sh)
-- [SDK Query Functions](https://docs.intuition.systems/docs/intuition-sdk/search-guide)
+[... see full docs for complete content]
 
 ---
 title: "SDK Migration V1 to V2"
 description: "Migrating SDK from v1.5 to v2.0"
-last_updated: "2026-06-22T14:26:07-04:00"
+last_updated: "2026-08-04T11:57:57-04:00"
 source: "https://docs.intuition.systems/docs/intuition-sdk/migration-guide"
 ---
 
@@ -4923,7 +4874,7 @@ The core smart contract has been upgraded from `EthMultiVault` to `MultiVault`, 
 ---
 title: "Quick Start"
 description: "Create your first atom and triple with the Intuition SDK in minutes"
-last_updated: "2026-06-30T11:21:44-04:00"
+last_updated: "2026-08-04T11:57:57-04:00"
 source: "https://docs.intuition.systems/docs/intuition-sdk/quick-start"
 ---
 
@@ -4959,13 +4910,15 @@ In this quick start guide, you'll:
 ---
 title: "Search and Discovery"
 description: "Search atoms, triples, and perform advanced queries"
-last_updated: "2026-06-25T17:11:24-04:00"
+last_updated: "2026-08-04T11:57:57-04:00"
 source: "https://docs.intuition.systems/docs/intuition-sdk/search-guide"
 ---
 
 # Search and Discovery
 
 Discover atoms, triples, accounts, and collections using search, filters, and batch entity lookups.
+
+SDK reads use mainnet by default. Configure the endpoint once at startup; use `API_URL_DEV` for Intuition Testnet or `API_URL_PROD` for Mainnet:
 
 ## Table of Contents
 
@@ -4985,22 +4938,13 @@ Search across all entity types (atoms, accounts, triples, collections) with a si
 | Parameter | Type | Description | Required |
 |-----------|------|-------------|----------|
 | `query` | `string` | Search query text | Yes |
-| `options` | `GlobalSearchOptions` | Search limits per type | No |
-
-### GlobalSearchOptions
-
-### Basic Example
-
-### Advanced Example
-
-Search with custom limits:
 
 [... see full docs for complete content]
 
 ---
 title: "Working with Triples"
 description: "Create and query triples using the SDK"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-08-04T11:57:57-04:00"
 source: "https://docs.intuition.systems/docs/intuition-sdk/triples-guide"
 ---
 
@@ -5009,6 +4953,8 @@ source: "https://docs.intuition.systems/docs/intuition-sdk/triples-guide"
 **Conceptual overview:** [Triples Fundamentals](https://docs.intuition.systems/docs/intuition-concepts/primitives/Triples/fundamentals)
 
 Triples are subject-predicate-object statements that connect three atoms to form relationships in the knowledge graph. This guide covers all ways to create and query triples using the SDK.
+
+SDK read helpers use the mainnet GraphQL API by default. The write examples on this page use Intuition Testnet, so configure reads once before calling a read helper:
 
 ## Table of Contents
 
@@ -5025,17 +4971,12 @@ Create a triple (subject-predicate-object statement) connecting three atoms in a
 
 ### Creating Triples - Parameters
 
-| Parameter | Type | Description | Required |
-|-----------|------|-------------|----------|
-| `config` | `WriteConfig` | Client configuration | Yes |
-| `args.args[0]` | `Hex[]` | Subject atom IDs | Yes |
-
 [... see full docs for complete content]
 
 ---
 title: "Working with Vaults"
 description: "Deposit, redeem, and query vaults using the SDK"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-08-04T11:57:57-04:00"
 source: "https://docs.intuition.systems/docs/intuition-sdk/vaults-guide"
 ---
 
@@ -5122,7 +5063,7 @@ The following fixed fees are applied when creating atoms and triples within the 
 ---
 title: "Contract Deployments"
 description: "The Intuition protocol contracts are deployed on both the Base Mainnet and the Intuition Layer 3 network, as well as their respective testnets. Below are the details of the deployed contracts,..."
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-08-04T11:51:50-04:00"
 source: "https://docs.intuition.systems/docs/intuition-smart-contracts/deployments"
 ---
 
@@ -5154,7 +5095,7 @@ The Intuition protocol contracts are deployed on both the Base Mainnet and the I
 ---
 title: "Contract Architecture Overview"
 description: "Overview of Intuition's smart contract architecture and design patterns"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-07-29T16:33:04+01:00"
 source: "https://docs.intuition.systems/docs/intuition-smart-contracts"
 ---
 
@@ -5167,8 +5108,8 @@ Intuition's smart contracts are central to the user experience, handling critica
 The MultiVault contract is the core component of Intuition's architecture, responsible for managing the creation of Atoms/Triples and handling deposits, redemptions, and share distributions. It supports multiple bonding curve implementations through a registry system.
 
 - **Creation**: Users can create Atoms and Triples
-- **Deposits**: Users can deposit ETH to receive shares in atoms/triples
-- **Redemptions**: Users can redeem shares for ETH
+- **Deposits**: Users can deposit TRUST to receive shares in atoms/triples
+- **Redemptions**: Users can redeem shares for TRUST
 
 [... see full docs for complete content]
 
@@ -5216,7 +5157,7 @@ The TrustBonding contract requires users to wrap their TRUST tokens into Wrapped
 ---
 title: "Portal (Explorer) Guide"
 description: "Documentation for the Intuition Portal application - create identities, make claims, stake, and explore the knowledge graph"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-07-29T16:33:04+01:00"
 source: "https://docs.intuition.systems/docs/portal"
 ---
 
@@ -6275,7 +6216,7 @@ Every atom and triple has an associated vault for staking:
 ---
 title: "Contract Deployments"
 description: "The Intuition protocol contracts are deployed on both the Base Mainnet and the Intuition Layer 3 network, as well as their respective testnets. Below are the details of the deployed contracts,..."
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-08-04T11:51:50-04:00"
 source: "https://docs.intuition.systems/docs/quick-start/deployments"
 ---
 
@@ -6307,7 +6248,7 @@ The Intuition protocol contracts are deployed on both the Base Mainnet and the I
 ---
 title: "Intuition Network & Explorers"
 description: "Interacting with the Intuition protocol requires connecting to the Intuition network - an L3 network that posts to [Base](https://base.org/)."
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-08-04T11:51:50-04:00"
 source: "https://docs.intuition.systems/docs/quick-start/network-details"
 ---
 
@@ -6347,7 +6288,7 @@ You can visit the [Intuition Testnet faucet](https://testnet.hub.intuition.syste
 ### Intuition Mainnet Configuration
 - **Chain ID**: 1155
 - **RPC URL**: `https://rpc.intuition.systems`
-- **WebSocket**: `wss://rpc.intuition.systems`
+- **WebSocket**: `wss://rpc.intuition.systems/ws`
 
 [... see full docs for complete content]
 
@@ -6373,7 +6314,7 @@ If you have any questions visit the [Intuition Discord](https://discord.gg/RgBen
 ---
 title: "Using the SDK"
 description: "Get started building with Intuition in minutes."
-last_updated: "2026-06-25T17:11:24-04:00"
+last_updated: "2026-08-04T11:57:57-04:00"
 source: "https://docs.intuition.systems/docs/quick-start/using-the-sdk"
 ---
 
