@@ -22,6 +22,10 @@ on:
   # Manual trigger
   workflow_dispatch:
 
+# Read-only by default; the schema-drift job elevates itself to push its branch and manage its PR.
+permissions:
+  contents: read
+
 jobs:
   # -----------------------------------------------------------------------
   # Job 1: PR check — validate queries against committed snapshots
@@ -31,7 +35,7 @@ jobs:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
 
       - name: Validate queries against committed schemas
         run: node scripts/validate-graphql-queries.js
@@ -43,8 +47,11 @@ jobs:
     name: Detect schema drift
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
