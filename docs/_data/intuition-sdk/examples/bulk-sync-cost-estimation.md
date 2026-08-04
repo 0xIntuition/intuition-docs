@@ -73,6 +73,10 @@ async function main() {
     knowledgeGraph
   )
 
+  if (typeof estimation === 'boolean') {
+    throw new Error('Expected a cost estimation from the dry run')
+  }
+
   console.log('\n=== Cost Summary ===')
   console.log('Atoms to create:', estimation.atomCount)
   console.log('Triples to create:', estimation.tripleCount)
@@ -97,7 +101,7 @@ async function main() {
       return
     }
 
-    const result = await sync(
+    const completion = await sync(
       {
         address,
         publicClient,
@@ -108,8 +112,15 @@ async function main() {
       knowledgeGraph
     )
 
+    // SDK 3.0.1 declares a boolean union but returns the cost estimation after
+    // successful live execution; failures reject by throwing.
+    if (typeof completion === 'boolean') {
+      throw new Error('Unexpected boolean result from sync')
+    }
+
     console.log('\n✓ Sync completed!')
-    console.log('Final cost:', formatEther(result.totalCost), 'tTRUST')
+    console.log('Estimated cost:', formatEther(estimation.totalCost), 'tTRUST')
+    console.log('Actual sync cost:', formatEther(completion.totalCost), 'tTRUST')
 
   } else {
     console.log('\n✗ Insufficient balance for sync operation')

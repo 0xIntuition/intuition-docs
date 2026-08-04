@@ -149,7 +149,27 @@ const address = getMultiVaultAddressFromChainId(intuitionTestnet.id);
 Most SDK functions accept a configuration object:
 
 ```typescript
-import type { WriteConfig } from '@0xintuition/sdk';
+import {
+  getMultiVaultAddressFromChainId,
+  intuitionTestnet,
+  type WriteConfig,
+} from '@0xintuition/sdk';
+import { createPublicClient, createWalletClient, http } from 'viem';
+import { privateKeyToAccount } from 'viem/accounts';
+
+const account = privateKeyToAccount(
+  process.env.PRIVATE_KEY as `0x${string}`,
+);
+const publicClient = createPublicClient({
+  chain: intuitionTestnet,
+  transport: http(),
+});
+const walletClient = createWalletClient({
+  chain: intuitionTestnet,
+  transport: http(),
+  account,
+});
+const address = getMultiVaultAddressFromChainId(intuitionTestnet.id);
 
 const config: WriteConfig = {
   address, // MultiVault contract address
@@ -219,15 +239,23 @@ The SDK provides utilities to get contract addresses for any supported network:
 import {
   getMultiVaultAddressFromChainId,
   getContractAddressFromChainId,
-  intuitionDeployments,
+  intuitionTestnet,
 } from '@0xintuition/sdk';
+
+const chainId = intuitionTestnet.id;
 
 // Get MultiVault address (most commonly used)
 const multiVaultAddress = getMultiVaultAddressFromChainId(chainId);
 
 // Get other contract addresses
-const trustBonding = getContractAddressFromChainId('TrustBonding', chainId);
-const wrappedTrust = getContractAddressFromChainId('WrappedTrust', chainId);
+const bondingCurveRegistry = getContractAddressFromChainId(
+  'BondingCurveRegistry',
+  chainId,
+);
+const offsetProgressiveCurve = getContractAddressFromChainId(
+  'OffsetProgressiveCurve',
+  chainId,
+);
 ```
 
 ---
@@ -258,9 +286,13 @@ Browser-only: this flow requires an injected wallet extension that exposes `wind
 import { createWalletClient, custom } from 'viem';
 import { intuitionTestnet } from '@0xintuition/sdk';
 
+const ethereum = (
+  window as unknown as Window & { ethereum: Parameters<typeof custom>[0] }
+).ethereum;
+
 const walletClient = createWalletClient({
   chain: intuitionTestnet,
-  transport: custom(window.ethereum),
+  transport: custom(ethereum),
 });
 ```
 
@@ -416,20 +448,23 @@ For direct Pinata upload operations, you'll need a Pinata API token:
 3. Pass it in the config when using direct Pinata upload functions
 
 ```typescript
-import { createAtomFromIpfsUpload } from '@0xintuition/sdk';
+import {
+  createAtomFromIpfsUpload,
+  type WriteConfig,
+} from '@0xintuition/sdk';
 
-const atom = await createAtomFromIpfsUpload(
-  {
-    walletClient,
-    publicClient,
-    address,
-    pinataApiJWT: 'your-pinata-jwt-token',
-  },
-  {
-    name: 'My Project',
-    description: 'A blockchain project',
-  },
-);
+async function createProjectAtom(config: WriteConfig) {
+  return createAtomFromIpfsUpload(
+    {
+      ...config,
+      pinataApiJWT: process.env.PINATA_API_JWT!,
+    },
+    {
+      name: 'My Project',
+      description: 'A blockchain project',
+    },
+  );
+}
 ```
 
 ---
