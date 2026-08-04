@@ -1,0 +1,7 @@
+{
+  "id": "scripts/__fixtures__/sdk-examples/ratcheted.md#L1",
+  "fingerprints": [
+    "TS2305:4ed76008039230782fae457c42775d118a43ad151486f7e0b4f1d6a0e97af587#1"
+  ],
+  "reason": "Self-test baseline for detecting a new diagnostic on an already-ratcheted TSX fence."
+}
