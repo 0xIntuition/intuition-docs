@@ -13,6 +13,9 @@ on:
       - 'package-lock.json'
       - '.github/workflows/validate-sdk-examples.yml'
 
+permissions:
+  contents: read
+
 jobs:
   validate-sdk-examples:
     name: Validate SDK examples
