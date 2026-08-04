@@ -1,0 +1,20 @@
+{
+  "file": "scripts/__fixtures__/sdk-examples/duplicate.md",
+  "fences": [
+    {
+      "contentHash": "c3d6483a22c73652",
+      "ordinal": 1,
+      "fingerprints": [
+        "TS2305:4ed76008039230782fae457c42775d118a43ad151486f7e0b4f1d6a0e97af587#1"
+      ]
+    },
+    {
+      "contentHash": "c3d6483a22c73652",
+      "ordinal": 2,
+      "fingerprints": [
+        "TS2305:4ed76008039230782fae457c42775d118a43ad151486f7e0b4f1d6a0e97af587#1"
+      ]
+    }
+  ],
+  "reason": "Self-test baselines proving document-order ordinals disambiguate identical failing fences."
+}
