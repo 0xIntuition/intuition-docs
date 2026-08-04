@@ -26,8 +26,25 @@ const ROOT = path.resolve(__dirname, '..');
 const CONFIG_PATH = path.join(__dirname, 'sdk-examples.config.json');
 const FIXTURES_DIR = path.join(__dirname, '__fixtures__', 'sdk-examples');
 const TYPESCRIPT_EXTENSIONS = new Set(['.md', '.mdx']);
+const CONTENT_HASH_LENGTH = 16;
 const IMPORT_PATTERN =
   /(?:^|\n)\s*import(?:\s+type)?[\s\S]*?\sfrom\s+['"]@0xintuition\/[^'"]+['"]/m;
+
+function hashFenceContent(code) {
+  return crypto
+    .createHash('sha256')
+    .update(code)
+    .digest('hex')
+    .slice(0, CONTENT_HASH_LENGTH);
+}
+
+function fenceIdentity(sourceFile, contentHash, ordinal = 1) {
+  return `${sourceFile}#${contentHash}#${ordinal}`;
+}
+
+function displayFence(example) {
+  return `${example.sourceFile}#L${example.fenceLine}`;
+}
 
 function parseArgs(argv) {
   const flags = new Set(argv.slice(2));
@@ -105,29 +122,44 @@ function readConfig({ allowMissingFingerprints = false } = {}) {
       throw new Error('Every knownFailing entry needs a non-empty reason');
     }
 
-    let fences;
-    if (typeof entry.id === 'string') {
-      fences = [{ id: entry.id, fingerprints: entry.fingerprints }];
-    } else if (
-      typeof entry.file === 'string' &&
-      Array.isArray(entry.fences) &&
-      entry.fences.every(
-        (fence) =>
-          (Number.isInteger(fence) && fence > 0) ||
-          (fence && Number.isInteger(fence.line) && fence.line > 0),
-      )
-    ) {
-      fences = entry.fences.map((fence) => ({
-        id: `${entry.file}#L${Number.isInteger(fence) ? fence : fence.line}`,
-        fingerprints: Number.isInteger(fence)
-          ? undefined
-          : fence.fingerprints,
-      }));
-    } else {
+    if (typeof entry.file !== 'string' || !entry.file) {
+      throw new Error('Every knownFailing entry needs a non-empty file');
+    }
+    if (!Array.isArray(entry.fences) || entry.fences.length === 0) {
       throw new Error(
-        'Every knownFailing entry needs either id or file plus positive fence entries',
+        `knownFailing entry ${entry.file} needs a non-empty fences array`,
       );
     }
+
+    const fences = entry.fences.map((fence) => {
+      if (!fence || typeof fence !== 'object' || Array.isArray(fence)) {
+        throw new Error(
+          `Every fence in knownFailing entry ${entry.file} must be an object`,
+        );
+      }
+
+      if (
+        typeof fence.contentHash === 'string' &&
+        new RegExp(`^[0-9a-f]{${CONTENT_HASH_LENGTH}}$`).test(
+          fence.contentHash,
+        ) &&
+        (fence.ordinal === undefined ||
+          (Number.isInteger(fence.ordinal) && fence.ordinal > 0))
+      ) {
+        const ordinal = fence.ordinal || 1;
+        return {
+          id: fenceIdentity(entry.file, fence.contentHash, ordinal),
+          file: entry.file,
+          contentHash: fence.contentHash,
+          ordinal,
+          fingerprints: fence.fingerprints,
+        };
+      }
+
+      throw new Error(
+        `Every fence in knownFailing entry ${entry.file} needs a ${CONTENT_HASH_LENGTH}-character lowercase hex contentHash and optional positive ordinal`,
+      );
+    });
 
     for (const fence of fences) {
       const { id, fingerprints } = fence;
@@ -139,8 +171,7 @@ function readConfig({ allowMissingFingerprints = false } = {}) {
           !Array.isArray(fingerprints) ||
           fingerprints.length === 0 ||
           fingerprints.some(
-            (fingerprint) =>
-              typeof fingerprint !== 'string' || !fingerprint,
+            (fingerprint) => typeof fingerprint !== 'string' || !fingerprint,
           ) ||
           new Set(fingerprints).size !== fingerprints.length
         ) {
@@ -151,13 +182,13 @@ function readConfig({ allowMissingFingerprints = false } = {}) {
       }
       ratchetIds.add(id);
       normalizedKnownFailing.push({
-        id,
+        ...fence,
         fingerprints: fingerprints || [],
         reason: entry.reason,
       });
     }
     knownFailingGroups.push({
-      label: entry.file || entry.id,
+      label: entry.file,
       ids: fences.map((fence) => fence.id),
       reason: entry.reason,
     });
@@ -225,62 +256,129 @@ function closingFencePattern(marker) {
   return new RegExp(`^\\s*${marker[0]}{${marker.length},}\\s*$`);
 }
 
-function extractExamples(files, skipComment) {
-  const examples = [];
-  const coverage = {
+function emptyCoverage() {
+  return {
     found: 0,
     extracted: 0,
     excludedByCriterion: 0,
     skippedByAnnotation: 0,
   };
+}
+
+function addCoverage(target, addition) {
+  for (const key of Object.keys(target)) target[key] += addition[key];
+}
+
+function splitSourceLines(source) {
+  const lines = [];
+  let start = 0;
+
+  while (start < source.length) {
+    const newline = source.indexOf('\n', start);
+    const end = newline === -1 ? source.length : newline + 1;
+    const raw = source.slice(start, end);
+    const withoutNewline = raw.endsWith('\n') ? raw.slice(0, -1) : raw;
+    const text = withoutNewline.endsWith('\r')
+      ? withoutNewline.slice(0, -1)
+      : withoutNewline;
+    lines.push({ start, end, text });
+    start = end;
+  }
+
+  return lines;
+}
+
+function extractExamplesFromSource(relativeFile, source, skipComment) {
+  const examples = [];
+  const coverage = emptyCoverage();
+  const candidates = [];
+  const lines = splitSourceLines(source);
+
+  for (let index = 0; index < lines.length; index++) {
+    const opening = lines[index].text.match(
+      /^\s*(`{3,})(?:typescript|tsx|ts)\b.*$/i,
+    );
+    if (!opening) continue;
+    coverage.found++;
+
+    const fenceLine = index + 1;
+    const content = [];
+    const closingPattern = closingFencePattern(opening[1]);
+    let closingIndex = index + 1;
+    while (
+      closingIndex < lines.length &&
+      !closingPattern.test(lines[closingIndex].text)
+    ) {
+      content.push(lines[closingIndex].text);
+      closingIndex++;
+    }
+
+    if (closingIndex === lines.length) {
+      throw new Error(
+        `Unclosed TypeScript fence at ${relativeFile}:${fenceLine}`,
+      );
+    }
+
+    const code = content.join('\n');
+    const rawCode = source.slice(lines[index].end, lines[closingIndex].start);
+    candidates.push({
+      sourceFile: relativeFile,
+      fenceLine,
+      code,
+      contentHash: hashFenceContent(rawCode),
+      skipped: index > 0 && lines[index - 1].text.trim() === skipComment,
+    });
+    index = closingIndex;
+  }
+
+  const contentCounts = new Map();
+  for (const candidate of candidates) {
+    contentCounts.set(
+      candidate.contentHash,
+      (contentCounts.get(candidate.contentHash) || 0) + 1,
+    );
+  }
+
+  const contentOrdinals = new Map();
+  for (const candidate of candidates) {
+    const ordinal = (contentOrdinals.get(candidate.contentHash) || 0) + 1;
+    contentOrdinals.set(candidate.contentHash, ordinal);
+
+    if (candidate.skipped) {
+      coverage.skippedByAnnotation++;
+    } else if (IMPORT_PATTERN.test(candidate.code)) {
+      const duplicateCount = contentCounts.get(candidate.contentHash);
+      examples.push({
+        id: fenceIdentity(relativeFile, candidate.contentHash, ordinal),
+        sourceFile: relativeFile,
+        fenceLine: candidate.fenceLine,
+        code: candidate.code,
+        contentHash: candidate.contentHash,
+        contentOrdinal: ordinal,
+        duplicateCount,
+      });
+      coverage.extracted++;
+    } else {
+      coverage.excludedByCriterion++;
+    }
+  }
+
+  return { examples, coverage };
+}
+
+function extractExamples(files, skipComment) {
+  const examples = [];
+  const coverage = emptyCoverage();
 
   for (const file of files) {
     const relativeFile = path.relative(ROOT, file).split(path.sep).join('/');
-    const lines = fs.readFileSync(file, 'utf8').split(/\r?\n/);
-
-    for (let index = 0; index < lines.length; index++) {
-      const opening = lines[index].match(
-        /^\s*(`{3,})(?:typescript|tsx|ts)\b.*$/i,
-      );
-      if (!opening) continue;
-      coverage.found++;
-
-      const fenceLine = index + 1;
-      const content = [];
-      const closingPattern = closingFencePattern(opening[1]);
-      let closingIndex = index + 1;
-      while (
-        closingIndex < lines.length &&
-        !closingPattern.test(lines[closingIndex])
-      ) {
-        content.push(lines[closingIndex]);
-        closingIndex++;
-      }
-
-      if (closingIndex === lines.length) {
-        throw new Error(
-          `Unclosed TypeScript fence at ${relativeFile}:${fenceLine}`,
-        );
-      }
-
-      const code = content.join('\n');
-      const skipped = index > 0 && lines[index - 1].trim() === skipComment;
-      if (skipped) {
-        coverage.skippedByAnnotation++;
-      } else if (IMPORT_PATTERN.test(code)) {
-        examples.push({
-          id: `${relativeFile}#L${fenceLine}`,
-          sourceFile: relativeFile,
-          fenceLine,
-          code,
-        });
-        coverage.extracted++;
-      } else {
-        coverage.excludedByCriterion++;
-      }
-
-      index = closingIndex;
-    }
+    const extracted = extractExamplesFromSource(
+      relativeFile,
+      fs.readFileSync(file, 'utf8'),
+      skipComment,
+    );
+    examples.push(...extracted.examples);
+    addCoverage(coverage, extracted.coverage);
   }
 
   return { examples, coverage };
@@ -409,7 +507,7 @@ function typecheckExamples(examples) {
 
 function formatDiagnostic(diagnostic) {
   const { example } = diagnostic;
-  return `${example.sourceFile}:${diagnostic.sourceLine}:${diagnostic.column} [fence ${example.id}] ${diagnostic.code}: ${diagnostic.message}`;
+  return `${example.sourceFile}:${diagnostic.sourceLine}:${diagnostic.column} [fence ${displayFence(example)}] ${diagnostic.code}: ${diagnostic.message}`;
 }
 
 function fingerprintDiagnostics(diagnostics) {
@@ -432,9 +530,7 @@ function fingerprintDiagnostics(diagnostics) {
         fingerprint: `${base}#${occurrence}`,
       };
     })
-    .sort((left, right) =>
-      left.fingerprint.localeCompare(right.fingerprint),
-    );
+    .sort((left, right) => left.fingerprint.localeCompare(right.fingerprint));
 }
 
 function groupDiagnosticsByFence(diagnostics) {
@@ -448,6 +544,45 @@ function groupDiagnosticsByFence(diagnostics) {
   }
 
   return diagnosticsByFence;
+}
+
+function resolveKnownFailing(config, examples) {
+  const examplesById = new Map(
+    examples.map((example) => [example.id, example]),
+  );
+  const resolvedByOriginalId = new Map();
+  const knownFailing = config.knownFailing.map((entry) => {
+    const example = examplesById.get(entry.id);
+    const resolved = {
+      ...entry,
+      id: example ? example.id : entry.id,
+      example,
+    };
+    resolvedByOriginalId.set(entry.id, resolved);
+    return resolved;
+  });
+
+  const resolvedIds = new Set();
+  for (const entry of knownFailing) {
+    if (resolvedIds.has(entry.id)) {
+      throw new Error(
+        `Multiple knownFailing entries resolve to the same fence: ${formatRatchetEntry(entry)}`,
+      );
+    }
+    resolvedIds.add(entry.id);
+  }
+
+  const knownFailingGroups = config.knownFailingGroups.map((group) => ({
+    ...group,
+    entries: group.ids.map((id) => resolvedByOriginalId.get(id)),
+  }));
+
+  return { knownFailing, knownFailingGroups };
+}
+
+function formatRatchetEntry(entry) {
+  if (entry.example) return displayFence(entry.example);
+  return `${entry.file} [content ${entry.contentHash}, ordinal ${entry.ordinal} not found]`;
 }
 
 function compareRatchet(diagnostics, knownFailing) {
@@ -486,14 +621,47 @@ function printRatchetMismatches(mismatches, logger = console.error) {
 
   logger('  Ratcheted fence fingerprint mismatches:');
   for (const mismatch of mismatches) {
-    logger(`    ${mismatch.entry.id}: ${mismatch.entry.reason}`);
+    logger(
+      `    ${formatRatchetEntry(mismatch.entry)}: ${mismatch.entry.reason}`,
+    );
     for (const item of mismatch.added) {
-      logger(`      NEW ${item.fingerprint}: ${formatDiagnostic(item.diagnostic)}`);
+      logger(
+        `      NEW ${item.fingerprint}: ${formatDiagnostic(item.diagnostic)}`,
+      );
     }
     for (const fingerprint of mismatch.missing) {
       logger(`      MISSING ${fingerprint}`);
     }
   }
+}
+
+function readFixtureRatchets(filename) {
+  const fixture = JSON.parse(
+    fs.readFileSync(path.join(FIXTURES_DIR, filename), 'utf8'),
+  );
+  const fences = fixture.fences || [fixture];
+
+  return fences.map((fence) => {
+    const ordinal = fence.ordinal || 1;
+    return {
+      id: fenceIdentity(fixture.file, fence.contentHash, ordinal),
+      file: fixture.file,
+      contentHash: fence.contentHash,
+      ordinal,
+      fingerprints: fence.fingerprints,
+      reason: fixture.reason,
+    };
+  });
+}
+
+function attachExamples(entries, examples) {
+  const examplesById = new Map(
+    examples.map((example) => [example.id, example]),
+  );
+  return entries.map((entry) => ({
+    ...entry,
+    example: examplesById.get(entry.id),
+  }));
 }
 
 function runSelfTest(config) {
@@ -504,9 +672,6 @@ function runSelfTest(config) {
     config.skipComment,
   );
   const result = typecheckExamples(examples);
-  const fixtureRatchet = JSON.parse(
-    fs.readFileSync(path.join(FIXTURES_DIR, 'ratcheted.json'), 'utf8'),
-  );
   const good = examples.find((example) =>
     example.sourceFile.endsWith('/good.md'),
   );
@@ -519,15 +684,33 @@ function runSelfTest(config) {
   const ratcheted = examples.find((example) =>
     example.sourceFile.endsWith('/ratcheted.md'),
   );
+  const duplicates = examples.filter((example) =>
+    example.sourceFile.endsWith('/duplicate.md'),
+  );
+  const fixtureRatchet = attachExamples(
+    readFixtureRatchets('ratcheted.json'),
+    examples,
+  )[0];
+  const duplicateRatchets = attachExamples(
+    readFixtureRatchets('duplicate.json'),
+    examples,
+  );
 
-  if (!good || !bad || !ratcheted || skipped || examples.length !== 3) {
+  if (
+    !good ||
+    !bad ||
+    !ratcheted ||
+    skipped ||
+    duplicates.length !== 2 ||
+    examples.length !== 5
+  ) {
     throw new Error(
-      `Expected good.md, bad.md, and ratcheted.md only; extracted ${examples.length}`,
+      `Expected good.md, bad.md, ratcheted.md, and two duplicate.md fences only; extracted ${examples.length}`,
     );
   }
   if (
-    coverage.found !== 4 ||
-    coverage.extracted !== 3 ||
+    coverage.found !== 6 ||
+    coverage.extracted !== 5 ||
     coverage.excludedByCriterion !== 0 ||
     coverage.skippedByAnnotation !== 1
   ) {
@@ -545,6 +728,9 @@ function runSelfTest(config) {
     .join('\n');
   const ratchetedDiagnostics = result.diagnostics.filter(
     (diagnostic) => diagnostic.example.id === ratcheted.id,
+  );
+  const duplicateDiagnostics = result.diagnostics.filter((diagnostic) =>
+    duplicates.some((example) => example.id === diagnostic.example.id),
   );
 
   if (goodDiagnostics.length > 0) {
@@ -574,7 +760,9 @@ function runSelfTest(config) {
     baseline.unexpectedDiagnostics.length > 0 ||
     baseline.mismatches.length > 0
   ) {
-    throw new Error('Ratcheted fixture does not match its fingerprint baseline');
+    throw new Error(
+      'Ratcheted fixture does not match its fingerprint baseline',
+    );
   }
 
   const disappearedComparison = compareRatchet([], [fixtureRatchet]);
@@ -590,37 +778,101 @@ function runSelfTest(config) {
     );
   }
 
-  const injectedExample = {
-    ...ratcheted,
-    code: `${ratcheted.code}\n\nconst injectedRegression: string = 123;\nvoid injectedRegression;`,
-  };
-  const injectedResult = typecheckExamples([injectedExample]);
-  const injectedComparison = compareRatchet(injectedResult.diagnostics, [
-    fixtureRatchet,
-  ]);
-  const injectedMismatch = injectedComparison.mismatches[0];
+  const ratchetedSource = fs.readFileSync(
+    path.join(FIXTURES_DIR, 'ratcheted.md'),
+    'utf8',
+  );
+  const movedExtraction = extractExamplesFromSource(
+    ratcheted.sourceFile,
+    `Moved fixture heading\n\n\n${ratchetedSource}`,
+    config.skipComment,
+  );
+  const moved = movedExtraction.examples[0];
+  const movedResult = typecheckExamples([moved]);
+  const movedComparison = compareRatchet(
+    movedResult.diagnostics,
+    attachExamples([fixtureRatchet], [moved]),
+  );
 
   if (
-    injectedResult.unparsed.length > 0 ||
-    injectedComparison.unexpectedDiagnostics.length > 0 ||
-    injectedComparison.mismatches.length !== 1 ||
-    injectedMismatch.added.length !== 1 ||
-    injectedMismatch.missing.length !== 0 ||
-    injectedMismatch.added[0].diagnostic.code !== 'TS2322'
+    !moved ||
+    moved.id !== ratcheted.id ||
+    moved.fenceLine === ratcheted.fenceLine ||
+    movedResult.unparsed.length > 0 ||
+    movedComparison.unexpectedDiagnostics.length > 0 ||
+    movedComparison.mismatches.length > 0
   ) {
     throw new Error(
-      'Ratcheted-fence regression fixture did not reject exactly the injected diagnostic',
+      'Moved-but-unchanged fixture did not validate against its existing content identity',
+    );
+  }
+
+  const changedSource = ratchetedSource.replace(
+    'void createMultivault;',
+    'void createMultivault; // content changed',
+  );
+  const changedExtraction = extractExamplesFromSource(
+    ratcheted.sourceFile,
+    changedSource,
+    config.skipComment,
+  );
+  const changed = changedExtraction.examples[0];
+  const changedResult = typecheckExamples([changed]);
+  const changedComparison = compareRatchet(changedResult.diagnostics, [
+    fixtureRatchet,
+  ]);
+  const changedMismatch = changedComparison.mismatches[0];
+
+  if (
+    !changed ||
+    changed.id === ratcheted.id ||
+    changedResult.unparsed.length > 0 ||
+    changedComparison.unexpectedDiagnostics.length !== 1 ||
+    changedComparison.mismatches.length !== 1 ||
+    changedMismatch.added.length !== 0 ||
+    changedMismatch.missing.length !== 1
+  ) {
+    throw new Error(
+      'Content-changed fixture did not fail as a new identity plus a missing old identity',
+    );
+  }
+
+  const duplicateComparison = compareRatchet(
+    duplicateDiagnostics,
+    duplicateRatchets,
+  );
+  if (
+    duplicates[0].contentHash !== duplicates[1].contentHash ||
+    duplicates[0].contentOrdinal !== 1 ||
+    duplicates[1].contentOrdinal !== 2 ||
+    duplicates.some((example) => example.duplicateCount !== 2) ||
+    duplicates[0].id === duplicates[1].id ||
+    duplicateComparison.unexpectedDiagnostics.length > 0 ||
+    duplicateComparison.mismatches.length > 0 ||
+    duplicateComparison.diagnosticsByFence.size !== 2
+  ) {
+    throw new Error(
+      'Duplicate-fence fixture did not assign and validate distinct document-order ordinals',
     );
   }
 
   console.log(`  ${formatCoverage(coverage)}`);
-  console.log(`  PASS known-good fixture: ${good.id}`);
+  console.log(`  PASS known-good fixture: ${displayFence(good)}`);
   console.log('  PASS immediately-preceding skip comment excluded skipped.md');
   console.log(
-    `  PASS TSX ratchet baseline matched ${ratchetedDiagnostics.length} expected diagnostic fingerprint: ${fixtureRatchet.id}`,
+    `  PASS TSX ratchet baseline matched ${ratchetedDiagnostics.length} expected diagnostic fingerprint: ${displayFence(ratcheted)}`,
   );
   console.log(
     '  PASS ratcheted-fence disappearance: missing expected fingerprint was rejected.',
+  );
+  console.log(
+    `  PASS moved-but-unchanged: fence shifted from L${ratcheted.fenceLine} to L${moved.fenceLine} with content identity unchanged; validation PASS with NO ratchet update needed.`,
+  );
+  console.log(
+    `  PASS content-changed: edited line at ${displayFence(changed)} changed the content identity; validation FAIL with 1 new-unratcheted diagnostic and 1 missing old ratchet entry (add+remove pair).`,
+  );
+  console.log(
+    `  PASS duplicate-fence ordinals: identical failing fences at L${duplicates[0].fenceLine} and L${duplicates[1].fenceLine} received ordinals 1 and 2; both ratcheted and validation PASS.`,
   );
   console.log(
     `  PASS known-bad fixture failed with ${badDiagnostics.length} diagnostics:`,
@@ -629,26 +881,27 @@ function runSelfTest(config) {
     console.log(`    ${formatDiagnostic(diagnostic)}`);
   }
   console.log(
-    '  PASS ratcheted-fence-regression: injected bad line produced a fingerprint mismatch (validator outcome: FAIL as expected):',
-  );
-  console.log(
-    `    NEW ${injectedMismatch.added[0].fingerprint}: ${formatDiagnostic(injectedMismatch.added[0].diagnostic)}`,
-  );
-  console.log(
-    'Self-test PASS: good passed; known-bad failed; TSX extracted; ratcheted regression rejected.\n',
+    'Self-test PASS: good passed; known-bad failed; TSX extracted; moved content stayed ratcheted; edited content failed; duplicate ordinals validated.\n',
   );
 }
 
 function runRatchetedRegressionDemo(config) {
   console.log('SDK examples ratcheted regression demonstration');
-  const fixtureFiles = walkMarkdownFiles(FIXTURES_DIR).sort();
-  const { examples } = extractExamples(fixtureFiles, config.skipComment);
-  const ratcheted = examples.find((example) =>
-    example.sourceFile.endsWith('/ratcheted.md'),
+  const sourceFile = 'scripts/__fixtures__/sdk-examples/ratcheted.md';
+  const source = fs.readFileSync(
+    path.join(FIXTURES_DIR, 'ratcheted.md'),
+    'utf8',
   );
-  const fixtureRatchet = JSON.parse(
-    fs.readFileSync(path.join(FIXTURES_DIR, 'ratcheted.json'), 'utf8'),
+  const { examples } = extractExamplesFromSource(
+    sourceFile,
+    source,
+    config.skipComment,
   );
+  const ratcheted = examples[0];
+  const fixtureRatchet = attachExamples(
+    readFixtureRatchets('ratcheted.json'),
+    examples,
+  )[0];
 
   if (!ratcheted) {
     throw new Error('Ratcheted regression fixture was not extracted');
@@ -664,25 +917,38 @@ function runRatchetedRegressionDemo(config) {
     throw new Error('Ratcheted regression fixture baseline did not match');
   }
   console.log(
-    `  Baseline PASS: ${fixtureRatchet.id} matched its expected fingerprint set.`,
+    `  Baseline PASS: ${displayFence(ratcheted)} matched its expected fingerprint set.`,
   );
 
-  const injectedResult = typecheckExamples([
-    {
-      ...ratcheted,
-      code: `${ratcheted.code}\n\nconst injectedRegression: string = 123;\nvoid injectedRegression;`,
-    },
-  ]);
-  const injectedComparison = compareRatchet(injectedResult.diagnostics, [
+  const changedSource = source.replace(
+    'void createMultivault;',
+    'void createMultivault; // content changed',
+  );
+  const changed = extractExamplesFromSource(
+    sourceFile,
+    changedSource,
+    config.skipComment,
+  ).examples[0];
+  const changedResult = typecheckExamples([changed]);
+  const changedComparison = compareRatchet(changedResult.diagnostics, [
     fixtureRatchet,
   ]);
 
-  printRatchetMismatches(injectedComparison.mismatches);
-  if (injectedComparison.mismatches.length === 0) {
-    throw new Error('Injected ratcheted-fence regression incorrectly passed');
+  if (changedComparison.unexpectedDiagnostics.length > 0) {
+    console.error('  NEW unratcheted failures:');
+    for (const diagnostic of changedComparison.unexpectedDiagnostics) {
+      console.error(`    ${formatDiagnostic(diagnostic)}`);
+    }
+  }
+  printRatchetMismatches(changedComparison.mismatches);
+  if (
+    changedComparison.unexpectedDiagnostics.length === 0 ||
+    changedComparison.mismatches.length === 0
+  ) {
+    throw new Error('Content-edited ratcheted fence incorrectly passed');
   }
   throw new Error(
-    'Validation FAIL (expected demonstration): an injected diagnostic changed the ratcheted fence fingerprint set',
+    'Validation FAIL (expected demonstration): edited fence content produced the required new-identity plus old-identity add+remove pair',
   );
 }
 
@@ -691,10 +957,11 @@ function runRealDocs(config) {
   const files = expandIncludes(config.include);
   const { examples, coverage } = extractExamples(files, config.skipComment);
   const result = typecheckExamples(examples);
+  const resolved = resolveKnownFailing(config, examples);
   const ratchet = new Map(
-    config.knownFailing.map((entry) => [entry.id, entry]),
+    resolved.knownFailing.map((entry) => [entry.id, entry]),
   );
-  const comparison = compareRatchet(result.diagnostics, config.knownFailing);
+  const comparison = compareRatchet(result.diagnostics, resolved.knownFailing);
   const { diagnosticsByFence, unexpectedDiagnostics, mismatches } = comparison;
 
   const expectedDiagnostics = result.diagnostics.filter((diagnostic) =>
@@ -708,15 +975,17 @@ function runRealDocs(config) {
     console.log(
       `  Expected ratcheted failures (${diagnosticsByFence.size - new Set(unexpectedDiagnostics.map((diagnostic) => diagnostic.example.id)).size} fences, ${expectedDiagnostics.length} diagnostics):`,
     );
-    for (const group of config.knownFailingGroups) {
-      const diagnostics = group.ids.flatMap(
-        (id) => diagnosticsByFence.get(id) || [],
+    for (const group of resolved.knownFailingGroups) {
+      const diagnostics = group.entries.flatMap(
+        (entry) => diagnosticsByFence.get(entry.id) || [],
       );
       if (diagnostics.length === 0) continue;
       console.log(
-        `    ${group.label}: ${group.ids.length} fence${group.ids.length === 1 ? '' : 's'}, ${diagnostics.length} diagnostic${diagnostics.length === 1 ? '' : 's'} — ${group.reason}`,
+        `    ${group.label}: ${group.entries.length} fence${group.entries.length === 1 ? '' : 's'}, ${diagnostics.length} diagnostic${diagnostics.length === 1 ? '' : 's'} — ${group.reason}`,
       );
-      console.log(`      Fences: ${group.ids.join(', ')}`);
+      console.log(
+        `      Fences: ${group.entries.map(formatRatchetEntry).join(', ')}`,
+      );
       console.log(`      Representative: ${formatDiagnostic(diagnostics[0])}`);
     }
   }
@@ -750,7 +1019,7 @@ function runRealDocs(config) {
   }
 
   console.log(
-    `Validation PASS: ${examples.length} fences checked; ${expectedDiagnostics.length} known diagnostics match the fingerprint ratchet; 0 new diagnostics; 0 missing diagnostics.\n`,
+    `Validation PASS: ${examples.length} fences checked; ${resolved.knownFailing.length} ratcheted fences across ${resolved.knownFailingGroups.length} files; ${expectedDiagnostics.length} known diagnostics match the fingerprint ratchet; 0 new diagnostics; 0 missing diagnostics.\n`,
   );
 }
 
@@ -759,12 +1028,13 @@ function updateRatchet(config) {
   const files = expandIncludes(config.include);
   const { examples, coverage } = extractExamples(files, config.skipComment);
   const result = typecheckExamples(examples);
-  const ratchetIds = new Set(config.knownFailing.map((entry) => entry.id));
+  const resolved = resolveKnownFailing(config, examples);
+  const ratchetIds = new Set(resolved.knownFailing.map((entry) => entry.id));
   const diagnosticsByFence = groupDiagnosticsByFence(result.diagnostics);
   const unexpectedDiagnostics = result.diagnostics.filter(
     (diagnostic) => !ratchetIds.has(diagnostic.example.id),
   );
-  const cleanEntries = config.knownFailing.filter(
+  const cleanEntries = resolved.knownFailing.filter(
     (entry) => !diagnosticsByFence.has(entry.id),
   );
 
@@ -782,7 +1052,7 @@ function updateRatchet(config) {
   if (cleanEntries.length > 0) {
     console.error('  Ratchet entries with no diagnostics:');
     for (const entry of cleanEntries) {
-      console.error(`    ${entry.id}: ${entry.reason}`);
+      console.error(`    ${formatRatchetEntry(entry)}: ${entry.reason}`);
     }
   }
   if (result.unparsed.length > 0) {
@@ -796,43 +1066,42 @@ function updateRatchet(config) {
     result.unparsed.length > 0 ||
     (result.status !== 0 && result.diagnostics.length === 0)
   ) {
+    console.error(
+      '  A content-edited ratcheted fence intentionally produces this add+remove pair: a new-unratcheted failure and an old ratchet entry with no diagnostics.',
+    );
     throw new Error(
       'Ratchet update refused: fix unratcheted failures and remove now-clean fence entries first.',
     );
   }
 
-  const updatedKnownFailing = config.sourceConfig.knownFailing.map((entry) => {
-    if (typeof entry.id === 'string') {
-      return {
-        ...entry,
-        fingerprints: fingerprintDiagnostics(
-          diagnosticsByFence.get(entry.id) || [],
-        ).map((item) => item.fingerprint),
-      };
-    }
-
+  const updatedKnownFailing = resolved.knownFailingGroups.map((group) => {
     return {
-      ...entry,
-      fences: entry.fences.map((fence) => {
-        const line = Number.isInteger(fence) ? fence : fence.line;
-        const id = `${entry.file}#L${line}`;
-        return {
-          line,
-          fingerprints: fingerprintDiagnostics(
-            diagnosticsByFence.get(id) || [],
-          ).map((item) => item.fingerprint),
+      file: group.label,
+      fences: group.entries.map((entry) => {
+        const fence = {
+          contentHash: entry.example.contentHash,
         };
+        if (entry.example.duplicateCount > 1) {
+          fence.ordinal = entry.example.contentOrdinal;
+        }
+        fence.fingerprints = fingerprintDiagnostics(
+          diagnosticsByFence.get(entry.id) || [],
+        ).map((item) => item.fingerprint);
+        return fence;
       }),
+      reason: group.reason,
     };
   });
   const updatedConfig = {
     ...config.sourceConfig,
+    ratchetPolicy:
+      'knownFailing groups exact source fence content by file and records the expected diagnostic fingerprint set for each fence. Fence identity uses a truncated SHA-256 content hash plus a document-order ordinal only for identical-content fences in the same file; source line numbers are display-only. Every listed fence is still typechecked. Any added or missing fingerprint fails CI; use --update-ratchet locally for a deliberate baseline refresh, and shrink the fence list when documentation fixes or docs-typecheck skip annotations merge.',
     knownFailing: updatedKnownFailing,
   };
 
   fs.writeFileSync(CONFIG_PATH, `${JSON.stringify(updatedConfig, null, 2)}\n`);
   console.log(
-    `Ratchet update PASS: wrote ${config.knownFailing.length} fence baselines with ${result.diagnostics.length} diagnostic fingerprints to ${path.relative(ROOT, CONFIG_PATH)}.\n`,
+    `Ratchet update PASS: wrote ${resolved.knownFailing.length} content-keyed fence baselines across ${resolved.knownFailingGroups.length} files with ${result.diagnostics.length} diagnostic fingerprints to ${path.relative(ROOT, CONFIG_PATH)}.\n`,
   );
 }
 

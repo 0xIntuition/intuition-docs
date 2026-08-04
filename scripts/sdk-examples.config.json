@@ -6,21 +6,21 @@
   "skipComment": "<!-- docs-typecheck: skip -->",
   "skipConvention": "Place the skip comment on the line immediately before an intentional partial or pseudocode TypeScript fence.",
   "coverageLimitation": "Import-less partial fences are outside the type-check gate and rely on manual content review.",
-  "ratchetPolicy": "knownFailing groups exact source fence lines by file and records the expected diagnostic fingerprint set for each fence. Every listed fence is still typechecked. Any added or missing fingerprint fails CI; use --update-ratchet locally for a deliberate baseline refresh, and shrink the fence list when documentation fixes or docs-typecheck skip annotations merge.",
+  "ratchetPolicy": "knownFailing groups exact source fence content by file and records the expected diagnostic fingerprint set for each fence. Fence identity uses a truncated SHA-256 content hash plus a document-order ordinal only for identical-content fences in the same file; source line numbers are display-only. Every listed fence is still typechecked. Any added or missing fingerprint fails CI; use --update-ratchet locally for a deliberate baseline refresh, and shrink the fence list when documentation fixes or docs-typecheck skip annotations merge.",
   "fingerprintFormat": "Each fingerprint is the TypeScript error code plus a SHA-256 hash of its position-independent diagnostic message and a same-message occurrence ordinal.",
   "knownFailing": [
     {
       "file": "docs/_data/intuition-sdk/atoms-guide.md",
       "fences": [
         {
-          "line": 147,
+          "contentHash": "30be8b9c9624e441",
           "fingerprints": [
             "TS2304:bff2858a82ef013493213f13bf052dd0c25861d0fee913bff4823c75805c9256#1",
             "TS2345:38f2f4f16e38c98fb1ee47b35f5870fa114a06f850d2140711fbab3449ea86ce#1"
           ]
         },
         {
-          "line": 197,
+          "contentHash": "331731c011bc0d06",
           "fingerprints": [
             "TS18004:184a1f056dbaa8f67561821c22c5fd1717c9e245c7a9fe16098f1891b3dac0b3#1",
             "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
@@ -28,7 +28,7 @@
           ]
         },
         {
-          "line": 281,
+          "contentHash": "4f7362414bf3dc5e",
           "fingerprints": [
             "TS18004:184a1f056dbaa8f67561821c22c5fd1717c9e245c7a9fe16098f1891b3dac0b3#1",
             "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
@@ -36,7 +36,7 @@
           ]
         },
         {
-          "line": 351,
+          "contentHash": "08622218d5a8987c",
           "fingerprints": [
             "TS18004:184a1f056dbaa8f67561821c22c5fd1717c9e245c7a9fe16098f1891b3dac0b3#1",
             "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
@@ -45,7 +45,7 @@
           ]
         },
         {
-          "line": 408,
+          "contentHash": "26f3997e9845788e",
           "fingerprints": [
             "TS18004:184a1f056dbaa8f67561821c22c5fd1717c9e245c7a9fe16098f1891b3dac0b3#1",
             "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
@@ -53,7 +53,7 @@
           ]
         },
         {
-          "line": 441,
+          "contentHash": "2e8d233895df885b",
           "fingerprints": [
             "TS18004:184a1f056dbaa8f67561821c22c5fd1717c9e245c7a9fe16098f1891b3dac0b3#1",
             "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
@@ -61,7 +61,7 @@
           ]
         },
         {
-          "line": 479,
+          "contentHash": "3831f5d695b18298",
           "fingerprints": [
             "TS18004:184a1f056dbaa8f67561821c22c5fd1717c9e245c7a9fe16098f1891b3dac0b3#1",
             "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
@@ -70,14 +70,14 @@
           ]
         },
         {
-          "line": 563,
+          "contentHash": "c9b695da35af7af4",
           "fingerprints": [
             "TS2345:2618859d7efc9268fb55655ece2af8351c9dd8a0630b6b34ea4077b5e10766b3#1",
             "TS2345:38f2f4f16e38c98fb1ee47b35f5870fa114a06f850d2140711fbab3449ea86ce#1"
           ]
         },
         {
-          "line": 585,
+          "contentHash": "caeaa9a236f9a1b8",
           "fingerprints": [
             "TS2304:bff2858a82ef013493213f13bf052dd0c25861d0fee913bff4823c75805c9256#1",
             "TS2345:8b1eb723a1e6bd01b45a92ea8202c3906801d60e67c8b92c44b1e17a0c13f070#1"
@@ -90,7 +90,7 @@
       "file": "docs/_data/intuition-sdk/examples/batch-ethereum-accounts.md",
       "fences": [
         {
-          "line": 15,
+          "contentHash": "49569086f4d5a5e7",
           "fingerprints": [
             "TS2345:1fdc628ab8134af864e2743ab357ce20c3e4f21a840f76244cd5b47243ad6284#1"
           ]
@@ -102,7 +102,7 @@
       "file": "docs/_data/intuition-sdk/examples/bulk-sync-cost-estimation.md",
       "fences": [
         {
-          "line": 15,
+          "contentHash": "50c321fc3c64134a",
           "fingerprints": [
             "TS2339:28df7799cead362e4d54390373c85e3ba3d19dee282874bf408ef295413d0756#1",
             "TS2339:43ac1ffefa70a804d4046416d2b8098c98cbb15fe57c54588060fb7f74b24ff4#1",
@@ -127,7 +127,7 @@
       "file": "docs/_data/intuition-sdk/examples/deposit-into-vault.md",
       "fences": [
         {
-          "line": 15,
+          "contentHash": "b51057b8e7f8d3ee",
           "fingerprints": [
             "TS2322:854ebea312e45833464c3443d55d92314ebff53a5402f8a07044ca0077c78518#1",
             "TS2322:854ebea312e45833464c3443d55d92314ebff53a5402f8a07044ca0077c78518#2",
@@ -142,7 +142,7 @@
       "file": "docs/_data/intuition-sdk/examples/find-existing-entities.md",
       "fences": [
         {
-          "line": 17,
+          "contentHash": "9402b4d4b3512adb",
           "fingerprints": [
             "TS2345:6943db3cefa57a72ef194c5f0f1c28504fdd43be4832c3eae8bb99e223169058#1"
           ]
@@ -154,7 +154,7 @@
       "file": "docs/_data/intuition-sdk/installation-and-setup.md",
       "fences": [
         {
-          "line": 151,
+          "contentHash": "9dd807a598f68abd",
           "fingerprints": [
             "TS18004:184a1f056dbaa8f67561821c22c5fd1717c9e245c7a9fe16098f1891b3dac0b3#1",
             "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
@@ -162,7 +162,7 @@
           ]
         },
         {
-          "line": 218,
+          "contentHash": "deb7350333aff9cd",
           "fingerprints": [
             "TS2304:3d9d3006a54313825544f2e40434565285086a081f661c8b3bcc883d8342d1bb#1",
             "TS2304:3d9d3006a54313825544f2e40434565285086a081f661c8b3bcc883d8342d1bb#2",
@@ -172,13 +172,13 @@
           ]
         },
         {
-          "line": 257,
+          "contentHash": "1803ca3843f598b6",
           "fingerprints": [
             "TS2339:ae3773e9f3f642f05d5d18ef4fc7eb7590a681fab18984896df5ba9d97532785#1"
           ]
         },
         {
-          "line": 418,
+          "contentHash": "e7d12bc97514b446",
           "fingerprints": [
             "TS18004:184a1f056dbaa8f67561821c22c5fd1717c9e245c7a9fe16098f1891b3dac0b3#1",
             "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
@@ -192,7 +192,7 @@
       "file": "docs/_data/intuition-sdk/integrations/pinata-ipfs.md",
       "fences": [
         {
-          "line": 78,
+          "contentHash": "cfe26e9611519505",
           "fingerprints": [
             "TS18004:184a1f056dbaa8f67561821c22c5fd1717c9e245c7a9fe16098f1891b3dac0b3#1",
             "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
@@ -200,7 +200,7 @@
           ]
         },
         {
-          "line": 194,
+          "contentHash": "1e8ed60539f1492f",
           "fingerprints": [
             "TS18046:bac87006155f9f3538d48704155ab3d2d0fda073e14f675bfdc8547f209b2861#1"
           ]
@@ -212,26 +212,26 @@
       "file": "docs/_data/intuition-sdk/integrations/react.md",
       "fences": [
         {
-          "line": 36,
+          "contentHash": "5fe47788b3bcfc96",
           "fingerprints": [
             "TS2307:9f684f546a73a553f388e71a9ae7bca50303e1d99cad59754601512a5fac3d30#1",
             "TS2307:c10ca036df7ba79ecc6b5b047055e6ab76bee1861c027793455869fc0f9b78e6#1"
           ]
         },
         {
-          "line": 75,
+          "contentHash": "e510bf511905d8d9",
           "fingerprints": [
             "TS2307:9f684f546a73a553f388e71a9ae7bca50303e1d99cad59754601512a5fac3d30#1"
           ]
         },
         {
-          "line": 133,
+          "contentHash": "a99a577e03ed2db1",
           "fingerprints": [
             "TS2307:9f684f546a73a553f388e71a9ae7bca50303e1d99cad59754601512a5fac3d30#1"
           ]
         },
         {
-          "line": 228,
+          "contentHash": "ee98b47b3f755774",
           "fingerprints": [
             "TS2307:9f684f546a73a553f388e71a9ae7bca50303e1d99cad59754601512a5fac3d30#1",
             "TS2339:ca1bdda15b7577aec68947a4dcde37642112cb31d539a4c89f12d5bfcdc42720#1"
@@ -244,19 +244,19 @@
       "file": "docs/_data/intuition-sdk/integrations/tanstack-query.md",
       "fences": [
         {
-          "line": 67,
+          "contentHash": "06af782b7da2665c",
           "fingerprints": [
             "TS2345:66f2b8235d9a9a67a84f0e32cd0ab3bac00767f42275170d207562638bb5753c#1"
           ]
         },
         {
-          "line": 90,
+          "contentHash": "b189e23ec8458f23",
           "fingerprints": [
             "TS2307:9f684f546a73a553f388e71a9ae7bca50303e1d99cad59754601512a5fac3d30#1"
           ]
         },
         {
-          "line": 132,
+          "contentHash": "99452c51ef51077a",
           "fingerprints": [
             "TS2307:9f684f546a73a553f388e71a9ae7bca50303e1d99cad59754601512a5fac3d30#1"
           ]
@@ -268,7 +268,7 @@
       "file": "docs/_data/intuition-sdk/migration-guide.mdx",
       "fences": [
         {
-          "line": 115,
+          "contentHash": "e5e3d485f7e2573d",
           "fingerprints": [
             "TS2304:3d9d3006a54313825544f2e40434565285086a081f661c8b3bcc883d8342d1bb#1",
             "TS2305:b13a261911cb7c23a70cd23e472a9d0a3a662b69ffbb0804fcfae2f1346e6a56#1",
@@ -276,7 +276,7 @@
           ]
         },
         {
-          "line": 234,
+          "contentHash": "5d0f4a28c190b6a5",
           "fingerprints": [
             "TS18004:30de6da6d9f559a560c7295758452b3521204662883ef851f1a5655d8cf99971#1",
             "TS2304:bff2858a82ef013493213f13bf052dd0c25861d0fee913bff4823c75805c9256#1",
@@ -289,7 +289,7 @@
           ]
         },
         {
-          "line": 253,
+          "contentHash": "37eb8c901507a5e3",
           "fingerprints": [
             "TS18004:30de6da6d9f559a560c7295758452b3521204662883ef851f1a5655d8cf99971#1",
             "TS2304:6b2a7af90e51937c4f32db84fb21abc9e532dbeebaedbafb83933b565712c568#1",
@@ -308,7 +308,7 @@
           ]
         },
         {
-          "line": 280,
+          "contentHash": "0a01ab4656bbe938",
           "fingerprints": [
             "TS18004:30de6da6d9f559a560c7295758452b3521204662883ef851f1a5655d8cf99971#1",
             "TS2304:092fabc9e26b171f990f4404cd887a4fc45a36823ebd12d48066d9876b667ab4#1",
@@ -325,7 +325,7 @@
           ]
         },
         {
-          "line": 298,
+          "contentHash": "fcd7d04d7d1e5a93",
           "fingerprints": [
             "TS18004:30de6da6d9f559a560c7295758452b3521204662883ef851f1a5655d8cf99971#1",
             "TS2304:261ed4df25d82b94d4dd05bf998198207a06e13c2d969e438800e1f0545fc217#1",
@@ -352,7 +352,7 @@
           ]
         },
         {
-          "line": 329,
+          "contentHash": "809ca3698d146e67",
           "fingerprints": [
             "TS18004:30de6da6d9f559a560c7295758452b3521204662883ef851f1a5655d8cf99971#1",
             "TS18004:30de6da6d9f559a560c7295758452b3521204662883ef851f1a5655d8cf99971#2",
@@ -381,7 +381,7 @@
           ]
         },
         {
-          "line": 350,
+          "contentHash": "fa875d20819ca510",
           "fingerprints": [
             "TS18004:30de6da6d9f559a560c7295758452b3521204662883ef851f1a5655d8cf99971#1",
             "TS2304:06835ca2a6e83e58ab8ba73fe6b42270606ca8b02b62aa8e37a6bf52d8b7ebc9#1",
@@ -408,7 +408,7 @@
           ]
         },
         {
-          "line": 374,
+          "contentHash": "69c33b21f324a6a5",
           "fingerprints": [
             "TS2305:7509755d20e5d2b836dc29034d8575f007c790c10d573e1a86e12ca69c06c8ca#1",
             "TS2305:9e93606532217b71a7007952f7e088203ecd1d98f4f6a022b649a88a48298c7b#1",
@@ -417,7 +417,7 @@
           ]
         },
         {
-          "line": 385,
+          "contentHash": "ee512ac08498d9bb",
           "fingerprints": [
             "TS2305:05f13bdac92d96b7156b5ce6f75a26250da4d41cd441e33f260f058e07a6f4f4#1",
             "TS2305:2bdd2a4397e04f7630afa9fafa5f1ecc165097982e9f4687e0608a32e2386bef#1",
@@ -426,7 +426,7 @@
           ]
         },
         {
-          "line": 398,
+          "contentHash": "25c5ba097051d58d",
           "fingerprints": [
             "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
             "TS18004:ac4f84b2017825bfd70eafdebc9cb6f9355e77358475577026b6637c30cb9de2#1",
@@ -434,7 +434,7 @@
           ]
         },
         {
-          "line": 406,
+          "contentHash": "d51aa7f47a240405",
           "fingerprints": [
             "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
             "TS18004:ac4f84b2017825bfd70eafdebc9cb6f9355e77358475577026b6637c30cb9de2#1",
@@ -442,7 +442,7 @@
           ]
         },
         {
-          "line": 416,
+          "contentHash": "17d2e20102a986b3",
           "fingerprints": [
             "TS18004:184a1f056dbaa8f67561821c22c5fd1717c9e245c7a9fe16098f1891b3dac0b3#1",
             "TS18004:ac4f84b2017825bfd70eafdebc9cb6f9355e77358475577026b6637c30cb9de2#1",
@@ -450,21 +450,21 @@
           ]
         },
         {
-          "line": 425,
+          "contentHash": "3e16659eff78a118",
           "fingerprints": [
             "TS2304:1e1124e156016e84d8a655a00c2def4a7503d0ff85a1c4b50bdb6acc62b398bd#1",
             "TS2304:faf11aba82a1a72f20548db0f0aa23ed16da78a43cacf82fee5c892839676f34#1"
           ]
         },
         {
-          "line": 515,
+          "contentHash": "a3421a9a603acb1e",
           "fingerprints": [
             "TS2305:8a78491e479f235bcd91a26cb78ef6fd459f718ebc6ee5a7dd260a65fb301d5b#1",
             "TS2305:9d0e3b0dfd70aae5d093bd9d7f231e2430cc98b2d95f4fbbf4f66b919f0e651c#1"
           ]
         },
         {
-          "line": 539,
+          "contentHash": "d8e458e622bf5aa9",
           "fingerprints": [
             "TS2304:5b9af3ed027d7f82f525917d64c3dfc293d67da598bd0bfbe5af31bca1458941#1",
             "TS2304:839fe35175bfe678773d86340eff802890d4cebb48f26fac65f3a10c5afc51d2#1",
@@ -474,7 +474,7 @@
           ]
         },
         {
-          "line": 550,
+          "contentHash": "5935479d87ff3444",
           "fingerprints": [
             "TS2304:5b9af3ed027d7f82f525917d64c3dfc293d67da598bd0bfbe5af31bca1458941#1",
             "TS2304:839fe35175bfe678773d86340eff802890d4cebb48f26fac65f3a10c5afc51d2#1",
@@ -489,13 +489,13 @@
       "file": "docs/_data/intuition-sdk/search-guide.md",
       "fences": [
         {
-          "line": 65,
+          "contentHash": "1a4e815e62503ed9",
           "fingerprints": [
             "TS2554:0d7f88caa9641107a48c1e7e16181950d9d374636b6c4d2f833dab296c63e034#1"
           ]
         },
         {
-          "line": 82,
+          "contentHash": "6053780361c8c2aa",
           "fingerprints": [
             "TS18049:374c7ecab5d8fd61ae600fcfa1ca291751c1a3b038fdab9397f9e5c296d4cbb1#1",
             "TS18049:5904503b0e4781475b8ce9134549c78496b80fe25c26ecbbc9059dda824c9d80#1",
@@ -504,7 +504,7 @@
           ]
         },
         {
-          "line": 243,
+          "contentHash": "d28fb72377d6c20d",
           "fingerprints": [
             "TS18047:0ac7f34d13f7175772b7427b7ad9ed7d947332c211a3c56cbcb9a71eb1f34e69#1",
             "TS18047:0ac7f34d13f7175772b7427b7ad9ed7d947332c211a3c56cbcb9a71eb1f34e69#2",
@@ -512,7 +512,7 @@
           ]
         },
         {
-          "line": 289,
+          "contentHash": "d2ae4d232f5ccbb8",
           "fingerprints": [
             "TS18047:0ac7f34d13f7175772b7427b7ad9ed7d947332c211a3c56cbcb9a71eb1f34e69#1",
             "TS18047:0ac7f34d13f7175772b7427b7ad9ed7d947332c211a3c56cbcb9a71eb1f34e69#2",
@@ -522,25 +522,25 @@
           ]
         },
         {
-          "line": 309,
+          "contentHash": "054e361c22a16f37",
           "fingerprints": [
             "TS2304:1e1124e156016e84d8a655a00c2def4a7503d0ff85a1c4b50bdb6acc62b398bd#1"
           ]
         },
         {
-          "line": 369,
+          "contentHash": "2664d682e3933e9c",
           "fingerprints": [
             "TS2304:bff2858a82ef013493213f13bf052dd0c25861d0fee913bff4823c75805c9256#1"
           ]
         },
         {
-          "line": 421,
+          "contentHash": "19319adc891effed",
           "fingerprints": [
             "TS2304:1e1124e156016e84d8a655a00c2def4a7503d0ff85a1c4b50bdb6acc62b398bd#1"
           ]
         },
         {
-          "line": 448,
+          "contentHash": "8af038848631c133",
           "fingerprints": [
             "TS2304:1e1124e156016e84d8a655a00c2def4a7503d0ff85a1c4b50bdb6acc62b398bd#1",
             "TS2304:a05d7e6c5ddafcb12f6867547a766863a9c4ad3addef3b218c92f1a5925d24f8#1",
@@ -556,14 +556,14 @@
       "file": "docs/_data/intuition-sdk/triples-guide.md",
       "fences": [
         {
-          "line": 40,
+          "contentHash": "c67f6d05aae5b85e",
           "fingerprints": [
             "TS2304:faf722e7c9aa72cfb0afd68610f4fa9c1c96b950aae11b7f6867ab2c65846e14#1",
             "TS2391:1f92c271d97dd32e2fb2035087417cae61e16c343aa07574309fb7ad57c7e476#1"
           ]
         },
         {
-          "line": 244,
+          "contentHash": "522bc5cf49f466b8",
           "fingerprints": [
             "TS2304:092fabc9e26b171f990f4404cd887a4fc45a36823ebd12d48066d9876b667ab4#1",
             "TS2304:a05d7e6c5ddafcb12f6867547a766863a9c4ad3addef3b218c92f1a5925d24f8#1",
@@ -575,13 +575,13 @@
           ]
         },
         {
-          "line": 287,
+          "contentHash": "1d9f24b95e5dcd08",
           "fingerprints": [
             "TS2391:1f92c271d97dd32e2fb2035087417cae61e16c343aa07574309fb7ad57c7e476#1"
           ]
         },
         {
-          "line": 362,
+          "contentHash": "5587b24f06661076",
           "fingerprints": [
             "TS2304:bff2858a82ef013493213f13bf052dd0c25861d0fee913bff4823c75805c9256#1",
             "TS2304:bff2858a82ef013493213f13bf052dd0c25861d0fee913bff4823c75805c9256#2",
@@ -602,7 +602,7 @@
           ]
         },
         {
-          "line": 487,
+          "contentHash": "f2f669c71da612e8",
           "fingerprints": [
             "TS2304:a05d7e6c5ddafcb12f6867547a766863a9c4ad3addef3b218c92f1a5925d24f8#1",
             "TS2304:a05d7e6c5ddafcb12f6867547a766863a9c4ad3addef3b218c92f1a5925d24f8#2",
@@ -610,7 +610,7 @@
           ]
         },
         {
-          "line": 550,
+          "contentHash": "5cfb5b6dc8f05ca5",
           "fingerprints": [
             "TS18048:5a2eb1b9a24d7af06d31d86251ed5bf15d1c58a5d754e9f576ed8396cbef469f#1",
             "TS18048:5a2eb1b9a24d7af06d31d86251ed5bf15d1c58a5d754e9f576ed8396cbef469f#2",
@@ -625,7 +625,7 @@
       "file": "docs/_data/intuition-sdk/vaults-guide.md",
       "fences": [
         {
-          "line": 58,
+          "contentHash": "bf705c482878a343",
           "fingerprints": [
             "TS18004:184a1f056dbaa8f67561821c22c5fd1717c9e245c7a9fe16098f1891b3dac0b3#1",
             "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
@@ -636,7 +636,7 @@
           ]
         },
         {
-          "line": 88,
+          "contentHash": "b029b876f1bbf414",
           "fingerprints": [
             "TS18004:184a1f056dbaa8f67561821c22c5fd1717c9e245c7a9fe16098f1891b3dac0b3#1",
             "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
@@ -656,7 +656,7 @@
           ]
         },
         {
-          "line": 158,
+          "contentHash": "b26d63cadaa234db",
           "fingerprints": [
             "TS18004:184a1f056dbaa8f67561821c22c5fd1717c9e245c7a9fe16098f1891b3dac0b3#1",
             "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
@@ -668,7 +668,7 @@
           ]
         },
         {
-          "line": 181,
+          "contentHash": "69d898dad6f063d1",
           "fingerprints": [
             "TS2304:1e1124e156016e84d8a655a00c2def4a7503d0ff85a1c4b50bdb6acc62b398bd#1",
             "TS2304:bff2858a82ef013493213f13bf052dd0c25861d0fee913bff4823c75805c9256#1",
@@ -677,14 +677,14 @@
           ]
         },
         {
-          "line": 198,
+          "contentHash": "fa9222208fde68df",
           "fingerprints": [
             "TS18048:5a2eb1b9a24d7af06d31d86251ed5bf15d1c58a5d754e9f576ed8396cbef469f#1",
             "TS2345:d6fc8b5d2b4f2a86d67aa98f56bccbbd5cb7bcb2e755371223b0b1cf03addffb#1"
           ]
         },
         {
-          "line": 226,
+          "contentHash": "c911314fcffbfa27",
           "fingerprints": [
             "TS2304:1e1124e156016e84d8a655a00c2def4a7503d0ff85a1c4b50bdb6acc62b398bd#1",
             "TS2304:bff2858a82ef013493213f13bf052dd0c25861d0fee913bff4823c75805c9256#1",
@@ -693,7 +693,8 @@
           ]
         },
         {
-          "line": 254,
+          "contentHash": "b09378c647f34342",
+          "ordinal": 1,
           "fingerprints": [
             "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
             "TS18004:ac4f84b2017825bfd70eafdebc9cb6f9355e77358475577026b6637c30cb9de2#1",
@@ -703,7 +704,7 @@
           ]
         },
         {
-          "line": 325,
+          "contentHash": "6fe88b71c10c901f",
           "fingerprints": [
             "TS18004:184a1f056dbaa8f67561821c22c5fd1717c9e245c7a9fe16098f1891b3dac0b3#1",
             "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
@@ -718,7 +719,7 @@
           ]
         },
         {
-          "line": 356,
+          "contentHash": "991092b7eff1bf45",
           "fingerprints": [
             "TS18004:184a1f056dbaa8f67561821c22c5fd1717c9e245c7a9fe16098f1891b3dac0b3#1",
             "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
@@ -734,7 +735,7 @@
           ]
         },
         {
-          "line": 419,
+          "contentHash": "1ee3c055d698cdd1",
           "fingerprints": [
             "TS18004:184a1f056dbaa8f67561821c22c5fd1717c9e245c7a9fe16098f1891b3dac0b3#1",
             "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
@@ -749,7 +750,7 @@
           ]
         },
         {
-          "line": 441,
+          "contentHash": "3e2b94f2ce8fdff2",
           "fingerprints": [
             "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
             "TS18004:ac4f84b2017825bfd70eafdebc9cb6f9355e77358475577026b6637c30cb9de2#1",
@@ -762,7 +763,7 @@
           ]
         },
         {
-          "line": 484,
+          "contentHash": "e39b975a03949b1c",
           "fingerprints": [
             "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
             "TS18004:ac4f84b2017825bfd70eafdebc9cb6f9355e77358475577026b6637c30cb9de2#1",
@@ -773,7 +774,8 @@
           ]
         },
         {
-          "line": 540,
+          "contentHash": "b09378c647f34342",
+          "ordinal": 2,
           "fingerprints": [
             "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
             "TS18004:ac4f84b2017825bfd70eafdebc9cb6f9355e77358475577026b6637c30cb9de2#1",
@@ -783,7 +785,7 @@
           ]
         },
         {
-          "line": 566,
+          "contentHash": "497db7c06f2b14fd",
           "fingerprints": [
             "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
             "TS18004:ac4f84b2017825bfd70eafdebc9cb6f9355e77358475577026b6637c30cb9de2#1",
@@ -794,7 +796,7 @@
           ]
         },
         {
-          "line": 593,
+          "contentHash": "746c96f8a3fdba24",
           "fingerprints": [
             "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
             "TS18004:ac4f84b2017825bfd70eafdebc9cb6f9355e77358475577026b6637c30cb9de2#1",
@@ -802,7 +804,7 @@
           ]
         },
         {
-          "line": 626,
+          "contentHash": "62e34bdf30d48090",
           "fingerprints": [
             "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
             "TS18004:ac4f84b2017825bfd70eafdebc9cb6f9355e77358475577026b6637c30cb9de2#1",
@@ -811,7 +813,7 @@
           ]
         },
         {
-          "line": 655,
+          "contentHash": "fc2d9a7b6289eabe",
           "fingerprints": [
             "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
             "TS18004:ac4f84b2017825bfd70eafdebc9cb6f9355e77358475577026b6637c30cb9de2#1",
@@ -821,7 +823,7 @@
           ]
         },
         {
-          "line": 673,
+          "contentHash": "d3bb62593104bbed",
           "fingerprints": [
             "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
             "TS18004:ac4f84b2017825bfd70eafdebc9cb6f9355e77358475577026b6637c30cb9de2#1",
@@ -836,7 +838,7 @@
           ]
         },
         {
-          "line": 700,
+          "contentHash": "1684dfb78949ae15",
           "fingerprints": [
             "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
             "TS18004:ac4f84b2017825bfd70eafdebc9cb6f9355e77358475577026b6637c30cb9de2#1",
@@ -854,13 +856,13 @@
       "file": "docs/_data/quick-start/using-the-sdk.md",
       "fences": [
         {
-          "line": 224,
+          "contentHash": "09e07972b7b57288",
           "fingerprints": [
             "TS2307:9f684f546a73a553f388e71a9ae7bca50303e1d99cad59754601512a5fac3d30#1"
           ]
         },
         {
-          "line": 252,
+          "contentHash": "56699f6fab1a6941",
           "fingerprints": [
             "TS18004:184a1f056dbaa8f67561821c22c5fd1717c9e245c7a9fe16098f1891b3dac0b3#1",
             "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
@@ -868,7 +870,7 @@
           ]
         },
         {
-          "line": 268,
+          "contentHash": "40b7f915ecb66ee3",
           "fingerprints": [
             "TS18004:184a1f056dbaa8f67561821c22c5fd1717c9e245c7a9fe16098f1891b3dac0b3#1",
             "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
@@ -877,7 +879,7 @@
           ]
         },
         {
-          "line": 333,
+          "contentHash": "f9594a45554e2f38",
           "fingerprints": [
             "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
             "TS18004:ac4f84b2017825bfd70eafdebc9cb6f9355e77358475577026b6637c30cb9de2#1",
@@ -886,7 +888,7 @@
           ]
         },
         {
-          "line": 351,
+          "contentHash": "c73a9d0b58811e44",
           "fingerprints": [
             "TS18004:184a1f056dbaa8f67561821c22c5fd1717c9e245c7a9fe16098f1891b3dac0b3#1",
             "TS18004:184a1f056dbaa8f67561821c22c5fd1717c9e245c7a9fe16098f1891b3dac0b3#2",
@@ -906,7 +908,7 @@
           ]
         },
         {
-          "line": 394,
+          "contentHash": "6b7be7eb48141d7b",
           "fingerprints": [
             "TS18004:184a1f056dbaa8f67561821c22c5fd1717c9e245c7a9fe16098f1891b3dac0b3#1",
             "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
@@ -919,7 +921,7 @@
           ]
         },
         {
-          "line": 415,
+          "contentHash": "731a755f43e5a087",
           "fingerprints": [
             "TS18004:184a1f056dbaa8f67561821c22c5fd1717c9e245c7a9fe16098f1891b3dac0b3#1",
             "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
@@ -932,7 +934,7 @@
           ]
         },
         {
-          "line": 438,
+          "contentHash": "a9439be8f00a11cc",
           "fingerprints": [
             "TS18004:184a1f056dbaa8f67561821c22c5fd1717c9e245c7a9fe16098f1891b3dac0b3#1",
             "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
@@ -943,14 +945,14 @@
           ]
         },
         {
-          "line": 452,
+          "contentHash": "0d173fd46b676a9c",
           "fingerprints": [
             "TS2305:40cae62fd0ddc8020b2b6d3f3418dd2a0dcf1ad33491e737252de36a36394a6d#1",
             "TS2307:9f684f546a73a553f388e71a9ae7bca50303e1d99cad59754601512a5fac3d30#1"
           ]
         },
         {
-          "line": 515,
+          "contentHash": "0c99344998cd8982",
           "fingerprints": [
             "TS18004:184a1f056dbaa8f67561821c22c5fd1717c9e245c7a9fe16098f1891b3dac0b3#1",
             "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
@@ -958,7 +960,7 @@
           ]
         },
         {
-          "line": 554,
+          "contentHash": "e7cd37ec2563f9cf",
           "fingerprints": [
             "TS18004:184a1f056dbaa8f67561821c22c5fd1717c9e245c7a9fe16098f1891b3dac0b3#1",
             "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
@@ -976,7 +978,7 @@
           ]
         },
         {
-          "line": 577,
+          "contentHash": "b6d29de1501eec70",
           "fingerprints": [
             "TS18004:184a1f056dbaa8f67561821c22c5fd1717c9e245c7a9fe16098f1891b3dac0b3#1",
             "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
