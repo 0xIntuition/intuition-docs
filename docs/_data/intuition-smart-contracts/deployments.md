@@ -69,14 +69,14 @@ The Intuition protocol contracts are deployed on both the Base Mainnet and the I
 ### Intuition Mainnet Configuration
 - **Chain ID**: 1155
 - **RPC URL**: `https://rpc.intuition.systems`
-- **WebSocket**: `wss://rpc.intuition.systems`
+- **WebSocket**: `wss://rpc.intuition.systems/ws`
 - **Explorer**: `https://explorer.intuition.systems/`
 - **Native Token**: $TRUST
 
 ### Intuition Testnet Configuration
 - **Chain ID**: 13579
 - **RPC URL**: `https://testnet.rpc.intuition.systems`
-- **WebSocket**: `wss://testnet.rpc.intuition.systems`
+- **WebSocket**: `wss://testnet.rpc.intuition.systems/ws`
 - **Explorer**: `https://testnet.explorer.intuition.systems/`
 - **Native Token**: $tTRUST
 
