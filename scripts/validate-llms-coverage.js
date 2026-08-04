@@ -18,7 +18,6 @@ const {
   BASE_URL,
   DOCS_DIR,
   getEligibleSections,
-  INDEX_DIRECTORY_HEADING,
   INDEX_DIRECTORY_INTRO,
   readCuratedIndexSource,
 } = require('./generate-llms-full');
@@ -32,7 +31,7 @@ const OMISSION_FIXTURE = path.join(
   'llms-coverage',
   'directory-with-omission.md',
 );
-const INDEX_DIRECTORY_MARKER = `\n${INDEX_DIRECTORY_HEADING}\n\n${INDEX_DIRECTORY_INTRO}\n\n`;
+const INDEX_DIRECTORY_MARKER = `\n${INDEX_DIRECTORY_INTRO}\n\n`;
 
 function sorted(values) {
   return [...values].sort();

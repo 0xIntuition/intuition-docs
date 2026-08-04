@@ -26,9 +26,10 @@ const DOCS_DIR = path.join(ROOT, 'docs', '_data');
 const STATIC_DIR = path.join(ROOT, 'static');
 const BASE_URL = 'https://docs.intuition.systems';
 const INDEX_SOURCE_PATH = path.join(__dirname, 'llms-index-source.md');
-const INDEX_DIRECTORY_HEADING = '## Optional';
+// The curated source already ends with an `## Optional` section, so the
+// directory is emitted inside it rather than under a second heading.
 const INDEX_DIRECTORY_INTRO =
-  'Complete directory: every documentation page, one line each.';
+  'Complete directory: every authored documentation page, one line each.';
 const ROUTE_EXCLUSION_LIST = Object.freeze({
   categoryShellBasenames: Object.freeze(['_category_.json']),
   internalDirectoryNames: Object.freeze(['_hidden', 'partials']),
@@ -761,7 +762,7 @@ function generateIndexTxt(sections) {
     .map((section) => `- [${section.title}](${section.url})`)
     .join('\n');
 
-  return `${curated}\n${INDEX_DIRECTORY_HEADING}\n\n${INDEX_DIRECTORY_INTRO}\n\n${directory}\n`;
+  return `${curated}\n${INDEX_DIRECTORY_INTRO}\n\n${directory}\n`;
 }
 
 function formatMetadataBlock({ title, description, url, lastUpdated }) {
@@ -919,7 +920,6 @@ function main() {
 module.exports = {
   BASE_URL,
   DOCS_DIR,
-  INDEX_DIRECTORY_HEADING,
   INDEX_DIRECTORY_INTRO,
   ROUTE_EXCLUSION_LIST,
   generateIndexTxt,

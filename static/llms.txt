@@ -68,9 +68,7 @@ Use the SDK for frontend/full-stack apps, GraphQL for read-heavy queries, Protoc
 - [Farcaster Frames](https://docs.intuition.systems/docs/experimental-applications/farcaster-frames): Build Intuition-powered Farcaster frames
 - [MetaMask Snap](https://docs.intuition.systems/docs/experimental-applications/metamask-snap): Intuition integration for MetaMask
 
-## Optional
-
-Complete directory: every documentation page, one line each.
+Complete directory: every authored documentation page, one line each.
 
 - [Introduction](https://docs.intuition.systems/docs)
 - [Contribution Guidelines](https://docs.intuition.systems/docs/contribution-guidelines)
