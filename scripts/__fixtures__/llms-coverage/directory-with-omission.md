@@ -2,6 +2,6 @@
 
 ## Optional
 
-Complete directory: every documentation page, one line each.
+Complete directory: every authored documentation page, one line each.
 
 - [Included Page](https://docs.intuition.systems/docs/fixture/included)
