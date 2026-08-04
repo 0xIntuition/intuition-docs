@@ -1,3 +1,7 @@
+# Delivery is PR-native because branch protection on main requires PRs, so direct pushes now fail with GH013.
+# Repeated runs force-update auto/llms-regeneration and reuse its open PR instead of creating a new branch and PR each time.
+# PRs created by the default GITHUB_TOKEN do not trigger other pull_request workflows; use a PAT or app token if gating CI must run automatically.
+# Plain git push plus gh keeps the fixed-branch convergence explicit without adding a third-party action dependency.
 name: Generate LLMs.txt Files
 
 on:
@@ -120,7 +124,7 @@ jobs:
             echo "changes=true" >> $GITHUB_OUTPUT
           fi
 
-      - name: Commit and push if changed
+      - name: Commit and force-update regeneration branch
         if: steps.check-changes.outputs.changes == 'true'
         run: |
           git config --local user.email "action@github.com"
@@ -130,4 +134,35 @@ jobs:
           Generated from documentation changes in commit ${{ github.sha }}
 
           Co-authored-by: GitHub Actions <action@github.com>"
-          git push
+          git push --force origin HEAD:auto/llms-regeneration
+
+      - name: Create regeneration PR if absent
+        id: ensure-pr
+        if: steps.check-changes.outputs.changes == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          pr_url="$(gh pr list \
+            --base main \
+            --head auto/llms-regeneration \
+            --state open \
+            --json url \
+            --jq '.[0].url')"
+
+          if [ -z "$pr_url" ]; then
+            pr_url="$(gh pr create \
+              --base main \
+              --head auto/llms-regeneration \
+              --title "🤖 Auto-update llms.txt files" \
+              --body "Automated regeneration of llms.txt files from documentation changes.")"
+          fi
+
+          echo "pr_url=$pr_url" >> "$GITHUB_OUTPUT"
+
+      - name: Attempt auto-merge
+        if: steps.check-changes.outputs.changes == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Auto-merge may be disabled or required checks may still be pending; either case should leave the PR for a human.
+          gh pr merge "${{ steps.ensure-pr.outputs.pr_url }}" --auto --squash || true
