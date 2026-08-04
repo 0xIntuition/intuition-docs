@@ -412,7 +412,7 @@ Fetch comprehensive triple details from the Intuition API.
 #### Function Signature
 
 ```typescript
-function getTripleDetails(tripleId: string): Promise<TripleDetails>
+function getTripleDetails(tripleId: string): Promise<TripleDetails | null>
 ```
 
 #### Parameters

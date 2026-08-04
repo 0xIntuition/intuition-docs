@@ -362,14 +362,16 @@ import {
   getMultiVaultAddressFromChainId,
 } from '@0xintuition/sdk';
 import type { WriteConfig } from '@0xintuition/sdk';
+import { API_URL_DEV } from '@0xintuition/graphql';
 import { createPublicClient, createWalletClient, http, fallback } from 'viem';
 import { privateKeyToAccount } from 'viem/accounts';
 
 // Account
 const account = privateKeyToAccount(process.env.PRIVATE_KEY as `0x${string}`);
 
-// Intuition pinning service
+// Pinning service + testnet reads (SDK reads default to mainnet otherwise)
 configureSdk({
+  apiUrl: API_URL_DEV,
   pinApiKey: process.env.INTUITION_PIN_API_KEY,
 });
 

@@ -452,8 +452,16 @@ console.log('Assets you will receive:', assetsToReceive)
 ```typescript
 import { useState } from 'react'
 import { useWalletClient, usePublicClient, useChainId } from 'wagmi'
-import { createAtomFromString, createTripleStatement } from '@0xintuition/sdk'
+import {
+  configureSdk,
+  createAtomFromString,
+  createTripleStatement,
+} from '@0xintuition/sdk'
+import { API_URL_DEV } from '@0xintuition/graphql'
 import { getMultiVaultAddressFromChainId, deposit } from '@0xintuition/protocol'
+
+// SDK reads default to mainnet; pair reads with the testnet write chain.
+configureSdk({ apiUrl: API_URL_DEV })
 
 function IntuitionQuickstart() {
   const chainId = useChainId()

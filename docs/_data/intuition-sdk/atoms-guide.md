@@ -528,7 +528,7 @@ Fetch comprehensive atom details from the Intuition API.
 #### Function Signature
 
 ```typescript
-function getAtomDetails(atomId: string): Promise<AtomDetails>;
+function getAtomDetails(atomId: string): Promise<AtomDetails | null>;
 ```
 
 #### Basic Example
