@@ -10,22 +10,28 @@ keywords: [sdk, example, atom, create, string, tutorial]
 
 This example demonstrates creating an atom from a plain text string, including setup, error handling, and querying the result.
 
+SDK reads default to the mainnet GraphQL API, so the example explicitly selects the testnet API to match its write chain. `createAtomFromString` fetches and forwards the required atom base cost; `additionalDeposit` is extra tTRUST signal, not the base cost.
+
 ## Complete Code
 
 ```typescript
 import {
+  configureSdk,
   intuitionTestnet,
   getMultiVaultAddressFromChainId,
   createAtomFromString,
   getAtomDetails,
   wait,
 } from '@0xintuition/sdk'
+import { API_URL_DEV } from '@0xintuition/graphql'
 import { createPublicClient, createWalletClient, http, parseEther, formatEther } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
 
 async function main() {
   // 1. Setup account and clients
   const account = privateKeyToAccount(process.env.PRIVATE_KEY as `0x${string}`)
+  // SDK reads default to mainnet; keep reads paired with the testnet write chain.
+  configureSdk({ apiUrl: API_URL_DEV })
 
   const publicClient = createPublicClient({
     chain: intuitionTestnet,
@@ -53,15 +59,15 @@ async function main() {
 
   // 3. Create atom
   const atomData = 'TypeScript'
-  const depositAmount = parseEther('0.01')
+  const additionalDeposit = parseEther('0.01')
 
   console.log(`\nCreating atom: "${atomData}"`)
-  console.log('Deposit:', formatEther(depositAmount), 'tTRUST')
+  console.log('Additional signal:', formatEther(additionalDeposit), 'tTRUST')
 
   const atom = await createAtomFromString(
     { walletClient, publicClient, address },
     atomData,
-    depositAmount
+    additionalDeposit
   )
 
   console.log('\n✓ Atom created successfully!')
@@ -80,13 +86,16 @@ async function main() {
   // 5. Query atom details
   console.log('Fetching atom details...')
   const details = await getAtomDetails(atom.state.termId)
+  if (!details) throw new Error('Created atom was not found on the testnet API')
+
+  const vault = details.term?.vaults[0]
 
   console.log('\n✓ Atom Details:')
   console.log('  Label:', details.label)
-  console.log('  Creator:', details.creator)
-  console.log('  Total Shares:', details.vault.totalShares)
-  console.log('  Share Price:', details.vault.currentSharePrice)
-  console.log('  Positions:', details.vault.positionCount)
+  console.log('  Creator:', details.creator?.label ?? details.creator_id)
+  console.log('  Total Shares:', vault?.total_shares)
+  console.log('  Share Price:', vault?.current_share_price)
+  console.log('  Positions:', vault?.position_count)
 
   console.log('\nSuccess!')
 }
@@ -117,7 +126,7 @@ Account: 0xYourAddress
 Balance: 10.5 tTRUST
 
 Creating atom: "TypeScript"
-Deposit: 0.01 tTRUST
+Additional signal: 0.01 tTRUST
 
 ✓ Atom created successfully!
   Atom ID: 0x1234567890abcdef...

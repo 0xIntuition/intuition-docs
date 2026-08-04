@@ -18,6 +18,17 @@ Install required dependencies:
 npm install wagmi viem @tanstack/react-query
 ```
 
+SDK read helpers use the mainnet GraphQL API by default. Because this guide configures Wagmi for Intuition Testnet, initialize the SDK read endpoint once during application startup:
+
+```typescript title="sdk-config.ts"
+import { configureSdk } from '@0xintuition/sdk'
+import { API_URL_DEV } from '@0xintuition/graphql'
+
+configureSdk({ apiUrl: API_URL_DEV })
+```
+
+Import this configuration module before components call SDK read helpers. Use `API_URL_PROD` when your Wagmi chains target `intuitionMainnet`.
+
 ## Wagmi Configuration
 
 Set up Wagmi provider in your app:
@@ -40,6 +51,7 @@ export const config = createConfig({
 import { WagmiProvider } from 'wagmi'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { config } from './wagmi-config'
+import './sdk-config'
 
 const queryClient = new QueryClient()
 
@@ -57,6 +69,8 @@ function App() {
 ## Creating Atoms
 
 Use SDK functions with Wagmi hooks:
+
+`createAtomFromString` fetches and forwards the required atom base cost. The optional amount in these examples is an additional TRUST/tTRUST deposit (signal).
 
 ```typescript title="CreateAtomButton.tsx"
 import { usePublicClient, useWalletClient, useChainId } from 'wagmi'
@@ -195,11 +209,13 @@ function AtomDisplay({ atomId }: { atomId: string }) {
   if (error) return <div>Error loading atom</div>
   if (!atom) return null
 
+  const vault = atom.term?.vaults[0]
+
   return (
     <div>
       <h3>{atom.label}</h3>
-      <p>Creator: {atom.creator}</p>
-      <p>Shares: {atom.vault.totalShares}</p>
+      <p>Creator: {atom.creator?.label ?? atom.creator_id}</p>
+      <p>Shares: {vault?.total_shares ?? 'Unavailable'}</p>
     </div>
   )
 }
@@ -213,6 +229,7 @@ Full-featured React component:
 import { useState } from 'react'
 import { useAccount, usePublicClient, useWalletClient, useChainId } from 'wagmi'
 import { useQuery, useMutation } from '@tanstack/react-query'
+import './sdk-config'
 import {
   createAtomFromString,
   getAtomDetails,

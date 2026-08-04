@@ -48,17 +48,22 @@ Create a new file and set up your Viem clients:
 
 ```typescript title="quickstart.ts"
 import {
+  configureSdk,
   intuitionTestnet,
   getMultiVaultAddressFromChainId,
   createAtomFromString,
   createTripleStatement,
   getAtomDetails,
 } from '@0xintuition/sdk'
+import { API_URL_DEV } from '@0xintuition/graphql'
 import { createPublicClient, createWalletClient, http, parseEther } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
 
 // Setup account and clients
 const account = privateKeyToAccount('0xYOUR_PRIVATE_KEY')
+
+// SDK reads default to mainnet; keep reads paired with the testnet write chain.
+configureSdk({ apiUrl: API_URL_DEV })
 
 const publicClient = createPublicClient({
   chain: intuitionTestnet,
@@ -74,6 +79,8 @@ const walletClient = createWalletClient({
 const address = getMultiVaultAddressFromChainId(intuitionTestnet.id)
 ```
 
+`configureSdk` controls the GraphQL endpoint used by SDK read helpers. Use `API_URL_PROD` instead when the Viem clients target `intuitionMainnet`.
+
 ## Step 2: Create Your First Atom
 
 Create an atom from a simple string:
@@ -83,7 +90,7 @@ Create an atom from a simple string:
 const atom = await createAtomFromString(
   { walletClient, publicClient, address },
   'TypeScript',
-  parseEther('0.01') // Optional: initial deposit of 0.01 TRUST
+  parseEther('0.01') // Optional: additional 0.01 tTRUST signal
 )
 
 console.log('Created atom!')
@@ -111,11 +118,14 @@ await new Promise(resolve => setTimeout(resolve, 2000))
 
 // Query atom details
 const details = await getAtomDetails(atom.state.termId)
+if (!details) throw new Error('Created atom was not found on the testnet API')
+
+const vault = details.term?.vaults[0]
 
 console.log('Atom Details:')
 console.log('- Label:', details.label)
-console.log('- Creator:', details.creator)
-console.log('- Vault Assets:', details.vault.totalShares)
+console.log('- Creator:', details.creator?.label ?? details.creator_id)
+console.log('- Vault Shares:', vault?.total_shares)
 ```
 
 ## Step 4: Create a Triple
@@ -154,7 +164,7 @@ const triple = await createTripleStatement(
 )
 
 console.log('Created triple!')
-console.log('Triple ID:', triple.state[0].args.tripleId)
+console.log('Triple ID:', triple.state[0].args.termId)
 console.log('Transaction:', triple.transactionHash)
 ```
 
@@ -164,18 +174,23 @@ Here's the complete quick start script:
 
 ```typescript title="quickstart.ts"
 import {
+  configureSdk,
   intuitionTestnet,
   getMultiVaultAddressFromChainId,
   createAtomFromString,
   createTripleStatement,
   getAtomDetails,
 } from '@0xintuition/sdk'
+import { API_URL_DEV } from '@0xintuition/graphql'
 import { createPublicClient, createWalletClient, http, parseEther } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
 
 async function main() {
   // Setup
   const account = privateKeyToAccount(process.env.PRIVATE_KEY as `0x${string}`)
+
+  // SDK reads default to mainnet; keep reads paired with the testnet write chain.
+  configureSdk({ apiUrl: API_URL_DEV })
 
   const publicClient = createPublicClient({
     chain: intuitionTestnet,
@@ -205,6 +220,7 @@ async function main() {
 
   // Query details
   const details = await getAtomDetails(atom.state.termId)
+  if (!details) throw new Error('Created atom was not found on the testnet API')
   console.log('✓ Atom label:', details.label)
 
   // Create three atoms for a triple
@@ -237,7 +253,7 @@ async function main() {
     }
   )
 
-  console.log('✓ Triple created:', triple.state[0].args.tripleId)
+  console.log('✓ Triple created:', triple.state[0].args.termId)
   console.log('\nSuccess! You created your first atom and triple.')
 }
 

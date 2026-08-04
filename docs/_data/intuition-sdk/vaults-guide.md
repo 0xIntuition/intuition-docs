@@ -196,20 +196,29 @@ await deposit(config, [
 #### Deposit into Triple Vault (FOR position)
 
 ```typescript
-import { createTripleStatement, deposit } from '@0xintuition/sdk'
+import {
+  createTripleStatement,
+  deposit,
+  type WriteConfig,
+} from '@0xintuition/sdk'
 import { parseEther } from 'viem'
 
-const triple = await createTripleStatement(config, tripleArgs)
-const tripleId = triple.state[0].args.tripleId
+async function createAndSignalTriple(
+  config: WriteConfig,
+  tripleArgs: Parameters<typeof createTripleStatement>[1],
+) {
+  const triple = await createTripleStatement(config, tripleArgs)
+  const tripleId = triple.state[0].args.termId
 
-// Deposit into FOR vault
-await deposit(config, [
-  walletClient.account.address,
-  tripleId,
-  1n,
-  parseEther('1'),
-  0n,
-])
+  // Deposit into FOR vault
+  await deposit(config, [
+    config.walletClient.account.address,
+    tripleId,
+    1n,
+    parseEther('1'),
+    0n,
+  ])
+}
 ```
 
 #### Deposit into Counter Vault (AGAINST position)

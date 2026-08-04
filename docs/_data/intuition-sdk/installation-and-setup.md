@@ -252,6 +252,8 @@ const account = mnemonicToAccount('your twelve word mnemonic phrase goes here');
 
 ### Browser Wallet (MetaMask, etc.)
 
+Browser-only: this flow requires an injected wallet extension that exposes `window.ethereum`.
+
 ```typescript
 import { createWalletClient, custom } from 'viem';
 import { intuitionTestnet } from '@0xintuition/sdk';
@@ -360,14 +362,16 @@ import {
   getMultiVaultAddressFromChainId,
 } from '@0xintuition/sdk';
 import type { WriteConfig } from '@0xintuition/sdk';
+import { API_URL_DEV } from '@0xintuition/graphql';
 import { createPublicClient, createWalletClient, http, fallback } from 'viem';
 import { privateKeyToAccount } from 'viem/accounts';
 
 // Account
 const account = privateKeyToAccount(process.env.PRIVATE_KEY as `0x${string}`);
 
-// Intuition pinning service
+// Pinning service + testnet reads (SDK reads default to mainnet otherwise)
 configureSdk({
+  apiUrl: API_URL_DEV,
   pinApiKey: process.env.INTUITION_PIN_API_KEY,
 });
 

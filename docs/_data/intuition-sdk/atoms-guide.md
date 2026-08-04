@@ -11,6 +11,19 @@ description: Create and query atoms using the SDK
 
 Atoms are unique identifiers for any entity—people, concepts, smart contracts, or data. This guide covers all ways to create and query atoms using the SDK.
 
+:::info Match SDK reads to your network
+SDK read helpers use the mainnet GraphQL API by default. The write examples on this page use Intuition Testnet, so configure reads once before calling a read helper:
+
+```typescript
+import { configureSdk } from '@0xintuition/sdk';
+import { API_URL_DEV } from '@0xintuition/graphql';
+
+configureSdk({ apiUrl: API_URL_DEV });
+```
+:::
+
+Atom creation helpers dynamically fetch and forward the required atom base cost. Their optional amount is an additional TRUST/tTRUST deposit (signal), not the required base cost.
+
 ## Table of Contents
 
 - [Creating from Strings](#creating-from-strings)
@@ -33,7 +46,7 @@ The simplest way to create an atom is from a plain string.
 function createAtomFromString(
   config: WriteConfig,
   data: string,
-  deposit?: bigint,
+  depositAmount?: bigint,
 ): Promise<AtomCreationResult>;
 ```
 
@@ -43,7 +56,7 @@ function createAtomFromString(
 | --------- | ------------- | --------------------------------------------------------------------- | -------- |
 | `config`  | `WriteConfig` | Client configuration with wallet, public client, and contract address | Yes      |
 | `data`    | `string`      | The text string to create an atom from                                | Yes      |
-| `deposit` | `bigint`      | Optional initial deposit amount in wei                                | No       |
+| `depositAmount` | `bigint` | Optional additional deposit/signal amount in wei                 | No       |
 
 ### Basic Example
 
@@ -73,7 +86,7 @@ const address = getMultiVaultAddressFromChainId(intuitionTestnet.id);
 const atom = await createAtomFromString(
   { walletClient, publicClient, address },
   'developer',
-  parseEther('0.01'), // Optional: 0.01 TRUST initial deposit
+  parseEther('0.01'), // Optional: additional 0.01 tTRUST signal
 );
 
 console.log('Atom ID:', atom.state.termId);
@@ -132,7 +145,15 @@ await createAtomFromString(config, 'dev');
 Before creating an atom, check if it already exists:
 
 ```typescript
-import { calculateAtomId, getAtomDetails } from '@0xintuition/sdk';
+import {
+  calculateAtomId,
+  configureSdk,
+  createAtomFromString,
+  getAtomDetails,
+} from '@0xintuition/sdk';
+import { API_URL_DEV } from '@0xintuition/graphql';
+
+configureSdk({ apiUrl: API_URL_DEV });
 
 const atomId = calculateAtomId('developer');
 const exists = await getAtomDetails(atomId);
@@ -507,7 +528,7 @@ Fetch comprehensive atom details from the Intuition API.
 #### Function Signature
 
 ```typescript
-function getAtomDetails(atomId: string): Promise<AtomDetails>;
+function getAtomDetails(atomId: string): Promise<AtomDetails | null>;
 ```
 
 #### Basic Example
@@ -517,11 +538,14 @@ import { getAtomDetails } from '@0xintuition/sdk';
 
 const atomId = '0x1234567890abcdef...';
 const details = await getAtomDetails(atomId);
+if (!details) throw new Error('Atom not found');
+
+const vault = details.term?.vaults[0];
 
 console.log('Atom Label:', details.label);
-console.log('Creator:', details.creator);
-console.log('Vault Shares:', details.vault.totalShares);
-console.log('Share Price:', details.vault.currentSharePrice);
+console.log('Creator:', details.creator?.label ?? details.creator_id);
+console.log('Vault Shares:', vault?.total_shares);
+console.log('Share Price:', vault?.current_share_price);
 ```
 
 ### calculateAtomId
@@ -561,25 +585,29 @@ console.log('IPFS Atom ID:', ipfsAtomId);
 ```typescript
 import {
   calculateAtomId,
+  configureSdk,
   getAtomDetails,
   createAtomFromString,
 } from '@0xintuition/sdk';
+import { API_URL_DEV } from '@0xintuition/graphql';
+
+configureSdk({ apiUrl: API_URL_DEV });
 
 async function createAtomIfNotExists(data: string) {
   // Calculate ID
   const atomId = calculateAtomId(data);
 
-  try {
-    // Check if exists
-    const existing = await getAtomDetails(atomId);
+  // Check if exists
+  const existing = await getAtomDetails(atomId);
+  if (existing !== null) {
     console.log('Atom already exists:', atomId);
     return existing;
-  } catch (error) {
-    // Doesn't exist, create it
-    console.log('Creating new atom');
-    const atom = await createAtomFromString(config, data);
-    return atom;
   }
+
+  // Doesn't exist, create it
+  console.log('Creating new atom');
+  const atom = await createAtomFromString(config, data);
+  return atom;
 }
 ```
 
@@ -592,7 +620,15 @@ async function getMultipleAtoms(atomIds: string[]) {
   const atoms = await Promise.all(atomIds.map((id) => getAtomDetails(id)));
 
   atoms.forEach((atom) => {
-    console.log(`${atom.label}: ${atom.vault.totalShares} shares`);
+    if (atom === null) return;
+
+    const vault = atom.term?.vaults[0];
+    if (!vault) {
+      console.log(`${atom.label}: no vault data`);
+      return;
+    }
+
+    console.log(`${atom.label}: ${vault.total_shares} shares`);
   });
 
   return atoms;

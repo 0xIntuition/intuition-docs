@@ -497,6 +497,17 @@ const assets = await multiVault.redeem(receiver, termId, curveId, shares, minAss
 
 ## 3. SDK Package Changes (`@0xintuition/sdk`)
 
+SDK read helpers use the mainnet GraphQL API by default. Configure the endpoint once before the migrated read examples; use `API_URL_DEV` for Intuition Testnet or `API_URL_PROD` for Mainnet:
+
+```typescript
+import { configureSdk } from '@0xintuition/sdk'
+import { API_URL_DEV } from '@0xintuition/graphql'
+
+configureSdk({ apiUrl: API_URL_DEV })
+```
+
+SDK atom creation helpers dynamically fetch and forward the required atom base cost. Any optional amount is an additional TRUST/tTRUST deposit (signal), not the base cost itself.
+
 ### API Function Renaming
 
 **Before:**

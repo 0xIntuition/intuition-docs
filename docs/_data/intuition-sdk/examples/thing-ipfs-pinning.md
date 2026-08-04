@@ -10,6 +10,8 @@ keywords: [sdk, example, thing, ipfs, metadata, json-ld]
 
 This example demonstrates creating a rich entity (Thing) with automatic IPFS pinning.
 
+SDK reads default to the mainnet GraphQL API, so this testnet write-and-read flow sets `API_URL_DEV` alongside its pinning configuration. `createAtomFromThing` fetches the required atom base cost; `depositAmount` is an additional tTRUST signal.
+
 ## Complete Code
 
 ```typescript
@@ -22,6 +24,7 @@ import {
   getAtomDetails,
   wait,
 } from '@0xintuition/sdk';
+import { API_URL_DEV } from '@0xintuition/graphql';
 import { createPublicClient, createWalletClient, http, parseEther } from 'viem';
 import { privateKeyToAccount } from 'viem/accounts';
 
@@ -29,6 +32,7 @@ async function main() {
   // Setup
   const account = privateKeyToAccount(process.env.PRIVATE_KEY as `0x${string}`);
   configureSdk({
+    apiUrl: API_URL_DEV,
     pinApiKey: process.env.INTUITION_PIN_API_KEY,
   });
 
@@ -80,12 +84,14 @@ async function main() {
 
   // 4. Query details
   const details = await getAtomDetails(atom.state.termId);
+  if (!details) throw new Error('Created atom was not found on the testnet API');
+
+  const vault = details.term?.vaults[0];
 
   console.log('\n=== Atom Details ===');
   console.log('Label:', details.label);
-  console.log('Creator:', details.creator);
-  console.log('Vault ID:', details.vault.id);
-  console.log('Total Shares:', details.vault.totalShares);
+  console.log('Creator:', details.creator?.label ?? details.creator_id);
+  console.log('Total Shares:', vault?.total_shares);
 
   console.log('\nSuccess!');
 }

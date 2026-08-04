@@ -9,6 +9,17 @@ description: Search atoms, triples, and perform advanced queries
 
 Discover atoms, triples, accounts, and collections using search, filters, and batch entity lookups.
 
+:::info Choose the GraphQL network explicitly
+SDK reads use mainnet by default. Configure the endpoint once at startup; use `API_URL_DEV` for Intuition Testnet or `API_URL_PROD` for Mainnet:
+
+```typescript
+import { configureSdk } from '@0xintuition/sdk'
+import { API_URL_DEV } from '@0xintuition/graphql'
+
+configureSdk({ apiUrl: API_URL_DEV })
+```
+:::
+
 ## Table of Contents
 
 - [Global Search](#global-search)
@@ -161,11 +172,18 @@ async function searchAndDisplay(query: string) {
 
   // Get detailed information for first atom
   const firstAtom = results.atoms[0]
-  const details = await getAtomDetails(firstAtom.id)
+  const details = await getAtomDetails(firstAtom.term_id)
+
+  if (!details) {
+    console.log('Atom details were not found')
+    return
+  }
+
+  const vault = details.term?.vaults[0]
 
   console.log('First result:', firstAtom.label)
-  console.log('Creator:', details.creator)
-  console.log('Vault shares:', details.vault.totalShares)
+  console.log('Creator:', details.creator?.label ?? details.creator_id)
+  console.log('Vault shares:', vault?.total_shares)
 }
 ```
 

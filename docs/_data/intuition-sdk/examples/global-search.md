@@ -10,12 +10,18 @@ keywords: [sdk, example, search, global, query]
 
 This example demonstrates using global search to find entities across the Intuition protocol.
 
+SDK reads use the mainnet GraphQL API by default. The example selects `API_URL_DEV` for testnet data; use `API_URL_PROD` instead for Mainnet.
+
 ## Complete Code
 
 ```typescript
-import { globalSearch, getAtomDetails } from '@0xintuition/sdk'
+import { configureSdk, globalSearch, getAtomDetails } from '@0xintuition/sdk'
+import { API_URL_DEV } from '@0xintuition/graphql'
 
 async function main() {
+  // Reads default to mainnet. Select API_URL_DEV for testnet data.
+  configureSdk({ apiUrl: API_URL_DEV })
+
   const searchQuery = 'ethereum'
 
   console.log(`Searching for: "${searchQuery}"\n`)
@@ -38,7 +44,7 @@ async function main() {
   console.log(`Found ${results.atoms.length} atoms:\n`)
   results.atoms.forEach((atom, i) => {
     console.log(`${i + 1}. ${atom.label}`)
-    console.log(`   ID: ${atom.id}`)
+    console.log(`   ID: ${atom.term_id}`)
   })
 
   // Display accounts
@@ -53,19 +59,22 @@ async function main() {
   console.log('\n=== Triples ===')
   console.log(`Found ${results.triples.length} triples:\n`)
   results.triples.forEach((triple, i) => {
-    console.log(`${i + 1}. ${triple.subject.label} ${triple.predicate.label} ${triple.object.label}`)
-    console.log(`   ID: ${triple.id}`)
+    console.log(`${i + 1}. ${triple.subject?.label} ${triple.predicate?.label} ${triple.object?.label}`)
+    console.log(`   ID: ${triple.term_id}`)
   })
 
   // Get details for first atom
   if (results.atoms.length > 0) {
     console.log('\n=== First Atom Details ===')
-    const details = await getAtomDetails(results.atoms[0].id)
+    const details = await getAtomDetails(results.atoms[0].term_id)
+    if (!details) throw new Error('Selected atom was not found on the testnet API')
+
+    const vault = details.term?.vaults[0]
 
     console.log('Label:', details.label)
-    console.log('Creator:', details.creator)
-    console.log('Total Shares:', details.vault.totalShares)
-    console.log('Positions:', details.vault.positionCount)
+    console.log('Creator:', details.creator?.label ?? details.creator_id)
+    console.log('Total Shares:', vault?.total_shares)
+    console.log('Positions:', vault?.position_count)
   }
 
   console.log('\nSuccess!')

@@ -18,6 +18,7 @@ npm install @tanstack/react-query
 
 ```typescript title="App.tsx"
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import './sdk-config'
 
 const queryClient = new QueryClient()
 
@@ -29,6 +30,17 @@ function App() {
   )
 }
 ```
+
+SDK read helpers use the mainnet GraphQL API by default. If the mutation hooks below write to Intuition Testnet, initialize the testnet read endpoint once before rendering the application:
+
+```typescript title="sdk-config.ts"
+import { configureSdk } from '@0xintuition/sdk'
+import { API_URL_DEV } from '@0xintuition/graphql'
+
+configureSdk({ apiUrl: API_URL_DEV })
+```
+
+Use `API_URL_PROD` instead when the write clients target `intuitionMainnet`. Atom creation helpers fetch and forward the required base cost; an optional amount is an additional TRUST/tTRUST deposit (signal).
 
 ## Query Hooks
 
@@ -179,6 +191,7 @@ Full React component with TanStack Query:
 ```typescript title="AtomExplorer.tsx"
 import { useState } from 'react'
 import { useCreateAtom, useGlobalSearch, useAtomDetails } from './hooks'
+import './sdk-config'
 
 export function AtomExplorer() {
   const [searchQuery, setSearchQuery] = useState('')
@@ -260,8 +273,8 @@ export function AtomExplorer() {
           {atomDetails.data && (
             <div>
               <p>Label: {atomDetails.data.label}</p>
-              <p>Creator: {atomDetails.data.creator}</p>
-              <p>Shares: {atomDetails.data.vault.totalShares}</p>
+              <p>Creator: {atomDetails.data.creator?.label ?? atomDetails.data.creator_id}</p>
+              <p>Shares: {atomDetails.data.term?.vaults[0]?.total_shares ?? 'Unavailable'}</p>
             </div>
           )}
         </div>

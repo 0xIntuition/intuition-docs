@@ -14,15 +14,19 @@ This example demonstrates using the experimental `sync` function to estimate cos
 
 ```typescript
 import {
+  configureSdk,
   intuitionTestnet,
   getMultiVaultAddressFromChainId,
   sync,
 } from '@0xintuition/sdk'
+import { API_URL_DEV } from '@0xintuition/graphql'
 import { createPublicClient, createWalletClient, http, formatEther } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
 
 async function main() {
-  // Setup
+  // Setup — sync() reads existing atoms/triples via GraphQL, which defaults
+  // to mainnet; pair its reads with the testnet write chain.
+  configureSdk({ apiUrl: API_URL_DEV })
   const account = privateKeyToAccount(process.env.PRIVATE_KEY as `0x${string}`)
   const publicClient = createPublicClient({
     chain: intuitionTestnet,
