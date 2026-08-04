@@ -29,6 +29,9 @@ jobs:
       - name: Validate internal /docs/ links
         run: node scripts/validate-internal-links.js
 
+      - name: Validate llms coverage
+        run: npm run validate-llms-coverage
+
   build:
     name: Docusaurus build
     runs-on: ubuntu-latest

@@ -21,11 +21,13 @@
     "typecheck": "tsc",
     "spell-check": "npx cspell docs/**/*.mdx",
     "validate-links": "node scripts/validate-internal-links.js",
+    "validate-llms-coverage": "node scripts/validate-llms-coverage.js",
     "validate-queries": "node scripts/validate-graphql-queries.js",
     "update-schema": "node scripts/validate-graphql-queries.js --update-schema",
     "generate-llms": "node scripts/generate-llms-full.js",
     "generate-llms-full": "node scripts/generate-llms-full.js --full-only",
     "validate-sdk-examples": "node scripts/validate-sdk-examples.js",
+    "generate-llms-index": "node scripts/generate-llms-full.js --index-only",
     "prepare": "husky"
   },
   "dependencies": {
