@@ -1,13 +1,5 @@
 import type { ComponentProps, ReactNode } from 'react';
-import {
-  ReactIcon,
-  AngularIcon,
-  AndroidIcon,
-  AppleIcon,
-  FlutterIcon,
-  HTMLIcon,
-  JSIcon,
-} from './icons';
+import { ReactIcon } from './icons';
 
 export type Section = { docId: string } & (
   | {
