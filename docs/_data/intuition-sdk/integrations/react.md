@@ -47,16 +47,19 @@ export const config = createConfig({
 })
 ```
 
+Pass the exported Wagmi `config` into the provider component:
+
 ```typescript title="AppProviders.tsx"
 import type { PropsWithChildren } from 'react'
-import { WagmiProvider } from 'wagmi'
+import { WagmiProvider, type Config } from 'wagmi'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { config } from './wagmi-config'
 import './sdk-config'
 
 const queryClient = new QueryClient()
 
-export function AppProviders({ children }: PropsWithChildren) {
+type AppProvidersProps = PropsWithChildren<{ config: Config }>
+
+export function AppProviders({ children, config }: AppProvidersProps) {
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
@@ -67,9 +70,11 @@ export function AppProviders({ children }: PropsWithChildren) {
 }
 ```
 
+Provider convention: Every usage component in this guide must render inside the `WagmiProvider` and `QueryClientProvider` shown above. Pasting a component into an app without that wrapper can throw `WagmiProviderNotFoundError` or `"No QueryClient set"`.
+
 ## Creating Atoms
 
-Use SDK functions with Wagmi hooks. Render every component that calls these hooks beneath `AppProviders` from the setup above.
+Use SDK functions with Wagmi hooks.
 
 `createAtomFromString` fetches and forwards the required atom base cost. The optional amount in these examples is an additional TRUST/tTRUST deposit (signal).
 
@@ -83,6 +88,7 @@ import { parseEther } from 'viem'
 import { useState } from 'react'
 
 export function CreateAtomButton() {
+  // Renders inside the providers from Setup
   const chainId = useChainId()
   const publicClient = usePublicClient()
   const { data: walletClient } = useWalletClient()
@@ -164,6 +170,7 @@ export function useCreateAtom() {
 
 // Usage in component
 function MyComponent() {
+  // Renders inside the providers from Setup
   const createAtom = useCreateAtom()
 
   const handleCreate = async () => {
@@ -204,6 +211,7 @@ export function useAtomDetails(atomId: string | undefined) {
 
 // Usage
 function AtomDisplay({ atomId }: { atomId: string }) {
+  // Renders inside the providers from Setup
   const { data: atom, isLoading, error } = useAtomDetails(atomId)
 
   if (isLoading) return <div>Loading...</div>
@@ -239,6 +247,7 @@ import {
 import { parseEther } from 'viem'
 
 export function AtomManager() {
+  // Renders inside the providers from Setup
   const chainId = useChainId()
   const { address: accountAddress } = useAccount()
   const publicClient = usePublicClient()
