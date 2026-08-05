@@ -71,6 +71,7 @@
     "@docusaurus/tsconfig": "3.9.2",
     "@styled-icons/boxicons-logos": "^10.47.0",
     "@swc/core": "^1.10.11",
+    "@tanstack/react-query": "5.101.4",
     "@typescript-eslint/eslint-plugin": "^5.56.0",
     "@typescript-eslint/parser": "^5.56.0",
     "autoprefixer": "^10.4.20",
@@ -97,7 +98,8 @@
     "typedoc-plugin-markdown": "^3.17.1",
     "typescript": "5.9.3",
     "url": "^0.11.4",
-    "viem": "2.55.10"
+    "viem": "2.55.10",
+    "wagmi": "3.7.6"
   },
   "browserslist": {
     "production": [

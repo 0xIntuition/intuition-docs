@@ -232,7 +232,6 @@ import { useQuery, useMutation } from '@tanstack/react-query'
 import './sdk-config'
 import {
   createAtomFromString,
-  getAtomDetails,
   globalSearch,
   getMultiVaultAddressFromChainId,
 } from '@0xintuition/sdk'
@@ -285,7 +284,7 @@ export function AtomManager() {
           placeholder="Search..."
         />
         {searchResults?.atoms.map(atom => (
-          <div key={atom.id}>{atom.label}</div>
+          <div key={atom.term_id}>{atom.label}</div>
         ))}
       </div>
 

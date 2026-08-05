@@ -112,6 +112,9 @@ function redeemBatch(address receiver, bytes32[] termIds, uint256[] curveIds, ui
 
 **Before:**
 
+This **Before** block intentionally preserves the removed v1 API for historical comparison and is illustrative rather than copy-paste code for the current package.
+
+<!-- docs-typecheck: skip -->
 ```typescript
 import { EthMultiVaultAbi } from '@0xintuition/protocol'
 import { getEthMultiVaultAddress } from '@0xintuition/sdk'
@@ -231,6 +234,9 @@ const [shares, assetsAfterFixedFees, assetsAfterFees] = await multiVault.preview
 
 **Before:**
 
+This **Before** block intentionally preserves the removed v1 API for historical comparison and is illustrative rather than copy-paste code for the current package.
+
+<!-- docs-typecheck: skip -->
 ```typescript
 import {
   createAtom,
@@ -252,31 +258,36 @@ const cost = await createAtomCalculateBaseCost(config)
 
 ```typescript
 import {
-  createAtoms,
-  createAtomsEncode,
-  getAtomCost,
+  multiVaultCreateAtoms,
+  multiVaultCreateAtomsEncode,
+  multiVaultGetAtomCost,
+  type WriteConfig,
 } from '@0xintuition/protocol'
+import { toHex } from 'viem'
 
-// Atoms creation (supports single or multiple)
-await createAtoms(config, {
-  args: [
-    [atomUri1, atomUri2],
-    [assets1, assets2],
-  ],
-  value,
-})
+async function createAtoms(config: WriteConfig, atomUris: string[]) {
+  const atomCost = await multiVaultGetAtomCost(config)
+  const atomData = atomUris.map((uri) => toHex(uri))
+  const assets = atomData.map(() => atomCost)
+  const value = assets.reduce((total, amount) => total + amount, 0n)
 
-// Encoding
-const encodedData = createAtomsEncode([atomUri1, atomUri2], [assets1, assets2])
+  const transactionHash = await multiVaultCreateAtoms(config, {
+    args: [atomData, assets],
+    value,
+  })
+  const encodedData = multiVaultCreateAtomsEncode(atomData, assets)
 
-// Cost calculation
-const cost = await getAtomCost(config)
+  return { transactionHash, encodedData, atomCost }
+}
 ```
 
 #### Triple Creation: Singular → Plural
 
 **Before:**
 
+This **Before** block intentionally preserves the removed v1 API for historical comparison and is illustrative rather than copy-paste code for the current package.
+
+<!-- docs-typecheck: skip -->
 ```typescript
 import {
   createTriple,
@@ -297,35 +308,52 @@ const cost = await createTripleCalculateBaseCost(config)
 
 ```typescript
 import {
-  createTriples,
-  createTriplesEncode,
-  getTripleCost,
+  multiVaultCreateTriples,
+  multiVaultCreateTriplesEncode,
+  multiVaultGetTripleCost,
+  type WriteConfig,
 } from '@0xintuition/protocol'
+import type { Hex } from 'viem'
 
-await createTriples(config, {
-  args: [
-    [subjectId1, subjectId2],
-    [predicateId1, predicateId2],
-    [objectId1, objectId2],
-    [assets1, assets2],
-  ],
-  value,
-})
+async function createTriples(
+  config: WriteConfig,
+  subjectIds: Hex[],
+  predicateIds: Hex[],
+  objectIds: Hex[],
+) {
+  if (
+    subjectIds.length !== predicateIds.length ||
+    subjectIds.length !== objectIds.length
+  ) {
+    throw new Error('Subject, predicate, and object arrays must have equal length')
+  }
 
-const encodedData = createTriplesEncode(
-  [subjectId1, subjectId2],
-  [predicateId1, predicateId2],
-  [objectId1, objectId2],
-  [assets1, assets2],
-)
+  const tripleCost = await multiVaultGetTripleCost(config)
+  const assets = subjectIds.map(() => tripleCost)
+  const value = assets.reduce((total, amount) => total + amount, 0n)
 
-const cost = await getTripleCost(config)
+  const transactionHash = await multiVaultCreateTriples(config, {
+    args: [subjectIds, predicateIds, objectIds, assets],
+    value,
+  })
+  const encodedData = multiVaultCreateTriplesEncode(
+    subjectIds,
+    predicateIds,
+    objectIds,
+    assets,
+  )
+
+  return { transactionHash, encodedData, tripleCost }
+}
 ```
 
 #### Deposit and Redeem Simplification
 
 **Before:**
 
+This **Before** block intentionally preserves the removed v1 API for historical comparison and is illustrative rather than copy-paste code for the current package.
+
+<!-- docs-typecheck: skip -->
 ```typescript
 import {
   depositAtom,
@@ -347,30 +375,45 @@ await redeemTriple(config, { args: [shares, receiver, tripleId] })
 
 **After:**
 
+The payable `deposit` wrapper is pending the post-publish SDK resync, so this deposit-value-coupled migration example is excluded from copy-paste typechecking until that package shape is available.
+
+<!-- docs-typecheck: skip -->
 ```typescript
-import {
-  deposit,
-  depositEncode,
-  redeem,
-  redeemEncode,
-} from '@0xintuition/protocol'
+import type { Address, Hex } from 'viem'
 
-// Unified functions for any vault (atom or triple)
-await deposit(config, {
-  args: [receiver, termId, curveId, assets, minShares],
-  value,
-})
-await redeem(config, { args: [receiver, termId, cirveId, shares, minAssets] })
+// Prepare the current MultiVault inputs without calling the pending SDK wrapper.
+function prepareVaultCalls(
+  receiver: Address,
+  termId: Hex,
+  curveId: bigint,
+  assets: bigint,
+  minShares: bigint,
+  shares: bigint,
+  minAssets: bigint,
+) {
+  const depositCall = {
+    args: [receiver, termId, curveId, minShares],
+    value: assets,
+  } as const
+  const redeemArgs = [
+    receiver,
+    termId,
+    curveId,
+    shares,
+    minAssets,
+  ] as const
 
-// Unified encoding
-const depositData = depositEncode(receiver, vaultId)
-const redeemData = redeemEncode(shares, receiver, vaultId)
+  return { depositCall, redeemArgs }
+}
 ```
 
 #### Batch Operations Renamed
 
 **Before:**
 
+This **Before** block intentionally preserves the removed v1 API for historical comparison and is illustrative rather than copy-paste code for the current package.
+
+<!-- docs-typecheck: skip -->
 ```typescript
 import {
   batchCreateAtom,
@@ -384,10 +427,10 @@ import {
 
 ```typescript
 import {
-  createAtoms, // Replaces batchCreateAtom
-  createTriples, // Replaces batchCreateTriple
-  depositBatch, // Replaces batchDepositCurve
-  redeemBatch, // Replaces batchRedeemCurve
+  multiVaultCreateAtoms, // Replaces batchCreateAtom
+  multiVaultCreateTriples, // Replaces batchCreateTriple
+  multiVaultDepositBatch, // Replaces batchDepositCurve
+  multiVaultRedeemBatch, // Replaces batchRedeemCurve
 } from '@0xintuition/protocol'
 ```
 
@@ -395,6 +438,9 @@ import {
 
 **Before:**
 
+This **Before** block intentionally preserves the removed v1 API for historical comparison and is illustrative rather than copy-paste code for the current package.
+
+<!-- docs-typecheck: skip -->
 ```typescript
 import { multiCallIntuitionConfigs } from '@0xintuition/protocol'
 
@@ -404,15 +450,23 @@ const config = await multiCallIntuitionConfigs({ address, publicClient })
 **After:**
 
 ```typescript
-import { multicallIntuitionConfig } from '@0xintuition/protocol'
+import {
+  multiVaultMultiCallIntuitionConfigs,
+  type ReadConfig,
+} from '@0xintuition/protocol'
 
-const config = await multicallIntuitionConfig({ address, publicClient })
+async function getMultiVaultConfig(config: ReadConfig) {
+  return multiVaultMultiCallIntuitionConfigs(config)
+}
 ```
 
 #### Removed EthMultiVault API
 
 **Before:**
 
+This **Before** block intentionally preserves the removed v1 API for historical comparison and is illustrative rather than copy-paste code for the current package.
+
+<!-- docs-typecheck: skip -->
 ```typescript
 import { EthMultiVault } from '@0xintuition/protocol'
 
@@ -426,24 +480,26 @@ const result = await ethMultiVault.createAtom('hello')
 import {
   getMultiVaultAddressFromChainId,
   intuitionTestnet,
-  MultiVaultAbi,
+  multiVaultCreateAtoms,
+  multiVaultGetAtomCost,
+  type WriteConfig,
 } from '@0xintuition/protocol'
+import { toHex } from 'viem'
 
-import { getContract } from 'viem'
+async function createHelloAtom(
+  clients: Omit<WriteConfig, 'address'>,
+) {
+  const config: WriteConfig = {
+    ...clients,
+    address: getMultiVaultAddressFromChainId(intuitionTestnet.id),
+  }
+  const atomCost = await multiVaultGetAtomCost(config)
 
-const multiVault = getContract({
-  abi: MultiVaultAbi,
-  address: getMultiVaultAddressFromChainId(intuitionTestnet.id),
-  client: {
-    public: publicClient,
-    wallet: walletClient,
-  },
-})
-
-const atomCost = await multiVault.read.getAtomCost()
-const result = await multiVault.createAtoms([['hello'], [atomCost]], {
-  value: atomCost,
-})
+  return multiVaultCreateAtoms(config, {
+    args: [[toHex('hello')], [atomCost]],
+    value: atomCost,
+  })
+}
 ```
 
 ### Bonding Curve Integration
@@ -512,6 +568,9 @@ SDK atom creation helpers dynamically fetch and forward the required atom base c
 
 **Before:**
 
+This **Before** block intentionally preserves the removed v1 API for historical comparison and is illustrative rather than copy-paste code for the current package.
+
+<!-- docs-typecheck: skip -->
 ```typescript
 import { getAtom, getTriple } from '@0xintuition/sdk'
 
@@ -522,7 +581,14 @@ const tripleData = await getTriple('54670')
 **After:**
 
 ```typescript
-import { getAtomDetails, getTripleDetails } from '@0xintuition/sdk'
+import {
+  configureSdk,
+  getAtomDetails,
+  getTripleDetails,
+} from '@0xintuition/sdk'
+import { API_URL_DEV } from '@0xintuition/graphql'
+
+configureSdk({ apiUrl: API_URL_DEV })
 
 const atomData = await getAtomDetails(
   '0x906527aae4af914b1ac01ff9adfdda5dafde3b5e21f84045e0660b0a15c07769',
@@ -536,6 +602,9 @@ const tripleData = await getTripleDetails(
 
 **Before:**
 
+This **Before** block intentionally preserves the removed v1 API for historical comparison and is illustrative rather than copy-paste code for the current package.
+
+<!-- docs-typecheck: skip -->
 ```typescript
 import { createTripleStatement } from '@0xintuition/sdk'
 
@@ -548,17 +617,25 @@ const triple = await createTripleStatement(config, {
 **After:**
 
 ```typescript
-import { createTripleStatement } from '@0xintuition/sdk'
+import {
+  createTripleStatement,
+  type WriteConfig,
+} from '@0xintuition/sdk'
+import type { Hex } from 'viem'
 
-const triple = await createTripleStatement(config, {
-  args: [
-    [subjectVaultId],
-    [predicateVaultId],
-    [objectVaultId],
-    [1000000000000000000n],
-  ],
-  value: 1000000000000000000n, // Required
-})
+async function createMigratedTriple(
+  config: WriteConfig,
+  subjectId: Hex,
+  predicateId: Hex,
+  objectId: Hex,
+) {
+  const assets = 1000000000000000000n
+
+  return createTripleStatement(config, {
+    args: [[subjectId], [predicateId], [objectId], [assets]],
+    value: assets,
+  })
+}
 ```
 
 ## 4. Configuration Changes
