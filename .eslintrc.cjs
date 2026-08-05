@@ -54,19 +54,5 @@ module.exports = {
         'no-undef': 'off',
       },
     },
-    {
-      files: ['src/components/BondingCurveDemo.tsx'],
-      rules: {
-        // Adding a case block is source cleanup outside this typecheck-only source fence.
-        'no-case-declarations': 'off',
-      },
-    },
-    {
-      files: ['src/components/IntuitionSandbox.tsx'],
-      rules: {
-        // These escapes live inside code shown to users; rewriting examples is outside this lint lane.
-        'no-useless-escape': 'off',
-      },
-    },
   ],
 };

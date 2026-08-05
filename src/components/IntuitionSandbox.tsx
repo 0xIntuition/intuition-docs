@@ -668,10 +668,10 @@ console.log('Network:', atom.network);
 console.log('Status: LIVE on universal knowledge graph');
 console.log('');
 console.log('What happens next:');
-console.log('• Developers can rate this AI agent\'s performance');
+console.log('• Developers can rate this AI agent's performance');
 console.log('• Build trust: "GPT-4o → EXCELS_AT → Code Generation"');
 console.log('• Early reputation builders earn as AI adoption explodes');
-console.log('• This AI\'s reputation works across ALL platforms forever');
+console.log('• This AI's reputation works across ALL platforms forever');
 console.log('');
 console.log('Imagine: AI agents with portable, verifiable track records!');`,
 
