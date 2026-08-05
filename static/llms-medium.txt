@@ -4566,7 +4566,7 @@ Atom creation helpers dynamically fetch and forward the required atom base cost.
 ---
 title: "Example: Batch Create Ethereum Accounts"
 description: "Create multiple identity atoms from Ethereum addresses in one transaction"
-last_updated: "2026-06-30T11:21:44-04:00"
+last_updated: "2026-08-04T16:59:15-04:00"
 source: "https://docs.intuition.systems/docs/intuition-sdk/examples/batch-ethereum-accounts"
 ---
 
@@ -4586,7 +4586,7 @@ This example demonstrates creating multiple identity atoms from Ethereum address
 ---
 title: "Example: Bulk Sync with Cost Estimation"
 description: "Use the experimental sync function to estimate costs for bulk operations"
-last_updated: "2026-08-04T11:57:57-04:00"
+last_updated: "2026-08-04T16:59:15-04:00"
 source: "https://docs.intuition.systems/docs/intuition-sdk/examples/bulk-sync-cost-estimation"
 ---
 
@@ -4670,7 +4670,7 @@ This example demonstrates depositing assets into a vault and tracking share bala
 ---
 title: "Example: Find Existing Entities"
 description: "Search for existing atoms and triples before creating new ones"
-last_updated: "2026-08-04T11:57:57-04:00"
+last_updated: "2026-08-04T16:59:15-04:00"
 source: "https://docs.intuition.systems/docs/intuition-sdk/examples/find-existing-entities"
 ---
 
@@ -4733,7 +4733,7 @@ SDK reads default to the mainnet GraphQL API, so this testnet write-and-read flo
 ---
 title: "Installation & Setup"
 description: "Install the Intuition SDK and configure your development environment"
-last_updated: "2026-08-04T11:57:57-04:00"
+last_updated: "2026-08-04T16:59:15-04:00"
 source: "https://docs.intuition.systems/docs/intuition-sdk/installation-and-setup"
 ---
 
@@ -4764,7 +4764,7 @@ For a complete list of `0xintuition/protocol` functions and interfaces, see the 
 ---
 title: "IPFS Pinning"
 description: "Pin metadata to IPFS using the Intuition pinning service or direct Pinata uploads"
-last_updated: "2026-06-25T15:48:40-04:00"
+last_updated: "2026-08-04T16:59:15-04:00"
 source: "https://docs.intuition.systems/docs/intuition-sdk/integrations/pinata-ipfs"
 ---
 
@@ -4910,7 +4910,7 @@ In this quick start guide, you'll:
 ---
 title: "Search and Discovery"
 description: "Search atoms, triples, and perform advanced queries"
-last_updated: "2026-08-04T11:57:57-04:00"
+last_updated: "2026-08-04T16:59:15-04:00"
 source: "https://docs.intuition.systems/docs/intuition-sdk/search-guide"
 ---
 
@@ -4944,7 +4944,7 @@ Search across all entity types (atoms, accounts, triples, collections) with a si
 ---
 title: "Working with Triples"
 description: "Create and query triples using the SDK"
-last_updated: "2026-08-04T11:57:57-04:00"
+last_updated: "2026-08-04T16:59:15-04:00"
 source: "https://docs.intuition.systems/docs/intuition-sdk/triples-guide"
 ---
 
