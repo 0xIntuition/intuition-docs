@@ -151,14 +151,25 @@ event TripleCreated(address indexed creator, bytes32 indexed termId, bytes32 sub
 
 #### ID Handling Update
 
-```typescript
-// Before (EthMultiVault)
-const atomId: bigint = 123n;
-const tripleId: bigint = 456n;
+**Before:**
 
-// After (MultiVault)
-const atomId: `0x${string}` = "0x1234..."; // 32-byte hash
-const tripleId: `0x${string}` = "0x5678..."; // 32-byte hash
+This **Before** block intentionally preserves the removed v1 numeric-ID shape for historical comparison and is illustrative rather than copy-paste code for the current package.
+
+<!-- docs-typecheck: skip -->
+```typescript
+const atomId: bigint = 123n
+const tripleId: bigint = 456n
+```
+
+**After:**
+
+```typescript
+import type { Hex } from 'viem'
+
+const atomId: Hex =
+  '0x906527aae4af914b1ac01ff9adfdda5dafde3b5e21f84045e0660b0a15c07769'
+const tripleId: Hex =
+  '0xc4e64dbc3d69293d28259653d9b15d2ab3f6aa1aa0b1a489e5250974cd089730'
 ```
 
 #### Query Functions
@@ -192,38 +203,119 @@ function convertToAssets(bytes32 termId, uint256 curveId, uint256 shares) view r
 #### 1. **Utilization Tracking**
 
 ```typescript
-const userUtilization = await multiVault.getUserUtilizationForEpoch(
-  userAddress,
-  epoch,
-)
-const totalUtilization = await multiVault.getTotalUtilizationForEpoch(epoch)
+import {
+  multiVaultGetTotalUtilizationForEpoch,
+  multiVaultGetUserUtilizationForEpoch,
+  type ReadConfig,
+} from '@0xintuition/protocol'
+import type { Address } from 'viem'
+
+async function getEpochUtilization(
+  config: ReadConfig,
+  userAddress: Address,
+  epoch: bigint,
+) {
+  const userUtilization = await multiVaultGetUserUtilizationForEpoch(config, {
+    args: [userAddress, epoch],
+  })
+  const totalUtilization = await multiVaultGetTotalUtilizationForEpoch(config, {
+    args: [epoch],
+  })
+
+  return { userUtilization, totalUtilization }
+}
 ```
 
 #### 2. **Epoch System**
 
 ```typescript
-const currentEpoch = await multiVault.currentEpoch()
-const lastActiveEpoch = await multiVault.lastActiveEpoch(userAddress)
+import {
+  multiVaultCurrentEpoch,
+  multiVaultGetUserLastActiveEpoch,
+  type ReadConfig,
+} from '@0xintuition/protocol'
+import type { Address } from 'viem'
+
+async function getEpochState(config: ReadConfig, userAddress: Address) {
+  const currentEpoch = await multiVaultCurrentEpoch(config)
+  const lastActiveEpoch = await multiVaultGetUserLastActiveEpoch(config, {
+    args: [userAddress],
+  })
+
+  return { currentEpoch, lastActiveEpoch }
+}
 ```
 
 #### 3. **Enhanced Fee Management**
 
 ```typescript
-// Atom wallet deposit fees
-const accumulatedFees =
-  await multiVault.accumulatedAtomWalletDepositFees(atomWallet)
-await multiVault.claimAtomWalletDepositFees(termId)
+import { MultiVaultAbi, type WriteConfig } from '@0xintuition/protocol'
+import type { Address, Hex } from 'viem'
 
-// Protocol fees by epoch
-const protocolFees = await multiVault.accumulatedProtocolFees(epoch)
+async function readAndClaimFees(
+  config: WriteConfig,
+  atomWallet: Address,
+  termId: Hex,
+  epoch: bigint,
+) {
+  const accumulatedFees = await config.publicClient.readContract({
+    address: config.address,
+    abi: MultiVaultAbi,
+    functionName: 'accumulatedAtomWalletDepositFees',
+    args: [atomWallet],
+  })
+  const protocolFees = await config.publicClient.readContract({
+    address: config.address,
+    abi: MultiVaultAbi,
+    functionName: 'accumulatedProtocolFees',
+    args: [epoch],
+  })
+  const { request } = await config.publicClient.simulateContract({
+    account: config.walletClient.account,
+    address: config.address,
+    abi: MultiVaultAbi,
+    functionName: 'claimAtomWalletDepositFees',
+    args: [termId],
+  })
+  const transactionHash = await config.walletClient.writeContract(request)
+
+  return { accumulatedFees, protocolFees, transactionHash }
+}
 ```
 
 #### 4. **Improved Preview Functions**
 
 ```typescript
-// Preview with different scenarios
-const [shares, assetsAfterFees] = await multiVault.previewDeposit(termId, curveId, assets);
-const [shares, assetsAfterFixedFees, assetsAfterFees] = await multiVault.previewAtomCreate(termId, curveId, assets);
+import {
+  multiVaultPreviewAtomCreate,
+  multiVaultPreviewDeposit,
+  type WriteConfig,
+} from '@0xintuition/protocol'
+import type { Hex } from 'viem'
+
+async function previewVaultOperations(
+  config: WriteConfig,
+  termId: Hex,
+  curveId: bigint,
+  assets: bigint,
+) {
+  const [depositShares, depositAssetsAfterFees] =
+    await multiVaultPreviewDeposit(config, {
+      args: [termId, curveId, assets],
+    })
+  const [atomShares, atomAssetsAfterFixedFees, atomAssetsAfterFees] =
+    await multiVaultPreviewAtomCreate(config, {
+      args: [termId, assets],
+    })
+
+  return {
+    depositShares,
+    depositAssetsAfterFees,
+    atomShares,
+    atomAssetsAfterFixedFees,
+    atomAssetsAfterFees,
+  }
+}
 ```
 
 ## 2. TypeScript Library Changes
@@ -507,13 +599,42 @@ async function createHelloAtom(
 The new `MultiVault` contract requires curve IDs for all operations:
 
 ```typescript
-// MultiVault requires curve ID for all operations
-const defaultCurveId = await multiVault.getBondingCurveConfig().defaultCurveId
+import {
+  multiVaultGetBondingCurveConfig,
+  type ReadConfig,
+} from '@0xintuition/protocol'
 
-// Use in all deposit/redeem operations
-await multiVault.deposit(receiver, termId, defaultCurveId, minShares, {
-  value: assets,
-})
+async function getDefaultCurveId(config: ReadConfig) {
+  const { defaultCurveId } = await multiVaultGetBondingCurveConfig(config)
+  return defaultCurveId
+}
+```
+
+Pass that curve ID to deposit and redeem operations. The payable `deposit` wrapper is pending the post-publish SDK resync, so this value-forwarding example is excluded from copy-paste typechecking until that package shape is available.
+
+<!-- docs-typecheck: skip -->
+```typescript
+import {
+  multiVaultDeposit,
+  multiVaultGetBondingCurveConfig,
+  type WriteConfig,
+} from '@0xintuition/protocol'
+import type { Address, Hex } from 'viem'
+
+async function depositWithDefaultCurve(
+  config: WriteConfig,
+  receiver: Address,
+  termId: Hex,
+  assets: bigint,
+  minShares: bigint,
+) {
+  const { defaultCurveId } = await multiVaultGetBondingCurveConfig(config)
+
+  return multiVaultDeposit(config, {
+    args: [receiver, termId, defaultCurveId, minShares],
+    value: assets,
+  })
+}
 ```
 
 ### Migration Steps
@@ -522,33 +643,102 @@ await multiVault.deposit(receiver, termId, defaultCurveId, minShares, {
 
 ##### Creating Atoms
 
-```typescript
-// Before
-const atomId = await ethMultiVault.createAtom(atomData, { value: fee });
+**Before:**
 
-// After
-const atomIds = await multiVault.createAtoms([atomData], [assets], { value: totalValue });
-const atomId = atomIds[0];
+This **Before** block intentionally preserves the removed v1 API for historical comparison and is illustrative rather than copy-paste code for the current package.
+
+<!-- docs-typecheck: skip -->
+```typescript
+const atomId = await ethMultiVault.createAtom(atomData, { value: fee })
+```
+
+**After:**
+
+```typescript
+import {
+  multiVaultCreateAtoms,
+  type WriteConfig,
+} from '@0xintuition/protocol'
+import type { Hex } from 'viem'
+
+async function createMigratedAtom(
+  config: WriteConfig,
+  atomData: Hex,
+  assets: bigint,
+) {
+  return multiVaultCreateAtoms(config, {
+    args: [[atomData], [assets]],
+    value: assets,
+  })
+}
 ```
 
 ##### Depositing
 
-```typescript
-// Before
-const shares = await ethMultiVault.depositAtom(receiver, atomId, { value: assets });
+**Before:**
 
-// After
-const shares = await multiVault.deposit(receiver, termId, curveId, minShares, { value: assets });
+This **Before** block intentionally preserves the removed v1 API for historical comparison and is illustrative rather than copy-paste code for the current package.
+
+<!-- docs-typecheck: skip -->
+```typescript
+const shares = await ethMultiVault.depositAtom(receiver, atomId, {
+  value: assets,
+})
+```
+
+**After:**
+
+The payable `deposit` wrapper is pending the post-publish SDK resync, so this value-forwarding migration example is excluded from copy-paste typechecking until that package shape is available.
+
+<!-- docs-typecheck: skip -->
+```typescript
+import { multiVaultDeposit, type WriteConfig } from '@0xintuition/protocol'
+import type { Address, Hex } from 'viem'
+
+async function depositIntoMigratedVault(
+  config: WriteConfig,
+  receiver: Address,
+  termId: Hex,
+  curveId: bigint,
+  assets: bigint,
+  minShares: bigint,
+) {
+  return multiVaultDeposit(config, {
+    args: [receiver, termId, curveId, minShares],
+    value: assets,
+  })
+}
 ```
 
 ##### Redeeming
 
-```typescript
-// Before
-const assets = await ethMultiVault.redeemAtom(shares, receiver, atomId);
+**Before:**
 
-// After
-const assets = await multiVault.redeem(receiver, termId, curveId, shares, minAssets);
+This **Before** block intentionally preserves the removed v1 API for historical comparison and is illustrative rather than copy-paste code for the current package.
+
+<!-- docs-typecheck: skip -->
+```typescript
+const assets = await ethMultiVault.redeemAtom(shares, receiver, atomId)
+```
+
+**After:**
+
+```typescript
+import { multiVaultRedeem, type WriteConfig } from '@0xintuition/protocol'
+import type { Address, Hex } from 'viem'
+
+async function redeemFromMigratedVault(
+  config: WriteConfig,
+  receiver: Address,
+  termId: Hex,
+  curveId: bigint,
+  shares: bigint,
+  minAssets: bigint,
+) {
+  return multiVaultRedeem(config, {
+    args: [receiver, termId, curveId, shares, minAssets],
+  })
+}
 ```
 
 ## 3. SDK Package Changes (`@0xintuition/sdk`)
@@ -616,6 +806,9 @@ const triple = await createTripleStatement(config, {
 
 **After:**
 
+The payable `createTripleStatement` example is pending the post-publish SDK resync, so this deposit-value-coupled migration example is excluded from copy-paste typechecking until that package shape is available.
+
+<!-- docs-typecheck: skip -->
 ```typescript
 import {
   createTripleStatement,

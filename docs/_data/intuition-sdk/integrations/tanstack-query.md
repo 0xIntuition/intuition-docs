@@ -16,17 +16,40 @@ Integrate the Intuition SDK with TanStack Query (React Query) for powerful data 
 npm install @tanstack/react-query wagmi viem
 ```
 
-```typescript title="App.tsx"
+Wagmi hooks require `WagmiProvider`, while both TanStack Query hooks and Wagmi's query-backed hooks require `QueryClientProvider`. Create the Wagmi config once:
+
+```typescript title="wagmi-config.ts"
+import { intuitionTestnet } from '@0xintuition/sdk'
+import { createConfig, http } from 'wagmi'
+import { injected } from 'wagmi/connectors'
+
+export const config = createConfig({
+  chains: [intuitionTestnet],
+  connectors: [injected()],
+  transports: {
+    [intuitionTestnet.id]: http(),
+  },
+})
+```
+
+Then wrap the application with both providers. Keeping `WagmiProvider` outside `QueryClientProvider` matches the provider tree used by the hooks below, including `useWalletClient`, which reads both contexts:
+
+```typescript title="AppProviders.tsx"
+import type { PropsWithChildren } from 'react'
+import { WagmiProvider } from 'wagmi'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { config } from './wagmi-config'
 import './sdk-config'
 
 const queryClient = new QueryClient()
 
-function App() {
+export function AppProviders({ children }: PropsWithChildren) {
   return (
-    <QueryClientProvider client={queryClient}>
-      <YourApp />
-    </QueryClientProvider>
+    <WagmiProvider config={config}>
+      <QueryClientProvider client={queryClient}>
+        {children}
+      </QueryClientProvider>
+    </WagmiProvider>
   )
 }
 ```
@@ -44,7 +67,7 @@ Use `API_URL_PROD` instead when the write clients target `intuitionMainnet`. Ato
 
 ## Query Hooks
 
-Create reusable query hooks for SDK functions:
+Create reusable query hooks for SDK functions. Render every component that calls these hooks beneath `AppProviders` from the setup above.
 
 ### useAtomDetails
 

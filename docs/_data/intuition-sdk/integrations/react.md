@@ -47,7 +47,8 @@ export const config = createConfig({
 })
 ```
 
-```typescript title="App.tsx"
+```typescript title="AppProviders.tsx"
+import type { PropsWithChildren } from 'react'
 import { WagmiProvider } from 'wagmi'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { config } from './wagmi-config'
@@ -55,11 +56,11 @@ import './sdk-config'
 
 const queryClient = new QueryClient()
 
-function App() {
+export function AppProviders({ children }: PropsWithChildren) {
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
-        <YourApp />
+        {children}
       </QueryClientProvider>
     </WagmiProvider>
   )
@@ -68,7 +69,7 @@ function App() {
 
 ## Creating Atoms
 
-Use SDK functions with Wagmi hooks:
+Use SDK functions with Wagmi hooks. Render every component that calls these hooks beneath `AppProviders` from the setup above.
 
 `createAtomFromString` fetches and forwards the required atom base cost. The optional amount in these examples is an additional TRUST/tTRUST deposit (signal).
 
