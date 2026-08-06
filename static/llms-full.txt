@@ -22248,18 +22248,23 @@ import {
   configureSdk,
   createAtomFromString,
   getAtomDetails,
+  type WriteConfig,
 } from '@0xintuition/sdk';
 import { API_URL_DEV } from '@0xintuition/graphql';
+import { toHex } from 'viem';
 
 configureSdk({ apiUrl: API_URL_DEV });
 
-const atomId = calculateAtomId('developer');
-const exists = await getAtomDetails(atomId);
+async function createDeveloperAtom(config: WriteConfig) {
+  const atomId = calculateAtomId(toHex('developer'));
+  const existing = await getAtomDetails(atomId);
 
-if (exists) {
-  console.log('Atom already exists:', atomId);
-} else {
-  const atom = await createAtomFromString(config, 'developer');
+  if (existing !== null) {
+    console.log('Atom already exists:', atomId);
+    return existing;
+  }
+
+  return createAtomFromString(config, 'developer');
 }
 ```
 
@@ -22294,8 +22299,7 @@ type Thing = {
 import {
   configureSdk,
   createAtomFromThing,
-  getMultiVaultAddressFromChainId,
-  intuitionTestnet,
+  type WriteConfig,
 } from '@0xintuition/sdk';
 import { parseEther } from 'viem';
 
@@ -22303,20 +22307,22 @@ configureSdk({
   pinApiKey: process.env.INTUITION_PIN_API_KEY,
 });
 
-// Create atom from Thing
-const atom = await createAtomFromThing(
-  { walletClient, publicClient, address },
-  {
-    url: 'https://www.example.com',
-    name: 'Example Project',
-    description: 'A great Web3 project',
-    image: 'https://example.com/logo.png',
-  },
-  { depositAmount: parseEther('0.05') },
-);
+async function createProjectAtom(config: WriteConfig) {
+  const atom = await createAtomFromThing(
+    config,
+    {
+      url: 'https://www.example.com',
+      name: 'Example Project',
+      description: 'A great Web3 project',
+      image: 'https://example.com/logo.png',
+    },
+    { depositAmount: parseEther('0.05') },
+  );
 
-console.log('Atom ID:', atom.state.termId);
-console.log('IPFS URI:', atom.uri); // ipfs://bafkrei...
+  console.log('Atom ID:', atom.state.termId);
+  console.log('IPFS URI:', atom.uri); // ipfs://bafkrei...
+  return atom;
+}
 ```
 
 ### Common Use Cases
@@ -22375,20 +22381,21 @@ function createAtomFromEthereumAccount(
 ```typescript
 import {
   createAtomFromEthereumAccount,
-  getMultiVaultAddressFromChainId,
-  intuitionTestnet,
+  type WriteConfig,
 } from '@0xintuition/sdk';
 import { parseEther } from 'viem';
 
-// Create atom from Ethereum address
-const atom = await createAtomFromEthereumAccount(
-  { walletClient, publicClient, address },
-  '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045',
-  parseEther('0.01'),
-);
+async function createIdentityAtom(config: WriteConfig) {
+  const atom = await createAtomFromEthereumAccount(
+    config,
+    '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045',
+    parseEther('0.01'),
+  );
 
-console.log('Identity Atom ID:', atom.state.termId);
-console.log('Address:', atom.uri);
+  console.log('Identity Atom ID:', atom.state.termId);
+  console.log('Address:', atom.uri);
+  return atom;
+}
 ```
 
 ### Common Use Cases
@@ -22433,7 +22440,7 @@ Create atoms representing smart contract addresses.
 ```typescript
 function createAtomFromSmartContract(
   config: WriteConfig,
-  contractAddress: Address,
+  contract: { address: Address; chainId: number },
   deposit?: bigint,
 ): Promise<AtomCreationResult>;
 ```
@@ -22443,19 +22450,24 @@ function createAtomFromSmartContract(
 ```typescript
 import {
   createAtomFromSmartContract,
-  getMultiVaultAddressFromChainId,
-  intuitionTestnet,
+  type WriteConfig,
 } from '@0xintuition/sdk';
 import { parseEther } from 'viem';
 
-// Create atom for Uniswap contract
-const uniswap = await createAtomFromSmartContract(
-  { walletClient, publicClient, address },
-  '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984', // UNI token
-  parseEther('0.01'),
-);
+async function createUniswapAtom(config: WriteConfig) {
+  const uniswap = await createAtomFromSmartContract(
+    config,
+    {
+      address: '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984', // UNI token
+      chainId: 1,
+    },
+    parseEther('0.01'),
+  );
 
-console.log('Contract Atom ID:', uniswap.state.termId);
+  console.log('Contract Atom ID:', uniswap.state.termId);
+  console.log('Contract URI:', uniswap.uri); // caip10:eip155:1:0x...
+  return uniswap;
+}
 ```
 
 ### Common Use Cases
@@ -22466,12 +22478,18 @@ console.log('Contract Atom ID:', uniswap.state.termId);
 // Create atoms for DeFi protocols
 const aave = await createAtomFromSmartContract(
   config,
-  '0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9', // AAVE token
+  {
+    address: '0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9', // AAVE token
+    chainId: 1,
+  },
 );
 
 const compound = await createAtomFromSmartContract(
   config,
-  '0xc00e94Cb662C3520282E6f5717214004A7f26888', // COMP token
+  {
+    address: '0xc00e94Cb662C3520282E6f5717214004A7f26888', // COMP token
+    chainId: 1,
+  },
 );
 ```
 
@@ -22488,7 +22506,7 @@ Create an atom from an existing IPFS URI.
 ```typescript
 function createAtomFromIpfsUri(
   config: WriteConfig,
-  ipfsUri: string,
+  ipfsUri: `ipfs://${string}`,
   deposit?: bigint,
 ): Promise<AtomCreationResult>;
 ```
@@ -22498,18 +22516,20 @@ function createAtomFromIpfsUri(
 ```typescript
 import {
   createAtomFromIpfsUri,
-  getMultiVaultAddressFromChainId,
-  intuitionTestnet,
+  type WriteConfig,
 } from '@0xintuition/sdk';
 import { parseEther } from 'viem';
 
-const atom = await createAtomFromIpfsUri(
-  { walletClient, publicClient, address },
-  'ipfs://bafkreib7534cszxn2c6qwoviv43sqh244yfrxomjbealjdwntd6a7atq6u',
-  parseEther('0.01'),
-);
+async function createIpfsAtom(config: WriteConfig) {
+  const atom = await createAtomFromIpfsUri(
+    config,
+    'ipfs://bafkreib7534cszxn2c6qwoviv43sqh244yfrxomjbealjdwntd6a7atq6u',
+    parseEther('0.01'),
+  );
 
-console.log('IPFS Atom ID:', atom.state.termId);
+  console.log('IPFS Atom ID:', atom.state.termId);
+  return atom;
+}
 ```
 
 ### createAtomFromIpfsUpload
@@ -22529,26 +22549,27 @@ function createAtomFromIpfsUpload(
 #### Basic Example
 
 ```typescript
-import { createAtomFromIpfsUpload } from '@0xintuition/sdk';
+import {
+  createAtomFromIpfsUpload,
+  type CreateAtomConfigWithIpfs,
+} from '@0xintuition/sdk';
 import { parseEther } from 'viem';
 
-const atom = await createAtomFromIpfsUpload(
-  {
-    walletClient,
-    publicClient,
-    address,
-    pinataApiJWT: 'your-pinata-jwt-token',
-  },
-  {
-    name: 'My Project',
-    description: 'A blockchain project',
-    url: 'https://myproject.com',
-  },
-  parseEther('0.05'),
-);
+async function uploadProjectAtom(config: CreateAtomConfigWithIpfs) {
+  const atom = await createAtomFromIpfsUpload(
+    config,
+    {
+      name: 'My Project',
+      description: 'A blockchain project',
+      url: 'https://myproject.com',
+    },
+    parseEther('0.05'),
+  );
 
-console.log('Atom ID:', atom.state.termId);
-console.log('IPFS URI:', atom.uri); // ipfs://bafkrei...
+  console.log('Atom ID:', atom.state.termId);
+  console.log('IPFS URI:', atom.uri); // ipfs://bafkrei...
+  return atom;
+}
 ```
 
 ## Batch Creation
@@ -22567,29 +22588,31 @@ Create multiple atoms in a single transaction for improved efficiency and reduce
 ```typescript
 import {
   batchCreateAtomsFromEthereumAccounts,
-  getMultiVaultAddressFromChainId,
-  intuitionTestnet,
+  type WriteConfig,
 } from '@0xintuition/sdk';
-import { parseEther } from 'viem';
+import { parseEther, type Address } from 'viem';
 
-const addresses = [
+const addresses: Address[] = [
   '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045',
   '0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb',
   '0x1234567890123456789012345678901234567890',
 ];
 
-const result = await batchCreateAtomsFromEthereumAccounts(
-  { walletClient, publicClient, address },
-  addresses,
-  parseEther('0.01'), // 0.01 TRUST per atom
-);
+async function createAccountAtoms(config: WriteConfig) {
+  const result = await batchCreateAtomsFromEthereumAccounts(
+    config,
+    addresses,
+    parseEther('0.01'), // Additional 0.01 tTRUST signal per atom
+  );
 
-console.log('Created', result.state.length, 'atoms');
-console.log(
-  'Atom IDs:',
-  result.state.map((s) => s.termId),
-);
-console.log('Single transaction:', result.transactionHash);
+  console.log('Created', result.state.length, 'atoms');
+  console.log(
+    'Atom IDs:',
+    result.state.map((state) => state.termId),
+  );
+  console.log('Single transaction:', result.transactionHash);
+  return result;
+}
 ```
 
 ### Gas Savings
@@ -22636,31 +22659,32 @@ console.log('Share Price:', vault?.current_share_price);
 
 ### calculateAtomId
 
-Calculate the atom ID from atom data without querying the blockchain.
+Calculate the atom ID from hex-encoded atom data without querying the blockchain. Encode text exactly as the creation helpers do before calculating its ID.
 
 #### Function Signature
 
 ```typescript
-function calculateAtomId(atomData: string): Hex;
+function calculateAtomId(atomData: Hex): Hex;
 ```
 
 #### Basic Example
 
 ```typescript
 import { calculateAtomId } from '@0xintuition/sdk';
+import { toHex } from 'viem';
 
 // Calculate ID for a string atom
-const atomId = calculateAtomId('developer');
+const atomId = calculateAtomId(toHex('developer'));
 console.log('Atom ID:', atomId);
 
 // Calculate ID for an Ethereum address
 const addressAtomId = calculateAtomId(
-  '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045',
+  toHex('0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045'),
 );
 console.log('Address Atom ID:', addressAtomId);
 
 // Calculate ID for IPFS URI
-const ipfsAtomId = calculateAtomId('ipfs://bafkreib...');
+const ipfsAtomId = calculateAtomId(toHex('ipfs://bafkreib...'));
 console.log('IPFS Atom ID:', ipfsAtomId);
 ```
 
@@ -22674,14 +22698,16 @@ import {
   configureSdk,
   getAtomDetails,
   createAtomFromString,
+  type WriteConfig,
 } from '@0xintuition/sdk';
 import { API_URL_DEV } from '@0xintuition/graphql';
+import { toHex } from 'viem';
 
 configureSdk({ apiUrl: API_URL_DEV });
 
-async function createAtomIfNotExists(data: string) {
+async function createAtomIfNotExists(config: WriteConfig, data: string) {
   // Calculate ID
-  const atomId = calculateAtomId(data);
+  const atomId = calculateAtomId(toHex(data));
 
   // Check if exists
   const existing = await getAtomDetails(atomId);
@@ -24437,28 +24463,34 @@ export const config = createConfig({
 })
 ```
 
-```typescript title="App.tsx"
-import { WagmiProvider } from 'wagmi'
+Pass the exported Wagmi `config` into the provider component:
+
+```typescript title="AppProviders.tsx"
+import type { PropsWithChildren } from 'react'
+import { WagmiProvider, type Config } from 'wagmi'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { config } from './wagmi-config'
 import './sdk-config'
 
 const queryClient = new QueryClient()
 
-function App() {
+type AppProvidersProps = PropsWithChildren<{ config: Config }>
+
+export function AppProviders({ children, config }: AppProvidersProps) {
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
-        <YourApp />
+        {children}
       </QueryClientProvider>
     </WagmiProvider>
   )
 }
 ```
 
+Provider convention: Every usage component in this guide must render inside the `WagmiProvider` and `QueryClientProvider` shown above. Pasting a component into an app without that wrapper can throw `WagmiProviderNotFoundError` or `"No QueryClient set"`.
+
 ## Creating Atoms
 
-Use SDK functions with Wagmi hooks:
+Use SDK functions with Wagmi hooks.
 
 `createAtomFromString` fetches and forwards the required atom base cost. The optional amount in these examples is an additional TRUST/tTRUST deposit (signal).
 
@@ -24472,6 +24504,7 @@ import { parseEther } from 'viem'
 import { useState } from 'react'
 
 export function CreateAtomButton() {
+  // Renders inside the providers from Setup
   const chainId = useChainId()
   const publicClient = usePublicClient()
   const { data: walletClient } = useWalletClient()
@@ -24553,6 +24586,7 @@ export function useCreateAtom() {
 
 // Usage in component
 function MyComponent() {
+  // Renders inside the providers from Setup
   const createAtom = useCreateAtom()
 
   const handleCreate = async () => {
@@ -24593,6 +24627,7 @@ export function useAtomDetails(atomId: string | undefined) {
 
 // Usage
 function AtomDisplay({ atomId }: { atomId: string }) {
+  // Renders inside the providers from Setup
   const { data: atom, isLoading, error } = useAtomDetails(atomId)
 
   if (isLoading) return <div>Loading...</div>
@@ -24622,13 +24657,13 @@ import { useQuery, useMutation } from '@tanstack/react-query'
 import './sdk-config'
 import {
   createAtomFromString,
-  getAtomDetails,
   globalSearch,
   getMultiVaultAddressFromChainId,
 } from '@0xintuition/sdk'
 import { parseEther } from 'viem'
 
 export function AtomManager() {
+  // Renders inside the providers from Setup
   const chainId = useChainId()
   const { address: accountAddress } = useAccount()
   const publicClient = usePublicClient()
@@ -24675,7 +24710,7 @@ export function AtomManager() {
           placeholder="Search..."
         />
         {searchResults?.atoms.map(atom => (
-          <div key={atom.id}>{atom.label}</div>
+          <div key={atom.term_id}>{atom.label}</div>
         ))}
       </div>
 
@@ -24720,20 +24755,44 @@ Integrate the Intuition SDK with TanStack Query (React Query) for powerful data 
 ## Setup
 
 ```bash
-npm install @tanstack/react-query
+npm install @tanstack/react-query wagmi viem
 ```
 
-```typescript title="App.tsx"
+Wagmi hooks require `WagmiProvider`, while both TanStack Query hooks and Wagmi's query-backed hooks require `QueryClientProvider`. Create the Wagmi config once:
+
+```typescript title="wagmi-config.ts"
+import { intuitionTestnet } from '@0xintuition/sdk'
+import { createConfig, http } from 'wagmi'
+import { injected } from 'wagmi/connectors'
+
+export const config = createConfig({
+  chains: [intuitionTestnet],
+  connectors: [injected()],
+  transports: {
+    [intuitionTestnet.id]: http(),
+  },
+})
+```
+
+Then pass that config to an application wrapper with both providers. Keeping `WagmiProvider` outside `QueryClientProvider` matches the provider tree used by the hooks below, including `useWalletClient`, which reads both contexts:
+
+```typescript title="AppProviders.tsx"
+import type { PropsWithChildren } from 'react'
+import { WagmiProvider, type Config } from 'wagmi'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import './sdk-config'
 
 const queryClient = new QueryClient()
 
-function App() {
+type AppProvidersProps = PropsWithChildren<{ config: Config }>
+
+export function AppProviders({ children, config }: AppProvidersProps) {
   return (
-    <QueryClientProvider client={queryClient}>
-      <YourApp />
-    </QueryClientProvider>
+    <WagmiProvider config={config}>
+      <QueryClientProvider client={queryClient}>
+        {children}
+      </QueryClientProvider>
+    </WagmiProvider>
   )
 }
 ```
@@ -24749,9 +24808,11 @@ configureSdk({ apiUrl: API_URL_DEV })
 
 Use `API_URL_PROD` instead when the write clients target `intuitionMainnet`. Atom creation helpers fetch and forward the required base cost; an optional amount is an additional TRUST/tTRUST deposit (signal).
 
+Provider convention: Every usage component in this guide must render inside the `WagmiProvider` and `QueryClientProvider` shown above. Pasting a component into an app without that wrapper can throw `WagmiProviderNotFoundError` or `"No QueryClient set"`.
+
 ## Query Hooks
 
-Create reusable query hooks for SDK functions:
+Create reusable query hooks for SDK functions.
 
 ### useAtomDetails
 
@@ -24773,11 +24834,12 @@ export function useAtomDetails(atomId: string | undefined) {
 
 ```typescript title="hooks/useGlobalSearch.ts"
 import { useQuery } from '@tanstack/react-query'
-import { globalSearch } from '@0xintuition/sdk'
+import { globalSearch, type GlobalSearchOptions } from '@0xintuition/sdk'
+import '../sdk-config'
 
 export function useGlobalSearch(
   query: string,
-  options?: { atomsLimit?: number }
+  options: GlobalSearchOptions = {}
 ) {
   return useQuery({
     queryKey: ['search', query, options],
@@ -24799,9 +24861,11 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { usePublicClient, useWalletClient, useChainId } from 'wagmi'
 import {
   createAtomFromString,
+  getAtomDetails,
   getMultiVaultAddressFromChainId,
 } from '@0xintuition/sdk'
 import { parseEther } from 'viem'
+import '../sdk-config'
 
 export function useCreateAtom() {
   const queryClient = useQueryClient()
@@ -24823,18 +24887,23 @@ export function useCreateAtom() {
         deposit ? parseEther(deposit) : undefined
       )
     },
-    onSuccess: (result) => {
+    onSuccess: async (result) => {
       // Invalidate search queries to refetch
-      queryClient.invalidateQueries({ queryKey: ['search'] })
+      await queryClient.invalidateQueries({ queryKey: ['search'] })
 
-      // Optionally prefetch the new atom details
-      queryClient.setQueryData(['atom', result.state.termId], result)
+      // Populate the atom-details cache with the GraphQL result shape.
+      await queryClient.prefetchQuery({
+        queryKey: ['atom', result.state.termId],
+        queryFn: () => getAtomDetails(result.state.termId),
+      })
     },
   })
 }
 ```
 
 ### useCreateTriple
+
+The payable triple-deposit example is pending the post-publish SDK resync, so it is excluded from copy-paste typechecking until the published package has the corrected deposit-value behavior.
 
 ```typescript title="hooks/useCreateTriple.ts"
 import { useMutation, useQueryClient } from '@tanstack/react-query'
@@ -24897,20 +24966,67 @@ Full React component with TanStack Query:
 
 ```typescript title="AtomExplorer.tsx"
 import { useState } from 'react'
-import { useCreateAtom, useGlobalSearch, useAtomDetails } from './hooks'
-import './sdk-config'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useChainId, usePublicClient, useWalletClient } from 'wagmi'
+import {
+  configureSdk,
+  createAtomFromString,
+  getAtomDetails,
+  getMultiVaultAddressFromChainId,
+  globalSearch,
+} from '@0xintuition/sdk'
+import { API_URL_DEV } from '@0xintuition/graphql'
+import { parseEther } from 'viem'
+
+configureSdk({ apiUrl: API_URL_DEV })
 
 export function AtomExplorer() {
+  // Renders inside the providers from Setup
+  const chainId = useChainId()
+  const publicClient = usePublicClient()
+  const { data: walletClient } = useWalletClient()
+  const queryClient = useQueryClient()
   const [searchQuery, setSearchQuery] = useState('')
   const [newAtomData, setNewAtomData] = useState('')
   const [selectedAtomId, setSelectedAtomId] = useState<string>()
 
   // Queries
-  const search = useGlobalSearch(searchQuery, { atomsLimit: 10 })
-  const atomDetails = useAtomDetails(selectedAtomId)
+  const search = useQuery({
+    queryKey: ['search', searchQuery],
+    queryFn: () => globalSearch(searchQuery, { atomsLimit: 10 }),
+    enabled: searchQuery.length > 2,
+  })
+  const atomDetails = useQuery({
+    queryKey: ['atom', selectedAtomId],
+    queryFn: () => selectedAtomId ? getAtomDetails(selectedAtomId) : null,
+    enabled: !!selectedAtomId,
+  })
 
   // Mutations
-  const createAtom = useCreateAtom()
+  const createAtom = useMutation({
+    mutationFn: async ({ data, deposit }: { data: string, deposit: string }) => {
+      if (!publicClient || !walletClient) {
+        throw new Error('Wallet not connected')
+      }
+
+      return createAtomFromString(
+        {
+          walletClient,
+          publicClient,
+          address: getMultiVaultAddressFromChainId(chainId),
+        },
+        data,
+        parseEther(deposit),
+      )
+    },
+    onSuccess: async (result) => {
+      await queryClient.invalidateQueries({ queryKey: ['search'] })
+      await queryClient.prefetchQuery({
+        queryKey: ['atom', result.state.termId],
+        queryFn: () => getAtomDetails(result.state.termId),
+      })
+    },
+  })
 
   const handleCreateAtom = async () => {
     try {
@@ -24942,8 +25058,8 @@ export function AtomExplorer() {
 
         {search.data?.atoms.map(atom => (
           <div
-            key={atom.id}
-            onClick={() => setSelectedAtomId(atom.id)}
+            key={atom.term_id}
+            onClick={() => setSelectedAtomId(atom.term_id)}
             style={{ cursor: 'pointer' }}
           >
             {atom.label}
@@ -24996,38 +25112,78 @@ export function AtomExplorer() {
 ### Optimistic Updates
 
 ```typescript
-const createAtom = useMutation({
-  mutationFn: createAtomFunction,
-  onMutate: async (newAtom) => {
-    // Cancel outgoing refetches
-    await queryClient.cancelQueries({ queryKey: ['search'] })
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { createAtomFromString } from '@0xintuition/sdk'
+import type { WriteConfig } from '@0xintuition/protocol'
 
-    // Snapshot previous value
-    const previous = queryClient.getQueryData(['search'])
+type NewAtom = { data: string }
+type AtomSummary = { term_id: string, label: string }
+type SearchData = { atoms: AtomSummary[] }
 
-    // Optimistically update
-    queryClient.setQueryData(['search'], (old: any) => ({
-      ...old,
-      atoms: [...(old?.atoms || []), { id: 'temp', label: newAtom.data }],
-    }))
+export function useOptimisticCreateAtom(
+  config: WriteConfig,
+) {
+  const queryClient = useQueryClient()
 
-    return { previous }
-  },
-  onError: (err, newAtom, context) => {
-    // Rollback on error
-    queryClient.setQueryData(['search'], context?.previous)
-  },
-  onSettled: () => {
-    queryClient.invalidateQueries({ queryKey: ['search'] })
-  },
-})
+  return useMutation<
+    AtomSummary,
+    Error,
+    NewAtom,
+    { previous: SearchData | undefined }
+  >({
+    mutationFn: async (newAtom) => {
+      const result = await createAtomFromString(config, newAtom.data)
+      return { term_id: result.state.termId, label: newAtom.data }
+    },
+    onMutate: async (newAtom) => {
+      // Cancel outgoing refetches
+      await queryClient.cancelQueries({ queryKey: ['search'] })
+
+      // Snapshot previous value
+      const previous = queryClient.getQueryData<SearchData>(['search'])
+
+      // Optimistically update
+      queryClient.setQueryData<SearchData>(['search'], (old) => ({
+        ...old,
+        atoms: [...(old?.atoms || []), { term_id: 'temp', label: newAtom.data }],
+      }))
+
+      return { previous }
+    },
+    onError: (_error, _newAtom, context) => {
+      // Rollback on error
+      queryClient.setQueryData(['search'], context?.previous)
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ['search'] })
+    },
+  })
+}
 ```
 
 ### Dependent Queries
 
 ```typescript
-function AtomWithTriples({ atomId }: { atomId: string }) {
-  const atom = useAtomDetails(atomId)
+import { useQuery } from '@tanstack/react-query'
+import { getAtomDetails } from '@0xintuition/sdk'
+import type { Hex } from 'viem'
+
+type TripleSummary = { term_id: Hex, label: string }
+
+type AtomWithTriplesProps = {
+  atomId: Hex
+  fetchTriplesForAtom: (atomId: Hex) => Promise<TripleSummary[]>
+}
+
+export function AtomWithTriples({
+  atomId,
+  fetchTriplesForAtom,
+}: AtomWithTriplesProps) {
+  // Renders inside the providers from Setup
+  const atom = useQuery({
+    queryKey: ['atom', atomId],
+    queryFn: () => getAtomDetails(atomId),
+  })
 
   const triples = useQuery({
     queryKey: ['triples', atomId],
@@ -25035,7 +25191,15 @@ function AtomWithTriples({ atomId }: { atomId: string }) {
     enabled: !!atom.data, // Only fetch when atom is loaded
   })
 
-  return (/* ... */)
+  if (atom.isLoading || triples.isLoading) return <p>Loading...</p>
+
+  return (
+    <ul>
+      {triples.data?.map((triple) => (
+        <li key={triple.term_id}>{triple.label}</li>
+      ))}
+    </ul>
+  )
 }
 ```
 
@@ -25159,6 +25323,8 @@ function redeemBatch(address receiver, bytes32[] termIds, uint256[] curveIds, ui
 
 **Before:**
 
+This **Before** block intentionally preserves the removed v1 API for historical comparison and is illustrative rather than copy-paste code for the current package.
+
 ```typescript
 import { EthMultiVaultAbi } from '@0xintuition/protocol'
 import { getEthMultiVaultAddress } from '@0xintuition/sdk'
@@ -25195,14 +25361,24 @@ event TripleCreated(address indexed creator, bytes32 indexed termId, bytes32 sub
 
 #### ID Handling Update
 
-```typescript
-// Before (EthMultiVault)
-const atomId: bigint = 123n;
-const tripleId: bigint = 456n;
+**Before:**
 
-// After (MultiVault)
-const atomId: `0x${string}` = "0x1234..."; // 32-byte hash
-const tripleId: `0x${string}` = "0x5678..."; // 32-byte hash
+This **Before** block intentionally preserves the removed v1 numeric-ID shape for historical comparison and is illustrative rather than copy-paste code for the current package.
+
+```typescript
+const atomId: bigint = 123n
+const tripleId: bigint = 456n
+```
+
+**After:**
+
+```typescript
+import type { Hex } from 'viem'
+
+const atomId: Hex =
+  '0x906527aae4af914b1ac01ff9adfdda5dafde3b5e21f84045e0660b0a15c07769'
+const tripleId: Hex =
+  '0xc4e64dbc3d69293d28259653d9b15d2ab3f6aa1aa0b1a489e5250974cd089730'
 ```
 
 #### Query Functions
@@ -25236,38 +25412,119 @@ function convertToAssets(bytes32 termId, uint256 curveId, uint256 shares) view r
 #### 1. **Utilization Tracking**
 
 ```typescript
-const userUtilization = await multiVault.getUserUtilizationForEpoch(
-  userAddress,
-  epoch,
-)
-const totalUtilization = await multiVault.getTotalUtilizationForEpoch(epoch)
+import {
+  multiVaultGetTotalUtilizationForEpoch,
+  multiVaultGetUserUtilizationForEpoch,
+  type ReadConfig,
+} from '@0xintuition/protocol'
+import type { Address } from 'viem'
+
+async function getEpochUtilization(
+  config: ReadConfig,
+  userAddress: Address,
+  epoch: bigint,
+) {
+  const userUtilization = await multiVaultGetUserUtilizationForEpoch(config, {
+    args: [userAddress, epoch],
+  })
+  const totalUtilization = await multiVaultGetTotalUtilizationForEpoch(config, {
+    args: [epoch],
+  })
+
+  return { userUtilization, totalUtilization }
+}
 ```
 
 #### 2. **Epoch System**
 
 ```typescript
-const currentEpoch = await multiVault.currentEpoch()
-const lastActiveEpoch = await multiVault.lastActiveEpoch(userAddress)
+import {
+  multiVaultCurrentEpoch,
+  multiVaultGetUserLastActiveEpoch,
+  type ReadConfig,
+} from '@0xintuition/protocol'
+import type { Address } from 'viem'
+
+async function getEpochState(config: ReadConfig, userAddress: Address) {
+  const currentEpoch = await multiVaultCurrentEpoch(config)
+  const lastActiveEpoch = await multiVaultGetUserLastActiveEpoch(config, {
+    args: [userAddress],
+  })
+
+  return { currentEpoch, lastActiveEpoch }
+}
 ```
 
 #### 3. **Enhanced Fee Management**
 
 ```typescript
-// Atom wallet deposit fees
-const accumulatedFees =
-  await multiVault.accumulatedAtomWalletDepositFees(atomWallet)
-await multiVault.claimAtomWalletDepositFees(termId)
+import { MultiVaultAbi, type WriteConfig } from '@0xintuition/protocol'
+import type { Address, Hex } from 'viem'
 
-// Protocol fees by epoch
-const protocolFees = await multiVault.accumulatedProtocolFees(epoch)
+async function readAndClaimFees(
+  config: WriteConfig,
+  atomWallet: Address,
+  termId: Hex,
+  epoch: bigint,
+) {
+  const accumulatedFees = await config.publicClient.readContract({
+    address: config.address,
+    abi: MultiVaultAbi,
+    functionName: 'accumulatedAtomWalletDepositFees',
+    args: [atomWallet],
+  })
+  const protocolFees = await config.publicClient.readContract({
+    address: config.address,
+    abi: MultiVaultAbi,
+    functionName: 'accumulatedProtocolFees',
+    args: [epoch],
+  })
+  const { request } = await config.publicClient.simulateContract({
+    account: config.walletClient.account,
+    address: config.address,
+    abi: MultiVaultAbi,
+    functionName: 'claimAtomWalletDepositFees',
+    args: [termId],
+  })
+  const transactionHash = await config.walletClient.writeContract(request)
+
+  return { accumulatedFees, protocolFees, transactionHash }
+}
 ```
 
 #### 4. **Improved Preview Functions**
 
 ```typescript
-// Preview with different scenarios
-const [shares, assetsAfterFees] = await multiVault.previewDeposit(termId, curveId, assets);
-const [shares, assetsAfterFixedFees, assetsAfterFees] = await multiVault.previewAtomCreate(termId, curveId, assets);
+import {
+  multiVaultPreviewAtomCreate,
+  multiVaultPreviewDeposit,
+  type WriteConfig,
+} from '@0xintuition/protocol'
+import type { Hex } from 'viem'
+
+async function previewVaultOperations(
+  config: WriteConfig,
+  termId: Hex,
+  curveId: bigint,
+  assets: bigint,
+) {
+  const [depositShares, depositAssetsAfterFees] =
+    await multiVaultPreviewDeposit(config, {
+      args: [termId, curveId, assets],
+    })
+  const [atomShares, atomAssetsAfterFixedFees, atomAssetsAfterFees] =
+    await multiVaultPreviewAtomCreate(config, {
+      args: [termId, assets],
+    })
+
+  return {
+    depositShares,
+    depositAssetsAfterFees,
+    atomShares,
+    atomAssetsAfterFixedFees,
+    atomAssetsAfterFees,
+  }
+}
 ```
 
 ## 2. TypeScript Library Changes
@@ -25277,6 +25534,8 @@ const [shares, assetsAfterFixedFees, assetsAfterFees] = await multiVault.preview
 #### Atom Creation: Singular → Plural
 
 **Before:**
+
+This **Before** block intentionally preserves the removed v1 API for historical comparison and is illustrative rather than copy-paste code for the current package.
 
 ```typescript
 import {
@@ -25297,32 +25556,38 @@ const cost = await createAtomCalculateBaseCost(config)
 
 **After:**
 
+The payable `multiVaultCreateAtoms` wrapper is pending the post-publish SDK resync, so this deposit-value-coupled migration example is excluded from copy-paste typechecking until that package shape is available.
+
 ```typescript
 import {
-  createAtoms,
-  createAtomsEncode,
-  getAtomCost,
+  multiVaultCreateAtoms,
+  multiVaultCreateAtomsEncode,
+  multiVaultGetAtomCost,
+  type WriteConfig,
 } from '@0xintuition/protocol'
+import { toHex } from 'viem'
 
-// Atoms creation (supports single or multiple)
-await createAtoms(config, {
-  args: [
-    [atomUri1, atomUri2],
-    [assets1, assets2],
-  ],
-  value,
-})
+async function createAtoms(config: WriteConfig, atomUris: string[]) {
+  const atomCost = await multiVaultGetAtomCost(config)
+  const atomData = atomUris.map((uri) => toHex(uri))
+  const assets = atomData.map(() => atomCost)
+  const value = assets.reduce((total, amount) => total + amount, 0n)
 
-// Encoding
-const encodedData = createAtomsEncode([atomUri1, atomUri2], [assets1, assets2])
+  const transactionHash = await multiVaultCreateAtoms(config, {
+    args: [atomData, assets],
+    value,
+  })
+  const encodedData = multiVaultCreateAtomsEncode(atomData, assets)
 
-// Cost calculation
-const cost = await getAtomCost(config)
+  return { transactionHash, encodedData, atomCost }
+}
 ```
 
 #### Triple Creation: Singular → Plural
 
 **Before:**
+
+This **Before** block intentionally preserves the removed v1 API for historical comparison and is illustrative rather than copy-paste code for the current package.
 
 ```typescript
 import {
@@ -25342,36 +25607,54 @@ const cost = await createTripleCalculateBaseCost(config)
 
 **After:**
 
+The payable `multiVaultCreateTriples` wrapper is pending the post-publish SDK resync, so this deposit-value-coupled migration example is excluded from copy-paste typechecking until that package shape is available.
+
 ```typescript
 import {
-  createTriples,
-  createTriplesEncode,
-  getTripleCost,
+  multiVaultCreateTriples,
+  multiVaultCreateTriplesEncode,
+  multiVaultGetTripleCost,
+  type WriteConfig,
 } from '@0xintuition/protocol'
+import type { Hex } from 'viem'
 
-await createTriples(config, {
-  args: [
-    [subjectId1, subjectId2],
-    [predicateId1, predicateId2],
-    [objectId1, objectId2],
-    [assets1, assets2],
-  ],
-  value,
-})
+async function createTriples(
+  config: WriteConfig,
+  subjectIds: Hex[],
+  predicateIds: Hex[],
+  objectIds: Hex[],
+) {
+  if (
+    subjectIds.length !== predicateIds.length ||
+    subjectIds.length !== objectIds.length
+  ) {
+    throw new Error('Subject, predicate, and object arrays must have equal length')
+  }
 
-const encodedData = createTriplesEncode(
-  [subjectId1, subjectId2],
-  [predicateId1, predicateId2],
-  [objectId1, objectId2],
-  [assets1, assets2],
-)
+  const tripleCost = await multiVaultGetTripleCost(config)
+  const assets = subjectIds.map(() => tripleCost)
+  const value = assets.reduce((total, amount) => total + amount, 0n)
 
-const cost = await getTripleCost(config)
+  const transactionHash = await multiVaultCreateTriples(config, {
+    args: [subjectIds, predicateIds, objectIds, assets],
+    value,
+  })
+  const encodedData = multiVaultCreateTriplesEncode(
+    subjectIds,
+    predicateIds,
+    objectIds,
+    assets,
+  )
+
+  return { transactionHash, encodedData, tripleCost }
+}
 ```
 
 #### Deposit and Redeem Simplification
 
 **Before:**
+
+This **Before** block intentionally preserves the removed v1 API for historical comparison and is illustrative rather than copy-paste code for the current package.
 
 ```typescript
 import {
@@ -25394,29 +25677,42 @@ await redeemTriple(config, { args: [shares, receiver, tripleId] })
 
 **After:**
 
+The payable `deposit` wrapper is pending the post-publish SDK resync, so this deposit-value-coupled migration example is excluded from copy-paste typechecking until that package shape is available.
+
 ```typescript
-import {
-  deposit,
-  depositEncode,
-  redeem,
-  redeemEncode,
-} from '@0xintuition/protocol'
+import type { Address, Hex } from 'viem'
 
-// Unified functions for any vault (atom or triple)
-await deposit(config, {
-  args: [receiver, termId, curveId, assets, minShares],
-  value,
-})
-await redeem(config, { args: [receiver, termId, cirveId, shares, minAssets] })
+// Prepare the current MultiVault inputs without calling the pending SDK wrapper.
+function prepareVaultCalls(
+  receiver: Address,
+  termId: Hex,
+  curveId: bigint,
+  assets: bigint,
+  minShares: bigint,
+  shares: bigint,
+  minAssets: bigint,
+) {
+  const depositCall = {
+    args: [receiver, termId, curveId, minShares],
+    value: assets,
+  } as const
+  const redeemArgs = [
+    receiver,
+    termId,
+    curveId,
+    shares,
+    minAssets,
+  ] as const
 
-// Unified encoding
-const depositData = depositEncode(receiver, vaultId)
-const redeemData = redeemEncode(shares, receiver, vaultId)
+  return { depositCall, redeemArgs }
+}
 ```
 
 #### Batch Operations Renamed
 
 **Before:**
+
+This **Before** block intentionally preserves the removed v1 API for historical comparison and is illustrative rather than copy-paste code for the current package.
 
 ```typescript
 import {
@@ -25431,16 +25727,18 @@ import {
 
 ```typescript
 import {
-  createAtoms, // Replaces batchCreateAtom
-  createTriples, // Replaces batchCreateTriple
-  depositBatch, // Replaces batchDepositCurve
-  redeemBatch, // Replaces batchRedeemCurve
+  multiVaultCreateAtoms, // Replaces batchCreateAtom
+  multiVaultCreateTriples, // Replaces batchCreateTriple
+  multiVaultDepositBatch, // Replaces batchDepositCurve
+  multiVaultRedeemBatch, // Replaces batchRedeemCurve
 } from '@0xintuition/protocol'
 ```
 
 #### Multicall Function Name
 
 **Before:**
+
+This **Before** block intentionally preserves the removed v1 API for historical comparison and is illustrative rather than copy-paste code for the current package.
 
 ```typescript
 import { multiCallIntuitionConfigs } from '@0xintuition/protocol'
@@ -25451,14 +25749,21 @@ const config = await multiCallIntuitionConfigs({ address, publicClient })
 **After:**
 
 ```typescript
-import { multicallIntuitionConfig } from '@0xintuition/protocol'
+import {
+  multiVaultMultiCallIntuitionConfigs,
+  type ReadConfig,
+} from '@0xintuition/protocol'
 
-const config = await multicallIntuitionConfig({ address, publicClient })
+async function getMultiVaultConfig(config: ReadConfig) {
+  return multiVaultMultiCallIntuitionConfigs(config)
+}
 ```
 
 #### Removed EthMultiVault API
 
 **Before:**
+
+This **Before** block intentionally preserves the removed v1 API for historical comparison and is illustrative rather than copy-paste code for the current package.
 
 ```typescript
 import { EthMultiVault } from '@0xintuition/protocol'
@@ -25469,28 +25774,32 @@ const result = await ethMultiVault.createAtom('hello')
 
 **After:**
 
+The payable `multiVaultCreateAtoms` wrapper is pending the post-publish SDK resync, so this deposit-value-coupled migration example is excluded from copy-paste typechecking until that package shape is available.
+
 ```typescript
 import {
   getMultiVaultAddressFromChainId,
   intuitionTestnet,
-  MultiVaultAbi,
+  multiVaultCreateAtoms,
+  multiVaultGetAtomCost,
+  type WriteConfig,
 } from '@0xintuition/protocol'
+import { toHex } from 'viem'
 
-import { getContract } from 'viem'
+async function createHelloAtom(
+  clients: Omit<WriteConfig, 'address'>,
+) {
+  const config: WriteConfig = {
+    ...clients,
+    address: getMultiVaultAddressFromChainId(intuitionTestnet.id),
+  }
+  const atomCost = await multiVaultGetAtomCost(config)
 
-const multiVault = getContract({
-  abi: MultiVaultAbi,
-  address: getMultiVaultAddressFromChainId(intuitionTestnet.id),
-  client: {
-    public: publicClient,
-    wallet: walletClient,
-  },
-})
-
-const atomCost = await multiVault.read.getAtomCost()
-const result = await multiVault.createAtoms([['hello'], [atomCost]], {
-  value: atomCost,
-})
+  return multiVaultCreateAtoms(config, {
+    args: [[toHex('hello')], [atomCost]],
+    value: atomCost,
+  })
+}
 ```
 
 ### Bonding Curve Integration
@@ -25498,13 +25807,41 @@ const result = await multiVault.createAtoms([['hello'], [atomCost]], {
 The new `MultiVault` contract requires curve IDs for all operations:
 
 ```typescript
-// MultiVault requires curve ID for all operations
-const defaultCurveId = await multiVault.getBondingCurveConfig().defaultCurveId
+import {
+  multiVaultGetBondingCurveConfig,
+  type ReadConfig,
+} from '@0xintuition/protocol'
 
-// Use in all deposit/redeem operations
-await multiVault.deposit(receiver, termId, defaultCurveId, minShares, {
-  value: assets,
-})
+async function getDefaultCurveId(config: ReadConfig) {
+  const { defaultCurveId } = await multiVaultGetBondingCurveConfig(config)
+  return defaultCurveId
+}
+```
+
+Pass that curve ID to deposit and redeem operations. The payable `deposit` wrapper is pending the post-publish SDK resync, so this value-forwarding example is excluded from copy-paste typechecking until that package shape is available.
+
+```typescript
+import {
+  multiVaultDeposit,
+  multiVaultGetBondingCurveConfig,
+  type WriteConfig,
+} from '@0xintuition/protocol'
+import type { Address, Hex } from 'viem'
+
+async function depositWithDefaultCurve(
+  config: WriteConfig,
+  receiver: Address,
+  termId: Hex,
+  assets: bigint,
+  minShares: bigint,
+) {
+  const { defaultCurveId } = await multiVaultGetBondingCurveConfig(config)
+
+  return multiVaultDeposit(config, {
+    args: [receiver, termId, defaultCurveId, minShares],
+    value: assets,
+  })
+}
 ```
 
 ### Migration Steps
@@ -25513,33 +25850,100 @@ await multiVault.deposit(receiver, termId, defaultCurveId, minShares, {
 
 ##### Creating Atoms
 
-```typescript
-// Before
-const atomId = await ethMultiVault.createAtom(atomData, { value: fee });
+**Before:**
 
-// After
-const atomIds = await multiVault.createAtoms([atomData], [assets], { value: totalValue });
-const atomId = atomIds[0];
+This **Before** block intentionally preserves the removed v1 API for historical comparison and is illustrative rather than copy-paste code for the current package.
+
+```typescript
+const atomId = await ethMultiVault.createAtom(atomData, { value: fee })
+```
+
+**After:**
+
+The payable `multiVaultCreateAtoms` wrapper is pending the post-publish SDK resync, so this deposit-value-coupled migration example is excluded from copy-paste typechecking until that package shape is available.
+
+```typescript
+import {
+  multiVaultCreateAtoms,
+  type WriteConfig,
+} from '@0xintuition/protocol'
+import type { Hex } from 'viem'
+
+async function createMigratedAtom(
+  config: WriteConfig,
+  atomData: Hex,
+  assets: bigint,
+) {
+  return multiVaultCreateAtoms(config, {
+    args: [[atomData], [assets]],
+    value: assets,
+  })
+}
 ```
 
 ##### Depositing
 
-```typescript
-// Before
-const shares = await ethMultiVault.depositAtom(receiver, atomId, { value: assets });
+**Before:**
 
-// After
-const shares = await multiVault.deposit(receiver, termId, curveId, minShares, { value: assets });
+This **Before** block intentionally preserves the removed v1 API for historical comparison and is illustrative rather than copy-paste code for the current package.
+
+```typescript
+const shares = await ethMultiVault.depositAtom(receiver, atomId, {
+  value: assets,
+})
+```
+
+**After:**
+
+The payable `deposit` wrapper is pending the post-publish SDK resync, so this value-forwarding migration example is excluded from copy-paste typechecking until that package shape is available.
+
+```typescript
+import { multiVaultDeposit, type WriteConfig } from '@0xintuition/protocol'
+import type { Address, Hex } from 'viem'
+
+async function depositIntoMigratedVault(
+  config: WriteConfig,
+  receiver: Address,
+  termId: Hex,
+  curveId: bigint,
+  assets: bigint,
+  minShares: bigint,
+) {
+  return multiVaultDeposit(config, {
+    args: [receiver, termId, curveId, minShares],
+    value: assets,
+  })
+}
 ```
 
 ##### Redeeming
 
-```typescript
-// Before
-const assets = await ethMultiVault.redeemAtom(shares, receiver, atomId);
+**Before:**
 
-// After
-const assets = await multiVault.redeem(receiver, termId, curveId, shares, minAssets);
+This **Before** block intentionally preserves the removed v1 API for historical comparison and is illustrative rather than copy-paste code for the current package.
+
+```typescript
+const assets = await ethMultiVault.redeemAtom(shares, receiver, atomId)
+```
+
+**After:**
+
+```typescript
+import { multiVaultRedeem, type WriteConfig } from '@0xintuition/protocol'
+import type { Address, Hex } from 'viem'
+
+async function redeemFromMigratedVault(
+  config: WriteConfig,
+  receiver: Address,
+  termId: Hex,
+  curveId: bigint,
+  shares: bigint,
+  minAssets: bigint,
+) {
+  return multiVaultRedeem(config, {
+    args: [receiver, termId, curveId, shares, minAssets],
+  })
+}
 ```
 
 ## 3. SDK Package Changes (`@0xintuition/sdk`)
@@ -25559,6 +25963,8 @@ SDK atom creation helpers dynamically fetch and forward the required atom base c
 
 **Before:**
 
+This **Before** block intentionally preserves the removed v1 API for historical comparison and is illustrative rather than copy-paste code for the current package.
+
 ```typescript
 import { getAtom, getTriple } from '@0xintuition/sdk'
 
@@ -25569,7 +25975,14 @@ const tripleData = await getTriple('54670')
 **After:**
 
 ```typescript
-import { getAtomDetails, getTripleDetails } from '@0xintuition/sdk'
+import {
+  configureSdk,
+  getAtomDetails,
+  getTripleDetails,
+} from '@0xintuition/sdk'
+import { API_URL_DEV } from '@0xintuition/graphql'
+
+configureSdk({ apiUrl: API_URL_DEV })
 
 const atomData = await getAtomDetails(
   '0x906527aae4af914b1ac01ff9adfdda5dafde3b5e21f84045e0660b0a15c07769',
@@ -25583,6 +25996,8 @@ const tripleData = await getTripleDetails(
 
 **Before:**
 
+This **Before** block preserves the pre-v3 call shape of `createTripleStatement` for historical comparison. The helper still exists and is payable, so this deposit-value-coupled example is excluded from copy-paste typechecking pending the post-publish SDK resync.
+
 ```typescript
 import { createTripleStatement } from '@0xintuition/sdk'
 
@@ -25594,18 +26009,28 @@ const triple = await createTripleStatement(config, {
 
 **After:**
 
-```typescript
-import { createTripleStatement } from '@0xintuition/sdk'
+The payable `createTripleStatement` example is pending the post-publish SDK resync, so this deposit-value-coupled migration example is excluded from copy-paste typechecking until that package shape is available.
 
-const triple = await createTripleStatement(config, {
-  args: [
-    [subjectVaultId],
-    [predicateVaultId],
-    [objectVaultId],
-    [1000000000000000000n],
-  ],
-  value: 1000000000000000000n, // Required
-})
+```typescript
+import {
+  createTripleStatement,
+  type WriteConfig,
+} from '@0xintuition/sdk'
+import type { Hex } from 'viem'
+
+async function createMigratedTriple(
+  config: WriteConfig,
+  subjectId: Hex,
+  predicateId: Hex,
+  objectId: Hex,
+) {
+  const assets = 1000000000000000000n
+
+  return createTripleStatement(config, {
+    args: [[subjectId], [predicateId], [objectId], [assets]],
+    value: assets,
+  })
+}
 ```
 
 ## 4. Configuration Changes

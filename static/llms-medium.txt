@@ -4542,7 +4542,7 @@ The workspace is structured into logical layers:
 ---
 title: "Working with Atoms"
 description: "Create and query atoms using the SDK"
-last_updated: "2026-08-04T11:57:57-04:00"
+last_updated: "2026-08-05T22:31:29-04:00"
 source: "https://docs.intuition.systems/docs/intuition-sdk/atoms-guide"
 ---
 
@@ -4786,7 +4786,7 @@ The SDK supports two IPFS paths:
 ---
 title: "React Integration"
 description: "Integrate the Intuition SDK with React applications using Wagmi hooks"
-last_updated: "2026-08-04T11:57:57-04:00"
+last_updated: "2026-08-05T22:31:29-04:00"
 source: "https://docs.intuition.systems/docs/intuition-sdk/integrations/react"
 ---
 
@@ -4806,16 +4806,14 @@ Import this configuration module before components call SDK read helpers. Use `A
 
 Set up Wagmi provider in your app:
 
-## Creating Atoms
-
-Use SDK functions with Wagmi hooks:
+Pass the exported Wagmi `config` into the provider component:
 
 [... see full docs for complete content]
 
 ---
 title: "TanStack Query Integration"
 description: "Use the Intuition SDK with TanStack Query for optimized data fetching and caching"
-last_updated: "2026-08-04T11:57:57-04:00"
+last_updated: "2026-08-05T22:31:29-04:00"
 source: "https://docs.intuition.systems/docs/intuition-sdk/integrations/tanstack-query"
 ---
 
@@ -4825,30 +4823,18 @@ Integrate the Intuition SDK with TanStack Query (React Query) for powerful data 
 
 ## Setup
 
+Wagmi hooks require `WagmiProvider`, while both TanStack Query hooks and Wagmi's query-backed hooks require `QueryClientProvider`. Create the Wagmi config once:
+
+Then pass that config to an application wrapper with both providers. Keeping `WagmiProvider` outside `QueryClientProvider` matches the provider tree used by the hooks below, including `useWalletClient`, which reads both contexts:
+
 SDK read helpers use the mainnet GraphQL API by default. If the mutation hooks below write to Intuition Testnet, initialize the testnet read endpoint once before rendering the application:
-
-Use `API_URL_PROD` instead when the write clients target `intuitionMainnet`. Atom creation helpers fetch and forward the required base cost; an optional amount is an additional TRUST/tTRUST deposit (signal).
-
-## Query Hooks
-
-Create reusable query hooks for SDK functions:
-
-### useAtomDetails
-
-### useGlobalSearch
-
-## Mutation Hooks
-
-Create mutation hooks for write operations:
-
-### useCreateAtom
 
 [... see full docs for complete content]
 
 ---
 title: "SDK Migration V1 to V2"
 description: "Migrating SDK from v1.5 to v2.0"
-last_updated: "2026-08-04T11:57:57-04:00"
+last_updated: "2026-08-05T22:31:29-04:00"
 source: "https://docs.intuition.systems/docs/intuition-sdk/migration-guide"
 ---
 
