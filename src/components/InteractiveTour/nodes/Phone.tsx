@@ -1,16 +1,15 @@
 import { Handle, Position } from 'reactflow';
 import type { NodeProps } from 'reactflow';
 import { clsx } from '../utils';
-import { useStore } from '../store';
 import React from 'react';
 
 export type PhoneProps = {
   children: (step: number) => React.ReactNode;
   active: boolean;
+  currentStep: number;
 };
 
 export default function Phone({ data }: NodeProps<PhoneProps>) {
-  const { currentStep } = useStore();
   return (
     <div
       className={clsx(
@@ -27,7 +26,7 @@ export default function Phone({ data }: NodeProps<PhoneProps>) {
       </p>
       <div className="simulator nowheel bg-secondary-1000">
         <div className="h-full w-full bg-secondary-1000 p-2">
-          {data.children(currentStep)}
+          {data.children(data.currentStep)}
         </div>
         <Handle className={'h-2 w-2'} type="source" position={Position.Right} />
       </div>
