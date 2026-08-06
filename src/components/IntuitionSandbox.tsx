@@ -48,7 +48,7 @@ const AtomDisplay: React.FC<{ data: any }> = ({ data }) => (
       <div>
         <strong style={{ fontSize: '1rem', color: 'var(--ifm-color-emphasis-700)' }}>Type:</strong>
         <p style={{ margin: '0.5rem 0', padding: '0.5rem 0.75rem', backgroundColor: 'var(--ifm-color-primary-lightest)', borderRadius: '6px', fontSize: '1rem' }}>
-          {data.type || 'General'}
+          {data.atomType || 'General'}
         </p>
       </div>
       <div>
@@ -321,7 +321,7 @@ const parseLogsForDisplay = (logs: string[], code: string) => {
       type: 'atom' as const,
       id: '1001',
       name: example.name,
-      type: example.type,
+      atomType: example.type,
       description: example.description,
       vaultId: Math.floor(Math.random() * 50000) + 1000,
       totalShares: (BigInt(Math.floor(Math.random() * 100) + 50) * BigInt(10**18)).toString(),
@@ -610,7 +610,7 @@ console.log('Explorer:', atom.explorerUrl);`);
         type: 'success',
           message: 'Demo executed successfully! (Simulated responses)',
           data: logs.length > 0 ? logs.join('\n') : 'No output',
-          parsedData
+          parsedData: parsedData ?? undefined
         });
 
       } else {
@@ -644,7 +644,16 @@ console.log('Created atom:', atom.state.vaultId);`);
     setResult(null);
   };
 
-  const loadExample = (example: string) => {
+  const loadExample = (
+    example:
+      | 'create-defi-atom'
+      | 'read-atom'
+      | 'read-triple'
+      | 'create-triple'
+      | 'check-vault'
+      | 'product-review'
+      | 'social-post',
+  ) => {
     const examples = {
       'create-defi-atom': `// Create an atom for AI Agent (the hottest trend!)
 const atom = await createAtomFromString(
@@ -659,10 +668,10 @@ console.log('Network:', atom.network);
 console.log('Status: LIVE on universal knowledge graph');
 console.log('');
 console.log('What happens next:');
-console.log('• Developers can rate this AI agent\'s performance');
+console.log('• Developers can rate this AI agent's performance');
 console.log('• Build trust: "GPT-4o → EXCELS_AT → Code Generation"');
 console.log('• Early reputation builders earn as AI adoption explodes');
-console.log('• This AI\'s reputation works across ALL platforms forever');
+console.log('• This AI's reputation works across ALL platforms forever');
 console.log('');
 console.log('Imagine: AI agents with portable, verifiable track records!');`,
 
@@ -780,7 +789,7 @@ const postTriple = await createTripleStatement(
 console.log('Created post triple:', postTriple.state.vaultId);`
     };
 
-    setCode(examples[example as keyof typeof examples] || examples['simple-atom']);
+    setCode(examples[example]);
     setResult(null);
   };
 
@@ -1119,4 +1128,4 @@ console.log('Created post triple:', postTriple.state.vaultId);`
   );
 };
 
-export default IntuitionSandbox; 
+export default IntuitionSandbox;

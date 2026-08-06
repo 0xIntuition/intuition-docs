@@ -31,10 +31,10 @@ export default function BondingCurveDemo({ className }: BondingCurveDemoProps) {
 
   const calculatePrice = (currentSupply: number, curve: string) => {
     switch (curve) {
-      case 'linear':
-        
+      case 'linear': {
         const totalAssets = 100;
         return totalAssets / currentSupply;
+      }
       case 'offset-progressive':
       
         return SLOPE * (currentSupply + OFFSET);
