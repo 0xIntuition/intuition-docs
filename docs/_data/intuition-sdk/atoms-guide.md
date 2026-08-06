@@ -150,18 +150,23 @@ import {
   configureSdk,
   createAtomFromString,
   getAtomDetails,
+  type WriteConfig,
 } from '@0xintuition/sdk';
 import { API_URL_DEV } from '@0xintuition/graphql';
+import { toHex } from 'viem';
 
 configureSdk({ apiUrl: API_URL_DEV });
 
-const atomId = calculateAtomId('developer');
-const exists = await getAtomDetails(atomId);
+async function createDeveloperAtom(config: WriteConfig) {
+  const atomId = calculateAtomId(toHex('developer'));
+  const existing = await getAtomDetails(atomId);
 
-if (exists) {
-  console.log('Atom already exists:', atomId);
-} else {
-  const atom = await createAtomFromString(config, 'developer');
+  if (existing !== null) {
+    console.log('Atom already exists:', atomId);
+    return existing;
+  }
+
+  return createAtomFromString(config, 'developer');
 }
 ```
 
@@ -198,8 +203,7 @@ type Thing = {
 import {
   configureSdk,
   createAtomFromThing,
-  getMultiVaultAddressFromChainId,
-  intuitionTestnet,
+  type WriteConfig,
 } from '@0xintuition/sdk';
 import { parseEther } from 'viem';
 
@@ -207,20 +211,22 @@ configureSdk({
   pinApiKey: process.env.INTUITION_PIN_API_KEY,
 });
 
-// Create atom from Thing
-const atom = await createAtomFromThing(
-  { walletClient, publicClient, address },
-  {
-    url: 'https://www.example.com',
-    name: 'Example Project',
-    description: 'A great Web3 project',
-    image: 'https://example.com/logo.png',
-  },
-  { depositAmount: parseEther('0.05') },
-);
+async function createProjectAtom(config: WriteConfig) {
+  const atom = await createAtomFromThing(
+    config,
+    {
+      url: 'https://www.example.com',
+      name: 'Example Project',
+      description: 'A great Web3 project',
+      image: 'https://example.com/logo.png',
+    },
+    { depositAmount: parseEther('0.05') },
+  );
 
-console.log('Atom ID:', atom.state.termId);
-console.log('IPFS URI:', atom.uri); // ipfs://bafkrei...
+  console.log('Atom ID:', atom.state.termId);
+  console.log('IPFS URI:', atom.uri); // ipfs://bafkrei...
+  return atom;
+}
 ```
 
 ### Common Use Cases
@@ -281,20 +287,21 @@ function createAtomFromEthereumAccount(
 ```typescript
 import {
   createAtomFromEthereumAccount,
-  getMultiVaultAddressFromChainId,
-  intuitionTestnet,
+  type WriteConfig,
 } from '@0xintuition/sdk';
 import { parseEther } from 'viem';
 
-// Create atom from Ethereum address
-const atom = await createAtomFromEthereumAccount(
-  { walletClient, publicClient, address },
-  '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045',
-  parseEther('0.01'),
-);
+async function createIdentityAtom(config: WriteConfig) {
+  const atom = await createAtomFromEthereumAccount(
+    config,
+    '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045',
+    parseEther('0.01'),
+  );
 
-console.log('Identity Atom ID:', atom.state.termId);
-console.log('Address:', atom.uri);
+  console.log('Identity Atom ID:', atom.state.termId);
+  console.log('Address:', atom.uri);
+  return atom;
+}
 ```
 
 ### Common Use Cases
@@ -341,7 +348,7 @@ Create atoms representing smart contract addresses.
 ```typescript
 function createAtomFromSmartContract(
   config: WriteConfig,
-  contractAddress: Address,
+  contract: { address: Address; chainId: number },
   deposit?: bigint,
 ): Promise<AtomCreationResult>;
 ```
@@ -351,19 +358,24 @@ function createAtomFromSmartContract(
 ```typescript
 import {
   createAtomFromSmartContract,
-  getMultiVaultAddressFromChainId,
-  intuitionTestnet,
+  type WriteConfig,
 } from '@0xintuition/sdk';
 import { parseEther } from 'viem';
 
-// Create atom for Uniswap contract
-const uniswap = await createAtomFromSmartContract(
-  { walletClient, publicClient, address },
-  '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984', // UNI token
-  parseEther('0.01'),
-);
+async function createUniswapAtom(config: WriteConfig) {
+  const uniswap = await createAtomFromSmartContract(
+    config,
+    {
+      address: '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984', // UNI token
+      chainId: 1,
+    },
+    parseEther('0.01'),
+  );
 
-console.log('Contract Atom ID:', uniswap.state.termId);
+  console.log('Contract Atom ID:', uniswap.state.termId);
+  console.log('Contract URI:', uniswap.uri); // caip10:eip155:1:0x...
+  return uniswap;
+}
 ```
 
 ### Common Use Cases
@@ -374,12 +386,18 @@ console.log('Contract Atom ID:', uniswap.state.termId);
 // Create atoms for DeFi protocols
 const aave = await createAtomFromSmartContract(
   config,
-  '0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9', // AAVE token
+  {
+    address: '0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9', // AAVE token
+    chainId: 1,
+  },
 );
 
 const compound = await createAtomFromSmartContract(
   config,
-  '0xc00e94Cb662C3520282E6f5717214004A7f26888', // COMP token
+  {
+    address: '0xc00e94Cb662C3520282E6f5717214004A7f26888', // COMP token
+    chainId: 1,
+  },
 );
 ```
 
@@ -398,7 +416,7 @@ Create an atom from an existing IPFS URI.
 ```typescript
 function createAtomFromIpfsUri(
   config: WriteConfig,
-  ipfsUri: string,
+  ipfsUri: `ipfs://${string}`,
   deposit?: bigint,
 ): Promise<AtomCreationResult>;
 ```
@@ -408,18 +426,20 @@ function createAtomFromIpfsUri(
 ```typescript
 import {
   createAtomFromIpfsUri,
-  getMultiVaultAddressFromChainId,
-  intuitionTestnet,
+  type WriteConfig,
 } from '@0xintuition/sdk';
 import { parseEther } from 'viem';
 
-const atom = await createAtomFromIpfsUri(
-  { walletClient, publicClient, address },
-  'ipfs://bafkreib7534cszxn2c6qwoviv43sqh244yfrxomjbealjdwntd6a7atq6u',
-  parseEther('0.01'),
-);
+async function createIpfsAtom(config: WriteConfig) {
+  const atom = await createAtomFromIpfsUri(
+    config,
+    'ipfs://bafkreib7534cszxn2c6qwoviv43sqh244yfrxomjbealjdwntd6a7atq6u',
+    parseEther('0.01'),
+  );
 
-console.log('IPFS Atom ID:', atom.state.termId);
+  console.log('IPFS Atom ID:', atom.state.termId);
+  return atom;
+}
 ```
 
 ### createAtomFromIpfsUpload
@@ -439,26 +459,27 @@ function createAtomFromIpfsUpload(
 #### Basic Example
 
 ```typescript
-import { createAtomFromIpfsUpload } from '@0xintuition/sdk';
+import {
+  createAtomFromIpfsUpload,
+  type CreateAtomConfigWithIpfs,
+} from '@0xintuition/sdk';
 import { parseEther } from 'viem';
 
-const atom = await createAtomFromIpfsUpload(
-  {
-    walletClient,
-    publicClient,
-    address,
-    pinataApiJWT: 'your-pinata-jwt-token',
-  },
-  {
-    name: 'My Project',
-    description: 'A blockchain project',
-    url: 'https://myproject.com',
-  },
-  parseEther('0.05'),
-);
+async function uploadProjectAtom(config: CreateAtomConfigWithIpfs) {
+  const atom = await createAtomFromIpfsUpload(
+    config,
+    {
+      name: 'My Project',
+      description: 'A blockchain project',
+      url: 'https://myproject.com',
+    },
+    parseEther('0.05'),
+  );
 
-console.log('Atom ID:', atom.state.termId);
-console.log('IPFS URI:', atom.uri); // ipfs://bafkrei...
+  console.log('Atom ID:', atom.state.termId);
+  console.log('IPFS URI:', atom.uri); // ipfs://bafkrei...
+  return atom;
+}
 ```
 
 ---
@@ -479,29 +500,31 @@ Create multiple atoms in a single transaction for improved efficiency and reduce
 ```typescript
 import {
   batchCreateAtomsFromEthereumAccounts,
-  getMultiVaultAddressFromChainId,
-  intuitionTestnet,
+  type WriteConfig,
 } from '@0xintuition/sdk';
-import { parseEther } from 'viem';
+import { parseEther, type Address } from 'viem';
 
-const addresses = [
+const addresses: Address[] = [
   '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045',
   '0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb',
   '0x1234567890123456789012345678901234567890',
 ];
 
-const result = await batchCreateAtomsFromEthereumAccounts(
-  { walletClient, publicClient, address },
-  addresses,
-  parseEther('0.01'), // 0.01 TRUST per atom
-);
+async function createAccountAtoms(config: WriteConfig) {
+  const result = await batchCreateAtomsFromEthereumAccounts(
+    config,
+    addresses,
+    parseEther('0.01'), // Additional 0.01 tTRUST signal per atom
+  );
 
-console.log('Created', result.state.length, 'atoms');
-console.log(
-  'Atom IDs:',
-  result.state.map((s) => s.termId),
-);
-console.log('Single transaction:', result.transactionHash);
+  console.log('Created', result.state.length, 'atoms');
+  console.log(
+    'Atom IDs:',
+    result.state.map((state) => state.termId),
+  );
+  console.log('Single transaction:', result.transactionHash);
+  return result;
+}
 ```
 
 ### Gas Savings
@@ -550,31 +573,32 @@ console.log('Share Price:', vault?.current_share_price);
 
 ### calculateAtomId
 
-Calculate the atom ID from atom data without querying the blockchain.
+Calculate the atom ID from hex-encoded atom data without querying the blockchain. Encode text exactly as the creation helpers do before calculating its ID.
 
 #### Function Signature
 
 ```typescript
-function calculateAtomId(atomData: string): Hex;
+function calculateAtomId(atomData: Hex): Hex;
 ```
 
 #### Basic Example
 
 ```typescript
 import { calculateAtomId } from '@0xintuition/sdk';
+import { toHex } from 'viem';
 
 // Calculate ID for a string atom
-const atomId = calculateAtomId('developer');
+const atomId = calculateAtomId(toHex('developer'));
 console.log('Atom ID:', atomId);
 
 // Calculate ID for an Ethereum address
 const addressAtomId = calculateAtomId(
-  '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045',
+  toHex('0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045'),
 );
 console.log('Address Atom ID:', addressAtomId);
 
 // Calculate ID for IPFS URI
-const ipfsAtomId = calculateAtomId('ipfs://bafkreib...');
+const ipfsAtomId = calculateAtomId(toHex('ipfs://bafkreib...'));
 console.log('IPFS Atom ID:', ipfsAtomId);
 ```
 
@@ -588,14 +612,16 @@ import {
   configureSdk,
   getAtomDetails,
   createAtomFromString,
+  type WriteConfig,
 } from '@0xintuition/sdk';
 import { API_URL_DEV } from '@0xintuition/graphql';
+import { toHex } from 'viem';
 
 configureSdk({ apiUrl: API_URL_DEV });
 
-async function createAtomIfNotExists(data: string) {
+async function createAtomIfNotExists(config: WriteConfig, data: string) {
   // Calculate ID
-  const atomId = calculateAtomId(data);
+  const atomId = calculateAtomId(toHex(data));
 
   // Check if exists
   const existing = await getAtomDetails(atomId);

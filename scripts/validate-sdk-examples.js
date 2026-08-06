@@ -518,16 +518,17 @@ function formatDiagnostic(diagnostic) {
 function fingerprintDiagnostics(diagnostics) {
   const occurrences = new Map();
 
-  // A fingerprint is TS code + SHA-256(message) + same-message occurrence.
-  // It deliberately omits line/column positions, so unrelated line shifts inside
-  // a fence do not churn the ratchet while duplicate diagnostics remain counted.
+  // A fingerprint is TS code + same-code occurrence within the fence. It
+  // deliberately omits line/column positions (unrelated line shifts must not
+  // churn the ratchet) and the diagnostic message: TypeScript embeds
+  // environment-dependent type displays in some messages (absolute import
+  // paths and truncation that vary with the platform's node_modules layout),
+  // so hashing the message makes the same diagnostic fingerprint differently
+  // on CI and local machines. The fence's content hash already anchors what
+  // is being checked; per-code occurrence counting keeps duplicates counted.
   return diagnostics
     .map((diagnostic) => {
-      const messageHash = crypto
-        .createHash('sha256')
-        .update(diagnostic.message)
-        .digest('hex');
-      const base = `${diagnostic.code}:${messageHash}`;
+      const base = String(diagnostic.code);
       const occurrence = (occurrences.get(base) || 0) + 1;
       occurrences.set(base, occurrence);
       return {

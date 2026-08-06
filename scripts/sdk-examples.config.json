@@ -10,373 +10,19 @@
   "fingerprintFormat": "Each fingerprint is the TypeScript error code plus a SHA-256 hash of its position-independent diagnostic message and a same-message occurrence ordinal.",
   "knownFailing": [
     {
-      "file": "docs/_data/intuition-sdk/atoms-guide.md",
-      "fences": [
-        {
-          "contentHash": "30be8b9c9624e441",
-          "fingerprints": [
-            "TS2304:bff2858a82ef013493213f13bf052dd0c25861d0fee913bff4823c75805c9256#1",
-            "TS2345:38f2f4f16e38c98fb1ee47b35f5870fa114a06f850d2140711fbab3449ea86ce#1"
-          ]
-        },
-        {
-          "contentHash": "331731c011bc0d06",
-          "fingerprints": [
-            "TS18004:184a1f056dbaa8f67561821c22c5fd1717c9e245c7a9fe16098f1891b3dac0b3#1",
-            "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
-            "TS18004:ac4f84b2017825bfd70eafdebc9cb6f9355e77358475577026b6637c30cb9de2#1"
-          ]
-        },
-        {
-          "contentHash": "4f7362414bf3dc5e",
-          "fingerprints": [
-            "TS18004:184a1f056dbaa8f67561821c22c5fd1717c9e245c7a9fe16098f1891b3dac0b3#1",
-            "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
-            "TS18004:ac4f84b2017825bfd70eafdebc9cb6f9355e77358475577026b6637c30cb9de2#1"
-          ]
-        },
-        {
-          "contentHash": "08622218d5a8987c",
-          "fingerprints": [
-            "TS18004:184a1f056dbaa8f67561821c22c5fd1717c9e245c7a9fe16098f1891b3dac0b3#1",
-            "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
-            "TS18004:ac4f84b2017825bfd70eafdebc9cb6f9355e77358475577026b6637c30cb9de2#1",
-            "TS2345:f8386e19840e807ead9dcbeaeb5ecf605dd7f3ee17fc0f325bb3707d0a1ea35f#1"
-          ]
-        },
-        {
-          "contentHash": "26f3997e9845788e",
-          "fingerprints": [
-            "TS18004:184a1f056dbaa8f67561821c22c5fd1717c9e245c7a9fe16098f1891b3dac0b3#1",
-            "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
-            "TS18004:ac4f84b2017825bfd70eafdebc9cb6f9355e77358475577026b6637c30cb9de2#1"
-          ]
-        },
-        {
-          "contentHash": "2e8d233895df885b",
-          "fingerprints": [
-            "TS18004:184a1f056dbaa8f67561821c22c5fd1717c9e245c7a9fe16098f1891b3dac0b3#1",
-            "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
-            "TS18004:ac4f84b2017825bfd70eafdebc9cb6f9355e77358475577026b6637c30cb9de2#1"
-          ]
-        },
-        {
-          "contentHash": "3831f5d695b18298",
-          "fingerprints": [
-            "TS18004:184a1f056dbaa8f67561821c22c5fd1717c9e245c7a9fe16098f1891b3dac0b3#1",
-            "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
-            "TS18004:ac4f84b2017825bfd70eafdebc9cb6f9355e77358475577026b6637c30cb9de2#1",
-            "TS2345:1fdc628ab8134af864e2743ab357ce20c3e4f21a840f76244cd5b47243ad6284#1"
-          ]
-        },
-        {
-          "contentHash": "c9b695da35af7af4",
-          "fingerprints": [
-            "TS2345:2618859d7efc9268fb55655ece2af8351c9dd8a0630b6b34ea4077b5e10766b3#1",
-            "TS2345:38f2f4f16e38c98fb1ee47b35f5870fa114a06f850d2140711fbab3449ea86ce#1"
-          ]
-        },
-        {
-          "contentHash": "caeaa9a236f9a1b8",
-          "fingerprints": [
-            "TS2304:bff2858a82ef013493213f13bf052dd0c25861d0fee913bff4823c75805c9256#1",
-            "TS2345:8b1eb723a1e6bd01b45a92ea8202c3906801d60e67c8b92c44b1e17a0c13f070#1"
-          ]
-        }
-      ],
-      "reason": "Current examples mix omitted setup variables with stale Hex argument and GraphQL result shapes, including removed atom vault fields."
-    },
-    {
       "file": "docs/_data/intuition-sdk/examples/deposit-into-vault.md",
       "fences": [
         {
           "contentHash": "b51057b8e7f8d3ee",
           "fingerprints": [
-            "TS2322:854ebea312e45833464c3443d55d92314ebff53a5402f8a07044ca0077c78518#1",
-            "TS2322:854ebea312e45833464c3443d55d92314ebff53a5402f8a07044ca0077c78518#2",
-            "TS2345:d614ff1c558e3dd64789cc2d13f7180c1e4c11bce98f0fbcdcd05213400d9828#1",
-            "TS2345:d6fc8b5d2b4f2a86d67aa98f56bccbbd5cb7bcb2e755371223b0b1cf03addffb#1"
+            "TS2322#1",
+            "TS2322#2",
+            "TS2345#1",
+            "TS2345#2"
           ]
         }
       ],
       "reason": "The example uses stale WriteConfig and deposit ABI tuple shapes against SDK 3.0.1."
-    },
-    {
-      "file": "docs/_data/intuition-sdk/integrations/react.md",
-      "fences": [
-        {
-          "contentHash": "5fe47788b3bcfc96",
-          "fingerprints": [
-            "TS2307:9f684f546a73a553f388e71a9ae7bca50303e1d99cad59754601512a5fac3d30#1",
-            "TS2307:c10ca036df7ba79ecc6b5b047055e6ab76bee1861c027793455869fc0f9b78e6#1"
-          ]
-        },
-        {
-          "contentHash": "e510bf511905d8d9",
-          "fingerprints": [
-            "TS2307:9f684f546a73a553f388e71a9ae7bca50303e1d99cad59754601512a5fac3d30#1"
-          ]
-        },
-        {
-          "contentHash": "a99a577e03ed2db1",
-          "fingerprints": [
-            "TS2307:9f684f546a73a553f388e71a9ae7bca50303e1d99cad59754601512a5fac3d30#1"
-          ]
-        },
-        {
-          "contentHash": "ee98b47b3f755774",
-          "fingerprints": [
-            "TS2307:9f684f546a73a553f388e71a9ae7bca50303e1d99cad59754601512a5fac3d30#1",
-            "TS2339:ca1bdda15b7577aec68947a4dcde37642112cb31d539a4c89f12d5bfcdc42720#1"
-          ]
-        }
-      ],
-      "reason": "These React snippets omit surrounding setup and use stale SDK configuration or atom vault result fields."
-    },
-    {
-      "file": "docs/_data/intuition-sdk/integrations/tanstack-query.md",
-      "fences": [
-        {
-          "contentHash": "06af782b7da2665c",
-          "fingerprints": [
-            "TS2345:66f2b8235d9a9a67a84f0e32cd0ab3bac00767f42275170d207562638bb5753c#1"
-          ]
-        },
-        {
-          "contentHash": "b189e23ec8458f23",
-          "fingerprints": [
-            "TS2307:9f684f546a73a553f388e71a9ae7bca50303e1d99cad59754601512a5fac3d30#1"
-          ]
-        },
-        {
-          "contentHash": "99452c51ef51077a",
-          "fingerprints": [
-            "TS2307:9f684f546a73a553f388e71a9ae7bca50303e1d99cad59754601512a5fac3d30#1"
-          ]
-        }
-      ],
-      "reason": "These query snippets omit surrounding setup and use stale SDK input and GraphQL result shapes."
-    },
-    {
-      "file": "docs/_data/intuition-sdk/migration-guide.mdx",
-      "fences": [
-        {
-          "contentHash": "e5e3d485f7e2573d",
-          "fingerprints": [
-            "TS2304:3d9d3006a54313825544f2e40434565285086a081f661c8b3bcc883d8342d1bb#1",
-            "TS2305:b13a261911cb7c23a70cd23e472a9d0a3a662b69ffbb0804fcfae2f1346e6a56#1",
-            "TS2724:e4f18221850ff9084abcd43f4162a33b4ad0882ac5695f720f3b27c1cde39bd9#1"
-          ]
-        },
-        {
-          "contentHash": "5d0f4a28c190b6a5",
-          "fingerprints": [
-            "TS18004:30de6da6d9f559a560c7295758452b3521204662883ef851f1a5655d8cf99971#1",
-            "TS2304:bff2858a82ef013493213f13bf052dd0c25861d0fee913bff4823c75805c9256#1",
-            "TS2304:bff2858a82ef013493213f13bf052dd0c25861d0fee913bff4823c75805c9256#2",
-            "TS2304:da80f7fd4851fd97c8f0f9b0abd9e146b85773b791fca03515abef8c0d85dc2d#1",
-            "TS2304:da80f7fd4851fd97c8f0f9b0abd9e146b85773b791fca03515abef8c0d85dc2d#2",
-            "TS2305:08db1c5dc1e2e5753a844b0363fcfb91b5e5c7fb0bd7caf5f7fd764d91a56769#1",
-            "TS2305:3b2ec55ded6cc5a855eaaaf34443ab99ac02b8a989f2f0dc71ea76876518e5a7#1",
-            "TS2305:a0979876cb08b4a063d4983b50da2f95029b77d790066ccff08675eafc0f4bce#1"
-          ]
-        },
-        {
-          "contentHash": "37eb8c901507a5e3",
-          "fingerprints": [
-            "TS18004:30de6da6d9f559a560c7295758452b3521204662883ef851f1a5655d8cf99971#1",
-            "TS2304:6b2a7af90e51937c4f32db84fb21abc9e532dbeebaedbafb83933b565712c568#1",
-            "TS2304:6b2a7af90e51937c4f32db84fb21abc9e532dbeebaedbafb83933b565712c568#2",
-            "TS2304:91c2a83b8e9dbe98f7235df088af5f77cbd6839ad30fc2611bd7f1a227439175#1",
-            "TS2304:91c2a83b8e9dbe98f7235df088af5f77cbd6839ad30fc2611bd7f1a227439175#2",
-            "TS2304:bbc0ddf75286fbc1e73910eb81d4dad7e5212931c1abe259eb2525122deab103#1",
-            "TS2304:bbc0ddf75286fbc1e73910eb81d4dad7e5212931c1abe259eb2525122deab103#2",
-            "TS2304:bff2858a82ef013493213f13bf052dd0c25861d0fee913bff4823c75805c9256#1",
-            "TS2304:bff2858a82ef013493213f13bf052dd0c25861d0fee913bff4823c75805c9256#2",
-            "TS2304:e2dd06f44162940e54b35d5ddec7e2b356d10695b3c69a9ce68489f78ad61dec#1",
-            "TS2304:e2dd06f44162940e54b35d5ddec7e2b356d10695b3c69a9ce68489f78ad61dec#2",
-            "TS2305:839ceb10efe5f6504b6ea07a3daf66a151681104f7b978d65a767eb41cce27b6#1",
-            "TS2305:9de15d85647f0fb26a62b6dd29f8e0176a82d548c9d42c9bbf7d900c78f0b32e#1",
-            "TS2305:e10b40cf88c4ad4061e79466f437050e142ea065ac9eee3f96c7d8624342905b#1"
-          ]
-        },
-        {
-          "contentHash": "0a01ab4656bbe938",
-          "fingerprints": [
-            "TS18004:30de6da6d9f559a560c7295758452b3521204662883ef851f1a5655d8cf99971#1",
-            "TS2304:092fabc9e26b171f990f4404cd887a4fc45a36823ebd12d48066d9876b667ab4#1",
-            "TS2304:092fabc9e26b171f990f4404cd887a4fc45a36823ebd12d48066d9876b667ab4#2",
-            "TS2304:bff2858a82ef013493213f13bf052dd0c25861d0fee913bff4823c75805c9256#1",
-            "TS2304:bff2858a82ef013493213f13bf052dd0c25861d0fee913bff4823c75805c9256#2",
-            "TS2304:f97170a7bf1bfd6f7f8229d14cdea03ea158f927495e6460db457470c460b7a6#1",
-            "TS2304:f97170a7bf1bfd6f7f8229d14cdea03ea158f927495e6460db457470c460b7a6#2",
-            "TS2304:fe0c30db76dc9bbcc94dbb3a5a4ebbf5bb16f9dadb5ed3d42f1472ada8cb332b#1",
-            "TS2304:fe0c30db76dc9bbcc94dbb3a5a4ebbf5bb16f9dadb5ed3d42f1472ada8cb332b#2",
-            "TS2305:33245a8cdc3f9279593d0e70984804c85b9ebff65a6002ca147e333b6f62f472#1",
-            "TS2305:87bab8bc16fe98204b03db887da8e1d13610c95bc11fe2619fa40fd649405f6a#1",
-            "TS2305:ebe01883d804b78e49bfd15ef462989acdc9915ecaa94eac657b4c257df88dc8#1"
-          ]
-        },
-        {
-          "contentHash": "fcd7d04d7d1e5a93",
-          "fingerprints": [
-            "TS18004:30de6da6d9f559a560c7295758452b3521204662883ef851f1a5655d8cf99971#1",
-            "TS2304:261ed4df25d82b94d4dd05bf998198207a06e13c2d969e438800e1f0545fc217#1",
-            "TS2304:261ed4df25d82b94d4dd05bf998198207a06e13c2d969e438800e1f0545fc217#2",
-            "TS2304:33eae363239f112986cea1f5395f54546299977f6f1ef0fa8c2bc74cb25d119f#1",
-            "TS2304:33eae363239f112986cea1f5395f54546299977f6f1ef0fa8c2bc74cb25d119f#2",
-            "TS2304:4351c22d720078e019ef002946f3523e517d5ad1220763005d452986b1719c50#1",
-            "TS2304:4351c22d720078e019ef002946f3523e517d5ad1220763005d452986b1719c50#2",
-            "TS2304:6b2a7af90e51937c4f32db84fb21abc9e532dbeebaedbafb83933b565712c568#1",
-            "TS2304:6b2a7af90e51937c4f32db84fb21abc9e532dbeebaedbafb83933b565712c568#2",
-            "TS2304:bb0ccbb550b152ed7a9c986756132772d4756c7f7cd18c80e39537d9beaacf7c#1",
-            "TS2304:bb0ccbb550b152ed7a9c986756132772d4756c7f7cd18c80e39537d9beaacf7c#2",
-            "TS2304:bff2858a82ef013493213f13bf052dd0c25861d0fee913bff4823c75805c9256#1",
-            "TS2304:bff2858a82ef013493213f13bf052dd0c25861d0fee913bff4823c75805c9256#2",
-            "TS2304:e2dd06f44162940e54b35d5ddec7e2b356d10695b3c69a9ce68489f78ad61dec#1",
-            "TS2304:e2dd06f44162940e54b35d5ddec7e2b356d10695b3c69a9ce68489f78ad61dec#2",
-            "TS2304:f739d21a9980e656c240e55e5e2b3c4f92d79a570bf489026a4f902cbeb69c77#1",
-            "TS2304:f739d21a9980e656c240e55e5e2b3c4f92d79a570bf489026a4f902cbeb69c77#2",
-            "TS2304:fb318b1664bc8fe6ddb3f82eb09720d37646603766f1c3dec2c30a8cb836ebfc#1",
-            "TS2304:fb318b1664bc8fe6ddb3f82eb09720d37646603766f1c3dec2c30a8cb836ebfc#2",
-            "TS2305:727ac90a548a56139626c92b20a4b0309ce68a160dea81a2a6d3c37b7d760f69#1",
-            "TS2305:8367a3de3f35a94124d81843a01aa2caf440c79ebb7465eb29452ab72f716c90#1",
-            "TS2305:d9540b16574583c2f8353ee167038d1ce4eba796a4f7c1a712bb1b388debf7c8#1"
-          ]
-        },
-        {
-          "contentHash": "809ca3698d146e67",
-          "fingerprints": [
-            "TS18004:30de6da6d9f559a560c7295758452b3521204662883ef851f1a5655d8cf99971#1",
-            "TS18004:30de6da6d9f559a560c7295758452b3521204662883ef851f1a5655d8cf99971#2",
-            "TS2304:0c2bba2fb019f235d1bf23911132a5d452710db42820d4e00c3a4968e45b81d8#1",
-            "TS2304:0c2bba2fb019f235d1bf23911132a5d452710db42820d4e00c3a4968e45b81d8#2",
-            "TS2304:0c2bba2fb019f235d1bf23911132a5d452710db42820d4e00c3a4968e45b81d8#3",
-            "TS2304:0c2bba2fb019f235d1bf23911132a5d452710db42820d4e00c3a4968e45b81d8#4",
-            "TS2304:b12454b6dd9f575a8f5aed7dbb2c810c10ae5e29d295d139adb67465ddbde910#1",
-            "TS2304:b12454b6dd9f575a8f5aed7dbb2c810c10ae5e29d295d139adb67465ddbde910#2",
-            "TS2304:bff2858a82ef013493213f13bf052dd0c25861d0fee913bff4823c75805c9256#1",
-            "TS2304:bff2858a82ef013493213f13bf052dd0c25861d0fee913bff4823c75805c9256#2",
-            "TS2304:bff2858a82ef013493213f13bf052dd0c25861d0fee913bff4823c75805c9256#3",
-            "TS2304:bff2858a82ef013493213f13bf052dd0c25861d0fee913bff4823c75805c9256#4",
-            "TS2304:c691092c645e4f3442699a5d8fd38ee903d11617e9cb2d1a0ce85dabe723ae56#1",
-            "TS2304:c691092c645e4f3442699a5d8fd38ee903d11617e9cb2d1a0ce85dabe723ae56#2",
-            "TS2304:fb83e9a669a2da1a8da67ef9678802abdaff29645a38dd9d67fb2d622253beeb#1",
-            "TS2304:fb83e9a669a2da1a8da67ef9678802abdaff29645a38dd9d67fb2d622253beeb#2",
-            "TS2305:12eb868940e1053c9974419da2e72e816c22ddd302f1c9b17a790aa9c1d416eb#1",
-            "TS2305:6693e8da5d8143922cffbbe9935f1dce64f7ab7a1bba00d2524fb06c7815429f#1",
-            "TS2305:77d4844fa367697f977d0a85019ce357d8b5dd205cea8a01a105bf988b68c37d#1",
-            "TS2305:7bacabcf37858ed696a31a101ee0cee4d7112985e2c9ca731cfa2945c6d9006d#1",
-            "TS2305:848feac3137942847a6be0117f28af60956ee70d02733aee1eb35b1cad126474#1",
-            "TS2305:a77adf791786a04b998ca226a6972ed2eb678b364a91846b3f533a0386440ea3#1",
-            "TS2305:cf5196831f06f54fc7b340fa5bb65dc4e5959f9eec1bdab58e1805308057784d#1",
-            "TS2305:d509a1402c814aa88e359dc1cbcb793cf7b544f65a3947414d7b3038325d1bf9#1"
-          ]
-        },
-        {
-          "contentHash": "fa875d20819ca510",
-          "fingerprints": [
-            "TS18004:30de6da6d9f559a560c7295758452b3521204662883ef851f1a5655d8cf99971#1",
-            "TS2304:06835ca2a6e83e58ab8ba73fe6b42270606ca8b02b62aa8e37a6bf52d8b7ebc9#1",
-            "TS2304:0c2bba2fb019f235d1bf23911132a5d452710db42820d4e00c3a4968e45b81d8#1",
-            "TS2304:0c2bba2fb019f235d1bf23911132a5d452710db42820d4e00c3a4968e45b81d8#2",
-            "TS2304:0c2bba2fb019f235d1bf23911132a5d452710db42820d4e00c3a4968e45b81d8#3",
-            "TS2304:0c2bba2fb019f235d1bf23911132a5d452710db42820d4e00c3a4968e45b81d8#4",
-            "TS2304:0c5188dceebc153606ad70f0409b8aa5790cadc6bf305a85d17e04857883523f#1",
-            "TS2304:1853be68f3f108195cbe9d10eedf260825af4e1e0a93145128c4e4ca6259c0c5#1",
-            "TS2304:1853be68f3f108195cbe9d10eedf260825af4e1e0a93145128c4e4ca6259c0c5#2",
-            "TS2304:69b2918eb3fef8b5996c453a9c2861149e131f7e739540331b92a17dfa3ed85b#1",
-            "TS2304:69b2918eb3fef8b5996c453a9c2861149e131f7e739540331b92a17dfa3ed85b#2",
-            "TS2304:75727d0ec0eb3bc3d74c3973cf810e8e7d06cace75843e6dfb7f5740bc3e92f3#1",
-            "TS2304:ae30a420e4cab9bb25fb6bd6c4944cfb0e812f98cbdd383e546542e4f4ad6772#1",
-            "TS2304:b12454b6dd9f575a8f5aed7dbb2c810c10ae5e29d295d139adb67465ddbde910#1",
-            "TS2304:b12454b6dd9f575a8f5aed7dbb2c810c10ae5e29d295d139adb67465ddbde910#2",
-            "TS2304:bff2858a82ef013493213f13bf052dd0c25861d0fee913bff4823c75805c9256#1",
-            "TS2304:bff2858a82ef013493213f13bf052dd0c25861d0fee913bff4823c75805c9256#2",
-            "TS2304:c621182f2503f925599141850f0a3666f197ca47278d7dc06639b3ac20d34667#1",
-            "TS2305:40cae62fd0ddc8020b2b6d3f3418dd2a0dcf1ad33491e737252de36a36394a6d#1",
-            "TS2305:51a502ab9f142558103dbb25dc993c6fd81f60c557dd6337e87511e3396cbd8d#1",
-            "TS2305:5af797d298cbe29a7b20beb227531352a80c1bcf8a5e487ac2d33f59a8d56eb3#1",
-            "TS2305:b592b9d17d3ab5bb6118ec9f99443002629ecab677422245aad4b414452d0358#1"
-          ]
-        },
-        {
-          "contentHash": "69c33b21f324a6a5",
-          "fingerprints": [
-            "TS2305:7509755d20e5d2b836dc29034d8575f007c790c10d573e1a86e12ca69c06c8ca#1",
-            "TS2305:9e93606532217b71a7007952f7e088203ecd1d98f4f6a022b649a88a48298c7b#1",
-            "TS2305:ad6fe9328eeebd1e182985ec4f4950264d1d40370153da58a5ed3321ad97ec4c#1",
-            "TS2305:e6817b54b08a5e63af32d8cb50ef4963854188ab6430831d55a83212c025fb10#1"
-          ]
-        },
-        {
-          "contentHash": "ee512ac08498d9bb",
-          "fingerprints": [
-            "TS2305:05f13bdac92d96b7156b5ce6f75a26250da4d41cd441e33f260f058e07a6f4f4#1",
-            "TS2305:2bdd2a4397e04f7630afa9fafa5f1ecc165097982e9f4687e0608a32e2386bef#1",
-            "TS2305:9de15d85647f0fb26a62b6dd29f8e0176a82d548c9d42c9bbf7d900c78f0b32e#1",
-            "TS2305:d9540b16574583c2f8353ee167038d1ce4eba796a4f7c1a712bb1b388debf7c8#1"
-          ]
-        },
-        {
-          "contentHash": "25c5ba097051d58d",
-          "fingerprints": [
-            "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
-            "TS18004:ac4f84b2017825bfd70eafdebc9cb6f9355e77358475577026b6637c30cb9de2#1",
-            "TS2724:4f8f04d8801a3084b8f4b62adb211066723fa3678fe80b52a3240528c110e546#1"
-          ]
-        },
-        {
-          "contentHash": "d51aa7f47a240405",
-          "fingerprints": [
-            "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
-            "TS18004:ac4f84b2017825bfd70eafdebc9cb6f9355e77358475577026b6637c30cb9de2#1",
-            "TS2724:bc4d5024ca96772654e893c348a40bc5a4a35e7888283f2ab5002a4ee869a029#1"
-          ]
-        },
-        {
-          "contentHash": "17d2e20102a986b3",
-          "fingerprints": [
-            "TS18004:184a1f056dbaa8f67561821c22c5fd1717c9e245c7a9fe16098f1891b3dac0b3#1",
-            "TS18004:ac4f84b2017825bfd70eafdebc9cb6f9355e77358475577026b6637c30cb9de2#1",
-            "TS2305:155476c7e18c4b99b59f02b2437d2b2897b9b26b21f768789aa67f24a924faf5#1"
-          ]
-        },
-        {
-          "contentHash": "3e16659eff78a118",
-          "fingerprints": [
-            "TS2304:1e1124e156016e84d8a655a00c2def4a7503d0ff85a1c4b50bdb6acc62b398bd#1",
-            "TS2304:faf11aba82a1a72f20548db0f0aa23ed16da78a43cacf82fee5c892839676f34#1"
-          ]
-        },
-        {
-          "contentHash": "a3421a9a603acb1e",
-          "fingerprints": [
-            "TS2305:8a78491e479f235bcd91a26cb78ef6fd459f718ebc6ee5a7dd260a65fb301d5b#1",
-            "TS2305:9d0e3b0dfd70aae5d093bd9d7f231e2430cc98b2d95f4fbbf4f66b919f0e651c#1"
-          ]
-        },
-        {
-          "contentHash": "d8e458e622bf5aa9",
-          "fingerprints": [
-            "TS2304:5b9af3ed027d7f82f525917d64c3dfc293d67da598bd0bfbe5af31bca1458941#1",
-            "TS2304:839fe35175bfe678773d86340eff802890d4cebb48f26fac65f3a10c5afc51d2#1",
-            "TS2304:a5aa6f76a2909be857514420da94a575be5a22a7a609afd2cbee8e74ea268848#1",
-            "TS2304:bff2858a82ef013493213f13bf052dd0c25861d0fee913bff4823c75805c9256#1",
-            "TS2322:9d399a7e3c1640392a3a122ecfc100d0cd8d38d6569ec3a214dd8a14d2b42a3a#1"
-          ]
-        },
-        {
-          "contentHash": "5935479d87ff3444",
-          "fingerprints": [
-            "TS2304:5b9af3ed027d7f82f525917d64c3dfc293d67da598bd0bfbe5af31bca1458941#1",
-            "TS2304:839fe35175bfe678773d86340eff802890d4cebb48f26fac65f3a10c5afc51d2#1",
-            "TS2304:a5aa6f76a2909be857514420da94a575be5a22a7a609afd2cbee8e74ea268848#1",
-            "TS2304:bff2858a82ef013493213f13bf052dd0c25861d0fee913bff4823c75805c9256#1"
-          ]
-        }
-      ],
-      "reason": "The migration comparison deliberately contains removed v1 APIs and partial before/after fragments that do not compile independently against the pinned v3 packages."
     },
     {
       "file": "docs/_data/intuition-sdk/vaults-guide.md",
@@ -384,226 +30,226 @@
         {
           "contentHash": "bf705c482878a343",
           "fingerprints": [
-            "TS18004:184a1f056dbaa8f67561821c22c5fd1717c9e245c7a9fe16098f1891b3dac0b3#1",
-            "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
-            "TS18004:ac4f84b2017825bfd70eafdebc9cb6f9355e77358475577026b6637c30cb9de2#1",
-            "TS2304:1e1124e156016e84d8a655a00c2def4a7503d0ff85a1c4b50bdb6acc62b398bd#1",
-            "TS2304:bff2858a82ef013493213f13bf052dd0c25861d0fee913bff4823c75805c9256#1",
-            "TS2345:8c407b8edc5e39c1d184bd70755317b053c41902d9e4b9b17c77b72c04030f99#1"
+            "TS18004#1",
+            "TS18004#2",
+            "TS18004#3",
+            "TS2304#1",
+            "TS2304#2",
+            "TS2345#1"
           ]
         },
         {
           "contentHash": "b029b876f1bbf414",
           "fingerprints": [
-            "TS18004:184a1f056dbaa8f67561821c22c5fd1717c9e245c7a9fe16098f1891b3dac0b3#1",
-            "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
-            "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#2",
-            "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#3",
-            "TS18004:ac4f84b2017825bfd70eafdebc9cb6f9355e77358475577026b6637c30cb9de2#1",
-            "TS18004:ac4f84b2017825bfd70eafdebc9cb6f9355e77358475577026b6637c30cb9de2#2",
-            "TS18004:ac4f84b2017825bfd70eafdebc9cb6f9355e77358475577026b6637c30cb9de2#3",
-            "TS2304:1e1124e156016e84d8a655a00c2def4a7503d0ff85a1c4b50bdb6acc62b398bd#1",
-            "TS2304:1e1124e156016e84d8a655a00c2def4a7503d0ff85a1c4b50bdb6acc62b398bd#2",
-            "TS2304:a05d7e6c5ddafcb12f6867547a766863a9c4ad3addef3b218c92f1a5925d24f8#1",
-            "TS2322:ab46e4f6188b96fed407285d6da23edd9f1ca9c515418418ee44f8f4b3a300de#1",
-            "TS2345:5670a7e8632867899fc0c050955b6560df0151b5fcef4890f93827808f0ec99c#1",
-            "TS2345:f7064a43278983d19b6aeeee8ef3c3c14e6a89cfb9bcfef070b5f22b73ef2e23#1",
-            "TS2362:3e37de66947d48e73526b2eed8ebb5ef385510e4cfb5b1acfa99cd55bfbc59b9#1",
-            "TS2365:db1ef5be1558f01a0e7e9e44fc8c6de7d741708b5d3640fb8668efd6c2f1050f#1"
+            "TS18004#1",
+            "TS18004#2",
+            "TS18004#3",
+            "TS18004#4",
+            "TS18004#5",
+            "TS18004#6",
+            "TS18004#7",
+            "TS2304#1",
+            "TS2304#2",
+            "TS2304#3",
+            "TS2322#1",
+            "TS2345#1",
+            "TS2345#2",
+            "TS2362#1",
+            "TS2365#1"
           ]
         },
         {
           "contentHash": "b26d63cadaa234db",
           "fingerprints": [
-            "TS18004:184a1f056dbaa8f67561821c22c5fd1717c9e245c7a9fe16098f1891b3dac0b3#1",
-            "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
-            "TS18004:ac4f84b2017825bfd70eafdebc9cb6f9355e77358475577026b6637c30cb9de2#1",
-            "TS2304:1e1124e156016e84d8a655a00c2def4a7503d0ff85a1c4b50bdb6acc62b398bd#1",
-            "TS2304:4371df8b3083bb081345ed8d3352f9270b228395ba4afc1abc6db5fbccac963b#1",
-            "TS2304:889750d0f208f3ae44c9073ac1b2ed98ddf567eea2f9eb8040e3446c06cd78c2#1",
-            "TS2304:8f8552a2bccadce3f28814a04d5b47950d5ac19e6ec7edd838c2421a93c6c241#1"
+            "TS18004#1",
+            "TS18004#2",
+            "TS18004#3",
+            "TS2304#1",
+            "TS2304#2",
+            "TS2304#3",
+            "TS2304#4"
           ]
         },
         {
           "contentHash": "69d898dad6f063d1",
           "fingerprints": [
-            "TS2304:1e1124e156016e84d8a655a00c2def4a7503d0ff85a1c4b50bdb6acc62b398bd#1",
-            "TS2304:bff2858a82ef013493213f13bf052dd0c25861d0fee913bff4823c75805c9256#1",
-            "TS2304:bff2858a82ef013493213f13bf052dd0c25861d0fee913bff4823c75805c9256#2",
-            "TS2345:8c407b8edc5e39c1d184bd70755317b053c41902d9e4b9b17c77b72c04030f99#1"
+            "TS2304#1",
+            "TS2304#2",
+            "TS2304#3",
+            "TS2345#1"
           ]
         },
         {
           "contentHash": "fa9222208fde68df",
           "fingerprints": [
-            "TS18048:5a2eb1b9a24d7af06d31d86251ed5bf15d1c58a5d754e9f576ed8396cbef469f#1",
-            "TS2345:d6fc8b5d2b4f2a86d67aa98f56bccbbd5cb7bcb2e755371223b0b1cf03addffb#1"
+            "TS18048#1",
+            "TS2345#1"
           ]
         },
         {
           "contentHash": "c911314fcffbfa27",
           "fingerprints": [
-            "TS2304:1e1124e156016e84d8a655a00c2def4a7503d0ff85a1c4b50bdb6acc62b398bd#1",
-            "TS2304:bff2858a82ef013493213f13bf052dd0c25861d0fee913bff4823c75805c9256#1",
-            "TS2304:fb83e9a669a2da1a8da67ef9678802abdaff29645a38dd9d67fb2d622253beeb#1",
-            "TS2345:8c407b8edc5e39c1d184bd70755317b053c41902d9e4b9b17c77b72c04030f99#1"
+            "TS2304#1",
+            "TS2304#2",
+            "TS2304#3",
+            "TS2345#1"
           ]
         },
         {
           "contentHash": "b09378c647f34342",
           "ordinal": 1,
           "fingerprints": [
-            "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
-            "TS18004:ac4f84b2017825bfd70eafdebc9cb6f9355e77358475577026b6637c30cb9de2#1",
-            "TS2304:1853be68f3f108195cbe9d10eedf260825af4e1e0a93145128c4e4ca6259c0c5#1",
-            "TS2304:1e1124e156016e84d8a655a00c2def4a7503d0ff85a1c4b50bdb6acc62b398bd#1",
-            "TS2322:88448480b211edb96d17e73f78b35b7268c2d99be07690aa3d247a0b77b52fc6#1"
+            "TS18004#1",
+            "TS18004#2",
+            "TS2304#1",
+            "TS2304#2",
+            "TS2322#1"
           ]
         },
         {
           "contentHash": "6fe88b71c10c901f",
           "fingerprints": [
-            "TS18004:184a1f056dbaa8f67561821c22c5fd1717c9e245c7a9fe16098f1891b3dac0b3#1",
-            "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
-            "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#2",
-            "TS18004:ac4f84b2017825bfd70eafdebc9cb6f9355e77358475577026b6637c30cb9de2#1",
-            "TS18004:ac4f84b2017825bfd70eafdebc9cb6f9355e77358475577026b6637c30cb9de2#2",
-            "TS2304:1853be68f3f108195cbe9d10eedf260825af4e1e0a93145128c4e4ca6259c0c5#1",
-            "TS2304:1853be68f3f108195cbe9d10eedf260825af4e1e0a93145128c4e4ca6259c0c5#2",
-            "TS2304:1e1124e156016e84d8a655a00c2def4a7503d0ff85a1c4b50bdb6acc62b398bd#1",
-            "TS2304:1e1124e156016e84d8a655a00c2def4a7503d0ff85a1c4b50bdb6acc62b398bd#2",
-            "TS2322:88448480b211edb96d17e73f78b35b7268c2d99be07690aa3d247a0b77b52fc6#1"
+            "TS18004#1",
+            "TS18004#2",
+            "TS18004#3",
+            "TS18004#4",
+            "TS18004#5",
+            "TS2304#1",
+            "TS2304#2",
+            "TS2304#3",
+            "TS2304#4",
+            "TS2322#1"
           ]
         },
         {
           "contentHash": "991092b7eff1bf45",
           "fingerprints": [
-            "TS18004:184a1f056dbaa8f67561821c22c5fd1717c9e245c7a9fe16098f1891b3dac0b3#1",
-            "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
-            "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#2",
-            "TS18004:ac4f84b2017825bfd70eafdebc9cb6f9355e77358475577026b6637c30cb9de2#1",
-            "TS18004:ac4f84b2017825bfd70eafdebc9cb6f9355e77358475577026b6637c30cb9de2#2",
-            "TS2304:1e1124e156016e84d8a655a00c2def4a7503d0ff85a1c4b50bdb6acc62b398bd#1",
-            "TS2304:a05d7e6c5ddafcb12f6867547a766863a9c4ad3addef3b218c92f1a5925d24f8#1",
-            "TS2345:257d0361da235cff4389b1d5a332cd87c5b505e1efc9da93656c2fe40558b7a8#1",
-            "TS2345:5670a7e8632867899fc0c050955b6560df0151b5fcef4890f93827808f0ec99c#1",
-            "TS2362:3e37de66947d48e73526b2eed8ebb5ef385510e4cfb5b1acfa99cd55bfbc59b9#1",
-            "TS2365:db1ef5be1558f01a0e7e9e44fc8c6de7d741708b5d3640fb8668efd6c2f1050f#1"
+            "TS18004#1",
+            "TS18004#2",
+            "TS18004#3",
+            "TS18004#4",
+            "TS18004#5",
+            "TS2304#1",
+            "TS2304#2",
+            "TS2345#1",
+            "TS2345#2",
+            "TS2362#1",
+            "TS2365#1"
           ]
         },
         {
           "contentHash": "1ee3c055d698cdd1",
           "fingerprints": [
-            "TS18004:184a1f056dbaa8f67561821c22c5fd1717c9e245c7a9fe16098f1891b3dac0b3#1",
-            "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
-            "TS18004:ac4f84b2017825bfd70eafdebc9cb6f9355e77358475577026b6637c30cb9de2#1",
-            "TS2304:1e1124e156016e84d8a655a00c2def4a7503d0ff85a1c4b50bdb6acc62b398bd#1",
-            "TS2304:258f1fc9fd0d7ecb42a978bb589245185fc006fb3a2895e497df0d038ebdf90d#1",
-            "TS2304:4371df8b3083bb081345ed8d3352f9270b228395ba4afc1abc6db5fbccac963b#1",
-            "TS2304:57912a859527bbb4f860a538d3069ab0800e9e2c6feed85333a2cc0fd4e7f62e#1",
-            "TS2304:889750d0f208f3ae44c9073ac1b2ed98ddf567eea2f9eb8040e3446c06cd78c2#1",
-            "TS2304:8f8552a2bccadce3f28814a04d5b47950d5ac19e6ec7edd838c2421a93c6c241#1",
-            "TS2304:ef5349836cac217103db2a3dbcc3a284e4e301712ec6684d66f50e8168ef63b1#1"
+            "TS18004#1",
+            "TS18004#2",
+            "TS18004#3",
+            "TS2304#1",
+            "TS2304#2",
+            "TS2304#3",
+            "TS2304#4",
+            "TS2304#5",
+            "TS2304#6",
+            "TS2304#7"
           ]
         },
         {
           "contentHash": "3e2b94f2ce8fdff2",
           "fingerprints": [
-            "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
-            "TS18004:ac4f84b2017825bfd70eafdebc9cb6f9355e77358475577026b6637c30cb9de2#1",
-            "TS2304:1853be68f3f108195cbe9d10eedf260825af4e1e0a93145128c4e4ca6259c0c5#1",
-            "TS2304:1853be68f3f108195cbe9d10eedf260825af4e1e0a93145128c4e4ca6259c0c5#2",
-            "TS2304:1e1124e156016e84d8a655a00c2def4a7503d0ff85a1c4b50bdb6acc62b398bd#1",
-            "TS2304:1e1124e156016e84d8a655a00c2def4a7503d0ff85a1c4b50bdb6acc62b398bd#2",
-            "TS2304:bff2858a82ef013493213f13bf052dd0c25861d0fee913bff4823c75805c9256#1",
-            "TS2322:88448480b211edb96d17e73f78b35b7268c2d99be07690aa3d247a0b77b52fc6#1"
+            "TS18004#1",
+            "TS18004#2",
+            "TS2304#1",
+            "TS2304#2",
+            "TS2304#3",
+            "TS2304#4",
+            "TS2304#5",
+            "TS2322#1"
           ]
         },
         {
           "contentHash": "e39b975a03949b1c",
           "fingerprints": [
-            "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
-            "TS18004:ac4f84b2017825bfd70eafdebc9cb6f9355e77358475577026b6637c30cb9de2#1",
-            "TS2304:0c5188dceebc153606ad70f0409b8aa5790cadc6bf305a85d17e04857883523f#1",
-            "TS2304:1853be68f3f108195cbe9d10eedf260825af4e1e0a93145128c4e4ca6259c0c5#1",
-            "TS2304:f98f0553c2b94650ddeaab8cc761821c718012fcf9c62c5d304f6fb22d88b9a5#1",
-            "TS2322:2b49ab5f67df462c63e3ff1f879bf29687aa676bb4d671bf824b746b2ed074eb#1"
+            "TS18004#1",
+            "TS18004#2",
+            "TS2304#1",
+            "TS2304#2",
+            "TS2304#3",
+            "TS2322#1"
           ]
         },
         {
           "contentHash": "b09378c647f34342",
           "ordinal": 2,
           "fingerprints": [
-            "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
-            "TS18004:ac4f84b2017825bfd70eafdebc9cb6f9355e77358475577026b6637c30cb9de2#1",
-            "TS2304:1853be68f3f108195cbe9d10eedf260825af4e1e0a93145128c4e4ca6259c0c5#1",
-            "TS2304:1e1124e156016e84d8a655a00c2def4a7503d0ff85a1c4b50bdb6acc62b398bd#1",
-            "TS2322:88448480b211edb96d17e73f78b35b7268c2d99be07690aa3d247a0b77b52fc6#1"
+            "TS18004#1",
+            "TS18004#2",
+            "TS2304#1",
+            "TS2304#2",
+            "TS2322#1"
           ]
         },
         {
           "contentHash": "497db7c06f2b14fd",
           "fingerprints": [
-            "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
-            "TS18004:ac4f84b2017825bfd70eafdebc9cb6f9355e77358475577026b6637c30cb9de2#1",
-            "TS2304:1853be68f3f108195cbe9d10eedf260825af4e1e0a93145128c4e4ca6259c0c5#1",
-            "TS2322:44814f6bdc8a356e4e815d4586b15de19c25d222a9525d2e2be1e45011209ec4#1",
-            "TS2339:8b5d72692bed8663843395290f86eae233fbf9923e9562d835ce438ee48e0bbe#1",
-            "TS2339:d6430450fb0284c4a085d22d01d5248167fe44398b5392bc38d69253621e5aae#1"
+            "TS18004#1",
+            "TS18004#2",
+            "TS2304#1",
+            "TS2322#1",
+            "TS2339#1",
+            "TS2339#2"
           ]
         },
         {
           "contentHash": "746c96f8a3fdba24",
           "fingerprints": [
-            "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
-            "TS18004:ac4f84b2017825bfd70eafdebc9cb6f9355e77358475577026b6637c30cb9de2#1",
-            "TS2304:1853be68f3f108195cbe9d10eedf260825af4e1e0a93145128c4e4ca6259c0c5#1"
+            "TS18004#1",
+            "TS18004#2",
+            "TS2304#1"
           ]
         },
         {
           "contentHash": "62e34bdf30d48090",
           "fingerprints": [
-            "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
-            "TS18004:ac4f84b2017825bfd70eafdebc9cb6f9355e77358475577026b6637c30cb9de2#1",
-            "TS2304:1853be68f3f108195cbe9d10eedf260825af4e1e0a93145128c4e4ca6259c0c5#1",
-            "TS2345:5670a7e8632867899fc0c050955b6560df0151b5fcef4890f93827808f0ec99c#1"
+            "TS18004#1",
+            "TS18004#2",
+            "TS2304#1",
+            "TS2345#1"
           ]
         },
         {
           "contentHash": "fc2d9a7b6289eabe",
           "fingerprints": [
-            "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
-            "TS18004:ac4f84b2017825bfd70eafdebc9cb6f9355e77358475577026b6637c30cb9de2#1",
-            "TS2304:1853be68f3f108195cbe9d10eedf260825af4e1e0a93145128c4e4ca6259c0c5#1",
-            "TS2345:257d0361da235cff4389b1d5a332cd87c5b505e1efc9da93656c2fe40558b7a8#1",
-            "TS2345:5670a7e8632867899fc0c050955b6560df0151b5fcef4890f93827808f0ec99c#1"
+            "TS18004#1",
+            "TS18004#2",
+            "TS2304#1",
+            "TS2345#1",
+            "TS2345#2"
           ]
         },
         {
           "contentHash": "d3bb62593104bbed",
           "fingerprints": [
-            "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
-            "TS18004:ac4f84b2017825bfd70eafdebc9cb6f9355e77358475577026b6637c30cb9de2#1",
-            "TS2304:1853be68f3f108195cbe9d10eedf260825af4e1e0a93145128c4e4ca6259c0c5#1",
-            "TS2304:1853be68f3f108195cbe9d10eedf260825af4e1e0a93145128c4e4ca6259c0c5#2",
-            "TS2304:1e1124e156016e84d8a655a00c2def4a7503d0ff85a1c4b50bdb6acc62b398bd#1",
-            "TS2304:bff2858a82ef013493213f13bf052dd0c25861d0fee913bff4823c75805c9256#1",
-            "TS2345:5670a7e8632867899fc0c050955b6560df0151b5fcef4890f93827808f0ec99c#1",
-            "TS2345:70f34245c3ff29a68763dc8fd6290126f588addb26b3eb3545c17bf500301b2e#1",
-            "TS2362:3e37de66947d48e73526b2eed8ebb5ef385510e4cfb5b1acfa99cd55bfbc59b9#1",
-            "TS2365:db1ef5be1558f01a0e7e9e44fc8c6de7d741708b5d3640fb8668efd6c2f1050f#1"
+            "TS18004#1",
+            "TS18004#2",
+            "TS2304#1",
+            "TS2304#2",
+            "TS2304#3",
+            "TS2304#4",
+            "TS2345#1",
+            "TS2345#2",
+            "TS2362#1",
+            "TS2365#1"
           ]
         },
         {
           "contentHash": "1684dfb78949ae15",
           "fingerprints": [
-            "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
-            "TS18004:ac4f84b2017825bfd70eafdebc9cb6f9355e77358475577026b6637c30cb9de2#1",
-            "TS2304:4371df8b3083bb081345ed8d3352f9270b228395ba4afc1abc6db5fbccac963b#1",
-            "TS2304:889750d0f208f3ae44c9073ac1b2ed98ddf567eea2f9eb8040e3446c06cd78c2#1",
-            "TS2304:8f8552a2bccadce3f28814a04d5b47950d5ac19e6ec7edd838c2421a93c6c241#1",
-            "TS2345:5670a7e8632867899fc0c050955b6560df0151b5fcef4890f93827808f0ec99c#1",
-            "TS2345:d4233222efe0161a41d47b27c9ae788dec4ffdadb4cb7cc2d96a81f34ff9b722#1"
+            "TS18004#1",
+            "TS18004#2",
+            "TS2304#1",
+            "TS2304#2",
+            "TS2304#3",
+            "TS2345#1",
+            "TS2345#2"
           ]
         }
       ],
@@ -615,141 +261,144 @@
         {
           "contentHash": "09e07972b7b57288",
           "fingerprints": [
-            "TS2307:9f684f546a73a553f388e71a9ae7bca50303e1d99cad59754601512a5fac3d30#1"
+            "TS2322#1",
+            "TS2719#1"
           ]
         },
         {
           "contentHash": "56699f6fab1a6941",
           "fingerprints": [
-            "TS18004:184a1f056dbaa8f67561821c22c5fd1717c9e245c7a9fe16098f1891b3dac0b3#1",
-            "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
-            "TS18004:ac4f84b2017825bfd70eafdebc9cb6f9355e77358475577026b6637c30cb9de2#1"
+            "TS18004#1",
+            "TS18004#2",
+            "TS18004#3"
           ]
         },
         {
           "contentHash": "40b7f915ecb66ee3",
           "fingerprints": [
-            "TS18004:184a1f056dbaa8f67561821c22c5fd1717c9e245c7a9fe16098f1891b3dac0b3#1",
-            "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
-            "TS18004:ac4f84b2017825bfd70eafdebc9cb6f9355e77358475577026b6637c30cb9de2#1",
-            "TS2345:d1fdc79832dd3581b02cfa70549026632a6bd39b7c52690551d7d8dd6a952840#1"
+            "TS18004#1",
+            "TS18004#2",
+            "TS18004#3",
+            "TS2345#1"
           ]
         },
         {
           "contentHash": "f9594a45554e2f38",
           "fingerprints": [
-            "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
-            "TS18004:ac4f84b2017825bfd70eafdebc9cb6f9355e77358475577026b6637c30cb9de2#1",
-            "TS2304:c691092c645e4f3442699a5d8fd38ee903d11617e9cb2d1a0ce85dabe723ae56#1",
-            "TS2305:b2d9ae887df419cdf7adfb392b7f597e2b857e178da3edb5064862fda86d0109#1"
+            "TS18004#1",
+            "TS18004#2",
+            "TS2304#1",
+            "TS2305#1"
           ]
         },
         {
           "contentHash": "c73a9d0b58811e44",
           "fingerprints": [
-            "TS18004:184a1f056dbaa8f67561821c22c5fd1717c9e245c7a9fe16098f1891b3dac0b3#1",
-            "TS18004:184a1f056dbaa8f67561821c22c5fd1717c9e245c7a9fe16098f1891b3dac0b3#2",
-            "TS18004:184a1f056dbaa8f67561821c22c5fd1717c9e245c7a9fe16098f1891b3dac0b3#3",
-            "TS18004:184a1f056dbaa8f67561821c22c5fd1717c9e245c7a9fe16098f1891b3dac0b3#4",
-            "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
-            "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#2",
-            "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#3",
-            "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#4",
-            "TS18004:ac4f84b2017825bfd70eafdebc9cb6f9355e77358475577026b6637c30cb9de2#1",
-            "TS18004:ac4f84b2017825bfd70eafdebc9cb6f9355e77358475577026b6637c30cb9de2#2",
-            "TS18004:ac4f84b2017825bfd70eafdebc9cb6f9355e77358475577026b6637c30cb9de2#3",
-            "TS18004:ac4f84b2017825bfd70eafdebc9cb6f9355e77358475577026b6637c30cb9de2#4",
-            "TS2322:39e6f594e027ab1bef567c6bb3ac7ff977a6ada55236f97bc1bc74528cb64a6a#1",
-            "TS2322:39e6f594e027ab1bef567c6bb3ac7ff977a6ada55236f97bc1bc74528cb64a6a#2",
-            "TS2322:39e6f594e027ab1bef567c6bb3ac7ff977a6ada55236f97bc1bc74528cb64a6a#3"
+            "TS18004#1",
+            "TS18004#10",
+            "TS18004#11",
+            "TS18004#12",
+            "TS18004#2",
+            "TS18004#3",
+            "TS18004#4",
+            "TS18004#5",
+            "TS18004#6",
+            "TS18004#7",
+            "TS18004#8",
+            "TS18004#9",
+            "TS2322#1",
+            "TS2322#2",
+            "TS2322#3"
           ]
         },
         {
           "contentHash": "6b7be7eb48141d7b",
           "fingerprints": [
-            "TS18004:184a1f056dbaa8f67561821c22c5fd1717c9e245c7a9fe16098f1891b3dac0b3#1",
-            "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
-            "TS18004:ac4f84b2017825bfd70eafdebc9cb6f9355e77358475577026b6637c30cb9de2#1",
-            "TS2304:1853be68f3f108195cbe9d10eedf260825af4e1e0a93145128c4e4ca6259c0c5#1",
-            "TS2304:1e1124e156016e84d8a655a00c2def4a7503d0ff85a1c4b50bdb6acc62b398bd#1",
-            "TS2304:a55b4655fe59264105d064c9d6fb8439349022d0c41b550af223da81b0087bbd#1",
-            "TS2304:a55b4655fe59264105d064c9d6fb8439349022d0c41b550af223da81b0087bbd#2",
-            "TS2305:40cae62fd0ddc8020b2b6d3f3418dd2a0dcf1ad33491e737252de36a36394a6d#1"
+            "TS18004#1",
+            "TS18004#2",
+            "TS18004#3",
+            "TS2304#1",
+            "TS2304#2",
+            "TS2304#3",
+            "TS2304#4",
+            "TS2305#1"
           ]
         },
         {
           "contentHash": "731a755f43e5a087",
           "fingerprints": [
-            "TS18004:184a1f056dbaa8f67561821c22c5fd1717c9e245c7a9fe16098f1891b3dac0b3#1",
-            "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
-            "TS18004:ac4f84b2017825bfd70eafdebc9cb6f9355e77358475577026b6637c30cb9de2#1",
-            "TS2304:1853be68f3f108195cbe9d10eedf260825af4e1e0a93145128c4e4ca6259c0c5#1",
-            "TS2304:1e1124e156016e84d8a655a00c2def4a7503d0ff85a1c4b50bdb6acc62b398bd#1",
-            "TS2304:1e1124e156016e84d8a655a00c2def4a7503d0ff85a1c4b50bdb6acc62b398bd#2",
-            "TS2304:51b4752ddf14d352f58e8c5e06d806f9e7d596103688fee2da3a3af7b61a1ce7#1",
-            "TS2305:5af797d298cbe29a7b20beb227531352a80c1bcf8a5e487ac2d33f59a8d56eb3#1"
+            "TS18004#1",
+            "TS18004#2",
+            "TS18004#3",
+            "TS2304#1",
+            "TS2304#2",
+            "TS2304#3",
+            "TS2304#4",
+            "TS2305#1"
           ]
         },
         {
           "contentHash": "a9439be8f00a11cc",
           "fingerprints": [
-            "TS18004:184a1f056dbaa8f67561821c22c5fd1717c9e245c7a9fe16098f1891b3dac0b3#1",
-            "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
-            "TS18004:ac4f84b2017825bfd70eafdebc9cb6f9355e77358475577026b6637c30cb9de2#1",
-            "TS2304:1853be68f3f108195cbe9d10eedf260825af4e1e0a93145128c4e4ca6259c0c5#1",
-            "TS2304:51b4752ddf14d352f58e8c5e06d806f9e7d596103688fee2da3a3af7b61a1ce7#1",
-            "TS2305:5f1322abed3dc7302d212764aafeb8e9d9c055ce67e1a51605101abf89211f7b#1"
+            "TS18004#1",
+            "TS18004#2",
+            "TS18004#3",
+            "TS2304#1",
+            "TS2304#2",
+            "TS2305#1"
           ]
         },
         {
           "contentHash": "0d173fd46b676a9c",
           "fingerprints": [
-            "TS2305:40cae62fd0ddc8020b2b6d3f3418dd2a0dcf1ad33491e737252de36a36394a6d#1",
-            "TS2307:9f684f546a73a553f388e71a9ae7bca50303e1d99cad59754601512a5fac3d30#1"
+            "TS18048#1",
+            "TS2305#1",
+            "TS2322#1",
+            "TS2719#1"
           ]
         },
         {
           "contentHash": "0c99344998cd8982",
           "fingerprints": [
-            "TS18004:184a1f056dbaa8f67561821c22c5fd1717c9e245c7a9fe16098f1891b3dac0b3#1",
-            "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
-            "TS18004:ac4f84b2017825bfd70eafdebc9cb6f9355e77358475577026b6637c30cb9de2#1"
+            "TS18004#1",
+            "TS18004#2",
+            "TS18004#3"
           ]
         },
         {
           "contentHash": "e7cd37ec2563f9cf",
           "fingerprints": [
-            "TS18004:184a1f056dbaa8f67561821c22c5fd1717c9e245c7a9fe16098f1891b3dac0b3#1",
-            "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
-            "TS18004:ac4f84b2017825bfd70eafdebc9cb6f9355e77358475577026b6637c30cb9de2#1",
-            "TS2304:261ed4df25d82b94d4dd05bf998198207a06e13c2d969e438800e1f0545fc217#1",
-            "TS2304:33eae363239f112986cea1f5395f54546299977f6f1ef0fa8c2bc74cb25d119f#1",
-            "TS2304:4351c22d720078e019ef002946f3523e517d5ad1220763005d452986b1719c50#1",
-            "TS2304:8427919ff027c639c9aac2687ccb300e0c41ec900e153b8b46cc601432f13a39#1",
-            "TS2304:bb0ccbb550b152ed7a9c986756132772d4756c7f7cd18c80e39537d9beaacf7c#1",
-            "TS2304:bfccdb1a571cb77e39fd71c234a82091d79777df70dca912c548d89200998906#1",
-            "TS2304:c3b39bed429760eec41b6cf927b43b283e1fb97abee42d201af8475055f73b84#1",
-            "TS2304:f739d21a9980e656c240e55e5e2b3c4f92d79a570bf489026a4f902cbeb69c77#1",
-            "TS2304:fb318b1664bc8fe6ddb3f82eb09720d37646603766f1c3dec2c30a8cb836ebfc#1",
-            "TS2345:7ff8d30d1dffc74a8415678d69d7af9d87b650bbb70b4acdcef9ce71640d4b1a#1"
+            "TS18004#1",
+            "TS18004#2",
+            "TS18004#3",
+            "TS2304#1",
+            "TS2304#2",
+            "TS2304#3",
+            "TS2304#4",
+            "TS2304#5",
+            "TS2304#6",
+            "TS2304#7",
+            "TS2304#8",
+            "TS2304#9",
+            "TS2345#1"
           ]
         },
         {
           "contentHash": "b6d29de1501eec70",
           "fingerprints": [
-            "TS18004:184a1f056dbaa8f67561821c22c5fd1717c9e245c7a9fe16098f1891b3dac0b3#1",
-            "TS18004:25454910a3ae48adeebc2e467f4031a8b5231d9d99e0138f2677e6fe1eb345db#1",
-            "TS18004:ac4f84b2017825bfd70eafdebc9cb6f9355e77358475577026b6637c30cb9de2#1",
-            "TS2304:5870d9d22b926977ea52911cf0c56dd5a80cfa9c5b6cefd3572a02ec0933e8be#1",
-            "TS2304:5dd07a532752e1da313381b1e812ff7959b4c65cf899230150b0e466d2517b73#1",
-            "TS2304:8162bbe8d10a824ed8cd6bf9c25eb38cc76cf519a141909856511218e65dc86c#1",
-            "TS2304:9c3b63ba737ea71ebfa1f8638bd878faaf02282b579e6c492c2eb375b7142bd3#1",
-            "TS2304:a87915a7e8956c51dc17606183560400c96ed8df2bdd99e58c00c0b18ef05f87#1",
-            "TS2304:a87915a7e8956c51dc17606183560400c96ed8df2bdd99e58c00c0b18ef05f87#2",
-            "TS2304:a87915a7e8956c51dc17606183560400c96ed8df2bdd99e58c00c0b18ef05f87#3",
-            "TS2304:bf2b348b1f739b9692a9f178b379338675dd0de0d7543af83a3facd91f72e68e#1",
-            "TS2304:cd17815fed5d1e6c6b42cba9d156591af67bcac0a913de4f69182c45c9a82aac#1",
-            "TS2305:5425a4e97b933fa3944c44006df8ab69927de7aeeb3402593b216a79cdf0f951#1"
+            "TS18004#1",
+            "TS18004#2",
+            "TS18004#3",
+            "TS2304#1",
+            "TS2304#2",
+            "TS2304#3",
+            "TS2304#4",
+            "TS2304#5",
+            "TS2304#6",
+            "TS2304#7",
+            "TS2304#8",
+            "TS2304#9",
+            "TS2305#1"
           ]
         }
       ],
