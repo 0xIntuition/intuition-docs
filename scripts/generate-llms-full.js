@@ -986,6 +986,16 @@ function main() {
       `Generated ${mediumPath} (${sections.length} sections, ${mediumSizeKB}KB)`,
     );
   }
+    // Generate llms.txt
+  if (doIndex) {
+    const indexContent = generateIndexTxt(sections);
+    const indexPath = path.join(STATIC_DIR, 'llms.txt');
+    fs.writeFileSync(indexPath, indexContent, 'utf-8');
+    const indexSizeKB = Math.round(fs.statSync(indexPath).size / 1024);
+    console.log(
+      `Generated ${indexPath} (${sections.length} routes, ${indexSizeKB}KB)`,
+    );
+  }
 }
 
 if (require.main === module) {
@@ -996,4 +1006,9 @@ module.exports = {
   cleanContent,
   parseSections,
   serializeMdxComponents,
+  BASE_URL,
+  DOCS_DIR,
+  getEligibleSections: parseSections,
+  INDEX_DIRECTORY_INTRO,
+  readCuratedIndexSource,
 };
