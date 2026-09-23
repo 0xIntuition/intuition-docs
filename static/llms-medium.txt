@@ -1525,15 +1525,19 @@ The Intuition GraphQL package provides a type-safe interface for interacting wit
 
 Install the package using your preferred package manager:
 
+### npm
+
+### pnpm
+
+### yarn
+
+### bun
+
 ## Quick Start
 
 ### 1. Client Configuration (Optional)
 
 Configure the GraphQL client at the root of your application:
-
-**Available API URLs:**
-
-- `API_URL_PROD`: `https://mainnet.intuition.sh/v1/graphql` (default)
 
 [... see full docs for complete content]
 
