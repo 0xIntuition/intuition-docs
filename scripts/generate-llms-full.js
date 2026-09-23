@@ -449,6 +449,97 @@ function qualifyGenericReferenceHeadings(content, pageTitle) {
     .join('\n');
 }
 
+/**
+ * Convert MDX component structure into useful plain Markdown.
+ *
+ * Content-bearing wrappers are unwrapped instead of discarded. Tabs receive
+ * headings derived from their labels so variants remain distinguishable after
+ * the interactive UI is removed. BrowserOnly is intentionally discarded
+ * because the current documentation uses it only for executable diagram
+ * renderers, which do not have meaningful static child content.
+ */
+function serializeMdxComponents(content) {
+  let serialized = content;
+
+  // BrowserOnly currently wraps executable Excalidraw render functions. Drop
+  // these blocks explicitly so JSX expressions do not leak into Markdown.
+  serialized = serialized.replace(
+    /^[ \t]*<BrowserOnly\b[^>]*>[\s\S]*?<\/BrowserOnly>\s*$/gm,
+    ''
+  );
+
+  const output = [];
+  const tabHeadingLevels = [];
+  let lastMarkdownHeadingLevel = 1;
+
+  for (const line of serialized.split('\n')) {
+    const trimmed = line.trim();
+
+    if (/^<Tabs\b[^>]*>$/.test(trimmed)) {
+      const parentLevel = tabHeadingLevels.length
+        ? tabHeadingLevels[tabHeadingLevels.length - 1]
+        : lastMarkdownHeadingLevel;
+      tabHeadingLevels.push(Math.min(parentLevel + 1, 6));
+      continue;
+    }
+
+    if (/^<\/Tabs>$/.test(trimmed)) {
+      tabHeadingLevels.pop();
+      continue;
+    }
+
+    const tabItemMatch = trimmed.match(/^<TabItem\b([^>]*)>$/);
+    if (tabItemMatch) {
+      const label =
+        getHtmlAttribute(tabItemMatch[1], 'label') ||
+        getHtmlAttribute(tabItemMatch[1], 'value');
+      if (label) {
+        const headingLevel = tabHeadingLevels.length
+          ? tabHeadingLevels[tabHeadingLevels.length - 1]
+          : Math.min(lastMarkdownHeadingLevel + 1, 6);
+        output.push(`${'#'.repeat(headingLevel)} ${textFromHtml(label)}`);
+      }
+      continue;
+    }
+
+    if (/^<\/TabItem>$/.test(trimmed)) {
+      continue;
+    }
+
+    // React fragments and named Fragment wrappers carry structure only.
+    if (/^(?:<>|<\/>)$/.test(trimmed)) {
+      continue;
+    }
+
+    if (/^<Fragment\b[^>]*>$/.test(trimmed) || /^<\/Fragment>$/.test(trimmed)) {
+      continue;
+    }
+
+    // A self-closing component has no child prose to preserve.
+    if (/^<[A-Z][A-Za-z0-9_.]*\b[^>]*\/>$/.test(trimmed)) {
+      continue;
+    }
+
+    // Unknown paired components are treated as presentation wrappers. Strip
+    // standalone tags but retain their children to avoid silent content loss.
+    if (
+      /^<[A-Z][A-Za-z0-9_.]*\b[^>]*>$/.test(trimmed) ||
+      /^<\/[A-Z][A-Za-z0-9_.]*>$/.test(trimmed)
+    ) {
+      continue;
+    }
+
+    const headingMatch = line.match(/^(#{1,6})\s+/);
+    if (headingMatch && tabHeadingLevels.length === 0) {
+      lastMarkdownHeadingLevel = headingMatch[1].length;
+    }
+
+    output.push(line);
+  }
+
+  return output.join('\n');
+}
+
 function cleanContent(
   body,
   title,
@@ -539,20 +630,11 @@ function cleanContent(
     },
   );
 
-  // Pass 8: Remove self-closing JSX components: <Component ... />
-  content = content.replace(/^[ \t]*<[A-Z][A-Za-z]*\b[^>]*\/>\s*$/gm, '');
+  // Pass 8: Remove MDX presentation structure while preserving useful child
+  // content and labels.
+  content = serializeMdxComponents(content);
 
-  // Pass 9: Remove multi-line JSX blocks (opening + children + closing)
-  for (let i = 0; i < 5; i++) {
-    const before = content;
-    content = content.replace(
-      /^[ \t]*<([A-Z][A-Za-z]*)\b[^>]*>[\s\S]*?<\/\1>\s*$/gm,
-      '',
-    );
-    if (content === before) break;
-  }
-
-  // Pass 10: Remove inline style objects: style={{ ... }}
+  // Pass 9: Remove inline style objects: style={{ ... }}
   content = content.replace(/style=\{\{[\s\S]*?\}\}/g, '');
 
   // Pass 11: Remove JSX event handlers and React-specific attributes
@@ -904,31 +986,14 @@ function main() {
       `Generated ${mediumPath} (${sections.length} sections, ${mediumSizeKB}KB)`,
     );
   }
-
-  // Generate llms.txt
-  if (doIndex) {
-    const indexContent = generateIndexTxt(sections);
-    const indexPath = path.join(STATIC_DIR, 'llms.txt');
-    fs.writeFileSync(indexPath, indexContent, 'utf-8');
-    const indexSizeKB = Math.round(fs.statSync(indexPath).size / 1024);
-    console.log(
-      `Generated ${indexPath} (${sections.length} routes, ${indexSizeKB}KB)`,
-    );
-  }
 }
-
-module.exports = {
-  BASE_URL,
-  DOCS_DIR,
-  INDEX_DIRECTORY_INTRO,
-  ROUTE_EXCLUSION_LIST,
-  generateIndexTxt,
-  getEligibleSections: parseSections,
-  isEligibleDocFile,
-  parseSections,
-  readCuratedIndexSource,
-};
 
 if (require.main === module) {
   main();
 }
+
+module.exports = {
+  cleanContent,
+  parseSections,
+  serializeMdxComponents,
+};
