@@ -3765,6 +3765,24 @@ const depositConfig = {
 [... see full docs for complete content]
 
 ---
+title: "Integrate FeeProxy"
+description: "Register as a FeeProxy affiliate, check a user's readiness, and route deposits and atom or triple creation through FeeProxy with the Intuition SDK"
+source: "https://docs.intuition.systems/docs/interaction-guide/fee-proxy-integration"
+---
+
+# Integrate FeeProxy
+
+This guide takes an app from zero to its first fee-earning deposit through [FeeProxy](https://docs.intuition.systems/docs/intuition-smart-contracts/fee-proxy):
+
+1. Register the app as an affiliate.
+2. Check what the user still needs, and send the MultiVault approval.
+3. Quote the fee and deposit through FeeProxy.
+
+It also covers creating atoms and triples through FeeProxy, reading your affiliate stats, and refund recovery. Read the [FeeProxy contract page](https://docs.intuition.systems/docs/intuition-smart-contracts/fee-proxy) first for the fee model and the rules each call enforces.
+
+[... see full docs for complete content]
+
+---
 title: "Contract Interactions Overview"
 description: "Introduction to Intuition contract interactions and smart contract operations"
 last_updated: "2026-01-05T17:16:01-08:00"
@@ -5075,6 +5093,23 @@ The Intuition protocol contracts are deployed on both the Base Mainnet and the I
 | MultiVault                    | 0x6E35cF57A41fA15eA0EaE9C33e751b01A784Fe7e |
 | AtomWalletFactory             | 0x33827373a7D1c7C78a01094071C2f6CE74253B9B |
 | AtomWalletBeacon              | 0xC23cD55CF924b3FE4b97deAA0EAF222a5082A1FF |
+
+[... see full docs for complete content]
+
+---
+title: "FeeProxy.sol"
+description: "Documentation for the FeeProxy smart contract, which lets apps route deposits and atom/triple creation to MultiVault while charging their own fee"
+source: "https://docs.intuition.systems/docs/intuition-smart-contracts/fee-proxy"
+---
+
+# FeeProxy.sol
+
+FeeProxy lets an app (an **affiliate**) route a user's deposits and atom/triple creation to the [MultiVault](https://docs.intuition.systems/docs/intuition-smart-contracts/multivault) and keep a fee for itself. Referral apps, social-trading apps and any other front end can use it to earn from the activity they bring to the protocol, without custody of user funds.
+
+The user stays the owner of record:
+
+- On a deposit, MultiVault mints the shares to the receiver the user picks, normally the user.
+- On creation, MultiVault records the user as the creator of each atom and triple, not FeeProxy and not the affiliate.
 
 [... see full docs for complete content]
 
