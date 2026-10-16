@@ -21,6 +21,14 @@ The MultiVault contract is the core component of Intuition's architecture, respo
 - **Share Distribution**: Manages the minting and burning of shares
 - **Fee Collection**: Collects small fees to maintain the system
 
+# FeeProxy
+The FeeProxy contract, introduced in v1.1.0, lets apps (affiliates) route a user's deposits and atom/triple creation to the MultiVault and charge their own fee. The user stays the depositor and creator of record, and redemptions always go directly to the MultiVault. See [FeeProxy.sol](/docs/intuition-smart-contracts/fee-proxy) for details.
+
+- **Affiliate Registration**: Any address can register as an affiliate and set its fees within protocol caps
+- **Fee Routing**: Takes the affiliate fee from each routed call and forwards the rest to the MultiVault
+- **User Protection**: A per-call fee guard, atomic calls, and refunds of excess value
+- **Analytics**: Per-affiliate and per-user usage counters stored on-chain
+
 # Trust Token
 The Trust Token contract is an ERC-20 compliant token that serves as the native utility token within the Intuition ecosystem. It is used for deposits, staking, governance, and accessing various features of the platform. 
 

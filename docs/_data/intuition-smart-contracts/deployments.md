@@ -34,6 +34,7 @@ The Intuition protocol contracts are deployed on both the Base Mainnet and the I
 | Multicall3                    | 0xcA11bde05977b3631167028862bE2a173976CA11 |
 | EntryPoint                    | 0x4337084D9E255Ff0702461CF8895CE9E3b5Ff108 |
 | SafeSingletonFactory          | 0x914d7Fec6aaC8cd542e72Bca78B30650d45643d7 |
+| FeeProxy                      | Pending (after the v1.1.0 MultiVault upgrade) |
 
 ## Testnet
 
@@ -63,6 +64,7 @@ The Intuition protocol contracts are deployed on both the Base Mainnet and the I
 | OffsetProgressiveCurve        | 0xE65EcaAF5964aC0d94459A66A59A8B9eBCE42CbB |
 | Multicall3                    | 0xcA11bde05977b3631167028862bE2a173976CA11 |
 | EntryPoint                    | 0x4337084D9E255Ff0702461CF8895CE9E3b5Ff108 |
+| FeeProxy                      | Pending (after the v1.1.0 MultiVault upgrade) |
 
 ## Network Details
 
