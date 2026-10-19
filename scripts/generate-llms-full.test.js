@@ -1,6 +1,7 @@
 'use strict';
 
 const assert = require('node:assert/strict');
+const fs = require('node:fs');
 const test = require('node:test');
 
 const {
@@ -72,59 +73,50 @@ test('drops BrowserOnly executable diagram blocks', () => {
   assert.equal(output, 'Before diagram\n\nAfter diagram');
 });
 
-test('preserves every tabbed command from the current documentation pages', () => {
-  const sectionsByRoute = new Map(
-    parseSections().map((section) => [section.route, section.contentFull]),
-  );
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
 
-  const expectedCommands = {
-    '/docs/quick-start/using-the-sdk': [
-      'npm install @0xintuition/sdk@latest',
-      'pnpm add @0xintuition/sdk@latest',
-      'yarn add @0xintuition/sdk@latest',
-      'bun add @0xintuition/sdk@latest',
-      'npm install @0xintuition/sdk@latest viem@latest',
-      'pnpm add @0xintuition/sdk@latest viem@latest',
-      'yarn add @0xintuition/sdk@latest viem@latest',
-      'bun add @0xintuition/sdk@latest viem@latest',
-      'npm install @0xintuition/protocol@latest @0xintuition/graphql@latest',
-      'pnpm add @0xintuition/protocol@latest @0xintuition/graphql@latest',
-      'yarn add @0xintuition/protocol@latest @0xintuition/graphql@latest',
-      'bun add @0xintuition/protocol@latest @0xintuition/graphql@latest',
-    ],
-    '/docs/graphql-api/npm-package': [
-      'npm install @0xintuition/graphql',
-      'pnpm install @0xintuition/graphql',
-      'yarn add @0xintuition/graphql',
-      'bun install @0xintuition/graphql',
-    ],
-    '/docs/protocol/getting-started/overview': [
-      'npm install viem @0xintuition/protocol',
-      'pnpm install viem @0xintuition/protocol',
-      'yarn add viem @0xintuition/protocol',
-      'bun install viem @0xintuition/protocol',
-    ],
-    '/docs/intuition-sdk/installation-and-setup': [
-      'npm install @0xintuition/sdk viem@^2.0.0',
-      'pnpm add @0xintuition/sdk viem@^2.0.0',
-      'bun add @0xintuition/sdk viem@^2.0.0',
-      'npm link @0xintuition/sdk',
-      'pnpm link --global @0xintuition/sdk',
-      'bun link @0xintuition/sdk',
-    ],
-  };
+function tabItemLabels(source) {
+  return [...source.matchAll(/<TabItem\b([^>]*)>/g)]
+    .map((match) => {
+      const attributes = match[1];
+      const label =
+        attributes.match(/\blabel\s*=\s*(?:"([^"]*)"|'([^']*)')/) ||
+        attributes.match(/\bvalue\s*=\s*(?:"([^"]*)"|'([^']*)')/);
+      return label ? (label[1] ?? label[2]) : null;
+    })
+    .filter(Boolean);
+}
 
-  for (const [route, commands] of Object.entries(expectedCommands)) {
-    const content = sectionsByRoute.get(route);
-    assert.ok(content, `Expected generated section for ${route}`);
+test('serializes every TabItem from the docs sources into a heading', () => {
+  const sections = parseSections();
 
-    for (const command of commands) {
-      assert.ok(
-        content.includes(command),
-        `Expected ${route} to preserve: ${command}`,
+  assert.ok(sections.length > 0, 'Expected generated sections');
+
+  let checkedTabItems = 0;
+
+  for (const section of sections) {
+    assert.doesNotMatch(
+      section.contentFull,
+      /<\/?(?:Tabs|TabItem)\b/,
+      `Expected ${section.route} to drop Tabs/TabItem tags`,
+    );
+
+    const source = fs.readFileSync(section.sourceFile, 'utf-8');
+
+    for (const label of tabItemLabels(source)) {
+      checkedTabItems += 1;
+      assert.match(
+        section.contentFull,
+        new RegExp(`^#{1,6} ${escapeRegExp(label)}$`, 'm'),
+        `Expected ${section.route} to turn TabItem "${label}" into a heading`,
       );
     }
-
-    assert.doesNotMatch(content, /<\/?(?:Tabs|TabItem)\b/);
   }
+
+  assert.ok(
+    checkedTabItems > 0,
+    'Expected the docs sources to contain at least one TabItem',
+  );
 });

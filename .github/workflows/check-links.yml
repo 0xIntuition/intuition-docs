@@ -14,6 +14,7 @@ on:
       - 'docusaurus.config.js'
       - 'scripts/validate-internal-links.js'
       - 'scripts/generate-llms-full.js'
+      - 'scripts/generate-llms-full.test.js'
       - '.github/workflows/generate-llms-txt.yml'
 
 permissions:
@@ -31,6 +32,9 @@ jobs:
 
       - name: Validate llms coverage
         run: npm run validate-llms-coverage
+
+      - name: Run llms generator tests
+        run: npm run test
 
   build:
     name: Docusaurus build

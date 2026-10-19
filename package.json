@@ -27,6 +27,7 @@
     "generate-llms": "node scripts/generate-llms-full.js",
     "generate-llms-full": "node scripts/generate-llms-full.js --full-only",
     "validate-sdk-examples": "node scripts/validate-sdk-examples.js",
+    "test": "node --test scripts/*.test.js",
     "generate-llms-index": "node scripts/generate-llms-full.js --index-only",
     "prepare": "husky"
   },
