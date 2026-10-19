@@ -465,7 +465,7 @@ function serializeMdxComponents(content) {
   // these blocks explicitly so JSX expressions do not leak into Markdown.
   serialized = serialized.replace(
     /^[ \t]*<BrowserOnly\b[^>]*>[\s\S]*?<\/BrowserOnly>\s*$/gm,
-    ''
+    '',
   );
 
   const output = [];
@@ -986,7 +986,7 @@ function main() {
       `Generated ${mediumPath} (${sections.length} sections, ${mediumSizeKB}KB)`,
     );
   }
-    // Generate llms.txt
+  // Generate llms.txt
   if (doIndex) {
     const indexContent = generateIndexTxt(sections);
     const indexPath = path.join(STATIC_DIR, 'llms.txt');
@@ -1008,7 +1008,10 @@ module.exports = {
   serializeMdxComponents,
   BASE_URL,
   DOCS_DIR,
-  getEligibleSections: parseSections,
   INDEX_DIRECTORY_INTRO,
+  ROUTE_EXCLUSION_LIST,
+  generateIndexTxt,
+  getEligibleSections: parseSections,
+  isEligibleDocFile,
   readCuratedIndexSource,
 };

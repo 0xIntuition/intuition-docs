@@ -74,7 +74,7 @@ test('drops BrowserOnly executable diagram blocks', () => {
 
 test('preserves every tabbed command from the current documentation pages', () => {
   const sectionsByRoute = new Map(
-    parseSections().map((section) => [section.route, section.contentFull])
+    parseSections().map((section) => [section.route, section.contentFull]),
   );
 
   const expectedCommands = {
@@ -121,7 +121,7 @@ test('preserves every tabbed command from the current documentation pages', () =
     for (const command of commands) {
       assert.ok(
         content.includes(command),
-        `Expected ${route} to preserve: ${command}`
+        `Expected ${route} to preserve: ${command}`,
       );
     }
 
