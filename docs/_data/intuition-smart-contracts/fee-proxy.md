@@ -68,7 +68,7 @@ forwardedAssets = grossAssets - affiliateFee
 - The fee comes **out of** `grossAssets`. It is not added on top. `msg.value` must be at least `grossAssets`.
 - The fee must be strictly less than `grossAssets`. Otherwise the call reverts with `FeeProxy_FeeExceedsGross`.
 - **Batch and multi-term calls charge the fee once per call**, on the sum of all legs: one percentage cut plus one flat fee, not one per atom, triple or vault. FeeProxy then splits the forwarded total across legs in proportion to each leg's gross amount. Rounding dust goes to the last leg.
-- Every leg must be non-zero, and each forwarded leg must still meet MultiVault's own requirements (minimum deposit, atom or triple cost). A leg that falls short reverts the whole call. An atom or triple that receives exactly 1 wei above its creation cost also reverts, because MultiVault's own fees on that 1 wei each round up to 1 wei.
+- Every leg must be non-zero, and each forwarded leg must still meet MultiVault's own requirements (minimum deposit, atom or triple cost). A leg that falls short reverts the whole call. An atom or triple that receives exactly 1 wei above its creation cost can also revert: when more than one MultiVault fee applies, each rounds up to 1 wei and together they exceed it. Check such a deposit with MultiVault's preview first.
 - `minShares` is passed to MultiVault unchanged, so it applies to the **post-fee** amount. Size it for `forwardedAssets`, not `grossAssets`.
 
 ### Protocol caps
@@ -289,10 +289,10 @@ MultiVault emits its own `Deposited`, `AtomCreated` and `TripleCreated` events f
 
 ## Deployments
 
-| Network                | FeeProxy address                                                |
-| ---------------------- | --------------------------------------------------------------- |
-| Intuition Testnet (L3) | Pending: deploys after the testnet MultiVault upgrade to v1.1.0 |
-| Intuition Mainnet (L3) | Pending: deploys after the mainnet MultiVault upgrade to v1.1.0 |
+| Network                | FeeProxy address                             |
+| ---------------------- | -------------------------------------------- |
+| Intuition Testnet (L3) | `0x847801465DcB17811089107c0051c49E0135F6B8` |
+| Intuition Mainnet (L3) | `0x45B65BB9FFC4BC51C9e3a56902d9183dcff51B55` |
 
 The full list of protocol contracts is on the [Deployments](/docs/intuition-smart-contracts/deployments) page.
 

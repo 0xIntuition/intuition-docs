@@ -3767,6 +3767,7 @@ const depositConfig = {
 ---
 title: "Integrate FeeProxy"
 description: "Register as a FeeProxy affiliate, check a user's readiness, and route deposits and atom or triple creation through FeeProxy with the Intuition SDK"
+last_updated: "2026-10-16T22:36:03+02:00"
 source: "https://docs.intuition.systems/docs/interaction-guide/fee-proxy-integration"
 ---
 
@@ -5051,23 +5052,18 @@ source: "https://docs.intuition.systems/docs/intuition-smart-contracts/configura
 
 The Intuition protocol smart contracts utilize a configuration system that allows for dynamic adjustment of various parameters effecting the behavior of the protocol. This document outlines the key configuration parameters and fees associated with the **mainnet Intuition protocol** deployment.
 
-The smart contract configurations and parameters can be adjusted by governance through onchain proposals, allowing for flexibility and adaptability as the protocol evolves.
+The smart contract configurations and parameters can be adjusted by governance through onchain proposals, allowing for flexibility and adaptability as the protocol evolves. From v1.1.0, every MultiVault configuration change goes through the Parameters TimelockController (see [Who can change the configuration](https://docs.intuition.systems/docs/intuition-smart-contracts/configuration#who-can-change-the-configuration)).
 
 ## MultiVault
 
 ### Atom & Triple Creation Fees
-
-The following fixed fees are applied when creating atoms and triples within the MultiVault:
-
-- **Atom Creation Fee:** 0.1 TRUST (1e17)
-- **Triple Creation Fee:** 0.1 TRUST (1e17)
 
 [... see full docs for complete content]
 
 ---
 title: "Contract Deployments"
 description: "The Intuition protocol contracts are deployed on both the Base Mainnet and the Intuition Layer 3 network, as well as their respective testnets. Below are the details of the deployed contracts,..."
-last_updated: "2026-08-04T11:51:50-04:00"
+last_updated: "2026-10-16T22:36:03+02:00"
 source: "https://docs.intuition.systems/docs/intuition-smart-contracts/deployments"
 ---
 
@@ -5075,30 +5071,14 @@ source: "https://docs.intuition.systems/docs/intuition-smart-contracts/deploymen
 
 The Intuition protocol contracts are deployed on both the Base Mainnet and the Intuition Layer 3 network, as well as their respective testnets. Below are the details of the deployed contracts, including their addresses and network configurations.
 
-## Mainnet
-
-### Base Mainnet
-
-| Contract      | Address                                    |
-|---------------|--------------------------------------------|
-| Trust (ERC20) | 0x6cd905dF2Ed214b22e0d48FF17CD4200C1C6d8A3 |
-
-### Intuition Mainnet (L3)
-
-| Contract Name                 | Address                                    |
-|-------------------------------|--------------------------------------------|
-| WrappedTrust                  | 0x81cFb09cb44f7184Ad934C09F82000701A4bF672 |
-| Upgrades TimelockController   | 0x321e5d4b20158648dFd1f360A79CAFc97190bAd1 |
-| Parameters TimelockController | 0x71b0F1ABebC2DaA0b7B5C3f9b72FAa1cd9F35FEA |
-| MultiVault                    | 0x6E35cF57A41fA15eA0EaE9C33e751b01A784Fe7e |
-| AtomWalletFactory             | 0x33827373a7D1c7C78a01094071C2f6CE74253B9B |
-| AtomWalletBeacon              | 0xC23cD55CF924b3FE4b97deAA0EAF222a5082A1FF |
+The protocol and periphery addresses match the [`@0xintuition/deployments`](https://www.npmjs.com/package/@0xintuition/deployments) package, which is the source of truth for contract addresses and ABIs. In code, resolve addresses from the package (for example `getMultiVaultAddressFromChainId(chainId)`) rather than copying them from this page. The timelocks, SafeSingletonFactory and the TRUST bridge hub are listed here for reference only.
 
 [... see full docs for complete content]
 
 ---
 title: "FeeProxy.sol"
 description: "Documentation for the FeeProxy smart contract, which lets apps route deposits and atom/triple creation to MultiVault while charging their own fee"
+last_updated: "2026-10-16T22:36:03+02:00"
 source: "https://docs.intuition.systems/docs/intuition-smart-contracts/fee-proxy"
 ---
 
@@ -5116,7 +5096,7 @@ The user stays the owner of record:
 ---
 title: "Contract Architecture Overview"
 description: "Overview of Intuition's smart contract architecture and design patterns"
-last_updated: "2026-07-29T16:33:04+01:00"
+last_updated: "2026-10-16T22:36:03+02:00"
 source: "https://docs.intuition.systems/docs/intuition-smart-contracts"
 ---
 
@@ -5124,36 +5104,29 @@ source: "https://docs.intuition.systems/docs/intuition-smart-contracts"
 
 Intuition's smart contracts are central to the user experience, handling critical onchain activities such as the creation of Atoms (also known as Identities) and Triples (also known as Claims), as well as the staking and rewards.
 
-## MultiVault
+The contracts live on two chains:
 
-The MultiVault contract is the core component of Intuition's architecture, responsible for managing the creation of Atoms/Triples and handling deposits, redemptions, and share distributions. It supports multiple bonding curve implementations through a registry system.
+- **Intuition Network (L3):** the protocol itself (MultiVault, the bonding curves, atom wallets, TrustBonding and the emissions receiver) and the periphery contracts built on it.
+- **Base:** the TRUST token and the BaseEmissionsController, which mints new TRUST and bridges it to the Intuition Network.
 
-- **Creation**: Users can create Atoms and Triples
-- **Deposits**: Users can deposit TRUST to receive shares in atoms/triples
-- **Redemptions**: Users can redeem shares for TRUST
+| Group               | Contracts                                                                                |
+| ------------------- | ---------------------------------------------------------------------------------------- |
 
 [... see full docs for complete content]
 
 ---
 title: "MultiVault.sol"
-description: "Documentation for the MultiVault smart contract"
+description: "Documentation for the MultiVault smart contract, including multicall, creating on behalf of another account, approvals and atom wallets"
 last_updated: "2026-01-05T17:16:01-08:00"
 source: "https://docs.intuition.systems/docs/intuition-smart-contracts/multivault"
 ---
 
 # MultiVault.sol
 
-The MultiVault contract is the core economic engine of the Intuition protocol, managing deposits, redemptions, and creation of atoms and triples. It implements a sophisticated vault system that supports multiple bonding curves and provides the foundation for the protocol's economic incentives.
+The MultiVault contract is the core economic engine of the Intuition protocol. It creates atoms and triples, and it manages the deposits into and redemptions from their vaults. Each term (atom or triple) has one vault per bonding curve, and every vault uses TRUST, the native token of the Intuition network, as its asset.
 
-The MultiVault is the primary interface for users to interact with the economic aspects of atoms and triples:
-
-### Atom IDs
-Atom IDs are generated using a hash function that hashes the Atom's data.
-
-### Triple IDs
-Triple IDs are generated using a hash function that hashes the subject, predicate, and object Atom IDs.
-
-## Smart Contract Writes
+- `multicall` runs several MultiVault calls in one transaction, with an explicit TRUST amount for each call.
+- `createAtomsFor` and `createTriplesFor` let an approved account create terms for another account, which stays the creator of record.
 
 [... see full docs for complete content]
 
@@ -5169,6 +5142,7 @@ source: "https://docs.intuition.systems/docs/intuition-smart-contracts/trust-bon
 The TrustBonding contract is the primary smart contract for bonding/staking of TRUST tokens within the Intuition protocol. Responsible for managing emissions of new TRUST tokens for various stakeholders, including atom creators, triple creators, and other participants in the ecosystem.
 
 ### Wrapped Trust (wTRUST)
+
 The TrustBonding contract requires users to wrap their TRUST tokens into Wrapped TRUST (wTRUST) before locking them in the voting escrow. This wrapping process is handled by the `WrappedTrust` contract, which allows users to deposit TRUST tokens and receive an equivalent amount of wTRUST tokens.
 
 ### Voting Escrow (veTRUST)

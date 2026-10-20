@@ -22,24 +22,27 @@ The SDK helpers below do the bookkeeping that is easy to get wrong by hand: they
 
 - `@0xintuition/sdk`, `@0xintuition/periphery` and `viem`, at the versions that include the FeeProxy helpers.
 - A viem `publicClient` and `walletClient` for Intuition Testnet or Mainnet. See the [Overview](/docs/interaction-guide/overview) for network setup.
-- The FeeProxy address for your network. FeeProxy is **pending deployment** on both networks; the address will be listed on the [contract page](/docs/intuition-smart-contracts/fee-proxy#deployments).
+- A FeeProxy deployment on your network. It is live on Intuition Mainnet and Testnet; see the [contract page](/docs/intuition-smart-contracts/fee-proxy#deployments). The SDK resolves both addresses from the chain ID, so you never paste one by hand.
 
 ```typescript title="feeProxy.ts"
+import { getFeeProxyAddressFromChainId } from '@0xintuition/periphery';
 import {
   getMultiVaultAddressFromChainId,
-  intuitionMainnet,
+  intuitionTestnet,
 } from '@0xintuition/sdk';
 import type { Address, Hex, PublicClient, WalletClient } from 'viem';
 
-// Fill in from the Deployments section of the FeeProxy page.
-export const FEE_PROXY_ADDRESS: Address = '0x...';
+// Pick the network once: intuitionTestnet.id to try things out, intuitionMainnet.id for production.
+export const CHAIN_ID = intuitionTestnet.id;
+export const FEE_PROXY_ADDRESS: Address =
+  getFeeProxyAddressFromChainId(CHAIN_ID);
 
 // The FeeProxy and MultiVault read configs every helper takes.
 export function feeProxyConfigs(publicClient: PublicClient) {
   return {
     feeProxy: { address: FEE_PROXY_ADDRESS, publicClient },
     multiVault: {
-      address: getMultiVaultAddressFromChainId(intuitionMainnet.id),
+      address: getMultiVaultAddressFromChainId(CHAIN_ID),
       publicClient,
     },
   };
@@ -154,7 +157,13 @@ export async function ensureReady(
     { walletClient, publicClient },
     { steps: readiness.approvalSteps },
   );
-  return readiness;
+
+  // Re-read: the first result is a snapshot from before the approvals.
+  return feeProxyGetReadiness(feeProxyConfigs(publicClient), {
+    user,
+    affiliate,
+    kinds: ['deposit', 'create'],
+  });
 }
 ```
 
@@ -247,7 +256,7 @@ export async function createAtomsViaAffiliate(
 - **Triples** take `triples: [{ subjectId, predicateId, objectId }]`. One plan can contain atoms and triples; it sends the atoms first, so a triple can use atoms created earlier in the same plan. For such a triple, the expected shares are previewed before those atoms exist, so treat them as an estimate.
 - **URIs.** Give an atom `uris` and the plan uses `createAtomsWithUrisVia` for the whole set.
 - **Sizing.** Every atom or triple receives at least its creation cost plus its deposit, and still does if the affiliate lowers its fee before the transaction lands. The rounding margin is a few wei. The plan checks its sizing against the contract's own `previewCreationFee` and previews each creation on MultiVault before returning.
-- **Avoid a deposit of exactly 1 wei.** MultiVault rejects an atom or triple created with exactly 1 wei above its creation cost: its own fees on that 1 wei each round up to 1 wei, and the call reverts. The plan steers its rounding margin around this and rejects a deposit you chose that would hit it.
+- **Avoid a deposit of exactly 1 wei.** An atom or triple created with exactly 1 wei above its creation cost can revert: when more than one MultiVault fee applies, each rounds up to 1 wei and together they exceed the deposit. The plan steers its rounding margin around this and checks a deposit you chose against MultiVault's own preview.
 
 ## Refund recovery
 
@@ -305,7 +314,7 @@ For creation, sizing the gross amounts by hand is error-prone with more than one
 | `FeeProxy_FeeExceedsGross`                                               | The fee would take the whole amount.                                                | Increase the gross amount.                                                            |
 | `FeeProxy_RegistrationFeeMismatch`                                       | `msg.value` is not exactly `registrationFee()`.                                     | Read `registrationFee()` and send that amount.                                        |
 | `EnforcedPause`                                                          | FeeProxy is globally paused.                                                        | Wait for the protocol to unpause. Users can still redeem on MultiVault.               |
-| Arithmetic underflow (`0x11`) on creation                                | An atom or triple received exactly 1 wei above its creation cost.                   | Use a deposit of 0, or of at least a few wei.                                         |
+| Arithmetic underflow (`0x11`) on creation                                | 1 wei above creation cost, and MultiVault's rounded-up fees exceeded it.            | Use a deposit of 0, or of at least a few wei.                                         |
 | MultiVault errors (slippage, minimum deposit, atom exists)               | The routed MultiVault call reverted.                                                | The whole call reverted and no fee was charged. Fix the input and retry.              |
 
 ## Next steps

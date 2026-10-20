@@ -11,10 +11,11 @@ description: Documentation for the TrustBonding smart contract
 The TrustBonding contract is the primary smart contract for bonding/staking of TRUST tokens within the Intuition protocol. Responsible for managing emissions of new TRUST tokens for various stakeholders, including atom creators, triple creators, and other participants in the ecosystem.
 
 ### Wrapped Trust (wTRUST)
+
 The TrustBonding contract requires users to wrap their TRUST tokens into Wrapped TRUST (wTRUST) before locking them in the voting escrow. This wrapping process is handled by the `WrappedTrust` contract, which allows users to deposit TRUST tokens and receive an equivalent amount of wTRUST tokens.
 
-
 ### Voting Escrow (veTRUST)
+
 The TrustBonding contract inherits from the popular Voting Escrow mechanism, allowing users to lock their TRUST tokens for a specified period in exchange for veTRUST tokens. These veTRUST tokens represent voting power and can be used to influence governance decisions within the Intuition protocol.
 
 The voting escrow mechanism is implemented using the `VotingEscrow` contract, which provides functions for creating locks, increasing lock amounts, and extending lock durations.
@@ -23,8 +24,13 @@ Originated from Curve Finance's veCRV model, originally written in Vyper, the Vo
 
 ## Smart Contract Writes
 
+:::note Pausing
+While TrustBonding is paused, the lock and deposit functions below (`create_lock`, `increase_amount`, `increase_unlock_time`, `increase_amount_and_time`, `deposit_for` and `withdraw_and_create_lock`) and `claimRewards` revert. `withdraw` keeps working, so a pause never traps locked tokens.
+:::
+
 ### Creating Locks
-Users can create a new lock by calling the `create_lock` function, specifying the amount of Wrapped TRUST tokens to lock and the duration of the lock.
+
+Users can create a new lock by calling the `create_lock` function, specifying the amount of Wrapped TRUST tokens to lock and the unlock time. `_unlock_time` is an absolute Unix timestamp, not a duration. The contract rounds it down to a whole week, and the result must be within the minimum and maximum lock periods (at most 2 years ahead).
 
 ```solidity
 function create_lock(uint256 _value, uint256 _unlock_time) external nonReentrant onlyUserOrWhitelist notUnlocked {
@@ -33,6 +39,7 @@ function create_lock(uint256 _value, uint256 _unlock_time) external nonReentrant
 ```
 
 ### Increasing Lock Amount
+
 Users can increase the amount of Wrapped TRUST tokens in an existing lock by calling the `increase_amount` function.
 
 ```solidity
@@ -42,7 +49,8 @@ function increase_amount(uint256 _value) external nonReentrant onlyUserOrWhiteli
 ```
 
 ### Increasing Lock Duration
-Users can extend the duration of an existing lock by calling the `increase_unlock_time` function.
+
+Users can extend the duration of an existing lock by calling the `increase_unlock_time` function with a new, later unlock timestamp (rounded down to a whole week).
 
 ```solidity
 function increase_unlock_time(uint256 _unlock_time) external nonReentrant onlyUserOrWhitelist notUnlocked {
@@ -51,19 +59,21 @@ function increase_unlock_time(uint256 _unlock_time) external nonReentrant onlyUs
 ```
 
 ### Increase Amount and Duration
-Users can simultaneously increase the amount of Wrapped TRUST tokens and extend the duration of an existing lock by calling the `increase_amount_and_duration` function.
+
+Users can simultaneously increase the amount of Wrapped TRUST tokens and extend the duration of an existing lock by calling the `increase_amount_and_time` function.
 
 ```solidity
-function increase_amount_and_duration(uint256 _value, uint256 _unlock_time) external nonRentrant onlyUserOrWhitelist notUnlocked {
+function increase_amount_and_time(uint256 _value, uint256 _unlock_time) external nonReentrant onlyUserOrWhitelist notUnlocked {
     // Lock amount and duration increase logic
 }
 ```
 
 ### Withdraw
-Once the lock period has expired, users can withdraw their locked Wrapped TRUST tokens by calling the `withdraw` function.
+
+Once the lock period has expired, users can withdraw their locked Wrapped TRUST tokens by calling the `withdraw` function. Any address, including a contract that is not whitelisted, can withdraw its own expired lock.
 
 ```solidity
-function withdraw() external nonReentrant onlyUserOrWhitelist {
+function withdraw() external nonReentrant {
     // Withdrawal logic
 }
 ```
@@ -71,6 +81,7 @@ function withdraw() external nonReentrant onlyUserOrWhitelist {
 ## Smart Contract Reads
 
 ### Balance Of
+
 The `balanceOf` function returns the voting power of a specific address at a given timestamp.
 
 ```solidity
@@ -80,15 +91,17 @@ function balanceOf(address _addr) external view returns (uint256) {
 ```
 
 ### Balance Of At Timestamp
-The `balanceOfAtT` function returns the voting power of a specific address at a given timestamp.
+
+The `balanceOfAtT` function returns the voting power of a specific address at a given timestamp. (`balanceOfAt(address, uint256)` takes a block number instead.)
 
 ```solidity
-function balanceOfAt(address _addr, uint256 _t) external view returns (uint256) {
+function balanceOfAtT(address _addr, uint256 _t) external view returns (uint256) {
     // Balance calculation logic
 }
 ```
 
 ### Total Supply
+
 The `totalSupply` function returns the total voting power in the system at a given timestamp.
 
 ```solidity
@@ -98,6 +111,7 @@ function totalSupply() external view returns (uint256) {
 ```
 
 ### Total Supply At Timestamp
+
 The `totalSupplyAtT` function returns the total voting power in the system at a given timestamp.
 
 ```solidity
@@ -109,11 +123,12 @@ function totalSupplyAtT(uint256 t) external view returns (uint256) {
 ## Events
 
 ### Rewards Claimed
+
 The `RewardsClaimed` event is emitted when a user claims their rewards.
 
 ```solidity
 event RewardsClaimed(address indexed user, address indexed recipient, uint256 amount);
-``` 
+```
 
 ## Additional Resources
 

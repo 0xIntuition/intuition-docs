@@ -18303,24 +18303,27 @@ The SDK helpers below do the bookkeeping that is easy to get wrong by hand: they
 
 - `@0xintuition/sdk`, `@0xintuition/periphery` and `viem`, at the versions that include the FeeProxy helpers.
 - A viem `publicClient` and `walletClient` for Intuition Testnet or Mainnet. See the [Overview](https://docs.intuition.systems/docs/interaction-guide/overview) for network setup.
-- The FeeProxy address for your network. FeeProxy is **pending deployment** on both networks; the address will be listed on the [contract page](https://docs.intuition.systems/docs/intuition-smart-contracts/fee-proxy#deployments).
+- A FeeProxy deployment on your network. It is live on Intuition Mainnet and Testnet; see the [contract page](https://docs.intuition.systems/docs/intuition-smart-contracts/fee-proxy#deployments). The SDK resolves both addresses from the chain ID, so you never paste one by hand.
 
 ```typescript title="feeProxy.ts"
+import { getFeeProxyAddressFromChainId } from '@0xintuition/periphery';
 import {
   getMultiVaultAddressFromChainId,
-  intuitionMainnet,
+  intuitionTestnet,
 } from '@0xintuition/sdk';
 import type { Address, Hex, PublicClient, WalletClient } from 'viem';
 
-// Fill in from the Deployments section of the FeeProxy page.
-export const FEE_PROXY_ADDRESS: Address = '0x...';
+// Pick the network once: intuitionTestnet.id to try things out, intuitionMainnet.id for production.
+export const CHAIN_ID = intuitionTestnet.id;
+export const FEE_PROXY_ADDRESS: Address =
+  getFeeProxyAddressFromChainId(CHAIN_ID);
 
 // The FeeProxy and MultiVault read configs every helper takes.
 export function feeProxyConfigs(publicClient: PublicClient) {
   return {
     feeProxy: { address: FEE_PROXY_ADDRESS, publicClient },
     multiVault: {
-      address: getMultiVaultAddressFromChainId(intuitionMainnet.id),
+      address: getMultiVaultAddressFromChainId(CHAIN_ID),
       publicClient,
     },
   };
@@ -18433,7 +18436,13 @@ export async function ensureReady(
     { walletClient, publicClient },
     { steps: readiness.approvalSteps },
   );
-  return readiness;
+
+  // Re-read: the first result is a snapshot from before the approvals.
+  return feeProxyGetReadiness(feeProxyConfigs(publicClient), {
+    user,
+    affiliate,
+    kinds: ['deposit', 'create'],
+  });
 }
 ```
 
@@ -18526,7 +18535,7 @@ export async function createAtomsViaAffiliate(
 - **Triples** take `triples: [{ subjectId, predicateId, objectId }]`. One plan can contain atoms and triples; it sends the atoms first, so a triple can use atoms created earlier in the same plan. For such a triple, the expected shares are previewed before those atoms exist, so treat them as an estimate.
 - **URIs.** Give an atom `uris` and the plan uses `createAtomsWithUrisVia` for the whole set.
 - **Sizing.** Every atom or triple receives at least its creation cost plus its deposit, and still does if the affiliate lowers its fee before the transaction lands. The rounding margin is a few wei. The plan checks its sizing against the contract's own `previewCreationFee` and previews each creation on MultiVault before returning.
-- **Avoid a deposit of exactly 1 wei.** MultiVault rejects an atom or triple created with exactly 1 wei above its creation cost: its own fees on that 1 wei each round up to 1 wei, and the call reverts. The plan steers its rounding margin around this and rejects a deposit you chose that would hit it.
+- **Avoid a deposit of exactly 1 wei.** An atom or triple created with exactly 1 wei above its creation cost can revert: when more than one MultiVault fee applies, each rounds up to 1 wei and together they exceed the deposit. The plan steers its rounding margin around this and checks a deposit you chose against MultiVault's own preview.
 
 ## Refund recovery
 
@@ -18584,7 +18593,7 @@ For creation, sizing the gross amounts by hand is error-prone with more than one
 | `FeeProxy_FeeExceedsGross`                                               | The fee would take the whole amount.                                                | Increase the gross amount.                                                            |
 | `FeeProxy_RegistrationFeeMismatch`                                       | `msg.value` is not exactly `registrationFee()`.                                     | Read `registrationFee()` and send that amount.                                        |
 | `EnforcedPause`                                                          | FeeProxy is globally paused.                                                        | Wait for the protocol to unpause. Users can still redeem on MultiVault.               |
-| Arithmetic underflow (`0x11`) on creation                                | An atom or triple received exactly 1 wei above its creation cost.                   | Use a deposit of 0, or of at least a few wei.                                         |
+| Arithmetic underflow (`0x11`) on creation                                | 1 wei above creation cost, and MultiVault's rounded-up fees exceeded it.            | Use a deposit of 0, or of at least a few wei.                                         |
 | MultiVault errors (slippage, minimum deposit, atom exists)               | The routed MultiVault call reverted.                                                | The whole call reverted and no fee was charged. Fix the input and retry.              |
 
 ## Next steps
@@ -28802,7 +28811,7 @@ Source: https://docs.intuition.systems/docs/intuition-smart-contracts/configurat
 
 The Intuition protocol smart contracts utilize a configuration system that allows for dynamic adjustment of various parameters effecting the behavior of the protocol. This document outlines the key configuration parameters and fees associated with the **mainnet Intuition protocol** deployment.
 
-The smart contract configurations and parameters can be adjusted by governance through onchain proposals, allowing for flexibility and adaptability as the protocol evolves.
+The smart contract configurations and parameters can be adjusted by governance through onchain proposals, allowing for flexibility and adaptability as the protocol evolves. From v1.1.0, every MultiVault configuration change goes through the Parameters TimelockController (see [Who can change the configuration](https://docs.intuition.systems/docs/intuition-smart-contracts/configuration#who-can-change-the-configuration)).
 
 ## MultiVault
 
@@ -28813,29 +28822,35 @@ The following fixed fees are applied when creating atoms and triples within the 
 - **Atom Creation Fee:** 0.1 TRUST (1e17)
 - **Triple Creation Fee:** 0.1 TRUST (1e17)
 
+The full fixed cost of creating a term also seeds the new vault's minimum shares (see **Minimum Shares** below): `getAtomCost()` is the atom creation fee plus 1e6 wei, and `getTripleCost()` is the triple creation fee plus 2e6 wei.
+
 ### Deposit & Withdrawal Fees & Minimums
 
-When depositing into an atom or triple, a minimum amount of TRUST is required:   
+When depositing into an atom or triple, a minimum amount of TRUST is required:
 
 - **Minimum Deposit:** 0.01 TRUST (1e16)
 
 The percentage-based fees are applied to the total TRUST being deposited/withdrawn after accounting for fixed costs:
 
-- **Entry Fee:** 50  (0.5% of deposit)
-- **Exit Fee:** 75  (0.75% of deposit)
-- **Protocol Fee:** 125  (1.25% of deposit)
-- **Atom Deposit Fraction Fee:**  90 (0.9% of deposit into atom from triple)*
+- **Entry Fee:** 50 (0.5% of deposit)†
+- **Exit Fee:** 75 (0.75% of redemption)†
+- **Protocol Fee:** 125 (1.25% of deposit or redemption)
+- **Atom Wallet Deposit Fee:** 50 (0.5% of a deposit into an atom, paid to the atom's wallet)
+- **Atom Deposit Fraction Fee:** 90 (0.9% of deposit into atom from triple)\*
 
-\* *This fee is only applied when depositing into a triple, and a portion of the deposit is allocated to the underlying atoms.*
+\* _This fee is only applied when depositing into a triple, and a portion of the deposit is allocated to the underlying atoms._
+
+† _The entry fee applies only when the term's vault on the default curve holds at least the fee threshold of 1 share (1e18). The exit fee applies only when that vault still holds at least the threshold after the redemption. Both fees stay in the term's vault on the default curve, which raises its share price for the vault's shareholders._
 
 **The percentage fees are calculated using a denominator of 10,000.**
 
-For example, if a user deposits 100 TRUST into an atom, the entry fee would be calculated as follows:
+For example, if a user deposits 100 TRUST into an existing atom whose fee threshold is met, the fees would be calculated as follows:
 
-- ```Entry Fee = (50 / 10,000) * 100 TRUST = 0.5 TRUST```
-- ```Protocol Fee = (125 / 10,000) * 100 TRUST = 1.25 TRUST```
+- `Entry Fee = (50 / 10,000) * 100 TRUST = 0.5 TRUST`
+- `Protocol Fee = (125 / 10,000) * 100 TRUST = 1.25 TRUST`
+- `Atom Wallet Deposit Fee = (50 / 10,000) * 100 TRUST = 0.5 TRUST`
 
-The total fees for 100 TRUST deposit would be 0.5 TRUST (entry fee) + 1.25 TRUST (protocol fee) = 1.75 TRUST.
+The total fees for 100 TRUST deposit would be 0.5 TRUST (entry fee) + 1.25 TRUST (protocol fee) + 0.5 TRUST (atom wallet deposit fee) = 2.25 TRUST.
 
 ### Low-Level Configuration Parameters
 
@@ -28844,6 +28859,34 @@ The Intuition Smart Contracts also include several low-level configuration param
 - **Fee Denominator:** 10000
 - **Minimum Shares** : 1e6 (1,000,000 WEI)
 - **Atom Data Max Length:** 1000
+- **Fee Threshold:** 1e18 (1 share on the default curve)
+- **Default Curve ID:** 1 (LinearCurve)
+
+### Atom URI Limits (v1.1.0)
+
+`createAtomsWithUris` attaches context URIs to new atoms. Two limits apply, read with `getAtomUriConfig()`:
+
+- **Max URIs per Atom:** 5
+- **Max URI Length:** 700 bytes
+
+These are the defaults that apply until governance sets other values with `setAtomUriConfig`. Neither limit can be set to 0.
+
+### Who can change the configuration
+
+From v1.1.0, only the Parameters TimelockController can call MultiVault's configuration setters. Any other caller reverts with `MultiVault_OnlyTimelock`.
+
+| Setter                  | Changes                                                                                                                       |
+| ----------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| `setGeneralConfig`      | Admin, protocol multisig, fee denominator, TrustBonding, minimum deposit, minimum shares, atom data max length, fee threshold |
+| `setAtomConfig`         | Atom creation fee, atom wallet deposit fee                                                                                    |
+| `setTripleConfig`       | Triple creation fee, atom deposit fraction                                                                                    |
+| `setVaultFees`          | Entry, exit and protocol fees                                                                                                 |
+| `setWalletConfig`       | EntryPoint, AtomWarden, atom wallet beacon, AtomWalletFactory                                                                 |
+| `setBondingCurveConfig` | Bonding curve registry and default curve ID                                                                                   |
+| `setAtomUriConfig`      | Atom URI limits                                                                                                               |
+| `setTimelock`           | The timelock itself                                                                                                           |
+
+On mainnet, the Parameters TimelockController has a 3-day delay, so a configuration change is visible on-chain for 3 days before it takes effect. Read the current values with `timelock()` and the `get...Config()` functions on MultiVault.
 
 ## TrustBonding & EmissionsController
 
@@ -28855,16 +28898,34 @@ The TrustBonding, BaseEmissionsController and SatelliteEmissionsController all s
 - **Emissions Reduction Points:** 1000 (10%)
 - **Emissions Reduction Cliff:** 26 (1 year i.e. two weeks x 26)\*
 
-\*  *The emissions reduction cliff indicates that after every 26 emission periods (i.e. every year), the emissions will reduce by the specified reduction points (10%). For example, if the initial emissions are 1000 TRUST per period, after one year (26 periods), the emissions will reduce to 900 TRUST per period.* 
+\*  _The emissions reduction cliff indicates that after every 26 emission periods (i.e. every year), the emissions will reduce by the specified reduction points (10%). For example, if the initial emissions are 1000 TRUST per period, after one year (26 periods), the emissions will reduce to 900 TRUST per period._ 
 
-## OffsetProgressiveCurve
+## Bonding Curves
 
-The Offset Progressive Curve is used to calculate the amount of shares minted when a user deposits. The curve is defined by the following parameters:
+MultiVault prices shares with the curves registered in the BondingCurveRegistry. Each vault uses one curve, chosen by the `curveId` of the deposit.
 
-- **Offset:** 1e17
-- **Slope:** 3e19 
+| Curve ID | Curve                  | Use                                                           |
+| -------- | ---------------------- | ------------------------------------------------------------- |
+| 1        | LinearCurve            | The default curve. Every new atom and triple starts on it.    |
+| 2        | OffsetProgressiveCurve | An optional curve on which the share price rises with supply. |
 
-The OffsetProgressiveCurve parameters are fixed and cannot be changed by governance.
+### LinearCurve
+
+LinearCurve has no parameters. It mints shares pro rata to a vault's assets:
+
+- `shares = assets * totalShares / totalAssets` (and 1:1 while the vault is empty)
+- `assets = shares * totalAssets / totalShares`
+
+The share price changes only when the vault's assets change without new shares, for example when entry and exit fees stay in the vault. The creation paths rely on this curve being the default, because they seed each new vault 1:1.
+
+### OffsetProgressiveCurve
+
+The Offset Progressive Curve is used to calculate the amount of shares minted when a user deposits. The share price grows linearly with the vault's total shares, starting from an offset. The curve is defined by the following parameters:
+
+- **Slope:** 1e17
+- **Offset:** 3e19
+
+Read them on-chain with `SLOPE()` and `OFFSET()`. The OffsetProgressiveCurve parameters are fixed and cannot be changed by governance.
 
 # Contract Deployments
 
@@ -28872,18 +28933,24 @@ Source: https://docs.intuition.systems/docs/intuition-smart-contracts/deployment
 
 The Intuition protocol contracts are deployed on both the Base Mainnet and the Intuition Layer 3 network, as well as their respective testnets. Below are the details of the deployed contracts, including their addresses and network configurations.
 
+The protocol and periphery addresses match the [`@0xintuition/deployments`](https://www.npmjs.com/package/@0xintuition/deployments) package, which is the source of truth for contract addresses and ABIs. In code, resolve addresses from the package (for example `getMultiVaultAddressFromChainId(chainId)`) rather than copying them from this page. The timelocks, SafeSingletonFactory and the TRUST bridge hub are listed here for reference only.
+
+The Upgrades TimelockControllers own the proxy admins, so every contract upgrade waits out their delay: 7 days on mainnet and 1 hour on testnet. The Parameters TimelockController is the only account that can change MultiVault's configuration, with a 3-day delay on mainnet and 1 hour on testnet.
+
 ## Mainnet
 
 ### Base Mainnet
 
-| Contract      | Address                                    |
-|---------------|--------------------------------------------|
-| Trust (ERC20) | 0x6cd905dF2Ed214b22e0d48FF17CD4200C1C6d8A3 |
+| Contract Name               | Address                                    |
+| --------------------------- | ------------------------------------------ |
+| Trust (ERC20)               | 0x6cd905dF2Ed214b22e0d48FF17CD4200C1C6d8A3 |
+| BaseEmissionsController     | 0x7745bDEe668501E5eeF7e9605C746f9cDfb60667 |
+| Upgrades TimelockController | 0x1E442BbB08c98100b18fa830a88E8A57b5dF9157 |
 
 ### Intuition Mainnet (L3)
 
 | Contract Name                 | Address                                    |
-|-------------------------------|--------------------------------------------|
+| ----------------------------- | ------------------------------------------ |
 | WrappedTrust                  | 0x81cFb09cb44f7184Ad934C09F82000701A4bF672 |
 | Upgrades TimelockController   | 0x321e5d4b20158648dFd1f360A79CAFc97190bAd1 |
 | Parameters TimelockController | 0x71b0F1ABebC2DaA0b7B5C3f9b72FAa1cd9F35FEA |
@@ -28899,41 +28966,69 @@ The Intuition protocol contracts are deployed on both the Base Mainnet and the I
 | Multicall3                    | 0xcA11bde05977b3631167028862bE2a173976CA11 |
 | EntryPoint                    | 0x4337084D9E255Ff0702461CF8895CE9E3b5Ff108 |
 | SafeSingletonFactory          | 0x914d7Fec6aaC8cd542e72Bca78B30650d45643d7 |
-| FeeProxy                      | Pending (after the v1.1.0 MultiVault upgrade) |
+| FeeProxy                      | 0x45B65BB9FFC4BC51C9e3a56902d9183dcff51B55 |
 
 ## Testnet
 
 ### Base Sepolia Testnet
 
 | Contract Name               | Address                                    |
-|-----------------------------|--------------------------------------------|
+| --------------------------- | ------------------------------------------ |
 | TestTrust                   | 0xA54b4E6e356b963Ee00d1C947f478d9194a1a210 |
-| Upgrades TimelockController | 0x9099BC9fd63B01F94528B60CEEB336C679eb6d52 |
-| BaseEmissionsController     | 0xC14773Aae24aA60CB8F261995405C28f6D742DCf |
+| BaseEmissionsController     | 0x6B96fB3867b666A7957fa589866627ea902ec2C6 |
+| Upgrades TimelockController | 0xE16E8e10664d399D36D2220fFA763e9367980507 |
 
 ### Intuition Testnet (L3)
 
 | Contract Name                 | Address                                    |
-|-------------------------------|--------------------------------------------|
+| ----------------------------- | ------------------------------------------ |
 | WrappedTrust                  | 0xDE80b6EE63f7D809427CA350e30093F436A0fe35 |
-| Upgrades TimelockController   | 0x59B7EaB1cFA47F8E61606aDf79a6b7B5bBF1aF26 |
-| Parameters TimelockController | 0xcCB113bfFf493d80F32Fb799Dca23686a04302A7 |
-| MultiVault                    | 0x2Ece8D4dEdcB9918A398528f3fa4688b1d2CAB91 |
-| AtomWalletFactory             | 0xa4e96c6dB8Dd3314c64bF9d0E845A4905a8705d4 |
-| AtomWalletBeacon              | 0x4B0aC884843576dBA0B0fda925f202aB8b546E33 |
-| AtomWarden                    | 0x040B7760EFDEd7e933CFf419224b57DFB9Eb4488 |
-| SatelliteEmissionsController  | 0xD3be4d1E56866b98f30Ae6C326F14EF9c6ffBBDF |
-| TrustBonding                  | 0x75dD32b522c89566265eA32ecb50b4Fc4d00ADc7 |
-| BondingCurveRegistry          | 0x2AFC4949Dd3664219AA2c20133771658E93892A1 |
-| LinearCurve                   | 0x6df5eecd9B14E31C98A027b8634876E4805F71B0 |
-| OffsetProgressiveCurve        | 0xE65EcaAF5964aC0d94459A66A59A8B9eBCE42CbB |
+| Upgrades TimelockController   | 0xc7721c865ba0bDf760073594922434Edc0C2d200 |
+| Parameters TimelockController | 0x50B874C22e4D54db9ACeE181bF2D5a0663D2D70A |
+| MultiVault                    | 0xF76d6976DeBFbB012ebc53e925BC4AEFCaA7C6c6 |
+| AtomWalletFactory             | 0x900cff1007055c850FB48695a3CB121290d6f17b |
+| AtomWalletBeacon              | 0x16deCCF5484bE9FFb5c8a2d800E0fdf27b876012 |
+| AtomWarden                    | 0xf3f875E0d390C9bA8Aa21881E983baDe91866A38 |
+| SatelliteEmissionsController  | 0x2f4ef00b05f5AA9976154125Cc46D47CAB75B1b7 |
+| TrustBonding                  | 0x9E79446fE4B1683eF1678654554535a9c90B1C3D |
+| BondingCurveRegistry          | 0xb3bfd62d259E07d623844fC7bDB7D54F74Ff9052 |
+| LinearCurve                   | 0x7499bFa918DBc73Ace4A05D6194a5Cd343AE32Dd |
+| OffsetProgressiveCurve        | 0x96bb9020ba4D027E42C29eCB3CEcc2471E505E6C |
 | Multicall3                    | 0xcA11bde05977b3631167028862bE2a173976CA11 |
 | EntryPoint                    | 0x4337084D9E255Ff0702461CF8895CE9E3b5Ff108 |
-| FeeProxy                      | Pending (after the v1.1.0 MultiVault upgrade) |
+| FeeProxy                      | 0x847801465DcB17811089107c0051c49E0135F6B8 |
+
+The Intuition Testnet MultiVault runs v1.1.0.
+
+## Periphery
+
+Periphery contracts provide auxiliary functions around the core protocol, such as bridging tokens and minting emissions. FeeProxy is listed with the L3 contracts above.
+
+### Base Mainnet
+
+| Contract Name              | Address                                    |
+| -------------------------- | ------------------------------------------ |
+| EmissionsAutomationAdapter | 0xb1ce9Ac324B5C3928736Ec33b5Fd741cb04a2F2d |
+| MetaERC20Hub (TRUST)       | 0xE12aaF1529Ae21899029a9b51cca2F2Bc2cfC421 |
+| MetaERC20Hub (USDC)        | 0x7e41962bE9B2640e653BfA8c8713A905659FE157 |
+| MetaERC20Hub (WETH)        | 0xFB4BAa05BF339AD6074047176F90757A6C87f944 |
+
+EmissionsAutomationAdapter is called only by the emissions keeper, so it is not part of `@0xintuition/deployments`.
+
+### Intuition Mainnet (L3)
+
+| Contract Name           | Address                                    |
+| ----------------------- | ------------------------------------------ |
+| MetaNativeSpoke (TRUST) | 0x375135fe908dD62f3C7939FA4e65bf41Da721AB9 |
+| MetaERC20Spoke (USDC)   | 0x7e41962bE9B2640e653BfA8c8713A905659FE157 |
+| MetaERC20Spoke (WETH)   | 0xFB4BAa05BF339AD6074047176F90757A6C87f944 |
+
+The Metalayer hubs on Base and spokes on Intuition bridge TRUST, USDC and WETH between the two chains. TRUST arrives on Intuition as the native token through MetaNativeSpoke; the USDC and WETH hubs share an address with their spokes.
 
 ## Network Details
 
 ### Intuition Mainnet Configuration
+
 - **Chain ID**: 1155
 - **RPC URL**: `https://rpc.intuition.systems`
 - **WebSocket**: `wss://rpc.intuition.systems/ws`
@@ -28941,6 +29036,7 @@ The Intuition protocol contracts are deployed on both the Base Mainnet and the I
 - **Native Token**: $TRUST
 
 ### Intuition Testnet Configuration
+
 - **Chain ID**: 13579
 - **RPC URL**: `https://testnet.rpc.intuition.systems`
 - **WebSocket**: `wss://testnet.rpc.intuition.systems/ws`
@@ -28948,12 +29044,14 @@ The Intuition protocol contracts are deployed on both the Base Mainnet and the I
 - **Native Token**: $tTRUST
 
 ### Base Sepolia Configuration
+
 - **Chain ID**: 84532
 - **RPC URL**: `https://sepolia.base.org`
 - **Explorer**: `https://sepolia.basescan.org`
 - **Native Token**: ETH
 
-### Base Sepolia Configuration
+### Base Mainnet Configuration
+
 - **Chain ID**: 8453
 - **RPC URL**: `https://mainnet.base.org`
 - **Explorer**: `https://basescan.org`
@@ -28966,7 +29064,8 @@ All deployed contracts are verified on their respective block explorers. You can
 ## Contract ABIs
 
 Contract ABIs can be found in the following locations:
-- **npm package**: `@0xintuition/protocol`
+
+- **npm package**: `@0xintuition/deployments` (addresses, ABIs and bytecode). `@0xintuition/protocol` and `@0xintuition/sdk` re-export the core ABIs and address helpers.
 - **GitHub**: [0xIntuition/intuition-contracts-v2](https://github.com/0xIntuition/intuition-contracts-v2/tree/main/abis)
 - **Block Explorer**: Available on verified contract pages
 
@@ -29032,7 +29131,7 @@ forwardedAssets = grossAssets - affiliateFee
 - The fee comes **out of** `grossAssets`. It is not added on top. `msg.value` must be at least `grossAssets`.
 - The fee must be strictly less than `grossAssets`. Otherwise the call reverts with `FeeProxy_FeeExceedsGross`.
 - **Batch and multi-term calls charge the fee once per call**, on the sum of all legs: one percentage cut plus one flat fee, not one per atom, triple or vault. FeeProxy then splits the forwarded total across legs in proportion to each leg's gross amount. Rounding dust goes to the last leg.
-- Every leg must be non-zero, and each forwarded leg must still meet MultiVault's own requirements (minimum deposit, atom or triple cost). A leg that falls short reverts the whole call. An atom or triple that receives exactly 1 wei above its creation cost also reverts, because MultiVault's own fees on that 1 wei each round up to 1 wei.
+- Every leg must be non-zero, and each forwarded leg must still meet MultiVault's own requirements (minimum deposit, atom or triple cost). A leg that falls short reverts the whole call. An atom or triple that receives exactly 1 wei above its creation cost can also revert: when more than one MultiVault fee applies, each rounds up to 1 wei and together they exceed it. Check such a deposit with MultiVault's preview first.
 - `minShares` is passed to MultiVault unchanged, so it applies to the **post-fee** amount. Size it for `forwardedAssets`, not `grossAssets`.
 
 ### Protocol caps
@@ -29249,10 +29348,10 @@ MultiVault emits its own `Deposited`, `AtomCreated` and `TripleCreated` events f
 
 ## Deployments
 
-| Network                | FeeProxy address                                                |
-| ---------------------- | --------------------------------------------------------------- |
-| Intuition Testnet (L3) | Pending: deploys after the testnet MultiVault upgrade to v1.1.0 |
-| Intuition Mainnet (L3) | Pending: deploys after the mainnet MultiVault upgrade to v1.1.0 |
+| Network                | FeeProxy address                             |
+| ---------------------- | -------------------------------------------- |
+| Intuition Testnet (L3) | `0x847801465DcB17811089107c0051c49E0135F6B8` |
+| Intuition Mainnet (L3) | `0x45B65BB9FFC4BC51C9e3a56902d9183dcff51B55` |
 
 The full list of protocol contracts is on the [Deployments](https://docs.intuition.systems/docs/intuition-smart-contracts/deployments) page.
 
@@ -29270,27 +29369,79 @@ Source: https://docs.intuition.systems/docs/intuition-smart-contracts
 
 Intuition's smart contracts are central to the user experience, handling critical onchain activities such as the creation of Atoms (also known as Identities) and Triples (also known as Claims), as well as the staking and rewards.
 
+The contracts live on two chains:
+
+- **Intuition Network (L3):** the protocol itself (MultiVault, the bonding curves, atom wallets, TrustBonding and the emissions receiver) and the periphery contracts built on it.
+- **Base:** the TRUST token and the BaseEmissionsController, which mints new TRUST and bridges it to the Intuition Network.
+
+```mermaid
+flowchart LR
+    subgraph Base
+        Trust[Trust ERC-20]
+        BEC[BaseEmissionsController]
+        EAA[EmissionsAutomationAdapter]
+    end
+    subgraph Intuition["Intuition Network (L3)"]
+        FeeProxy
+        MultiVault
+        Registry[BondingCurveRegistry]
+        Curves["LinearCurve, OffsetProgressiveCurve"]
+        Factory[AtomWalletFactory]
+        Wallets[AtomWallets]
+        Warden[AtomWarden]
+        SEC[SatelliteEmissionsController]
+        TB[TrustBonding]
+        WT[WrappedTrust]
+    end
+    EAA -- keeper upkeep --> BEC
+    BEC -- mints --> Trust
+    BEC -- bridges emissions --> SEC
+    SEC -- rewards --> TB
+    WT -- locked in --> TB
+    FeeProxy -- routes deposits and creation --> MultiVault
+    MultiVault -- prices shares --> Registry
+    Registry --> Curves
+    MultiVault -- wallet addresses --> Factory
+    Factory -- deploys --> Wallets
+    Warden -- assigns owners --> Wallets
+    MultiVault -- reads epochs --> TB
+```
+
+| Group               | Contracts                                                                                |
+| ------------------- | ---------------------------------------------------------------------------------------- |
+| Core                | MultiVault, BondingCurveRegistry, LinearCurve, OffsetProgressiveCurve                    |
+| Atom wallets        | AtomWalletFactory, AtomWallet (one per atom, behind a beacon), AtomWarden                |
+| Token and emissions | Trust, WrappedTrust, TrustBonding, BaseEmissionsController, SatelliteEmissionsController |
+| Governance          | Upgrades TimelockController, Parameters TimelockController                               |
+| Periphery           | FeeProxy, EmissionsAutomationAdapter                                                     |
+
+All addresses are on the [Deployments](https://docs.intuition.systems/docs/intuition-smart-contracts/deployments) page.
+
 ## MultiVault
 
 The MultiVault contract is the core component of Intuition's architecture, responsible for managing the creation of Atoms/Triples and handling deposits, redemptions, and share distributions. It supports multiple bonding curve implementations through a registry system.
 
-- **Creation**: Users can create Atoms and Triples
+- **Creation**: Users can create Atoms and Triples, for themselves or, with a user's approval, on that user's behalf
 - **Deposits**: Users can deposit TRUST to receive shares in atoms/triples
 - **Redemptions**: Users can redeem shares for TRUST
 - **Multi-Vault**: Supports multiple bonding curve implementations
 - **Share Distribution**: Manages the minting and burning of shares
 - **Fee Collection**: Collects small fees to maintain the system
+- **Multicall**: Runs several MultiVault calls in one transaction (v1.1.0)
 
-## FeeProxy
-The FeeProxy contract, introduced in v1.1.0, lets apps (affiliates) route a user's deposits and atom/triple creation to the MultiVault and charge their own fee. The user stays the depositor and creator of record, and redemptions always go directly to the MultiVault. See [FeeProxy.sol](https://docs.intuition.systems/docs/intuition-smart-contracts/fee-proxy) for details.
+See [MultiVault.sol](https://docs.intuition.systems/docs/intuition-smart-contracts/multivault) for details.
 
-- **Affiliate Registration**: Any address can register as an affiliate and set its fees within protocol caps
-- **Fee Routing**: Takes the affiliate fee from each routed call and forwards the rest to the MultiVault
-- **User Protection**: A per-call fee guard, atomic calls, and refunds of excess value
-- **Analytics**: Per-affiliate and per-user usage counters stored on-chain
+## Atom Wallets
+
+Every atom has its own **AtomWallet**, an ERC-4337 smart account. Deposits into an atom's vaults pay a small atom wallet deposit fee, which accumulates for the atom's wallet and can be claimed by the wallet's owner.
+
+- **AtomWalletFactory** computes each wallet's deterministic address and deploys the wallet on request. Anyone can deploy a wallet.
+- **AtomWallet** is the smart account itself. All atom wallets share one implementation through an upgradeable beacon.
+- **AtomWarden** owns every atom wallet until it is claimed, and hands ownership to the right account once. An account can claim the wallet of the atom for its own address, a claim can be signed by AtomWarden's signers, an atom's creator can claim after a waiting period, and an operator can grant ownership. See [Atom wallets and AtomWarden](https://docs.intuition.systems/docs/intuition-smart-contracts/multivault#atom-wallets-and-atomwarden).
 
 ## Trust Token
-The Trust Token contract is an ERC-20 compliant token that serves as the native utility token within the Intuition ecosystem. It is used for deposits, staking, governance, and accessing various features of the platform. 
+
+The Trust Token contract is an ERC-20 compliant token that serves as the native utility token within the Intuition ecosystem. It is used for deposits, staking, governance, and accessing various features of the platform.
 
 - **ERC-20 Compliance**: Fully compliant with the ERC-20 standard
 - **Minting and Burning**: Controlled minting and burning of tokens
@@ -29299,11 +29450,13 @@ The Trust Token contract is an ERC-20 compliant token that serves as the native 
 The Trust Token contract is **deployed on Base** and is the **native gas token on the Intuition Network L3 chain**.
 
 ## Wrapped Trust
+
 The Wrapped Trust contract is an ERC-20 compliant token that lives on the Intuition Network L3 chain. After users bridge their Trust tokens from Base to the Intuition Network L3 chain, they can receive Wrapped Trust tokens by depositing Trust tokens into the Wrapped Trust contract.
 
 **Wrapped Trust tokens can be used for staking in the Trust Bonding contract.**
 
 ## Trust Bonding
+
 The Trust Bonding contract is a smart contract introduced in V2. Inheriting from the Curve VotingEscrow contract, it enables staking of Wrapped Trust to earn rewards and participate in governance. Key features include:
 
 - **Staking**: Users can stake Wrapped Trust to earn rewards
@@ -29312,13 +29465,17 @@ The Trust Bonding contract is a smart contract introduced in V2. Inheriting from
 - **Governance**: Stakers can participate in governance decisions
 
 ## Bonding Curve Registry
+
 The Bonding Curve Registry contract is a registry for bonding curve implementations. It allows the MultiVault contract to look up and use different bonding curve implementations. Key features include:
 
-- **Registration**: Developers can register new bonding curve implementations
+- **Registration**: The registry owner registers new bonding curve implementations, each under the next curve ID
 - **Lookup**: The MultiVault contract can look up bonding curve implementations by ID
 - **Management**: The registry can be managed by the contract owner
 
+Two curves are registered: **LinearCurve** (curve ID 1, the default curve for new atoms and triples) and **OffsetProgressiveCurve** (curve ID 2). See [Configurations & Fees](https://docs.intuition.systems/docs/intuition-smart-contracts/configuration#bonding-curves).
+
 ## BaseEmissionsController
+
 The BaseEmissionsController contract is responsible for managing the emissions of Trust tokens. It controls the rate at which new Trust tokens are minted and distributed to stakers in the Trust Bonding contract. Key features include:
 
 - **Emission Rate**: Controls the rate of Trust token emissions
@@ -29326,68 +29483,148 @@ The BaseEmissionsController contract is responsible for managing the emissions o
 - **Bridging**: Uses the Caldera MetaLayer protocol to bridge emissions to the Intuition Network L3 chain
 
 ## SatelliteEmissionsController
+
 The SatelliteEmissionsController contract is responsible for managing the emissions of Trust tokens on the Intuition Network L3 chain. It receives emissions from the BaseEmissionsController and distributes them to stakers via the Trust Bonding contract. Key features include:
 
 - **Receiving Emissions**: Receives Trust token emissions from the BaseEmissionsController
 - **Distribution**: Distributes Trust tokens to stakers via the Trust Bonding contract
 - **Bridging/Burning**: Uses the Caldera MetaLayer protocol to bridge/burn emissions back to Base
 
+## Governance
+
+The protocol contracts are upgradeable, and two timelocks control changes to them:
+
+- **Upgrades TimelockController** owns the proxy admins and the atom wallet beacon. A contract upgrade can run only after the timelock's delay (7 days on mainnet).
+- **Parameters TimelockController** is, from v1.1.0, the only address that can change MultiVault's configuration: the general, atom, triple, wallet, fee and bonding curve settings, and the atom URI limits. Any other caller gets `MultiVault_OnlyTimelock`. A change can run only after the timelock's delay (3 days on mainnet).
+
+On mainnet, a multisig proposes every timelocked change, so each change is public on-chain for the whole delay before it takes effect. Pausing does not go through the timelocks: on MultiVault, a `PAUSER_ROLE` holder can pause, and only the admin can unpause.
+
+## Periphery
+
+Periphery contracts provide auxiliary functions around the core protocol, such as routing deposits with an app's fee or minting emissions. Users can always use the core contracts directly.
+
+## FeeProxy
+
+The FeeProxy contract, introduced in v1.1.0, lets apps (affiliates) route a user's deposits and atom/triple creation to the MultiVault and charge their own fee. The user stays the creator of record and receives the shares; on deposits, MultiVault's `Deposited` event records FeeProxy as the sender, and FeeProxy's own events record the user. Redemptions always go directly to the MultiVault. See [FeeProxy.sol](https://docs.intuition.systems/docs/intuition-smart-contracts/fee-proxy) for details.
+
+- **Affiliate Registration**: Any address can register as an affiliate and set its fees within protocol caps
+- **Fee Routing**: Takes the affiliate fee from each routed call and forwards the rest to the MultiVault
+- **User Protection**: A per-call fee guard, atomic calls, and refunds of excess value
+- **Analytics**: Per-affiliate and per-user usage counters stored on-chain
+
+## EmissionsAutomationAdapter
+
+The EmissionsAutomationAdapter contract on Base is the contract that automation keepers call to start each epoch's emissions. For each epoch, it mints that epoch's TRUST and bridges it to the Intuition Network through the BaseEmissionsController.
+
+- **Keeper-only**: Only an address with `UPKEEP_ROLE` can call `performUpkeep`
+- **Once per epoch**: `checkUpkeep` reports whether the current epoch is still unminted, and `performUpkeep` does nothing for an epoch that is already minted
+- **Pausable**: The admin can pause and unpause it, which stops automated minting without changing the BaseEmissionsController
+
+Integrators do not call this contract. It emits `UpkeepPerformed(epochNumber)` on Base each time it mints an epoch.
+
 # MultiVault.sol
 
 Source: https://docs.intuition.systems/docs/intuition-smart-contracts/multivault
 
-The MultiVault contract is the core economic engine of the Intuition protocol, managing deposits, redemptions, and creation of atoms and triples. It implements a sophisticated vault system that supports multiple bonding curves and provides the foundation for the protocol's economic incentives.
+The MultiVault contract is the core economic engine of the Intuition protocol. It creates atoms and triples, and it manages the deposits into and redemptions from their vaults. Each term (atom or triple) has one vault per bonding curve, and every vault uses TRUST, the native token of the Intuition network, as its asset.
 
-The MultiVault is the primary interface for users to interact with the economic aspects of atoms and triples:
+- `multicall` runs several MultiVault calls in one transaction, with an explicit TRUST amount for each call.
+- `createAtomsFor` and `createTriplesFor` let an approved account create terms for another account, which stays the creator of record.
+- A new `CREATION` approval type, and read functions for each approval type.
+- `createAtomsWithUris` attaches context URIs to new atoms.
+- MultiVault now records the creator and creation time of each new atom. AtomWarden uses these records for creator claims of atom wallets.
+- Configuration changes now go through a timelock.
 
-### Atom IDs
-Atom IDs are generated using a hash function that hashes the Atom's data.
+Function selectors, argument types and event signatures of the v1.0 functions are unchanged, except for the preview functions listed under [Reads](https://docs.intuition.systems/docs/intuition-smart-contracts/multivault#reads).
 
-```solidity
-function calculateAtomId(bytes memory data) public pure returns (bytes32 id) {
-    return keccak256(abi.encodePacked(data));
+## SDK setup
+
+The examples on this page use `@0xintuition/sdk` and `viem`. The SDK resolves the MultiVault address from the chain ID:
+
+```typescript title="multiVault.ts"
+import {
+  getMultiVaultAddressFromChainId,
+  intuitionTestnet,
+} from '@0xintuition/sdk';
+import type { Address, PublicClient, WalletClient } from 'viem';
+
+// Use intuitionMainnet.id for Intuition Mainnet.
+export const MULTIVAULT_ADDRESS: Address = getMultiVaultAddressFromChainId(
+  intuitionTestnet.id,
+);
+
+export function readConfig(publicClient: PublicClient) {
+  return { address: MULTIVAULT_ADDRESS, publicClient };
+}
+
+export function writeConfig(
+  publicClient: PublicClient,
+  walletClient: WalletClient,
+) {
+  return { address: MULTIVAULT_ADDRESS, publicClient, walletClient };
 }
 ```
 
-### Triple IDs
-Triple IDs are generated using a hash function that hashes the subject, predicate, and object Atom IDs.
+Each write helper in the SDK simulates the call first, so a call that would revert throws before anything is sent.
+
+## Term IDs
+
+Atom and triple IDs are deterministic. You can compute them off-chain before the term exists:
 
 ```solidity
-function calculateTripleId(
-    bytes32 subjectId,
-    bytes32 predicateId,
-    bytes32 objectId
-) public pure returns (bytes32 id) {
-    return keccak256(abi.encodePacked(subjectId, predicateId, objectId));
-}
+bytes32 public constant ATOM_SALT = keccak256("ATOM_SALT");
+bytes32 public constant TRIPLE_SALT = keccak256("TRIPLE_SALT");
+bytes32 public constant COUNTER_SALT = keccak256("COUNTER_SALT");
+
+atomId          = keccak256(abi.encodePacked(ATOM_SALT, keccak256(atomData)));
+tripleId        = keccak256(abi.encodePacked(TRIPLE_SALT, subjectId, predicateId, objectId));
+counterTripleId = keccak256(abi.encodePacked(COUNTER_SALT, tripleId));
 ```
 
-## Smart Contract Writes
-The MultiVault contract allows users to create new terms, plus deposit and redeem assets.
+The same values are available on-chain from `calculateAtomId(bytes)`, `calculateTripleId(bytes32,bytes32,bytes32)` and `getCounterIdFromTripleId(bytes32)`, and off-chain from the SDK:
 
-### Creating Atoms
-An Atom represents an entity within the Intuition ecosystem and is identified by a unique `bytes32` identifier. Atoms can represent objects, individuals, organizations, or any other entity type. Atom data is stored onchain and also emitted for caching/indexing using the `AtomCreated` event.
+```typescript
+import { calculateAtomId, calculateTripleId } from '@0xintuition/sdk';
+import { toHex } from 'viem';
 
-Any user can create an Atom by calling the `createAtoms` function on the MultiVault contract.
+const subjectId = calculateAtomId(toHex('alice.eth'));
+const predicateId = calculateAtomId(toHex('follows'));
+const objectId = calculateAtomId(toHex('bob.eth'));
+const tripleId = calculateTripleId(subjectId, predicateId, objectId);
+```
+
+## Writes
+
+All value is sent as TRUST in `msg.value`. Every call that takes an `assets` array requires `msg.value` to equal the sum of the array exactly. A call that sends a different amount reverts with `MultiVault_InsufficientBalance`. A batch can hold at most 150 entries (`MAX_BATCH_SIZE`). The create, deposit and redeem functions revert while MultiVault is paused (`EnforcedPause`); `approve` keeps working.
+
+### Creating atoms
 
 ```solidity
-function createAtoms(
-        bytes[] calldata data,
-        uint256[] calldata assets
-    )
-        external
-        payable
-        returns (bytes32[] memory)
-    {
-    // Atom creation logic
-}
+function createAtoms(bytes[] calldata atomDatas, uint256[] calldata assets)
+    external payable returns (bytes32[] memory termIds);
 ```
-The function accepts an array of Atom data and an array of asset amounts, allowing for the creation of multiple Atoms in a single transaction.
 
-Creating an Atom requires a fee payment, which is paid in the native blockchain currency (e.g., TRUST on the Intuition Network). In addition to the fee, users can also deposit TRUST tokens when creating an Atom. This deposit acts as a signal, ensuring that users have a vested interest in the integrity of the Atom they are creating.
+Each `assets[i]` must be at least `getAtomCost()`: the atom creation fee plus the small seed for the vault's minimum shares. Anything above the cost is the creator's first deposit into the atom's vault on the default curve. The creator receives the shares.
 
-### Creating Triples
-A Triple represents a claim or statement. A triple is structured using a **subject-predicate-object** relationship. For example, in the triple "Alice is a friend of Bob", "Alice" is the subject, "is a friend of" is the predicate, and "Bob" is the object.
+Atom data can be at most `atomDataMaxLength` bytes long (`MultiVault_AtomDataTooLong`). Creating an atom that already exists reverts with `MultiVault_AtomExists`.
+
+To attach context to new atoms (for example the source URLs of a page you made an atom for), use `createAtomsWithUris`:
+
+```solidity
+function createAtomsWithUris(
+    address creator,
+    bytes[] calldata atomDatas,
+    uint256[] calldata assets,
+    bytes[][] calldata uris
+) external payable returns (bytes32[] memory termIds);
+```
+
+- `uris[i]` belongs to `atomDatas[i]`, so both arrays must have the same length. An empty list is allowed.
+- The URIs are emitted in an `AtomContextRegistered` event and are not stored on-chain. They do not change the atom ID.
+- `getAtomUriConfig()` returns the limits: the highest number of URIs for one atom (default 5) and the highest byte length of one URI (default 700). Above a limit, the call reverts with `MultiVault_AtomUriCountExceeded` or `MultiVault_AtomUriLengthExceeded`.
+- Pass your own address as `creator` to create for yourself. To create for another account, you need its `CREATION` approval, as for `createAtomsFor`.
+
+### Creating triples
 
 ```solidity
 function createTriples(
@@ -29395,226 +29632,420 @@ function createTriples(
     bytes32[] calldata predicateIds,
     bytes32[] calldata objectIds,
     uint256[] calldata assets
-)
-    external
-    payable
-    whenNotPaused
-    nonReentrant
-    returns (bytes32[] memory)
-{
-    // Triple creation logic
-}
+) external payable returns (bytes32[] memory termIds);
 ```
+
+The subject, predicate and object must all exist (atoms or triples). The total payment must be at least `getTripleCost()` times the number of triples (`MultiVault_InsufficientBalance`), and each `assets[i]` must be at least `getTripleCost()` (`MultiVault_InsufficientAssets`). Anything above the cost is the creator's first deposit into the triple. Creating a triple also creates its counter triple, which holds positions against the claim. Creating a triple that already exists reverts with `MultiVault_TripleExists`.
+
+### Creating on behalf of another account
+
+```solidity
+function createAtomsFor(address creator, bytes[] calldata atomDatas, uint256[] calldata assets)
+    external payable returns (bytes32[] memory termIds);
+
+function createTriplesFor(
+    address creator,
+    bytes32[] calldata subjectIds,
+    bytes32[] calldata predicateIds,
+    bytes32[] calldata objectIds,
+    uint256[] calldata assets
+) external payable returns (bytes32[] memory termIds);
+```
+
+These work like `createAtoms` and `createTriples`, but `creator` is the creator of record instead of `msg.sender`:
+
+- `creator` receives the shares of the first deposit and is credited with the utilization (which counts towards TrustBonding rewards).
+- `AtomCreated` or `TripleCreated` names `creator`, and MultiVault records `creator` as the atom's creator (`getAtomCreator`).
+- `msg.sender` pays. The TRUST comes from the caller's `msg.value`, never from `creator`.
+- `creator` must have approved `msg.sender` for `CREATION`. Otherwise the call reverts with `MultiVault_CreatorNotApproved`. When `creator == msg.sender`, no approval is needed.
+
+This is how a front end, a relayer or [FeeProxy](https://docs.intuition.systems/docs/intuition-smart-contracts/fee-proxy) can create terms in a user's name.
 
 ### Deposit
-Deposits are made in the native blockchain currency (e.g., TRUST). Users can also batch multiple deposits or redemptions into a single transaction for efficiency.
-
-The `deposit` function allows users to deposit assets into a specific term and bonding curve. The user specifies the receiver address, term ID, curve ID, and minimum shares they expect to receive.
-
-The `msg.value` sent with the transaction represents the amount of assets being deposited.
 
 ```solidity
-function deposit(
-    address receiver,
-    bytes32 termId,
-    uint256 curveId,
-    uint256 minShares
-)
-    external
-    payable
-    whenNotPaused
-    nonReentrant
-    returns (uint256)
-{
-    /// Deposit logic
-}
-```
+function deposit(address receiver, bytes32 termId, uint256 curveId, uint256 minShares)
+    external payable returns (uint256 shares);
 
-### Batch Deposit
-The `depositBatch` function allows users to make multiple deposits in a single transaction. The user provides arrays of receiver addresses, term IDs, curve IDs, and minimum shares for each deposit.
-
-The `msg.value` sent with the transaction represents the total amount of assets being deposited across all specified deposits. The sum of `assets` must equal `msg.value`.
-
-```solidity
 function depositBatch(
     address receiver,
     bytes32[] calldata termIds,
     uint256[] calldata curveIds,
     uint256[] calldata assets,
     uint256[] calldata minShares
-)
-    external
-    payable
-    whenNotPaused
-    nonReentrant
-    returns (uint256[] memory shares)
-{
-    /// Batch deposit logic
-}
+) external payable returns (uint256[] memory shares);
 ```
+
+- `msg.value` is the deposit for `deposit`. For `depositBatch`, `msg.value` must equal the sum of `assets`.
+- Each deposit must be at least the minimum deposit (`MultiVault_DepositBelowMinimumDeposit`).
+- The shares go to `receiver`. If `receiver` is not `msg.sender`, `receiver` must have approved `msg.sender` for `DEPOSIT` (`MultiVault_SenderNotApproved`).
+- `minShares` is the slippage limit. If the deposit would mint fewer shares, the call reverts with `MultiVault_SlippageExceeded`. Get the expected shares from `previewDeposit` and subtract your tolerance.
+- The term must exist (`MultiVaultCore_TermDoesNotExist`). The vault on the default curve is opened by the create call. The first deposit into a term on any other curve opens that vault and pays a small seed for its minimum shares.
 
 ### Redeem
 
-The `redeem` function allows users to redeem their shares for the underlying assets. The user specifies the receiver address, term ID, curve ID, and the number of shares they want to redeem.
-
 ```solidity
-function redeem(
-    address receiver,
-    bytes32 termId,
-    uint256 curveId,
-    uint256 shares,
-    uint256 minAssets
-)
-    external
-    whenNotPaused
-    nonReentrant
-    returns (uint256)
-{
-    /// Redemption logic
-}
-```
+function redeem(address receiver, bytes32 termId, uint256 curveId, uint256 shares, uint256 minAssets)
+    external payable returns (uint256 assets);
 
-### Batch Redeem
-
-The `redeemBatch` function allows users to redeem shares from multiple terms and curves in a single transaction. The user provides arrays of term IDs, curve IDs, shares to redeem, and minimum assets they expect to receive for each redemption.
-
-```solidity
 function redeemBatch(
     address receiver,
     bytes32[] calldata termIds,
     uint256[] calldata curveIds,
     uint256[] calldata shares,
     uint256[] calldata minAssets
-)
-    external
-    whenNotPaused
-    nonReentrant
-    returns (uint256[] memory received)
-{
-    /// Batch redemption logic
+) external payable returns (uint256[] memory assets);
+```
+
+- `receiver` is the account whose shares are burned, and it receives the TRUST. If `receiver` is not `msg.sender`, `receiver` must have approved `msg.sender` for `REDEMPTION` (`MultiVault_RedeemerNotApproved`).
+- `minAssets` is the slippage limit (`MultiVault_SlippageExceeded`).
+- `redeem`, `redeemBatch` and `approve` are `payable` only so they can be part of a [multicall](https://docs.intuition.systems/docs/intuition-smart-contracts/multivault#multicall) that also sends value. They take no value: a call with a non-zero `msg.value`, or a non-zero multicall value, reverts with `MultiVault_UnexpectedValue`.
+
+### SDK: create, deposit and redeem
+
+```typescript title="multiVault.ts"
+import {
+  multiVaultCreateAtoms,
+  multiVaultDeposit,
+  multiVaultGetAtomCost,
+  multiVaultPreviewDeposit,
+  multiVaultRedeem,
+} from '@0xintuition/sdk';
+import { type Hex, parseEther } from 'viem';
+
+export async function createAtom(
+  publicClient: PublicClient,
+  walletClient: WalletClient,
+  atomData: Hex,
+) {
+  const atomCost = await multiVaultGetAtomCost(readConfig(publicClient));
+  const assets = atomCost + parseEther('1'); // the cost, plus a 1 TRUST first deposit
+  return multiVaultCreateAtoms(writeConfig(publicClient, walletClient), {
+    args: [[atomData], [assets]],
+    value: assets,
+  });
+}
+
+export async function depositWithSlippage(
+  publicClient: PublicClient,
+  walletClient: WalletClient,
+  receiver: Address,
+  termId: Hex,
+  curveId: bigint,
+  assets: bigint,
+) {
+  const [expectedShares] = await multiVaultPreviewDeposit(
+    readConfig(publicClient),
+    { args: [termId, curveId, assets] },
+  );
+  const minShares = (expectedShares * 99n) / 100n; // accept up to 1% slippage
+  return multiVaultDeposit(writeConfig(publicClient, walletClient), {
+    args: [receiver, termId, curveId, minShares],
+    value: assets,
+  });
+}
+
+export async function redeemAll(
+  publicClient: PublicClient,
+  walletClient: WalletClient,
+  account: Address,
+  termId: Hex,
+  curveId: bigint,
+  shares: bigint,
+  minAssets: bigint,
+) {
+  return multiVaultRedeem(writeConfig(publicClient, walletClient), {
+    args: [account, termId, curveId, shares, minAssets],
+  });
 }
 ```
 
-## Smart Contract Reads
+## Approvals
 
-### Is Term Created
-
-The `isTermCreated` function checks if a specific term has been created in the MultiVault.
+An account (the **receiver** or **creator**) can let another address (the **sender**) act for it. The receiver calls:
 
 ```solidity
-function isTermCreated(bytes32 termId) external view returns (bool) {
-    // Term existence logic
+function approve(address sender, ApprovalTypes approvalType) external payable;
+```
+
+`ApprovalTypes` is a bit mask: `DEPOSIT` is bit 0, `REDEMPTION` is bit 1 and `CREATION` is bit 2.
+
+| `approvalType`            | Value | Lets `sender`                                                 |
+| ------------------------- | ----- | ------------------------------------------------------------- |
+| `NONE`                    | `0`   | Nothing. Removes the approval.                                |
+| `DEPOSIT`                 | `1`   | Deposit with the receiver as `receiver`                       |
+| `REDEMPTION`              | `2`   | Redeem the receiver's shares (the TRUST goes to the receiver) |
+| `BOTH`                    | `3`   | Deposit and redeem (`DEPOSIT` and `REDEMPTION`)               |
+| `CREATION`                | `4`   | Create atoms and triples with the receiver as `creator`       |
+| `DEPOSIT_AND_CREATION`    | `5`   | Deposit and create                                            |
+| `REDEMPTION_AND_CREATION` | `6`   | Redeem and create                                             |
+| `ALL`                     | `7`   | Deposit, redeem and create                                    |
+
+Each call stores `approvalType` in place of the earlier value. If you approved a sender for `DEPOSIT` and then call `approve(sender, CREATION)`, the `DEPOSIT` approval is gone. To keep both, send the combined value, here `DEPOSIT_AND_CREATION` (`5`). Read the current state first with `isApprovedToDeposit`, `isApprovedToRedeem` and `isApprovedToCreate`.
+
+- You cannot approve yourself: `approve(msg.sender, ...)` reverts with `MultiVault_CannotApproveOrRevokeSelf`. You never need to, because every account can always act for itself.
+- `approve` emits `ApprovalTypeUpdated(sender, receiver, approvalType)`.
+- An approval stays until the receiver replaces it or sets `NONE`.
+- An approved sender can change the receiver's positions. A `REDEMPTION` approval lets the sender exit the receiver's positions at a time the sender chooses. Approve only addresses you trust, and grant only the bits they need.
+
+### SDK: create for a user
+
+The user approves your app once for `CREATION`, keeping any approval they already gave. Your app then creates atoms with the user as creator and pays for them:
+
+```typescript title="createFor.ts"
+import {
+  ApprovalTypes,
+  multiVaultApprove,
+  multiVaultCreateAtomsFor,
+  multiVaultIsApprovedToCreate,
+  multiVaultIsApprovedToDeposit,
+  multiVaultIsApprovedToRedeem,
+} from '@0xintuition/sdk';
+import type { Address, Hex, PublicClient, WalletClient } from 'viem';
+
+import { readConfig, writeConfig } from './multiVault';
+
+// Signed by the user. Adds CREATION and keeps any DEPOSIT or REDEMPTION approval.
+export async function approveAppForCreation(
+  publicClient: PublicClient,
+  userWallet: WalletClient,
+  user: Address,
+  app: Address,
+) {
+  const config = readConfig(publicClient);
+  const [canDeposit, canRedeem, canCreate] = await Promise.all([
+    multiVaultIsApprovedToDeposit(config, { args: [app, user] }),
+    multiVaultIsApprovedToRedeem(config, { args: [app, user] }),
+    multiVaultIsApprovedToCreate(config, { args: [app, user] }),
+  ]);
+  if (canCreate) return null;
+
+  const approvalType = (ApprovalTypes.CREATION |
+    (canDeposit ? ApprovalTypes.DEPOSIT : 0) |
+    (canRedeem ? ApprovalTypes.REDEMPTION : 0)) as ApprovalTypes;
+
+  return multiVaultApprove(writeConfig(publicClient, userWallet), {
+    args: [app, approvalType],
+  });
+}
+
+// Signed and paid by the app. The user is the creator and receives the shares.
+export async function createAtomsForUser(
+  publicClient: PublicClient,
+  appWallet: WalletClient,
+  user: Address,
+  atomDatas: Hex[],
+  assets: bigint[],
+) {
+  return multiVaultCreateAtomsFor(writeConfig(publicClient, appWallet), {
+    args: [user, atomDatas, assets],
+    value: assets.reduce((sum, amount) => sum + amount, 0n),
+  });
 }
 ```
 
-### Current Share Price
-The `currentSharePrice` function returns the current share price for a given term and bonding curve.
+`multivaultPrepareOnBehalfOfCreationPlan` in the SDK does the same planning and returns the approval and creation calldata as ordered steps, each marked with the account that must sign it.
+
+## Multicall
 
 ```solidity
-function currentSharePrice(bytes32 termId, uint256 curveId) external view returns (uint256) {
-    // Share price calculation logic
+function multicall(bytes[] calldata data, uint256[] calldata values)
+    external payable returns (bytes[] memory results);
+```
+
+`multicall` runs a list of MultiVault calls in one transaction. Each entry of `data` is ABI-encoded calldata for one MultiVault function, and `values[i]` is the TRUST that call receives.
+
+- **Value accounting.** The sum of `values` must equal `msg.value` (`MultiVault_MulticallValueMismatch`), and `data` and `values` must have the same length (`MultiVault_ArraysNotSameLength`). Each call is charged only its own `values[i]` and treats it as its `msg.value`, so the per-call rules above apply unchanged: for example, a `createAtoms` call needs `values[i]` equal to the sum of its `assets`.
+- **No value for calls that take none.** `approve`, `redeem` and `redeemBatch` need `values[i] = 0` (`MultiVault_UnexpectedValue`).
+- **Same caller.** Every call runs with your address as `msg.sender`, and its own checks (approvals, pause, slippage) run as for a direct call.
+- **Atomic.** If any call reverts, the whole transaction reverts with that call's error.
+- **No nesting.** A `multicall` inside a `multicall` reverts with `MultiVault_NestedMulticall`.
+- **View and non-payable functions.** When `msg.value` is zero, you can include any MultiVault function. When it is non-zero, include only payable functions. A non-payable function, including a view function, reverts if the transaction carries value.
+
+Later calls can use terms that earlier calls created, because each call sees the state left by the one before it.
+
+### Worked example: create an atom and deposit into it in one transaction
+
+This creates an atom, with a first deposit on the default curve (curve 1), and opens a second position on curve 2 in the same transaction.
+
+```typescript title="createAndDeposit.ts"
+import {
+  calculateAtomId,
+  multiVaultCreateAtomsEncode,
+  multiVaultDepositEncode,
+  multiVaultGetAtomCost,
+  multiVaultMulticall,
+  multivaultPrepareMulticallTx,
+} from '@0xintuition/sdk';
+import { parseEther, type PublicClient, toHex, type WalletClient } from 'viem';
+
+import { readConfig, writeConfig } from './multiVault';
+
+export async function createAtomAndDeposit(
+  publicClient: PublicClient,
+  walletClient: WalletClient,
+) {
+  const receiver = walletClient.account?.address;
+  if (!receiver) throw new Error('The wallet client needs an account');
+
+  const atomData = toHex('ipfs://bafkreib...'); // your atom's data
+  const atomId = calculateAtomId(atomData);
+
+  const atomCost = await multiVaultGetAtomCost(readConfig(publicClient));
+  const createAssets = atomCost + parseEther('1'); // 1 TRUST on curve 1
+  const depositAssets = parseEther('5'); // 5 TRUST on curve 2
+
+  const tx = multivaultPrepareMulticallTx([
+    {
+      calldata: multiVaultCreateAtomsEncode([atomData], [createAssets]),
+      value: createAssets,
+    },
+    {
+      // minShares = 0 is safe only here: the atom is new, so its curve 2 vault is empty
+      // and nobody can deposit before this call. Use a real minimum for existing vaults.
+      calldata: multiVaultDepositEncode(receiver, atomId, 2n, 0n),
+      value: depositAssets,
+    },
+  ]);
+
+  // tx.value is createAssets + depositAssets, the sum of the per-call values.
+  return multiVaultMulticall(writeConfig(publicClient, walletClient), {
+    args: tx.args,
+    value: tx.value,
+  });
 }
 ```
 
-### Preview Atom Create
-The `previewAtomCreate` function allows users to preview the cost of creating an Atom with a given set of data.
+If the atom already exists, the first call reverts with `MultiVault_AtomExists` and the deposit does not happen either.
+
+The raw call has the same shape:
 
 ```solidity
-function previewAtomCreate(
-    bytes32 termId,
-    uint256 curveId,
-    uint256 assets
-)
-    external
-    view
-    returns (uint256 shares, uint256 assetsAfterFixedFees, uint256 assetsAfterFees)
-{
-    // Atom creation cost preview logic
+bytes[] memory data = new bytes[](2);
+uint256[] memory values = new uint256[](2);
+
+bytes[] memory atomDatas = new bytes[](1);
+atomDatas[0] = atomData;
+uint256[] memory createAssets = new uint256[](1);
+createAssets[0] = multiVault.getAtomCost() + 1 ether;
+
+data[0] = abi.encodeCall(IMultiVault.createAtoms, (atomDatas, createAssets));
+values[0] = createAssets[0];
+data[1] = abi.encodeCall(IMultiVault.deposit, (receiver, multiVault.calculateAtomId(atomData), 2, 0));
+values[1] = 5 ether;
+
+multiVault.multicall{ value: values[0] + values[1] }(data, values);
+```
+
+## Atom wallets and AtomWarden
+
+Every atom has an **atom wallet**: an ERC-4337 smart account at a deterministic address, `computeAtomWalletAddr(atomId)`. Anyone can deploy it with `AtomWalletFactory.deployAtomWallet(atomId)`.
+
+Each deposit into an atom vault (including the first deposit at creation) pays an **atom wallet deposit fee** to the atom's wallet. The fee accumulates in MultiVault, and `accumulatedAtomWalletDepositFees(atomWallet)` returns the amount. The wallet's owner collects it by calling `claimAtomWalletDepositFees()` on the atom wallet, which pays the owner. MultiVault accepts this claim only from the atom's own wallet (`MultiVault_OnlyAssociatedAtomWallet`).
+
+Until someone claims the wallet, its owner is **AtomWarden** (`getAtomWarden()`). AtomWarden hands ownership to the right account once, through one of these paths:
+
+| Path                                    | Who calls    | Conditions                                                                                                                                                                                                                             |
+| --------------------------------------- | ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `claimOwnershipOverAddressAtom(atomId)` | The address  | The atom's data is the caller's own address as a hex string, lowercase or checksummed.                                                                                                                                                 |
+| `claimWithAuthorization(auth, sig)`     | The claimant | An EIP-712 claim authorization for the caller, signed by at least the required number of AtomWarden signers, with the current nonce, inside its validity window and within the claim rate limit.                                       |
+| `claimAsCreatorAfterExpiry(atomId)`     | The creator  | The caller is the creator recorded by MultiVault, the claim window has passed since creation, and the wallet's accumulated fees reach the minimum. Atoms created before v1.1.0 have no recorded creator (`AtomWarden_CreatorUnknown`). |
+| `grantAtomWalletOwnership(atomId, to)`  | An operator  | Needs AtomWarden's `OPERATOR_ROLE`.                                                                                                                                                                                                    |
+
+On every path, the atom must exist, its wallet must be deployed (`AtomWarden_AtomWalletNotDeployed`), and the wallet must not be claimed yet (`AtomWarden_AlreadyClaimed`). The three user paths revert while AtomWarden is paused.
+
+`createAtomsFor` matters here: the `creator` you pass is the address that can later use the creator path. After a claim, the new owner controls the wallet, and AtomWarden can no longer change its owner.
+
+```typescript title="atomWallet.ts"
+import {
+  MultiVaultAbi,
+  multiVaultAccumulatedAtomWalletDepositFees,
+  multiVaultComputeAtomWalletAddr,
+} from '@0xintuition/sdk';
+import type { Hex, PublicClient } from 'viem';
+
+import { readConfig } from './multiVault';
+
+export async function atomWalletInfo(publicClient: PublicClient, atomId: Hex) {
+  const config = readConfig(publicClient);
+  const wallet = await multiVaultComputeAtomWalletAddr(config, {
+    args: [atomId],
+  });
+  const [pendingFees, creator] = await Promise.all([
+    multiVaultAccumulatedAtomWalletDepositFees(config, { args: [wallet] }),
+    publicClient.readContract({
+      address: config.address,
+      abi: MultiVaultAbi,
+      functionName: 'getAtomCreator',
+      args: [atomId],
+    }),
+  ]);
+  return { wallet, pendingFees, creator };
 }
 ```
 
-### Preview Triple Create
-The `previewTripleCreate` function allows users to preview the cost of creating a Triple with given subject, predicate, and object IDs.
+## Reads
+
+### Previews
 
 ```solidity
-function previewTripleCreate(
-    bytes32 termId,
-    uint256 curveId,
-    uint256 assets
-)
-    external
-    view
-    returns (uint256 shares, uint256 assetsAfterFixedFees, uint256 assetsAfterFees)
-{
-    // Triple creation cost preview logic
-}
+function previewAtomCreate(bytes32 termId, uint256 assets)
+    external view returns (uint256 shares, uint256 feeBaseAssets, uint256 assetsAfterFees);
+
+function previewTripleCreate(bytes32 subjectId, bytes32 predicateId, bytes32 objectId, uint256 assets)
+    external view returns (uint256 shares, uint256 feeBaseAssets, uint256 assetsAfterFees);
+
+function previewDeposit(bytes32 termId, uint256 curveId, uint256 assets)
+    external view returns (uint256 shares, uint256 assetsAfterFees);
+
+function previewRedeem(bytes32 termId, uint256 curveId, uint256 shares)
+    external view returns (uint256 assetsAfterFees, uint256 sharesUsed);
 ```
 
-### Preview Deposit
-The `previewDeposit` function allows users to preview the number of shares they would receive for a deposit of a given amount of assets into a specific term and bonding curve.
+- **Changed in v1.1.0:** `previewTripleCreate` takes the three atom IDs instead of the triple ID, so that it can quote a triple that does not exist yet.
+- Creation previews use the default curve. `feeBaseAssets` is `assets` minus the fixed creation cost, the amount the percentage fees are charged on. `assetsAfterFees` is what goes into the vault.
+- `previewDeposit` and `previewRedeem` revert with `MultiVault_TermDoesNotExist` for a term that does not exist.
+- `previewRedeem` reverts with `MultiVault_RedeemYieldsNoAssets` when the fees would take the whole redemption, as the redemption itself would. When you preview many positions, handle a revert on one of them.
 
-```solidity
-function previewDeposit(
-    bytes32 termId,
-    uint256 curveId,
-    uint256 assets
-)
-    public
-    view
-    returns (uint256 shares, uint256 assetsAfterFees)
-{
-    // Deposit preview logic
-}
-```
+### Approvals, creators and wallets
 
-### Preview Redeem
-The `previewRedeem` function allows users to preview the amount of assets they would receive for redeeming a given number of shares from a specific term and bonding curve.
+| Function                                       | Returns                                                                                                               |
+| ---------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `isApprovedToDeposit(sender, receiver)`        | `true` if `sender == receiver` or `receiver` approved `sender` with the `DEPOSIT` bit.                                |
+| `isApprovedToRedeem(sender, receiver)`         | `true` if `sender == receiver` or `receiver` approved `sender` with the `REDEMPTION` bit.                             |
+| `isApprovedToCreate(sender, creator)`          | `true` if `sender == creator` or `creator` approved `sender` with the `CREATION` bit.                                 |
+| `getAtomCreator(atomId)`                       | The recorded creator. `address(0)` for atoms created before v1.1.0.                                                   |
+| `getAtomCreatedAt(atomId)`                     | The recorded creation timestamp. `0` for atoms created before v1.1.0.                                                 |
+| `getAtomWarden()`                              | The AtomWarden address, the owner of every unclaimed atom wallet.                                                     |
+| `computeAtomWalletAddr(atomId)`                | The atom wallet address, deployed or not.                                                                             |
+| `accumulatedAtomWalletDepositFees(atomWallet)` | Atom wallet deposit fees waiting to be claimed.                                                                       |
+| `getAtomUriConfig()`                           | `(maxUriCount, maxUriLength)` for `createAtomsWithUris`.                                                              |
+| `timelock()`                                   | The timelock that owns the configuration setters. See [Configuration](https://docs.intuition.systems/docs/intuition-smart-contracts/configuration). |
 
-```solidity
-function previewRedeem(
-    bytes32 termId,
-    uint256 curveId,
-    uint256 shares
-)
-    public
-    view
-    returns (uint256 assetsAfterFees, uint256 sharesUsed)
-{
-    // Redemption preview logic
-}
-```
+### Other reads
+
+| Function                                                                                                                       | Returns                                        |
+| ------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------- |
+| `isTermCreated(termId)`                                                                                                        | `true` if the atom or triple exists.           |
+| `getAtomCost()`, `getTripleCost()`                                                                                             | The fixed cost of creating one atom or triple. |
+| `currentSharePrice(termId, curveId)`                                                                                           | The current share price of a vault.            |
+| `getVault(termId, curveId)`                                                                                                    | `(totalAssets, totalShares)` of a vault.       |
+| `getShares(account, termId, curveId)`                                                                                          | An account's shares in a vault.                |
+| `maxRedeem(account, termId, curveId)`                                                                                          | The shares an account can redeem from a vault. |
+| `convertToShares(termId, curveId, assets)`, `convertToAssets(...)`                                                             | Conversion at the vault's curve, without fees. |
+| `getGeneralConfig()`, `getAtomConfig()`, `getTripleConfig()`, `getVaultFees()`, `getWalletConfig()`, `getBondingCurveConfig()` | The current configuration.                     |
 
 ## Events
-The MultiVault contract emits a number of different events to track key actions:
 
-- `AtomCreated`: Emitted when a new Atom is created.
-- `TripleCreated`: Emitted when a new Triple is created.
-- `Deposited`: Emitted when a deposit is made.
-- `Redeemed`: Emitted when shares are redeemed for assets.
-- `SharePriceChanged`: Emitted when the share price for a term and curve changes.
+The v1.0 events keep their signatures, so existing decoders and indexers work unchanged. Some fields have new names that say what they hold.
 
-### AtomCreated
 ```solidity
-event AtomCreated(
-    address indexed creator,
-    bytes32 indexed termId,
-    bytes data
-);
-```
+event AtomCreated(address indexed creator, bytes32 indexed termId, bytes atomData, address atomWallet);
 
-### TripleCreated
-```solidity
 event TripleCreated(
-    address indexed creator,
-    bytes32 indexed tripleId,
-    bytes32 subjectId,
-    bytes32 predicateId,
-    bytes32 objectId
+    address indexed creator, bytes32 indexed termId, bytes32 subjectId, bytes32 predicateId, bytes32 objectId
 );
-```
 
-### Deposited
-```solidity
 event Deposited(
     address indexed sender,
     address indexed receiver,
@@ -29623,28 +30054,22 @@ event Deposited(
     uint256 assets,
     uint256 assetsAfterFees,
     uint256 shares,
-    uint256 totalShares,
+    uint256 receiverSharesAfter, // the receiver's balance after the deposit, not the vault total
     VaultType vaultType
 );
-```
 
-### Redeemed
-```solidity
 event Redeemed(
     address indexed sender,
-    address indexed receiver,
+    address indexed account,     // whose shares are burned; receives the TRUST
     bytes32 indexed termId,
     uint256 curveId,
     uint256 shares,
-    uint256 totalShares,
-    uint256 assets,
-    uint256 fees,
+    uint256 accountSharesAfter,  // the account's balance after the redemption, not the vault total
+    uint256 assetsAfterFees,     // the TRUST paid out
+    uint256 totalFees,
     VaultType vaultType
 );
-```
 
-### SharePriceChanged
-```solidity
 event SharePriceChanged(
     bytes32 indexed termId,
     uint256 indexed curveId,
@@ -29655,9 +30080,45 @@ event SharePriceChanged(
 );
 ```
 
+- `creator` in `AtomCreated` and `TripleCreated` is the creator of record, which for `createAtomsFor` and `createTriplesFor` is the `creator` argument, not `msg.sender`. The `Deposited` event of a creation also names the creator as `sender` and `receiver`.
+- `AtomCreated.atomWallet` is the atom wallet address, whether the wallet is deployed yet or not.
+
+New in v1.1.0:
+
+| Event                                             | Emitted when                                                     |
+| ------------------------------------------------- | ---------------------------------------------------------------- |
+| `AtomContextRegistered(termId, registrant, uris)` | `createAtomsWithUris` creates an atom with a non-empty URI list. |
+| `TimelockSet(timelock)`                           | The configuration timelock is set or changed.                    |
+| `AtomUriConfigUpdated(maxUriCount, maxUriLength)` | The URI limits change.                                           |
+
+`ApprovalTypeUpdated(sender, receiver, approvalType)` now also carries the `CREATION` values (`4` to `7`).
+
+## Errors
+
+The errors you are most likely to meet when you integrate:
+
+| Error                                                                         | Cause                                                                                                                                 |
+| ----------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `MultiVault_InsufficientBalance`                                              | `msg.value` (or the multicall value) is not the sum of `assets`, or the total is below `getTripleCost()` times the number of triples. |
+| `MultiVault_InsufficientAssets`                                               | An atom's or triple's `assets` is below `getAtomCost()` or `getTripleCost()`.                                                         |
+| `MultiVault_DepositBelowMinimumDeposit`                                       | A deposit is below the minimum deposit.                                                                                               |
+| `MultiVault_SlippageExceeded`                                                 | Fewer shares or assets than `minShares` or `minAssets`.                                                                               |
+| `MultiVault_SenderNotApproved`                                                | Deposit for a `receiver` that did not approve you for `DEPOSIT`.                                                                      |
+| `MultiVault_RedeemerNotApproved`                                              | Redeem for a `receiver` that did not approve you for `REDEMPTION`.                                                                    |
+| `MultiVault_CreatorNotApproved` _(new)_                                       | Create for a `creator` that did not approve you for `CREATION`.                                                                       |
+| `MultiVault_CannotApproveOrRevokeSelf`                                        | `approve` with your own address as `sender`.                                                                                          |
+| `MultiVault_MulticallValueMismatch` _(new)_                                   | The multicall `values` do not add up to `msg.value`.                                                                                  |
+| `MultiVault_NestedMulticall` _(new)_                                          | A `multicall` inside a `multicall`.                                                                                                   |
+| `MultiVault_UnexpectedValue` _(new)_                                          | Value sent to `approve`, `redeem` or `redeemBatch`.                                                                                   |
+| `MultiVault_AtomUriCountExceeded`, `MultiVault_AtomUriLengthExceeded` _(new)_ | Too many URIs for one atom, or a URI that is too long.                                                                                |
+| `MultiVault_RedeemYieldsNoAssets` _(new)_                                     | The fees would take the whole redemption.                                                                                             |
+| `MultiVault_AtomExists`, `MultiVault_TripleExists`                            | The term already exists.                                                                                                              |
+| `MultiVaultCore_TermDoesNotExist`, `MultiVault_TermDoesNotExist`              | Deposit into, or preview of, a term that does not exist.                                                                              |
+| `EnforcedPause`                                                               | MultiVault is paused.                                                                                                                 |
+
 ## Additional Resources
 
-For more detailed information on the MultiVault contract and its functions, please refer to the [Intuition Smart Contract V2 repository](https://github.com/0xIntuition/intuition-contracts-v2).
+For the full source, see the [Intuition Smart Contracts V2 repository](https://github.com/0xIntuition/intuition-contracts-v2).
 
 # TrustBonding.sol
 
@@ -29666,9 +30127,11 @@ Source: https://docs.intuition.systems/docs/intuition-smart-contracts/trust-bond
 The TrustBonding contract is the primary smart contract for bonding/staking of TRUST tokens within the Intuition protocol. Responsible for managing emissions of new TRUST tokens for various stakeholders, including atom creators, triple creators, and other participants in the ecosystem.
 
 ### Wrapped Trust (wTRUST)
+
 The TrustBonding contract requires users to wrap their TRUST tokens into Wrapped TRUST (wTRUST) before locking them in the voting escrow. This wrapping process is handled by the `WrappedTrust` contract, which allows users to deposit TRUST tokens and receive an equivalent amount of wTRUST tokens.
 
 ### Voting Escrow (veTRUST)
+
 The TrustBonding contract inherits from the popular Voting Escrow mechanism, allowing users to lock their TRUST tokens for a specified period in exchange for veTRUST tokens. These veTRUST tokens represent voting power and can be used to influence governance decisions within the Intuition protocol.
 
 The voting escrow mechanism is implemented using the `VotingEscrow` contract, which provides functions for creating locks, increasing lock amounts, and extending lock durations.
@@ -29677,8 +30140,11 @@ Originated from Curve Finance's veCRV model, originally written in Vyper, the Vo
 
 ## Smart Contract Writes
 
+While TrustBonding is paused, the lock and deposit functions below (`create_lock`, `increase_amount`, `increase_unlock_time`, `increase_amount_and_time`, `deposit_for` and `withdraw_and_create_lock`) and `claimRewards` revert. `withdraw` keeps working, so a pause never traps locked tokens.
+
 ### Creating Locks
-Users can create a new lock by calling the `create_lock` function, specifying the amount of Wrapped TRUST tokens to lock and the duration of the lock.
+
+Users can create a new lock by calling the `create_lock` function, specifying the amount of Wrapped TRUST tokens to lock and the unlock time. `_unlock_time` is an absolute Unix timestamp, not a duration. The contract rounds it down to a whole week, and the result must be within the minimum and maximum lock periods (at most 2 years ahead).
 
 ```solidity
 function create_lock(uint256 _value, uint256 _unlock_time) external nonReentrant onlyUserOrWhitelist notUnlocked {
@@ -29687,6 +30153,7 @@ function create_lock(uint256 _value, uint256 _unlock_time) external nonReentrant
 ```
 
 ### Increasing Lock Amount
+
 Users can increase the amount of Wrapped TRUST tokens in an existing lock by calling the `increase_amount` function.
 
 ```solidity
@@ -29696,7 +30163,8 @@ function increase_amount(uint256 _value) external nonReentrant onlyUserOrWhiteli
 ```
 
 ### Increasing Lock Duration
-Users can extend the duration of an existing lock by calling the `increase_unlock_time` function.
+
+Users can extend the duration of an existing lock by calling the `increase_unlock_time` function with a new, later unlock timestamp (rounded down to a whole week).
 
 ```solidity
 function increase_unlock_time(uint256 _unlock_time) external nonReentrant onlyUserOrWhitelist notUnlocked {
@@ -29705,19 +30173,21 @@ function increase_unlock_time(uint256 _unlock_time) external nonReentrant onlyUs
 ```
 
 ### Increase Amount and Duration
-Users can simultaneously increase the amount of Wrapped TRUST tokens and extend the duration of an existing lock by calling the `increase_amount_and_duration` function.
+
+Users can simultaneously increase the amount of Wrapped TRUST tokens and extend the duration of an existing lock by calling the `increase_amount_and_time` function.
 
 ```solidity
-function increase_amount_and_duration(uint256 _value, uint256 _unlock_time) external nonRentrant onlyUserOrWhitelist notUnlocked {
+function increase_amount_and_time(uint256 _value, uint256 _unlock_time) external nonReentrant onlyUserOrWhitelist notUnlocked {
     // Lock amount and duration increase logic
 }
 ```
 
 ### Withdraw
-Once the lock period has expired, users can withdraw their locked Wrapped TRUST tokens by calling the `withdraw` function.
+
+Once the lock period has expired, users can withdraw their locked Wrapped TRUST tokens by calling the `withdraw` function. Any address, including a contract that is not whitelisted, can withdraw its own expired lock.
 
 ```solidity
-function withdraw() external nonReentrant onlyUserOrWhitelist {
+function withdraw() external nonReentrant {
     // Withdrawal logic
 }
 ```
@@ -29725,6 +30195,7 @@ function withdraw() external nonReentrant onlyUserOrWhitelist {
 ## Smart Contract Reads
 
 ### Balance Of
+
 The `balanceOf` function returns the voting power of a specific address at a given timestamp.
 
 ```solidity
@@ -29734,15 +30205,17 @@ function balanceOf(address _addr) external view returns (uint256) {
 ```
 
 ### Balance Of At Timestamp
-The `balanceOfAtT` function returns the voting power of a specific address at a given timestamp.
+
+The `balanceOfAtT` function returns the voting power of a specific address at a given timestamp. (`balanceOfAt(address, uint256)` takes a block number instead.)
 
 ```solidity
-function balanceOfAt(address _addr, uint256 _t) external view returns (uint256) {
+function balanceOfAtT(address _addr, uint256 _t) external view returns (uint256) {
     // Balance calculation logic
 }
 ```
 
 ### Total Supply
+
 The `totalSupply` function returns the total voting power in the system at a given timestamp.
 
 ```solidity
@@ -29752,6 +30225,7 @@ function totalSupply() external view returns (uint256) {
 ```
 
 ### Total Supply At Timestamp
+
 The `totalSupplyAtT` function returns the total voting power in the system at a given timestamp.
 
 ```solidity
@@ -29763,11 +30237,12 @@ function totalSupplyAtT(uint256 t) external view returns (uint256) {
 ## Events
 
 ### Rewards Claimed
+
 The `RewardsClaimed` event is emitted when a user claims their rewards.
 
 ```solidity
 event RewardsClaimed(address indexed user, address indexed recipient, uint256 amount);
-``` 
+```
 
 ## Additional Resources
 
