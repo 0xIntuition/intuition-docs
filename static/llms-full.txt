@@ -7869,6 +7869,30 @@ The Intuition GraphQL package provides a type-safe interface for interacting wit
 
 Install the package using your preferred package manager:
 
+### npm
+
+```bash
+npm install @0xintuition/graphql
+```
+
+### pnpm
+
+```bash
+pnpm install @0xintuition/graphql
+```
+
+### yarn
+
+```bash
+yarn add @0xintuition/graphql
+```
+
+### bun
+
+```bash
+bun install @0xintuition/graphql
+```
+
 ## Quick Start
 
 ### 1. Client Configuration (Optional)
@@ -23786,6 +23810,24 @@ For a complete list of `0xintuition/graphql` functions and interfaces, see the [
 
 Install the SDK using your preferred package manager:
 
+### npm
+
+```bash
+npm install @0xintuition/sdk viem@^2.0.0
+```
+
+### pnpm
+
+```bash
+pnpm add @0xintuition/sdk viem@^2.0.0
+```
+
+### bun
+
+```bash
+bun add @0xintuition/sdk viem@^2.0.0
+```
+
 The SDK requires **viem@2.x** as a peer dependency. Viem is a lightweight, type-safe Ethereum library that powers all blockchain operations.
 
 ## Verify Installation
@@ -24157,6 +24199,45 @@ async function createProjectAtom(config: WriteConfig) {
 ## Local Development
 
 For contributing or testing with a custom build:
+
+### npm
+
+```bash
+git clone https://github.com/0xIntuition/intuition-ts.git
+cd intuition-ts/packages/sdk
+npm install
+npm run build
+npm link
+
+# In your project
+npm link @0xintuition/sdk
+```
+
+### pnpm
+
+```bash
+git clone https://github.com/0xIntuition/intuition-ts.git
+cd intuition-ts/packages/sdk
+pnpm install
+pnpm build
+pnpm link --global
+
+# In your project
+pnpm link --global @0xintuition/sdk
+```
+
+### bun
+
+```bash
+git clone https://github.com/0xIntuition/intuition-ts.git
+cd intuition-ts/packages/sdk
+bun install
+bun run build
+bun link
+
+# In your project
+bun link @0xintuition/sdk
+```
 
 ## Troubleshooting
 
@@ -34476,6 +34557,30 @@ The Protocol package is built on top of [viem](https://viem.sh), providing type-
 
 Install the package along with its peer dependency `viem`:
 
+### npm
+
+```bash
+npm install viem @0xintuition/protocol
+```
+
+### pnpm
+
+```bash
+pnpm install viem @0xintuition/protocol
+```
+
+### yarn
+
+```bash
+yarn add viem @0xintuition/protocol
+```
+
+### bun
+
+```bash
+bun install viem @0xintuition/protocol
+```
+
 **Peer Dependencies:** `viem ^2.0.0`
 
 ## Quick Start
@@ -35047,11 +35152,83 @@ In most cases, you will only need to install the `@0xintuition/sdk` package. Thi
 
 The `@0xintuition/sdk` package is the only required package to get started.
 
+### npm
+
+```bash
+npm install @0xintuition/sdk@latest
+```
+
+### pnpm
+
+```bash
+pnpm add @0xintuition/sdk@latest
+```
+
+### yarn
+
+```bash
+yarn add @0xintuition/sdk@latest
+```
+
+### bun
+
+```bash
+bun add @0xintuition/sdk@latest
+```
+
 If you're starting a new project entirely, be sure to install the required peer dependencies as well.
+
+### npm
+
+```bash
+npm install @0xintuition/sdk@latest viem@latest
+```
+
+### pnpm
+
+```bash
+pnpm add @0xintuition/sdk@latest viem@latest
+```
+
+### yarn
+
+```bash
+yarn add @0xintuition/sdk@latest viem@latest
+```
+
+### bun
+
+```bash
+bun add @0xintuition/sdk@latest viem@latest
+```
 
 **Secondary dependencies:**
 
 If you need to interact with the Intuition contracts directly, you will need to install the `@0xintuition/protocol` package.
+
+### npm
+
+```bash
+npm install @0xintuition/protocol@latest @0xintuition/graphql@latest
+```
+
+### pnpm
+
+```bash
+pnpm add @0xintuition/protocol@latest @0xintuition/graphql@latest
+```
+
+### yarn
+
+```bash
+yarn add @0xintuition/protocol@latest @0xintuition/graphql@latest
+```
+
+### bun
+
+```bash
+bun add @0xintuition/protocol@latest @0xintuition/graphql@latest
+```
 
 ## Prerequisites
 

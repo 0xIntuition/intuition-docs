@@ -46,6 +46,9 @@ jobs:
       - name: Generate llms-full.txt (comprehensive docs)
         run: node scripts/generate-llms-full.js
 
+      - name: Test LLM content serialization
+        run: node --test scripts/generate-llms-full.test.js
+
       - name: Validate llms links
         run: node scripts/validate-internal-links.js static/llms*.txt
 
