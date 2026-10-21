@@ -298,7 +298,7 @@ The full list of protocol contracts is on the [Deployments](/docs/intuition-smar
 
 **ABI:** `FeeProxyAbi`, exported by `@0xintuition/periphery` and published as `abis/FeeProxy.ts` in the [intuition-contracts-v2](https://github.com/0xIntuition/intuition-contracts-v2/tree/main/abis) repository with the v1.1.0 release.
 
-**Audit:** FeeProxy was audited as part of the v1.1.0 release. The report will be linked on the [Audit Reports](/docs/intuition-smart-contracts/audit-reports) page when it is published.
+**Audit:** FeeProxy was audited as part of the v1.1.0 release. See the Diligence v1.1.0 report on the [Audit Reports](/docs/intuition-smart-contracts/audit-reports) page.
 
 ## Integration guide
 
