@@ -21,6 +21,11 @@ keywords:
   ]
 ---
 
+:::note SDK generation
+This page documents the existing SDK v3 integration. For the upcoming SDK 4, identity packages, and Core workflows, start with [Build with the knowledge graph](/docs/build/overview) and the [migration guide](/docs/build/migration).
+:::
+
+
 # Installation & Setup
 
 The Intuition SDK is a comprehensive TypeScript library for building applications on the Intuition protocol. This guide covers installation, configuration, and getting your development environment ready.

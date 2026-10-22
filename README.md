@@ -293,3 +293,30 @@ Copyright © Intuition Systems Inc. since 2023. All rights reserved.
 - 📚 [SDK Documentation](/docs/intuition-sdk)
 - 🔧 [Developer Tools](/docs/protocol)
 - 💬 [Join our Community](/docs/resources/community-and-support)
+
+## Candidate package documentation
+
+The `docs/_data/build` area covers the upcoming public package/Core stack. Its
+source baseline and package export map are recorded in
+`static/intuition-release.json`. Keep existing SDK v3 pages explicitly labeled.
+
+With a clean checkout of the selected public packages revision and its packages
+built, use:
+
+```sh
+npm run generate-package-reference -- /path/to/packages
+npm run validate-candidate-examples -- /path/to/packages
+npm run generate-llms
+npm run validate-links
+npm run validate-llms-coverage
+npm run build
+```
+
+The reference generator pins source links, extracts SDK API/action signatures and
+named types, and rejects functions without an upstream or curated description.
+The candidate checker compiles guidebook snippets against local built public
+exports and executes only the offline atom recipe with HTTP disabled. These
+checks do not establish npm publication, deployed compatibility, or live writes.
+Release qualification must separately use the published artifacts and chosen
+environment. Generated SDK reference fences are declarations, not executable
+recipes, and are excluded from the snippet checker.

@@ -1,0 +1,294 @@
+{
+  "schemaVersion": 1,
+  "status": "candidate-source",
+  "registryPublicationVerified": false,
+  "source": {
+    "repository": "https://github.com/0xIntuition/packages",
+    "commit": "1dc7103d2a05f23bc565a81df4b001336ce9ba53"
+  },
+  "packages": [
+    {
+      "name": "@0xintuition/atom-classification",
+      "version": "0.1.0-alpha.0",
+      "entrypoints": [
+        ".",
+        "./ai",
+        "./cache",
+        "./client",
+        "./engine",
+        "./plugin-factories",
+        "./plugins",
+        "./plugins/amazon",
+        "./plugins/default-url",
+        "./plugins/etherscan",
+        "./plugins/ethereum",
+        "./plugins/github",
+        "./plugins/imdb",
+        "./plugins/instagram",
+        "./plugins/isbn",
+        "./plugins/lexical",
+        "./plugins/plain-text",
+        "./plugins/spotify",
+        "./plugins/tiktok",
+        "./plugins/tmdb",
+        "./plugins/type-profiles",
+        "./plugins/wikipedia",
+        "./plugins/x",
+        "./plugins/youtube",
+        "./presets",
+        "./server",
+        "./type-registry",
+        "./types",
+        "./package.json"
+      ],
+      "peers": {},
+      "source": "https://github.com/0xIntuition/packages/tree/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/atom-classification"
+    },
+    {
+      "name": "@0xintuition/atom-enrichment",
+      "version": "0.1.0-alpha.0",
+      "entrypoints": [
+        ".",
+        "./types",
+        "./handoff",
+        "./provider-data",
+        "./plugins",
+        "./providers",
+        "./presets",
+        "./engine",
+        "./plugin-registry",
+        "./cache",
+        "./testing",
+        "./classifications",
+        "./classifications/defaults",
+        "./classifications/registry",
+        "./classifications/schemas",
+        "./provider-external-data",
+        "./provider-plan",
+        "./slug-aliases",
+        "./extraction",
+        "./package.json"
+      ],
+      "peers": {},
+      "source": "https://github.com/0xIntuition/packages/tree/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/atom-enrichment"
+    },
+    {
+      "name": "@0xintuition/atom-parser",
+      "version": "0.1.0-alpha.0",
+      "entrypoints": [
+        ".",
+        "./types",
+        "./detect",
+        "./remote",
+        "./parse",
+        "./package.json"
+      ],
+      "peers": {},
+      "source": "https://github.com/0xIntuition/packages/tree/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/atom-parser"
+    },
+    {
+      "name": "@0xintuition/classifications",
+      "version": "0.1.0-alpha.1",
+      "entrypoints": [
+        ".",
+        "./package.json",
+        "./creation",
+        "./creation/*",
+        "./*"
+      ],
+      "peers": {
+        "viem": "^2.0.0"
+      },
+      "source": "https://github.com/0xIntuition/packages/tree/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/classifications"
+    },
+    {
+      "name": "@0xintuition/cli",
+      "version": "0.1.0",
+      "entrypoints": [
+        ".",
+        "./package.json"
+      ],
+      "peers": {},
+      "source": "https://github.com/0xIntuition/packages/tree/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/cli"
+    },
+    {
+      "name": "@0xintuition/curves",
+      "version": "0.1.0",
+      "entrypoints": [
+        ".",
+        "./package.json"
+      ],
+      "peers": {},
+      "source": "https://github.com/0xIntuition/packages/tree/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/curves"
+    },
+    {
+      "name": "@0xintuition/deployments",
+      "version": "0.1.0",
+      "entrypoints": [
+        ".",
+        "./bytecode",
+        "./package.json"
+      ],
+      "peers": {
+        "viem": "^2.0.0"
+      },
+      "source": "https://github.com/0xIntuition/packages/tree/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/deployments"
+    },
+    {
+      "name": "@0xintuition/ids",
+      "version": "0.1.0-alpha.1",
+      "entrypoints": [
+        ".",
+        "./package.json"
+      ],
+      "peers": {
+        "viem": "^2.0.0"
+      },
+      "source": "https://github.com/0xIntuition/packages/tree/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/ids"
+    },
+    {
+      "name": "@0xintuition/iid",
+      "version": "0.1.0-alpha.0",
+      "entrypoints": [
+        ".",
+        "./package.json"
+      ],
+      "peers": {
+        "viem": "^2.0.0"
+      },
+      "source": "https://github.com/0xIntuition/packages/tree/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/iid"
+    },
+    {
+      "name": "@0xintuition/iid-ladder",
+      "version": "0.1.0-alpha.0",
+      "entrypoints": [
+        ".",
+        "./package.json"
+      ],
+      "peers": {},
+      "source": "https://github.com/0xIntuition/packages/tree/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/iid-ladder"
+    },
+    {
+      "name": "@0xintuition/iid-registry",
+      "version": "0.1.0-alpha.0",
+      "entrypoints": [
+        ".",
+        "./package.json"
+      ],
+      "peers": {
+        "viem": "^2.0.0"
+      },
+      "source": "https://github.com/0xIntuition/packages/tree/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/iid-registry"
+    },
+    {
+      "name": "@0xintuition/iid-spec",
+      "version": "0.1.0-alpha.0",
+      "entrypoints": [
+        "./conformance/*.json",
+        "./package.json"
+      ],
+      "peers": {},
+      "source": "https://github.com/0xIntuition/packages/tree/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/iid-spec"
+    },
+    {
+      "name": "@0xintuition/periphery",
+      "version": "0.1.0",
+      "entrypoints": [
+        ".",
+        "./package.json"
+      ],
+      "peers": {
+        "viem": "^2.0.0"
+      },
+      "source": "https://github.com/0xIntuition/packages/tree/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/periphery"
+    },
+    {
+      "name": "@0xintuition/predicates",
+      "version": "0.1.0-alpha.1",
+      "entrypoints": [
+        ".",
+        "./package.json",
+        "./*"
+      ],
+      "peers": {
+        "viem": "^2.0.0"
+      },
+      "source": "https://github.com/0xIntuition/packages/tree/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/predicates"
+    },
+    {
+      "name": "@0xintuition/primitives",
+      "version": "0.1.0-alpha.1",
+      "entrypoints": [
+        ".",
+        "./package.json",
+        "./atom",
+        "./predicate",
+        "./triple",
+        "./discover",
+        "./validate",
+        "./types",
+        "./anchor"
+      ],
+      "peers": {
+        "viem": "^2.0.0"
+      },
+      "source": "https://github.com/0xIntuition/packages/tree/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/primitives"
+    },
+    {
+      "name": "@0xintuition/protocol",
+      "version": "4.0.0",
+      "entrypoints": [
+        ".",
+        "./contracts",
+        "./package.json"
+      ],
+      "peers": {
+        "viem": "^2.0.0"
+      },
+      "source": "https://github.com/0xIntuition/packages/tree/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol"
+    },
+    {
+      "name": "@0xintuition/react",
+      "version": "0.1.0-alpha.1",
+      "entrypoints": [
+        ".",
+        "./package.json"
+      ],
+      "peers": {
+        "@tanstack/react-query": ">=5",
+        "react": ">=18",
+        "viem": "^2.0.0",
+        "wagmi": ">=2"
+      },
+      "source": "https://github.com/0xIntuition/packages/tree/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/react"
+    },
+    {
+      "name": "@0xintuition/schema-org",
+      "version": "0.1.0-alpha.0",
+      "entrypoints": [
+        ".",
+        "./package.json",
+        "./*"
+      ],
+      "peers": {},
+      "source": "https://github.com/0xIntuition/packages/tree/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/schema-org"
+    },
+    {
+      "name": "@0xintuition/sdk",
+      "version": "4.0.0",
+      "entrypoints": [
+        ".",
+        "./api",
+        "./actions",
+        "./protocol",
+        "./trust-swap-and-bridge-router",
+        "./utils",
+        "./package.json"
+      ],
+      "peers": {
+        "viem": "^2.0.0"
+      },
+      "source": "https://github.com/0xIntuition/packages/tree/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk"
+    }
+  ]
+}

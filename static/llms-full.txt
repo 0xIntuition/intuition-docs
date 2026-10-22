@@ -23,6 +23,3901 @@ For a curated index of the most important pages, see: https://docs.intuition.sys
 
 Because this file is large, agents should prefer https://docs.intuition.systems/llms.txt first, then fetch specific pages or chunk this file by page sections. Each page section starts with a single H1 followed by a `Source:` line.
 
+# Agent integration contract
+
+Source: https://docs.intuition.systems/docs/build/agents
+
+Start a coding agent with a specific outcome, the release manifest, and the relevant recipe. A package export or an example endpoint must not be inferred from a marketing description.
+
+## Read in this order
+
+1. [Compatibility and source manifest](https://docs.intuition.systems/docs/build/compatibility).
+2. [System boundaries](https://docs.intuition.systems/docs/build/architecture) and [identity semantics](https://docs.intuition.systems/docs/build/concepts).
+3. [Package map](https://docs.intuition.systems/docs/build/packages/index), then the selected guidebook.
+4. The recipe and its [SDK function signatures](https://docs.intuition.systems/docs/build/sdk-reference/api), if used.
+
+Machine-readable entrypoints: [release manifest](https://docs.intuition.systems/intuition-release.json), [documentation index](https://docs.intuition.systems/llms.txt), and [complete documentation text](https://docs.intuition.systems/llms-full.txt). The manifest records source versions and public package subpaths, not a registry publication assertion.
+
+## Copyable task brief
+
+```text
+Build an offline Intuition recording-anchor preview.
+Read /docs/build/compatibility and /docs/build/guides/first-atom.
+Use the manifest's exact package versions and public exports.
+Input: an ISRC and optional context URIs.
+Output: canonical IID, selected profile, data, dataHex, atom ID, and errors.
+Do not submit API writes or transactions for this preview.
+Verify equivalent ISRC spellings produce the same anchor.
+Verify changing only context URIs does not change the P0 atom ID.
+Preserve BuildResult failures and nullable fallback identity metadata.
+Report the installed versions, checks, and any release prerequisite.
+```
+
+For a persistence task, add the target Core URL, credential injection mechanism, allowed inputs, and expected readback. For a transaction task, add chain ID, supported deployment revision, signer, receiver, maximum value, minimum output, and explicit authorization policy.
+
+## Invariants to preserve
+
+- An IID string is not a bytes32 term ID. Derive bytes through the canonical builder.
+- Do not reconstruct envelope key order, schema context, salts, or predicate payloads manually.
+- URI context and provider artifacts do not silently alter anchor identity.
+- `classifications` owns semantic specs; `atom-classification` executes plugins.
+- `iid-registry` returns a provider plan; it does not fetch data.
+- `createIntuitionApiClient` uses the hosted GraphQL contract, not Core REST.
+- Preparing a transaction is distinct from submitting it. `feeProxyExecutePlan` submits.
+- An off-chain Core write, a successful receipt, and an indexed record are separate outcomes.
+- Main-app internal packages and routers are not public integration APIs.
+- A missing package version is a release prerequisite. Do not silently fall back to SDK v3 or fabricate an import.
+
+## Verification contract
+
+For offline code, assert deterministic outputs and structured error handling. For HTTP adapters, use fixtures for success, absent data, auth rejection, processing failures, and timeouts. Typecheck against the exact release dependencies. For approved live qualification, record the environment, chain/deployment, versions, receipt where applicable, and bounded readback.
+
+Never count a prose snippet as executed evidence. Report source inspection, compilation, mocked tests, and live behavior separately. Keep unresolved compatibility questions explicit in the handoff.
+
+## Handoff template
+
+```text
+Outcome and supported workflow:
+Package versions and manifest source commit:
+API contract / network / deployment:
+Inputs and canonical identity decisions:
+Checks actually performed:
+Expected output and failure behavior:
+Unverified behavior or release prerequisites:
+Next action:
+```
+
+# What to build with a shared knowledge graph
+
+Source: https://docs.intuition.systems/docs/build/application-patterns
+
+The packages remove repeated identity and modeling work. Core supplies a graph backend. Contracts add shared registration and economic signaling. An application combines those capabilities with its own product policy.
+
+| Pattern                       | Start with                                                | Add when needed                                  | Decisions your app owns                             |
+| ----------------------------- | --------------------------------------------------------- | ------------------------------------------------ | --------------------------------------------------- |
+| Media discovery and curation  | Category identity ladder, Creation Profiles, Core triples | Provider enrichment and account signals          | Duplicate reconciliation, ranking, moderation       |
+| Research and evidence graph   | Stable anchors, canonical predicates, provenance          | Nested claims and selected on-chain registration | Evidence quality, citations, access control         |
+| Portable collections          | Canonical item IDs and containment relationships          | Accounts and public sharing                      | Membership order, permissions, deletion semantics   |
+| Contextual reputation         | Attributed claims and queryable relationships             | Vault positions and signals                      | Context, scoring, manipulation resistance           |
+| Agent-assisted graph building | Offline builders, explicit plans, Core reads              | Approved writes and transaction execution        | Scope, budget, provenance, human authorization      |
+| Enrichment service            | Parser and processing engines                             | Persistent artifacts and refresh scheduling      | Provider terms, credentials, retry and cache policy |
+
+These are application designs, not claims that a hosted product or turnkey ranking API already exists.
+
+## Example: a recording discovery app
+
+1. Collect a strong identifier such as an ISRC and retain the provider source.
+2. Build the canonical recording anchor with `primitives`.
+3. Use the shared profile to offer relationships to artists, albums, or playlists.
+4. Persist chosen terms and triples in Core.
+5. Enrich display metadata through configured providers without rewriting identity.
+6. Query attributed relationships and apply your own ranking policy.
+7. Offer optional on-chain registration or signaling through an explicit wallet flow.
+
+Two applications using the same supported canonical representation can refer to the same atom. They may still disagree on labels, claims, visibility, or ranking. That disagreement is data an application can expose and contextualize.
+
+## Example: an evidence-aware agent
+
+Give an agent a fixed list of source URLs and a maximum number of proposed claims. Have it return canonical candidate identities, source attribution, and relationship proposals before persistence. Validate the package results and show which inputs remain uncertain. Store accepted claims through your server; execute economic actions only through an authorized signer with a bounded budget.
+
+The agent should cite the source behind each claim and preserve processing failures. It should not infer that a fetched artifact is trustworthy, that `sameAs` proves equivalence, or that a large vault balance validates a claim. See the [agent contract](https://docs.intuition.systems/docs/build/agents).
+
+# Packages, Core, contracts, and application boundaries
+
+Source: https://docs.intuition.systems/docs/build/architecture
+
+Use each layer for the work it owns. This keeps application code portable and makes an agent's integration choices reviewable.
+
+| Layer                                                       | Owns                                                                   | Your application supplies                                    |
+| ----------------------------------------------------------- | ---------------------------------------------------------------------- | ------------------------------------------------------------ |
+| `iid-spec`, `iid`, `iid-registry`, `iid-ladder`, `ids`      | Identifier rules, pure resolution, selection policy, content IDs       | Input facts and reconciliation policy                        |
+| `schema-org`, `classifications`, `predicates`, `primitives` | Vocabulary, creation fields, relationships, deterministic builders     | Forms, validation presentation, persistence decision         |
+| `atom-parser`, `atom-classification`, `atom-enrichment`     | Reusable processing engines and plugins                                | Runtime mode, providers, credentials, cache, network policy  |
+| Core                                                        | REST graph API, storage, workers, chain ingestion and projections      | Node configuration, access policy, operations                |
+| `deployments`, `protocol`, `periphery`, `curves`            | Artifacts, contract helpers, encoding and quote math                   | Matching chain/deployment, clients, current state            |
+| `sdk`, `cli`, `react`                                       | Integration reads/plans, deterministic command-line encoding, UI hooks | Signing policy, transaction UX, error recovery               |
+| Main application                                            | Product flows and orchestration                                        | Its own auth, ranking, billing, moderation, and presentation |
+
+## Core's two data paths
+
+```mermaid
+flowchart TB
+  CH[Chain events] --> IX[Rust indexer]
+  IX --> TS[Timescale event store]
+  TS --> PR[Checkpointed projections]
+  PR --> MK[Market read models]
+  PR --> KG[Postgres knowledge graph]
+  API[Key-attributed REST writes] --> KG
+  KG --> W[Lease-based workers]
+  W --> KG
+  KG --> READ[REST graph reads]
+  AS[Stateless atom-services] --> R[Classification and enrichment response]
+```
+
+Postgres-KG stores atoms, triples, predicates, artifacts, accounts, and attribution. The event store and market projections track chain events, vaults, positions, and signals. Deterministic term IDs connect the models; there is no cross-database foreign key guaranteeing they advance together. The graph can be used without chain indexing.
+
+Atom-services is a separate stateless HTTP service for classification/enrichment. Calling it does not persist a graph record. Running a package engine likewise does not start a worker, provision a database, or write a term.
+
+## Public integration versus product internals
+
+An application can derive WebPage identity from URL facts and attach extracted title/image to presentation data separately. A provider-backed picker can combine provider candidates with category identity policy. These patterns keep a metadata refresh from changing the target of existing relationships.
+
+App-local routers, authentication packages, database actions, and UI models are not public SDK contracts. Third-party builders should use the [Core API](https://docs.intuition.systems/docs/build/guides/core-rest) and [public packages](https://docs.intuition.systems/docs/build/packages/index), then implement their own application adapter. The [creation guide](https://docs.intuition.systems/docs/build/guides/creation-profiles) shows the public imports for that adapter.
+
+## Query surface selection
+
+- **Core REST:** your node's atoms, triples, artifacts, pipeline state, events, and schema metadata.
+- **SDK API client:** a narrow set of lookups over the hosted GraphQL schema, returning normalized models.
+- **GraphQL documentation elsewhere on this site:** the established hosted schema; this does not imply Core hosts that schema.
+- **Contract reads:** current protocol state at the selected RPC and block. These can lead indexed data.
+
+A Core-native GraphQL contract is tracked as separate roadmap work. Do not send the SDK's generated GraphQL operations to `/api/atoms` or infer a new Core `/graphql` endpoint.
+
+## Failure and consistency model
+
+Keep separate UI states for a missing record, a pending projection, an enrichment failure, and a transaction revert. Use finite retries and observable status. Core's workers reclaim expired leases and maintain stage attempts; applications still need a timeout and recovery path. A provider timeout can leave identity and relationships intact.
+
+[Core architecture source](https://github.com/0xIntuition/intuition-core/blob/eebba114666ba2373690f2beb7dce565aa16f0b7/docs/architecture.md).
+
+# Candidate versions and compatibility
+
+Source: https://docs.intuition.systems/docs/build/compatibility
+
+This documentation targets the upcoming Intuition package train inspected on **2026-10-22**. Package publication is assumed for the intended rollout; it has **not** been verified here. Install examples use the exact source versions so they can be qualified against the matching npm artifacts or release tarballs. A missing version should stop installation with a release prerequisite, not trigger a silent downgrade.
+
+## Source baseline
+
+| Repository                                                                                                    | Selected revision                          | Role                                            |
+| ------------------------------------------------------------------------------------------------------------- | ------------------------------------------ | ----------------------------------------------- |
+| [packages](https://github.com/0xIntuition/packages/tree/1dc7103d2a05f23bc565a81df4b001336ce9ba53)             | `1dc7103d2a05f23bc565a81df4b001336ce9ba53` | Public package exports and function signatures  |
+| [intuition-core](https://github.com/0xIntuition/intuition-core/tree/eebba114666ba2373690f2beb7dce565aa16f0b7) | `eebba114666ba2373690f2beb7dce565aa16f0b7` | Core REST, processing, persistence and indexing |
+
+The [release manifest](https://docs.intuition.systems/intuition-release.json) records all package versions, exports, and peer ranges. The [package guidebook index](https://docs.intuition.systems/docs/build/packages/index) presents the same source train by task.
+
+## Runtime and API boundaries
+
+| Surface                       | Candidate contract                                                | Qualification requirement                                      |
+| ----------------------------- | ----------------------------------------------------------------- | -------------------------------------------------------------- |
+| SDK and protocol              | `4.0.0`, ESM, viem 2                                              | Matching public artifacts and deployed contracts               |
+| Atom parser                   | Node 22+ / Bun, Fetch and Web Streams                             | Remote inspection policy and server network controls           |
+| Classification and enrichment | Typed ESM, explicit plugins and runtime                           | Credentials, transport, cache, provider fixtures               |
+| React                         | React 18+ declared; React 19, wagmi 2, Query 5 exercised upstream | Match peers; upstream consumer checks use `skipLibCheck: true` |
+| SDK read API                  | Hosted GraphQL schema                                             | Correct endpoint, query contract, auth if required             |
+| Core Query API                | REST on local port 3000 by default                                | Node revision, migrations, auth and indexing configuration     |
+| Atom-services                 | Stateless HTTP on local port 4010 by default                      | Runtime/provider availability; no persistence implied          |
+
+## Contract capability gates
+
+The inspected deployment package references core `contracts-v2@1.1.0-alpha.1` and periphery `contracts-v2-periphery@1.1.0-alpha.0` artifacts. An ABI can be available before every chain's deployed implementation supports it. Read current deployment evidence before enabling new functions.
+
+The package source explicitly withholds the TrustSwapAndBridgeRouter address pending a compatible redeployment; its lookup throws. FeeProxy and bridge support are distinct. Dynamic-fee math also requires matching configuration and contract parity qualification. Do not interpret mainnet/testnet chain definitions as proof that every exported contract is available on both.
+
+## Existing documentation
+
+The site's SDK v3 and hosted GraphQL guides remain available for their existing consumers. New integrations for this candidate should start here and use [migration guidance](https://docs.intuition.systems/docs/build/migration). Core-native GraphQL, hosted-node onboarding, and broader rollout outcomes remain separate delivery work until their contracts and environments are qualified.
+
+## Release acceptance
+
+Before promoting these docs as the supported release, record exact npm versions and integrity, compile the copyable recipes in a clean consumer, verify the selected deployment and API contracts, and capture authorized off-chain/test-environment readback. Retain source and runtime evidence separately. The Linear documentation rollout tracks these gates; a documentation PR does not publish packages or deploy contracts.
+
+# Identity, representations, relationships, and signals
+
+Source: https://docs.intuition.systems/docs/build/concepts
+
+An application needs to distinguish the thing being described, its serialized representation, and the claims people make about it.
+
+| Concept        | What it means                                                                | What it does not establish                                 |
+| -------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------- |
+| IID            | A canonical `int:<scheme>:<value>` identifier derived under registered rules | That an atom exists in a database or contract              |
+| Atom data      | Exact bytes describing an entity or anchoring an IID                         | That every equivalent description has identical bytes      |
+| Atom ID        | Deterministic protocol hash of those exact bytes                             | A mutable record identifier that survives payload edits    |
+| Classification | Shared entity specification, such as `music-recording`                       | A guarantee that a provider's answer is correct            |
+| Predicate      | An atom identifying a relationship, with shared semantic metadata            | A database column name or arbitrary UI label               |
+| Triple         | Subject, predicate, and object term IDs forming a claim                      | An independently verified fact                             |
+| URI context    | Ordered, validated references associated with an anchor                      | A component of the anchor's atom ID                        |
+| Artifact       | A provider's processing output with provenance and status                    | New identity bytes that should overwrite the original atom |
+| Vault          | Assets and shares for a term on a particular curve                           | A universal or objective truth score                       |
+
+## Identity and representation profiles
+
+An IID describes identity; the representation profile determines what bytes an atom stores. P0 uses an eligible canonical IID directly. P1 carries a typed envelope. P2 is the specification’s opt-in enriched representation: a typed identity envelope plus descriptive fields. The current anchor builder serializes the same identified envelope bytes for explicit P1 and P2 requests; requesting P2 does not automatically attach every descriptive input. Profile metadata is not itself serialized. This is a builder limitation to account for, not a redefinition of P2. See [representation and equivalence](https://docs.intuition.systems/docs/build/identity-resolution) before choosing a richer payload.
+
+```mermaid
+flowchart TD
+  A[Known entity facts] --> B[Classification identity ladder]
+  B --> C{Eligible canonical IID?}
+  C -->|Yes| D[P0 bare IID when selected]
+  C -->|Requires type or recipe| E[P1 typed envelope]
+  C -->|No usable IID| F[Validated descriptive fallback]
+  D --> G[Exact UTF-8 atom bytes]
+  E --> G
+  F --> G
+  G --> H[Deterministic atom ID]
+  I[URI context and provider artifacts] -. separate from identity .-> H
+```
+
+Use the package builder instead of reimplementing JSON ordering or normalization. Whitespace, property order, schema context spelling, and string forms can change an envelope's ID. Enriching a display label should not silently change its identity.
+
+`inspectIntuitionId` reports validity and anchor eligibility separately. Bare Wikidata QIDs are polymorphic and cannot be bare P0 anchors. Active typed bindings such as `int:wd:film:Q188035` can be eligible. Class C (`gen1`), registered provider-local Class D identifiers, and weak account handles require richer representations. `candidateIid` is a distinct builder path with its own validation; it is not a general-purpose way to bypass the normal ladder.
+
+## Ladders and aliases
+
+An identity ladder tries stronger identifiers before weaker ones. The `iid` engine evaluates a declared classification ladder. `iid-ladder` projects provider/import inputs using category policy. They share rules but accept different input shapes.
+
+An alias is useful evidence for matching. It need not be eligible as the primary identifier. A `sameAs` relationship or field is an assertion that an application must evaluate; it does not collapse IDs or automatically merge on-chain positions. Keep the identity candidates and provenance when reconciling duplicates.
+
+## Relationships and context
+
+A triple's subject and object refer to terms. Nested triples let applications make claims about claims. Predicates supply canonical payloads and IDs; classification metadata recommends meaningful targets. Recommendations in a form are not a protocol-level authorization policy.
+
+The shared `I` subject is the literal UTF-8 string `I`, exported as `I_SUBJECT_ID` by `ids`. It supports patterns such as `I → follow → account`. Attribution belongs to the account creating or signaling on the claim; `I` is not a new identifier for each user.
+
+## On-chain and off-chain state
+
+A Core write creates an off-chain graph record. Registering identical atom bytes on-chain produces the same protocol ID, but requires a separate transaction. Core observes indexed events and updates its read model later. Transaction submission, successful receipt, indexing, projection, and enrichment are distinct states.
+
+Signals and positions add economic context to claims. An application chooses how to rank or display that context. Preserve the account, term, curve, time, and source behind a ranking instead of presenting a balance as proof of truth.
+
+For the exact profile rules, read the [pinned IID specification](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/iid-spec/explainer.md).
+
+# Create and query an off-chain graph with Core
+
+Source: https://docs.intuition.systems/docs/build/guides/core-rest
+
+Prerequisites: a running Core node and an operator-issued writable API key for its configured auth mode. The examples use a local Query API at port 3000. See the [pinned node setup](https://github.com/0xIntuition/intuition-core/blob/eebba114666ba2373690f2beb7dce565aa16f0b7/docs/run-your-own-node.md) for the service topology and migrations. These calls mutate only the selected node's graph; they do not submit blockchain transactions.
+
+Set `CORE_URL` and `CORE_API_KEY` in the server environment. Never put a writable operator key in a client bundle. This complete Node 22 script creates three terms, connects them, and reads the result:
+
+```js
+const base = process.env.CORE_URL ?? 'http://localhost:3000';
+const key = process.env.CORE_API_KEY;
+if (!key) throw new Error('Set CORE_API_KEY for this node');
+async function request(path, body) {
+  const response = await fetch(new URL(path, base), {
+    method: body === undefined ? 'GET' : 'POST',
+    headers: {
+      Authorization: `Bearer ${key}`,
+      ...(body === undefined ? {} : { 'Content-Type': 'application/json' }),
+    },
+    ...(body === undefined ? {} : { body: JSON.stringify(body) }),
+  });
+  if (!response.ok) throw new Error(`Core ${response.status}: ${path}`);
+  return response.json();
+}
+const subject = await request('/api/atoms', { input: 'docs-example:alice' });
+const predicate = await request('/api/atoms', {
+  input: 'docs-example:recommends',
+});
+const object = await request('/api/atoms', { input: 'docs-example:book' });
+const triple = await request('/api/triples', {
+  subject_id: subject.data.id,
+  predicate_id: predicate.data.id,
+  object_id: object.data.id,
+});
+console.log(await request(`/api/triples/${triple.data.id}`));
+console.log(
+  await request(`/api/atoms/${subject.data.id}/triples?limit=10&expand=terms`),
+);
+```
+
+The `docs-example:` strings intentionally define a self-contained demonstration vocabulary. For an interoperable application, replace them with the exact anchor and canonical predicate data produced by the packages. In particular, pass the first-atom recipe's `atom.data` as `input`; do not JSON-encode that string a second time or reformat a serialized envelope.
+
+First creation returns HTTP 201; repeating the same input returns HTTP 200 and the same ID. The response's `created` flag distinguishes creation from an existing record. Authentication, term validation, and database failures must still be handled.
+
+## Read surface
+
+| Request                                        | Use and expected shape                                               |
+| ---------------------------------------------- | -------------------------------------------------------------------- |
+| `GET /api/atoms?limit=25&offset=0&q=example`   | `{ data, pagination }`; substring search, not semantic ranking       |
+| `GET /api/atoms/:id`                           | Full atom, processing stages, and graph stats                        |
+| `GET /api/atoms/:id/artifacts`                 | Provider artifacts, extracted fields, source URI, errors             |
+| `GET /api/atoms/:id/triples?expand=terms`      | Relationships touching any subject/predicate/object position         |
+| `GET /api/triples?subject_id=…&predicate_id=…` | Combinable S/P/O filters and limit/offset                            |
+| `GET /api/events?entity_id=…`                  | Attributed graph activity, including chain coordinates where present |
+| `GET /api/stats/pipeline`                      | Processing-stage counts                                              |
+| `GET /api/schema`                              | Local KG metadata, not the hosted GraphQL schema                     |
+
+The list limit defaults to 25 and is capped at 100. Public graph reads filter to active, public rows. A 404 can mean the requested term is absent from the public read model. Offset pagination can shift as records arrive; record your application consistency requirements.
+
+## Processing is asynchronous
+
+Creation does not mean classification or enrichment has completed. Read the atom's stage status and artifacts. Show pending, skipped, and failed outcomes explicitly; use a bounded polling budget in an application. An empty provider plan or unavailable credential can explain a skipped enrichment without invalidating the atom.
+
+## Troubleshooting
+
+| Result                                         | Next check                                                         |
+| ---------------------------------------------- | ------------------------------------------------------------------ |
+| 401 `api_key_required` / `invalid_api_key`     | Correct node, bearer header, key validity                          |
+| 403 `api_key_not_writable`                     | Writable credential for an authorized operation                    |
+| 400 `invalid_input` / `invalid_term_id`        | Raw input and complete 32-byte term IDs                            |
+| 413 `input_too_large`                          | Node's documented input limit; avoid embedding large assets        |
+| Atom exists but chain state does not           | An off-chain write does not register a term on-chain               |
+| Receipt succeeded but Core has no chain record | Correct network, indexing scope, ingestion and projection progress |
+
+Core's documented modes are `open`, `public-read`, and `gated`. The schema endpoint is separately public in the inspected implementation; do not assume gated mode makes all metadata private. Read the node's exact configuration and API source before offering hosted access.
+
+[Core API reference](https://github.com/0xIntuition/intuition-core/blob/eebba114666ba2373690f2beb7dce565aa16f0b7/docs/api-reference.md).
+
+# Build creation forms and relationship suggestions
+
+Source: https://docs.intuition.systems/docs/build/guides/creation-profiles
+
+Use `classifications` as the source of form fields and relationship recommendations. Use `primitives` to produce the anchor. Use `predicates` for canonical relationship vocabulary. This avoids each app inventing a different schema or hashing a UI label as a predicate.
+
+```ts
+import { musicRecordingCreationProfile } from '@0xintuition/classifications/creation/music-recording';
+import { getClassification } from '@0xintuition/classifications';
+import { buildIidAnchor } from '@0xintuition/primitives/anchor';
+
+const spec = getClassification('music-recording');
+const fields = musicRecordingCreationProfile.fields;
+const relationships = musicRecordingCreationProfile.relationships;
+const built = buildIidAnchor('music-recording', { isrc: 'USRC17607839' });
+if (!built.success) throw new Error(built.errors.join('; '));
+console.log({ schema: spec?.schema, fields, relationships, atom: built.value });
+```
+
+Render fields with their declared requirements and validation. Offer relationship targets according to the profile's typed recommendations. A human-readable legacy `expectedObjectType` hint is less precise than the classification metadata matrix; use the latter for new forms.
+
+## Add a relationship
+
+```ts
+import { buildEthereumAccount } from '@0xintuition/primitives/atom';
+import { buildTripleByName } from '@0xintuition/primitives/triple';
+
+const alice = buildEthereumAccount({
+  address: '0x0000000000000000000000000000000000000001',
+});
+const bob = buildEthereumAccount({
+  address: '0x0000000000000000000000000000000000000002',
+});
+if (!alice.success || !bob.success) throw new Error('Invalid account');
+const follows = buildTripleByName(alice.value.id, 'follow', bob.value.id);
+if (!follows.success) throw new Error(follows.errors.join('; '));
+console.log(follows.value);
+```
+
+This creates an in-memory relationship description. It does not persist the subject, predicate, object, or triple. Ensure all required terms exist in the target storage before writing the triple. For registry-backed predicates, use the package's exact canonical data and ID. Changing the predicate description can create a different atom.
+
+## Separate form state from identity
+
+A form may collect descriptive values, identity facts, and relationship choices. Do not serialize the entire form indiscriminately into an anchor. Once the builder selects identity bytes, keep added images, provider ratings, and labels in their appropriate metadata or relationship layer. A preview should show the proposed ID and representation before persistence.
+
+A provider-backed picker can use `projectIdentifierLadder` to choose a canonical candidate, then pass a validated `candidateIid` to the anchor builder. Do not force every provider namespace into a strong IID: unregistered schemes and alias-only rungs have explicit fallback behavior.
+
+# Build a deterministic atom offline
+
+Source: https://docs.intuition.systems/docs/build/guides/first-atom
+
+This recipe produces canonical atom bytes and an ID. It makes no API, provider, RPC, or wallet calls. Use Node 22 and an ESM project; install the [candidate versions](https://docs.intuition.systems/docs/build/compatibility) once published, or use the matching release tarballs during qualification.
+
+```sh
+npm install @0xintuition/primitives@0.1.0-alpha.1 @0xintuition/ids@0.1.0-alpha.1 viem@^2
+```
+
+Save as `first-atom.mjs` and run `node first-atom.mjs`:
+
+```js
+import assert from 'node:assert/strict';
+import { buildIidAnchor } from '@0xintuition/primitives/anchor';
+import { calculateAtomId } from '@0xintuition/ids';
+
+const result = buildIidAnchor(
+  'music-recording',
+  { isrc: 'US-RC1-76-07839' },
+  { contextUris: ['https://example.com/recordings/1'] },
+);
+if (!result.success) throw new Error(result.errors.join('; '));
+const atom = result.value;
+assert.equal(atom.iid, 'int:isrc:USRC17607839');
+assert.equal(atom.profile, 'p0');
+assert.equal(atom.data, atom.iid);
+assert.equal(calculateAtomId(atom.data), atom.id);
+
+const otherContext = buildIidAnchor(
+  'music-recording',
+  { isrc: 'USRC17607839' },
+  { contextUris: ['https://example.org/alternate-evidence'] },
+);
+if (!otherContext.success) throw new Error(otherContext.errors.join('; '));
+assert.equal(otherContext.value.id, atom.id);
+console.log({ iid: atom.iid, id: atom.id, dataHex: atom.dataHex });
+```
+
+The assertions show canonicalization and the identity/context boundary. The two context lists differ, but the P0 atom bytes and ID are identical. The output ID is a 32-byte hex value; retain it rather than substituting the IID where a protocol term ID is required.
+
+## What to persist
+
+Keep `data`, `dataHex`, `id`, the selected profile, and the original identity evidence together. Send the exact `data` to Core or `dataHex` to a protocol call. Display metadata can be refreshed independently. URI context is submitted explicitly by a URI-aware contract operation; the builder does not upload it.
+
+## Failure handling
+
+Check `success` before reading `value`. Invalid or noncanonical candidates, incompatible representation requests, missing fallback fields, and URI policy violations produce actionable errors. Do not silently replace an error with a random ID. For fallback envelopes `iid` can be `null`; the atom still has deterministic bytes and an ID.
+
+Next: [build a relationship](https://docs.intuition.systems/docs/build/guides/creation-profiles) or [persist the atom in Core](https://docs.intuition.systems/docs/build/guides/core-rest).
+
+# Plan an on-chain write and observe its result
+
+Source: https://docs.intuition.systems/docs/build/guides/onchain
+
+Use an explicit network, deployment, account, and budget. The candidate ABI includes functions that older deployments may not implement. Select the [matching release](https://docs.intuition.systems/docs/build/compatibility) before using URI-aware creation, FeeProxy routing, or dynamic-fee actions.
+
+## The transaction lifecycle
+
+```mermaid
+sequenceDiagram
+  participant App
+  participant SDK
+  participant Wallet
+  participant Chain
+  participant Core
+  App->>SDK: exact bytes, IDs, receiver, amounts
+  SDK->>Chain: reads for quotes and readiness
+  SDK-->>App: plan and transaction requests
+  App->>App: review chain, signers, value, minimum output
+  App->>Wallet: authorized transaction request
+  Wallet->>Chain: signed transaction
+  Chain-->>App: successful receipt or revert
+  Chain->>Core: indexed events
+  App->>Core: read projected term and processing status
+```
+
+A quote is a snapshot, not a reservation. Revalidate stale state before submission. A transaction hash is not a successful receipt, and a receipt is not proof that the chosen Core node has indexed it.
+
+## Select an operation
+
+| Task                                     | SDK action                                                  | Result                                                  |
+| ---------------------------------------- | ----------------------------------------------------------- | ------------------------------------------------------- |
+| Create atoms/triples and seed positions  | `multivaultCreateAndSeedTerm`                               | Ordered plan; despite the name, it does not submit      |
+| Quote and prepare a deposit              | `multivaultQuoteDepositPlan`, `multivaultPrepareDepositTx`  | Fee details and transaction request                     |
+| Quote and prepare redemption             | `multivaultQuoteRedeemPlan`, `multivaultPrepareRedeemTx`    | Redeem quote and request                                |
+| Create with URI context through FeeProxy | `feeProxyPrepareCreateAtomsWithUrisTx`                      | Quote, calldata, value, and effective URI configuration |
+| Check routed creation/deposit readiness  | `feeProxyGetReadiness`                                      | Requirements and readiness issues                       |
+| Route a deposit or creation              | `feeProxyBuildDepositViaPlan`, `feeProxyBuildCreateViaPlan` | Signer-attributed steps                                 |
+| Submit a FeeProxy plan                   | `feeProxyExecutePlan`                                       | Sends each step and waits for its receipt               |
+| Prepare a pending refund claim           | `feeProxyClaimRefundIfAny`                                  | A transaction or `null`; it does not submit             |
+
+See the [function reference](https://docs.intuition.systems/docs/build/sdk-reference/multivault) for complete parameter and result types. Import these functions from `@0xintuition/sdk/actions`; use `sdk/protocol` or `protocol` for low-level wrappers and encoders.
+
+## Prepare an atom creation plan
+
+This function takes a caller-configured MultiVault `WriteConfig`, a receiver, and an initial amount in base units. It prepares a plan and makes contract reads; it does not own signing or submit transactions.
+
+```ts
+import { buildIidAnchor } from '@0xintuition/primitives/anchor';
+import { multivaultCreateAndSeedTerm } from '@0xintuition/sdk/actions';
+import type { WriteConfig } from '@0xintuition/protocol';
+import type { Address } from 'viem';
+
+export async function prepareRecording(
+  config: WriteConfig,
+  receiver: Address,
+  assetsIn: bigint,
+) {
+  const result = buildIidAnchor('music-recording', { isrc: 'USRC17607839' });
+  if (!result.success) throw new Error(result.errors.join('; '));
+  return multivaultCreateAndSeedTerm(config, {
+    receiver,
+    atomsToCreate: [
+      {
+        termId: result.value.id,
+        data: result.value.dataHex,
+        assetsIn,
+      },
+    ],
+    seedDeposits: [],
+  });
+}
+```
+
+The caller must choose an amount that satisfies current contract costs and decide whether an existing term should be reused or funded. For context URIs, use the explicit URI-aware function instead of assuming this ordinary creation path registers them. Pass live URI limits to the anchor builder where applicable.
+
+## Review the plan
+
+Check every step's destination, chain, calldata, value, receiver, required signer, and ordering. Keep big integers in base units; format them only for display. Delegated operations can require a receiver's approval from a different account. `feeProxyExecutePlan` refuses a plan containing a step for another signer before sending anything. A later failure can still leave earlier mined steps completed: record their hashes and re-read state before resuming.
+
+FeeProxy excess value is first pushed back; only a failed refund push credits the pull-refund ledger. `feeProxyClaimRefundIfAny` can therefore return `null` normally. Do not assume every routed operation leaves a claimable balance.
+
+## React integration
+
+`IntuitionProvider` sits inside wagmi and TanStack Query providers. `useTransactionFlow` handles submitting/confirming/confirmed/error states. Resetting it does not cancel a wallet request or chain transaction. The candidate's `useCreateAtomFlow` uses ordinary `createAtoms`; compose a URI-aware protocol call explicitly when context registration is required.
+
+This recipe intentionally leaves transaction authorization to your application's wallet flow. The docs qualification process records test-environment evidence separately from source compilation.
+
+# Parse, classify, and enrich without changing identity
+
+Source: https://docs.intuition.systems/docs/build/guides/processing
+
+The processing stages answer different questions. Parsing detects input structure. Classification proposes an entity type under configured plugins. Enrichment obtains provider artifacts and normalized fields. Persistence, scheduling, and retries belong to Core or your application.
+
+```mermaid
+sequenceDiagram
+  participant App
+  participant Parser
+  participant Classifier
+  participant Enricher
+  participant Store
+  App->>Parser: input and transport policy
+  Parser-->>App: detected kind and normalized fields
+  App->>Classifier: input, mode, selected plugins
+  Classifier-->>App: classification result
+  App->>Enricher: explicit classified input and provider hints
+  Enricher-->>App: artifacts, status, provenance
+  App->>Store: persist under application's policy
+```
+
+## Parse locally
+
+```ts
+import { parseAtom } from '@0xintuition/atom-parser';
+const parsed = await parseAtom('https://example.com', { remoteFetch: false });
+console.log(parsed.kind);
+```
+
+`remoteFetch: false` makes this example local. URL/IPFS remote inspection is enabled by default otherwise. The parser exposes timeouts and response limits, and rejects private literal addresses by default; it does not resolve/pin DNS or prevent DNS rebinding. Services handling untrusted URLs need network egress controls.
+
+## Choose classification plugins
+
+```ts
+import {
+  createClientEngine,
+  createPlainTextPlugin,
+  createTypeProfilesPlugin,
+} from '@0xintuition/atom-classification';
+const engine = createClientEngine({
+  plugins: [createTypeProfilesPlugin(), createPlainTextPlugin()],
+});
+const classified = await engine.classify({
+  input: 'An example idea',
+  mode: 'client-only',
+  classificationSessionId: 'docs-example',
+});
+console.log(classified);
+```
+
+The engine does not automatically enable every plugin. Choose `client-only`, `progressive`, or `server-only` according to the plugin's capability and your deployment. The `classifications` data package owns canonical entity specifications; the similarly named `atom-classification` package executes plugins.
+
+## Enrich on the server
+
+```ts
+import {
+  createEnrichmentEngine,
+  createMemoryCacheAdapter,
+  createOpenGraphPlugin,
+} from '@0xintuition/atom-enrichment';
+const engine = createEnrichmentEngine({
+  plugins: [createOpenGraphPlugin()],
+  cache: createMemoryCacheAdapter({ maxEntries: 1000 }),
+});
+const enriched = await engine.enrich({
+  runtime: 'server',
+  input: {
+    atomType: 'thing',
+    jsonLd: { '@context': 'https://schema.org', '@type': 'Thing' },
+    hints: { url: 'https://example.com' },
+    source: {
+      classificationEngine: 'docs-example',
+      classifiedAt: new Date().toISOString(),
+    },
+  },
+});
+console.log(enriched);
+```
+
+Unlike the earlier examples, this invokes an HTTP provider. Preserve provider status, source URI, and errors; do not claim a provider result was verified just because it was fetched. The registry's provider plan is only a list of capabilities. Intersect it with installed plugins, runtime support, and credentials before execution.
+
+## Use Core's stateless service instead
+
+Atom-services exposes `POST /v1/classify` with `{ "input": "…" }`, and `POST /v1/process` with `{ "rawInput": "…" }`. The payload keys differ. The latter classifies and enriches but does not write your node's graph. Its port is 4010 in the documented local setup, separate from the Query API.
+
+## Contribute a plugin
+
+Start with Core's [classification plugin guide](https://github.com/0xIntuition/intuition-core/blob/eebba114666ba2373690f2beb7dce565aa16f0b7/docs/writing-a-classification-plugin.md) or [enrichment plugin guide](https://github.com/0xIntuition/intuition-core/blob/eebba114666ba2373690f2beb7dce565aa16f0b7/docs/writing-an-enrichment-plugin.md). Use injected fixtures for provider failures, timeouts, missing credentials, and deterministic output. `atom-enrichment/testing` provides `runPluginConformanceSuite` for Node/Bun tests; do not include that test-only entrypoint in a browser bundle.
+
+# Use the SDK hosted GraphQL read client
+
+Source: https://docs.intuition.systems/docs/build/guides/sdk-reads
+
+`createIntuitionApiClient` is a small read client for the established hosted GraphQL contract. It is not a REST client for a Core node and does not implement general search, graph traversal, uploads, or writes.
+
+```ts
+import {
+  createIntuitionApiClient,
+  getIntuitionApiUrl,
+} from '@0xintuition/sdk/api';
+const api = createIntuitionApiClient({
+  baseUrl: getIntuitionApiUrl('testnet'),
+});
+const atom = await api.atoms.getByLabel({ label: 'example' });
+if (atom) console.log(atom.termId, atom.label, atom.type);
+```
+
+Always select the environment explicitly. Omitting `baseUrl` defaults to mainnet in this candidate. The built-in local URL is the hosted-schema development endpoint on port 8080, not Core's Query API on port 3000.
+
+| Method             | Input                | Output                              |
+| ------------------ | -------------------- | ----------------------------------- |
+| `atoms.getById`    | `{ termId: string }` | `IntuitionApiAtom` or `null`        |
+| `atoms.getByLabel` | `{ label: string }`  | First exact label match or `null`   |
+| `atoms.getByData`  | `{ data: string }`   | First exact payload match or `null` |
+| `triples.getById`  | `{ termId: string }` | `IntuitionApiTriple` or `null`      |
+
+Labels are not unique identities. Prefer a known term ID or exact canonical data for deduplication. Atom results normalize `term_id` to `termId` and absent presentation fields to `null`. Triple results include subject, predicate, and object term references.
+
+The client accepts an injected `fetch`, extra headers, bearer auth, or API-key auth with a configurable header name. Keep server credentials on the server. HTTP failures, GraphQL errors, and missing response data throw; an absent row returns `null`. Handle those cases separately.
+
+For lists, arbitrary filtering, pagination, and relationships beyond these four methods, use the API's own documented query surface. See [Core REST](https://docs.intuition.systems/docs/build/guides/core-rest) for your node or the existing hosted GraphQL section for that schema.
+
+[Complete API types and functions](https://docs.intuition.systems/docs/build/sdk-reference/api).
+
+# Representation and identity resolution
+
+Source: https://docs.intuition.systems/docs/build/identity-resolution
+
+Two applications can agree on an entity while storing different descriptions of it. Shared identifiers and an equivalence layer address different parts of that problem.
+
+## Three representation profiles
+
+| Profile               | Payload                                                      | Use                                                             |
+| --------------------- | ------------------------------------------------------------ | --------------------------------------------------------------- |
+| P0 — anchor           | Exact eligible canonical IID string                          | Stable target for claims, with identical bytes across producers |
+| P1 — identity context | Type, IID, identity recipe fields and corroborating evidence | Required context for derived or ambiguous identifiers           |
+| P2 — enriched         | P1 plus descriptive fields                                   | Opt-in when descriptive data must travel in the atom payload    |
+
+Adding descriptive fields changes atom bytes and can change the atom ID. For a stable anchor with refreshable presentation, keep provider artifacts separate. The current `buildIidAnchor` derivation path serializes the same identified envelope for explicit P1/P2 options; the option alone does not implement full descriptive P2 output. The `candidateIid` path also chooses its representation under its own eligibility rules. Read the exact [builder contract](https://docs.intuition.systems/docs/build/packages/primitives) before relying on either behavior.
+
+## Three identity-resolution mechanisms
+
+```mermaid
+flowchart LR
+  A[Identical canonical bytes] --> B[Same protocol atom ID]
+  C[Different bytes with the same IID] --> D[Identifier-keyed identity cluster]
+  E[Different IIDs for one entity] --> F[Attested equivalence edges]
+  D --> G[Application identity and display projections]
+  F --> G
+```
+
+The first mechanism follows directly from deterministic hashing. The latter two describe the specification's equivalence architecture: matching embedded IIDs can group representations, while accepted `sameAs` edges can connect distinct identifiers for one entity. Candidate generation proposes edges for review; it is not permission to merge uncertain entities automatically.
+
+**Implementation boundary:** the IID specification's equivalence chapter is informative and describes a layer above the identifier packages. The pure packages do not maintain clusters or acceptance thresholds, and this guide does not promise a cluster/election API in the inspected Core REST contract. Verify the selected backend's implemented projection before depending on those behaviors.
+
+## Identity-canonical and display-canonical
+
+The representation specification distinguishes a stable identity target from the richer member chosen for display. A P0 anchor, when available, provides a convergence point for new claims. A display representation can improve as better descriptions and attestations arrive.
+
+The informative equivalence model also describes class/rung/creation-time tie-breaking and reversible accepted-edge projections. Those policies must be reconciled with the backend's actual election behavior before an application treats them as a supported API. Do not rewrite atoms or transfer positions as a side effect of a display choice.
+
+## Implement an application policy
+
+1. Preserve raw identity evidence, the canonical IID, exact atom bytes and ID.
+2. Match exact IDs first; distinguish equal IIDs from cross-scheme candidates.
+3. Keep suggested equivalence edges separate from accepted edges.
+4. Record sources, attribution, confidence and disagreement.
+5. Choose the identity target and display source explicitly.
+6. Keep original claims, balances and positions attached to their original terms.
+7. Make projection decisions reversible and observable.
+
+A valid identifier is a claim about identity, not a certificate that its associated description is correct. Check digits catch malformed values; they do not establish truth. Applications can apply different acceptance policies to the same evidence.
+
+[Normative representation profiles](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/iid-spec/spec/07-representation-profiles.md) · [Informative equivalence architecture](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/iid-spec/spec/08-equivalence.md).
+
+# Move from SDK v3 and app-local helpers
+
+Source: https://docs.intuition.systems/docs/build/migration
+
+The new SDK 4 candidate separates API reads, action planning, deterministic utilities, and low-level contract access. Existing SDK v3 guides describe a different public surface; keep a migration deliberate instead of mixing imports from both generations.
+
+| Existing pattern                            | Candidate direction                                           | Migration check                                                                                       |
+| ------------------------------------------- | ------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| General SDK root import                     | `sdk/api`, `sdk/actions`, `sdk/utils`, `sdk/protocol`         | Resolve the actual exported symbol; root compatibility is broader than the intended long-term surface |
+| Pinata helpers in the SDK                   | Application-owned upload provider                             | Upload first, then pass the returned content URI to a supported action                                |
+| App-local atom identity serialization       | `primitives/anchor` and IID packages                          | Compare exact bytes and IDs on your existing fixture corpus                                           |
+| App-local type/predicate maps               | `classifications`, Creation Profiles, `predicates`            | Preserve canonical slug, schema type, and predicate identity                                          |
+| Provider name used as identity              | Category ladder and validated candidate IID                   | Keep alias-only and unregistered-provider fallback behavior                                           |
+| All JSON-LD atoms assumed to be IID anchors | Explicit legacy parsing and new anchor creation paths         | Historical data stays readable; do not rewrite identity silently                                      |
+| Core REST assumed to match hosted GraphQL   | Explicit adapter for each query contract                      | Check endpoint, input keys, pagination, and response model                                            |
+| React creation assumed URI-aware            | Compose `multiVaultCreateAtomsWithUris` with transaction flow | The existing creation hook uses ordinary `createAtoms`                                                |
+
+## Reader-first rollout
+
+Inventory the historical representations your application reads. Add recognition and display support for the new representation before enabling new writers. Compare old and new fixture outputs, record intentional differences, and preserve historical IDs. When two atoms represent the same entity, model the equivalence claim with provenance instead of mutating the old payload or pretending its vault moved.
+
+## Candidate-specific checks
+
+The app's selected alignment branch is evidence of package adoption, not proof that it has shipped. Its public-package imports can guide an adapter, while its auth, routes, and persistence remain product-specific. The Core checkout similarly describes an implementation revision; deployed nodes can have different API and indexing capabilities.
+
+Reconcile contract documentation with the existing [FeeProxy/v1.1.0 documentation PR](https://github.com/0xIntuition/intuition-docs/pull/111). Use the contracts' authoritative deployment evidence before enabling new ABI calls. The candidate router intentionally has no published address while a compatible deployment is pending.
+
+## Cutover checklist
+
+- Pin package versions and record their public exports.
+- Compile the new imports in a clean consumer project.
+- Compare identity bytes and protocol IDs against known fixtures.
+- Test errors, nullable outputs, and provider failure handling.
+- Verify target deployment compatibility and exact query schema.
+- Keep previous routes and historical guides accessible with version labels.
+- Release docs, packages, contracts, and applications as separately evidenced steps.
+
+# Build with the Intuition knowledge graph
+
+Source: https://docs.intuition.systems/docs/build/overview
+
+Intuition gives applications shared identifiers, a common vocabulary for relationships, a backend for processing and querying those relationships, and an on-chain protocol for publishing terms and expressing economic signals. You can start by modeling data entirely offline, persist it in a Core node, and add wallet interactions when your application needs them.
+
+This guide covers the upcoming package release. The [compatibility manifest](https://docs.intuition.systems/docs/build/compatibility) pins the source revisions and package versions. Some npm versions and contract capabilities are release candidates; code in a checkout is not proof of a deployed service.
+
+## Choose a first result
+
+| You want to…                     | Start here                                          | Result                                                       |
+| -------------------------------- | --------------------------------------------------- | ------------------------------------------------------------ |
+| Give an entity a stable identity | [Build your first atom](https://docs.intuition.systems/docs/build/guides/first-atom)     | Canonical data, hex bytes, deterministic ID; no credentials  |
+| Store and query a graph          | [Core REST cookbook](https://docs.intuition.systems/docs/build/guides/core-rest)         | Attributed off-chain atoms and triples in your node          |
+| Build a creation form            | [Creation Profiles](https://docs.intuition.systems/docs/build/guides/creation-profiles)  | Fields and relationship suggestions from shared package data |
+| Add metadata from providers      | [Processing and enrichment](https://docs.intuition.systems/docs/build/guides/processing) | Explicit classifications, artifacts, and provenance          |
+| Prepare protocol actions         | [On-chain workflow](https://docs.intuition.systems/docs/build/guides/onchain)            | Reviewed transaction plans with chain, amounts, and receiver |
+| Build with an agent              | [Agent integration contract](https://docs.intuition.systems/docs/build/agents)           | A bounded task, correct imports, and checkable outcomes      |
+
+## How the systems fit
+
+```mermaid
+flowchart LR
+  A[Application or agent] --> B[Identity and modeling packages]
+  B --> C[Canonical atom bytes and triple IDs]
+  C --> D[Core REST writes]
+  C --> E[SDK action plans]
+  E --> F[Wallet and contracts]
+  F --> G[Indexer and projections]
+  G --> H[Core knowledge graph]
+  D --> H
+  H --> I[Parse classify enrich workers]
+  I --> H
+  H --> J[Core REST reads]
+  J --> A
+  K[Hosted GraphQL API] --> A
+```
+
+The hosted GraphQL API is a separate query contract. Do not assume a Core REST server implements it. An application can use either read surface, or adapt both deliberately.
+
+## Why shared identity matters
+
+Imagine a music discovery application and an independent reputation application. Both can derive the same canonical ISRC-based atom for a recording. Each application adds its own relationships and presentation without inventing a new identity for the recording. A Core node can enrich it from available providers, while contracts can register the same bytes and their associated vaults.
+
+The opportunity is composable applications: curation and discovery, research graphs, portable collections, contextual reputation, and agents that explain which entities and evidence informed a result. Shared identifiers make joins possible. They do not establish that a claim is true, grant access to another node's private records, or make every node automatically replicate every fact.
+
+See [application patterns](https://docs.intuition.systems/docs/build/application-patterns) for designs and the decisions each application still owns.
+
+# @0xintuition/atom-classification guide
+
+Source: https://docs.intuition.systems/docs/build/packages/atom-classification
+
+Compose a plugin-based classification engine for client, progressive, or server execution.
+
+Candidate source version: **0.1.0-alpha.0**. [Release compatibility](https://docs.intuition.systems/docs/build/compatibility) explains publication and deployment prerequisites.
+
+## Install
+
+```sh
+npm install @0xintuition/atom-classification@0.1.0-alpha.0
+```
+
+Use ESM imports.
+
+## Main surface
+
+| Export or operation             | Purpose                                 |
+| ------------------------------- | --------------------------------------- |
+| `createClientEngine(options)`   | Client-compatible classification engine |
+| `createPlainTextPlugin()`       | Local text classification plugin        |
+| `createTypeProfilesPlugin()`    | Runtime type-profile plugin             |
+| `defaultClassificationPreset()` | Explicit default plugin selection       |
+
+## First use
+
+```ts
+import {
+  createClientEngine,
+  createPlainTextPlugin,
+  createTypeProfilesPlugin,
+} from '@0xintuition/atom-classification';
+const engine = createClientEngine({
+  plugins: [createTypeProfilesPlugin(), createPlainTextPlugin()],
+});
+console.log(
+  await engine.classify({
+    input: 'An idea',
+    mode: 'client-only',
+    classificationSessionId: 'example',
+  }),
+);
+```
+
+## Integration decisions
+
+Creating an engine does not enable all plugins or persist results. This runtime is distinct from classifications, which owns canonical entity specifications. Keep provider credentials on the server.
+
+## Source and full contract
+
+[Source and package guide](https://github.com/0xIntuition/packages/tree/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/atom-classification) · [npm package](https://www.npmjs.com/package/@0xintuition/atom-classification). The [machine-readable manifest](https://docs.intuition.systems/intuition-release.json) lists all declared public subpaths and peer dependencies. Npm links name the intended package; this page does not assert that the candidate has been published.
+
+# @0xintuition/atom-enrichment guide
+
+Source: https://docs.intuition.systems/docs/build/packages/atom-enrichment
+
+Execute selected enrichment providers and extract fields from artifacts.
+
+Candidate source version: **0.1.0-alpha.0**. [Release compatibility](https://docs.intuition.systems/docs/build/compatibility) explains publication and deployment prerequisites.
+
+## Install
+
+```sh
+npm install @0xintuition/atom-enrichment@0.1.0-alpha.0
+```
+
+Use ESM imports.
+
+## Main surface
+
+| Export or operation                 | Purpose                                                |
+| ----------------------------------- | ------------------------------------------------------ |
+| `createEnrichmentEngine(options)`   | Engine with an explicit plugin and cache configuration |
+| `createOpenGraphPlugin()`           | OpenGraph provider plugin                              |
+| `createMemoryCacheAdapter(options)` | Bounded process-local cache adapter                    |
+| `runPluginConformanceSuite`         | Test-only conformance helper from /testing             |
+
+## First use
+
+```ts
+import {
+  createEnrichmentEngine,
+  createMemoryCacheAdapter,
+} from '@0xintuition/atom-enrichment';
+const engine = createEnrichmentEngine({
+  plugins: [],
+  cache: createMemoryCacheAdapter({ maxEntries: 100 }),
+});
+// Add approved provider plugins before calling engine.enrich with a classified input.
+```
+
+## Integration decisions
+
+The caller owns credentials, transport, retries, scheduling, and persistence. Provider payload validation does not replace the canonical classification registry. Imports alone do not fetch data.
+
+## Source and full contract
+
+[Source and package guide](https://github.com/0xIntuition/packages/tree/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/atom-enrichment) · [npm package](https://www.npmjs.com/package/@0xintuition/atom-enrichment). The [machine-readable manifest](https://docs.intuition.systems/intuition-release.json) lists all declared public subpaths and peer dependencies. Npm links name the intended package; this page does not assert that the candidate has been published.
+
+# @0xintuition/atom-parser guide
+
+Source: https://docs.intuition.systems/docs/build/packages/atom-parser
+
+Detect and normalize raw strings, JSON objects/arrays, URLs, IPFS, addresses, names, and ISBNs.
+
+Candidate source version: **0.1.0-alpha.0**. [Release compatibility](https://docs.intuition.systems/docs/build/compatibility) explains publication and deployment prerequisites.
+
+## Install
+
+```sh
+npm install @0xintuition/atom-parser@0.1.0-alpha.0
+```
+
+Use ESM imports.
+
+## Main surface
+
+| Export or operation          | Purpose                                       |
+| ---------------------------- | --------------------------------------------- |
+| `parseAtom(input, options?)` | Promise of ParseResult, discriminated by kind |
+| `detectLocal`                | Local input detection                         |
+| `inspectRemote`              | Bounded remote content inspection             |
+| `ParseError`                 | Structured input/configuration errors         |
+
+## First use
+
+```ts
+import { parseAtom } from '@0xintuition/atom-parser';
+console.log(await parseAtom('https://example.com', { remoteFetch: false }));
+```
+
+## Integration decisions
+
+URL/IPFS inspection is on by default; set remoteFetch: false for local-only detection. Network restrictions do not prevent DNS rebinding; service operators own egress controls. Use Node 22+ for this runtime.
+
+## Source and full contract
+
+[Source and package guide](https://github.com/0xIntuition/packages/tree/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/atom-parser) · [npm package](https://www.npmjs.com/package/@0xintuition/atom-parser). The [machine-readable manifest](https://docs.intuition.systems/intuition-release.json) lists all declared public subpaths and peer dependencies. Npm links name the intended package; this page does not assert that the candidate has been published.
+
+# @0xintuition/classifications guide
+
+Source: https://docs.intuition.systems/docs/build/packages/classifications
+
+Use canonical entity specifications, identity ladders, Creation Profiles, discovery metadata, and atom-data builders.
+
+Candidate source version: **0.1.0-alpha.1**. [Release compatibility](https://docs.intuition.systems/docs/build/compatibility) explains publication and deployment prerequisites.
+
+## Install
+
+```sh
+npm install @0xintuition/classifications@0.1.0-alpha.1 viem@^2
+```
+
+Use ESM imports. Required peers: `viem ^2.0.0`.
+
+## Main surface
+
+| Export or operation                            | Purpose                                                  |
+| ---------------------------------------------- | -------------------------------------------------------- |
+| `getClassification(slug)`                      | Canonical specification by slug                          |
+| `getClassificationByType(type)`                | Exact schema-type lookup                                 |
+| `getClassificationByReference(reference)`      | Case-insensitive reference resolver with ambiguity rules |
+| `deriveClassificationIdentifier(slug, values)` | IID ladder result or undefined                           |
+| `buildAtomData(slug, values)`                  | Serialized descriptive atom data                         |
+
+## First use
+
+```ts
+import { musicRecordingCreationProfile } from '@0xintuition/classifications/creation/music-recording';
+console.log(
+  musicRecordingCreationProfile.fields,
+  musicRecordingCreationProfile.relationships,
+);
+```
+
+## Integration decisions
+
+Canonical slug, schema type, display name, and engine category are separate values. Use Creation Profiles for fields and recommended relationships; use primitives/anchor for identifier-first atom bytes.
+
+## Source and full contract
+
+[Source and package guide](https://github.com/0xIntuition/packages/tree/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/classifications) · [npm package](https://www.npmjs.com/package/@0xintuition/classifications). The [machine-readable manifest](https://docs.intuition.systems/intuition-release.json) lists all declared public subpaths and peer dependencies. Npm links name the intended package; this page does not assert that the candidate has been published.
+
+# @0xintuition/cli guide
+
+Source: https://docs.intuition.systems/docs/build/packages/cli
+
+Discover encoders and produce deterministic calldata or action envelopes for agents and scripts.
+
+Candidate source version: **0.1.0**. [Release compatibility](https://docs.intuition.systems/docs/build/compatibility) explains publication and deployment prerequisites.
+
+## Install
+
+```sh
+npm install @0xintuition/cli@0.1.0
+```
+
+Use ESM imports.
+
+## Main surface
+
+| Export or operation                | Purpose                                |
+| ---------------------------------- | -------------------------------------- |
+| `intuition --help`                 | Discover executable commands           |
+| `AgentActionEnvelope`              | Structured plan contract               |
+| `buildMultiVaultDepositPlan`       | Deterministic deposit plan builder     |
+| `buildMultiVaultCreateAndSeedPlan` | Deterministic create/seed plan builder |
+
+## First use
+
+```sh
+npx @0xintuition/cli@0.1.0 --help
+```
+
+Start with encoder discovery before constructing an action envelope. The command does not sign or send transactions.
+
+## Integration decisions
+
+The CLI owns no wallet/public client, simulation, or submission. A plan still requires deployment compatibility checks, simulation where supported, authorization, and an external executor.
+
+## Source and full contract
+
+[Source and package guide](https://github.com/0xIntuition/packages/tree/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/cli) · [npm package](https://www.npmjs.com/package/@0xintuition/cli). The [machine-readable manifest](https://docs.intuition.systems/intuition-release.json) lists all declared public subpaths and peer dependencies. Npm links name the intended package; this page does not assert that the candidate has been published.
+
+# @0xintuition/curves guide
+
+Source: https://docs.intuition.systems/docs/build/packages/curves
+
+Calculate local curve previews and exact-net gross-up quotes using explicit state and parameters.
+
+Candidate source version: **0.1.0**. [Release compatibility](https://docs.intuition.systems/docs/build/compatibility) explains publication and deployment prerequisites.
+
+## Install
+
+```sh
+npm install @0xintuition/curves@0.1.0
+```
+
+Use ESM imports.
+
+## Main surface
+
+| Export or operation         | Purpose                                         |
+| --------------------------- | ----------------------------------------------- |
+| `createLinearCurve()`       | Linear preview implementation                   |
+| `grossUpAtomDeposit`        | Gross amount for an exact net atom deposit      |
+| `grossUpTripleDeposit`      | Gross amount for an exact net triple deposit    |
+| `dynamicFeeQuoteDepositFee` | Dynamic-fee preview from explicit configuration |
+
+## First use
+
+```ts
+import { createLinearCurve } from '@0xintuition/curves';
+console.log(
+  createLinearCurve().previewDeposit(100n, {
+    totalAssets: 0n,
+    totalShares: 0n,
+  }),
+);
+```
+
+## Integration decisions
+
+Use bigint base units and current fee/curve configuration. Quotes are not execution guarantees. Exact contract parity and overflow/revert behavior are release qualification gates; an exact-net solution need not be the smallest gross solution.
+
+## Source and full contract
+
+[Source and package guide](https://github.com/0xIntuition/packages/tree/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/curves) · [npm package](https://www.npmjs.com/package/@0xintuition/curves). The [machine-readable manifest](https://docs.intuition.systems/intuition-release.json) lists all declared public subpaths and peer dependencies. Npm links name the intended package; this page does not assert that the candidate has been published.
+
+# @0xintuition/deployments guide
+
+Source: https://docs.intuition.systems/docs/build/packages/deployments
+
+Resolve the shared ABI, bytecode, address, and chain metadata consumed by all protocol packages.
+
+Candidate source version: **0.1.0**. [Release compatibility](https://docs.intuition.systems/docs/build/compatibility) explains publication and deployment prerequisites.
+
+## Install
+
+```sh
+npm install @0xintuition/deployments@0.1.0 viem@^2
+```
+
+Use ESM imports. Required peers: `viem ^2.0.0`.
+
+## Main surface
+
+| Export or operation                        | Purpose                             |
+| ------------------------------------------ | ----------------------------------- |
+| `getMultiVaultAddressFromChainId(chainId)` | Configured deployment address       |
+| `intuitionMainnet / intuitionTestnet`      | Chain definitions                   |
+| `MultiVaultAbi`                            | Core ABI                            |
+| `/bytecode`                                | Separate deploy-bytecode entrypoint |
+
+## First use
+
+```ts
+import {
+  getMultiVaultAddressFromChainId,
+  intuitionTestnet,
+} from '@0xintuition/deployments';
+console.log(getMultiVaultAddressFromChainId(intuitionTestnet.id));
+```
+
+## Integration decisions
+
+An address lookup does not prove that its deployment implements a candidate ABI. Metalayer bytecode exports are runtime code, and MultiVault bytecode has a library link placeholder. Do not treat every Bytecode export as ready-to-deploy creation code.
+
+## Source and full contract
+
+[Source and package guide](https://github.com/0xIntuition/packages/tree/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/deployments) · [npm package](https://www.npmjs.com/package/@0xintuition/deployments). The [machine-readable manifest](https://docs.intuition.systems/intuition-release.json) lists all declared public subpaths and peer dependencies. Npm links name the intended package; this page does not assert that the candidate has been published.
+
+# @0xintuition/ids guide
+
+Source: https://docs.intuition.systems/docs/build/packages/ids
+
+Calculate deterministic atom, predicate, triple, counter-triple, and authentication-related IDs.
+
+Candidate source version: **0.1.0-alpha.1**. [Release compatibility](https://docs.intuition.systems/docs/build/compatibility) explains publication and deployment prerequisites.
+
+## Install
+
+```sh
+npm install @0xintuition/ids@0.1.0-alpha.1 viem@^2
+```
+
+Use ESM imports. Required peers: `viem ^2.0.0`.
+
+## Main surface
+
+| Export or operation                             | Purpose                                                  |
+| ----------------------------------------------- | -------------------------------------------------------- |
+| `calculateAtomId(data)`                         | Protocol atom ID from the exact string representation    |
+| `calculateTripleId(subject, predicate, object)` | Deterministic triple ID                                  |
+| `I_SUBJECT_ID`                                  | ID of the literal first-person subject I                 |
+| `calculateAuthUserAtomId(input)`                | ID for the versioned normalized auth-user representation |
+
+## First use
+
+```ts
+import { calculateAtomId, I_SUBJECT_ID } from '@0xintuition/ids';
+console.log(calculateAtomId('I') === I_SUBJECT_ID);
+```
+
+## Integration decisions
+
+These helpers do not register a term. Do not confuse an IID, a protocol ID, and an encoded payload. The auth-user hash is a deterministic public identifier, not encryption of a secret.
+
+## Source and full contract
+
+[Source and package guide](https://github.com/0xIntuition/packages/tree/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/ids) · [npm package](https://www.npmjs.com/package/@0xintuition/ids). The [machine-readable manifest](https://docs.intuition.systems/intuition-release.json) lists all declared public subpaths and peer dependencies. Npm links name the intended package; this page does not assert that the candidate has been published.
+
+# @0xintuition/iid-ladder guide
+
+Source: https://docs.intuition.systems/docs/build/packages/iid-ladder
+
+Choose canonical identities from application, provider, seed, and import inputs.
+
+Candidate source version: **0.1.0-alpha.0**. [Release compatibility](https://docs.intuition.systems/docs/build/compatibility) explains publication and deployment prerequisites.
+
+## Install
+
+```sh
+npm install @0xintuition/iid-ladder@0.1.0-alpha.0
+```
+
+Use ESM imports.
+
+## Main surface
+
+| Export or operation                                    | Purpose                                                                 |
+| ------------------------------------------------------ | ----------------------------------------------------------------------- |
+| `projectIdentifierLadder(input)`                       | Strong identifier, registered handle, URL, or explicit fallback outcome |
+| `schemeOrderForIdentityCategory(category)`             | Strongest-first category order or undefined                             |
+| `iidForIdentityRung(token, value, primarySchemaType?)` | Canonical matching alias or undefined                                   |
+| `resolveWikidataP31Identity(p31)`                      | Schema type and eligible typed Wikidata binding from supplied classes   |
+
+## First use
+
+```ts
+import { projectIdentifierLadder } from '@0xintuition/iid-ladder';
+console.log(
+  projectIdentifierLadder({ strongIdentifiers: { isrc: 'USRC17607839' } }),
+);
+```
+
+## Integration decisions
+
+Category policy distinguishes primary identities from matching-only aliases. The result does not record aliases or serialize atom bytes. Unknown provider namespaces are not silently promoted to registered strong identities.
+
+## Source and full contract
+
+[Source and package guide](https://github.com/0xIntuition/packages/tree/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/iid-ladder) · [npm package](https://www.npmjs.com/package/@0xintuition/iid-ladder). The [machine-readable manifest](https://docs.intuition.systems/intuition-release.json) lists all declared public subpaths and peer dependencies. Npm links name the intended package; this page does not assert that the candidate has been published.
+
+# @0xintuition/iid-registry guide
+
+Source: https://docs.intuition.systems/docs/build/packages/iid-registry
+
+Resolve identifier meaning and provider capabilities without HTTP or credentials.
+
+Candidate source version: **0.1.0-alpha.0**. [Release compatibility](https://docs.intuition.systems/docs/build/compatibility) explains publication and deployment prerequisites.
+
+## Install
+
+```sh
+npm install @0xintuition/iid-registry@0.1.0-alpha.0 viem@^2
+```
+
+Use ESM imports. Required peers: `viem ^2.0.0`.
+
+## Main surface
+
+| Export or operation          | Purpose                                                            |
+| ---------------------------- | ------------------------------------------------------------------ |
+| `classificationForIid(iid)`  | Classification for a value, or undefined when unmapped/polymorphic |
+| `providersForIid(iid)`       | Ordered provider capability slugs                                  |
+| `identifierHintsForIid(iid)` | Typed identifier hints for downstream providers                    |
+
+## First use
+
+```ts
+import {
+  classificationForIid,
+  providersForIid,
+} from '@0xintuition/iid-registry';
+const iid = 'int:isrc:USRC17607839';
+console.log(classificationForIid(iid), providersForIid(iid));
+```
+
+## Integration decisions
+
+An empty provider plan does not mean an invalid IID. A listed provider is a capability, not a guarantee of installed code, credentials, availability, or an HTTP result.
+
+## Source and full contract
+
+[Source and package guide](https://github.com/0xIntuition/packages/tree/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/iid-registry) · [npm package](https://www.npmjs.com/package/@0xintuition/iid-registry). The [machine-readable manifest](https://docs.intuition.systems/intuition-release.json) lists all declared public subpaths and peer dependencies. Npm links name the intended package; this page does not assert that the candidate has been published.
+
+# @0xintuition/iid-spec guide
+
+Source: https://docs.intuition.systems/docs/build/packages/iid-spec
+
+The normative identifier specification and conformance corpus. Read it when implementing an identifier producer or comparing independent implementations.
+
+Candidate source version: **0.1.0-alpha.0**. [Release compatibility](https://docs.intuition.systems/docs/build/compatibility) explains publication and deployment prerequisites.
+
+## Install
+
+```sh
+npm install @0xintuition/iid-spec@0.1.0-alpha.0
+```
+
+Use ESM imports.
+
+## Main surface
+
+| Export or operation  | Purpose                                                                    |
+| -------------------- | -------------------------------------------------------------------------- |
+| `Specification`      | Grammar, classes, normalization, schemes, ladders, representation profiles |
+| `Conformance corpus` | Known-answer vectors for independent implementations                       |
+
+## First use
+
+Read the [identifier explainer](https://github.com/0xIntuition/packages/tree/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/iid-spec/explainer.md), then use `iid` and `primitives` to implement a conforming application. Run the published conformance fixtures when producing identifiers independently.
+
+## Integration decisions
+
+This is the contract and test data, not a network resolver. Prefer the iid implementation for application code.
+
+## Source and full contract
+
+[Source and package guide](https://github.com/0xIntuition/packages/tree/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/iid-spec) · [npm package](https://www.npmjs.com/package/@0xintuition/iid-spec). The [machine-readable manifest](https://docs.intuition.systems/intuition-release.json) lists all declared public subpaths and peer dependencies. Npm links name the intended package; this page does not assert that the candidate has been published.
+
+# @0xintuition/iid guide
+
+Source: https://docs.intuition.systems/docs/build/packages/iid
+
+Parse, inspect, canonicalize, and derive Intuition identifiers entirely offline.
+
+Candidate source version: **0.1.0-alpha.0**. [Release compatibility](https://docs.intuition.systems/docs/build/compatibility) explains publication and deployment prerequisites.
+
+## Install
+
+```sh
+npm install @0xintuition/iid@0.1.0-alpha.0 viem@^2
+```
+
+Use ESM imports. Required peers: `viem ^2.0.0`.
+
+## Main surface
+
+| Export or operation                 | Purpose                                                        |
+| ----------------------------------- | -------------------------------------------------------------- |
+| `inspectIntuitionId(iid)`           | Typed validity, canonicalization and anchor-eligibility result |
+| `validateIntuitionId(iid)`          | Whether the complete identifier is canonical                   |
+| `SCHEMES.isrc.canonicalize(value)`  | Canonical scheme value or undefined                            |
+| `deriveIntuitionId(ladder, values)` | First successful declared identity rung                        |
+| `buildGen1Iid(slug, tag, values)`   | Recipe-derived identifier                                      |
+
+## First use
+
+```ts
+import { inspectIntuitionId } from '@0xintuition/iid';
+console.log(inspectIntuitionId('int:isrc:USRC17607839'));
+```
+
+## Integration decisions
+
+Validity and P0 eligibility differ. Bare polymorphic Wikidata values and provider-local identifiers can be valid while requiring P1. Never repair a canonicalization error by inventing a new scheme.
+
+## Source and full contract
+
+[Source and package guide](https://github.com/0xIntuition/packages/tree/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/iid) · [npm package](https://www.npmjs.com/package/@0xintuition/iid). The [machine-readable manifest](https://docs.intuition.systems/intuition-release.json) lists all declared public subpaths and peer dependencies. Npm links name the intended package; this page does not assert that the candidate has been published.
+
+# Choose the packages your application needs
+
+Source: https://docs.intuition.systems/docs/build/packages/index
+
+Install the smallest layer that supplies your workflow. All names below refer to public package artifacts in the selected source train; Core's private database and worker packages are service implementation details.
+
+| Package                                                      | Responsibility                                                                                                                                            | Candidate version |
+| ------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| [@0xintuition/iid-spec](https://docs.intuition.systems/docs/build/packages/iid-spec)                       | The normative identifier specification and conformance corpus. Read it when implementing an identifier producer or comparing independent implementations. | `0.1.0-alpha.0`   |
+| [@0xintuition/iid](https://docs.intuition.systems/docs/build/packages/iid)                                 | Parse, inspect, canonicalize, and derive Intuition identifiers entirely offline.                                                                          | `0.1.0-alpha.0`   |
+| [@0xintuition/iid-registry](https://docs.intuition.systems/docs/build/packages/iid-registry)               | Resolve identifier meaning and provider capabilities without HTTP or credentials.                                                                         | `0.1.0-alpha.0`   |
+| [@0xintuition/iid-ladder](https://docs.intuition.systems/docs/build/packages/iid-ladder)                   | Choose canonical identities from application, provider, seed, and import inputs.                                                                          | `0.1.0-alpha.0`   |
+| [@0xintuition/ids](https://docs.intuition.systems/docs/build/packages/ids)                                 | Calculate deterministic atom, predicate, triple, counter-triple, and authentication-related IDs.                                                          | `0.1.0-alpha.1`   |
+| [@0xintuition/schema-org](https://docs.intuition.systems/docs/build/packages/schema-org)                   | Look up the pinned schema.org vocabulary and inherited properties for forms and tooling.                                                                  | `0.1.0-alpha.0`   |
+| [@0xintuition/classifications](https://docs.intuition.systems/docs/build/packages/classifications)         | Use canonical entity specifications, identity ladders, Creation Profiles, discovery metadata, and atom-data builders.                                     | `0.1.0-alpha.1`   |
+| [@0xintuition/predicates](https://docs.intuition.systems/docs/build/packages/predicates)                   | Use shared relationship vocabulary, canonical predicate data and IDs, semantic flags, and display helpers.                                                | `0.1.0-alpha.1`   |
+| [@0xintuition/primitives](https://docs.intuition.systems/docs/build/packages/primitives)                   | Build atoms and triples with validated, deterministic public helpers.                                                                                     | `0.1.0-alpha.1`   |
+| [@0xintuition/atom-parser](https://docs.intuition.systems/docs/build/packages/atom-parser)                 | Detect and normalize raw strings, JSON objects/arrays, URLs, IPFS, addresses, names, and ISBNs.                                                           | `0.1.0-alpha.0`   |
+| [@0xintuition/atom-classification](https://docs.intuition.systems/docs/build/packages/atom-classification) | Compose a plugin-based classification engine for client, progressive, or server execution.                                                                | `0.1.0-alpha.0`   |
+| [@0xintuition/atom-enrichment](https://docs.intuition.systems/docs/build/packages/atom-enrichment)         | Execute selected enrichment providers and extract fields from artifacts.                                                                                  | `0.1.0-alpha.0`   |
+| [@0xintuition/deployments](https://docs.intuition.systems/docs/build/packages/deployments)                 | Resolve the shared ABI, bytecode, address, and chain metadata consumed by all protocol packages.                                                          | `0.1.0`           |
+| [@0xintuition/protocol](https://docs.intuition.systems/docs/build/packages/protocol)                       | Call or encode core protocol contracts with explicit viem clients and deployment configuration.                                                           | `4.0.0`           |
+| [@0xintuition/periphery](https://docs.intuition.systems/docs/build/packages/periphery)                     | Use direct FeeProxy, router, and meta-bridge wrappers and encoders.                                                                                       | `0.1.0`           |
+| [@0xintuition/curves](https://docs.intuition.systems/docs/build/packages/curves)                           | Calculate local curve previews and exact-net gross-up quotes using explicit state and parameters.                                                         | `0.1.0`           |
+| [@0xintuition/sdk](https://docs.intuition.systems/docs/build/packages/sdk)                                 | Build integrations with hosted GraphQL reads, deterministic utilities, and explicit on-chain action plans.                                                | `4.0.0`           |
+| [@0xintuition/cli](https://docs.intuition.systems/docs/build/packages/cli)                                 | Discover encoders and produce deterministic calldata or action envelopes for agents and scripts.                                                          | `0.1.0`           |
+| [@0xintuition/react](https://docs.intuition.systems/docs/build/packages/react)                             | Compose protocol read/write hooks and observable transaction lifecycle state in React.                                                                    | `0.1.0-alpha.1`   |
+
+Start with `primitives` for an offline atom, `classifications` for a form, `sdk` for a protocol integration, or Core REST for graph persistence. Add processing engines when you own their runtime. The existing `@0xintuition/graphql` hosted-schema tooling belongs to the earlier documentation surface and is not one of this repository's new package artifacts.
+
+Do not install private Core packages as if they were public SDKs. Use the [system map](https://docs.intuition.systems/docs/build/architecture) and [compatibility matrix](https://docs.intuition.systems/docs/build/compatibility) to choose the correct boundary.
+
+# @0xintuition/periphery guide
+
+Source: https://docs.intuition.systems/docs/build/packages/periphery
+
+Use direct FeeProxy, router, and meta-bridge wrappers and encoders.
+
+Candidate source version: **0.1.0**. [Release compatibility](https://docs.intuition.systems/docs/build/compatibility) explains publication and deployment prerequisites.
+
+## Install
+
+```sh
+npm install @0xintuition/periphery@0.1.0 viem@^2
+```
+
+Use ESM imports. Required peers: `viem ^2.0.0`.
+
+## Main surface
+
+| Export or operation                             | Purpose                                  |
+| ----------------------------------------------- | ---------------------------------------- |
+| `getFeeProxyAddressFromChainId(chainId)`        | FeeProxy deployment lookup               |
+| `getMetaNativeSpokeAddressFromChainId(chainId)` | Native spoke lookup                      |
+| `feeProxyPendingRefund`                         | Read the pull-refund ledger              |
+| `feeProxyClaimRefundToEncode`                   | Encode a refund claim without submitting |
+
+## First use
+
+```ts
+import { getFeeProxyAddressFromChainId } from '@0xintuition/periphery';
+console.log(getFeeProxyAddressFromChainId(13579));
+```
+
+## Integration decisions
+
+The candidate router address lookup throws while a matching redeployment is pending. Bridge support differs by chain; do not infer testnet bridge availability from FeeProxy support.
+
+## Source and full contract
+
+[Source and package guide](https://github.com/0xIntuition/packages/tree/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/periphery) · [npm package](https://www.npmjs.com/package/@0xintuition/periphery). The [machine-readable manifest](https://docs.intuition.systems/intuition-release.json) lists all declared public subpaths and peer dependencies. Npm links name the intended package; this page does not assert that the candidate has been published.
+
+# @0xintuition/predicates guide
+
+Source: https://docs.intuition.systems/docs/build/packages/predicates
+
+Use shared relationship vocabulary, canonical predicate data and IDs, semantic flags, and display helpers.
+
+Candidate source version: **0.1.0-alpha.1**. [Release compatibility](https://docs.intuition.systems/docs/build/compatibility) explains publication and deployment prerequisites.
+
+## Install
+
+```sh
+npm install @0xintuition/predicates@0.1.0-alpha.1 viem@^2
+```
+
+Use ESM imports. Required peers: `viem ^2.0.0`.
+
+## Main surface
+
+| Export or operation                          | Purpose                                   |
+| -------------------------------------------- | ----------------------------------------- |
+| `PREDICATE_IDS`                              | Canonical registry IDs keyed by predicate |
+| `createPredicateAtomData(name, description)` | Exact inline DefinedTerm data             |
+| `getLaunchPredicateBootstrapTriples()`       | Launch vocabulary bootstrap relationships |
+| `buildPredicateIpfsDocument(key, options)`   | Enrichment document data; no upload       |
+
+## First use
+
+```ts
+import { PREDICATE_IDS } from '@0xintuition/predicates';
+console.log(PREDICATE_IDS.follow);
+```
+
+## Integration decisions
+
+Changing identity-bearing payload text changes an ID. The classification metadata matrix owns typed creation targets; legacy expectedObjectType strings are descriptive hints.
+
+## Source and full contract
+
+[Source and package guide](https://github.com/0xIntuition/packages/tree/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/predicates) · [npm package](https://www.npmjs.com/package/@0xintuition/predicates). The [machine-readable manifest](https://docs.intuition.systems/intuition-release.json) lists all declared public subpaths and peer dependencies. Npm links name the intended package; this page does not assert that the candidate has been published.
+
+# @0xintuition/primitives guide
+
+Source: https://docs.intuition.systems/docs/build/packages/primitives
+
+Build atoms and triples with validated, deterministic public helpers.
+
+Candidate source version: **0.1.0-alpha.1**. [Release compatibility](https://docs.intuition.systems/docs/build/compatibility) explains publication and deployment prerequisites.
+
+## Install
+
+```sh
+npm install @0xintuition/primitives@0.1.0-alpha.1 viem@^2
+```
+
+Use ESM imports. Required peers: `viem ^2.0.0`.
+
+## Main surface
+
+| Export or operation                            | Purpose                                                             |
+| ---------------------------------------------- | ------------------------------------------------------------------- |
+| `buildIidAnchor(slug, values, options?)`       | BuildResult with exact bytes, ID, profile, nullable IID and context |
+| `buildAtomAnchor`                              | Alias of buildIidAnchor                                             |
+| `buildEthereumAccount(values)`                 | Validated compatibility atom builder                                |
+| `buildTripleByName(subjectId, name, objectId)` | BuildResult resolving a canonical predicate                         |
+
+## First use
+
+```ts
+import { buildIidAnchor } from '@0xintuition/primitives/anchor';
+const built = buildIidAnchor('music-recording', { isrc: 'USRC17607839' });
+if (!built.success) throw new Error(built.errors.join('; '));
+console.log(built.value);
+```
+
+## Integration decisions
+
+Always narrow BuildResult.success. Context URIs never affect the atom ID. The candidateIid option is a distinct validation path; read its contract before using imported provider identifiers.
+
+## Source and full contract
+
+[Source and package guide](https://github.com/0xIntuition/packages/tree/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/primitives) · [npm package](https://www.npmjs.com/package/@0xintuition/primitives). The [machine-readable manifest](https://docs.intuition.systems/intuition-release.json) lists all declared public subpaths and peer dependencies. Npm links name the intended package; this page does not assert that the candidate has been published.
+
+# @0xintuition/protocol guide
+
+Source: https://docs.intuition.systems/docs/build/packages/protocol
+
+Call or encode core protocol contracts with explicit viem clients and deployment configuration.
+
+Candidate source version: **4.0.0**. [Release compatibility](https://docs.intuition.systems/docs/build/compatibility) explains publication and deployment prerequisites.
+
+## Install
+
+```sh
+npm install @0xintuition/protocol@4.0.0 viem@^2
+```
+
+Use ESM imports. Required peers: `viem ^2.0.0`.
+
+## Main surface
+
+| Export or operation             | Purpose                               |
+| ------------------------------- | ------------------------------------- |
+| `ReadConfig`                    | Contract address and public client    |
+| `WriteConfig`                   | Read configuration plus wallet client |
+| `multiVaultCreateAtomsWithUris` | URI-aware atom registration wrapper   |
+| `multiVaultDepositEncode`       | Pure calldata encoder for a deposit   |
+
+## First use
+
+Start with the [on-chain guide](https://docs.intuition.systems/docs/build/guides/onchain), configure the matching deployment and viem clients, then choose read, encode, or write behavior deliberately. The [upstream guide](https://github.com/0xIntuition/packages/tree/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/README.md) contains the contract wrapper conventions.
+
+## Integration decisions
+
+Read wrappers call RPC. Write wrappers can submit transactions; Encode helpers only build calldata. Periphery bridges and FeeProxy live in periphery. Use sdk/actions when you need a higher-level quote or plan.
+
+## Source and full contract
+
+[Source and package guide](https://github.com/0xIntuition/packages/tree/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol) · [npm package](https://www.npmjs.com/package/@0xintuition/protocol). The [machine-readable manifest](https://docs.intuition.systems/intuition-release.json) lists all declared public subpaths and peer dependencies. Npm links name the intended package; this page does not assert that the candidate has been published.
+
+# @0xintuition/react guide
+
+Source: https://docs.intuition.systems/docs/build/packages/react
+
+Compose protocol read/write hooks and observable transaction lifecycle state in React.
+
+Candidate source version: **0.1.0-alpha.1**. [Release compatibility](https://docs.intuition.systems/docs/build/compatibility) explains publication and deployment prerequisites.
+
+## Install
+
+```sh
+npm install @0xintuition/react@0.1.0-alpha.1 viem@^2
+```
+
+Use ESM imports. Required peers: `@tanstack/react-query >=5`, `react >=18`, `viem ^2.0.0`, `wagmi >=2`.
+
+## Main surface
+
+| Export or operation  | Purpose                                                  |
+| -------------------- | -------------------------------------------------------- |
+| `IntuitionProvider`  | Intuition configuration inside wagmi and Query providers |
+| `useAtomCost()`      | Creation-cost read hook                                  |
+| `useTransactionFlow` | Submission and receipt-confirmation state                |
+| `useCreateAtomFlow`  | Ordinary atom creation plus ID extraction                |
+
+## First use
+
+Wrap the application in `WagmiProvider`, then `QueryClientProvider`, then `IntuitionProvider`. Start with a read-only `useAtomCost` component. Add wallet connectors and explicit transaction handling when implementing writes. See the complete [provider setup](https://github.com/0xIntuition/packages/tree/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/react/README.md#providers).
+
+## Integration decisions
+
+Use compatible React, wagmi, TanStack Query, and viem peers. The candidate supports React 18+ but release checks exercise React 19/wagmi 2/Query 5. Reset does not cancel a submitted transaction, and the ordinary creation hook does not register URI context.
+
+## Source and full contract
+
+[Source and package guide](https://github.com/0xIntuition/packages/tree/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/react) · [npm package](https://www.npmjs.com/package/@0xintuition/react). The [machine-readable manifest](https://docs.intuition.systems/intuition-release.json) lists all declared public subpaths and peer dependencies. Npm links name the intended package; this page does not assert that the candidate has been published.
+
+# @0xintuition/schema-org guide
+
+Source: https://docs.intuition.systems/docs/build/packages/schema-org
+
+Look up the pinned schema.org vocabulary and inherited properties for forms and tooling.
+
+Candidate source version: **0.1.0-alpha.0**. [Release compatibility](https://docs.intuition.systems/docs/build/compatibility) explains publication and deployment prerequisites.
+
+## Install
+
+```sh
+npm install @0xintuition/schema-org@0.1.0-alpha.0
+```
+
+Use ESM imports.
+
+## Main surface
+
+| Export or operation      | Purpose                                     |
+| ------------------------ | ------------------------------------------- |
+| `getType(name)`          | Type record or undefined                    |
+| `getPropertiesFor(name)` | Resolved property list including originType |
+| `schemaOrgBook`          | Named Book export from the Book subpath     |
+
+## First use
+
+```ts
+import { getPropertiesFor } from '@0xintuition/schema-org';
+console.log(getPropertiesFor('Book').find((p) => p.name === 'name'));
+```
+
+## Integration decisions
+
+The snapshot is schema.org V30.0. The vocabulary supplies schema metadata, while classifications decides which fields an Intuition creation flow recommends.
+
+## Source and full contract
+
+[Source and package guide](https://github.com/0xIntuition/packages/tree/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/schema-org) · [npm package](https://www.npmjs.com/package/@0xintuition/schema-org). The [machine-readable manifest](https://docs.intuition.systems/intuition-release.json) lists all declared public subpaths and peer dependencies. Npm links name the intended package; this page does not assert that the candidate has been published.
+
+# @0xintuition/sdk guide
+
+Source: https://docs.intuition.systems/docs/build/packages/sdk
+
+Build integrations with hosted GraphQL reads, deterministic utilities, and explicit on-chain action plans.
+
+Candidate source version: **4.0.0**. [Release compatibility](https://docs.intuition.systems/docs/build/compatibility) explains publication and deployment prerequisites.
+
+## Install
+
+```sh
+npm install @0xintuition/sdk@4.0.0 viem@^2
+```
+
+Use ESM imports. Required peers: `viem ^2.0.0`.
+
+## Main surface
+
+| Export or operation                | Purpose                                     |
+| ---------------------------------- | ------------------------------------------- |
+| `createIntuitionApiClient(config)` | Narrow hosted-schema read client from /api  |
+| `multivaultCreateAndSeedTerm`      | Create/seed plan from /actions              |
+| `feeProxyBuildCreateViaPlan`       | Signer-attributed routed creation plan      |
+| `feeProxyExecutePlan`              | Submits transactions and waits for receipts |
+
+## First use
+
+```ts
+import {
+  createIntuitionApiClient,
+  getIntuitionApiUrl,
+} from '@0xintuition/sdk/api';
+const api = createIntuitionApiClient({
+  baseUrl: getIntuitionApiUrl('testnet'),
+});
+// Calling api.atoms.getById({ termId }) makes an HTTP request.
+```
+
+## Integration decisions
+
+This is the SDK 4 candidate. It does not own IPFS uploads, framework hooks, general search, or product auth. The existing SDK v3 examples on this site are a separate generation. See the full function reference for exact parameter and result types.
+
+[API client reference](https://docs.intuition.systems/docs/build/sdk-reference/api) · [MultiVault](https://docs.intuition.systems/docs/build/sdk-reference/multivault) · [FeeProxy](https://docs.intuition.systems/docs/build/sdk-reference/fee-proxy-builders) · [Dynamic fees](https://docs.intuition.systems/docs/build/sdk-reference/dynamic-fee-curve) · [TrustBonding](https://docs.intuition.systems/docs/build/sdk-reference/trust-bonding) · [Portfolio](https://docs.intuition.systems/docs/build/sdk-reference/portfolio).
+
+## Source and full contract
+
+[Source and package guide](https://github.com/0xIntuition/packages/tree/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk) · [npm package](https://www.npmjs.com/package/@0xintuition/sdk). The [machine-readable manifest](https://docs.intuition.systems/intuition-release.json) lists all declared public subpaths and peer dependencies. Npm links name the intended package; this page does not assert that the candidate has been published.
+
+# API client
+
+Source: https://docs.intuition.systems/docs/build/sdk-reference/api
+
+Generated from the upcoming SDK **4.0.0** source. See [release compatibility](https://docs.intuition.systems/docs/build/compatibility) before installing or connecting to a deployment. Regenerate with `node scripts/generate-package-reference.js /path/to/packages`.
+
+Import from `@0xintuition/sdk/api`. [Implementation and internal helpers](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/api/index.ts).
+
+Signatures show the exact accepted inputs and return types. Named input/output structures and dependency-injection types are listed below; viem and protocol types come from their respective packages. Preparation and quote functions can perform RPC reads. **`feeProxyExecutePlan` sends transactions**; the other SDK actions on these pages prepare transactions or read data.
+
+## getIntuitionApiUrl
+
+Select the built-in local, testnet, or mainnet hosted GraphQL endpoint. This is a pure URL lookup, not a Core REST connection.
+
+[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/api/index.ts#L82)
+
+```ts
+function getIntuitionApiUrl(network: IntuitionApiNetwork): string;
+```
+
+## createIntuitionApiClient
+
+Construct a read client for the hosted GraphQL schema. Its four methods return normalized atom/triple models or null for absent rows, and throw for transport or GraphQL failures.
+
+[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/api/index.ts#L246)
+
+```ts
+function createIntuitionApiClient(
+  config: IntuitionApiClientConfig,
+): IntuitionApiClient;
+```
+
+## Input and result types
+
+```ts
+type FetchHeaders = Record<string, string>;
+
+type FetchResponseLike = {
+  ok: boolean;
+  status: number;
+  json(): Promise<unknown>;
+  text(): Promise<string>;
+};
+
+export type FetchLike = (
+  input: string,
+  init?: {
+    method?: string;
+    headers?: FetchHeaders;
+    body?: string;
+  },
+) => Promise<FetchResponseLike>;
+
+export type IntuitionApiClientAuth =
+  | {
+      kind: 'bearer';
+      token: string;
+    }
+  | {
+      kind: 'apiKey';
+      value: string;
+      headerName?: string;
+    };
+
+export type IntuitionApiClientConfig = {
+  baseUrl?: string;
+  auth?: IntuitionApiClientAuth;
+  fetch?: FetchLike;
+  headers?: FetchHeaders;
+};
+
+export type IntuitionApiNetwork = 'local' | 'testnet' | 'mainnet';
+
+export type IntuitionApiAtom = {
+  termId: string;
+  label: string | null;
+  data: string | null;
+  image: string | null;
+  emoji: string | null;
+  type: string | null;
+};
+
+export type IntuitionApiTermReference = {
+  termId: string;
+  label: string | null;
+  image: string | null;
+  type: string | null;
+};
+
+export type IntuitionApiTriple = {
+  termId: string;
+  subject: IntuitionApiTermReference;
+  predicate: IntuitionApiTermReference;
+  object: IntuitionApiTermReference;
+};
+
+export type IntuitionApiClient = {
+  atoms: {
+    getById(inputs: { termId: string }): Promise<IntuitionApiAtom | null>;
+    getByLabel(inputs: { label: string }): Promise<IntuitionApiAtom | null>;
+    getByData(inputs: { data: string }): Promise<IntuitionApiAtom | null>;
+  };
+  triples: {
+    getById(inputs: { termId: string }): Promise<IntuitionApiTriple | null>;
+  };
+};
+
+type GraphqlSuccess<TData> = {
+  data?: TData;
+  errors?: Array<{ message?: string }>;
+};
+```
+
+# Dynamic-fee curve actions
+
+Source: https://docs.intuition.systems/docs/build/sdk-reference/dynamic-fee-curve
+
+Generated from the upcoming SDK **4.0.0** source. See [release compatibility](https://docs.intuition.systems/docs/build/compatibility) before installing or connecting to a deployment. Regenerate with `node scripts/generate-package-reference.js /path/to/packages`.
+
+Import from `@0xintuition/sdk/actions`. [Implementation and internal helpers](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/dynamic-fee-curve.ts).
+
+Signatures show the exact accepted inputs and return types. Named input/output structures and dependency-injection types are listed below; viem and protocol types come from their respective packages. Preparation and quote functions can perform RPC reads. **`feeProxyExecutePlan` sends transactions**; the other SDK actions on these pages prepare transactions or read data.
+
+## dynamicFeeCurveGetTierOverrides
+
+Reads every tier's manual fee override for a curve, in the shape the pure tier maths takes.
+
+The live contract consults `tierFeeOverride[tier]` before falling back to the formulaic rate, so
+any off-chain rendering of the ladder or its rates must do the same or it silently disagrees
+wherever an override is set. Exported because it is a prerequisite for using `@0xintuition/curves`
+directly — without it, every consumer rediscovers both the tier range and the fact that the two
+rate fields are `uint16`, which viem decodes as a JS `number` while `DynamicFeeTierOverride`
+declares them as `bigint`. An unchecked pass-through type-checks and then throws inside the first
+`mulDivUp`.
+
+[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/dynamic-fee-curve.ts#L180)
+
+```ts
+function dynamicFeeCurveGetTierOverrides(
+  config: ReadConfig,
+  inputs: {
+    config: DynamicFeeConfig;
+  },
+  deps?: Pick<DynamicFeeCurveDeps, 'tierFeeOverride'>,
+): Promise<Map<bigint, DynamicFeeTierOverride>>;
+```
+
+- **`config`**: Curve address and public client.
+- **`inputs`**: The curve's config, which carries the tier count to walk.
+- **`deps`**: Injectable protocol read primitives.
+- **returns**: The set overrides, keyed by tier. Tiers without an override are absent.
+
+Defaults: `deps = defaultDynamicFeeCurveDeps`. Dependency arguments are optional test/customization hooks; normal consumers use the built-in dependencies.
+
+## dynamicFeeCurveGetTierLadder
+
+Resolves a dynamic-fee curve's tier ladder for the current vault state — the tier
+math itself is pure (`@0xintuition/curves`), fed by a single on-chain config read.
+
+[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/dynamic-fee-curve.ts#L218)
+
+```ts
+function dynamicFeeCurveGetTierLadder(
+  configs: {
+    bondingCurveRegistry: ReadConfig;
+    curveReadConfig: Omit<ReadConfig, 'address'>;
+  },
+  inputs: {
+    curveId: bigint;
+  },
+  deps?: Pick<
+    DynamicFeeCurveDeps,
+    'curveAddresses' | 'getConfig' | 'tierFeeOverride'
+  >,
+): Promise<{
+  curveAddress: Address;
+  config: DynamicFeeConfig;
+  overrides: Map<bigint, DynamicFeeTierOverride>;
+  tierLadder: DynamicFeeTierLadderEntry[];
+}>;
+```
+
+- **`configs`**: `bondingCurveRegistry` (to resolve the curve address) and the shared read config the resolved curve is read through.
+- **`inputs`**: The curve ID to resolve and quote.
+- **`deps`**: Injectable protocol read primitives.
+- **returns**: The curve address, its config, its overrides, and the full tier ladder.
+
+Defaults: `deps = defaultDynamicFeeCurveDeps`. Dependency arguments are optional test/customization hooks; normal consumers use the built-in dependencies.
+
+## dynamicFeeCurveQuoteDepositPlan
+
+Quotes a deposit into a dynamic-fee vault: resolves the curve from the registry, reads the
+on-chain piecewise deposit-fee quote (exact across every band the deposit traverses, not just the
+pre-deposit tier), and composes it with the standard MultiVault deposit quote.
+
+Also reports the traversal itself — which tier the vault starts in, which it lands in, and the
+per-band split — because a piecewise fee that arrives as a single number cannot be explained to
+the person paying it.
+
+[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/dynamic-fee-curve.ts#L254)
+
+```ts
+function dynamicFeeCurveQuoteDepositPlan(
+  configs: {
+    multiVault: ReadConfig;
+    bondingCurveRegistry: ReadConfig;
+  },
+  inputs: {
+    termId: Hex;
+    curveId: bigint;
+    assetsIn: bigint;
+    slippageBps?: bigint;
+  },
+  deps?: DynamicFeeCurveDeps,
+): Promise<DynamicFeeCurveDepositQuotePlan>;
+```
+
+- **`configs`**: `multiVault` and `bondingCurveRegistry` read configs.
+- **`inputs`**: The term/curve to deposit into and the gross asset amount.
+- **`deps`**: Injectable protocol read primitives.
+- **returns**: The combined dynamic-fee-curve and MultiVault deposit quote.
+
+Defaults: `deps = defaultDynamicFeeCurveDeps`. Dependency arguments are optional test/customization hooks; normal consumers use the built-in dependencies.
+
+## dynamicFeeCurvePrepareDepositTx
+
+Prepare encoded deposit arguments and minimum shares from a dynamic-fee quote, without submitting a transaction.
+
+[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/dynamic-fee-curve.ts#L323)
+
+```ts
+function dynamicFeeCurvePrepareDepositTx(
+  configs: {
+    multiVault: ReadConfig;
+    bondingCurveRegistry: ReadConfig;
+  },
+  inputs: {
+    receiver: Address;
+    termId: Hex;
+    curveId: bigint;
+    assetsIn: bigint;
+    slippageBps?: bigint;
+  },
+  deps?: DynamicFeeCurveDeps,
+): Promise<DynamicFeeCurvePrepareDepositTxResult>;
+```
+
+- **`configs`**: `multiVault` and `bondingCurveRegistry` read configs.
+- **`inputs`**: The receiver, term/curve to deposit into, and the gross asset amount.
+- **`deps`**: Injectable protocol read primitives.
+- **returns**: The deposit calldata, args, value, and the quote it was built from.
+
+Defaults: `deps = defaultDynamicFeeCurveDeps`. Dependency arguments are optional test/customization hooks; normal consumers use the built-in dependencies.
+
+## dynamicFeeCurveQuoteRedeemPlan
+
+Quotes a redeem out of a dynamic-fee vault for a specific account.
+
+The withdrawal rate on this curve keys on the tiers the ACCOUNT entered at, not on where the vault
+sits now, and the two diverge in both directions as the vault moves. A position is a set of lots,
+one per band the holder entered through, and a redeem unwinds them highest tier first, so a single
+redemption can be priced at several rates at once. This adds that context to the generic
+account-aware MultiVault quote: the lots in unwind order, the one the next share out comes from,
+where the vault currently is, and whether the account holds any lot at all — an account with none
+falls back to the vault's tier, which is the one case where the two coincide by construction.
+
+[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/dynamic-fee-curve.ts#L364)
+
+```ts
+function dynamicFeeCurveQuoteRedeemPlan(
+  configs: {
+    multiVault: ReadConfig;
+    bondingCurveRegistry: ReadConfig;
+  },
+  inputs: {
+    termId: Hex;
+    curveId: bigint;
+    account: Address;
+    sharesIn: bigint;
+    slippageBps?: bigint;
+  },
+  deps?: DynamicFeeCurveDeps,
+): Promise<DynamicFeeCurveRedeemQuotePlan>;
+```
+
+- **`configs`**: `multiVault` and `bondingCurveRegistry` read configs.
+- **`inputs`**: The term/curve, the redeeming account, the share count and optional slippage.
+- **`deps`**: Injectable protocol read primitives.
+- **returns**: The account's payout, its fee breakdown, and the tiers behind the withdrawal rate.
+
+Defaults: `deps = defaultDynamicFeeCurveDeps`. Dependency arguments are optional test/customization hooks; normal consumers use the built-in dependencies.
+
+## dynamicFeeCurvePrepareRedeemTx
+
+Prepares a redeem transaction out of a dynamic-fee vault, floored against the redeeming account's
+own payout rather than a holder-agnostic one.
+
+[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/dynamic-fee-curve.ts#L438)
+
+```ts
+function dynamicFeeCurvePrepareRedeemTx(
+  configs: {
+    multiVault: ReadConfig;
+    bondingCurveRegistry: ReadConfig;
+  },
+  inputs: {
+    receiver: Address;
+    termId: Hex;
+    curveId: bigint;
+    account: Address;
+    sharesIn: bigint;
+    slippageBps?: bigint;
+  },
+  deps?: DynamicFeeCurveDeps,
+): Promise<DynamicFeeCurvePrepareRedeemTxResult>;
+```
+
+- **`configs`**: `multiVault` and `bondingCurveRegistry` read configs.
+- **`inputs`**: The receiver, term/curve, redeeming account, share count and optional slippage.
+- **`deps`**: Injectable protocol read primitives.
+- **returns**: The redeem calldata, args, and the quote it was built from.
+
+Defaults: `deps = defaultDynamicFeeCurveDeps`. Dependency arguments are optional test/customization hooks; normal consumers use the built-in dependencies.
+
+## dynamicFeeCurveProjectDepositEarnings
+
+Projects what a deposit's curve fee EARNS — for every tier, and optionally for one holder.
+
+This is the other half of a deposit quote. The fee side has always been answerable; the earning
+side is what makes an early position worth taking, and it needs the fulcrum kernel: each
+traversed band's slice of the fee is spread over the tiers below it by a sliding triangular
+window, gated on `minEligibleTierStakeBps`, with the depositor's own landing changing the
+denominators between bands. The kernel maths is `dynamicFeeDistributeDeposit` in
+`@0xintuition/curves`, a floor-exact mirror of the contract's `recordDeposit`; this function
+feeds it the on-chain state it needs (config, overrides, per-tier occupancy and accumulators, the
+depositor's lots) and, for a named holder, sums their lots so the projection is wei-exact rather
+than approximately pro-rata. A holder with lots at several tiers earns at each of them.
+
+A projection is a statement about the CURRENT state: another deposit landing first changes the
+denominators, exactly as it would change a price quote.
+
+[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/dynamic-fee-curve.ts#L508)
+
+```ts
+function dynamicFeeCurveProjectDepositEarnings(
+  configs: {
+    multiVault: ReadConfig;
+    bondingCurveRegistry: ReadConfig;
+  },
+  inputs: {
+    termId: Hex;
+    curveId: bigint;
+    assetsIn: bigint;
+    depositor?: Address;
+    holder?: Address;
+  },
+  deps?: DynamicFeeCurveDeps,
+): Promise<DynamicFeeCurveEarningsProjection>;
+```
+
+- **`configs`**: `multiVault` and `bondingCurveRegistry` read configs.
+- **`inputs`**: The term/curve and gross deposit, the depositor (when they hold a position), and optionally a holder to project for.
+- **`deps`**: Injectable protocol read primitives.
+- **returns**: The per-tier distribution of the deposit's curve fee, and the named holder's exact earning.
+
+Defaults: `deps = defaultDynamicFeeCurveDeps`. Dependency arguments are optional test/customization hooks; normal consumers use the built-in dependencies.
+
+## dynamicFeeCurveGetClaimableAcrossTerms
+
+Reads what an account can claim across a set of terms, and where it comes from.
+
+`claimable(account, termId)` is the obvious read and the wrong one for a multi-term total: it
+folds in the account's banked (term-independent) balance on every call, so summing or filtering by
+it per term double-counts that component, and the error grows with the number of positions held.
+`claimableAcross` is the total `claim` would actually pay; `pendingFor` is the additive per-term
+part; `bankedEarnings` is the settled remainder. Returning all three is what lets a consumer show
+the breakdown without reconstructing it wrongly.
+
+[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/dynamic-fee-curve.ts#L631)
+
+```ts
+function dynamicFeeCurveGetClaimableAcrossTerms(
+  config: ReadConfig,
+  inputs: {
+    account: Address;
+    termIds: Hex[];
+  },
+  deps?: Pick<
+    DynamicFeeCurveDeps,
+    'claimableAcross' | 'pendingFor' | 'bankedEarnings'
+  >,
+): Promise<DynamicFeeCurveClaimableAcrossTermsResult>;
+```
+
+- **`config`**: Read config for the dynamic-fee curve.
+- **`inputs`**: The account and the candidate term IDs to check.
+- **`deps`**: Injectable protocol read primitives.
+- **returns**: The total claimable across the supplied terms, which of them are non-zero, and the split.
+
+Defaults: `deps = defaultDynamicFeeCurveDeps`. Dependency arguments are optional test/customization hooks; normal consumers use the built-in dependencies.
+
+## dynamicFeeCurvePrepareClaimTx
+
+Builds a batched claim transaction for a dynamic-fee curve: discovers which terms hold a claimable
+balance for the account, then returns one `claim` calldata settling all of them at once.
+
+Having nothing to claim is an ordinary state, not an error, so it comes back as `isClaimable:
+false` rather than as a thrown exception a UI has to catch to render a zero. Term IDs are
+de-duplicated because the contract reverts with `DynamicFeeFlatPriceCurve_DuplicateTermIds` on a
+repeat.
+
+[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/dynamic-fee-curve.ts#L675)
+
+```ts
+function dynamicFeeCurvePrepareClaimTx(
+  config: ReadConfig,
+  inputs: {
+    account: Address;
+    termIds: Hex[];
+  },
+  deps?: Pick<
+    DynamicFeeCurveDeps,
+    'claimableAcross' | 'pendingFor' | 'bankedEarnings'
+  >,
+): Promise<DynamicFeeCurvePrepareClaimTxResult>;
+```
+
+- **`config`**: Read config for the dynamic-fee curve.
+- **`inputs`**: The account and the candidate term IDs to settle.
+- **`deps`**: Injectable protocol read primitives.
+- **returns**: The claim calldata, args, the claimable breakdown, and whether it is worth sending.
+
+Defaults: `deps = defaultDynamicFeeCurveDeps`. Dependency arguments are optional test/customization hooks; normal consumers use the built-in dependencies.
+
+## Input and result types
+
+```ts
+export type DynamicFeeCurveDepositQuotePlan = {
+  curveId: bigint;
+  curveAddress: Address;
+  termId: Hex;
+  assetsIn: bigint;
+  curveFee: bigint;
+  tierLadder: DynamicFeeTierLadderEntry[];
+  /** Where the vault sits before the deposit, and where this deposit leaves it. */
+  startTier: bigint;
+  landingTier: bigint;
+  vaultStakeBefore: bigint;
+  /**
+   * The tier bands the FEE quote traverses, and what each one costs — the walk behind `curveFee`,
+   * available before the trade.
+   *
+   * This is the fee walk, not the landing walk: it advances by the fee base net of the CURVE fee
+   * only, mirroring the on-chain `quoteDepositFee`, while the shares that actually land are also
+   * net of MultiVault's protocol, entry and term fees. The landing (what `DepositBandRecorded`
+   * emits, and what `landingTier` reports) can therefore stop a band short of the last band here.
+   * Both walks are the contract's own; they answer different questions.
+   */
+  bands: DynamicFeeDepositBand[];
+  multiVaultQuote: MultiVaultDepositQuotePlan;
+};
+
+export type DynamicFeeCurvePrepareDepositTxResult = {
+  args: readonly [Address, Hex, bigint, bigint];
+  calldata: Hex;
+  value?: bigint;
+  quote: DynamicFeeCurveDepositQuotePlan;
+};
+
+export type DynamicFeeCurveRedeemQuotePlan = {
+  curveId: bigint;
+  curveAddress: Address;
+  termId: Hex;
+  account: Address;
+  /**
+   * The account's lots, highest tier first — the order the redeem unwinds them, and the order the
+   * withdrawal fee is priced in: each portion at the rate of the band it entered through.
+   */
+  lots: Array<{ tier: bigint; stake: bigint }>;
+  /**
+   * The lot the redeem draws from first, so the rate on the next share out. `DYNAMIC_FEE_NO_LOT`
+   * when the account holds no lot at all.
+   */
+  topTier: bigint;
+  /** Where the vault currently sits, which is NOT what a holder's fee keys on. */
+  vaultTier: bigint;
+  /** True when the account holds no lot, so the vault's tier prices the whole redemption. */
+  usesVaultTierFallback: boolean;
+  multiVaultQuote: MultiVaultRedeemQuotePlan;
+};
+
+export type DynamicFeeCurvePrepareRedeemTxResult = {
+  args: readonly [Address, Hex, bigint, bigint, bigint];
+  calldata: Hex;
+  quote: DynamicFeeCurveRedeemQuotePlan;
+};
+
+export type DynamicFeeCurveClaimableAcrossTermsResult = {
+  account: Address;
+  termIds: Hex[];
+  totalClaimable: bigint;
+  claimableTermIds: Hex[];
+  /** The account-wide settled balance, which `claimable` folds into every per-term answer. */
+  bankedEarnings: bigint;
+  /** The unsettled part, per term. Additive, unlike `claimable`. */
+  pendingByTermId: Array<{ termId: Hex; pending: bigint }>;
+};
+
+export type DynamicFeeCurvePrepareClaimTxResult = {
+  args: readonly [readonly Hex[]];
+  calldata: Hex;
+  claimable: DynamicFeeCurveClaimableAcrossTermsResult;
+  /** False when there is nothing to settle. The calldata is still well-formed; sending it wastes gas. */
+  isClaimable: boolean;
+};
+
+type DynamicFeeCurveDeps = {
+  curveAddresses: typeof bondingCurveRegistryCurveAddresses;
+  getConfig: typeof dynamicFeeFlatPriceCurveGetConfig;
+  tierFeeOverride: typeof dynamicFeeFlatPriceCurveTierFeeOverride;
+  quoteDepositFee: typeof dynamicFeeFlatPriceCurveQuoteDepositFee;
+  claimableAcross: typeof dynamicFeeFlatPriceCurveClaimableAcross;
+  pendingFor: typeof dynamicFeeFlatPriceCurvePendingFor;
+  bankedEarnings: typeof dynamicFeeFlatPriceCurveBankedEarnings;
+  vaultStake: typeof dynamicFeeFlatPriceCurveVaultStake;
+  userLots: typeof dynamicFeeFlatPriceCurveUserLots;
+  tierStake: typeof dynamicFeeFlatPriceCurveTierStake;
+  accFeePerShare: typeof dynamicFeeFlatPriceCurveAccFeePerShare;
+  /**
+   * The depositor's stored lot debts, which decide what a deposit topping up an earning lot banks.
+   * Optional so offline callers that inject every read can omit it; without it the projection
+   * checkpoints the depositor's lots at the current accumulators and reports nothing banked.
+   */
+  lotRewardDebt?: typeof dynamicFeeFlatPriceCurveLotRewardDebt;
+  quoteDepositPlan: typeof multivaultQuoteDepositPlan;
+  quoteRedeemPlan: typeof multivaultQuoteRedeemPlan;
+};
+
+export type DynamicFeeCurveEarningsProjection = {
+  termId: Hex;
+  curveId: bigint;
+  curveAddress: Address;
+  assetsIn: bigint;
+  /** The curve fee this deposit pays, which is exactly what the distribution below hands out. */
+  curveFee: bigint;
+  /** Where the fee goes: per-tier cohort payouts and the exact accumulator deltas. */
+  distribution: DynamicFeeDepositDistribution;
+  /** Per-tier occupancy the distribution ran against, for rendering "who earns" honestly. */
+  occupancy: DynamicFeeTierOccupancy;
+  /** Per-tier accumulators the distribution ran against, the "before" the projection measures from. */
+  accFeePerShare: DynamicFeeAccumulators;
+  /** Present when a holder was named: their lots, total stake, and wei-exact projected earning. */
+  holder?: {
+    account: Address;
+    lots: Array<{ tier: bigint; stake: bigint }>;
+    stake: bigint;
+    /** The pending delta the contract will write for this holder if the deposit executes now. */
+    projectedEarning: bigint;
+  };
+};
+```
+
+# FeeProxy affiliate profile
+
+Source: https://docs.intuition.systems/docs/build/sdk-reference/fee-proxy-affiliate-profile
+
+Generated from the upcoming SDK **4.0.0** source. See [release compatibility](https://docs.intuition.systems/docs/build/compatibility) before installing or connecting to a deployment. Regenerate with `node scripts/generate-package-reference.js /path/to/packages`.
+
+Import from `@0xintuition/sdk/actions`. [Implementation and internal helpers](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/fee-proxy-affiliate-profile.ts).
+
+Signatures show the exact accepted inputs and return types. Named input/output structures and dependency-injection types are listed below; viem and protocol types come from their respective packages. Preparation and quote functions can perform RPC reads. **`feeProxyExecutePlan` sends transactions**; the other SDK actions on these pages prepare transactions or read data.
+
+## feeProxyGetAffiliateProfile
+
+Reads everything a builder dashboard shows for one affiliate in one batched read: the registry
+row (fees, fee recipient, registration time, pause flag), whether it is active, its aggregate
+stats, the protocol caps and the registration fee. Uses the chain's Multicall3 (or the canonical
+address); when the batch is unavailable or any leg fails it falls back to individual reads.
+
+[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/fee-proxy-affiliate-profile.ts#L136)
+
+```ts
+function feeProxyGetAffiliateProfile(
+  config: ReadConfig,
+  inputs: {
+    affiliate: Address;
+  },
+): Promise<FeeProxyAffiliateProfile>;
+```
+
+- **`config`**: FeeProxy address and public client.
+- **`inputs`**: The affiliate to profile.
+- **returns**: The normalised profile: raw fees, fees as percentages, and headroom against the caps.
+
+## Input and result types
+
+```ts
+export type FeeProxyAffiliateStats = ContractFunctionReturnType<
+  typeof FeeProxyAbi,
+  'view',
+  'affiliateStats'
+>;
+
+export type FeeProxyFeeHeadroom = {
+  depositBps: bigint;
+  creationBps: bigint;
+  depositFixedFee: bigint;
+  creationFixedFee: bigint;
+};
+
+export type FeeProxyAffiliateProfile = {
+  affiliate: Address;
+  registered: boolean;
+  /** Registered and not row-paused: the condition every routing call checks. */
+  active: boolean;
+  paused: boolean;
+  /** Unix seconds; zero when unregistered. */
+  registeredAt: bigint;
+  feeRecipient: Address;
+  fees: FeeConfig;
+  /** The bps fields as percentages, for display (`250n` bps is `2.5`). */
+  feePercent: { deposit: number; creation: number };
+  caps: { maxFeeBps: bigint; maxFixedFee: bigint; maxFeePercent: number };
+  headroom: FeeProxyFeeHeadroom;
+  /**
+   * Whether each side's row is within the current protocol caps. Routing on a side that is over
+   * the cap reverts until the affiliate lowers its fees.
+   */
+  withinCaps: { deposit: boolean; creation: boolean };
+  registrationFee: bigint;
+  stats: FeeProxyAffiliateStats;
+};
+
+type AffiliateProfileReads = {
+  config: ContractFunctionReturnType<
+    typeof FeeProxyAbi,
+    'view',
+    'affiliateConfig'
+  >;
+  active: boolean;
+  stats: FeeProxyAffiliateStats;
+  maxFeeBps: bigint;
+  maxFixedFee: bigint;
+  registrationFee: bigint;
+};
+```
+
+# FeeProxy plans and execution
+
+Source: https://docs.intuition.systems/docs/build/sdk-reference/fee-proxy-builders
+
+Generated from the upcoming SDK **4.0.0** source. See [release compatibility](https://docs.intuition.systems/docs/build/compatibility) before installing or connecting to a deployment. Regenerate with `node scripts/generate-package-reference.js /path/to/packages`.
+
+Import from `@0xintuition/sdk/actions`. [Implementation and internal helpers](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/fee-proxy-builders.ts).
+
+Signatures show the exact accepted inputs and return types. Named input/output structures and dependency-injection types are listed below; viem and protocol types come from their respective packages. Preparation and quote functions can perform RPC reads. **`feeProxyExecutePlan` sends transactions**; the other SDK actions on these pages prepare transactions or read data.
+
+## feeProxyGetReadiness
+
+Checks everything a FeeProxy deposit or create needs before it can land, mirroring the checks
+the contract makes in order: the global pause, an active affiliate, the affiliate's fees on the
+used side within the current protocol caps, and the MultiVault approvals. First reads FeeProxy's
+`multiVault()` and throws unless it is `configs.multiVault`, where the approvals are read.
+
+Deposits need `receiver` to have approved FeeProxy for DEPOSIT, and, when `receiver` is not the
+caller, `receiver` to have approved the caller for DEPOSIT too (`FeeProxy_ReceiverNotApproved`).
+Both approvals are signed by `receiver`. Creates need the caller to have approved FeeProxy for
+CREATION. Approval steps preserve every bit already granted and merge requirements on the same
+pair into one `approve`, because `approve` overwrites the bitmask.
+
+[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/fee-proxy-builders.ts#L275)
+
+```ts
+function feeProxyGetReadiness(
+  configs: FeeProxyConfigs,
+  inputs: FeeProxyReadinessInputs,
+  deps?: FeeProxyReadinessDeps,
+): Promise<FeeProxyReadiness>;
+```
+
+- **`configs`**: FeeProxy and MultiVault read configs.
+- **`inputs`**: The caller, the affiliate, the deposit receiver (defaults to the caller) and the route kinds to check.
+- **`deps`**: Injectable read primitives.
+- **returns**: Whether the route is ready, what is missing, the approval transactions that fix it, and any pending refund.
+
+Defaults: `deps = defaultReadinessDeps`. Dependency arguments are optional test/customization hooks; normal consumers use the built-in dependencies.
+
+## feeProxyQuoteDepositVia
+
+Quotes a FeeProxy deposit: the affiliate fee from on-chain `previewDepositFee` on the total gross,
+the per-leg forwarded split (FeeProxy `_allocate`, cross-checked against the preview), then
+`MultiVault.previewDeposit` on each forwarded leg for the expected shares. `minShares` is
+previewed on each leg's `minForwardedAssets`, so a fee cut before inclusion cannot trip it. One
+leg quotes `depositVia`; several (or `batch: true`) quote `depositBatchVia`, which charges one
+fixed fee for the whole batch. First reads FeeProxy's `multiVault()` and throws unless it is
+`configs.multiVault`.
+
+[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/fee-proxy-builders.ts#L477)
+
+```ts
+function feeProxyQuoteDepositVia(
+  configs: FeeProxyConfigs,
+  inputs: FeeProxyDepositQuoteInputs,
+  deps?: FeeProxyDepositQuoteDeps,
+): Promise<FeeProxyDepositViaQuote>;
+```
+
+- **`configs`**: FeeProxy and MultiVault read configs.
+- **`inputs`**: The affiliate, the deposits, slippage in bps (default 100) and whether to force the batch entry point.
+- **`deps`**: Injectable read primitives.
+- **returns**: The quote, including the exact value to send and the pinned `FeeGuard`.
+
+Defaults: `deps = defaultDepositQuoteDeps`. Dependency arguments are optional test/customization hooks; normal consumers use the built-in dependencies.
+
+## feeProxyBuildDepositViaPlan
+
+Builds a FeeProxy deposit plan: readiness, then the quote, then ordered steps — any missing
+MultiVault approvals first, then `depositVia` / `depositBatchVia` carrying the quoted value,
+`minShares` and the pinned `FeeGuard`. Throws when FeeProxy does not forward to
+`configs.multiVault`, or when the route has a blocker no approval can fix (paused proxy, inactive
+affiliate, fees over the caps). Send with `feeProxyExecutePlan` or any signer, step by step.
+
+[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/fee-proxy-builders.ts#L611)
+
+```ts
+function feeProxyBuildDepositViaPlan(
+  configs: FeeProxyConfigs,
+  inputs: {
+    user: Address;
+    affiliate: Address;
+    receiver?: Address;
+    deposits: FeeProxyDepositInput[];
+    slippageBps?: bigint;
+    batch?: boolean;
+  },
+  deps?: FeeProxyReadinessDeps & FeeProxyDepositQuoteDeps,
+): Promise<FeeProxyDepositViaPlan>;
+```
+
+- **`configs`**: FeeProxy and MultiVault read configs.
+- **`inputs`**: The caller, the affiliate, the receiver (defaults to the caller), the deposits and slippage.
+- **`deps`**: Injectable read primitives.
+- **returns**: The plan.
+
+Defaults: `deps = {
+		...defaultReadinessDeps,
+		...defaultDepositQuoteDeps,
+	}`. Dependency arguments are optional test/customization hooks; normal consumers use the built-in dependencies.
+
+## feeProxyBuildCreateViaPlan
+
+Builds a FeeProxy creation plan. Each term is grossed up so that after the affiliate's creation
+bps and its fixed fee (charged once per call) and FeeProxy's pro-rata split, the amount MultiVault
+receives for that term is at least its creation cost plus the intended deposit, and stays so if
+the affiliate lowers either fee before the call lands. The total is the least for which the
+gross-up's per-term split does both, so a term can receive a few wei more than its target (the
+last term most). The gross-up is computed in bigint (`feeProxyGrossUpForTargets`), then the
+total is checked against on-chain `previewCreationFee`; any disagreement throws rather than
+sending a mispriced call. Atoms and triples are separate calls, each paying its own fixed fee.
+First reads FeeProxy's `multiVault()` and throws unless it is `configs.multiVault`.
+
+[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/fee-proxy-builders.ts#L738)
+
+```ts
+function feeProxyBuildCreateViaPlan(
+  configs: FeeProxyConfigs,
+  inputs: {
+    user: Address;
+    affiliate: Address;
+    atoms?: FeeProxyCreateAtomInput[];
+    triples?: FeeProxyCreateTripleInput[];
+    depositPerTerm?: bigint;
+  },
+  deps?: FeeProxyCreatePlanDeps,
+): Promise<FeeProxyCreateViaPlan>;
+```
+
+- **`configs`**: FeeProxy and MultiVault read configs.
+- **`inputs`**: The caller (also the creator), the affiliate, atoms and/or triples, and the default deposit per term.
+- **`deps`**: Injectable read primitives.
+- **returns**: The plan, with the gross-up quote per call.
+
+Defaults: `deps = defaultCreatePlanDeps`. Dependency arguments are optional test/customization hooks; normal consumers use the built-in dependencies.
+
+## feeProxyExecutePlan
+
+Sends a FeeProxy plan's steps in order from one wallet, waiting for each receipt before the
+next (an approval must be mined before the routed call that needs it). Refuses up front, before
+sending anything, when a step must be signed by a different account — for example a receiver's
+approval in a delegated deposit; send those steps from the receiver's wallet first.
+
+[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/fee-proxy-builders.ts#L979)
+
+```ts
+function feeProxyExecutePlan(
+  config: {
+    walletClient: WalletClient;
+    publicClient: PublicClient;
+  },
+  plan: {
+    steps: readonly FeeProxyPlanStep[];
+  },
+): Promise<FeeProxyExecutedStep[]>;
+```
+
+- **`config`**: The signing wallet client and a public client for receipts.
+- **`plan`**: Any plan with `steps`.
+- **returns**: Each step with its transaction hash and receipt.
+
+## Input and result types
+
+```ts
+type FeeProxyConfigs = { feeProxy: ReadConfig; multiVault: ReadConfig };
+
+export type FeeProxyRouteKind = 'deposit' | 'create';
+
+export type FeeProxyPlanStepKind =
+  | 'approve'
+  | 'deposit-via'
+  | 'deposit-batch-via'
+  | 'create-atoms-via'
+  | 'create-atoms-with-uris-via'
+  | 'create-triples-via';
+
+export type FeeProxyPlanStep = {
+  kind: FeeProxyPlanStepKind;
+  /** The account that must sign and send this step. Approval steps may need a different signer. */
+  from: Address;
+  to: Address;
+  data: Hex;
+  value: bigint;
+  description: string;
+};
+
+export type FeeProxyReadinessIssueCode =
+  | 'proxy-paused'
+  | 'affiliate-not-registered'
+  | 'affiliate-paused'
+  | 'deposit-fees-over-cap'
+  | 'creation-fees-over-cap'
+  | 'receiver-has-not-approved-proxy-for-deposit'
+  | 'receiver-has-not-approved-caller-for-deposit'
+  | 'caller-has-not-approved-proxy-for-creation';
+
+export type FeeProxyReadinessIssue = {
+  code: FeeProxyReadinessIssueCode;
+  message: string;
+  /** True when one of the returned approval steps resolves it; false when only an admin or the affiliate can. */
+  fixable: boolean;
+};
+
+export type FeeProxyReadiness = {
+  ready: boolean;
+  user: Address;
+  affiliate: Address;
+  receiver: Address;
+  kinds: FeeProxyRouteKind[];
+  missing: FeeProxyReadinessIssue[];
+  /** Ready-to-send MultiVault `approve` transactions that clear every fixable issue. */
+  approvalSteps: FeeProxyPlanStep[];
+  /** The user's pull-fallback refund balance. Claim it with `feeProxyClaimRefundIfAny`. */
+  pendingRefund: bigint;
+};
+
+type FeeProxyTargetDeps = {
+  multiVault: typeof feeProxyMultiVault;
+};
+
+type FeeProxyReadinessDeps = FeeProxyTargetDeps & {
+  paused: typeof feeProxyPaused;
+  affiliateConfig: typeof feeProxyAffiliateConfig;
+  maxFeeBps: typeof feeProxyMaxFeeBps;
+  maxFixedFee: typeof feeProxyMaxFixedFee;
+  pendingRefund: typeof feeProxyPendingRefund;
+  isApprovedToDeposit: typeof multiVaultIsApprovedToDeposit;
+  isApprovedToRedeem: typeof multiVaultIsApprovedToRedeem;
+  isApprovedToCreate: typeof multiVaultIsApprovedToCreate;
+};
+
+type FeeProxyDepositQuoteDeps = FeeProxyTargetDeps & {
+  affiliateConfig: typeof feeProxyAffiliateConfig;
+  previewDepositFee: typeof feeProxyPreviewDepositFee;
+  previewDeposit: typeof multiVaultPreviewDeposit;
+  getGeneralConfig: typeof multiVaultGetGeneralConfig;
+};
+
+type FeeProxyCreatePlanDeps = FeeProxyReadinessDeps & {
+  previewCreationFee: typeof feeProxyPreviewCreationFee;
+  getAtomCost: typeof multiVaultGetAtomCost;
+  getTripleCost: typeof multiVaultGetTripleCost;
+  getAtomUriConfig: typeof multiVaultGetAtomUriConfig;
+  calculateAtomId: typeof multiVaultCalculateAtomId;
+  calculateTripleId: typeof multiVaultCalculateTripleId;
+  previewAtomCreate: typeof multiVaultPreviewAtomCreate;
+  previewTripleCreate: typeof multiVaultPreviewTripleCreate;
+};
+
+type ApprovalRequirement = {
+  /** The account that calls `MultiVault.approve`. */
+  granter: Address;
+  /** The account being approved. */
+  spender: Address;
+  bit: number;
+  code: FeeProxyReadinessIssueCode;
+  message: string;
+};
+
+type FeeProxyReadinessInputs = {
+  user: Address;
+  affiliate: Address;
+  receiver?: Address;
+  kinds: FeeProxyRouteKind[];
+};
+
+export type FeeProxyDepositInput = {
+  termId: Hex;
+  curveId: bigint;
+  grossAssets: bigint;
+};
+
+export type FeeProxyDepositLegQuote = FeeProxyDepositInput & {
+  /** What MultiVault receives for this leg after the affiliate fee and the pro-rata split. */
+  forwardedAssets: bigint;
+  /**
+   * The least this leg can receive if the affiliate lowers its deposit fee before the call lands
+   * (the `FeeGuard` lets decreases through). A lower fee forwards more in total, but the last leg of a
+   * batch takes the rounding remainder and can get up to one wei per other leg less than quoted.
+   * Equal to `forwardedAssets` for every other leg.
+   */
+  minForwardedAssets: bigint;
+  /** `MultiVault.previewDeposit` on the forwarded amount. */
+  expectedShares: bigint;
+  /** `MultiVault.previewDeposit` on `minForwardedAssets`, less slippage: the `minShares` the call carries. */
+  minShares: bigint;
+};
+
+export type FeeProxyDepositViaQuote = {
+  affiliate: Address;
+  method: 'depositVia' | 'depositBatchVia';
+  legs: FeeProxyDepositLegQuote[];
+  totalGrossAssets: bigint;
+  affiliateFee: bigint;
+  totalForwardedAssets: bigint;
+  slippageBps: bigint;
+  /** The exact `msg.value` to send: the total gross. Anything above it is refunded. */
+  value: bigint;
+  /** Pinned to the affiliate's current deposit fees, so the call reverts if they rise before it lands. */
+  feeGuard: FeeGuard;
+};
+
+type FeeProxyDepositQuoteInputs = {
+  affiliate: Address;
+  deposits: FeeProxyDepositInput[];
+  slippageBps?: bigint;
+  batch?: boolean;
+};
+
+export type FeeProxyDepositViaPlan = {
+  readiness: FeeProxyReadiness;
+  quote: FeeProxyDepositViaQuote;
+  /** Approvals first (possibly signed by the receiver), then the routed deposit. */
+  steps: FeeProxyPlanStep[];
+  value: bigint;
+};
+
+export type FeeProxyCreateAtomInput = {
+  data: Hex;
+  /** Creation-time context URIs. Any atom with URIs routes the whole set through `createAtomsWithUrisVia`. */
+  uris?: Hex[];
+  /** Assets to land in the new vault on top of the creation cost; defaults to `depositPerTerm`. */
+  deposit?: bigint;
+};
+
+export type FeeProxyCreateTripleInput = {
+  subjectId: Hex;
+  predicateId: Hex;
+  objectId: Hex;
+  /** Assets to land in the new vault on top of the creation cost; defaults to `depositPerTerm`. */
+  deposit?: bigint;
+};
+
+export type FeeProxyCreateViaQuote = FeeProxyGrossUp & {
+  method: 'createAtomsVia' | 'createAtomsWithUrisVia' | 'createTriplesVia';
+  /** `MultiVault.getAtomCost()` or `getTripleCost()`: every forwarded leg must cover it. */
+  costPerTerm: bigint;
+  /** The intended deposit per term on top of the cost. */
+  deposits: bigint[];
+  /** The term IDs the call will create, in leg order. */
+  termIds: Hex[];
+  /**
+   * `previewAtomCreate` / `previewTripleCreate` on each forwarded leg at the quoted fee. A triple
+   * whose atoms are created earlier in the same plan is previewed against the state before those
+   * atoms exist.
+   */
+  expectedShares: bigint[];
+  /** The exact `msg.value` to send: the total gross. */
+  value: bigint;
+  /** Pinned to the affiliate's current creation fees. */
+  feeGuard: FeeGuard;
+};
+
+export type FeeProxyCreateViaPlan = {
+  readiness: FeeProxyReadiness;
+  atoms?: FeeProxyCreateViaQuote;
+  triples?: FeeProxyCreateViaQuote;
+  /** Approval first, then atoms, then triples (so triples can reference atoms from the same plan). */
+  steps: FeeProxyPlanStep[];
+  value: bigint;
+};
+
+export type FeeProxyExecutedStep = {
+  step: FeeProxyPlanStep;
+  hash: Hex;
+  receipt: TransactionReceipt;
+};
+```
+
+# FeeProxy refund preparation
+
+Source: https://docs.intuition.systems/docs/build/sdk-reference/fee-proxy-claim-refund-if-any
+
+Generated from the upcoming SDK **4.0.0** source. See [release compatibility](https://docs.intuition.systems/docs/build/compatibility) before installing or connecting to a deployment. Regenerate with `node scripts/generate-package-reference.js /path/to/packages`.
+
+Import from `@0xintuition/sdk/actions`. [Implementation and internal helpers](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/fee-proxy-claim-refund-if-any.ts).
+
+Signatures show the exact accepted inputs and return types. Named input/output structures and dependency-injection types are listed below; viem and protocol types come from their respective packages. Preparation and quote functions can perform RPC reads. **`feeProxyExecutePlan` sends transactions**; the other SDK actions on these pages prepare transactions or read data.
+
+## feeProxyClaimRefundIfAny
+
+Checks the pull-fallback refund ledger and builds a `claimRefundTo` transaction only when the
+user is owed something. FeeProxy pushes excess `msg.value` back first and only credits the
+ledger when that push fails, so for most callers this returns `null`; it never builds a claim
+that would revert `FeeProxy_NoRefundOwed`.
+
+[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/fee-proxy-claim-refund-if-any.ts#L30)
+
+```ts
+function feeProxyClaimRefundIfAny(
+  config: ReadConfig,
+  inputs: {
+    user: Address;
+    recipient?: Address;
+  },
+): Promise<FeeProxyRefundClaim | null>;
+```
+
+- **`config`**: FeeProxy address and public client.
+- **`inputs`**: The ledger owner, and where to send the refund (defaults to the owner). Pass a
+  different recipient when the owner is a contract whose `receive` reverts.
+- **returns**: The claim transaction and amount, or `null` when nothing is owed.
+
+## Input and result types
+
+```ts
+export type FeeProxyRefundClaim = {
+  amount: bigint;
+  tx: {
+    /** The ledger owner. Only this account can claim its refund. */
+    from: Address;
+    to: Address;
+    data: Hex;
+    value: bigint;
+  };
+};
+```
+
+# FeeProxy URI creation
+
+Source: https://docs.intuition.systems/docs/build/sdk-reference/fee-proxy
+
+Generated from the upcoming SDK **4.0.0** source. See [release compatibility](https://docs.intuition.systems/docs/build/compatibility) before installing or connecting to a deployment. Regenerate with `node scripts/generate-package-reference.js /path/to/packages`.
+
+Import from `@0xintuition/sdk/actions`. [Implementation and internal helpers](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/fee-proxy.ts).
+
+Signatures show the exact accepted inputs and return types. Named input/output structures and dependency-injection types are listed below; viem and protocol types come from their respective packages. Preparation and quote functions can perform RPC reads. **`feeProxyExecutePlan` sends transactions**; the other SDK actions on these pages prepare transactions or read data.
+
+## feeProxyPrepareCreateAtomsWithUrisTx
+
+Prepares a `createAtomsWithUrisVia` transaction routed through an affiliate: reads
+the live URI bounds and validates every atom's URI list against them, computes the
+affiliate's creation-fee value (so the caller can size `msg.value` and a
+`FeeGuard` cap correctly), and returns the calldata.
+
+[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/fee-proxy.ts#L82)
+
+```ts
+function feeProxyPrepareCreateAtomsWithUrisTx(
+  configs: {
+    feeProxy: ReadConfig;
+    multiVault: ReadConfig;
+  },
+  inputs: {
+    affiliate: Address;
+    atomDatas: Hex[];
+    assets: bigint[];
+    uris: Hex[][];
+    feeGuard: FeeGuard;
+  },
+  deps?: FeeProxyCreateAtomsWithUrisDeps,
+): Promise<FeeProxyPrepareCreateAtomsWithUrisTxResult>;
+```
+
+- **`configs`**: `feeProxy` and `multiVault` read configs (both resolve against the same public client).
+- **`inputs`**: The affiliate, per-atom data/assets/URIs, and the caller's front-run guard.
+- **`deps`**: Injectable protocol/periphery read primitives.
+- **returns**: The `createAtomsWithUrisVia` calldata, args, gross value, and the fee/bounds quote it was built from.
+
+Defaults: `deps = defaultFeeProxyCreateAtomsWithUrisDeps`. Dependency arguments are optional test/customization hooks; normal consumers use the built-in dependencies.
+
+## Input and result types
+
+```ts
+export type FeeProxyCreateAtomsWithUrisQuote = {
+  affiliate: Address;
+  totalGrossAssets: bigint;
+  previewedFee: bigint;
+  previewedForwarded: bigint;
+  maxUriCount: number;
+  maxUriLength: number;
+};
+
+export type FeeProxyPrepareCreateAtomsWithUrisTxResult = {
+  args: readonly [Address, Hex[], bigint[], Hex[][], FeeGuard];
+  calldata: Hex;
+  value: bigint;
+  quote: FeeProxyCreateAtomsWithUrisQuote;
+};
+
+type FeeProxyCreateAtomsWithUrisDeps = {
+  previewCreationFee: typeof feeProxyPreviewCreationFee;
+  getAtomUriConfig: typeof multiVaultGetAtomUriConfig;
+};
+```
+
+# SDK function reference
+
+Source: https://docs.intuition.systems/docs/build/sdk-reference/index
+
+The SDK 4 candidate exposes narrow hosted API reads and higher-level protocol actions. Start with a guidebook recipe, then use these pages for exact inputs, return types, defaults, and source links.
+
+| Reference                                                | Main operations                                                            | Effects                                         |
+| -------------------------------------------------------- | -------------------------------------------------------------------------- | ----------------------------------------------- |
+| [API client](https://docs.intuition.systems/docs/build/sdk-reference/api)                                   | Atom/triple lookups and endpoint selection                                 | HTTP reads when methods are called              |
+| [MultiVault](https://docs.intuition.systems/docs/build/sdk-reference/multivault)                            | Fees, deposits, redemptions, create/seed, on-behalf-of creation, multicall | RPC reads and transaction preparation           |
+| [Dynamic-fee curves](https://docs.intuition.systems/docs/build/sdk-reference/dynamic-fee-curve)             | Tier ladders, quotes, claims and earnings projections                      | RPC reads and transaction preparation           |
+| [FeeProxy URI creation](https://docs.intuition.systems/docs/build/sdk-reference/fee-proxy)                  | URI-aware atom creation quote/request                                      | RPC reads and preparation                       |
+| [FeeProxy plans](https://docs.intuition.systems/docs/build/sdk-reference/fee-proxy-builders)                | Readiness, routed deposit/create plans, execution                          | Plans read state; `feeProxyExecutePlan` submits |
+| [Affiliate profile](https://docs.intuition.systems/docs/build/sdk-reference/fee-proxy-affiliate-profile)    | Status, fees and headroom                                                  | RPC reads                                       |
+| [Refund preparation](https://docs.intuition.systems/docs/build/sdk-reference/fee-proxy-claim-refund-if-any) | Pending refund and optional claim request                                  | RPC read; returns transaction or null           |
+| [TrustBonding](https://docs.intuition.systems/docs/build/sdk-reference/trust-bonding)                       | Rewards, claim eligibility, locks, restake plans and timelines             | RPC reads and transaction preparation           |
+| [Portfolio](https://docs.intuition.systems/docs/build/sdk-reference/portfolio)                              | Explicit position list and actionable state                                | RPC reads; no global position discovery         |
+
+## Common configuration
+
+The core protocol exports these structural types:
+
+```ts
+type ReadConfig = {
+  address: Address;
+  publicClient: PublicClient;
+};
+type WriteConfig = {
+  address: Address;
+  publicClient: PublicClient;
+  walletClient: WalletClient;
+};
+```
+
+`Address`, `PublicClient`, and `WalletClient` are viem types. Import the actual configuration types from `@0xintuition/protocol`. Set `address` to the contract required by that function: a FeeProxy configuration is not a MultiVault configuration. Some planners accept `WriteConfig` even though they do not submit; follow the signature instead of inferring effects from the type name.
+
+Amounts and shares use `bigint` base units. `Hex` term IDs are protocol IDs, not IID strings. Optional dependency arguments are testing/customization hooks; omit them in normal integrations. Quotes can become stale. Low-level protocol re-exports, constants, and utility implementations remain documented by their owning [package guidebooks](https://docs.intuition.systems/docs/build/packages/index).
+
+The API pages below are generated from the pinned clean source. Named dependency types are shown to explain signatures; their presence is not a promise that internal helper types are standalone public exports.
+
+For executable examples use the [on-chain guide](https://docs.intuition.systems/docs/build/guides/onchain) and [read-client guide](https://docs.intuition.systems/docs/build/guides/sdk-reads). Declarations on reference pages are not standalone programs.
+
+# MultiVault actions
+
+Source: https://docs.intuition.systems/docs/build/sdk-reference/multivault
+
+Generated from the upcoming SDK **4.0.0** source. See [release compatibility](https://docs.intuition.systems/docs/build/compatibility) before installing or connecting to a deployment. Regenerate with `node scripts/generate-package-reference.js /path/to/packages`.
+
+Import from `@0xintuition/sdk/actions`. [Implementation and internal helpers](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/multivault.ts).
+
+Signatures show the exact accepted inputs and return types. Named input/output structures and dependency-injection types are listed below; viem and protocol types come from their respective packages. Preparation and quote functions can perform RPC reads. **`feeProxyExecutePlan` sends transactions**; the other SDK actions on these pages prepare transactions or read data.
+
+## multivaultResolveDepositFeeBase
+
+Resolves the base MultiVault will charge fees on for a deposit.
+
+On a vault's first deposit MultiVault nets a min-share bootstrap cost out of the gross assets
+BEFORE computing any fee (doubled for triples) — see `MultiVaultLib._calculateAtomDeposit`. A quote
+that applies fee rates to the gross amount therefore disagrees with the contract on exactly that
+deposit, in every fee component at once. Exported because more than one quote needs it, and
+because a consumer reconciling a quote against a receipt needs to know which number was quoted.
+
+[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/multivault.ts#L498)
+
+```ts
+function multivaultResolveDepositFeeBase(
+  config: ReadConfig,
+  inputs: {
+    termId: Hex;
+    curveId: bigint;
+    assetsIn: bigint;
+  },
+  deps?: MultiVaultDepositFeeBaseDeps,
+): Promise<MultiVaultDepositFeeBase>;
+```
+
+- **`config`**: MultiVault address and public client.
+- **`inputs`**: The term, curve and gross assets being deposited.
+- **returns**: The fee base, whether this is the bootstrapping deposit, and what the bootstrap cost.
+
+Defaults: `deps = defaultDepositFeeBaseDeps`. Dependency arguments are optional test/customization hooks; normal consumers use the built-in dependencies.
+
+## multivaultQuoteTermDepositFee
+
+The term-type-specific deposit fee: the atom-wallet cut on an atom, or the underlying-atom
+fraction on a triple.
+
+MultiVault charges this alongside its entry and protocol fees, so a quote that reports only those
+two can never sum to the shares actually minted. On an atom it is `atomWalletDepositFee` applied
+to the fee base; on a triple it is `atomDepositFractionForTriple`, waived unless ALL THREE
+underlying atoms are individually above the fee threshold.
+
+[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/multivault.ts#L545)
+
+```ts
+function multivaultQuoteTermDepositFee(
+  config: ReadConfig,
+  inputs: {
+    termId: Hex;
+    feeBaseAssets: bigint;
+  },
+  deps?: MultiVaultDepositFeeBaseDeps & MultiVaultTermFeeDeps,
+): Promise<{
+  kind: 'atom-wallet' | 'atom-deposit-fraction';
+  fee: bigint;
+  waived: boolean;
+}>;
+```
+
+- **`config`**: MultiVault address and public client.
+- **`inputs`**: The term and the fee base to charge on.
+- **`deps`**: Injectable protocol read primitives.
+- **returns**: The fee and which kind it is.
+
+Defaults: `deps = {
+		...defaultDepositFeeBaseDeps,
+		...defaultTermFeeDeps,
+	}`. Dependency arguments are optional test/customization hooks; normal consumers use the built-in dependencies.
+
+## multivaultWillChargeEntryFee
+
+Whether MultiVault will charge its entry fee on a deposit into this term.
+
+Waived while the DEFAULT curve's vault holds fewer shares than `feeThreshold`: fees are routed
+into that vault, and donating them into a near-empty share supply would move its price. A quote
+that assumes the fee always applies overstates it.
+
+[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/multivault.ts#L600)
+
+```ts
+function multivaultWillChargeEntryFee(
+  config: ReadConfig,
+  inputs: {
+    termId: Hex;
+  },
+  deps?: MultiVaultFeeContextDeps,
+): Promise<boolean>;
+```
+
+- **`config`**: MultiVault address and public client.
+- **`inputs`**: The term being deposited into.
+- **returns**: True if the entry fee applies.
+
+Defaults: `deps = defaultFeeContextDeps`. Dependency arguments are optional test/customization hooks; normal consumers use the built-in dependencies.
+
+## multivaultWillChargeExitFee
+
+Whether MultiVault will charge its exit fee on a redemption.
+
+Same threshold as the entry fee, measured on what the default vault would be LEFT with — so
+whether it applies depends on the size of the redemption, not only on the term.
+
+[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/multivault.ts#L625)
+
+```ts
+function multivaultWillChargeExitFee(
+  config: ReadConfig,
+  inputs: {
+    termId: Hex;
+    curveId: bigint;
+    sharesIn: bigint;
+  },
+  deps?: MultiVaultFeeContextDeps,
+): Promise<boolean>;
+```
+
+- **`config`**: MultiVault address and public client.
+- **`inputs`**: The term, curve and share count being redeemed.
+- **returns**: True if the exit fee applies.
+
+Defaults: `deps = defaultFeeContextDeps`. Dependency arguments are optional test/customization hooks; normal consumers use the built-in dependencies.
+
+## multivaultQuoteCurveRedeemFee
+
+The curve-level withdrawal fee for a specific account, or zero if the curve charges none.
+
+Curve-agnostic: it asks the curve whether it has a redeem hook and, if so, quotes it for THIS
+account. MultiVault's own `previewRedeem` quotes the same hook with the zero address, which on a
+curve whose rate keys on the holder's entry tier is a different — and for a slippage floor,
+unusable — number.
+
+[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/multivault.ts#L655)
+
+```ts
+function multivaultQuoteCurveRedeemFee(
+  config: ReadConfig,
+  inputs: {
+    termId: Hex;
+    curveId: bigint;
+    account: Address;
+    assetsBeforeFees: bigint;
+  },
+  deps?: MultiVaultCurveRedeemFeeDeps,
+): Promise<{
+  curveAddress: Address | null;
+  curveFee: bigint;
+}>;
+```
+
+- **`config`**: MultiVault address and public client.
+- **`inputs`**: The term, curve, redeeming account and gross assets.
+- **returns**: The curve's withdrawal fee for that account, and the curve it was quoted from.
+
+Defaults: `deps = defaultCurveRedeemFeeDeps`. Dependency arguments are optional test/customization hooks; normal consumers use the built-in dependencies.
+
+## multivaultQuoteDepositPlan
+
+Read current vault and fee state and return a deposit quote, including expected output and the minimum shares to accept. No transaction is sent.
+
+[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/multivault.ts#L676)
+
+```ts
+function multivaultQuoteDepositPlan(
+  config: ReadConfig,
+  inputs: {
+    termId: Hex;
+    curveId: bigint;
+    assetsIn: bigint;
+    slippageBps?: bigint;
+  },
+  deps?: MultiVaultQuoteDeps,
+): Promise<MultiVaultDepositQuotePlan>;
+```
+
+Defaults: `deps = defaultQuoteDeps`. Dependency arguments are optional test/customization hooks; normal consumers use the built-in dependencies.
+
+## multivaultPrepareDepositTx
+
+Prepares a deposit transaction sized against its own quote.
+
+MultiVault deposits exactly `msg.value`, so the transaction value IS the deposit: it defaults to
+`assetsIn`, the amount the quote and its slippage floor were computed for. An explicit `value`
+is passed through as given.
+
+[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/multivault.ts#L757)
+
+```ts
+function multivaultPrepareDepositTx(
+  config: WriteConfig,
+  inputs: {
+    receiver: Address;
+    termId: Hex;
+    curveId: bigint;
+    assetsIn: bigint;
+    slippageBps?: bigint;
+    value?: bigint;
+  },
+  deps?: MultiVaultQuoteDeps,
+): Promise<MultiVaultPrepareDepositTxResult>;
+```
+
+- **`config`**: MultiVault address and viem clients.
+- **`inputs`**: Receiver, term, curve, gross assets, optional slippage and optional explicit value.
+- **`deps`**: Injectable protocol read primitives.
+- **returns**: The deposit calldata, args, the value to send with it, and the quote it was built from.
+
+Defaults: `deps = defaultQuoteDeps`. Dependency arguments are optional test/customization hooks; normal consumers use the built-in dependencies.
+
+## multivaultGetUserPositionSnapshot
+
+Read an account balance and vault state for one term/curve pair and return its current position snapshot.
+
+[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/multivault.ts#L788)
+
+```ts
+function multivaultGetUserPositionSnapshot(
+  config: ReadConfig,
+  inputs: {
+    account: Address;
+    termId: Hex;
+    curveId: bigint;
+    includeUtilization?: boolean;
+  },
+  deps?: MultiVaultPositionDeps,
+): Promise<MultiVaultUserPositionSnapshot>;
+```
+
+Defaults: `deps = defaultPositionDeps`. Dependency arguments are optional test/customization hooks; normal consumers use the built-in dependencies.
+
+## multivaultQuoteRedeemPlan
+
+Quotes what a SPECIFIC account receives for redeeming shares, and the floor to send with it.
+
+`account` is required, and that is the point. MultiVault's `previewRedeem` quotes any curve redeem
+hook with the zero address, so on a curve whose withdrawal rate keys on where the holder entered
+it returns a number that belongs to no one — and a `minAssets` derived from it is wrong in both
+directions: too loose when it understates the payout, and unmeetable (the redeem reverts) when it
+overstates it. This composes the payout from parts that each know who is asking: MultiVault's
+gross conversion, its protocol fee, its exit fee where that fee actually applies, and the curve's
+own account-aware quote.
+
+[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/multivault.ts#L871)
+
+```ts
+function multivaultQuoteRedeemPlan(
+  config: ReadConfig,
+  inputs: {
+    termId: Hex;
+    curveId: bigint;
+    account: Address;
+    sharesIn: bigint;
+    slippageBps?: bigint;
+  },
+  deps?: MultiVaultRedeemQuoteDeps,
+): Promise<MultiVaultRedeemQuotePlan>;
+```
+
+- **`config`**: MultiVault address and public client.
+- **`inputs`**: The term, curve, redeeming account, share count and optional slippage.
+- **`deps`**: Injectable protocol read primitives.
+- **returns**: The account's payout, its fee breakdown, and a slippage floor derived from it.
+
+Defaults: `deps = defaultRedeemQuoteDeps`. Dependency arguments are optional test/customization hooks; normal consumers use the built-in dependencies.
+
+## multivaultPrepareRedeemTx
+
+Prepares a redeem transaction for a specific account, sized against its own quote.
+
+[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/multivault.ts#L939)
+
+```ts
+function multivaultPrepareRedeemTx(
+  config: WriteConfig,
+  inputs: {
+    receiver: Address;
+    termId: Hex;
+    curveId: bigint;
+    account: Address;
+    sharesIn: bigint;
+    slippageBps?: bigint;
+  },
+  deps?: MultiVaultRedeemQuoteDeps,
+): Promise<MultiVaultPrepareRedeemTxResult>;
+```
+
+- **`config`**: MultiVault address and viem clients.
+- **`inputs`**: Receiver, term, curve, redeeming account, share count and optional slippage.
+- **`deps`**: Injectable protocol read primitives.
+- **returns**: The redeem calldata, args, and the quote it was built from.
+
+Defaults: `deps = defaultRedeemQuoteDeps`. Dependency arguments are optional test/customization hooks; normal consumers use the built-in dependencies.
+
+## multivaultCreateAndSeedTerm
+
+Prepare ordered atom creation, triple creation, and seed-deposit steps with their quotes and total value. Requires WriteConfig in this candidate, but does not submit the plan.
+
+[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/multivault.ts#L969)
+
+```ts
+function multivaultCreateAndSeedTerm(
+  config: WriteConfig,
+  inputs: {
+    receiver: Address;
+    atomsToCreate?: MultiVaultCreateAtomInput[];
+    triplesToCreate?: MultiVaultCreateTripleInput[];
+    seedDeposits?: MultiVaultSeedDepositInput[];
+  },
+  deps?: MultiVaultCreateAndSeedDeps,
+): Promise<MultiVaultCreateAndSeedTermPlan>;
+```
+
+Defaults: `deps = defaultCreateAndSeedDeps`. Dependency arguments are optional test/customization hooks; normal consumers use the built-in dependencies.
+
+## multivaultGetUtilizationAnalyticsBundle
+
+Read protocol and personal utilization over the requested epochs and return an analytics bundle.
+
+[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/multivault.ts#L1099)
+
+```ts
+function multivaultGetUtilizationAnalyticsBundle(
+  config: ReadConfig,
+  inputs: {
+    account?: Address;
+    startEpoch?: bigint;
+    endEpoch?: bigint;
+  },
+  deps?: MultiVaultUtilizationDeps,
+): Promise<MultiVaultUtilizationAnalyticsBundle>;
+```
+
+Defaults: `deps = defaultUtilizationDeps`. Dependency arguments are optional test/customization hooks; normal consumers use the built-in dependencies.
+
+## multivaultPrepareOnBehalfOfCreationPlan
+
+Prepares an on-behalf-of creation plan: `createAtomsFor` / `createTriplesFor` require
+`creator` to have granted `caller` CREATION approval first, so this reads that
+approval state and — if missing — prepends the `approve` calldata as its own step.
+The approval step and the creation steps have DIFFERENT required signers
+(`creator` vs `caller`); the caller of this function is responsible for routing each
+step to the right signer, in order.
+
+[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/multivault.ts#L1247)
+
+```ts
+function multivaultPrepareOnBehalfOfCreationPlan(
+  config: ReadConfig,
+  inputs: {
+    creator: Address;
+    caller: Address;
+    atoms?: MultiVaultOnBehalfOfAtomInput[];
+    triples?: MultiVaultOnBehalfOfTripleInput[];
+  },
+  deps?: MultiVaultOnBehalfOfCreationDeps,
+): Promise<MultiVaultOnBehalfOfCreationPlan>;
+```
+
+- **`config`**: Read config for MultiVault.
+- **`inputs`**: The creator being created for, the caller acting on their behalf, and the atoms/triples to create.
+- **`deps`**: Injectable protocol read primitives.
+- **returns**: The ordered steps (approval, if needed, then creation) and whether approval was already in place.
+
+Defaults: `deps = defaultOnBehalfOfCreationDeps`. Dependency arguments are optional test/customization hooks; normal consumers use the built-in dependencies.
+
+## multivaultPrepareMulticallTx
+
+Assembles a consolidated payable `multicall` batch: the `bytes[]` sub-call array and
+the `uint256[]` per-sub-call value array must stay aligned and their values must sum
+to exactly `msg.value` — the fiddliest part of building this call by hand.
+
+[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/multivault.ts#L1339)
+
+```ts
+function multivaultPrepareMulticallTx(
+  subCalls: MultiVaultMulticallSubCall[],
+): MultiVaultPrepareMulticallTxResult;
+```
+
+- **`subCalls`**: The sub-calls to batch, each with its own calldata and value allocation.
+- **returns**: The `multicall` calldata, args, and the total value the batch requires.
+
+## Input and result types
+
+```ts
+type PreviewDepositTuple = readonly [bigint, bigint] & {
+  shares?: bigint;
+  assetsAfterFees?: bigint;
+};
+
+type PreviewCreateTuple = readonly [bigint, bigint, bigint] & {
+  shares?: bigint;
+  feeBaseAssets?: bigint;
+  assetsAfterFees?: bigint;
+};
+
+export type MultiVaultDepositQuotePlan = {
+  termId: Hex;
+  curveId: bigint;
+  assetsIn: bigint;
+  /** What every fee was actually charged on — `assetsIn` less any min-share bootstrap cost. */
+  feeBaseAssets: bigint;
+  minShareCost: bigint;
+  isFirstDeposit: boolean;
+  sharesOut: bigint;
+  minSharesOut: bigint;
+  assetsAfterFees: bigint;
+  /** Zero when MultiVault waives it below `feeThreshold`. */
+  entryFee: bigint;
+  entryFeeWaived: boolean;
+  protocolFee: bigint;
+  /**
+   * The term-type-specific fee charged alongside the other two: the atom-wallet cut on an atom,
+   * the underlying-atom fraction on a triple. Without it the components cannot sum to the whole.
+   */
+  termFee: bigint;
+  termFeeKind: 'atom-wallet' | 'atom-deposit-fraction';
+  termFeeWaived: boolean;
+  totalEstimatedFees: bigint;
+  currentSharePrice: bigint;
+  effectivePricePerShare: bigint | null;
+  slippageBps: bigint;
+};
+
+export type MultiVaultPrepareDepositTxResult = {
+  args: readonly [Address, Hex, bigint, bigint];
+  calldata: Hex;
+  /** The value to send: the deposit itself, `assetsIn` unless an explicit value was passed. */
+  value: bigint;
+  quote: MultiVaultDepositQuotePlan;
+};
+
+export type MultiVaultUserPositionSnapshot = {
+  account: Address;
+  termId: Hex;
+  curveId: bigint;
+  shares: bigint;
+  maxRedeemShares: bigint;
+  estimatedAssetsForCurrentShares: bigint;
+  estimatedAssetsForMaxRedeem: bigint;
+  currentSharePrice: bigint;
+  vaultTotalAssets: bigint;
+  vaultTotalShares: bigint;
+  utilization?: {
+    epoch: bigint;
+    totalForEpoch: bigint;
+    userForEpoch: bigint;
+    userInEpoch: bigint;
+  };
+};
+
+export type MultiVaultRedeemQuotePlan = {
+  termId: Hex;
+  curveId: bigint;
+  /** The account whose payout this is. A redeem quote is meaningless without one. */
+  account: Address;
+  sharesIn: bigint;
+  sharesUsed: bigint;
+  assetsBeforeFees: bigint;
+  assetsOut: bigint;
+  minAssetsOut: bigint;
+  /** Zero when MultiVault waives it below `feeThreshold`. */
+  exitFee: bigint;
+  exitFeeWaived: boolean;
+  protocolFee: bigint;
+  /** The curve's own withdrawal fee for THIS account. Zero on a curve without a redeem hook. */
+  curveFee: bigint;
+  curveAddress: Address | null;
+  totalEstimatedFees: bigint;
+  currentSharePrice: bigint;
+  effectivePricePerShare: bigint | null;
+  slippageBps: bigint;
+};
+
+export type MultiVaultPrepareRedeemTxResult = {
+  args: readonly [Address, Hex, bigint, bigint, bigint];
+  calldata: Hex;
+  quote: MultiVaultRedeemQuotePlan;
+};
+
+export type MultiVaultCreateAtomInput = {
+  termId: Hex;
+  data: Hex;
+  assetsIn: bigint;
+};
+
+export type MultiVaultCreateTripleInput = {
+  termId: Hex;
+  subjectId: Hex;
+  predicateId: Hex;
+  objectId: Hex;
+  assetsIn: bigint;
+};
+
+export type MultiVaultSeedDepositInput = {
+  termId: Hex;
+  curveId: bigint;
+  assetsIn: bigint;
+  slippageBps?: bigint;
+};
+
+export type MultiVaultCreateAndSeedStep = {
+  type: 'create-atoms' | 'create-triples' | 'deposit-batch';
+  calldata: Hex;
+  value?: bigint;
+};
+
+export type MultiVaultCreateAndSeedTermPlan = {
+  receiver: Address;
+  createAtomPreviews: Array<{
+    termId: Hex;
+    assetsIn: bigint;
+    sharesOut: bigint;
+    feeBaseAssets: bigint;
+    assetsAfterFees: bigint;
+  }>;
+  createTriplePreviews: Array<{
+    termId: Hex;
+    assetsIn: bigint;
+    sharesOut: bigint;
+    feeBaseAssets: bigint;
+    assetsAfterFees: bigint;
+  }>;
+  seedDepositQuotes: MultiVaultDepositQuotePlan[];
+  steps: MultiVaultCreateAndSeedStep[];
+  totalValue: bigint;
+};
+
+export type MultiVaultUtilizationEpochPoint = {
+  epoch: bigint;
+  totalForEpoch: bigint;
+  deltaFromPreviousTotal: bigint | null;
+  userForEpoch?: bigint;
+  userInEpoch?: bigint | null;
+  deltaFromPreviousUser?: bigint | null;
+};
+
+export type MultiVaultUtilizationAnalyticsBundle = {
+  startEpoch: bigint;
+  endEpoch: bigint;
+  currentEpoch: bigint;
+  account?: Address;
+  lastActiveEpoch?: bigint;
+  aggregateTotalUtilization: bigint;
+  aggregateUserUtilization?: bigint;
+  points: MultiVaultUtilizationEpochPoint[];
+};
+
+type MultiVaultFeeContextDeps = {
+  getVault: typeof multiVaultGetVault;
+  getGeneralConfig: typeof multiVaultGetGeneralConfig;
+  getBondingCurveConfig: typeof multiVaultGetBondingCurveConfig;
+};
+
+type MultiVaultDepositFeeBaseDeps = MultiVaultFeeContextDeps & {
+  isTriple: typeof multiVaultIsTriple;
+  previewMint: typeof bondingCurveRegistryPreviewMint;
+};
+
+type MultiVaultTermFeeDeps = {
+  getAtomConfig: typeof multiVaultGetAtomConfig;
+  getTriple: typeof multiVaultGetTriple;
+  atomDepositFractionAmount: typeof multiVaultAtomDepositFractionAmount;
+};
+
+type MultiVaultCurveRedeemFeeDeps = {
+  getBondingCurveConfig: typeof multiVaultGetBondingCurveConfig;
+  curveAddresses: typeof bondingCurveRegistryCurveAddresses;
+  hasRedeemFeeHook: typeof baseCurveHasRedeemFeeHook;
+  quoteRedeemFee: typeof baseCurveQuoteRedeemFee;
+};
+
+type MultiVaultQuoteDeps = MultiVaultDepositFeeBaseDeps &
+  MultiVaultTermFeeDeps & {
+    previewDeposit: typeof multiVaultPreviewDeposit;
+    entryFeeAmount: typeof multiVaultEntryFeeAmount;
+    protocolFeeAmount: typeof multiVaultProtocolFeeAmount;
+    currentSharePrice: typeof multiVaultCurrentSharePrice;
+  };
+
+type MultiVaultRedeemQuoteDeps = MultiVaultFeeContextDeps &
+  MultiVaultCurveRedeemFeeDeps & {
+    convertToAssets: typeof multiVaultConvertToAssets;
+    exitFeeAmount: typeof multiVaultExitFeeAmount;
+    protocolFeeAmount: typeof multiVaultProtocolFeeAmount;
+    currentSharePrice: typeof multiVaultCurrentSharePrice;
+  };
+
+type MultiVaultPositionDeps = {
+  getShares: typeof multiVaultGetShares;
+  maxRedeem: typeof multiVaultMaxRedeem;
+  convertToAssets: typeof multiVaultConvertToAssets;
+  currentSharePrice: typeof multiVaultCurrentSharePrice;
+  getVault: typeof multiVaultGetVault;
+  currentEpoch: typeof multiVaultCurrentEpoch;
+  getTotalUtilizationForEpoch: typeof multiVaultGetTotalUtilizationForEpoch;
+  getUserUtilizationForEpoch: typeof multiVaultGetUserUtilizationForEpoch;
+  getUserUtilizationInEpoch: typeof multiVaultGetUserUtilizationInEpoch;
+};
+
+type MultiVaultCreateAndSeedDeps = MultiVaultQuoteDeps & {
+  previewAtomCreate: typeof multiVaultPreviewAtomCreate;
+  previewTripleCreate: typeof multiVaultPreviewTripleCreate;
+};
+
+type MultiVaultUtilizationDeps = {
+  currentEpoch: typeof multiVaultCurrentEpoch;
+  getTotalUtilizationForEpoch: typeof multiVaultGetTotalUtilizationForEpoch;
+  getUserUtilizationForEpoch: typeof multiVaultGetUserUtilizationForEpoch;
+  getUserUtilizationInEpoch: typeof multiVaultGetUserUtilizationInEpoch;
+  getUserLastActiveEpoch: typeof multiVaultGetUserLastActiveEpoch;
+};
+
+export type MultiVaultDepositFeeBase = {
+  /** The amount every fee — MultiVault's and the curve's — is actually charged on. */
+  feeBaseAssets: bigint;
+  /** True when this deposit is the one that bootstraps the vault's minimum share supply. */
+  isFirstDeposit: boolean;
+  /** What the bootstrap costs, netted out before any fee. Zero on an established vault. */
+  minShareCost: bigint;
+};
+
+export type MultiVaultOnBehalfOfAtomInput = { data: Hex; assets: bigint };
+
+export type MultiVaultOnBehalfOfTripleInput = {
+  subjectId: Hex;
+  predicateId: Hex;
+  objectId: Hex;
+  assets: bigint;
+};
+
+export type MultiVaultOnBehalfOfCreationStep = {
+  type: 'approve' | 'create-atoms-for' | 'create-triples-for';
+  // The account that must sign this step. The approval leg is signed by `creator`
+  // (granting `caller` CREATION approval); the creation legs are signed by `caller`.
+  signer: 'creator' | 'caller';
+  calldata: Hex;
+  value?: bigint;
+};
+
+export type MultiVaultOnBehalfOfCreationPlan = {
+  creator: Address;
+  caller: Address;
+  approvalAlreadyGranted: boolean;
+  steps: MultiVaultOnBehalfOfCreationStep[];
+};
+
+type MultiVaultOnBehalfOfCreationDeps = {
+  isApprovedToCreate: typeof multiVaultIsApprovedToCreate;
+  isApprovedToDeposit: typeof multiVaultIsApprovedToDeposit;
+  isApprovedToRedeem: typeof multiVaultIsApprovedToRedeem;
+};
+
+export type MultiVaultMulticallSubCall = {
+  calldata: Hex;
+  value: bigint;
+};
+
+export type MultiVaultPrepareMulticallTxResult = {
+  args: readonly [readonly Hex[], readonly bigint[]];
+  calldata: Hex;
+  value: bigint;
+};
+```
+
+# Portfolio reads
+
+Source: https://docs.intuition.systems/docs/build/sdk-reference/portfolio
+
+Generated from the upcoming SDK **4.0.0** source. See [release compatibility](https://docs.intuition.systems/docs/build/compatibility) before installing or connecting to a deployment. Regenerate with `node scripts/generate-package-reference.js /path/to/packages`.
+
+Import from `@0xintuition/sdk/actions`. [Implementation and internal helpers](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/portfolio.ts).
+
+Signatures show the exact accepted inputs and return types. Named input/output structures and dependency-injection types are listed below; viem and protocol types come from their respective packages. Preparation and quote functions can perform RPC reads. **`feeProxyExecutePlan` sends transactions**; the other SDK actions on these pages prepare transactions or read data.
+
+## portfolioGetIntuitionPositionsSnapshot
+
+Read balances and vault state for the explicitly supplied account and term/curve positions. This does not discover every position held by an account.
+
+[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/portfolio.ts#L79)
+
+```ts
+function portfolioGetIntuitionPositionsSnapshot(
+  configs: {
+    multiVault: ReadConfig;
+    trustBonding: ReadConfig;
+  },
+  inputs: {
+    account: Address;
+    positions: PortfolioPositionInput[];
+    includeUtilization?: boolean;
+    nowTimestamp?: bigint;
+  },
+  deps?: PortfolioDeps,
+): Promise<PortfolioIntuitionPositionsSnapshot>;
+```
+
+Defaults: `deps = defaultPortfolioDeps`. Dependency arguments are optional test/customization hooks; normal consumers use the built-in dependencies.
+
+## portfolioGetActionableState
+
+Combine position snapshots with TrustBonding claim state so an application can decide which actions to offer.
+
+[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/portfolio.ts#L128)
+
+```ts
+function portfolioGetActionableState(
+  configs: {
+    multiVault: ReadConfig;
+    trustBonding: ReadConfig;
+    wrappedTrust?: ReadConfig;
+  },
+  inputs: {
+    account: Address;
+    positions: PortfolioPositionInput[];
+    nowTimestamp?: bigint;
+    recipient?: string | null;
+    expectedWrappedTrustSpend?: bigint;
+  },
+  deps?: PortfolioDeps,
+): Promise<PortfolioActionableState>;
+```
+
+Defaults: `deps = defaultPortfolioDeps`. Dependency arguments are optional test/customization hooks; normal consumers use the built-in dependencies.
+
+## Input and result types
+
+```ts
+export type PortfolioPositionInput = {
+  termId: Hex;
+  curveId: bigint;
+};
+
+export type PortfolioIntuitionPositionsSnapshot = {
+  account: Address;
+  positions: MultiVaultUserPositionSnapshot[];
+  trustBonding: {
+    dashboard: TrustBondingRewardsDashboard;
+    lockState: TrustBondingLockStateSummary;
+  };
+  totals: {
+    totalShares: bigint;
+    totalEstimatedAssets: bigint;
+    totalEstimatedRedeemableAssets: bigint;
+  };
+};
+
+export type PortfolioActionableState = {
+  account: Address;
+  claim: TrustBondingClaimActionState;
+  lock: TrustBondingLockStateSummary;
+  redeemablePositions: Array<{
+    termId: Hex;
+    curveId: bigint;
+    maxRedeemShares: bigint;
+    estimatedAssetsForMaxRedeem: bigint;
+    canRedeem: boolean;
+  }>;
+  approval: {
+    checked: boolean;
+    currentAllowance: bigint | null;
+    requiredAllowance: bigint;
+    required: boolean;
+  };
+  prioritizedCtas: string[];
+};
+
+type PortfolioDeps = {
+  getUserPositionSnapshot: typeof multivaultGetUserPositionSnapshot;
+  getRewardsDashboard: typeof trustBondingGetRewardsDashboard;
+  getLockStateSummary: typeof trustBondingGetLockStateSummary;
+  getClaimActionState: typeof trustBondingGetClaimActionState;
+  getWrappedTrustAllowance: typeof wrappedTrustAllowance;
+};
+```
+
+# TrustBonding actions
+
+Source: https://docs.intuition.systems/docs/build/sdk-reference/trust-bonding
+
+Generated from the upcoming SDK **4.0.0** source. See [release compatibility](https://docs.intuition.systems/docs/build/compatibility) before installing or connecting to a deployment. Regenerate with `node scripts/generate-package-reference.js /path/to/packages`.
+
+Import from `@0xintuition/sdk/actions`. [Implementation and internal helpers](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/trust-bonding.ts).
+
+Signatures show the exact accepted inputs and return types. Named input/output structures and dependency-injection types are listed below; viem and protocol types come from their respective packages. Preparation and quote functions can perform RPC reads. **`feeProxyExecutePlan` sends transactions**; the other SDK actions on these pages prepare transactions or read data.
+
+## trustBondingGetRewardsDashboard
+
+Read epoch, utilization, balance, and reward information for the selected account and return a dashboard snapshot.
+
+[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/trust-bonding.ts#L308)
+
+```ts
+function trustBondingGetRewardsDashboard(
+  config: ReadConfig,
+  inputs: {
+    account: Address;
+  },
+  deps?: TrustBondingDashboardDeps,
+): Promise<TrustBondingRewardsDashboard>;
+```
+
+Defaults: `deps = defaultTrustBondingDeps`. Dependency arguments are optional test/customization hooks; normal consumers use the built-in dependencies.
+
+## trustBondingGetClaimActionState
+
+Determine whether the selected account can claim rewards and return the reason and claim state for the UI.
+
+[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/trust-bonding.ts#L348)
+
+```ts
+function trustBondingGetClaimActionState(
+  config: ReadConfig,
+  inputs: {
+    account: Address;
+    recipient?: string | null;
+  },
+  deps?: TrustBondingDashboardDeps,
+): Promise<TrustBondingClaimActionState>;
+```
+
+Defaults: `deps = defaultTrustBondingDeps`. Dependency arguments are optional test/customization hooks; normal consumers use the built-in dependencies.
+
+## trustBondingPrepareLockAction
+
+Determine the applicable lock operation and prepare its calldata and value. The result describes the action; it does not request a signature.
+
+[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/trust-bonding.ts#L456)
+
+```ts
+function trustBondingPrepareLockAction(
+  config: ReadConfig,
+  inputs: {
+    account: Address;
+    amountDelta?: bigint;
+    unlockTime?: bigint;
+    nowTimestamp?: bigint;
+  },
+  deps?: TrustBondingLockDeps,
+): Promise<TrustBondingLockActionPlan>;
+```
+
+Defaults: `deps = defaultTrustBondingLockDeps`. Dependency arguments are optional test/customization hooks; normal consumers use the built-in dependencies.
+
+## trustBondingClaimAndRestakePlan
+
+Prepare ordered claim and restake steps using the current account and lock state. Review the plan before executing it.
+
+[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/trust-bonding.ts#L570)
+
+```ts
+function trustBondingClaimAndRestakePlan(
+  config: ReadConfig,
+  inputs: {
+    account: Address;
+    recipient?: Address;
+    target:
+      | {
+          kind: 'trust-bonding';
+          wrappedTrustAddress: Address;
+          beneficiary?: Address;
+        }
+      | {
+          kind: 'multivault';
+          receiver?: Address;
+          termId: Hex;
+          curveId: bigint;
+          multiVaultConfig: WriteConfig;
+          slippageBps?: bigint;
+        };
+  },
+  deps?: TrustBondingClaimAndRestakeDeps,
+): Promise<TrustBondingClaimAndRestakePlanResult>;
+```
+
+Defaults: `deps = defaultTrustBondingClaimAndRestakeDeps`. Dependency arguments are optional test/customization hooks; normal consumers use the built-in dependencies.
+
+## trustBondingGetLockStateSummary
+
+Read the account lock balance, expiry, and related state into a normalized summary.
+
+[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/trust-bonding.ts#L695)
+
+```ts
+function trustBondingGetLockStateSummary(
+  config: ReadConfig,
+  inputs: {
+    account: Address;
+    nowTimestamp?: bigint;
+  },
+  deps?: TrustBondingLockDeps,
+): Promise<TrustBondingLockStateSummary>;
+```
+
+Defaults: `deps = defaultTrustBondingLockDeps`. Dependency arguments are optional test/customization hooks; normal consumers use the built-in dependencies.
+
+## trustBondingGetEpochRewardsTimeline
+
+Read reward information across the requested epoch window and return timeline points for presentation.
+
+[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/trust-bonding.ts#L731)
+
+```ts
+function trustBondingGetEpochRewardsTimeline(
+  config: ReadConfig,
+  inputs: {
+    account: Address;
+    startEpoch: bigint;
+    endEpoch: bigint;
+  },
+  deps?: TrustBondingTimelineDeps,
+): Promise<TrustBondingEpochRewardsTimeline>;
+```
+
+Defaults: `deps = defaultTrustBondingTimelineDeps`. Dependency arguments are optional test/customization hooks; normal consumers use the built-in dependencies.
+
+## Input and result types
+
+```ts
+type ApyTuple = readonly [bigint, bigint] & {
+  currentApy?: bigint;
+  maxApy?: bigint;
+};
+
+type UserInfoTuple = readonly [
+  bigint,
+  bigint,
+  bigint,
+  bigint,
+  bigint,
+  bigint,
+] & {
+  personalUtilization?: bigint;
+  eligibleRewards?: bigint;
+  maxRewards?: bigint;
+  lockedAmount?: bigint;
+  lockEnd?: bigint;
+  bondedBalance?: bigint;
+};
+
+type LockedTuple = readonly [bigint, bigint] & {
+  amount?: bigint;
+  end?: bigint;
+};
+
+type UserRewardsForEpochTuple = readonly [bigint, bigint] & {
+  currentRewards?: bigint;
+  maxRewards?: bigint;
+};
+
+export type TrustBondingUserInfoSnapshot = {
+  personalUtilization: bigint;
+  eligibleRewards: bigint;
+  maxRewards: bigint;
+  lockedAmount: bigint;
+  lockEnd: bigint;
+  bondedBalance: bigint;
+};
+
+export type TrustBondingRewardsDashboard = {
+  account: Address;
+  currentEpoch: bigint;
+  previousEpoch: bigint;
+  currentEpochEndTimestamp: bigint;
+  userInfo: TrustBondingUserInfoSnapshot;
+  currentClaimableRewards: bigint;
+  userApy: {
+    currentApy: bigint;
+    maxApy: bigint;
+  };
+  systemApy: {
+    currentApy: bigint;
+    maxApy: bigint;
+  };
+  hasClaimedPreviousEpochRewards: boolean;
+};
+
+export type TrustBondingClaimActionReason =
+  | 'can-claim'
+  | 'invalid-recipient'
+  | 'too-early'
+  | 'already-claimed'
+  | 'nothing-to-claim'
+  | 'inconsistent-state';
+
+export type TrustBondingClaimActionState = {
+  account: Address;
+  recipient: Address | null;
+  currentEpoch: bigint;
+  previousEpoch: bigint | null;
+  claimableRewards: bigint;
+  hasClaimedPreviousEpochRewards: boolean | null;
+  canClaim: boolean;
+  reason: TrustBondingClaimActionReason;
+  ctaLabel: string;
+};
+
+export type TrustBondingLockActionKind =
+  | 'createLock'
+  | 'increaseAmount'
+  | 'increaseUnlockTime'
+  | 'increaseAmountAndTime'
+  | 'withdrawAndCreateLock';
+
+export type TrustBondingLockActionPlan = {
+  account: Address;
+  action: TrustBondingLockActionKind;
+  args: readonly bigint[];
+  calldata: Hex;
+  lockedAmount: bigint;
+  lockEnd: bigint;
+  nowTimestamp: bigint;
+  isExpired: boolean;
+};
+
+export type TrustBondingClaimAndRestakeStep = {
+  type:
+    | 'claimRewards'
+    | 'wrappedTrustDeposit'
+    | 'wrappedTrustApprove'
+    | 'trustBondingDepositFor'
+    | 'multiVaultDeposit';
+  to: Address;
+  calldata: Hex;
+  value?: bigint;
+  estimatedAmount: bigint;
+};
+
+export type TrustBondingClaimAndRestakePlanResult = {
+  account: Address;
+  recipient: Address;
+  claimableRewards: bigint;
+  target: 'trust-bonding' | 'multivault';
+  steps: TrustBondingClaimAndRestakeStep[];
+  estimatedSharesOut?: bigint;
+  minSharesOut?: bigint;
+};
+
+export type TrustBondingLockStateSummary = {
+  account: Address;
+  lockedAmount: bigint;
+  lockEnd: bigint;
+  nowTimestamp: bigint;
+  isExpired: boolean;
+  timeRemaining: bigint;
+  nextActions: TrustBondingLockActionKind[];
+};
+
+export type TrustBondingEpochRewardsPoint = {
+  epoch: bigint;
+  eligibleRewards: bigint;
+  currentRewards: bigint;
+  maxRewards: bigint;
+  hasClaimed: boolean;
+  personalUtilizationRatio: bigint;
+  systemUtilizationRatio: bigint;
+  statusLabel: 'claimed' | 'claimable' | 'unclaimed' | 'no-rewards';
+};
+
+export type TrustBondingEpochRewardsTimeline = {
+  account: Address;
+  startEpoch: bigint;
+  endEpoch: bigint;
+  currentEpoch: bigint;
+  totalEligibleRewards: bigint;
+  totalCurrentRewards: bigint;
+  totalMaxRewards: bigint;
+  points: TrustBondingEpochRewardsPoint[];
+};
+
+type TrustBondingDashboardDeps = {
+  currentEpoch: typeof trustBondingCurrentEpoch;
+  previousEpoch: typeof trustBondingPreviousEpoch;
+  epochTimestampEnd: typeof trustBondingEpochTimestampEnd;
+  getUserInfo: typeof trustBondingGetUserInfo;
+  getUserCurrentClaimableRewards: typeof trustBondingGetUserCurrentClaimableRewards;
+  getUserApy: typeof trustBondingGetUserApy;
+  getSystemApy: typeof trustBondingGetSystemApy;
+  hasClaimedRewardsForEpoch: typeof trustBondingHasClaimedRewardsForEpoch;
+};
+
+type TrustBondingLockDeps = {
+  locked: typeof trustBondingLocked;
+  lockedEnd: typeof trustBondingLockedEnd;
+};
+
+type TrustBondingClaimAndRestakeDeps = {
+  getClaimActionState: typeof trustBondingGetClaimActionState;
+  previewDeposit: typeof multiVaultPreviewDeposit;
+};
+
+type TrustBondingTimelineDeps = {
+  currentEpoch: typeof trustBondingCurrentEpoch;
+  userEligibleRewardsForEpoch: typeof trustBondingUserEligibleRewardsForEpoch;
+  hasClaimedRewardsForEpoch: typeof trustBondingHasClaimedRewardsForEpoch;
+  getUserRewardsForEpoch: typeof trustBondingGetUserRewardsForEpoch;
+  getPersonalUtilizationRatio: typeof trustBondingGetPersonalUtilizationRatio;
+  getSystemUtilizationRatio: typeof trustBondingGetSystemUtilizationRatio;
+};
+```
+
 # Contribution Guidelines
 
 Source: https://docs.intuition.systems/docs/contribution-guidelines
@@ -21719,6 +25614,10 @@ docker-compose -f docker/docker-compose-apps.yml logs -f
 
 Source: https://docs.intuition.systems/docs/intuition-node/overview
 
+For the upcoming Core and package architecture, read [the system map](https://docs.intuition.systems/docs/build/architecture) and [Core REST cookbook](https://docs.intuition.systems/docs/build/guides/core-rest). They distinguish Core REST from the hosted GraphQL API.
+
+## Overview
+
 Learn how to set up and run your own Intuition node to participate in the network using the official Rust implementation.
 
 ## What is an Intuition Node?
@@ -23780,6 +27679,10 @@ main()
 # Installation & Setup
 
 Source: https://docs.intuition.systems/docs/intuition-sdk/installation-and-setup
+
+This page documents the existing SDK v3 integration. For the upcoming SDK 4, identity packages, and Core workflows, start with [Build with the knowledge graph](https://docs.intuition.systems/docs/build/overview) and the [migration guide](https://docs.intuition.systems/docs/build/migration).
+
+## Installation & Setup
 
 The Intuition SDK is a comprehensive TypeScript library for building applications on the Intuition protocol. This guide covers installation, configuration, and getting your development environment ready.
 
@@ -26206,6 +30109,10 @@ Take your time with the migration and test thoroughly. The new API is more power
 # Quick Start
 
 Source: https://docs.intuition.systems/docs/intuition-sdk/quick-start
+
+This page documents the existing SDK v3 integration. For the upcoming SDK 4, identity packages, and Core workflows, start with [Build with the knowledge graph](https://docs.intuition.systems/docs/build/overview) and the [migration guide](https://docs.intuition.systems/docs/build/migration).
+
+## Quick Start
 
 Get started with the Intuition SDK by creating your first atom and triple in minutes.
 
@@ -35136,6 +39043,8 @@ If you have any questions visit the [Intuition Discord](https://discord.gg/RgBen
 # Using the SDK
 
 Source: https://docs.intuition.systems/docs/quick-start/using-the-sdk
+
+This page documents the existing SDK v3 integration. For the upcoming SDK 4, identity packages, and Core workflows, start with [Build with the knowledge graph](https://docs.intuition.systems/docs/build/overview) and the [migration guide](https://docs.intuition.systems/docs/build/migration).
 
 ## Intuition SDK Quick Start
 

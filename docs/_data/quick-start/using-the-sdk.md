@@ -3,6 +3,11 @@ sidebar_position: 0
 sidebar_label: SDK & Creating Data
 title: Using the SDK
 ---
+
+:::note SDK generation
+This page documents the existing SDK v3 integration. For the upcoming SDK 4, identity packages, and Core workflows, start with [Build with the knowledge graph](/docs/build/overview) and the [migration guide](/docs/build/migration).
+:::
+
 # Intuition SDK Quick Start
 
 Get started building with Intuition in minutes. 

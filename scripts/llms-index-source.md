@@ -1,10 +1,20 @@
 <!-- Curated index source. The generator appends the Optional directory; every claim must stay literally true. -->
+
 # Intuition
 
 > Intuition is a permissionless protocol for creating verifiable, tokenized attestations on a Layer 3 blockchain. Developers build context-aware applications using semantic triples (subject-predicate-object relationships) backed by economic incentives through bonding curves. The three core primitives are Atoms (universal identifiers), Triples (structured claims), and Signals (staked conviction).
 
 - [llms-full.txt](https://docs.intuition.systems/llms-full.txt): Complete documentation with full page content for deep reference
 - [llms-medium.txt](https://docs.intuition.systems/llms-medium.txt): Condensed summaries with metadata — fits in a single context window
+
+## Upcoming knowledge-graph developer stack
+
+- [Start here](https://docs.intuition.systems/docs/build/overview): System map and developer paths for the SDK 4 candidate
+- [Package guidebooks](https://docs.intuition.systems/docs/build/packages/index): Nineteen public packages, responsibilities, imports, and candidate versions
+- [Compatibility](https://docs.intuition.systems/docs/build/compatibility): Source revisions and publication/deployment prerequisites
+- [Release manifest](https://docs.intuition.systems/intuition-release.json): Machine-readable package versions, exports, and peers; source evidence, not publication proof
+- [Agent integration contract](https://docs.intuition.systems/docs/build/agents): Invariants, task brief, and verification contract
+- [SDK functions](https://docs.intuition.systems/docs/build/sdk-reference/multivault): Source-generated signatures, inputs, outputs, and effects
 
 ## Quick Start
 
