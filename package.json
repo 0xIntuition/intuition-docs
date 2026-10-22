@@ -29,7 +29,9 @@
     "validate-sdk-examples": "node scripts/validate-sdk-examples.js",
     "test": "node --test scripts/*.test.js",
     "generate-llms-index": "node scripts/generate-llms-full.js --index-only",
-    "prepare": "husky"
+    "prepare": "husky",
+    "generate-package-reference": "node scripts/generate-package-reference.js",
+    "validate-candidate-examples": "node scripts/validate-candidate-examples.js"
   },
   "dependencies": {
     "@apollo/explorer": "^3.7.2",

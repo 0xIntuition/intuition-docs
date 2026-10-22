@@ -6,6 +6,11 @@ description: Create your first atom and triple with the Intuition SDK in minutes
 keywords: [sdk, quick start, tutorial, atom, triple, create, example]
 ---
 
+:::note SDK generation
+This page documents the existing SDK v3 integration. For the upcoming SDK 4, identity packages, and Core workflows, start with [Build with the knowledge graph](/docs/build/overview) and the [migration guide](/docs/build/migration).
+:::
+
+
 # Quick Start
 
 Get started with the Intuition SDK by creating your first atom and triple in minutes.

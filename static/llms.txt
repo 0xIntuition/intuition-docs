@@ -1,9 +1,19 @@
+
 # Intuition
 
 > Intuition is a permissionless protocol for creating verifiable, tokenized attestations on a Layer 3 blockchain. Developers build context-aware applications using semantic triples (subject-predicate-object relationships) backed by economic incentives through bonding curves. The three core primitives are Atoms (universal identifiers), Triples (structured claims), and Signals (staked conviction).
 
 - [llms-full.txt](https://docs.intuition.systems/llms-full.txt): Complete documentation with full page content for deep reference
 - [llms-medium.txt](https://docs.intuition.systems/llms-medium.txt): Condensed summaries with metadata — fits in a single context window
+
+## Upcoming knowledge-graph developer stack
+
+- [Start here](https://docs.intuition.systems/docs/build/overview): System map and developer paths for the SDK 4 candidate
+- [Package guidebooks](https://docs.intuition.systems/docs/build/packages/index): Nineteen public packages, responsibilities, imports, and candidate versions
+- [Compatibility](https://docs.intuition.systems/docs/build/compatibility): Source revisions and publication/deployment prerequisites
+- [Release manifest](https://docs.intuition.systems/intuition-release.json): Machine-readable package versions, exports, and peers; source evidence, not publication proof
+- [Agent integration contract](https://docs.intuition.systems/docs/build/agents): Invariants, task brief, and verification contract
+- [SDK functions](https://docs.intuition.systems/docs/build/sdk-reference/multivault): Source-generated signatures, inputs, outputs, and effects
 
 ## Quick Start
 
@@ -71,6 +81,50 @@ Use the SDK for frontend/full-stack apps, GraphQL for read-heavy queries, Protoc
 Complete directory: every authored documentation page, one line each.
 
 - [Introduction](https://docs.intuition.systems/docs)
+- [Agent integration contract](https://docs.intuition.systems/docs/build/agents)
+- [What to build with a shared knowledge graph](https://docs.intuition.systems/docs/build/application-patterns)
+- [Packages, Core, contracts, and application boundaries](https://docs.intuition.systems/docs/build/architecture)
+- [Candidate versions and compatibility](https://docs.intuition.systems/docs/build/compatibility)
+- [Identity, representations, relationships, and signals](https://docs.intuition.systems/docs/build/concepts)
+- [Create and query an off-chain graph with Core](https://docs.intuition.systems/docs/build/guides/core-rest)
+- [Build creation forms and relationship suggestions](https://docs.intuition.systems/docs/build/guides/creation-profiles)
+- [Build a deterministic atom offline](https://docs.intuition.systems/docs/build/guides/first-atom)
+- [Plan an on-chain write and observe its result](https://docs.intuition.systems/docs/build/guides/onchain)
+- [Parse, classify, and enrich without changing identity](https://docs.intuition.systems/docs/build/guides/processing)
+- [Use the SDK hosted GraphQL read client](https://docs.intuition.systems/docs/build/guides/sdk-reads)
+- [Representation and identity resolution](https://docs.intuition.systems/docs/build/identity-resolution)
+- [Move from SDK v3 and app-local helpers](https://docs.intuition.systems/docs/build/migration)
+- [Build with the Intuition knowledge graph](https://docs.intuition.systems/docs/build/overview)
+- [@0xintuition/atom-classification guide](https://docs.intuition.systems/docs/build/packages/atom-classification)
+- [@0xintuition/atom-enrichment guide](https://docs.intuition.systems/docs/build/packages/atom-enrichment)
+- [@0xintuition/atom-parser guide](https://docs.intuition.systems/docs/build/packages/atom-parser)
+- [@0xintuition/classifications guide](https://docs.intuition.systems/docs/build/packages/classifications)
+- [@0xintuition/cli guide](https://docs.intuition.systems/docs/build/packages/cli)
+- [@0xintuition/curves guide](https://docs.intuition.systems/docs/build/packages/curves)
+- [@0xintuition/deployments guide](https://docs.intuition.systems/docs/build/packages/deployments)
+- [@0xintuition/ids guide](https://docs.intuition.systems/docs/build/packages/ids)
+- [@0xintuition/iid guide](https://docs.intuition.systems/docs/build/packages/iid)
+- [@0xintuition/iid-ladder guide](https://docs.intuition.systems/docs/build/packages/iid-ladder)
+- [@0xintuition/iid-registry guide](https://docs.intuition.systems/docs/build/packages/iid-registry)
+- [@0xintuition/iid-spec guide](https://docs.intuition.systems/docs/build/packages/iid-spec)
+- [Choose the packages your application needs](https://docs.intuition.systems/docs/build/packages/index)
+- [@0xintuition/periphery guide](https://docs.intuition.systems/docs/build/packages/periphery)
+- [@0xintuition/predicates guide](https://docs.intuition.systems/docs/build/packages/predicates)
+- [@0xintuition/primitives guide](https://docs.intuition.systems/docs/build/packages/primitives)
+- [@0xintuition/protocol guide](https://docs.intuition.systems/docs/build/packages/protocol)
+- [@0xintuition/react guide](https://docs.intuition.systems/docs/build/packages/react)
+- [@0xintuition/schema-org guide](https://docs.intuition.systems/docs/build/packages/schema-org)
+- [@0xintuition/sdk guide](https://docs.intuition.systems/docs/build/packages/sdk)
+- [API client](https://docs.intuition.systems/docs/build/sdk-reference/api)
+- [Dynamic-fee curve actions](https://docs.intuition.systems/docs/build/sdk-reference/dynamic-fee-curve)
+- [FeeProxy URI creation](https://docs.intuition.systems/docs/build/sdk-reference/fee-proxy)
+- [FeeProxy affiliate profile](https://docs.intuition.systems/docs/build/sdk-reference/fee-proxy-affiliate-profile)
+- [FeeProxy plans and execution](https://docs.intuition.systems/docs/build/sdk-reference/fee-proxy-builders)
+- [FeeProxy refund preparation](https://docs.intuition.systems/docs/build/sdk-reference/fee-proxy-claim-refund-if-any)
+- [SDK function reference](https://docs.intuition.systems/docs/build/sdk-reference/index)
+- [MultiVault actions](https://docs.intuition.systems/docs/build/sdk-reference/multivault)
+- [Portfolio reads](https://docs.intuition.systems/docs/build/sdk-reference/portfolio)
+- [TrustBonding actions](https://docs.intuition.systems/docs/build/sdk-reference/trust-bonding)
 - [Contribution Guidelines](https://docs.intuition.systems/docs/contribution-guidelines)
 - [ERC-8004 Agent Layer Partner Guide](https://docs.intuition.systems/docs/erc-8004-agent-layer)
 - [Data Populator (Deprecated)](https://docs.intuition.systems/docs/experimental-applications/data-populator)
