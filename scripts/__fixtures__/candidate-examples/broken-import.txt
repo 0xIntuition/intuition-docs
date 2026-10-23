@@ -1,0 +1,3 @@
+// This deliberately invalid candidate import must make the checker fail with TS2305.
+import { candidateExportThatMustNotExist } from '@0xintuition/sdk/actions';
+void candidateExportThatMustNotExist;

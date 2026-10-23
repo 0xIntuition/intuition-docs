@@ -33,16 +33,34 @@ function createIntuitionApiClient(
 
 ## Input and result types
 
+Exported declarations are public imports from the SDK subpath above. Module-local helper aliases describe accepted shapes but are not public exports.
+
+### FetchHeaders
+
+Module-local helper; not a public export.
+
 ```ts
 type FetchHeaders = Record<string, string>;
+```
 
+### FetchResponseLike
+
+Module-local helper; not a public export.
+
+```ts
 type FetchResponseLike = {
   ok: boolean;
   status: number;
   json(): Promise<unknown>;
   text(): Promise<string>;
 };
+```
 
+### FetchLike
+
+Public export.
+
+```ts
 export type FetchLike = (
   input: string,
   init?: {
@@ -51,7 +69,13 @@ export type FetchLike = (
     body?: string;
   },
 ) => Promise<FetchResponseLike>;
+```
 
+### IntuitionApiClientAuth
+
+Public export.
+
+```ts
 export type IntuitionApiClientAuth =
   | {
       kind: 'bearer';
@@ -62,16 +86,34 @@ export type IntuitionApiClientAuth =
       value: string;
       headerName?: string;
     };
+```
 
+### IntuitionApiClientConfig
+
+Public export.
+
+```ts
 export type IntuitionApiClientConfig = {
   baseUrl?: string;
   auth?: IntuitionApiClientAuth;
   fetch?: FetchLike;
   headers?: FetchHeaders;
 };
+```
 
+### IntuitionApiNetwork
+
+Public export.
+
+```ts
 export type IntuitionApiNetwork = 'local' | 'testnet' | 'mainnet';
+```
 
+### IntuitionApiAtom
+
+Public export.
+
+```ts
 export type IntuitionApiAtom = {
   termId: string;
   label: string | null;
@@ -80,21 +122,39 @@ export type IntuitionApiAtom = {
   emoji: string | null;
   type: string | null;
 };
+```
 
+### IntuitionApiTermReference
+
+Public export.
+
+```ts
 export type IntuitionApiTermReference = {
   termId: string;
   label: string | null;
   image: string | null;
   type: string | null;
 };
+```
 
+### IntuitionApiTriple
+
+Public export.
+
+```ts
 export type IntuitionApiTriple = {
   termId: string;
   subject: IntuitionApiTermReference;
   predicate: IntuitionApiTermReference;
   object: IntuitionApiTermReference;
 };
+```
 
+### IntuitionApiClient
+
+Public export.
+
+```ts
 export type IntuitionApiClient = {
   atoms: {
     getById(inputs: { termId: string }): Promise<IntuitionApiAtom | null>;
@@ -105,7 +165,13 @@ export type IntuitionApiClient = {
     getById(inputs: { termId: string }): Promise<IntuitionApiTriple | null>;
   };
 };
+```
 
+### GraphqlSuccess
+
+Module-local helper; not a public export.
+
+```ts
 type GraphqlSuccess<TData> = {
   data?: TData;
   errors?: Array<{ message?: string }>;
