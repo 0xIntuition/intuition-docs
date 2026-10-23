@@ -41,7 +41,7 @@ A quote is a snapshot, not a reservation. Revalidate stale state before submissi
 | Submit a FeeProxy plan                   | `feeProxyExecutePlan`                                       | Sends each step and waits for its receipt               |
 | Prepare a pending refund claim           | `feeProxyClaimRefundIfAny`                                  | A transaction or `null`; it does not submit             |
 
-See the [function reference](../sdk-reference/multivault.md) for complete parameter and result types. Import these functions from `@0xintuition/sdk/actions`; use `sdk/protocol` or `protocol` for low-level wrappers and encoders.
+See the [function reference index](../sdk-reference/index.md) for complete parameter and result types across MultiVault, FeeProxy, and refund actions. Import these functions from `@0xintuition/sdk/actions`; use `sdk/protocol` or `protocol` for low-level wrappers and encoders.
 
 ## Prepare an atom creation plan
 
