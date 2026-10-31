@@ -138,32 +138,6 @@
         "kind": "SCALAR"
       }
     },
-    "CachedImage": {
-      "created_at": {
-        "type": "timestamptz",
-        "kind": "SCALAR"
-      },
-      "model": {
-        "type": "String",
-        "kind": "SCALAR"
-      },
-      "original_url": {
-        "type": "String",
-        "kind": "SCALAR"
-      },
-      "safe": {
-        "type": "Boolean",
-        "kind": "SCALAR"
-      },
-      "score": {
-        "type": "jsonb",
-        "kind": "SCALAR"
-      },
-      "url": {
-        "type": "String",
-        "kind": "SCALAR"
-      }
-    },
     "ChartDataOutput": {
       "count": {
         "type": "Int",
@@ -202,12 +176,6 @@
     },
     "ChartSvgOutput": {
       "svg": {
-        "type": "String",
-        "kind": "SCALAR"
-      }
-    },
-    "PinOutput": {
-      "uri": {
         "type": "String",
         "kind": "SCALAR"
       }
@@ -422,26 +390,6 @@
         "kind": "SCALAR"
       },
       "unrealized_pnl": {
-        "type": "String",
-        "kind": "SCALAR"
-      }
-    },
-    "UploadImageFromUrlOutput": {
-      "images": {
-        "type": "CachedImage",
-        "kind": "OBJECT"
-      }
-    },
-    "UploadJsonToIpfsOutput": {
-      "hash": {
-        "type": "String",
-        "kind": "SCALAR"
-      },
-      "name": {
-        "type": "String",
-        "kind": "SCALAR"
-      },
-      "size": {
         "type": "String",
         "kind": "SCALAR"
       }
@@ -3118,32 +3066,6 @@
       "id": {
         "type": "String",
         "kind": "SCALAR"
-      }
-    },
-    "mutation_root": {
-      "pinOrganization": {
-        "type": "PinOutput",
-        "kind": "OBJECT"
-      },
-      "pinPerson": {
-        "type": "PinOutput",
-        "kind": "OBJECT"
-      },
-      "pinThing": {
-        "type": "PinOutput",
-        "kind": "OBJECT"
-      },
-      "uploadImage": {
-        "type": "UploadImageFromUrlOutput",
-        "kind": "OBJECT"
-      },
-      "uploadImageFromUrl": {
-        "type": "UploadImageFromUrlOutput",
-        "kind": "OBJECT"
-      },
-      "uploadJsonToIpfs": {
-        "type": "UploadJsonToIpfsOutput",
-        "kind": "OBJECT"
       }
     },
     "organizations": {
@@ -14305,7 +14227,6 @@
   },
   "rootTypes": {
     "query": "query_root",
-    "mutation": "mutation_root",
     "subscription": "subscription_root"
   }
 }
