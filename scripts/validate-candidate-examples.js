@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Typecheck the new guidebook against a selected candidate's built public exports.
-// Execute only the explicitly offline first-atom recipe, with fetch disabled.
+// Execute only the explicitly offline identity and profile recipes, with fetch disabled.
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
@@ -17,6 +17,15 @@ const revision = execFileSync('git', ['-C', source, 'rev-parse', 'HEAD'], {
 }).trim();
 if (revision !== manifest.source.commit)
   throw new Error('Candidate source does not match manifest');
+if (
+  execFileSync('git', ['-C', source, 'status', '--porcelain'], {
+    encoding: 'utf8',
+  }).trim()
+)
+  throw new Error('Candidate validation requires a clean source checkout');
+const fixtureIndex = process.argv.indexOf('--fixture');
+const fixture = fixtureIndex >= 0 && process.argv[fixtureIndex + 1];
+if (fixtureIndex >= 0 && !fixture) throw new Error('--fixture requires a file');
 const temp = fs.mkdtempSync(
   path.join(os.tmpdir(), 'intuition-docs-candidate-'),
 );
@@ -58,7 +67,7 @@ try {
   let count = 0;
   const mapping = [];
   for (const file of walk(path.join(root, 'docs/_data/build'))) {
-    if (!file.endsWith('.md') || file.includes('/sdk-reference/')) continue;
+    if (!/\.mdx?$/.test(file) || file.includes('/sdk-reference/')) continue;
     const text = fs.readFileSync(file, 'utf8');
     for (const match of text.matchAll(/```(?:ts|typescript)\n([\s\S]*?)```/g)) {
       const name = `example-${++count}.mts`;
@@ -68,6 +77,12 @@ try {
       );
     }
   }
+  if (fixture)
+    fs.copyFileSync(
+      path.resolve(fixture),
+      path.join(temp, 'negative-fixture.mts'),
+    );
+  if (count === 0) throw new Error('No candidate TypeScript snippets found');
   fs.writeFileSync(
     path.join(temp, 'tsconfig.json'),
     JSON.stringify({
@@ -112,8 +127,22 @@ try {
   execFileSync(process.execPath, [path.join(temp, 'first-atom.mjs')], {
     stdio: 'inherit',
   });
+  const profiles = fs
+    .readFileSync(
+      path.join(root, 'docs/_data/build/packages/primitives.md'),
+      'utf8',
+    )
+    .match(/```js\n([\s\S]*?)```/)[1];
+  fs.writeFileSync(
+    path.join(temp, 'profiles.mjs'),
+    "globalThis.fetch = () => { throw new Error('Offline recipe attempted HTTP'); };\n" +
+      profiles,
+  );
+  execFileSync(process.execPath, [path.join(temp, 'profiles.mjs')], {
+    stdio: 'inherit',
+  });
   console.log(
-    `Passed ${count} TypeScript snippets against local built candidate exports; offline identity/context assertions passed. No npm-publication or live-service verification is implied.`,
+    `Passed ${count} TypeScript snippets against local built candidate exports; offline identity/context and derived/candidate profile assertions passed. No npm-publication or live-service verification is implied.`,
   );
 } finally {
   fs.rmSync(temp, { recursive: true, force: true });

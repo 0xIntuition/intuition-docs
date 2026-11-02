@@ -139,14 +139,52 @@ function trustBondingGetEpochRewardsTimeline(
 
 Defaults: `deps = defaultTrustBondingTimelineDeps`. Dependency arguments are optional test/customization hooks; normal consumers use the built-in dependencies.
 
+## Imported type provenance
+
+Public import locations and the definitions used by these signatures and helper types. Value imports appear where a dependency hook uses `typeof`.
+
+| Name in this module                          | Public import                                                                        | Definition                                                                                                                                                                                   |
+| -------------------------------------------- | ------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `multiVaultPreviewDeposit`                   | `import { multiVaultPreviewDeposit } from '@0xintuition/protocol'`                   | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/multivault/preview-deposit.ts#L26)                      |
+| `ReadConfig`                                 | `import type { ReadConfig } from '@0xintuition/protocol'`                            | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/types.ts#L3)                                                 |
+| `trustBondingCurrentEpoch`                   | `import { trustBondingCurrentEpoch } from '@0xintuition/protocol'`                   | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/trustbonding/current-epoch.ts#L9)                       |
+| `trustBondingEpochTimestampEnd`              | `import { trustBondingEpochTimestampEnd } from '@0xintuition/protocol'`              | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/trustbonding/epoch-timestamp-end.ts#L12)                |
+| `trustBondingGetPersonalUtilizationRatio`    | `import { trustBondingGetPersonalUtilizationRatio } from '@0xintuition/protocol'`    | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/trustbonding/get-personal-utilization-ratio.ts#L12)     |
+| `trustBondingGetSystemApy`                   | `import { trustBondingGetSystemApy } from '@0xintuition/protocol'`                   | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/trustbonding/get-system-apy.ts#L9)                      |
+| `trustBondingGetSystemUtilizationRatio`      | `import { trustBondingGetSystemUtilizationRatio } from '@0xintuition/protocol'`      | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/trustbonding/get-system-utilization-ratio.ts#L12)       |
+| `trustBondingGetUserApy`                     | `import { trustBondingGetUserApy } from '@0xintuition/protocol'`                     | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/trustbonding/get-user-apy.ts#L12)                       |
+| `trustBondingGetUserCurrentClaimableRewards` | `import { trustBondingGetUserCurrentClaimableRewards } from '@0xintuition/protocol'` | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/trustbonding/get-user-current-claimable-rewards.ts#L12) |
+| `trustBondingGetUserInfo`                    | `import { trustBondingGetUserInfo } from '@0xintuition/protocol'`                    | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/trustbonding/get-user-info.ts#L12)                      |
+| `trustBondingGetUserRewardsForEpoch`         | `import { trustBondingGetUserRewardsForEpoch } from '@0xintuition/protocol'`         | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/trustbonding/get-user-rewards-for-epoch.ts#L12)         |
+| `trustBondingHasClaimedRewardsForEpoch`      | `import { trustBondingHasClaimedRewardsForEpoch } from '@0xintuition/protocol'`      | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/trustbonding/has-claimed-rewards-for-epoch.ts#L12)      |
+| `trustBondingLocked`                         | `import { trustBondingLocked } from '@0xintuition/protocol'`                         | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/trustbonding/locked.ts#L12)                             |
+| `trustBondingLockedEnd`                      | `import { trustBondingLockedEnd } from '@0xintuition/protocol'`                      | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/trustbonding/locked-end.ts#L12)                         |
+| `trustBondingPreviousEpoch`                  | `import { trustBondingPreviousEpoch } from '@0xintuition/protocol'`                  | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/trustbonding/previous-epoch.ts#L9)                      |
+| `trustBondingUserEligibleRewardsForEpoch`    | `import { trustBondingUserEligibleRewardsForEpoch } from '@0xintuition/protocol'`    | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/trustbonding/user-eligible-rewards-for-epoch.ts#L12)    |
+| `WriteConfig`                                | `import type { WriteConfig } from '@0xintuition/protocol'`                           | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/types.ts#L8)                                                 |
+| `Address`                                    | `import type { Address } from 'viem'`                                                | Owned by the external package.                                                                                                                                                               |
+| `Hex`                                        | `import type { Hex } from 'viem'`                                                    | Owned by the external package.                                                                                                                                                               |
+
 ## Input and result types
+
+Exported declarations are public imports from the SDK subpath above. Module-local helper aliases describe accepted shapes but are not public exports.
+
+### ApyTuple
+
+Module-local helper; not a public export.
 
 ```ts
 type ApyTuple = readonly [bigint, bigint] & {
   currentApy?: bigint;
   maxApy?: bigint;
 };
+```
 
+### UserInfoTuple
+
+Module-local helper; not a public export.
+
+```ts
 type UserInfoTuple = readonly [
   bigint,
   bigint,
@@ -162,17 +200,35 @@ type UserInfoTuple = readonly [
   lockEnd?: bigint;
   bondedBalance?: bigint;
 };
+```
 
+### LockedTuple
+
+Module-local helper; not a public export.
+
+```ts
 type LockedTuple = readonly [bigint, bigint] & {
   amount?: bigint;
   end?: bigint;
 };
+```
 
+### UserRewardsForEpochTuple
+
+Module-local helper; not a public export.
+
+```ts
 type UserRewardsForEpochTuple = readonly [bigint, bigint] & {
   currentRewards?: bigint;
   maxRewards?: bigint;
 };
+```
 
+### TrustBondingUserInfoSnapshot
+
+Public export.
+
+```ts
 export type TrustBondingUserInfoSnapshot = {
   personalUtilization: bigint;
   eligibleRewards: bigint;
@@ -181,7 +237,13 @@ export type TrustBondingUserInfoSnapshot = {
   lockEnd: bigint;
   bondedBalance: bigint;
 };
+```
 
+### TrustBondingRewardsDashboard
+
+Public export.
+
+```ts
 export type TrustBondingRewardsDashboard = {
   account: Address;
   currentEpoch: bigint;
@@ -199,7 +261,13 @@ export type TrustBondingRewardsDashboard = {
   };
   hasClaimedPreviousEpochRewards: boolean;
 };
+```
 
+### TrustBondingClaimActionReason
+
+Public export.
+
+```ts
 export type TrustBondingClaimActionReason =
   | 'can-claim'
   | 'invalid-recipient'
@@ -207,7 +275,13 @@ export type TrustBondingClaimActionReason =
   | 'already-claimed'
   | 'nothing-to-claim'
   | 'inconsistent-state';
+```
 
+### TrustBondingClaimActionState
+
+Public export.
+
+```ts
 export type TrustBondingClaimActionState = {
   account: Address;
   recipient: Address | null;
@@ -219,14 +293,26 @@ export type TrustBondingClaimActionState = {
   reason: TrustBondingClaimActionReason;
   ctaLabel: string;
 };
+```
 
+### TrustBondingLockActionKind
+
+Public export.
+
+```ts
 export type TrustBondingLockActionKind =
   | 'createLock'
   | 'increaseAmount'
   | 'increaseUnlockTime'
   | 'increaseAmountAndTime'
   | 'withdrawAndCreateLock';
+```
 
+### TrustBondingLockActionPlan
+
+Public export.
+
+```ts
 export type TrustBondingLockActionPlan = {
   account: Address;
   action: TrustBondingLockActionKind;
@@ -237,7 +323,13 @@ export type TrustBondingLockActionPlan = {
   nowTimestamp: bigint;
   isExpired: boolean;
 };
+```
 
+### TrustBondingClaimAndRestakeStep
+
+Public export.
+
+```ts
 export type TrustBondingClaimAndRestakeStep = {
   type:
     | 'claimRewards'
@@ -250,7 +342,13 @@ export type TrustBondingClaimAndRestakeStep = {
   value?: bigint;
   estimatedAmount: bigint;
 };
+```
 
+### TrustBondingClaimAndRestakePlanResult
+
+Public export.
+
+```ts
 export type TrustBondingClaimAndRestakePlanResult = {
   account: Address;
   recipient: Address;
@@ -260,7 +358,13 @@ export type TrustBondingClaimAndRestakePlanResult = {
   estimatedSharesOut?: bigint;
   minSharesOut?: bigint;
 };
+```
 
+### TrustBondingLockStateSummary
+
+Public export.
+
+```ts
 export type TrustBondingLockStateSummary = {
   account: Address;
   lockedAmount: bigint;
@@ -270,7 +374,13 @@ export type TrustBondingLockStateSummary = {
   timeRemaining: bigint;
   nextActions: TrustBondingLockActionKind[];
 };
+```
 
+### TrustBondingEpochRewardsPoint
+
+Public export.
+
+```ts
 export type TrustBondingEpochRewardsPoint = {
   epoch: bigint;
   eligibleRewards: bigint;
@@ -281,7 +391,13 @@ export type TrustBondingEpochRewardsPoint = {
   systemUtilizationRatio: bigint;
   statusLabel: 'claimed' | 'claimable' | 'unclaimed' | 'no-rewards';
 };
+```
 
+### TrustBondingEpochRewardsTimeline
+
+Public export.
+
+```ts
 export type TrustBondingEpochRewardsTimeline = {
   account: Address;
   startEpoch: bigint;
@@ -292,7 +408,13 @@ export type TrustBondingEpochRewardsTimeline = {
   totalMaxRewards: bigint;
   points: TrustBondingEpochRewardsPoint[];
 };
+```
 
+### TrustBondingDashboardDeps
+
+Module-local helper; not a public export.
+
+```ts
 type TrustBondingDashboardDeps = {
   currentEpoch: typeof trustBondingCurrentEpoch;
   previousEpoch: typeof trustBondingPreviousEpoch;
@@ -303,17 +425,35 @@ type TrustBondingDashboardDeps = {
   getSystemApy: typeof trustBondingGetSystemApy;
   hasClaimedRewardsForEpoch: typeof trustBondingHasClaimedRewardsForEpoch;
 };
+```
 
+### TrustBondingLockDeps
+
+Module-local helper; not a public export.
+
+```ts
 type TrustBondingLockDeps = {
   locked: typeof trustBondingLocked;
   lockedEnd: typeof trustBondingLockedEnd;
 };
+```
 
+### TrustBondingClaimAndRestakeDeps
+
+Module-local helper; not a public export.
+
+```ts
 type TrustBondingClaimAndRestakeDeps = {
   getClaimActionState: typeof trustBondingGetClaimActionState;
   previewDeposit: typeof multiVaultPreviewDeposit;
 };
+```
 
+### TrustBondingTimelineDeps
+
+Module-local helper; not a public export.
+
+```ts
 type TrustBondingTimelineDeps = {
   currentEpoch: typeof trustBondingCurrentEpoch;
   userEligibleRewardsForEpoch: typeof trustBondingUserEligibleRewardsForEpoch;

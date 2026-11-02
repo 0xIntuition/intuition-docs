@@ -5,6 +5,10 @@ const path = require('node:path');
 const { execFileSync } = require('node:child_process');
 const ts = require('typescript');
 const prettier = require('prettier');
+const {
+  createTypeReference,
+  isExported,
+} = require('./package-reference-types');
 
 const summaries = {
   dynamicFeeCurvePrepareDepositTx:
@@ -56,6 +60,15 @@ async function main() {
       'Usage: node scripts/generate-package-reference.js /path/to/packages',
     );
   const root = path.resolve(input);
+  const check = process.argv.includes('--check');
+  function write(file, content) {
+    if (check) {
+      if (!fs.existsSync(file) || fs.readFileSync(file, 'utf8') !== content)
+        throw new Error(
+          `Generated reference drift: ${path.relative(path.resolve(__dirname, '..'), file)}`,
+        );
+    } else fs.writeFileSync(file, content);
+  }
   const git = (...args) =>
     execFileSync('git', ['-C', root, ...args], { encoding: 'utf8' }).trim();
   if (
@@ -67,6 +80,11 @@ async function main() {
   if (git('status', '--porcelain'))
     throw new Error('Reference generation requires a clean source checkout');
   const commit = git('rev-parse', 'HEAD');
+  const selected = require('../static/intuition-release.json');
+  if (commit !== selected.source.commit)
+    throw new Error(
+      'Candidate source does not match manifest; repinning requires a separate decision',
+    );
   const output = path.resolve(__dirname, '../docs/_data/build/sdk-reference');
   fs.mkdirSync(output, { recursive: true });
   const manifest = {
@@ -89,7 +107,7 @@ async function main() {
       source: `https://github.com/0xIntuition/packages/tree/${commit}/packages/${dir}`,
     });
   }
-  fs.writeFileSync(
+  write(
     path.resolve(__dirname, '../static/intuition-release.json'),
     JSON.stringify(manifest, null, 2) + '\n',
   );
@@ -138,6 +156,7 @@ async function main() {
     (pkg) => pkg.name === '@0xintuition/sdk',
   ).version;
   let functions = 0;
+  const typeReference = createTypeReference(root, commit, sections);
   for (const [relative, title, subpath] of sections) {
     const sourcePath = `packages/sdk/src/${relative}`;
     const source = fs.readFileSync(path.join(root, sourcePath), 'utf8');
@@ -157,7 +176,7 @@ async function main() {
     const types = [];
     for (const node of ast.statements) {
       if (ts.isTypeAliasDeclaration(node) || ts.isInterfaceDeclaration(node)) {
-        types.push(node.getText(ast));
+        types.push(node);
         continue;
       }
       if (!node.modifiers?.some((m) => m.kind === ts.SyntaxKind.ExportKeyword))
@@ -224,23 +243,29 @@ async function main() {
         ts.isTypeAliasDeclaration(node) ||
         ts.isInterfaceDeclaration(node)
       ) {
-        types.push(node.getText(ast));
+        types.push(node);
       }
     }
-    if (types.length)
-      md += `## Input and result types\n\n\`\`\`ts\n${types.join('\n\n')}\n\`\`\`\n`;
-    fs.writeFileSync(
+    md += typeReference.render(relative);
+    if (types.length) {
+      md +=
+        '## Input and result types\n\nExported declarations are public imports from the SDK subpath above. Module-local helper aliases describe accepted shapes but are not public exports.\n\n';
+      for (const node of types) {
+        md += `### ${node.name.text}\n\n${isExported(node) ? 'Public export.' : 'Module-local helper; not a public export.'}\n\n\`\`\`ts\n${node.getText(ast)}\n\`\`\`\n\n`;
+      }
+    }
+    write(
       path.join(output, slug + '.md'),
       await prettier.format(md, { parser: 'mdx', singleQuote: true }),
     );
   }
-  fs.writeFileSync(
+  write(
     path.join(output, '_category_.json'),
     JSON.stringify({ label: 'SDK function reference', position: 5 }, null, 2) +
       '\n',
   );
   console.log(
-    `Generated ${sections.length} API pages, ${functions} functions, ${manifest.packages.length} package records at ${commit}`,
+    `${check ? 'Verified' : 'Generated'} ${sections.length} API pages, ${functions} functions, ${manifest.packages.length} package records at ${commit}`,
   );
 }
 main().catch((error) => {

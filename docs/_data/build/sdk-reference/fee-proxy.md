@@ -42,7 +42,41 @@ function feeProxyPrepareCreateAtomsWithUrisTx(
 
 Defaults: `deps = defaultFeeProxyCreateAtomsWithUrisDeps`. Dependency arguments are optional test/customization hooks; normal consumers use the built-in dependencies.
 
+## Imported type provenance
+
+Public import locations and the definitions used by these signatures and helper types. Value imports appear where a dependency hook uses `typeof`.
+
+| Name in this module          | Public import                                                         | Definition                                                                                                                                                                  |
+| ---------------------------- | --------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `FeeGuard`                   | `import type { FeeGuard } from '@0xintuition/periphery'`              | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/periphery/src/fee-proxy/types.ts#L2)                     |
+| `feeProxyPreviewCreationFee` | `import { feeProxyPreviewCreationFee } from '@0xintuition/periphery'` | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/periphery/src/fee-proxy/preview-creation-fee.ts#L12)     |
+| `multiVaultGetAtomUriConfig` | `import { multiVaultGetAtomUriConfig } from '@0xintuition/protocol'`  | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/multivault/get-atom-uri-config.ts#L11) |
+| `ReadConfig`                 | `import type { ReadConfig } from '@0xintuition/protocol'`             | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/types.ts#L3)                                |
+| `Address`                    | `import type { Address } from 'viem'`                                 | Owned by the external package.                                                                                                                                              |
+| `Hex`                        | `import type { Hex } from 'viem'`                                     | Owned by the external package.                                                                                                                                              |
+
+## External input and result structures
+
+These declarations belong to the named packages, not to the SDK. Nested supporting types retain their owning source links.
+
+### FeeGuard
+
+[Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/periphery/src/fee-proxy/types.ts#L2)
+
+```ts
+export type FeeGuard = {
+  maxFeeBps: bigint;
+  maxFixedFee: bigint;
+};
+```
+
 ## Input and result types
+
+Exported declarations are public imports from the SDK subpath above. Module-local helper aliases describe accepted shapes but are not public exports.
+
+### FeeProxyCreateAtomsWithUrisQuote
+
+Public export.
 
 ```ts
 export type FeeProxyCreateAtomsWithUrisQuote = {
@@ -53,14 +87,26 @@ export type FeeProxyCreateAtomsWithUrisQuote = {
   maxUriCount: number;
   maxUriLength: number;
 };
+```
 
+### FeeProxyPrepareCreateAtomsWithUrisTxResult
+
+Public export.
+
+```ts
 export type FeeProxyPrepareCreateAtomsWithUrisTxResult = {
   args: readonly [Address, Hex[], bigint[], Hex[][], FeeGuard];
   calldata: Hex;
   value: bigint;
   quote: FeeProxyCreateAtomsWithUrisQuote;
 };
+```
 
+### FeeProxyCreateAtomsWithUrisDeps
+
+Module-local helper; not a public export.
+
+```ts
 type FeeProxyCreateAtomsWithUrisDeps = {
   previewCreationFee: typeof feeProxyPreviewCreationFee;
   getAtomUriConfig: typeof multiVaultGetAtomUriConfig;

@@ -8,6 +8,7 @@ Intuition is a permissionless protocol for creating verifiable, tokenized attest
 ---
 title: "Agent integration contract"
 description: "Start a coding agent with a specific outcome, the release manifest, and the relevant recipe. A package export or an example endpoint must not be inferred from a marketing description."
+last_updated: "2026-10-22T11:24:44-07:00"
 source: "https://docs.intuition.systems/docs/build/agents"
 ---
 
@@ -31,6 +32,7 @@ Machine-readable entrypoints: [release manifest](https://docs.intuition.systems/
 ---
 title: "What to build with a shared knowledge graph"
 description: "The packages remove repeated identity and modeling work. Core supplies a graph backend. Contracts add shared registration and economic signaling. An application combines those capabilities with its..."
+last_updated: "2026-10-22T11:24:44-07:00"
 source: "https://docs.intuition.systems/docs/build/application-patterns"
 ---
 
@@ -47,6 +49,7 @@ The packages remove repeated identity and modeling work. Core supplies a graph b
 ---
 title: "Packages, Core, contracts, and application boundaries"
 description: "Use each layer for the work it owns. This keeps application code portable and makes an agent's integration choices reviewable."
+last_updated: "2026-10-22T11:24:44-07:00"
 source: "https://docs.intuition.systems/docs/build/architecture"
 ---
 
@@ -65,6 +68,7 @@ Use each layer for the work it owns. This keeps application code portable and ma
 ---
 title: "Candidate versions and compatibility"
 description: "This documentation targets the upcoming Intuition package train inspected on **2026-10-22**. Package publication is assumed for the intended rollout; it has **not** been verified here. Install..."
+last_updated: "2026-10-22T11:24:44-07:00"
 source: "https://docs.intuition.systems/docs/build/compatibility"
 ---
 
@@ -83,6 +87,7 @@ This documentation targets the upcoming Intuition package train inspected on **2
 ---
 title: "Identity, representations, relationships, and signals"
 description: "An application needs to distinguish the thing being described, its serialized representation, and the claims people make about it."
+last_updated: "2026-10-22T11:24:44-07:00"
 source: "https://docs.intuition.systems/docs/build/concepts"
 ---
 
@@ -100,6 +105,7 @@ An application needs to distinguish the thing being described, its serialized re
 ---
 title: "Create and query an off-chain graph with Core"
 description: "Prerequisites: a running Core node and an operator-issued writable API key for its configured auth mode. The examples use a local Query API at port 3000. See the [pinned node..."
+last_updated: "2026-10-22T11:24:44-07:00"
 source: "https://docs.intuition.systems/docs/build/guides/core-rest"
 ---
 
@@ -114,6 +120,7 @@ Set `CORE_URL` and `CORE_API_KEY` in the server environment. Never put a writabl
 ---
 title: "Build creation forms and relationship suggestions"
 description: "Use `classifications` as the source of form fields and relationship recommendations. Use `primitives` to produce the anchor. Use `predicates` for canonical relationship vocabulary. This avoids each..."
+last_updated: "2026-10-22T11:24:44-07:00"
 source: "https://docs.intuition.systems/docs/build/guides/creation-profiles"
 ---
 
@@ -130,6 +137,7 @@ Render fields with their declared requirements and validation. Offer relationshi
 ---
 title: "Build a deterministic atom offline"
 description: "This recipe produces canonical atom bytes and an ID. It makes no API, provider, RPC, or wallet calls. Use Node 22 and an ESM project; install the [candidate versions](../compatibility.md) once..."
+last_updated: "2026-10-22T11:24:44-07:00"
 source: "https://docs.intuition.systems/docs/build/guides/first-atom"
 ---
 
@@ -148,6 +156,7 @@ The assertions show canonicalization and the identity/context boundary. The two 
 ---
 title: "Plan an on-chain write and observe its result"
 description: "Use an explicit network, deployment, account, and budget. The candidate ABI includes functions that older deployments may not implement. Select the [matching release](../compatibility.md) before using..."
+last_updated: "2026-10-23T10:50:37-07:00"
 source: "https://docs.intuition.systems/docs/build/guides/onchain"
 ---
 
@@ -169,6 +178,7 @@ A quote is a snapshot, not a reservation. Revalidate stale state before submissi
 ---
 title: "Parse, classify, and enrich without changing identity"
 description: "The processing stages answer different questions. Parsing detects input structure. Classification proposes an entity type under configured plugins. Enrichment obtains provider artifacts and normalized..."
+last_updated: "2026-10-22T11:24:44-07:00"
 source: "https://docs.intuition.systems/docs/build/guides/processing"
 ---
 
@@ -187,6 +197,7 @@ The processing stages answer different questions. Parsing detects input structur
 ---
 title: "Use the SDK hosted GraphQL read client"
 description: "`createIntuitionApiClient` is a small read client for the established hosted GraphQL contract. It is not a REST client for a Core node and does not implement general search, graph traversal, uploads,..."
+last_updated: "2026-10-22T11:24:44-07:00"
 source: "https://docs.intuition.systems/docs/build/guides/sdk-reads"
 ---
 
@@ -205,6 +216,7 @@ Always select the environment explicitly. Omitting `baseUrl` defaults to mainnet
 ---
 title: "Representation and identity resolution"
 description: "Two applications can agree on an entity while storing different descriptions of it. Shared identifiers and an equivalence layer address different parts of that problem."
+last_updated: "2026-10-22T11:24:44-07:00"
 source: "https://docs.intuition.systems/docs/build/identity-resolution"
 ---
 
@@ -224,6 +236,7 @@ Two applications can agree on an entity while storing different descriptions of 
 ---
 title: "Move from SDK v3 and app-local helpers"
 description: "The new SDK 4 candidate separates API reads, action planning, deterministic utilities, and low-level contract access. Existing SDK v3 guides describe a different public surface; keep a migration..."
+last_updated: "2026-10-22T11:24:44-07:00"
 source: "https://docs.intuition.systems/docs/build/migration"
 ---
 
@@ -240,6 +253,7 @@ The new SDK 4 candidate separates API reads, action planning, deterministic util
 ---
 title: "Build with the Intuition knowledge graph"
 description: "Intuition gives applications shared identifiers, a common vocabulary for relationships, a backend for processing and querying those relationships, and an on-chain protocol for publishing terms and..."
+last_updated: "2026-10-22T11:24:44-07:00"
 source: "https://docs.intuition.systems/docs/build/overview"
 ---
 
@@ -256,6 +270,7 @@ This guide covers the upcoming package release. The [compatibility manifest](htt
 ---
 title: "@0xintuition/atom-classification guide"
 description: "Compose a plugin-based classification engine for client, progressive, or server execution."
+last_updated: "2026-10-22T11:24:44-07:00"
 source: "https://docs.intuition.systems/docs/build/packages/atom-classification"
 ---
 
@@ -287,6 +302,7 @@ Use ESM imports.
 ---
 title: "@0xintuition/atom-enrichment guide"
 description: "Execute selected enrichment providers and extract fields from artifacts."
+last_updated: "2026-10-22T11:24:44-07:00"
 source: "https://docs.intuition.systems/docs/build/packages/atom-enrichment"
 ---
 
@@ -318,6 +334,7 @@ Use ESM imports.
 ---
 title: "@0xintuition/atom-parser guide"
 description: "Detect and normalize raw strings, JSON objects/arrays, URLs, IPFS, addresses, names, and ISBNs."
+last_updated: "2026-10-22T11:24:44-07:00"
 source: "https://docs.intuition.systems/docs/build/packages/atom-parser"
 ---
 
@@ -349,6 +366,7 @@ Use ESM imports.
 ---
 title: "@0xintuition/classifications guide"
 description: "Use canonical entity specifications, identity ladders, Creation Profiles, discovery metadata, and atom-data builders."
+last_updated: "2026-10-22T11:24:44-07:00"
 source: "https://docs.intuition.systems/docs/build/packages/classifications"
 ---
 
@@ -381,6 +399,7 @@ Use ESM imports. Required peers: `viem ^2.0.0`.
 ---
 title: "@0xintuition/cli guide"
 description: "Discover encoders and produce deterministic calldata or action envelopes for agents and scripts."
+last_updated: "2026-10-22T11:24:44-07:00"
 source: "https://docs.intuition.systems/docs/build/packages/cli"
 ---
 
@@ -414,6 +433,7 @@ Start with encoder discovery before constructing an action envelope. The command
 ---
 title: "@0xintuition/curves guide"
 description: "Calculate local curve previews and exact-net gross-up quotes using explicit state and parameters."
+last_updated: "2026-10-22T11:24:44-07:00"
 source: "https://docs.intuition.systems/docs/build/packages/curves"
 ---
 
@@ -445,6 +465,7 @@ Use ESM imports.
 ---
 title: "@0xintuition/deployments guide"
 description: "Resolve the shared ABI, bytecode, address, and chain metadata consumed by all protocol packages."
+last_updated: "2026-10-22T11:24:44-07:00"
 source: "https://docs.intuition.systems/docs/build/packages/deployments"
 ---
 
@@ -476,6 +497,7 @@ Use ESM imports. Required peers: `viem ^2.0.0`.
 ---
 title: "@0xintuition/ids guide"
 description: "Calculate deterministic atom, predicate, triple, counter-triple, and authentication-related IDs."
+last_updated: "2026-10-22T11:24:44-07:00"
 source: "https://docs.intuition.systems/docs/build/packages/ids"
 ---
 
@@ -507,6 +529,7 @@ Use ESM imports. Required peers: `viem ^2.0.0`.
 ---
 title: "@0xintuition/iid-ladder guide"
 description: "Choose canonical identities from application, provider, seed, and import inputs."
+last_updated: "2026-10-22T11:24:44-07:00"
 source: "https://docs.intuition.systems/docs/build/packages/iid-ladder"
 ---
 
@@ -538,6 +561,7 @@ Use ESM imports.
 ---
 title: "@0xintuition/iid-registry guide"
 description: "Resolve identifier meaning and provider capabilities without HTTP or credentials."
+last_updated: "2026-10-22T11:24:44-07:00"
 source: "https://docs.intuition.systems/docs/build/packages/iid-registry"
 ---
 
@@ -568,6 +592,7 @@ Use ESM imports. Required peers: `viem ^2.0.0`.
 ---
 title: "@0xintuition/iid-spec guide"
 description: "The normative identifier specification and conformance corpus. Read it when implementing an identifier producer or comparing independent implementations."
+last_updated: "2026-10-22T11:24:44-07:00"
 source: "https://docs.intuition.systems/docs/build/packages/iid-spec"
 ---
 
@@ -599,6 +624,7 @@ Read the [identifier explainer](https://github.com/0xIntuition/packages/tree/1dc
 ---
 title: "@0xintuition/iid guide"
 description: "Parse, inspect, canonicalize, and derive Intuition identifiers entirely offline."
+last_updated: "2026-10-22T11:24:44-07:00"
 source: "https://docs.intuition.systems/docs/build/packages/iid"
 ---
 
@@ -631,6 +657,7 @@ Use ESM imports. Required peers: `viem ^2.0.0`.
 ---
 title: "Choose the packages your application needs"
 description: "Install the smallest layer that supplies your workflow. All names below refer to public package artifacts in the selected source train; Core's private database and worker packages are service..."
+last_updated: "2026-10-22T11:24:44-07:00"
 source: "https://docs.intuition.systems/docs/build/packages/index"
 ---
 
@@ -648,6 +675,7 @@ Install the smallest layer that supplies your workflow. All names below refer to
 ---
 title: "@0xintuition/periphery guide"
 description: "Use direct FeeProxy, router, and meta-bridge wrappers and encoders."
+last_updated: "2026-10-22T11:24:44-07:00"
 source: "https://docs.intuition.systems/docs/build/packages/periphery"
 ---
 
@@ -679,6 +707,7 @@ Use ESM imports. Required peers: `viem ^2.0.0`.
 ---
 title: "@0xintuition/predicates guide"
 description: "Use shared relationship vocabulary, canonical predicate data and IDs, semantic flags, and display helpers."
+last_updated: "2026-10-22T11:24:44-07:00"
 source: "https://docs.intuition.systems/docs/build/packages/predicates"
 ---
 
@@ -710,6 +739,7 @@ Use ESM imports. Required peers: `viem ^2.0.0`.
 ---
 title: "@0xintuition/primitives guide"
 description: "Build atoms and triples with validated, deterministic public helpers."
+last_updated: "2026-10-23T10:50:37-07:00"
 source: "https://docs.intuition.systems/docs/build/packages/primitives"
 ---
 
@@ -741,6 +771,7 @@ Use ESM imports. Required peers: `viem ^2.0.0`.
 ---
 title: "@0xintuition/protocol guide"
 description: "Call or encode core protocol contracts with explicit viem clients and deployment configuration."
+last_updated: "2026-10-22T11:24:44-07:00"
 source: "https://docs.intuition.systems/docs/build/packages/protocol"
 ---
 
@@ -770,6 +801,7 @@ Use ESM imports. Required peers: `viem ^2.0.0`.
 ---
 title: "@0xintuition/react guide"
 description: "Compose protocol read/write hooks and observable transaction lifecycle state in React."
+last_updated: "2026-10-22T11:24:44-07:00"
 source: "https://docs.intuition.systems/docs/build/packages/react"
 ---
 
@@ -799,6 +831,7 @@ Use ESM imports. Required peers: `@tanstack/react-query >=5`, `react >=18`, `vie
 ---
 title: "@0xintuition/schema-org guide"
 description: "Look up the pinned schema.org vocabulary and inherited properties for forms and tooling."
+last_updated: "2026-10-22T11:24:44-07:00"
 source: "https://docs.intuition.systems/docs/build/packages/schema-org"
 ---
 
@@ -831,6 +864,7 @@ The snapshot is schema.org V30.0. The vocabulary supplies schema metadata, while
 ---
 title: "@0xintuition/sdk guide"
 description: "Build integrations with hosted GraphQL reads, deterministic utilities, and explicit on-chain action plans."
+last_updated: "2026-10-22T11:24:44-07:00"
 source: "https://docs.intuition.systems/docs/build/packages/sdk"
 ---
 
@@ -862,6 +896,7 @@ Use ESM imports. Required peers: `viem ^2.0.0`.
 ---
 title: "API client"
 description: "Generated from the upcoming SDK **4.0.0** source. See [release compatibility](../compatibility.md) before installing or connecting to a deployment. Regenerate with `node..."
+last_updated: "2026-10-23T10:50:26-07:00"
 source: "https://docs.intuition.systems/docs/build/sdk-reference/api"
 ---
 
@@ -880,6 +915,7 @@ Signatures show the exact accepted inputs and return types. Named input/output s
 ---
 title: "Dynamic-fee curve actions"
 description: "Generated from the upcoming SDK **4.0.0** source. See [release compatibility](../compatibility.md) before installing or connecting to a deployment. Regenerate with `node..."
+last_updated: "2026-10-23T10:50:26-07:00"
 source: "https://docs.intuition.systems/docs/build/sdk-reference/dynamic-fee-curve"
 ---
 
@@ -900,6 +936,7 @@ Reads every tier's manual fee override for a curve, in the shape the pure tier m
 ---
 title: "FeeProxy affiliate profile"
 description: "Generated from the upcoming SDK **4.0.0** source. See [release compatibility](../compatibility.md) before installing or connecting to a deployment. Regenerate with `node..."
+last_updated: "2026-10-23T10:50:26-07:00"
 source: "https://docs.intuition.systems/docs/build/sdk-reference/fee-proxy-affiliate-profile"
 ---
 
@@ -920,6 +957,7 @@ Reads everything a builder dashboard shows for one affiliate in one batched read
 ---
 title: "FeeProxy plans and execution"
 description: "Generated from the upcoming SDK **4.0.0** source. See [release compatibility](../compatibility.md) before installing or connecting to a deployment. Regenerate with `node..."
+last_updated: "2026-10-23T10:50:26-07:00"
 source: "https://docs.intuition.systems/docs/build/sdk-reference/fee-proxy-builders"
 ---
 
@@ -940,6 +978,7 @@ Checks everything a FeeProxy deposit or create needs before it can land, mirrori
 ---
 title: "FeeProxy refund preparation"
 description: "Generated from the upcoming SDK **4.0.0** source. See [release compatibility](../compatibility.md) before installing or connecting to a deployment. Regenerate with `node..."
+last_updated: "2026-10-23T10:50:26-07:00"
 source: "https://docs.intuition.systems/docs/build/sdk-reference/fee-proxy-claim-refund-if-any"
 ---
 
@@ -960,6 +999,7 @@ Checks the pull-fallback refund ledger and builds a `claimRefundTo` transaction 
 ---
 title: "FeeProxy URI creation"
 description: "Generated from the upcoming SDK **4.0.0** source. See [release compatibility](../compatibility.md) before installing or connecting to a deployment. Regenerate with `node..."
+last_updated: "2026-10-23T10:50:26-07:00"
 source: "https://docs.intuition.systems/docs/build/sdk-reference/fee-proxy"
 ---
 
@@ -980,6 +1020,7 @@ Prepares a `createAtomsWithUrisVia` transaction routed through an affiliate: rea
 ---
 title: "SDK function reference"
 description: "The SDK 4 candidate exposes narrow hosted API reads and higher-level protocol actions. Start with a guidebook recipe, then use these pages for exact inputs, return types, defaults, and source links."
+last_updated: "2026-10-22T11:24:44-07:00"
 source: "https://docs.intuition.systems/docs/build/sdk-reference/index"
 ---
 
@@ -998,6 +1039,7 @@ The SDK 4 candidate exposes narrow hosted API reads and higher-level protocol ac
 ---
 title: "MultiVault actions"
 description: "Generated from the upcoming SDK **4.0.0** source. See [release compatibility](../compatibility.md) before installing or connecting to a deployment. Regenerate with `node..."
+last_updated: "2026-10-23T10:50:26-07:00"
 source: "https://docs.intuition.systems/docs/build/sdk-reference/multivault"
 ---
 
@@ -1018,6 +1060,7 @@ Resolves the base MultiVault will charge fees on for a deposit.
 ---
 title: "Portfolio reads"
 description: "Generated from the upcoming SDK **4.0.0** source. See [release compatibility](../compatibility.md) before installing or connecting to a deployment. Regenerate with `node..."
+last_updated: "2026-10-23T10:50:26-07:00"
 source: "https://docs.intuition.systems/docs/build/sdk-reference/portfolio"
 ---
 
@@ -1036,6 +1079,7 @@ Signatures show the exact accepted inputs and return types. Named input/output s
 ---
 title: "TrustBonding actions"
 description: "Generated from the upcoming SDK **4.0.0** source. See [release compatibility](../compatibility.md) before installing or connecting to a deployment. Regenerate with `node..."
+last_updated: "2026-10-23T10:50:26-07:00"
 source: "https://docs.intuition.systems/docs/build/sdk-reference/trust-bonding"
 ---
 
@@ -5500,7 +5544,7 @@ Create local test data:
 ---
 title: "Overview"
 description: "For the upcoming Core and package architecture, read [the system map](/docs/build/architecture) and [Core REST cookbook](/docs/build/guides/core-rest). They distinguish Core REST from the hosted..."
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-10-22T11:24:44-07:00"
 source: "https://docs.intuition.systems/docs/intuition-node/overview"
 ---
 
@@ -5786,7 +5830,7 @@ SDK reads default to the mainnet GraphQL API, so this testnet write-and-read flo
 ---
 title: "Installation & Setup"
 description: "Install the Intuition SDK and configure your development environment"
-last_updated: "2026-08-04T16:59:15-04:00"
+last_updated: "2026-10-22T11:24:44-07:00"
 source: "https://docs.intuition.systems/docs/intuition-sdk/installation-and-setup"
 ---
 
@@ -5909,7 +5953,7 @@ The core smart contract has been upgraded from `EthMultiVault` to `MultiVault`, 
 ---
 title: "Quick Start"
 description: "Create your first atom and triple with the Intuition SDK in minutes"
-last_updated: "2026-08-04T11:57:57-04:00"
+last_updated: "2026-10-22T11:24:44-07:00"
 source: "https://docs.intuition.systems/docs/intuition-sdk/quick-start"
 ---
 
@@ -7342,7 +7386,7 @@ If you have any questions visit the [Intuition Discord](https://discord.gg/RgBen
 ---
 title: "Using the SDK"
 description: ":::note SDK generation This page documents the existing SDK v3 integration. For the upcoming SDK 4, identity packages, and Core workflows, start with [Build with the knowledge..."
-last_updated: "2026-08-04T11:57:57-04:00"
+last_updated: "2026-10-22T11:24:44-07:00"
 source: "https://docs.intuition.systems/docs/quick-start/using-the-sdk"
 ---
 

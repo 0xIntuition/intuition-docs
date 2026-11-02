@@ -320,7 +320,211 @@ function dynamicFeeCurvePrepareClaimTx(
 
 Defaults: `deps = defaultDynamicFeeCurveDeps`. Dependency arguments are optional test/customization hooks; normal consumers use the built-in dependencies.
 
+## Imported type provenance
+
+Public import locations and the definitions used by these signatures and helper types. Value imports appear where a dependency hook uses `typeof`.
+
+| Name in this module                       | Public import                                                                     | Definition                                                                                                                                                                                  |
+| ----------------------------------------- | --------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `DynamicFeeAccumulators`                  | `import type { DynamicFeeAccumulators } from '@0xintuition/curves'`               | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/curves/src/types.ts#L133)                                                |
+| `DynamicFeeConfig`                        | `import type { DynamicFeeConfig } from '@0xintuition/curves'`                     | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/curves/src/types.ts#L89)                                                 |
+| `DynamicFeeDepositBand`                   | `import type { DynamicFeeDepositBand } from '@0xintuition/curves'`                | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/curves/src/types.ts#L142)                                                |
+| `DynamicFeeDepositDistribution`           | `import type { DynamicFeeDepositDistribution } from '@0xintuition/curves'`        | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/curves/src/dynamic-fee-distribution.ts#L92)                              |
+| `DynamicFeeTierLadderEntry`               | `import type { DynamicFeeTierLadderEntry } from '@0xintuition/curves'`            | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/curves/src/types.ts#L170)                                                |
+| `DynamicFeeTierOccupancy`                 | `import type { DynamicFeeTierOccupancy } from '@0xintuition/curves'`              | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/curves/src/dynamic-fee-distribution.ts#L63)                              |
+| `DynamicFeeTierOverride`                  | `import type { DynamicFeeTierOverride } from '@0xintuition/curves'`               | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/curves/src/types.ts#L109)                                                |
+| `bondingCurveRegistryCurveAddresses`      | `import { bondingCurveRegistryCurveAddresses } from '@0xintuition/protocol'`      | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/bonding-curve-registry/curve-addresses.ts#L12)         |
+| `dynamicFeeFlatPriceCurveAccFeePerShare`  | `import { dynamicFeeFlatPriceCurveAccFeePerShare } from '@0xintuition/protocol'`  | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/dynamic-fee-flat-price-curve/acc-fee-per-share.ts#L14) |
+| `dynamicFeeFlatPriceCurveBankedEarnings`  | `import { dynamicFeeFlatPriceCurveBankedEarnings } from '@0xintuition/protocol'`  | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/dynamic-fee-flat-price-curve/banked-earnings.ts#L14)   |
+| `dynamicFeeFlatPriceCurveClaimableAcross` | `import { dynamicFeeFlatPriceCurveClaimableAcross } from '@0xintuition/protocol'` | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/dynamic-fee-flat-price-curve/claimable-across.ts#L14)  |
+| `dynamicFeeFlatPriceCurveGetConfig`       | `import { dynamicFeeFlatPriceCurveGetConfig } from '@0xintuition/protocol'`       | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/dynamic-fee-flat-price-curve/get-config.ts#L17)        |
+| `dynamicFeeFlatPriceCurveLotRewardDebt`   | `import { dynamicFeeFlatPriceCurveLotRewardDebt } from '@0xintuition/protocol'`   | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/dynamic-fee-flat-price-curve/lot-reward-debt.ts#L13)   |
+| `dynamicFeeFlatPriceCurvePendingFor`      | `import { dynamicFeeFlatPriceCurvePendingFor } from '@0xintuition/protocol'`      | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/dynamic-fee-flat-price-curve/pending-for.ts#L15)       |
+| `dynamicFeeFlatPriceCurveQuoteDepositFee` | `import { dynamicFeeFlatPriceCurveQuoteDepositFee } from '@0xintuition/protocol'` | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/dynamic-fee-flat-price-curve/quote-deposit-fee.ts#L15) |
+| `dynamicFeeFlatPriceCurveTierFeeOverride` | `import { dynamicFeeFlatPriceCurveTierFeeOverride } from '@0xintuition/protocol'` | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/dynamic-fee-flat-price-curve/tier-fee-override.ts#L12) |
+| `dynamicFeeFlatPriceCurveTierStake`       | `import { dynamicFeeFlatPriceCurveTierStake } from '@0xintuition/protocol'`       | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/dynamic-fee-flat-price-curve/tier-stake.ts#L13)        |
+| `dynamicFeeFlatPriceCurveUserLots`        | `import { dynamicFeeFlatPriceCurveUserLots } from '@0xintuition/protocol'`        | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/dynamic-fee-flat-price-curve/user-lots.ts#L13)         |
+| `dynamicFeeFlatPriceCurveVaultStake`      | `import { dynamicFeeFlatPriceCurveVaultStake } from '@0xintuition/protocol'`      | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/dynamic-fee-flat-price-curve/vault-stake.ts#L13)       |
+| `ReadConfig`                              | `import type { ReadConfig } from '@0xintuition/protocol'`                         | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/types.ts#L3)                                                |
+| `Address`                                 | `import type { Address } from 'viem'`                                             | Owned by the external package.                                                                                                                                                              |
+| `Hex`                                     | `import type { Hex } from 'viem'`                                                 | Owned by the external package.                                                                                                                                                              |
+| `MultiVaultDepositQuotePlan`              | `import type { MultiVaultDepositQuotePlan } from '@0xintuition/sdk/actions'`      | [MultiVaultDepositQuotePlan](./multivault.md#multivaultdepositquoteplan)                                                                                                                    |
+| `MultiVaultRedeemQuotePlan`               | `import type { MultiVaultRedeemQuotePlan } from '@0xintuition/sdk/actions'`       | [MultiVaultRedeemQuotePlan](./multivault.md#multivaultredeemquoteplan)                                                                                                                      |
+| `multivaultQuoteDepositPlan`              | `import { multivaultQuoteDepositPlan } from '@0xintuition/sdk/actions'`           | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/multivault.ts#L676)                                      |
+| `multivaultQuoteRedeemPlan`               | `import { multivaultQuoteRedeemPlan } from '@0xintuition/sdk/actions'`            | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/multivault.ts#L871)                                      |
+
+## External input and result structures
+
+These declarations belong to the named packages, not to the SDK. Nested supporting types retain their owning source links.
+
+### DynamicFeeAccumulators
+
+[Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/curves/src/types.ts#L133)
+
+```ts
+export type DynamicFeeAccumulators = Map<bigint, bigint>;
+```
+
+### DynamicFeeConfig
+
+[Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/curves/src/types.ts#L89)
+
+```ts
+export type DynamicFeeConfig = {
+  width0: bigint;
+  tierCount: bigint;
+  tierWidthGrowthBps: bigint;
+  depositBaseBps: bigint;
+  depositGrowthBps: bigint;
+  depositCapBps: bigint;
+  depositFulcrumAlphaBps: bigint;
+  depositKernelSpread: bigint;
+  redeemFulcrumAlphaBps: bigint;
+  redeemKernelSpread: bigint;
+  redeemBaseBps: bigint;
+  redeemGrowthBps: bigint;
+  redeemCapBps: bigint;
+  redeemToFulcrumTiersBps: bigint;
+  depositToPriorTierBps: bigint;
+  minEligibleTierStakeBps: bigint;
+};
+```
+
+### DynamicFeeDepositBand
+
+[Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/curves/src/types.ts#L142)
+
+```ts
+export type DynamicFeeDepositBand = {
+  tier: bigint;
+  feeBps: bigint;
+  assets: bigint;
+  fee: bigint;
+};
+```
+
+### DynamicFeeDepositDistribution
+
+[Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/curves/src/dynamic-fee-distribution.ts#L92)
+
+```ts
+export type DynamicFeeDepositDistribution = {
+  /** Credited tiers in ascending order. Tiers that received nothing are absent. */
+  perTier: DynamicFeeTierPayout[];
+  /**
+   * Fee no cohort was there to earn at the schedule rate — protocol accrual. A first-tier deposit
+   * has no prior tier at all; past that it is the part of a pool the prior ladder's occupancy could
+   * not absorb once every tier is paid at the schedule ceiling.
+   */
+  toProtocol: bigint;
+  /** Occupancy as the contract leaves it: fee-independent, with the deposit's stake landed. */
+  occupancyAfter: DynamicFeeTierOccupancy;
+  /** The accumulators as the contract leaves them, the supplied values plus this deposit's deltas. */
+  accFeePerShareAfter: DynamicFeeAccumulators;
+  /** The bands the stake traversed, in ascending order, with each band's slice of the fee. */
+  bands: DynamicFeeDepositBandLanding[];
+  /** The depositor's lots as the contract leaves them. */
+  depositorAfter: DynamicFeeLots;
+  /** The depositor's highest lot after the deposit, or `DYNAMIC_FEE_NO_LOT` when they hold none. */
+  topTierAfter: bigint;
+  /**
+   * What the replay banked into the account-wide settled balance. A deposit settles only the lots
+   * it tops up, so this is non-zero only when a band lands on a lot that had earned something.
+   */
+  banked: bigint;
+};
+```
+
+### DynamicFeeTierLadderEntry
+
+[Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/curves/src/types.ts#L170)
+
+```ts
+export type DynamicFeeTierLadderEntry = {
+  tier: bigint;
+  upperEdge: bigint | null;
+  width: bigint | null;
+  depositFeeBps: bigint;
+  redeemFeeBps: bigint;
+};
+```
+
+### DynamicFeeTierOccupancy
+
+[Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/curves/src/dynamic-fee-distribution.ts#L63)
+
+```ts
+export type DynamicFeeTierOccupancy = Map<bigint, bigint>;
+```
+
+### DynamicFeeTierOverride
+
+[Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/curves/src/types.ts#L109)
+
+```ts
+export type DynamicFeeTierOverride = {
+  isSet: boolean;
+  depositFeeBps: bigint;
+  redeemFeeBps: bigint;
+};
+```
+
+### DynamicFeeTierPayout
+
+[Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/curves/src/dynamic-fee-distribution.ts#L66)
+
+```ts
+export type DynamicFeeTierPayout = {
+  tier: bigint;
+  /** Assets credited to this tier's cohort in total. */
+  amount: bigint;
+  /**
+   * The exact `accFeePerShare` increment the contract writes for this tier, in `ACC_PRECISION`.
+   * A holder's pending delta is `floor(stake * accAfter / ACC) - floor(stake * accBefore / ACC)`,
+   * which is what makes wei-exact per-account projection possible.
+   */
+  accDelta: bigint;
+};
+```
+
+### DynamicFeeDepositBandLanding
+
+[Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/curves/src/dynamic-fee-distribution.ts#L79)
+
+```ts
+export type DynamicFeeDepositBandLanding = {
+  tier: bigint;
+  stake: bigint;
+  fee: bigint;
+};
+```
+
+### DynamicFeeLots
+
+[Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/curves/src/types.ts#L130)
+
+```ts
+export type DynamicFeeLots = Map<bigint, DynamicFeeLot>;
+```
+
+### DynamicFeeLot
+
+[Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/curves/src/types.ts#L120)
+
+```ts
+export type DynamicFeeLot = {
+  stake: bigint;
+  rewardDebt: bigint;
+};
+```
+
 ## Input and result types
+
+Exported declarations are public imports from the SDK subpath above. Module-local helper aliases describe accepted shapes but are not public exports.
+
+### DynamicFeeCurveDepositQuotePlan
+
+Public export.
 
 ```ts
 export type DynamicFeeCurveDepositQuotePlan = {
@@ -347,14 +551,26 @@ export type DynamicFeeCurveDepositQuotePlan = {
   bands: DynamicFeeDepositBand[];
   multiVaultQuote: MultiVaultDepositQuotePlan;
 };
+```
 
+### DynamicFeeCurvePrepareDepositTxResult
+
+Public export.
+
+```ts
 export type DynamicFeeCurvePrepareDepositTxResult = {
   args: readonly [Address, Hex, bigint, bigint];
   calldata: Hex;
   value?: bigint;
   quote: DynamicFeeCurveDepositQuotePlan;
 };
+```
 
+### DynamicFeeCurveRedeemQuotePlan
+
+Public export.
+
+```ts
 export type DynamicFeeCurveRedeemQuotePlan = {
   curveId: bigint;
   curveAddress: Address;
@@ -376,13 +592,25 @@ export type DynamicFeeCurveRedeemQuotePlan = {
   usesVaultTierFallback: boolean;
   multiVaultQuote: MultiVaultRedeemQuotePlan;
 };
+```
 
+### DynamicFeeCurvePrepareRedeemTxResult
+
+Public export.
+
+```ts
 export type DynamicFeeCurvePrepareRedeemTxResult = {
   args: readonly [Address, Hex, bigint, bigint, bigint];
   calldata: Hex;
   quote: DynamicFeeCurveRedeemQuotePlan;
 };
+```
 
+### DynamicFeeCurveClaimableAcrossTermsResult
+
+Public export.
+
+```ts
 export type DynamicFeeCurveClaimableAcrossTermsResult = {
   account: Address;
   termIds: Hex[];
@@ -393,7 +621,13 @@ export type DynamicFeeCurveClaimableAcrossTermsResult = {
   /** The unsettled part, per term. Additive, unlike `claimable`. */
   pendingByTermId: Array<{ termId: Hex; pending: bigint }>;
 };
+```
 
+### DynamicFeeCurvePrepareClaimTxResult
+
+Public export.
+
+```ts
 export type DynamicFeeCurvePrepareClaimTxResult = {
   args: readonly [readonly Hex[]];
   calldata: Hex;
@@ -401,7 +635,13 @@ export type DynamicFeeCurvePrepareClaimTxResult = {
   /** False when there is nothing to settle. The calldata is still well-formed; sending it wastes gas. */
   isClaimable: boolean;
 };
+```
 
+### DynamicFeeCurveDeps
+
+Module-local helper; not a public export.
+
+```ts
 type DynamicFeeCurveDeps = {
   curveAddresses: typeof bondingCurveRegistryCurveAddresses;
   getConfig: typeof dynamicFeeFlatPriceCurveGetConfig;
@@ -423,7 +663,13 @@ type DynamicFeeCurveDeps = {
   quoteDepositPlan: typeof multivaultQuoteDepositPlan;
   quoteRedeemPlan: typeof multivaultQuoteRedeemPlan;
 };
+```
 
+### DynamicFeeCurveEarningsProjection
+
+Public export.
+
+```ts
 export type DynamicFeeCurveEarningsProjection = {
   termId: Hex;
   curveId: bigint;

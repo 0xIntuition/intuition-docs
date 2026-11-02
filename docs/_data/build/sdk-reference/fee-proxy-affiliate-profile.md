@@ -31,7 +31,53 @@ function feeProxyGetAffiliateProfile(
 - **`inputs`**: The affiliate to profile.
 - **returns**: The normalised profile: raw fees, fees as percentages, and headroom against the caps.
 
+## Imported type provenance
+
+Public import locations and the definitions used by these signatures and helper types. Value imports appear where a dependency hook uses `typeof`.
+
+| Name in this module          | Public import                                              | Definition                                                                                                                                                  |
+| ---------------------------- | ---------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `FeeConfig`                  | `import type { FeeConfig } from '@0xintuition/periphery'`  | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/periphery/src/fee-proxy/types.ts#L8)     |
+| `FeeProxyAbi`                | `import { FeeProxyAbi } from '@0xintuition/periphery'`     | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/deployments/src/abis/FeeProxy-abi.ts#L1) |
+| `ReadConfig`                 | `import type { ReadConfig } from '@0xintuition/periphery'` | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/periphery/src/types.ts#L3)               |
+| `Address`                    | `import type { Address } from 'viem'`                      | Owned by the external package.                                                                                                                              |
+| `ContractFunctionReturnType` | `import type { ContractFunctionReturnType } from 'viem'`   | Owned by the external package.                                                                                                                              |
+
+## External input and result structures
+
+These declarations belong to the named packages, not to the SDK. Nested supporting types retain their owning source links.
+
+### FeeConfig
+
+[Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/periphery/src/fee-proxy/types.ts#L8)
+
+```ts
+export type FeeConfig = {
+  depositBps: bigint;
+  creationBps: bigint;
+  depositFixedFee: bigint;
+  creationFixedFee: bigint;
+};
+```
+
+### ReadConfig
+
+[Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/periphery/src/types.ts#L3)
+
+```ts
+export type ReadConfig = {
+  address: Address;
+  publicClient: PublicClient;
+};
+```
+
 ## Input and result types
+
+Exported declarations are public imports from the SDK subpath above. Module-local helper aliases describe accepted shapes but are not public exports.
+
+### FeeProxyAffiliateStats
+
+Public export.
 
 ```ts
 export type FeeProxyAffiliateStats = ContractFunctionReturnType<
@@ -39,14 +85,26 @@ export type FeeProxyAffiliateStats = ContractFunctionReturnType<
   'view',
   'affiliateStats'
 >;
+```
 
+### FeeProxyFeeHeadroom
+
+Public export.
+
+```ts
 export type FeeProxyFeeHeadroom = {
   depositBps: bigint;
   creationBps: bigint;
   depositFixedFee: bigint;
   creationFixedFee: bigint;
 };
+```
 
+### FeeProxyAffiliateProfile
+
+Public export.
+
+```ts
 export type FeeProxyAffiliateProfile = {
   affiliate: Address;
   registered: boolean;
@@ -69,7 +127,13 @@ export type FeeProxyAffiliateProfile = {
   registrationFee: bigint;
   stats: FeeProxyAffiliateStats;
 };
+```
 
+### AffiliateProfileReads
+
+Module-local helper; not a public export.
+
+```ts
 type AffiliateProfileReads = {
   config: ContractFunctionReturnType<
     typeof FeeProxyAbi,
