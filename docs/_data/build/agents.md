@@ -13,7 +13,7 @@ Start a coding agent with a specific outcome, the release manifest, and the rele
 3. [Package map](./packages/index.md), then the selected guidebook.
 4. The recipe and its [SDK function signatures](./sdk-reference/api.md), if used.
 
-Machine-readable entrypoints: [release manifest](/intuition-release.json), [documentation index](/llms.txt), and [complete documentation text](/llms-full.txt). The manifest records source versions and public package subpaths, not a registry publication assertion.
+Machine-readable entrypoints: [release manifest](/intuition-release.json), [documentation index](/llms.txt), and [complete documentation text](/llms-full.txt). The manifest records verified npm versions, artifact integrity, public subpaths, and the matching source. Publication does not establish deployment compatibility.
 
 ## Copyable task brief
 

@@ -3,17 +3,17 @@ title: 'TrustBonding actions'
 slug: /build/sdk-reference/trust-bonding
 ---
 
-Generated from the upcoming SDK **4.0.0** source. See [release compatibility](../compatibility.md) before installing or connecting to a deployment. Regenerate with `node scripts/generate-package-reference.js /path/to/packages`.
+Generated from the published SDK **4.0.0-alpha.0** source. See [release compatibility](../compatibility.md) before installing or connecting to a deployment. Regenerate with `node scripts/generate-package-reference.js /path/to/packages`.
 
-Import from `@0xintuition/sdk/actions`. [Implementation and internal helpers](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/trust-bonding.ts).
+Import from `@0xintuition/sdk/actions`. [Implementation and internal helpers](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/sdk/src/actions/trust-bonding.ts).
 
-Signatures show the exact accepted inputs and return types. Named input/output structures and dependency-injection types are listed below; viem and protocol types come from their respective packages. Preparation and quote functions can perform RPC reads. **`feeProxyExecutePlan` sends transactions**; the other SDK actions on these pages prepare transactions or read data.
+Signatures show the exact accepted inputs and return types. Named input/output structures and dependency-injection types are listed below; viem and protocol types come from their respective packages. Preparation and quote functions can perform RPC reads. Envelope builders on the action-envelope pages use caller-supplied read context and perform no RPC reads or signing. **`feeProxyExecutePlan` sends transactions**; the other SDK actions on these pages prepare transactions or read data.
 
 ## trustBondingGetRewardsDashboard
 
 Read epoch, utilization, balance, and reward information for the selected account and return a dashboard snapshot.
 
-[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/trust-bonding.ts#L308)
+[Source](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/sdk/src/actions/trust-bonding.ts#L308)
 
 ```ts
 function trustBondingGetRewardsDashboard(
@@ -31,7 +31,7 @@ Defaults: `deps = defaultTrustBondingDeps`. Dependency arguments are optional te
 
 Determine whether the selected account can claim rewards and return the reason and claim state for the UI.
 
-[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/trust-bonding.ts#L348)
+[Source](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/sdk/src/actions/trust-bonding.ts#L348)
 
 ```ts
 function trustBondingGetClaimActionState(
@@ -50,7 +50,7 @@ Defaults: `deps = defaultTrustBondingDeps`. Dependency arguments are optional te
 
 Determine the applicable lock operation and prepare its calldata and value. The result describes the action; it does not request a signature.
 
-[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/trust-bonding.ts#L456)
+[Source](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/sdk/src/actions/trust-bonding.ts#L456)
 
 ```ts
 function trustBondingPrepareLockAction(
@@ -71,7 +71,7 @@ Defaults: `deps = defaultTrustBondingLockDeps`. Dependency arguments are optiona
 
 Prepare ordered claim and restake steps using the current account and lock state. Review the plan before executing it.
 
-[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/trust-bonding.ts#L570)
+[Source](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/sdk/src/actions/trust-bonding.ts#L570)
 
 ```ts
 function trustBondingClaimAndRestakePlan(
@@ -104,7 +104,7 @@ Defaults: `deps = defaultTrustBondingClaimAndRestakeDeps`. Dependency arguments 
 
 Read the account lock balance, expiry, and related state into a normalized summary.
 
-[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/trust-bonding.ts#L695)
+[Source](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/sdk/src/actions/trust-bonding.ts#L695)
 
 ```ts
 function trustBondingGetLockStateSummary(
@@ -123,7 +123,7 @@ Defaults: `deps = defaultTrustBondingLockDeps`. Dependency arguments are optiona
 
 Read reward information across the requested epoch window and return timeline points for presentation.
 
-[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/trust-bonding.ts#L731)
+[Source](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/sdk/src/actions/trust-bonding.ts#L731)
 
 ```ts
 function trustBondingGetEpochRewardsTimeline(
@@ -145,23 +145,23 @@ Public import locations and the definitions used by these signatures and helper 
 
 | Name in this module                          | Public import                                                                        | Definition                                                                                                                                                                                   |
 | -------------------------------------------- | ------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `multiVaultPreviewDeposit`                   | `import { multiVaultPreviewDeposit } from '@0xintuition/protocol'`                   | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/multivault/preview-deposit.ts#L26)                      |
-| `ReadConfig`                                 | `import type { ReadConfig } from '@0xintuition/protocol'`                            | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/types.ts#L3)                                                 |
-| `trustBondingCurrentEpoch`                   | `import { trustBondingCurrentEpoch } from '@0xintuition/protocol'`                   | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/trustbonding/current-epoch.ts#L9)                       |
-| `trustBondingEpochTimestampEnd`              | `import { trustBondingEpochTimestampEnd } from '@0xintuition/protocol'`              | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/trustbonding/epoch-timestamp-end.ts#L12)                |
-| `trustBondingGetPersonalUtilizationRatio`    | `import { trustBondingGetPersonalUtilizationRatio } from '@0xintuition/protocol'`    | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/trustbonding/get-personal-utilization-ratio.ts#L12)     |
-| `trustBondingGetSystemApy`                   | `import { trustBondingGetSystemApy } from '@0xintuition/protocol'`                   | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/trustbonding/get-system-apy.ts#L9)                      |
-| `trustBondingGetSystemUtilizationRatio`      | `import { trustBondingGetSystemUtilizationRatio } from '@0xintuition/protocol'`      | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/trustbonding/get-system-utilization-ratio.ts#L12)       |
-| `trustBondingGetUserApy`                     | `import { trustBondingGetUserApy } from '@0xintuition/protocol'`                     | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/trustbonding/get-user-apy.ts#L12)                       |
-| `trustBondingGetUserCurrentClaimableRewards` | `import { trustBondingGetUserCurrentClaimableRewards } from '@0xintuition/protocol'` | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/trustbonding/get-user-current-claimable-rewards.ts#L12) |
-| `trustBondingGetUserInfo`                    | `import { trustBondingGetUserInfo } from '@0xintuition/protocol'`                    | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/trustbonding/get-user-info.ts#L12)                      |
-| `trustBondingGetUserRewardsForEpoch`         | `import { trustBondingGetUserRewardsForEpoch } from '@0xintuition/protocol'`         | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/trustbonding/get-user-rewards-for-epoch.ts#L12)         |
-| `trustBondingHasClaimedRewardsForEpoch`      | `import { trustBondingHasClaimedRewardsForEpoch } from '@0xintuition/protocol'`      | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/trustbonding/has-claimed-rewards-for-epoch.ts#L12)      |
-| `trustBondingLocked`                         | `import { trustBondingLocked } from '@0xintuition/protocol'`                         | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/trustbonding/locked.ts#L12)                             |
-| `trustBondingLockedEnd`                      | `import { trustBondingLockedEnd } from '@0xintuition/protocol'`                      | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/trustbonding/locked-end.ts#L12)                         |
-| `trustBondingPreviousEpoch`                  | `import { trustBondingPreviousEpoch } from '@0xintuition/protocol'`                  | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/trustbonding/previous-epoch.ts#L9)                      |
-| `trustBondingUserEligibleRewardsForEpoch`    | `import { trustBondingUserEligibleRewardsForEpoch } from '@0xintuition/protocol'`    | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/trustbonding/user-eligible-rewards-for-epoch.ts#L12)    |
-| `WriteConfig`                                | `import type { WriteConfig } from '@0xintuition/protocol'`                           | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/types.ts#L8)                                                 |
+| `multiVaultPreviewDeposit`                   | `import { multiVaultPreviewDeposit } from '@0xintuition/protocol'`                   | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/core/multivault/preview-deposit.ts#L26)                      |
+| `ReadConfig`                                 | `import type { ReadConfig } from '@0xintuition/protocol'`                            | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/types.ts#L3)                                                 |
+| `trustBondingCurrentEpoch`                   | `import { trustBondingCurrentEpoch } from '@0xintuition/protocol'`                   | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/core/trustbonding/current-epoch.ts#L10)                      |
+| `trustBondingEpochTimestampEnd`              | `import { trustBondingEpochTimestampEnd } from '@0xintuition/protocol'`              | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/core/trustbonding/epoch-timestamp-end.ts#L12)                |
+| `trustBondingGetPersonalUtilizationRatio`    | `import { trustBondingGetPersonalUtilizationRatio } from '@0xintuition/protocol'`    | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/core/trustbonding/get-personal-utilization-ratio.ts#L12)     |
+| `trustBondingGetSystemApy`                   | `import { trustBondingGetSystemApy } from '@0xintuition/protocol'`                   | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/core/trustbonding/get-system-apy.ts#L10)                     |
+| `trustBondingGetSystemUtilizationRatio`      | `import { trustBondingGetSystemUtilizationRatio } from '@0xintuition/protocol'`      | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/core/trustbonding/get-system-utilization-ratio.ts#L12)       |
+| `trustBondingGetUserApy`                     | `import { trustBondingGetUserApy } from '@0xintuition/protocol'`                     | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/core/trustbonding/get-user-apy.ts#L12)                       |
+| `trustBondingGetUserCurrentClaimableRewards` | `import { trustBondingGetUserCurrentClaimableRewards } from '@0xintuition/protocol'` | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/core/trustbonding/get-user-current-claimable-rewards.ts#L12) |
+| `trustBondingGetUserInfo`                    | `import { trustBondingGetUserInfo } from '@0xintuition/protocol'`                    | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/core/trustbonding/get-user-info.ts#L12)                      |
+| `trustBondingGetUserRewardsForEpoch`         | `import { trustBondingGetUserRewardsForEpoch } from '@0xintuition/protocol'`         | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/core/trustbonding/get-user-rewards-for-epoch.ts#L12)         |
+| `trustBondingHasClaimedRewardsForEpoch`      | `import { trustBondingHasClaimedRewardsForEpoch } from '@0xintuition/protocol'`      | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/core/trustbonding/has-claimed-rewards-for-epoch.ts#L12)      |
+| `trustBondingLocked`                         | `import { trustBondingLocked } from '@0xintuition/protocol'`                         | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/core/trustbonding/locked.ts#L12)                             |
+| `trustBondingLockedEnd`                      | `import { trustBondingLockedEnd } from '@0xintuition/protocol'`                      | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/core/trustbonding/locked-end.ts#L12)                         |
+| `trustBondingPreviousEpoch`                  | `import { trustBondingPreviousEpoch } from '@0xintuition/protocol'`                  | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/core/trustbonding/previous-epoch.ts#L10)                     |
+| `trustBondingUserEligibleRewardsForEpoch`    | `import { trustBondingUserEligibleRewardsForEpoch } from '@0xintuition/protocol'`    | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/core/trustbonding/user-eligible-rewards-for-epoch.ts#L12)    |
+| `WriteConfig`                                | `import type { WriteConfig } from '@0xintuition/protocol'`                           | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/types.ts#L8)                                                 |
 | `Address`                                    | `import type { Address } from 'viem'`                                                | Owned by the external package.                                                                                                                                                               |
 | `Hex`                                        | `import type { Hex } from 'viem'`                                                    | Owned by the external package.                                                                                                                                                               |
 

@@ -22,7 +22,7 @@ keywords:
 ---
 
 :::note SDK generation
-This page documents the existing SDK v3 integration. For the upcoming SDK 4, identity packages, and Core workflows, start with [Build with the knowledge graph](/docs/build/overview) and the [migration guide](/docs/build/migration).
+This page documents the existing SDK v3 integration. For the published SDK 4 alpha, identity packages, and Core workflows, start with [Build with the knowledge graph](/docs/build/overview) and the [migration guide](/docs/build/migration).
 :::
 
 

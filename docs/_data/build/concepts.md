@@ -58,4 +58,4 @@ A Core write creates an off-chain graph record. Registering identical atom bytes
 
 Signals and positions add economic context to claims. An application chooses how to rank or display that context. Preserve the account, term, curve, time, and source behind a ranking instead of presenting a balance as proof of truth.
 
-For the exact profile rules, read the [pinned IID specification](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/iid-spec/explainer.md).
+For the exact profile rules, read the [pinned IID specification](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/iid-spec/explainer.md).

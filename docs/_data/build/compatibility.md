@@ -1,42 +1,50 @@
 ---
-title: 'Candidate versions and compatibility'
+title: 'Published versions and compatibility'
 slug: /build/compatibility
 sidebar_position: 10
 ---
 
-This documentation targets the upcoming Intuition package train inspected on **2026-10-22**. Package publication is assumed for the intended rollout; it has **not** been verified here. Install examples use the exact source versions so they can be qualified against the matching npm artifacts or release tarballs. A missing version should stop installation with a release prerequisite, not trigger a silent downgrade.
+These guides target the **October 28, 2026 alpha release** of all 21 public packages. npm publication, exact versions, exports, peers, and source provenance were checked on **November 2, 2026**. The [release manifest](/intuition-release.json) records each artifact's tarball URL, SHA-512 integrity, publication time, and observed dist-tags.
 
-## Source baseline
+## Install the documented release
 
-| Repository                                                                                                    | Selected revision                          | Role                                            |
-| ------------------------------------------------------------------------------------------------------------- | ------------------------------------------ | ----------------------------------------------- |
-| [packages](https://github.com/0xIntuition/packages/tree/1dc7103d2a05f23bc565a81df4b001336ce9ba53)             | `1dc7103d2a05f23bc565a81df4b001336ce9ba53` | Public package exports and function signatures  |
-| [intuition-core](https://github.com/0xIntuition/intuition-core/tree/eebba114666ba2373690f2beb7dce565aa16f0b7) | `eebba114666ba2373690f2beb7dce565aa16f0b7` | Core REST, processing, persistence and indexing |
+Use exact versions from the [package catalog](./packages/index.md). All 21 releases are on the `alpha` tag, but `latest` is not consistently the same release. In particular, untagged SDK installs still select `3.0.1`, protocol selects `2.0.3`, and CLI selects `0.0.0` at the time of verification. SDK and protocol use independent major versions.
 
-The [release manifest](/intuition-release.json) records all package versions, exports, and peer ranges. The [package guidebook index](./packages/index.md) presents the same source train by task.
+```sh
+npm install @0xintuition/sdk@4.0.0-alpha.0 @0xintuition/protocol@3.0.0-alpha.0 viem@^2
+```
 
-## Runtime and API boundaries
+For reproducible applications, commit your package-manager lockfile. Use named ESM imports; these packages do not ship CommonJS `require` entrypoints. Start with Node 22+ for the complete guide set, including remote parsing. The SDK and processing composition packages declare Node 20+ support. Use browser-compatible entrypoints and plugins when integrating a web application; keep server providers and credentials on your backend.
 
-| Surface                       | Candidate contract                                                | Qualification requirement                                      |
-| ----------------------------- | ----------------------------------------------------------------- | -------------------------------------------------------------- |
-| SDK and protocol              | `4.0.0`, ESM, viem 2                                              | Matching public artifacts and deployed contracts               |
-| Atom parser                   | Node 22+ / Bun, Fetch and Web Streams                             | Remote inspection policy and server network controls           |
-| Classification and enrichment | Typed ESM, explicit plugins and runtime                           | Credentials, transport, cache, provider fixtures               |
-| React                         | React 18+ declared; React 19, wagmi 2, Query 5 exercised upstream | Match peers; upstream consumer checks use `skipLibCheck: true` |
-| SDK read API                  | Hosted GraphQL schema                                             | Correct endpoint, query contract, auth if required             |
-| Core Query API                | REST on local port 3000 by default                                | Node revision, migrations, auth and indexing configuration     |
-| Atom-services                 | Stateless HTTP on local port 4010 by default                      | Runtime/provider availability; no persistence implied          |
+## Source and publication evidence
 
-## Contract capability gates
+| Repository                                                                                                    | Baseline                                                            | Scope                                    |
+| ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- | ---------------------------------------- |
+| [packages](https://github.com/0xIntuition/packages/tree/dde4fdf5774447b84cd0b820593fb0db7366e58d)             | October 28 alpha release; npm `gitHead` matches the selected source | Public package exports and SDK reference |
+| [intuition-core](https://github.com/0xIntuition/intuition-core/tree/eebba114666ba2373690f2beb7dce565aa16f0b7) | Existing Core guide baseline                                        | REST, persistence, workers, and indexing |
 
-The inspected deployment package references core `contracts-v2@1.1.0-alpha.1` and periphery `contracts-v2-periphery@1.1.0-alpha.0` artifacts. An ABI can be available before every chain's deployed implementation supports it. Read current deployment evidence before enabling new functions.
+The package update does not repin Core or prove that a hosted service has adopted it. Core REST recipes remain tied to their linked revision. The npm version pages for [SDK](https://www.npmjs.com/package/@0xintuition/sdk/v/4.0.0-alpha.0), [protocol](https://www.npmjs.com/package/@0xintuition/protocol/v/3.0.0-alpha.0), and every package in the catalog identify the installable artifacts.
 
-The package source explicitly withholds the TrustSwapAndBridgeRouter address pending a compatible redeployment; its lookup throws. FeeProxy and bridge support are distinct. Dynamic-fee math also requires matching configuration and contract parity qualification. Do not interpret mainnet/testnet chain definitions as proof that every exported contract is available on both.
+## Choose compatible dependencies
 
-## Existing documentation
+| Surface                              | Required integration                                                                                                                                                    |
+| ------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Identity/modeling and SDK/protocol   | viem 2 where declared; exact internal alpha dependencies are published together                                                                                         |
+| React hooks                          | `react >=18`, `wagmi >=2`, `@tanstack/react-query >=5`, viem 2, protocol `3.0.0-alpha.0`, deployments `0.1.0-alpha.1`; upstream tests exercise React 19/wagmi 2/Query 5 |
+| Parser remote inspection             | Node-compatible DNS and pinned HTTP transport, Fetch/Web Streams; disable remote inspection for local detection                                                         |
+| Classifier, enricher, shared runtime | Explicit provider settings, runtime-compatible plugins, credentials, and cache policy                                                                                   |
+| SDK API reads                        | Hosted GraphQL schema; explicit mainnet/testnet URL                                                                                                                     |
+| Core Query API                       | REST node, migrations, credentials, and indexing configuration; local default port 3000                                                                                 |
+| Core atom-services                   | Stateless classification/enrichment HTTP service; local default port 4010                                                                                               |
 
-The site's SDK v3 and hosted GraphQL guides remain available for their existing consumers. New integrations for this candidate should start here and use [migration guidance](./migration.md). Core-native GraphQL, hosted-node onboarding, and broader rollout outcomes remain separate delivery work until their contracts and environments are qualified.
+The manifest's per-package `peers` and `engines` are the authoritative declared ranges. A package without `engines` does not thereby promise every runtime. The snippet checks use strict TypeScript with `skipLibCheck: true`, matching the upstream consumer checks.
 
-## Release acceptance
+## Contract capabilities remain deployment-specific
 
-Before promoting these docs as the supported release, record exact npm versions and integrity, compile the copyable recipes in a clean consumer, verify the selected deployment and API contracts, and capture authorized off-chain/test-environment readback. Retain source and runtime evidence separately. The Linear documentation rollout tracks these gates; a documentation PR does not publish packages or deploy contracts.
+The deployment package includes artifacts from `contracts-v2@1.1.0-alpha.1` and `contracts-v2-periphery@1.1.0-alpha.0`. Publishing these libraries does not upgrade a contract. Verify the destination chain's implementation before using URI creation, payable multicall, dynamic-fee, or on-behalf-of operations.
+
+The published catalog deliberately withholds the TrustSwapAndBridgeRouter address pending a compatible deployment; its lookup throws. FeeProxy and other bridge helpers are separate capabilities. Use the [deployment guide](./packages/deployments.md) and the pinned [artifact provenance](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/docs/contract-artifacts.md) when selecting addresses.
+
+## Upgrade existing applications
+
+The site's SDK v3 and hosted GraphQL documentation remains available for existing integrations. For SDK 4, start with [migration](./migration.md), then [installation](./guides/installation.md). Source and npm artifact checks verify the library contract; provider availability, your credentials, hosted APIs, and deployed contract behavior still depend on your environment.

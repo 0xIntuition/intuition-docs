@@ -23,7 +23,7 @@ Start a coding agent with a specific outcome, the release manifest, and the rele
 3. [Package map](https://docs.intuition.systems/docs/build/packages/index), then the selected guidebook.
 4. The recipe and its [SDK function signatures](https://docs.intuition.systems/docs/build/sdk-reference/api), if used.
 
-Machine-readable entrypoints: [release manifest](https://docs.intuition.systems/intuition-release.json), [documentation index](https://docs.intuition.systems/llms.txt), and [complete documentation text](https://docs.intuition.systems/llms-full.txt). The manifest records source versions and public package subpaths, not a registry publication assertion.
+Machine-readable entrypoints: [release manifest](https://docs.intuition.systems/intuition-release.json), [documentation index](https://docs.intuition.systems/llms.txt), and [complete documentation text](https://docs.intuition.systems/llms-full.txt). The manifest records verified npm versions, artifact integrity, public subpaths, and the matching source. Publication does not establish deployment compatibility.
 
 ## Copyable task brief
 
@@ -57,30 +57,28 @@ source: "https://docs.intuition.systems/docs/build/architecture"
 
 Use each layer for the work it owns. This keeps application code portable and makes an agent's integration choices reviewable.
 
-| Layer                                                       | Owns                                                                   | Your application supplies                                    |
-| ----------------------------------------------------------- | ---------------------------------------------------------------------- | ------------------------------------------------------------ |
-| `iid-spec`, `iid`, `iid-registry`, `iid-ladder`, `ids`      | Identifier rules, pure resolution, selection policy, content IDs       | Input facts and reconciliation policy                        |
-| `schema-org`, `classifications`, `predicates`, `primitives` | Vocabulary, creation fields, relationships, deterministic builders     | Forms, validation presentation, persistence decision         |
-| `atom-parser`, `atom-classification`, `atom-enrichment`     | Reusable processing engines and plugins                                | Runtime mode, providers, credentials, cache, network policy  |
+| Layer                                                       | Owns                                                                     | Your application supplies                                         |
+| ----------------------------------------------------------- | ------------------------------------------------------------------------ | ----------------------------------------------------------------- |
+| `iid-spec`, `iid`, `iid-registry`, `iid-ladder`, `ids`      | Identifier rules, pure resolution, selection policy, content IDs         | Input facts and reconciliation policy                             |
+| `schema-org`, `classifications`, `predicates`, `primitives` | Vocabulary, creation fields, relationships, deterministic builders       | Forms, validation presentation, persistence decision              |
+| `atom-parser`, `atom-classification`, `atom-enrichment`     | Reusable processing engines and plugins                                  | Runtime mode, providers, credentials, cache, network policy       |
 
 [... see full docs for complete content]
 
 ---
-title: "Candidate versions and compatibility"
-description: "This documentation targets the upcoming Intuition package train inspected on **2026-10-22**. Package publication is assumed for the intended rollout; it has **not** been verified here. Install..."
+title: "Published versions and compatibility"
+description: "These guides target the **October 28, 2026 alpha release** of all 21 public packages. npm publication, exact versions, exports, peers, and source provenance were checked on **November 2, 2026**. The..."
 last_updated: "2026-10-22T11:24:44-07:00"
 source: "https://docs.intuition.systems/docs/build/compatibility"
 ---
 
-# Candidate versions and compatibility
+# Published versions and compatibility
 
-This documentation targets the upcoming Intuition package train inspected on **2026-10-22**. Package publication is assumed for the intended rollout; it has **not** been verified here. Install examples use the exact source versions so they can be qualified against the matching npm artifacts or release tarballs. A missing version should stop installation with a release prerequisite, not trigger a silent downgrade.
+These guides target the **October 28, 2026 alpha release** of all 21 public packages. npm publication, exact versions, exports, peers, and source provenance were checked on **November 2, 2026**. The [release manifest](https://docs.intuition.systems/intuition-release.json) records each artifact's tarball URL, SHA-512 integrity, publication time, and observed dist-tags.
 
-## Source baseline
+## Install the documented release
 
-| Repository                                                                                                    | Selected revision                          | Role                                            |
-| ------------------------------------------------------------------------------------------------------------- | ------------------------------------------ | ----------------------------------------------- |
-| [packages](https://github.com/0xIntuition/packages/tree/1dc7103d2a05f23bc565a81df4b001336ce9ba53)             | `1dc7103d2a05f23bc565a81df4b001336ce9ba53` | Public package exports and function signatures  |
+Use exact versions from the [package catalog](https://docs.intuition.systems/docs/build/packages/index). All 21 releases are on the `alpha` tag, but `latest` is not consistently the same release. In particular, untagged SDK installs still select `3.0.1`, protocol selects `2.0.3`, and CLI selects `0.0.0` at the time of verification. SDK and protocol use independent major versions.
 
 [... see full docs for complete content]
 
@@ -99,6 +97,22 @@ An application needs to distinguish the thing being described, its serialized re
 | -------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------- |
 | IID            | A canonical `int:<scheme>:<value>` identifier derived under registered rules | That an atom exists in a database or contract              |
 | Atom data      | Exact bytes describing an entity or anchoring an IID                         | That every equivalent description has identical bytes      |
+
+[... see full docs for complete content]
+
+---
+title: "Build serializable action plans for applications and agents"
+description: "SDK 4 owns the client-free action-envelope builders formerly exported by the CLI. They take explicit inputs and caller-supplied read context, then return JSON-serializable steps for a separate..."
+source: "https://docs.intuition.systems/docs/build/guides/action-envelopes"
+---
+
+# Build serializable action plans for applications and agents
+
+SDK 4 owns the client-free action-envelope builders formerly exported by the CLI. They take explicit inputs and caller-supplied read context, then return JSON-serializable steps for a separate executor. They perform no RPC requests, signatures, or transaction submission.
+
+Use [RPC-backed action helpers](https://docs.intuition.systems/docs/build/guides/onchain) when you want the SDK to obtain a quote directly from your public client. Use envelopes when a server, agent, or approval system needs to exchange a structured plan.
+
+## Encode and validate a batch offline
 
 [... see full docs for complete content]
 
@@ -136,14 +150,14 @@ Render fields with their declared requirements and validation. Offer relationshi
 
 ---
 title: "Build a deterministic atom offline"
-description: "This recipe produces canonical atom bytes and an ID. It makes no API, provider, RPC, or wallet calls. Use Node 22 and an ESM project; install the [candidate versions](../compatibility.md) once..."
+description: "This recipe produces canonical atom bytes and an ID. It makes no API, provider, RPC, or wallet calls. Use Node 22+ and an ESM project; follow [installation](./installation.md) and use the exact..."
 last_updated: "2026-10-22T11:24:44-07:00"
 source: "https://docs.intuition.systems/docs/build/guides/first-atom"
 ---
 
 # Build a deterministic atom offline
 
-This recipe produces canonical atom bytes and an ID. It makes no API, provider, RPC, or wallet calls. Use Node 22 and an ESM project; install the [candidate versions](https://docs.intuition.systems/docs/build/compatibility) once published, or use the matching release tarballs during qualification.
+This recipe produces canonical atom bytes and an ID. It makes no API, provider, RPC, or wallet calls. Use Node 22+ and an ESM project; follow [installation](https://docs.intuition.systems/docs/build/guides/installation) and use the exact published versions below.
 
 Save as `first-atom.mjs` and run `node first-atom.mjs`:
 
@@ -154,15 +168,35 @@ The assertions show canonicalization and the identity/context boundary. The two 
 [... see full docs for complete content]
 
 ---
+title: "Install the packages for your application"
+description: "Start with one workflow. The packages are ESM-only, and the examples use Node 22+ with viem 2 where required. These are the published October 28 alpha versions; an untagged install can select an older..."
+source: "https://docs.intuition.systems/docs/build/guides/installation"
+---
+
+# Install the packages for your application
+
+Start with one workflow. The packages are ESM-only, and the examples use Node 22+ with viem 2 where required. These are the published October 28 alpha versions; an untagged install can select an older API. See [compatibility](https://docs.intuition.systems/docs/build/compatibility) for the release snapshot.
+
+## Model an entity offline
+
+Run the JavaScript in [your first atom](https://docs.intuition.systems/docs/build/guides/first-atom) with `node first-atom.mjs`. You need no wallet, RPC URL, provider key, or Core node for this step.
+
+Add shared form and relationship data when your application needs it:
+
+Follow [Creation Profiles](https://docs.intuition.systems/docs/build/guides/creation-profiles) to build the same entity shapes and relationship suggestions used by other Intuition applications.
+
+[... see full docs for complete content]
+
+---
 title: "Plan an on-chain write and observe its result"
-description: "Use an explicit network, deployment, account, and budget. The candidate ABI includes functions that older deployments may not implement. Select the [matching release](../compatibility.md) before using..."
-last_updated: "2026-10-23T10:50:37-07:00"
+description: "Use an explicit network, deployment, account, and budget. The published ABI includes functions that older deployments may not implement. Select the [matching release](../compatibility.md) before using..."
+last_updated: "2026-11-02T10:10:52-08:00"
 source: "https://docs.intuition.systems/docs/build/guides/onchain"
 ---
 
 # Plan an on-chain write and observe its result
 
-Use an explicit network, deployment, account, and budget. The candidate ABI includes functions that older deployments may not implement. Select the [matching release](https://docs.intuition.systems/docs/build/compatibility) before using URI-aware creation, FeeProxy routing, or dynamic-fee actions.
+Use an explicit network, deployment, account, and budget. The published ABI includes functions that older deployments may not implement. Select the [matching release](https://docs.intuition.systems/docs/build/compatibility) before using URI-aware creation, FeeProxy routing, or dynamic-fee actions.
 
 ## The transaction lifecycle
 
@@ -176,21 +210,37 @@ A quote is a snapshot, not a reservation. Revalidate stale state before submissi
 [... see full docs for complete content]
 
 ---
+title: "Extend classification and provider enrichment"
+description: "Build extensions against the public package APIs so your application can share the processing engine without depending on Core internals. Keep classification rules, provider acquisition, and graph..."
+source: "https://docs.intuition.systems/docs/build/guides/processing-plugins"
+---
+
+# Extend classification and provider enrichment
+
+Build extensions against the public package APIs so your application can share the processing engine without depending on Core internals. Keep classification rules, provider acquisition, and graph persistence separate.
+
+## Add a local classifier and resolver
+
+Install `@0xintuition/atom-classification@0.1.0-alpha.0`. This complete example recognizes a deliberate `idea:` prefix and emits a canonical classification envelope. It makes no network requests.
+
+The engine supplies missing provider/plugin/timestamp metadata. A classification envelope does not mint a registered IID, hash an atom, or write to Core. Use the shared identity builders for accepted identities and your persistence layer for accepted results.
+
+[... see full docs for complete content]
+
+---
 title: "Parse, classify, and enrich without changing identity"
-description: "The processing stages answer different questions. Parsing detects input structure. Classification proposes an entity type under configured plugins. Enrichment obtains provider artifacts and normalized..."
+description: "Parsing detects input structure. Classification proposes an entity type and publishable identity data. Enrichment obtains provider artifacts; extraction maps them to canonical classification fields...."
 last_updated: "2026-10-22T11:24:44-07:00"
 source: "https://docs.intuition.systems/docs/build/guides/processing"
 ---
 
 # Parse, classify, and enrich without changing identity
 
-The processing stages answer different questions. Parsing detects input structure. Classification proposes an entity type under configured plugins. Enrichment obtains provider artifacts and normalized fields. Persistence, scheduling, and retries belong to Core or your application.
+Parsing detects input structure. Classification proposes an entity type and publishable identity data. Enrichment obtains provider artifacts; extraction maps them to canonical classification fields. Your application decides what to persist and when to refresh it.
 
-## Parse locally
+Use [atom-runtime](https://docs.intuition.systems/docs/build/packages/atom-runtime) to share engines and caches across requests, or compose [atom-classification](https://docs.intuition.systems/docs/build/packages/atom-classification) and [atom-enrichment](https://docs.intuition.systems/docs/build/packages/atom-enrichment) directly for a smaller plugin set. Follow [installation](https://docs.intuition.systems/docs/build/guides/installation) first.
 
-`remoteFetch: false` makes this example local. URL/IPFS remote inspection is enabled by default otherwise. The parser exposes timeouts and response limits, and rejects private literal addresses by default; it does not resolve/pin DNS or prevent DNS rebinding. Services handling untrusted URLs need network egress controls.
-
-## Choose classification plugins
+## Parse locally, including IIDs
 
 [... see full docs for complete content]
 
@@ -205,7 +255,7 @@ source: "https://docs.intuition.systems/docs/build/guides/sdk-reads"
 
 `createIntuitionApiClient` is a small read client for the established hosted GraphQL contract. It is not a REST client for a Core node and does not implement general search, graph traversal, uploads, or writes.
 
-Always select the environment explicitly. Omitting `baseUrl` defaults to mainnet in this candidate. The built-in local URL is the hosted-schema development endpoint on port 8080, not Core's Query API on port 3000.
+Always select the environment explicitly. Omitting `baseUrl` defaults to mainnet in this release. The built-in local URL is the hosted-schema development endpoint on port 8080, not Core's Query API on port 3000.
 
 | Method             | Input                | Output                              |
 | ------------------ | -------------------- | ----------------------------------- |
@@ -234,19 +284,22 @@ Two applications can agree on an entity while storing different descriptions of 
 [... see full docs for complete content]
 
 ---
-title: "Move from SDK v3 and app-local helpers"
-description: "The new SDK 4 candidate separates API reads, action planning, deterministic utilities, and low-level contract access. Existing SDK v3 guides describe a different public surface; keep a migration..."
+title: "Upgrade SDK v3 and app-local processing helpers"
+description: "The October 28 release publishes SDK **4.0.0-alpha.0** and protocol **3.0.0-alpha.0**, plus the semantic, identity, and processing packages in the [catalog](./packages/index.md). These are independent..."
 last_updated: "2026-10-22T11:24:44-07:00"
 source: "https://docs.intuition.systems/docs/build/migration"
 ---
 
-# Move from SDK v3 and app-local helpers
+# Upgrade SDK v3 and app-local processing helpers
 
-The new SDK 4 candidate separates API reads, action planning, deterministic utilities, and low-level contract access. Existing SDK v3 guides describe a different public surface; keep a migration deliberate instead of mixing imports from both generations.
+The October 28 release publishes SDK **4.0.0-alpha.0** and protocol **3.0.0-alpha.0**, plus the semantic, identity, and processing packages in the [catalog](https://docs.intuition.systems/docs/build/packages/index). These are independent version lines. Keep the existing SDK v3 integration until you have replaced its imports and checked your application's identity fixtures.
 
-| Existing pattern                            | Candidate direction                                           | Migration check                                                                                       |
-| ------------------------------------------- | ------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| General SDK root import                     | `sdk/api`, `sdk/actions`, `sdk/utils`, `sdk/protocol`         | Resolve the actual exported symbol; root compatibility is broader than the intended long-term surface |
+## Update public imports
+
+| Existing use                       | Published replacement                                        | Check                                                                            |
+| ---------------------------------- | ------------------------------------------------------------ | -------------------------------------------------------------------------------- |
+| Protocol-wide SDK root imports     | `@0xintuition/protocol` or `@0xintuition/sdk/protocol`       | The SDK root no longer re-exports the entire protocol                            |
+| ID-wide SDK root imports           | `@0xintuition/ids`                                           | The SDK root retains only selected ID helpers                                    |
 
 [... see full docs for complete content]
 
@@ -261,9 +314,7 @@ source: "https://docs.intuition.systems/docs/build/overview"
 
 Intuition gives applications shared identifiers, a common vocabulary for relationships, a backend for processing and querying those relationships, and an on-chain protocol for publishing terms and expressing economic signals. You can start by modeling data entirely offline, persist it in a Core node, and add wallet interactions when your application needs them.
 
-This guide covers the upcoming package release. The [compatibility manifest](https://docs.intuition.systems/docs/build/compatibility) pins the source revisions and package versions. Some npm versions and contract capabilities are release candidates; code in a checkout is not proof of a deployed service.
-
-## Choose a first result
+This guide covers all **21 packages published in the October 28 alpha release**. Start with [installation](https://docs.intuition.systems/docs/build/guides/installation), then build an atom offline and add only the capabilities your application needs. The [compatibility manifest](https://docs.intuition.systems/docs/build/compatibility) pins npm artifacts and source; contract and hosted-service capabilities depend on your target environment.
 
 [... see full docs for complete content]
 
@@ -278,7 +329,7 @@ source: "https://docs.intuition.systems/docs/build/packages/atom-classification"
 
 Compose a plugin-based classification engine for client, progressive, or server execution.
 
-Candidate source version: **0.1.0-alpha.0**. [Release compatibility](https://docs.intuition.systems/docs/build/compatibility) explains publication and deployment prerequisites.
+Published alpha version: **0.1.0-alpha.0**. [Release compatibility](https://docs.intuition.systems/docs/build/compatibility) records npm publication, peer dependencies, and deployment boundaries.
 
 ## Install
 
@@ -310,7 +361,7 @@ source: "https://docs.intuition.systems/docs/build/packages/atom-enrichment"
 
 Execute selected enrichment providers and extract fields from artifacts.
 
-Candidate source version: **0.1.0-alpha.0**. [Release compatibility](https://docs.intuition.systems/docs/build/compatibility) explains publication and deployment prerequisites.
+Published alpha version: **0.1.0-alpha.0**. [Release compatibility](https://docs.intuition.systems/docs/build/compatibility) records npm publication, peer dependencies, and deployment boundaries.
 
 ## Install
 
@@ -333,16 +384,16 @@ Use ESM imports.
 
 ---
 title: "@0xintuition/atom-parser guide"
-description: "Detect and normalize raw strings, JSON objects/arrays, URLs, IPFS, addresses, names, and ISBNs."
+description: "Detect and normalize IIDs, raw strings, JSON objects/arrays, URLs, IPFS, addresses, names, and ISBNs."
 last_updated: "2026-10-22T11:24:44-07:00"
 source: "https://docs.intuition.systems/docs/build/packages/atom-parser"
 ---
 
 # @0xintuition/atom-parser guide
 
-Detect and normalize raw strings, JSON objects/arrays, URLs, IPFS, addresses, names, and ISBNs.
+Detect and normalize IIDs, raw strings, JSON objects/arrays, URLs, IPFS, addresses, names, and ISBNs.
 
-Candidate source version: **0.1.0-alpha.0**. [Release compatibility](https://docs.intuition.systems/docs/build/compatibility) explains publication and deployment prerequisites.
+Published alpha version: **0.1.0-alpha.0**. [Release compatibility](https://docs.intuition.systems/docs/build/compatibility) records npm publication, peer dependencies, and deployment boundaries.
 
 ## Install
 
@@ -359,7 +410,29 @@ Use ESM imports.
 
 ## First use
 
-## Integration decisions
+## Parse an identifier
+
+[... see full docs for complete content]
+
+---
+title: "@0xintuition/atom-runtime guide"
+description: "Compose classification and enrichment with shared configuration, presets, caches, and memoized engines. This is the public server integration layer for applications that previously maintained their..."
+source: "https://docs.intuition.systems/docs/build/packages/atom-runtime"
+---
+
+# @0xintuition/atom-runtime guide
+
+Compose classification and enrichment with shared configuration, presets, caches, and memoized engines. This is the public server integration layer for applications that previously maintained their own engine wiring. It uses Promises and requires Node 20+.
+
+## Install
+
+## Create and reuse a runtime
+
+Creating engines does not fetch provider data. Keep one runtime per intended configuration/lifecycle instead of recreating caches for every request. Enrichment engines are memoized by preset and identity capability. Their published plugin registries are immutable; select plugin overrides when constructing a runtime.
+
+## Configuration and public entrypoints
+
+| Import suffix       | Use                                                                                          |
 
 [... see full docs for complete content]
 
@@ -374,7 +447,7 @@ source: "https://docs.intuition.systems/docs/build/packages/classifications"
 
 Use canonical entity specifications, identity ladders, Creation Profiles, discovery metadata, and atom-data builders.
 
-Candidate source version: **0.1.0-alpha.1**. [Release compatibility](https://docs.intuition.systems/docs/build/compatibility) explains publication and deployment prerequisites.
+Published alpha version: **0.1.0-alpha.1**. [Release compatibility](https://docs.intuition.systems/docs/build/compatibility) records npm publication, peer dependencies, and deployment boundaries.
 
 ## Install
 
@@ -392,22 +465,20 @@ Use ESM imports. Required peers: `viem ^2.0.0`.
 
 ## First use
 
-## Integration decisions
-
 [... see full docs for complete content]
 
 ---
 title: "@0xintuition/cli guide"
-description: "Discover encoders and produce deterministic calldata or action envelopes for agents and scripts."
+description: "Discover encoders and produce deterministic calldata for agents and scripts. Use SDK actions for new action-envelope integrations."
 last_updated: "2026-10-22T11:24:44-07:00"
 source: "https://docs.intuition.systems/docs/build/packages/cli"
 ---
 
 # @0xintuition/cli guide
 
-Discover encoders and produce deterministic calldata or action envelopes for agents and scripts.
+Discover encoders and produce deterministic calldata for agents and scripts. Use SDK actions for new action-envelope integrations.
 
-Candidate source version: **0.1.0**. [Release compatibility](https://docs.intuition.systems/docs/build/compatibility) explains publication and deployment prerequisites.
+Published alpha version: **0.1.0-alpha.0**. [Release compatibility](https://docs.intuition.systems/docs/build/compatibility) records npm publication, peer dependencies, and deployment boundaries.
 
 ## Install
 
@@ -415,18 +486,14 @@ Use ESM imports.
 
 ## Main surface
 
-| Export or operation                | Purpose                                |
-| ---------------------------------- | -------------------------------------- |
-| `intuition --help`                 | Discover executable commands           |
-| `AgentActionEnvelope`              | Structured plan contract               |
-| `buildMultiVaultDepositPlan`       | Deterministic deposit plan builder     |
-| `buildMultiVaultCreateAndSeedPlan` | Deterministic create/seed plan builder |
+| Export or operation                | Purpose                           |
+| ---------------------------------- | --------------------------------- |
+| `intuition --help`                 | Discover executable commands      |
+| `AgentActionEnvelope`              | Structured plan contract          |
+| `buildMultiVaultDepositPlan`       | Deprecated alias; use SDK actions |
+| `buildMultiVaultCreateAndSeedPlan` | Deprecated alias; use SDK actions |
 
 ## First use
-
-Start with encoder discovery before constructing an action envelope. The command does not sign or send transactions.
-
-## Integration decisions
 
 [... see full docs for complete content]
 
@@ -441,7 +508,7 @@ source: "https://docs.intuition.systems/docs/build/packages/curves"
 
 Calculate local curve previews and exact-net gross-up quotes using explicit state and parameters.
 
-Candidate source version: **0.1.0**. [Release compatibility](https://docs.intuition.systems/docs/build/compatibility) explains publication and deployment prerequisites.
+Published alpha version: **0.1.0-alpha.1**. [Release compatibility](https://docs.intuition.systems/docs/build/compatibility) records npm publication, peer dependencies, and deployment boundaries.
 
 ## Install
 
@@ -473,7 +540,7 @@ source: "https://docs.intuition.systems/docs/build/packages/deployments"
 
 Resolve the shared ABI, bytecode, address, and chain metadata consumed by all protocol packages.
 
-Candidate source version: **0.1.0**. [Release compatibility](https://docs.intuition.systems/docs/build/compatibility) explains publication and deployment prerequisites.
+Published alpha version: **0.1.0-alpha.1**. [Release compatibility](https://docs.intuition.systems/docs/build/compatibility) records npm publication, peer dependencies, and deployment boundaries.
 
 ## Install
 
@@ -505,7 +572,7 @@ source: "https://docs.intuition.systems/docs/build/packages/ids"
 
 Calculate deterministic atom, predicate, triple, counter-triple, and authentication-related IDs.
 
-Candidate source version: **0.1.0-alpha.1**. [Release compatibility](https://docs.intuition.systems/docs/build/compatibility) explains publication and deployment prerequisites.
+Published alpha version: **0.1.0-alpha.1**. [Release compatibility](https://docs.intuition.systems/docs/build/compatibility) records npm publication, peer dependencies, and deployment boundaries.
 
 ## Install
 
@@ -537,7 +604,7 @@ source: "https://docs.intuition.systems/docs/build/packages/iid-ladder"
 
 Choose canonical identities from application, provider, seed, and import inputs.
 
-Candidate source version: **0.1.0-alpha.0**. [Release compatibility](https://docs.intuition.systems/docs/build/compatibility) explains publication and deployment prerequisites.
+Published alpha version: **0.1.0-alpha.0**. [Release compatibility](https://docs.intuition.systems/docs/build/compatibility) records npm publication, peer dependencies, and deployment boundaries.
 
 ## Install
 
@@ -569,7 +636,7 @@ source: "https://docs.intuition.systems/docs/build/packages/iid-registry"
 
 Resolve identifier meaning and provider capabilities without HTTP or credentials.
 
-Candidate source version: **0.1.0-alpha.0**. [Release compatibility](https://docs.intuition.systems/docs/build/compatibility) explains publication and deployment prerequisites.
+Published alpha version: **0.1.0-alpha.0**. [Release compatibility](https://docs.intuition.systems/docs/build/compatibility) records npm publication, peer dependencies, and deployment boundaries.
 
 ## Install
 
@@ -600,7 +667,7 @@ source: "https://docs.intuition.systems/docs/build/packages/iid-spec"
 
 The normative identifier specification and conformance corpus. Read it when implementing an identifier producer or comparing independent implementations.
 
-Candidate source version: **0.1.0-alpha.0**. [Release compatibility](https://docs.intuition.systems/docs/build/compatibility) explains publication and deployment prerequisites.
+Published alpha version: **0.1.0-alpha.0**. [Release compatibility](https://docs.intuition.systems/docs/build/compatibility) records npm publication, peer dependencies, and deployment boundaries.
 
 ## Install
 
@@ -615,9 +682,7 @@ Use ESM imports.
 
 ## First use
 
-Read the [identifier explainer](https://github.com/0xIntuition/packages/tree/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/iid-spec/explainer.md), then use `iid` and `primitives` to implement a conforming application. Run the published conformance fixtures when producing identifiers independently.
-
-## Integration decisions
+Read the [identifier explainer](https://github.com/0xIntuition/packages/tree/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/iid-spec/explainer.md), then use `iid` and `primitives` to implement a conforming application. Run the published conformance fixtures when producing identifiers independently.
 
 [... see full docs for complete content]
 
@@ -632,7 +697,7 @@ source: "https://docs.intuition.systems/docs/build/packages/iid"
 
 Parse, inspect, canonicalize, and derive Intuition identifiers entirely offline.
 
-Candidate source version: **0.1.0-alpha.0**. [Release compatibility](https://docs.intuition.systems/docs/build/compatibility) explains publication and deployment prerequisites.
+Published alpha version: **0.1.0-alpha.0**. [Release compatibility](https://docs.intuition.systems/docs/build/compatibility) records npm publication, peer dependencies, and deployment boundaries.
 
 ## Install
 
@@ -656,19 +721,19 @@ Use ESM imports. Required peers: `viem ^2.0.0`.
 
 ---
 title: "Choose the packages your application needs"
-description: "Install the smallest layer that supplies your workflow. All names below refer to public package artifacts in the selected source train; Core's private database and worker packages are service..."
+description: "Install the smallest layer that supplies your workflow. All names below refer to the 21 npm packages published October 28, 2026; Core's private database and worker packages are service implementation..."
 last_updated: "2026-10-22T11:24:44-07:00"
 source: "https://docs.intuition.systems/docs/build/packages/index"
 ---
 
 # Choose the packages your application needs
 
-Install the smallest layer that supplies your workflow. All names below refer to public package artifacts in the selected source train; Core's private database and worker packages are service implementation details.
+Install the smallest layer that supplies your workflow. All names below refer to the 21 npm packages published October 28, 2026; Core's private database and worker packages are service implementation details.
 
-| Package                                                      | Responsibility                                                                                                                                            | Candidate version |
-| ------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| [@0xintuition/iid-spec](https://docs.intuition.systems/docs/build/packages/iid-spec)                       | The normative identifier specification and conformance corpus. Read it when implementing an identifier producer or comparing independent implementations. | `0.1.0-alpha.0`   |
-| [@0xintuition/iid](https://docs.intuition.systems/docs/build/packages/iid)                                 | Parse, inspect, canonicalize, and derive Intuition identifiers entirely offline.                                                                          | `0.1.0-alpha.0`   |
+| Package                                                      | Responsibility                                                                                                                                            | Published version                                                                                 |
+| ------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| [@0xintuition/iid-spec](https://docs.intuition.systems/docs/build/packages/iid-spec)                       | The normative identifier specification and conformance corpus. Read it when implementing an identifier producer or comparing independent implementations. | [`0.1.0-alpha.0`](https://www.npmjs.com/package/@0xintuition/iid-spec/v/0.1.0-alpha.0)            |
+| [@0xintuition/iid](https://docs.intuition.systems/docs/build/packages/iid)                                 | Parse, inspect, canonicalize, and derive Intuition identifiers entirely offline.                                                                          | [`0.1.0-alpha.0`](https://www.npmjs.com/package/@0xintuition/iid/v/0.1.0-alpha.0)                 |
 
 [... see full docs for complete content]
 
@@ -683,7 +748,7 @@ source: "https://docs.intuition.systems/docs/build/packages/periphery"
 
 Use direct FeeProxy, router, and meta-bridge wrappers and encoders.
 
-Candidate source version: **0.1.0**. [Release compatibility](https://docs.intuition.systems/docs/build/compatibility) explains publication and deployment prerequisites.
+Published alpha version: **0.1.0-alpha.1**. [Release compatibility](https://docs.intuition.systems/docs/build/compatibility) records npm publication, peer dependencies, and deployment boundaries.
 
 ## Install
 
@@ -705,6 +770,29 @@ Use ESM imports. Required peers: `viem ^2.0.0`.
 [... see full docs for complete content]
 
 ---
+title: "@0xintuition/pipeline-runtime guide"
+description: "Use dependency-free Promise utilities for bounded concurrency, cancellation, circuit breaking, cache contracts, and provider observation. This package is ESM-only and requires Node 20+. It does not..."
+source: "https://docs.intuition.systems/docs/build/packages/pipeline-runtime"
+---
+
+# @0xintuition/pipeline-runtime guide
+
+Use dependency-free Promise utilities for bounded concurrency, cancellation, circuit breaking, cache contracts, and provider observation. This package is ESM-only and requires Node 20+. It does not start a pipeline or depend on Effect.
+
+## Install
+
+## Bound work and keep input order
+
+The result retains input order. Synchronous callback throws become `defect`; Promise rejections become `failure`. Parent cancellation stops queued work, signals active callbacks, and rejects with the parent's abort reason. Callbacks must honor the signal to stop underlying I/O.
+
+## Select a public module
+
+| Subpath                                                                                                  | Purpose                                                                                                                        |
+| -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+
+[... see full docs for complete content]
+
+---
 title: "@0xintuition/predicates guide"
 description: "Use shared relationship vocabulary, canonical predicate data and IDs, semantic flags, and display helpers."
 last_updated: "2026-10-22T11:24:44-07:00"
@@ -715,7 +803,7 @@ source: "https://docs.intuition.systems/docs/build/packages/predicates"
 
 Use shared relationship vocabulary, canonical predicate data and IDs, semantic flags, and display helpers.
 
-Candidate source version: **0.1.0-alpha.1**. [Release compatibility](https://docs.intuition.systems/docs/build/compatibility) explains publication and deployment prerequisites.
+Published alpha version: **0.1.0-alpha.1**. [Release compatibility](https://docs.intuition.systems/docs/build/compatibility) records npm publication, peer dependencies, and deployment boundaries.
 
 ## Install
 
@@ -739,7 +827,7 @@ Use ESM imports. Required peers: `viem ^2.0.0`.
 ---
 title: "@0xintuition/primitives guide"
 description: "Build atoms and triples with validated, deterministic public helpers."
-last_updated: "2026-10-23T10:50:37-07:00"
+last_updated: "2026-11-02T10:10:52-08:00"
 source: "https://docs.intuition.systems/docs/build/packages/primitives"
 ---
 
@@ -747,7 +835,7 @@ source: "https://docs.intuition.systems/docs/build/packages/primitives"
 
 Build atoms and triples with validated, deterministic public helpers.
 
-Candidate source version: **0.1.0-alpha.1**. [Release compatibility](https://docs.intuition.systems/docs/build/compatibility) explains publication and deployment prerequisites.
+Published alpha version: **0.1.0-alpha.1**. [Release compatibility](https://docs.intuition.systems/docs/build/compatibility) records npm publication, peer dependencies, and deployment boundaries.
 
 ## Install
 
@@ -779,7 +867,7 @@ source: "https://docs.intuition.systems/docs/build/packages/protocol"
 
 Call or encode core protocol contracts with explicit viem clients and deployment configuration.
 
-Candidate source version: **4.0.0**. [Release compatibility](https://docs.intuition.systems/docs/build/compatibility) explains publication and deployment prerequisites.
+Published alpha version: **3.0.0-alpha.0**. [Release compatibility](https://docs.intuition.systems/docs/build/compatibility) records npm publication, peer dependencies, and deployment boundaries.
 
 ## Install
 
@@ -809,11 +897,11 @@ source: "https://docs.intuition.systems/docs/build/packages/react"
 
 Compose protocol read/write hooks and observable transaction lifecycle state in React.
 
-Candidate source version: **0.1.0-alpha.1**. [Release compatibility](https://docs.intuition.systems/docs/build/compatibility) explains publication and deployment prerequisites.
+Published alpha version: **0.1.0-alpha.1**. [Release compatibility](https://docs.intuition.systems/docs/build/compatibility) records npm publication, peer dependencies, and deployment boundaries.
 
 ## Install
 
-Use ESM imports. Required peers: `@tanstack/react-query >=5`, `react >=18`, `viem ^2.0.0`, `wagmi >=2`.
+Use ESM imports. Required peers: `@tanstack/react-query >=5`, `react >=18`, `viem ^2.0.0`, `wagmi >=2`, `@0xintuition/protocol 3.0.0-alpha.0`, and `@0xintuition/deployments 0.1.0-alpha.1`.
 
 ## Main surface
 
@@ -839,7 +927,7 @@ source: "https://docs.intuition.systems/docs/build/packages/schema-org"
 
 Look up the pinned schema.org vocabulary and inherited properties for forms and tooling.
 
-Candidate source version: **0.1.0-alpha.0**. [Release compatibility](https://docs.intuition.systems/docs/build/compatibility) explains publication and deployment prerequisites.
+Published alpha version: **0.1.0-alpha.1**. [Release compatibility](https://docs.intuition.systems/docs/build/compatibility) records npm publication, peer dependencies, and deployment boundaries.
 
 ## Install
 
@@ -857,8 +945,6 @@ Use ESM imports.
 
 ## Integration decisions
 
-The snapshot is schema.org V30.0. The vocabulary supplies schema metadata, while classifications decides which fields an Intuition creation flow recommends.
-
 [... see full docs for complete content]
 
 ---
@@ -872,7 +958,7 @@ source: "https://docs.intuition.systems/docs/build/packages/sdk"
 
 Build integrations with hosted GraphQL reads, deterministic utilities, and explicit on-chain action plans.
 
-Candidate source version: **4.0.0**. [Release compatibility](https://docs.intuition.systems/docs/build/compatibility) explains publication and deployment prerequisites.
+Published alpha version: **4.0.0-alpha.0**. [Release compatibility](https://docs.intuition.systems/docs/build/compatibility) records npm publication, peer dependencies, and deployment boundaries.
 
 ## Install
 
@@ -895,18 +981,18 @@ Use ESM imports. Required peers: `viem ^2.0.0`.
 
 ---
 title: "API client"
-description: "Generated from the upcoming SDK **4.0.0** source. See [release compatibility](../compatibility.md) before installing or connecting to a deployment. Regenerate with `node..."
-last_updated: "2026-10-23T10:50:26-07:00"
+description: "Generated from the published SDK **4.0.0-alpha.0** source. See [release compatibility](../compatibility.md) before installing or connecting to a deployment. Regenerate with `node..."
+last_updated: "2026-11-02T10:10:52-08:00"
 source: "https://docs.intuition.systems/docs/build/sdk-reference/api"
 ---
 
 # API client
 
-Generated from the upcoming SDK **4.0.0** source. See [release compatibility](https://docs.intuition.systems/docs/build/compatibility) before installing or connecting to a deployment. Regenerate with `node scripts/generate-package-reference.js /path/to/packages`.
+Generated from the published SDK **4.0.0-alpha.0** source. See [release compatibility](https://docs.intuition.systems/docs/build/compatibility) before installing or connecting to a deployment. Regenerate with `node scripts/generate-package-reference.js /path/to/packages`.
 
-Import from `@0xintuition/sdk/api`. [Implementation and internal helpers](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/api/index.ts).
+Import from `@0xintuition/sdk/api`. [Implementation and internal helpers](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/sdk/src/api/index.ts).
 
-Signatures show the exact accepted inputs and return types. Named input/output structures and dependency-injection types are listed below; viem and protocol types come from their respective packages. Preparation and quote functions can perform RPC reads. **`feeProxyExecutePlan` sends transactions**; the other SDK actions on these pages prepare transactions or read data.
+Signatures show the exact accepted inputs and return types. Named input/output structures and dependency-injection types are listed below; viem and protocol types come from their respective packages. Preparation and quote functions can perform RPC reads. Envelope builders on the action-envelope pages use caller-supplied read context and perform no RPC reads or signing. **`feeProxyExecutePlan` sends transactions**; the other SDK actions on these pages prepare transactions or read data.
 
 ## getIntuitionApiUrl
 
@@ -914,119 +1000,109 @@ Signatures show the exact accepted inputs and return types. Named input/output s
 
 ---
 title: "Dynamic-fee curve actions"
-description: "Generated from the upcoming SDK **4.0.0** source. See [release compatibility](../compatibility.md) before installing or connecting to a deployment. Regenerate with `node..."
-last_updated: "2026-10-23T10:50:26-07:00"
+description: "Generated from the published SDK **4.0.0-alpha.0** source. See [release compatibility](../compatibility.md) before installing or connecting to a deployment. Regenerate with `node..."
+last_updated: "2026-11-02T10:10:52-08:00"
 source: "https://docs.intuition.systems/docs/build/sdk-reference/dynamic-fee-curve"
 ---
 
 # Dynamic-fee curve actions
 
-Generated from the upcoming SDK **4.0.0** source. See [release compatibility](https://docs.intuition.systems/docs/build/compatibility) before installing or connecting to a deployment. Regenerate with `node scripts/generate-package-reference.js /path/to/packages`.
+Generated from the published SDK **4.0.0-alpha.0** source. See [release compatibility](https://docs.intuition.systems/docs/build/compatibility) before installing or connecting to a deployment. Regenerate with `node scripts/generate-package-reference.js /path/to/packages`.
 
-Import from `@0xintuition/sdk/actions`. [Implementation and internal helpers](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/dynamic-fee-curve.ts).
+Import from `@0xintuition/sdk/actions`. [Implementation and internal helpers](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/sdk/src/actions/dynamic-fee-curve.ts).
 
-Signatures show the exact accepted inputs and return types. Named input/output structures and dependency-injection types are listed below; viem and protocol types come from their respective packages. Preparation and quote functions can perform RPC reads. **`feeProxyExecutePlan` sends transactions**; the other SDK actions on these pages prepare transactions or read data.
+Signatures show the exact accepted inputs and return types. Named input/output structures and dependency-injection types are listed below; viem and protocol types come from their respective packages. Preparation and quote functions can perform RPC reads. Envelope builders on the action-envelope pages use caller-supplied read context and perform no RPC reads or signing. **`feeProxyExecutePlan` sends transactions**; the other SDK actions on these pages prepare transactions or read data.
 
 ## dynamicFeeCurveGetTierOverrides
-
-Reads every tier's manual fee override for a curve, in the shape the pure tier maths takes.
 
 [... see full docs for complete content]
 
 ---
 title: "FeeProxy affiliate profile"
-description: "Generated from the upcoming SDK **4.0.0** source. See [release compatibility](../compatibility.md) before installing or connecting to a deployment. Regenerate with `node..."
-last_updated: "2026-10-23T10:50:26-07:00"
+description: "Generated from the published SDK **4.0.0-alpha.0** source. See [release compatibility](../compatibility.md) before installing or connecting to a deployment. Regenerate with `node..."
+last_updated: "2026-11-02T10:10:52-08:00"
 source: "https://docs.intuition.systems/docs/build/sdk-reference/fee-proxy-affiliate-profile"
 ---
 
 # FeeProxy affiliate profile
 
-Generated from the upcoming SDK **4.0.0** source. See [release compatibility](https://docs.intuition.systems/docs/build/compatibility) before installing or connecting to a deployment. Regenerate with `node scripts/generate-package-reference.js /path/to/packages`.
+Generated from the published SDK **4.0.0-alpha.0** source. See [release compatibility](https://docs.intuition.systems/docs/build/compatibility) before installing or connecting to a deployment. Regenerate with `node scripts/generate-package-reference.js /path/to/packages`.
 
-Import from `@0xintuition/sdk/actions`. [Implementation and internal helpers](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/fee-proxy-affiliate-profile.ts).
+Import from `@0xintuition/sdk/actions`. [Implementation and internal helpers](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/sdk/src/actions/fee-proxy-affiliate-profile.ts).
 
-Signatures show the exact accepted inputs and return types. Named input/output structures and dependency-injection types are listed below; viem and protocol types come from their respective packages. Preparation and quote functions can perform RPC reads. **`feeProxyExecutePlan` sends transactions**; the other SDK actions on these pages prepare transactions or read data.
+Signatures show the exact accepted inputs and return types. Named input/output structures and dependency-injection types are listed below; viem and protocol types come from their respective packages. Preparation and quote functions can perform RPC reads. Envelope builders on the action-envelope pages use caller-supplied read context and perform no RPC reads or signing. **`feeProxyExecutePlan` sends transactions**; the other SDK actions on these pages prepare transactions or read data.
 
 ## feeProxyGetAffiliateProfile
-
-Reads everything a builder dashboard shows for one affiliate in one batched read: the registry
 
 [... see full docs for complete content]
 
 ---
 title: "FeeProxy plans and execution"
-description: "Generated from the upcoming SDK **4.0.0** source. See [release compatibility](../compatibility.md) before installing or connecting to a deployment. Regenerate with `node..."
-last_updated: "2026-10-23T10:50:26-07:00"
+description: "Generated from the published SDK **4.0.0-alpha.0** source. See [release compatibility](../compatibility.md) before installing or connecting to a deployment. Regenerate with `node..."
+last_updated: "2026-11-02T10:10:52-08:00"
 source: "https://docs.intuition.systems/docs/build/sdk-reference/fee-proxy-builders"
 ---
 
 # FeeProxy plans and execution
 
-Generated from the upcoming SDK **4.0.0** source. See [release compatibility](https://docs.intuition.systems/docs/build/compatibility) before installing or connecting to a deployment. Regenerate with `node scripts/generate-package-reference.js /path/to/packages`.
+Generated from the published SDK **4.0.0-alpha.0** source. See [release compatibility](https://docs.intuition.systems/docs/build/compatibility) before installing or connecting to a deployment. Regenerate with `node scripts/generate-package-reference.js /path/to/packages`.
 
-Import from `@0xintuition/sdk/actions`. [Implementation and internal helpers](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/fee-proxy-builders.ts).
+Import from `@0xintuition/sdk/actions`. [Implementation and internal helpers](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/sdk/src/actions/fee-proxy-builders.ts).
 
-Signatures show the exact accepted inputs and return types. Named input/output structures and dependency-injection types are listed below; viem and protocol types come from their respective packages. Preparation and quote functions can perform RPC reads. **`feeProxyExecutePlan` sends transactions**; the other SDK actions on these pages prepare transactions or read data.
+Signatures show the exact accepted inputs and return types. Named input/output structures and dependency-injection types are listed below; viem and protocol types come from their respective packages. Preparation and quote functions can perform RPC reads. Envelope builders on the action-envelope pages use caller-supplied read context and perform no RPC reads or signing. **`feeProxyExecutePlan` sends transactions**; the other SDK actions on these pages prepare transactions or read data.
 
 ## feeProxyGetReadiness
-
-Checks everything a FeeProxy deposit or create needs before it can land, mirroring the checks
 
 [... see full docs for complete content]
 
 ---
 title: "FeeProxy refund preparation"
-description: "Generated from the upcoming SDK **4.0.0** source. See [release compatibility](../compatibility.md) before installing or connecting to a deployment. Regenerate with `node..."
-last_updated: "2026-10-23T10:50:26-07:00"
+description: "Generated from the published SDK **4.0.0-alpha.0** source. See [release compatibility](../compatibility.md) before installing or connecting to a deployment. Regenerate with `node..."
+last_updated: "2026-11-02T10:10:52-08:00"
 source: "https://docs.intuition.systems/docs/build/sdk-reference/fee-proxy-claim-refund-if-any"
 ---
 
 # FeeProxy refund preparation
 
-Generated from the upcoming SDK **4.0.0** source. See [release compatibility](https://docs.intuition.systems/docs/build/compatibility) before installing or connecting to a deployment. Regenerate with `node scripts/generate-package-reference.js /path/to/packages`.
+Generated from the published SDK **4.0.0-alpha.0** source. See [release compatibility](https://docs.intuition.systems/docs/build/compatibility) before installing or connecting to a deployment. Regenerate with `node scripts/generate-package-reference.js /path/to/packages`.
 
-Import from `@0xintuition/sdk/actions`. [Implementation and internal helpers](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/fee-proxy-claim-refund-if-any.ts).
+Import from `@0xintuition/sdk/actions`. [Implementation and internal helpers](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/sdk/src/actions/fee-proxy-claim-refund-if-any.ts).
 
-Signatures show the exact accepted inputs and return types. Named input/output structures and dependency-injection types are listed below; viem and protocol types come from their respective packages. Preparation and quote functions can perform RPC reads. **`feeProxyExecutePlan` sends transactions**; the other SDK actions on these pages prepare transactions or read data.
+Signatures show the exact accepted inputs and return types. Named input/output structures and dependency-injection types are listed below; viem and protocol types come from their respective packages. Preparation and quote functions can perform RPC reads. Envelope builders on the action-envelope pages use caller-supplied read context and perform no RPC reads or signing. **`feeProxyExecutePlan` sends transactions**; the other SDK actions on these pages prepare transactions or read data.
 
 ## feeProxyClaimRefundIfAny
-
-Checks the pull-fallback refund ledger and builds a `claimRefundTo` transaction only when the
 
 [... see full docs for complete content]
 
 ---
 title: "FeeProxy URI creation"
-description: "Generated from the upcoming SDK **4.0.0** source. See [release compatibility](../compatibility.md) before installing or connecting to a deployment. Regenerate with `node..."
-last_updated: "2026-10-23T10:50:26-07:00"
+description: "Generated from the published SDK **4.0.0-alpha.0** source. See [release compatibility](../compatibility.md) before installing or connecting to a deployment. Regenerate with `node..."
+last_updated: "2026-11-02T10:10:52-08:00"
 source: "https://docs.intuition.systems/docs/build/sdk-reference/fee-proxy"
 ---
 
 # FeeProxy URI creation
 
-Generated from the upcoming SDK **4.0.0** source. See [release compatibility](https://docs.intuition.systems/docs/build/compatibility) before installing or connecting to a deployment. Regenerate with `node scripts/generate-package-reference.js /path/to/packages`.
+Generated from the published SDK **4.0.0-alpha.0** source. See [release compatibility](https://docs.intuition.systems/docs/build/compatibility) before installing or connecting to a deployment. Regenerate with `node scripts/generate-package-reference.js /path/to/packages`.
 
-Import from `@0xintuition/sdk/actions`. [Implementation and internal helpers](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/fee-proxy.ts).
+Import from `@0xintuition/sdk/actions`. [Implementation and internal helpers](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/sdk/src/actions/fee-proxy.ts).
 
-Signatures show the exact accepted inputs and return types. Named input/output structures and dependency-injection types are listed below; viem and protocol types come from their respective packages. Preparation and quote functions can perform RPC reads. **`feeProxyExecutePlan` sends transactions**; the other SDK actions on these pages prepare transactions or read data.
+Signatures show the exact accepted inputs and return types. Named input/output structures and dependency-injection types are listed below; viem and protocol types come from their respective packages. Preparation and quote functions can perform RPC reads. Envelope builders on the action-envelope pages use caller-supplied read context and perform no RPC reads or signing. **`feeProxyExecutePlan` sends transactions**; the other SDK actions on these pages prepare transactions or read data.
 
 ## feeProxyPrepareCreateAtomsWithUrisTx
-
-Prepares a `createAtomsWithUrisVia` transaction routed through an affiliate: reads
 
 [... see full docs for complete content]
 
 ---
 title: "SDK function reference"
-description: "The SDK 4 candidate exposes narrow hosted API reads and higher-level protocol actions. Start with a guidebook recipe, then use these pages for exact inputs, return types, defaults, and source links."
+description: "The published SDK 4 alpha exposes narrow hosted API reads and higher-level protocol actions. Start with a guidebook recipe, then use these pages for exact inputs, return types, defaults, and source..."
 last_updated: "2026-10-22T11:24:44-07:00"
 source: "https://docs.intuition.systems/docs/build/sdk-reference/index"
 ---
 
 # SDK function reference
 
-The SDK 4 candidate exposes narrow hosted API reads and higher-level protocol actions. Start with a guidebook recipe, then use these pages for exact inputs, return types, defaults, and source links.
+The published SDK 4 alpha exposes narrow hosted API reads and higher-level protocol actions. Start with a guidebook recipe, then use these pages for exact inputs, return types, defaults, and source links.
 
 | Reference                                                | Main operations                                                            | Effects                                         |
 | -------------------------------------------------------- | -------------------------------------------------------------------------- | ----------------------------------------------- |
@@ -1038,64 +1114,202 @@ The SDK 4 candidate exposes narrow hosted API reads and higher-level protocol ac
 
 ---
 title: "MultiVault actions"
-description: "Generated from the upcoming SDK **4.0.0** source. See [release compatibility](../compatibility.md) before installing or connecting to a deployment. Regenerate with `node..."
-last_updated: "2026-10-23T10:50:26-07:00"
+description: "Generated from the published SDK **4.0.0-alpha.0** source. See [release compatibility](../compatibility.md) before installing or connecting to a deployment. Regenerate with `node..."
+last_updated: "2026-11-02T10:10:52-08:00"
 source: "https://docs.intuition.systems/docs/build/sdk-reference/multivault"
 ---
 
 # MultiVault actions
 
-Generated from the upcoming SDK **4.0.0** source. See [release compatibility](https://docs.intuition.systems/docs/build/compatibility) before installing or connecting to a deployment. Regenerate with `node scripts/generate-package-reference.js /path/to/packages`.
+Generated from the published SDK **4.0.0-alpha.0** source. See [release compatibility](https://docs.intuition.systems/docs/build/compatibility) before installing or connecting to a deployment. Regenerate with `node scripts/generate-package-reference.js /path/to/packages`.
 
-Import from `@0xintuition/sdk/actions`. [Implementation and internal helpers](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/multivault.ts).
+Import from `@0xintuition/sdk/actions`. [Implementation and internal helpers](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/sdk/src/actions/multivault.ts).
 
-Signatures show the exact accepted inputs and return types. Named input/output structures and dependency-injection types are listed below; viem and protocol types come from their respective packages. Preparation and quote functions can perform RPC reads. **`feeProxyExecutePlan` sends transactions**; the other SDK actions on these pages prepare transactions or read data.
+Signatures show the exact accepted inputs and return types. Named input/output structures and dependency-injection types are listed below; viem and protocol types come from their respective packages. Preparation and quote functions can perform RPC reads. Envelope builders on the action-envelope pages use caller-supplied read context and perform no RPC reads or signing. **`feeProxyExecutePlan` sends transactions**; the other SDK actions on these pages prepare transactions or read data.
 
 ## multivaultResolveDepositFeeBase
 
-Resolves the base MultiVault will charge fees on for a deposit.
+[... see full docs for complete content]
+
+---
+title: "Bridge action envelopes"
+description: "Generated from the published SDK **4.0.0-alpha.0** source. See [release compatibility](../compatibility.md) before installing or connecting to a deployment. Regenerate with `node..."
+source: "https://docs.intuition.systems/docs/build/sdk-reference/plans-base"
+---
+
+# Bridge action envelopes
+
+Generated from the published SDK **4.0.0-alpha.0** source. See [release compatibility](https://docs.intuition.systems/docs/build/compatibility) before installing or connecting to a deployment. Regenerate with `node scripts/generate-package-reference.js /path/to/packages`.
+
+Import from `@0xintuition/sdk/actions`. [Implementation and internal helpers](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/sdk/src/actions/plans/base.ts).
+
+Signatures show the exact accepted inputs and return types. Named input/output structures and dependency-injection types are listed below; viem and protocol types come from their respective packages. Preparation and quote functions can perform RPC reads. Envelope builders on the action-envelope pages use caller-supplied read context and perform no RPC reads or signing. **`feeProxyExecutePlan` sends transactions**; the other SDK actions on these pages prepare transactions or read data.
+
+## baseTrustBridgeToIntuitionEnvelope
+
+[... see full docs for complete content]
+
+---
+title: "Dynamic-fee action envelopes"
+description: "Generated from the published SDK **4.0.0-alpha.0** source. See [release compatibility](../compatibility.md) before installing or connecting to a deployment. Regenerate with `node..."
+source: "https://docs.intuition.systems/docs/build/sdk-reference/plans-dynamic-fee-curve"
+---
+
+# Dynamic-fee action envelopes
+
+Generated from the published SDK **4.0.0-alpha.0** source. See [release compatibility](https://docs.intuition.systems/docs/build/compatibility) before installing or connecting to a deployment. Regenerate with `node scripts/generate-package-reference.js /path/to/packages`.
+
+Import from `@0xintuition/sdk/actions`. [Implementation and internal helpers](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/sdk/src/actions/plans/dynamic-fee-curve.ts).
+
+Signatures show the exact accepted inputs and return types. Named input/output structures and dependency-injection types are listed below; viem and protocol types come from their respective packages. Preparation and quote functions can perform RPC reads. Envelope builders on the action-envelope pages use caller-supplied read context and perform no RPC reads or signing. **`feeProxyExecutePlan` sends transactions**; the other SDK actions on these pages prepare transactions or read data.
+
+## dynamicFeeCurveDepositEnvelope
+
+[... see full docs for complete content]
+
+---
+title: "FeeProxy action envelopes"
+description: "Generated from the published SDK **4.0.0-alpha.0** source. See [release compatibility](../compatibility.md) before installing or connecting to a deployment. Regenerate with `node..."
+source: "https://docs.intuition.systems/docs/build/sdk-reference/plans-fee-proxy"
+---
+
+# FeeProxy action envelopes
+
+Generated from the published SDK **4.0.0-alpha.0** source. See [release compatibility](https://docs.intuition.systems/docs/build/compatibility) before installing or connecting to a deployment. Regenerate with `node scripts/generate-package-reference.js /path/to/packages`.
+
+Import from `@0xintuition/sdk/actions`. [Implementation and internal helpers](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/sdk/src/actions/plans/fee-proxy.ts).
+
+Signatures show the exact accepted inputs and return types. Named input/output structures and dependency-injection types are listed below; viem and protocol types come from their respective packages. Preparation and quote functions can perform RPC reads. Envelope builders on the action-envelope pages use caller-supplied read context and perform no RPC reads or signing. **`feeProxyExecutePlan` sends transactions**; the other SDK actions on these pages prepare transactions or read data.
+
+## feeProxyCreateAtomsWithUrisEnvelope
+
+[... see full docs for complete content]
+
+---
+title: "MultiVault action envelopes"
+description: "Generated from the published SDK **4.0.0-alpha.0** source. See [release compatibility](../compatibility.md) before installing or connecting to a deployment. Regenerate with `node..."
+source: "https://docs.intuition.systems/docs/build/sdk-reference/plans-multivault"
+---
+
+# MultiVault action envelopes
+
+Generated from the published SDK **4.0.0-alpha.0** source. See [release compatibility](https://docs.intuition.systems/docs/build/compatibility) before installing or connecting to a deployment. Regenerate with `node scripts/generate-package-reference.js /path/to/packages`.
+
+Import from `@0xintuition/sdk/actions`. [Implementation and internal helpers](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/sdk/src/actions/plans/multivault.ts).
+
+Signatures show the exact accepted inputs and return types. Named input/output structures and dependency-injection types are listed below; viem and protocol types come from their respective packages. Preparation and quote functions can perform RPC reads. Envelope builders on the action-envelope pages use caller-supplied read context and perform no RPC reads or signing. **`feeProxyExecutePlan` sends transactions**; the other SDK actions on these pages prepare transactions or read data.
+
+## multiVaultDepositEnvelope
+
+[... see full docs for complete content]
+
+---
+title: "TrustBonding action envelopes"
+description: "Generated from the published SDK **4.0.0-alpha.0** source. See [release compatibility](../compatibility.md) before installing or connecting to a deployment. Regenerate with `node..."
+source: "https://docs.intuition.systems/docs/build/sdk-reference/plans-trust-bonding"
+---
+
+# TrustBonding action envelopes
+
+Generated from the published SDK **4.0.0-alpha.0** source. See [release compatibility](https://docs.intuition.systems/docs/build/compatibility) before installing or connecting to a deployment. Regenerate with `node scripts/generate-package-reference.js /path/to/packages`.
+
+Import from `@0xintuition/sdk/actions`. [Implementation and internal helpers](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/sdk/src/actions/plans/trust-bonding.ts).
+
+Signatures show the exact accepted inputs and return types. Named input/output structures and dependency-injection types are listed below; viem and protocol types come from their respective packages. Preparation and quote functions can perform RPC reads. Envelope builders on the action-envelope pages use caller-supplied read context and perform no RPC reads or signing. **`feeProxyExecutePlan` sends transactions**; the other SDK actions on these pages prepare transactions or read data.
+
+## trustBondingClaimEnvelope
 
 [... see full docs for complete content]
 
 ---
 title: "Portfolio reads"
-description: "Generated from the upcoming SDK **4.0.0** source. See [release compatibility](../compatibility.md) before installing or connecting to a deployment. Regenerate with `node..."
-last_updated: "2026-10-23T10:50:26-07:00"
+description: "Generated from the published SDK **4.0.0-alpha.0** source. See [release compatibility](../compatibility.md) before installing or connecting to a deployment. Regenerate with `node..."
+last_updated: "2026-11-02T10:10:52-08:00"
 source: "https://docs.intuition.systems/docs/build/sdk-reference/portfolio"
 ---
 
 # Portfolio reads
 
-Generated from the upcoming SDK **4.0.0** source. See [release compatibility](https://docs.intuition.systems/docs/build/compatibility) before installing or connecting to a deployment. Regenerate with `node scripts/generate-package-reference.js /path/to/packages`.
+Generated from the published SDK **4.0.0-alpha.0** source. See [release compatibility](https://docs.intuition.systems/docs/build/compatibility) before installing or connecting to a deployment. Regenerate with `node scripts/generate-package-reference.js /path/to/packages`.
 
-Import from `@0xintuition/sdk/actions`. [Implementation and internal helpers](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/portfolio.ts).
+Import from `@0xintuition/sdk/actions`. [Implementation and internal helpers](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/sdk/src/actions/portfolio.ts).
 
-Signatures show the exact accepted inputs and return types. Named input/output structures and dependency-injection types are listed below; viem and protocol types come from their respective packages. Preparation and quote functions can perform RPC reads. **`feeProxyExecutePlan` sends transactions**; the other SDK actions on these pages prepare transactions or read data.
+Signatures show the exact accepted inputs and return types. Named input/output structures and dependency-injection types are listed below; viem and protocol types come from their respective packages. Preparation and quote functions can perform RPC reads. Envelope builders on the action-envelope pages use caller-supplied read context and perform no RPC reads or signing. **`feeProxyExecutePlan` sends transactions**; the other SDK actions on these pages prepare transactions or read data.
 
 ## portfolioGetIntuitionPositionsSnapshot
 
 [... see full docs for complete content]
 
 ---
+title: "Create and validate action envelopes"
+description: "Generated from the published SDK **4.0.0-alpha.0** source. See [release compatibility](../compatibility.md) before installing or connecting to a deployment. Regenerate with `node..."
+source: "https://docs.intuition.systems/docs/build/sdk-reference/schema-create-agent-action-envelope"
+---
+
+# Create and validate action envelopes
+
+Generated from the published SDK **4.0.0-alpha.0** source. See [release compatibility](https://docs.intuition.systems/docs/build/compatibility) before installing or connecting to a deployment. Regenerate with `node scripts/generate-package-reference.js /path/to/packages`.
+
+Import from `@0xintuition/sdk/actions`. [Implementation and internal helpers](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/sdk/src/actions/schema/create-agent-action-envelope.ts).
+
+Signatures show the exact accepted inputs and return types. Named input/output structures and dependency-injection types are listed below; viem and protocol types come from their respective packages. Preparation and quote functions can perform RPC reads. Envelope builders on the action-envelope pages use caller-supplied read context and perform no RPC reads or signing. **`feeProxyExecutePlan` sends transactions**; the other SDK actions on these pages prepare transactions or read data.
+
+## bigintToDecimalString
+
+[... see full docs for complete content]
+
+---
+title: "Resolve action targets"
+description: "Generated from the published SDK **4.0.0-alpha.0** source. See [release compatibility](../compatibility.md) before installing or connecting to a deployment. Regenerate with `node..."
+source: "https://docs.intuition.systems/docs/build/sdk-reference/schema-resolve-agent-action-target"
+---
+
+# Resolve action targets
+
+Generated from the published SDK **4.0.0-alpha.0** source. See [release compatibility](https://docs.intuition.systems/docs/build/compatibility) before installing or connecting to a deployment. Regenerate with `node scripts/generate-package-reference.js /path/to/packages`.
+
+Import from `@0xintuition/sdk/actions`. [Implementation and internal helpers](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/sdk/src/actions/schema/resolve-agent-action-target.ts).
+
+Signatures show the exact accepted inputs and return types. Named input/output structures and dependency-injection types are listed below; viem and protocol types come from their respective packages. Preparation and quote functions can perform RPC reads. Envelope builders on the action-envelope pages use caller-supplied read context and perform no RPC reads or signing. **`feeProxyExecutePlan` sends transactions**; the other SDK actions on these pages prepare transactions or read data.
+
+## resolveAgentActionTarget
+
+[... see full docs for complete content]
+
+---
+title: "Action envelope types"
+description: "Generated from the published SDK **4.0.0-alpha.0** source. See [release compatibility](../compatibility.md) before installing or connecting to a deployment. Regenerate with `node..."
+source: "https://docs.intuition.systems/docs/build/sdk-reference/schema-types"
+---
+
+# Action envelope types
+
+Generated from the published SDK **4.0.0-alpha.0** source. See [release compatibility](https://docs.intuition.systems/docs/build/compatibility) before installing or connecting to a deployment. Regenerate with `node scripts/generate-package-reference.js /path/to/packages`.
+
+Import from `@0xintuition/sdk/actions`. [Implementation and internal helpers](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/sdk/src/actions/schema/types.ts).
+
+Signatures show the exact accepted inputs and return types. Named input/output structures and dependency-injection types are listed below; viem and protocol types come from their respective packages. Preparation and quote functions can perform RPC reads. Envelope builders on the action-envelope pages use caller-supplied read context and perform no RPC reads or signing. **`feeProxyExecutePlan` sends transactions**; the other SDK actions on these pages prepare transactions or read data.
+
+## Constants
+
+[... see full docs for complete content]
+
+---
 title: "TrustBonding actions"
-description: "Generated from the upcoming SDK **4.0.0** source. See [release compatibility](../compatibility.md) before installing or connecting to a deployment. Regenerate with `node..."
-last_updated: "2026-10-23T10:50:26-07:00"
+description: "Generated from the published SDK **4.0.0-alpha.0** source. See [release compatibility](../compatibility.md) before installing or connecting to a deployment. Regenerate with `node..."
+last_updated: "2026-11-02T10:10:52-08:00"
 source: "https://docs.intuition.systems/docs/build/sdk-reference/trust-bonding"
 ---
 
 # TrustBonding actions
 
-Generated from the upcoming SDK **4.0.0** source. See [release compatibility](https://docs.intuition.systems/docs/build/compatibility) before installing or connecting to a deployment. Regenerate with `node scripts/generate-package-reference.js /path/to/packages`.
+Generated from the published SDK **4.0.0-alpha.0** source. See [release compatibility](https://docs.intuition.systems/docs/build/compatibility) before installing or connecting to a deployment. Regenerate with `node scripts/generate-package-reference.js /path/to/packages`.
 
-Import from `@0xintuition/sdk/actions`. [Implementation and internal helpers](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/trust-bonding.ts).
+Import from `@0xintuition/sdk/actions`. [Implementation and internal helpers](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/sdk/src/actions/trust-bonding.ts).
 
-Signatures show the exact accepted inputs and return types. Named input/output structures and dependency-injection types are listed below; viem and protocol types come from their respective packages. Preparation and quote functions can perform RPC reads. **`feeProxyExecutePlan` sends transactions**; the other SDK actions on these pages prepare transactions or read data.
+Signatures show the exact accepted inputs and return types. Named input/output structures and dependency-injection types are listed below; viem and protocol types come from their respective packages. Preparation and quote functions can perform RPC reads. Envelope builders on the action-envelope pages use caller-supplied read context and perform no RPC reads or signing. **`feeProxyExecutePlan` sends transactions**; the other SDK actions on these pages prepare transactions or read data.
 
 ## trustBondingGetRewardsDashboard
-
-Read epoch, utilization, balance, and reward information for the selected account and return a dashboard snapshot.
-
-[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/trust-bonding.ts#L308)
 
 [... see full docs for complete content]
 
@@ -1276,27 +1490,19 @@ source: "https://docs.intuition.systems/docs/getting-started/choose-your-path"
 
 Not sure where to start? Pick the path that matches your goal.
 
+## Build with the current package stack
+
+Start with [Build with Intuition](https://docs.intuition.systems/docs/build/overview) for the October 28 alpha release: [install packages](https://docs.intuition.systems/docs/build/guides/installation), [create an atom offline](https://docs.intuition.systems/docs/build/guides/first-atom), [classify and enrich inputs](https://docs.intuition.systems/docs/build/guides/processing), then add reads or protocol actions. The [catalog](https://docs.intuition.systems/docs/build/packages/index) links all 21 npm packages and their guides.
+
 ## I Want to...
 
 ### Build a Frontend App (Most Common)
 
-**Use the SDK** - High-level TypeScript SDK with React hooks.
+**Use SDK actions and the React package** — typed protocol integration with separate React hooks.
 
 - Best for: Web apps, dashboards, social platforms
 - Abstracts complexity
 - React integration ready
-- **Start here:** [SDK Quick Start](https://docs.intuition.systems/docs/intuition-sdk/quick-start)
-
-### Query Data Only (No Writes)
-
-**Use GraphQL API** - Read-only queries for the knowledge graph.
-
-- Best for: Analytics, dashboards, data visualization
-- No wallet needed for reads
-- Powerful filtering and aggregation
-- **Start here:** [GraphQL Setup](https://docs.intuition.systems/docs/graphql-api/getting-started/client-setup)
-
-### Build Smart Contract Integration
 
 [... see full docs for complete content]
 
@@ -5836,7 +6042,7 @@ source: "https://docs.intuition.systems/docs/intuition-sdk/installation-and-setu
 
 # Installation & Setup
 
-This page documents the existing SDK v3 integration. For the upcoming SDK 4, identity packages, and Core workflows, start with [Build with the knowledge graph](https://docs.intuition.systems/docs/build/overview) and the [migration guide](https://docs.intuition.systems/docs/build/migration).
+This page documents the existing SDK v3 integration. For the published SDK 4 alpha, identity packages, and Core workflows, start with [Build with the knowledge graph](https://docs.intuition.systems/docs/build/overview) and the [migration guide](https://docs.intuition.systems/docs/build/migration).
 
 ## Installation & Setup
 
@@ -5849,8 +6055,6 @@ The Intuition SDK is a comprehensive TypeScript library for building application
 - **TypeScript** (recommended): Version 5.x or higher
 
 ## Auto-Generated Package Documentation
-
-For a complete list of `0xintuition/sdk` functions and interfaces, see the [Intuition SDK documentation](https://github.com/0xIntuition/intuition-ts/tree/main/packages/sdk/docs).
 
 [... see full docs for complete content]
 
@@ -5959,7 +6163,7 @@ source: "https://docs.intuition.systems/docs/intuition-sdk/quick-start"
 
 # Quick Start
 
-This page documents the existing SDK v3 integration. For the upcoming SDK 4, identity packages, and Core workflows, start with [Build with the knowledge graph](https://docs.intuition.systems/docs/build/overview) and the [migration guide](https://docs.intuition.systems/docs/build/migration).
+This page documents the existing SDK v3 integration. For the published SDK 4 alpha, identity packages, and Core workflows, start with [Build with the knowledge graph](https://docs.intuition.systems/docs/build/overview) and the [migration guide](https://docs.intuition.systems/docs/build/migration).
 
 ## Quick Start
 
@@ -7385,14 +7589,14 @@ If you have any questions visit the [Intuition Discord](https://discord.gg/RgBen
 
 ---
 title: "Using the SDK"
-description: ":::note SDK generation This page documents the existing SDK v3 integration. For the upcoming SDK 4, identity packages, and Core workflows, start with [Build with the knowledge..."
+description: ":::note SDK generation This page documents the existing SDK v3 integration. For the published SDK 4 alpha, identity packages, and Core workflows, start with [Build with the knowledge..."
 last_updated: "2026-10-22T11:24:44-07:00"
 source: "https://docs.intuition.systems/docs/quick-start/using-the-sdk"
 ---
 
 # Using the SDK
 
-This page documents the existing SDK v3 integration. For the upcoming SDK 4, identity packages, and Core workflows, start with [Build with the knowledge graph](https://docs.intuition.systems/docs/build/overview) and the [migration guide](https://docs.intuition.systems/docs/build/migration).
+This page documents the existing SDK v3 integration. For the published SDK 4 alpha, identity packages, and Core workflows, start with [Build with the knowledge graph](https://docs.intuition.systems/docs/build/overview) and the [migration guide](https://docs.intuition.systems/docs/build/migration).
 
 ## Intuition SDK Quick Start
 

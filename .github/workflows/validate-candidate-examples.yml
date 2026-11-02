@@ -1,4 +1,4 @@
-name: Validate Candidate Guide
+name: Validate Package Guide
 
 on:
   pull_request:
@@ -6,6 +6,7 @@ on:
     paths:
       - 'docs/_data/build/**'
       - 'scripts/*candidate*.js'
+      - 'scripts/validate-published-examples.js'
       - 'scripts/*package-reference*.js'
       - 'scripts/__fixtures__/candidate-examples/**'
       - 'static/intuition-release.json'
@@ -19,7 +20,7 @@ permissions:
 
 jobs:
   validate-candidate:
-    name: Validate pinned candidate examples and references
+    name: Validate published examples and pinned source references
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -56,7 +57,7 @@ jobs:
       - name: Install docs dependencies and candidate package manager
         run: |
           npm ci
-          npm install --prefix "$RUNNER_TEMP/candidate-bun" --no-save bun@1.3.3
+          npm install --prefix "$RUNNER_TEMP/candidate-bun" --no-save bun@1.3.11
           echo "$RUNNER_TEMP/candidate-bun/node_modules/.bin" >> "$GITHUB_PATH"
 
       - name: Install frozen candidate dependencies
@@ -77,3 +78,6 @@ jobs:
 
       - name: Check generated reference and manifest bytes
         run: npm run generate-package-reference -- .docusaurus/candidate-packages --check
+
+      - name: Verify published npm artifacts and consumer examples
+        run: npm run validate-published-examples

@@ -1,38 +1,53 @@
 ---
-title: 'Move from SDK v3 and app-local helpers'
+title: 'Upgrade SDK v3 and app-local processing helpers'
 slug: /build/migration
 sidebar_position: 9
 ---
 
-The new SDK 4 candidate separates API reads, action planning, deterministic utilities, and low-level contract access. Existing SDK v3 guides describe a different public surface; keep a migration deliberate instead of mixing imports from both generations.
+The October 28 release publishes SDK **4.0.0-alpha.0** and protocol **3.0.0-alpha.0**, plus the semantic, identity, and processing packages in the [catalog](./packages/index.md). These are independent version lines. Keep the existing SDK v3 integration until you have replaced its imports and checked your application's identity fixtures.
 
-| Existing pattern                            | Candidate direction                                           | Migration check                                                                                       |
-| ------------------------------------------- | ------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| General SDK root import                     | `sdk/api`, `sdk/actions`, `sdk/utils`, `sdk/protocol`         | Resolve the actual exported symbol; root compatibility is broader than the intended long-term surface |
-| Pinata helpers in the SDK                   | Application-owned upload provider                             | Upload first, then pass the returned content URI to a supported action                                |
-| App-local atom identity serialization       | `primitives/anchor` and IID packages                          | Compare exact bytes and IDs on your existing fixture corpus                                           |
-| App-local type/predicate maps               | `classifications`, Creation Profiles, `predicates`            | Preserve canonical slug, schema type, and predicate identity                                          |
-| Provider name used as identity              | Category ladder and validated candidate IID                   | Keep alias-only and unregistered-provider fallback behavior                                           |
-| All JSON-LD atoms assumed to be IID anchors | Explicit legacy parsing and new anchor creation paths         | Historical data stays readable; do not rewrite identity silently                                      |
-| Core REST assumed to match hosted GraphQL   | Explicit adapter for each query contract                      | Check endpoint, input keys, pagination, and response model                                            |
-| React creation assumed URI-aware            | Compose `multiVaultCreateAtomsWithUris` with transaction flow | The existing creation hook uses ordinary `createAtoms`                                                |
+## Update public imports
 
-## Reader-first rollout
+| Existing use                       | Published replacement                                        | Check                                                                            |
+| ---------------------------------- | ------------------------------------------------------------ | -------------------------------------------------------------------------------- |
+| Protocol-wide SDK root imports     | `@0xintuition/protocol` or `@0xintuition/sdk/protocol`       | The SDK root no longer re-exports the entire protocol                            |
+| ID-wide SDK root imports           | `@0xintuition/ids`                                           | The SDK root retains only selected ID helpers                                    |
+| SDK read operations                | `@0xintuition/sdk/api`                                       | Hosted GraphQL contract; not Core REST                                           |
+| Quote and preparation helpers      | `@0xintuition/sdk/actions`                                   | Some perform RPC reads; preparation does not imply submission                    |
+| CLI `build*Plan` helpers           | SDK `*Envelope` helpers                                      | [Alias migration](./guides/action-envelopes.md); metadata now identifies the SDK |
+| Pinata upload helpers              | Application-owned storage provider                           | Upload first, then pass the content URI to an appropriate action                 |
+| App-local type/predicate maps      | `classifications`, Creation Profiles, `predicates`           | Preserve canonical slugs, schema types, predicate bytes and IDs                  |
+| App-local engine/cache wiring      | `atom-runtime`                                               | Explicit environment, presets, memoization, and request cancellation             |
+| Effect pipeline helpers            | `pipeline-runtime` Promise helpers or a local Effect adapter | Promise helpers do not accept Effect `Exit`, `Cause`, or service Layers          |
+| React hooks without protocol peers | Install protocol and deployments explicitly                  | Shared metadata/wrappers now come from peer dependencies                         |
 
-Inventory the historical representations your application reads. Add recognition and display support for the new representation before enabling new writers. Compare old and new fixture outputs, record intentional differences, and preserve historical IDs. When two atoms represent the same entity, model the equivalence claim with provenance instead of mutating the old payload or pretending its vault moved.
+The SDK root retains `calculateAtomId`, `calculateTripleId`, `calculateCounterTripleId`, `calculateOAuthAtomId`, and selected ID/configuration types. `sdk/utils` is for SDK formatting utilities; it is not the full ID package. Bytecode belongs to `deployments/bytecode` or `protocol/contracts`, and curve math belongs to `curves`.
 
-## Candidate-specific checks
+## Preserve identity when migrating processing
 
-The app's selected alignment branch is evidence of package adoption, not proof that it has shipped. Its public-package imports can guide an adapter, while its auth, routes, and persistence remain product-specific. The Core checkout similarly describes an implementation revision; deployed nodes can have different API and indexing capabilities.
+- Use the [parser's IID result](./packages/atom-parser.md) and reject invalid IID-shaped inputs explicitly.
+- Default plain-text classification is `Thing`. Opt into lexical classification only when you intend `DefinedTerm`; do not expect synthetic `term:*` identifiers from all text.
+- Use `toClassifiedAtomInput` for the [enrichment handoff](./guides/processing.md); terminal acquisition failures and invalid identities can produce `null`.
+- Classifications, engine categories, and provider artifact types remain separate vocabularies. Refreshable metadata should not silently change canonical atom bytes.
+- `iid-ladder` defaults to rejecting unregistered provider handles. `createLadder({ providerLocalHandles: 'mint' })` is an application-local compatibility policy for historical strings, not a change to the normative IID registry. Such output does not become a valid P0 anchor automatically.
+- `buildIidAnchor` has distinct derived and candidate paths. Preserve the [documented profile behavior](./packages/primitives.md), including the current P1/P2 serialization boundary.
 
-Reconcile contract documentation with the existing [FeeProxy/v1.1.0 documentation PR](https://github.com/0xIntuition/intuition-docs/pull/111). Use the contracts' authoritative deployment evidence before enabling new ABI calls. The candidate router intentionally has no published address while a compatible deployment is pending.
+Add readers for new representations before enabling writers. Compare old/new bytes and IDs on your fixture corpus. Preserve historical IDs and their claims/positions; model equivalence with attributed relationships instead of rewriting identity in place.
 
-## Cutover checklist
+## Review protocol and event behavior
 
-- Pin package versions and record their public exports.
-- Compile the new imports in a clean consumer project.
-- Compare identity bytes and protocol IDs against known fixtures.
-- Test errors, nullable outputs, and provider failure handling.
-- Verify target deployment compatibility and exact query schema.
-- Keep previous routes and historical guides accessible with version labels.
-- Release docs, packages, contracts, and applications as separately evidenced steps.
+Direct write wrappers can submit transactions. Use encoders or SDK plans when you need an unsigned result. Protocol event parsers obtain the transaction receipt and reject reverted transactions. Scope parsing to the expected emitting contract, and handle an empty matching-event result rather than assuming every log in a transaction belongs to it.
+
+The published ABIs include URI-aware creation, on-behalf-of creation, and payable multicall, but these require a matching deployed implementation. The router address remains deliberately withheld. Check the [deployment boundary](./compatibility.md) before enabling the functions.
+
+`useCreateAtom` and `useCreateAtomFlow` use ordinary `createAtoms`; use `multiVaultCreateAtomsWithUris` with an explicit transaction flow when you need context registration. Resetting a hook does not cancel a pending transaction.
+
+## Cut over deliberately
+
+1. Install exact versions and commit the lockfile, including direct imports and peers.
+2. Compile against emitted npm declarations and compare identity fixtures.
+3. Handle null handoffs, missing records, partial enrichment, provider failure, and cancellation.
+4. Check the selected API schema and chain/deployment separately from package publication.
+5. Keep the previous reader path for historical atoms and label SDK v3 guides for existing consumers.
+
+Core REST documentation retains its [separately pinned baseline](./compatibility.md). This package release does not assert that a Core node, hosted API, or application deployment has upgraded with it.

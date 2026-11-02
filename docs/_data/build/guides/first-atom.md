@@ -4,7 +4,7 @@ slug: /build/guides/first-atom
 sidebar_position: 1
 ---
 
-This recipe produces canonical atom bytes and an ID. It makes no API, provider, RPC, or wallet calls. Use Node 22 and an ESM project; install the [candidate versions](../compatibility.md) once published, or use the matching release tarballs during qualification.
+This recipe produces canonical atom bytes and an ID. It makes no API, provider, RPC, or wallet calls. Use Node 22+ and an ESM project; follow [installation](./installation.md) and use the exact published versions below.
 
 ```sh
 npm install @0xintuition/primitives@0.1.0-alpha.1 @0xintuition/ids@0.1.0-alpha.1 viem@^2

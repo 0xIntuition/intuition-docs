@@ -78,3 +78,44 @@ test('renders external interface and nested supporting structure', (t) => {
   assert.match(md, /### Tier/);
   assert.match(md, /export type Tier = \{ width: bigint \}/);
 });
+
+test('inferred envelope returns use a public import without a checkout path', (t) => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'reference-return-'));
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  const dir = path.join(root, 'packages/sdk/src/actions');
+  fs.mkdirSync(path.join(dir, 'plans'), { recursive: true });
+  fs.writeFileSync(
+    path.join(root, 'packages/sdk/package.json'),
+    JSON.stringify({ name: '@0xintuition/sdk' }),
+  );
+  fs.writeFileSync(
+    path.join(dir, 'types.ts'),
+    'export type Envelope = { steps: string[] };',
+  );
+  fs.writeFileSync(
+    path.join(dir, 'plans/helpers.ts'),
+    "import type { Envelope } from '../types'; export function build(): Envelope { return { steps: [] }; } export type Context = { fee: bigint };",
+  );
+  fs.writeFileSync(
+    path.join(dir, 'plans/deposit.ts'),
+    "import { build, type Context } from './helpers'; export function deposit(context: Context) { return build(); }",
+  );
+  const reference = createTypeReference(root, 'b'.repeat(40), [
+    ['actions/plans/deposit.ts'],
+    ['actions/types.ts'],
+  ]);
+  const ts = require('typescript');
+  const result = ts
+    .createPrinter()
+    .printNode(
+      ts.EmitHint.Unspecified,
+      reference.returnType('actions/plans/deposit.ts', 'deposit'),
+      ts.createSourceFile('result.ts', '', ts.ScriptTarget.Latest),
+    );
+  assert.match(result, /import\("@0xintuition\/sdk\/actions"\)\.Envelope/);
+  assert.ok(!result.includes(root));
+  const md = reference.render('actions/plans/deposit.ts');
+  assert.match(md, /Context.*Internal supporting type; not a public import/);
+  assert.match(md, /export type Context = \{ fee: bigint \}/);
+  assert.doesNotMatch(md, /import type \{ Context \} from/);
+});

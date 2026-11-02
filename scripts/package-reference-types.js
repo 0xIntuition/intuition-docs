@@ -7,7 +7,12 @@ const isType = (node) =>
 const isExported = (node) =>
   node.modifiers?.some((m) => m.kind === ts.SyntaxKind.ExportKeyword);
 const slugFor = (file) =>
-  file === 'api/index.ts' ? 'api' : path.basename(file, '.ts');
+  file === 'api/index.ts'
+    ? 'api'
+    : file
+        .replace(/^actions\//, '')
+        .replace(/\.ts$/, '')
+        .replaceAll('/', '-');
 
 // Resolve public package imports to the selected source, never the site's v3 SDK.
 function createTypeReference(root, commit, sections) {
@@ -117,9 +122,11 @@ function createTypeReference(root, commit, sections) {
           }
           if (
             isType(declaration) &&
-            /\/(?:curves|periphery)\//.test(
+            (/\/(?:curves|periphery)\//.test(
               declaration.getSourceFile().fileName,
-            )
+            ) ||
+              (origin.startsWith('.') &&
+                !sections.some(([file]) => file === sdkFile)))
           ) {
             external.set(declaration.name.text, declaration);
           }
@@ -132,8 +139,16 @@ function createTypeReference(root, commit, sections) {
           ? '@0xintuition/sdk/actions'
           : origin;
         const binding = imported === name ? imported : `${imported} as ${name}`;
+        const internal =
+          origin.startsWith('.') &&
+          declaration &&
+          !sections.some(
+            ([file]) =>
+              path.join(root, 'packages/sdk/src', file) ===
+              declaration.getSourceFile().fileName,
+          );
         rows.push(
-          `| \`${name}\` | \`import type { ${binding} } from '${publicOrigin}'\` | ${definition} |`,
+          `| \`${name}\` | ${internal ? 'Internal supporting type; not a public import' : `\`import type { ${binding} } from '${publicOrigin}'\``} | ${definition} |`,
         );
         // typeof dependencies refer to value exports, not type-only bindings.
         if (!(node.importClause.isTypeOnly || entry.isTypeOnly)) {
@@ -152,7 +167,10 @@ function createTypeReference(root, commit, sections) {
           if (
             nested &&
             isType(nested) &&
-            /\/(?:curves|periphery)\//.test(nested.getSourceFile().fileName)
+            /\/(?:curves|periphery|sdk)\//.test(
+              nested.getSourceFile().fileName,
+            ) &&
+            nested.getSourceFile().fileName !== source.fileName
           ) {
             external.set(nested.name.text, nested);
           }
@@ -172,14 +190,59 @@ function createTypeReference(root, commit, sections) {
     }
     if (external.size) {
       md +=
-        '## External input and result structures\n\nThese declarations belong to the named packages, not to the SDK. Nested supporting types retain their owning source links.\n\n';
+        '## Supporting input and result structures\n\nThese declarations retain their owning source links. Internal supporting types describe accepted shapes but are not standalone public imports.\n\n';
       for (const [name, declaration] of external) {
         md += `### ${name}\n\n[Source definition](${sourceLink(declaration)})\n\n\`\`\`ts\n${declaration.getText()}\n\`\`\`\n\n`;
       }
     }
     return md;
   }
-  return { render };
+  function returnType(relative, name) {
+    const source = program.getSourceFile(
+      path.join(root, 'packages/sdk/src', relative),
+    );
+    const node = source.statements.find(
+      (entry) => ts.isFunctionDeclaration(entry) && entry.name?.text === name,
+    );
+    const signature = checker.getSignatureFromDeclaration(node);
+    const type = checker.getReturnTypeOfSignature(signature);
+    const typeNode = checker.typeToTypeNode(
+      type,
+      node,
+      ts.NodeBuilderFlags.NoTruncation,
+    );
+    const transformed = ts.transform(typeNode, [
+      (context) => {
+        const visit = (entry) => {
+          if (
+            ts.isImportTypeNode(entry) &&
+            ts.isLiteralTypeNode(entry.argument) &&
+            ts.isStringLiteral(entry.argument.literal) &&
+            entry.argument.literal.text.startsWith(
+              path.join(root, 'packages/sdk/src'),
+            )
+          ) {
+            return ts.factory.updateImportTypeNode(
+              entry,
+              ts.factory.createLiteralTypeNode(
+                ts.factory.createStringLiteral('@0xintuition/sdk/actions'),
+              ),
+              entry.attributes,
+              entry.qualifier,
+              entry.typeArguments,
+              entry.isTypeOf,
+            );
+          }
+          return ts.visitEachChild(entry, visit, context);
+        };
+        return (entry) => ts.visitNode(entry, visit);
+      },
+    ]);
+    const result = transformed.transformed[0];
+    transformed.dispose();
+    return result;
+  }
+  return { render, returnType };
 }
 
 module.exports = { createTypeReference, isExported };

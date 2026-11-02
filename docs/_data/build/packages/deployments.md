@@ -1,17 +1,17 @@
 ---
 title: '@0xintuition/deployments guide'
 slug: /build/packages/deployments
-sidebar_position: 13
+sidebar_position: 15
 ---
 
 Resolve the shared ABI, bytecode, address, and chain metadata consumed by all protocol packages.
 
-Candidate source version: **0.1.0**. [Release compatibility](../compatibility.md) explains publication and deployment prerequisites.
+Published alpha version: **0.1.0-alpha.1**. [Release compatibility](../compatibility.md) records npm publication, peer dependencies, and deployment boundaries.
 
 ## Install
 
 ```sh
-npm install @0xintuition/deployments@0.1.0 viem@^2
+npm install @0xintuition/deployments@0.1.0-alpha.1 viem@^2
 ```
 
 Use ESM imports. Required peers: `viem ^2.0.0`.
@@ -41,4 +41,4 @@ An address lookup does not prove that its deployment implements a candidate ABI.
 
 ## Source and full contract
 
-[Source and package guide](https://github.com/0xIntuition/packages/tree/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/deployments) · [npm package](https://www.npmjs.com/package/@0xintuition/deployments). The [machine-readable manifest](/intuition-release.json) lists all declared public subpaths and peer dependencies. Npm links name the intended package; this page does not assert that the candidate has been published.
+[Source and package guide](https://github.com/0xIntuition/packages/tree/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/deployments) · [npm package](https://www.npmjs.com/package/@0xintuition/deployments/v/0.1.0-alpha.1). The [machine-readable manifest](/intuition-release.json) lists all declared public subpaths and peer dependencies. Exact npm versions, tarball integrity, and observed dist-tags are recorded in the manifest.

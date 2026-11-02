@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Generate candidate API reference from an explicitly selected packages checkout.
+// Generate release API reference from an explicitly selected packages checkout.
 const fs = require('node:fs');
 const path = require('node:path');
 const { execFileSync } = require('node:child_process');
@@ -11,6 +11,38 @@ const {
 } = require('./package-reference-types');
 
 const summaries = {
+  baseTrustBridgeToIntuitionEnvelope:
+    'Encode approval and Base-to-Intuition TRUST bridge steps using supplied allowance and fee context, without RPC or signing.',
+  intuitionTrustBridgeToBaseEnvelope:
+    'Encode Intuition-to-Base TRUST bridge steps using supplied fee context, without RPC or signing.',
+  baseERC20BridgeToIntuitionEnvelope:
+    'Encode ERC-20 approval and bridge steps from Base using supplied allowance and fee context.',
+  intuitionERC20BridgeToBaseEnvelope:
+    'Encode ERC-20 approval and bridge steps from Intuition using supplied allowance and fee context.',
+  multiVaultDepositEnvelope:
+    'Build a JSON-serializable deposit envelope using caller-supplied vault, fee, and preview context. Missing required context throws.',
+  multiVaultRedeemEnvelope:
+    'Build a JSON-serializable redemption envelope using caller-supplied balance, fee, and preview context.',
+  multiVaultCreateAndSeedEnvelope:
+    'Build ordered atom, triple, and seed-deposit steps from explicit creation costs and read context.',
+  trustBondingClaimEnvelope:
+    'Build reward-claim steps from supplied epoch and claim state, without fetching or submitting.',
+  trustBondingLockEnvelope:
+    'Build the applicable lock action from supplied lock state and time, without fetching or submitting.',
+  trustBondingClaimAndRestakeEnvelope:
+    'Build ordered claim and restake steps from supplied reward and target-vault context.',
+  bigintToDecimalString:
+    'Convert a bigint to its decimal string representation for a JSON action envelope.',
+  validateAgentActionStep:
+    'Validate a step target, calldata, and decimal value. Throws for invalid input; does not simulate the transaction.',
+  createAgentActionStep:
+    'Resolve a supported target intent and construct a validated action step.',
+  validateAgentActionEnvelope:
+    'Validate envelope schema, metadata, unique step IDs, and individual steps. Does not authorize or execute them.',
+  createAgentActionEnvelope:
+    'Construct and validate a JSON-serializable envelope of ordered transaction steps.',
+  resolveAgentActionTarget:
+    'Resolve a chain and contract intent through the deployment catalog. Unsupported or withheld targets throw.',
   dynamicFeeCurvePrepareDepositTx:
     'Prepare encoded deposit arguments and minimum shares from a dynamic-fee quote, without submitting a transaction.',
 
@@ -30,7 +62,7 @@ const summaries = {
   multivaultQuoteRedeemPlan:
     'Read the position and current redemption fees to calculate expected assets and the minimum output for redemption.',
   multivaultCreateAndSeedTerm:
-    'Prepare ordered atom creation, triple creation, and seed-deposit steps with their quotes and total value. Requires WriteConfig in this candidate, but does not submit the plan.',
+    'Prepare ordered atom creation, triple creation, and seed-deposit steps with their quotes and total value. Requires WriteConfig, but does not submit the plan.',
   multivaultGetUtilizationAnalyticsBundle:
     'Read protocol and personal utilization over the requested epochs and return an analytics bundle.',
   dynamicFeeCurveGetClaimableAcrossTerms:
@@ -83,14 +115,15 @@ async function main() {
   const selected = require('../static/intuition-release.json');
   if (commit !== selected.source.commit)
     throw new Error(
-      'Candidate source does not match manifest; repinning requires a separate decision',
+      'Source does not match manifest; update the release pin before regeneration',
     );
   const output = path.resolve(__dirname, '../docs/_data/build/sdk-reference');
   fs.mkdirSync(output, { recursive: true });
   const manifest = {
-    schemaVersion: 1,
-    status: 'candidate-source',
-    registryPublicationVerified: false,
+    schemaVersion: selected.schemaVersion,
+    status: selected.status,
+    registryPublicationVerified: selected.registryPublicationVerified,
+    registryVerifiedAt: selected.registryVerifiedAt,
     source: { repository: 'https://github.com/0xIntuition/packages', commit },
     packages: [],
   };
@@ -99,12 +132,24 @@ async function main() {
     if (!fs.existsSync(file)) continue;
     const pkg = JSON.parse(fs.readFileSync(file, 'utf8'));
     if (pkg.private) continue;
+    const recorded = selected.packages.find((entry) => entry.name === pkg.name);
+    if (
+      selected.registryPublicationVerified &&
+      (recorded?.version !== pkg.version ||
+        recorded?.registry?.gitHead !== commit)
+    ) {
+      throw new Error(
+        `Refresh publication evidence before documenting ${pkg.name}`,
+      );
+    }
     manifest.packages.push({
       name: pkg.name,
       version: pkg.version,
       entrypoints: Object.keys(pkg.exports || {}),
       peers: pkg.peerDependencies || {},
+      engines: pkg.engines || {},
       source: `https://github.com/0xIntuition/packages/tree/${commit}/packages/${dir}`,
+      ...(recorded?.registry ? { registry: recorded.registry } : {}),
     });
   }
   write(
@@ -133,14 +178,46 @@ async function main() {
     ],
     ['actions/trust-bonding.ts', 'TrustBonding actions', 'actions'],
     ['actions/portfolio.ts', 'Portfolio reads', 'actions'],
+    ['actions/plans/base.ts', 'Bridge action envelopes', 'actions'],
+    ['actions/plans/multivault.ts', 'MultiVault action envelopes', 'actions'],
+    [
+      'actions/plans/dynamic-fee-curve.ts',
+      'Dynamic-fee action envelopes',
+      'actions',
+    ],
+    ['actions/plans/fee-proxy.ts', 'FeeProxy action envelopes', 'actions'],
+    [
+      'actions/plans/trust-bonding.ts',
+      'TrustBonding action envelopes',
+      'actions',
+    ],
+    [
+      'actions/schema/create-agent-action-envelope.ts',
+      'Create and validate action envelopes',
+      'actions',
+    ],
+    [
+      'actions/schema/resolve-agent-action-target.ts',
+      'Resolve action targets',
+      'actions',
+    ],
+    ['actions/schema/types.ts', 'Action envelope types', 'actions'],
   ];
-  const actionIndex = fs.readFileSync(
-    path.join(root, 'packages/sdk/src/actions/index.ts'),
-    'utf8',
-  );
-  const indexedActions = [
-    ...actionIndex.matchAll(/export \* from ['"]\.\/([^'"]+)['"]/g),
-  ].map((match) => `actions/${match[1]}.ts`);
+  function publicModules(relative) {
+    const source = fs.readFileSync(
+      path.join(root, 'packages/sdk/src', relative),
+      'utf8',
+    );
+    return [...source.matchAll(/export \* from ['"]\.\/([^'"]+)['"]/g)].flatMap(
+      (match) => {
+        const base = path.posix.join(path.posix.dirname(relative), match[1]);
+        return fs.existsSync(path.join(root, 'packages/sdk/src', base + '.ts'))
+          ? [base + '.ts']
+          : publicModules(base + '/index.ts');
+      },
+    );
+  }
+  const indexedActions = publicModules('actions/index.ts');
   const documentedActions = sections
     .map(([file]) => file)
     .filter((file) => file.startsWith('actions/'));
@@ -167,12 +244,17 @@ async function main() {
       true,
     );
     const slug =
-      relative === 'api/index.ts' ? 'api' : path.basename(relative, '.ts');
+      relative === 'api/index.ts'
+        ? 'api'
+        : relative
+            .replace(/^actions\//, '')
+            .replace(/\.ts$/, '')
+            .replaceAll('/', '-');
     const link = `https://github.com/0xIntuition/packages/blob/${commit}/${sourcePath}`;
     let md = `---\ntitle: ${JSON.stringify(title)}\nslug: /build/sdk-reference/${slug}\n---\n\n`;
-    md += `Generated from the upcoming SDK **${sdkVersion}** source. See [release compatibility](../compatibility.md) before installing or connecting to a deployment. Regenerate with \`node scripts/generate-package-reference.js /path/to/packages\`.\n\nImport from \`@0xintuition/sdk/${subpath}\`. [Implementation and internal helpers](${link}).\n\n`;
+    md += `Generated from the published SDK **${sdkVersion}** source. See [release compatibility](../compatibility.md) before installing or connecting to a deployment. Regenerate with \`node scripts/generate-package-reference.js /path/to/packages\`.\n\nImport from \`@0xintuition/sdk/${subpath}\`. [Implementation and internal helpers](${link}).\n\n`;
     md +=
-      'Signatures show the exact accepted inputs and return types. Named input/output structures and dependency-injection types are listed below; viem and protocol types come from their respective packages. Preparation and quote functions can perform RPC reads. **`feeProxyExecutePlan` sends transactions**; the other SDK actions on these pages prepare transactions or read data.\n\n';
+      'Signatures show the exact accepted inputs and return types. Named input/output structures and dependency-injection types are listed below; viem and protocol types come from their respective packages. Preparation and quote functions can perform RPC reads. Envelope builders on the action-envelope pages use caller-supplied read context and perform no RPC reads or signing. **`feeProxyExecutePlan` sends transactions**; the other SDK actions on these pages prepare transactions or read data.\n\n';
     const types = [];
     for (const node of ast.statements) {
       if (ts.isTypeAliasDeclaration(node) || ts.isInterfaceDeclaration(node)) {
@@ -216,7 +298,7 @@ async function main() {
               undefined,
             ),
           ),
-          node.type,
+          node.type || typeReference.returnType(relative, name),
           undefined,
         );
         const signature = ts
@@ -245,6 +327,15 @@ async function main() {
       ) {
         types.push(node);
       }
+    }
+    const constants = ast.statements.filter(
+      (node) => ts.isVariableStatement(node) && isExported(node),
+    );
+    if (constants.length) {
+      md +=
+        '## Constants\n\n```ts\n' +
+        constants.map((node) => node.getText(ast)).join('\n') +
+        '\n```\n\n';
     }
     md += typeReference.render(relative);
     if (types.length) {

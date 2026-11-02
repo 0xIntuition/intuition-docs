@@ -11,16 +11,20 @@ keywords: [getting started, quick start, decision tree, sdk, graphql, protocol, 
 
 Not sure where to start? Pick the path that matches your goal.
 
+## Build with the current package stack
+
+Start with [Build with Intuition](/docs/build/overview) for the October 28 alpha release: [install packages](/docs/build/guides/installation), [create an atom offline](/docs/build/guides/first-atom), [classify and enrich inputs](/docs/build/guides/processing), then add reads or protocol actions. The [catalog](/docs/build/packages/index) links all 21 npm packages and their guides.
+
 ## I Want to...
 
 ### Build a Frontend App (Most Common)
 
-**Use the SDK** - High-level TypeScript SDK with React hooks.
+**Use SDK actions and the React package** — typed protocol integration with separate React hooks.
 
 - Best for: Web apps, dashboards, social platforms
 - Abstracts complexity
 - React integration ready
-- **Start here:** [SDK Quick Start](/docs/intuition-sdk/quick-start)
+- **Start here:** [Application installation](/docs/build/guides/installation)
 
 ### Query Data Only (No Writes)
 
@@ -38,7 +42,7 @@ Not sure where to start? Pick the path that matches your goal.
 - Best for: Other smart contracts, custom logic, gas optimization
 - Direct contract calls
 - Full control
-- **Start here:** [Protocol Configuration](/docs/protocol/getting-started/configuration)
+- **Start here:** [Protocol package guide](/docs/build/packages/protocol)
 
 ### Understand the System First
 
@@ -110,7 +114,7 @@ graph TD
 
 ### Build a Frontend App (Most Common)
 
-**Use the SDK** - High-level TypeScript SDK with React hooks.
+**Use SDK actions and the React package** — typed protocol integration with separate React hooks.
 
 - Best for: Web apps, dashboards, social platforms
 - Abstracts complexity

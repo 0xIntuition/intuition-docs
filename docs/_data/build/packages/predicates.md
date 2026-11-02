@@ -6,7 +6,7 @@ sidebar_position: 8
 
 Use shared relationship vocabulary, canonical predicate data and IDs, semantic flags, and display helpers.
 
-Candidate source version: **0.1.0-alpha.1**. [Release compatibility](../compatibility.md) explains publication and deployment prerequisites.
+Published alpha version: **0.1.0-alpha.1**. [Release compatibility](../compatibility.md) records npm publication, peer dependencies, and deployment boundaries.
 
 ## Install
 
@@ -38,4 +38,4 @@ Changing identity-bearing payload text changes an ID. The classification metadat
 
 ## Source and full contract
 
-[Source and package guide](https://github.com/0xIntuition/packages/tree/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/predicates) · [npm package](https://www.npmjs.com/package/@0xintuition/predicates). The [machine-readable manifest](/intuition-release.json) lists all declared public subpaths and peer dependencies. Npm links name the intended package; this page does not assert that the candidate has been published.
+[Source and package guide](https://github.com/0xIntuition/packages/tree/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/predicates) · [npm package](https://www.npmjs.com/package/@0xintuition/predicates/v/0.1.0-alpha.1). The [machine-readable manifest](/intuition-release.json) lists all declared public subpaths and peer dependencies. Exact npm versions, tarball integrity, and observed dist-tags are recorded in the manifest.

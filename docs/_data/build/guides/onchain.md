@@ -4,7 +4,7 @@ slug: /build/guides/onchain
 sidebar_position: 5
 ---
 
-Use an explicit network, deployment, account, and budget. The candidate ABI includes functions that older deployments may not implement. Select the [matching release](../compatibility.md) before using URI-aware creation, FeeProxy routing, or dynamic-fee actions.
+Use an explicit network, deployment, account, and budget. The published ABI includes functions that older deployments may not implement. Select the [matching release](../compatibility.md) before using URI-aware creation, FeeProxy routing, or dynamic-fee actions.
 
 ## The transaction lifecycle
 
@@ -84,6 +84,6 @@ FeeProxy excess value is first pushed back; only a failed refund push credits th
 
 ## React integration
 
-`IntuitionProvider` sits inside wagmi and TanStack Query providers. `useTransactionFlow` handles submitting/confirming/confirmed/error states. Resetting it does not cancel a wallet request or chain transaction. The candidate's `useCreateAtomFlow` uses ordinary `createAtoms`; compose a URI-aware protocol call explicitly when context registration is required.
+`IntuitionProvider` sits inside wagmi and TanStack Query providers. `useTransactionFlow` handles submitting/confirming/confirmed/error states. Resetting it does not cancel a wallet request or chain transaction. The release's `useCreateAtomFlow` uses ordinary `createAtoms`; compose a URI-aware protocol call explicitly when context registration is required.
 
 This recipe intentionally leaves transaction authorization to your application's wallet flow. The docs qualification process records test-environment evidence separately from source compilation.

@@ -18,7 +18,7 @@ const atom = await api.atoms.getByLabel({ label: 'example' });
 if (atom) console.log(atom.termId, atom.label, atom.type);
 ```
 
-Always select the environment explicitly. Omitting `baseUrl` defaults to mainnet in this candidate. The built-in local URL is the hosted-schema development endpoint on port 8080, not Core's Query API on port 3000.
+Always select the environment explicitly. Omitting `baseUrl` defaults to mainnet in this release. The built-in local URL is the hosted-schema development endpoint on port 8080, not Core's Query API on port 3000.
 
 | Method             | Input                | Output                              |
 | ------------------ | -------------------- | ----------------------------------- |

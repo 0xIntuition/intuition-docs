@@ -3,11 +3,11 @@ title: 'FeeProxy affiliate profile'
 slug: /build/sdk-reference/fee-proxy-affiliate-profile
 ---
 
-Generated from the upcoming SDK **4.0.0** source. See [release compatibility](../compatibility.md) before installing or connecting to a deployment. Regenerate with `node scripts/generate-package-reference.js /path/to/packages`.
+Generated from the published SDK **4.0.0-alpha.0** source. See [release compatibility](../compatibility.md) before installing or connecting to a deployment. Regenerate with `node scripts/generate-package-reference.js /path/to/packages`.
 
-Import from `@0xintuition/sdk/actions`. [Implementation and internal helpers](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/fee-proxy-affiliate-profile.ts).
+Import from `@0xintuition/sdk/actions`. [Implementation and internal helpers](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/sdk/src/actions/fee-proxy-affiliate-profile.ts).
 
-Signatures show the exact accepted inputs and return types. Named input/output structures and dependency-injection types are listed below; viem and protocol types come from their respective packages. Preparation and quote functions can perform RPC reads. **`feeProxyExecutePlan` sends transactions**; the other SDK actions on these pages prepare transactions or read data.
+Signatures show the exact accepted inputs and return types. Named input/output structures and dependency-injection types are listed below; viem and protocol types come from their respective packages. Preparation and quote functions can perform RPC reads. Envelope builders on the action-envelope pages use caller-supplied read context and perform no RPC reads or signing. **`feeProxyExecutePlan` sends transactions**; the other SDK actions on these pages prepare transactions or read data.
 
 ## feeProxyGetAffiliateProfile
 
@@ -16,7 +16,7 @@ row (fees, fee recipient, registration time, pause flag), whether it is active, 
 stats, the protocol caps and the registration fee. Uses the chain's Multicall3 (or the canonical
 address); when the batch is unavailable or any leg fails it falls back to individual reads.
 
-[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/fee-proxy-affiliate-profile.ts#L136)
+[Source](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/sdk/src/actions/fee-proxy-affiliate-profile.ts#L136)
 
 ```ts
 function feeProxyGetAffiliateProfile(
@@ -37,19 +37,19 @@ Public import locations and the definitions used by these signatures and helper 
 
 | Name in this module          | Public import                                              | Definition                                                                                                                                                  |
 | ---------------------------- | ---------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `FeeConfig`                  | `import type { FeeConfig } from '@0xintuition/periphery'`  | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/periphery/src/fee-proxy/types.ts#L8)     |
-| `FeeProxyAbi`                | `import { FeeProxyAbi } from '@0xintuition/periphery'`     | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/deployments/src/abis/FeeProxy-abi.ts#L1) |
-| `ReadConfig`                 | `import type { ReadConfig } from '@0xintuition/periphery'` | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/periphery/src/types.ts#L3)               |
+| `FeeConfig`                  | `import type { FeeConfig } from '@0xintuition/periphery'`  | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/periphery/src/fee-proxy/types.ts#L8)     |
+| `FeeProxyAbi`                | `import { FeeProxyAbi } from '@0xintuition/periphery'`     | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/deployments/src/abis/FeeProxy-abi.ts#L1) |
+| `ReadConfig`                 | `import type { ReadConfig } from '@0xintuition/periphery'` | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/periphery/src/types.ts#L3)               |
 | `Address`                    | `import type { Address } from 'viem'`                      | Owned by the external package.                                                                                                                              |
 | `ContractFunctionReturnType` | `import type { ContractFunctionReturnType } from 'viem'`   | Owned by the external package.                                                                                                                              |
 
-## External input and result structures
+## Supporting input and result structures
 
-These declarations belong to the named packages, not to the SDK. Nested supporting types retain their owning source links.
+These declarations retain their owning source links. Internal supporting types describe accepted shapes but are not standalone public imports.
 
 ### FeeConfig
 
-[Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/periphery/src/fee-proxy/types.ts#L8)
+[Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/periphery/src/fee-proxy/types.ts#L8)
 
 ```ts
 export type FeeConfig = {
@@ -62,7 +62,7 @@ export type FeeConfig = {
 
 ### ReadConfig
 
-[Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/periphery/src/types.ts#L3)
+[Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/periphery/src/types.ts#L3)
 
 ```ts
 export type ReadConfig = {

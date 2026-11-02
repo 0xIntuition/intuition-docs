@@ -179,6 +179,9 @@ npm run write-heading-ids
 
 ### For Developers
 
+- **[Build with Intuition](/docs/build/overview)** — Start with the published package stack, offline atom creation, classification/enrichment, SDK actions, and application architecture
+- **[Package catalog](/docs/build/packages/index)** — All 21 packages with exact npm versions and guides
+
 - **[Quick Start](/docs/quick-start)** — Get up and running quickly
 - **[Intuition SDK](/docs/intuition-sdk)** — TypeScript SDK documentation and guides
   - [Installation & Setup](/docs/intuition-sdk/installation-and-setup)
@@ -294,11 +297,9 @@ Copyright © Intuition Systems Inc. since 2023. All rights reserved.
 - 🔧 [Developer Tools](/docs/protocol)
 - 💬 [Join our Community](/docs/resources/community-and-support)
 
-## Candidate package documentation
+## Published package documentation
 
-The `docs/_data/build` area covers the upcoming public package/Core stack. Its
-source baseline and package export map are recorded in
-`static/intuition-release.json`. Keep existing SDK v3 pages explicitly labeled.
+The `docs/_data/build` area covers the 21 packages published in the October 28, 2026 alpha release. Start at the [developer guide](https://docs.intuition.systems/docs/build/overview). `static/intuition-release.json` records exact versions, npm publication evidence, artifact integrity, and public exports. Core REST keeps its separate source baseline; existing SDK v3 pages remain labeled.
 
 With a clean checkout of the selected public packages revision and its packages
 built, use:
@@ -306,6 +307,7 @@ built, use:
 ```sh
 npm run generate-package-reference -- /path/to/packages
 npm run validate-candidate-examples -- /path/to/packages
+npm run validate-published-examples
 npm run generate-llms
 npm run validate-links
 npm run validate-llms-coverage
@@ -314,9 +316,16 @@ npm run build
 
 The reference generator pins source links, extracts SDK API/action signatures and
 named types, and rejects functions without an upstream or curated description.
-The candidate checker compiles guidebook snippets against local built public
-exports and executes only the offline atom recipe with HTTP disabled. These
-checks do not establish npm publication, deployed compatibility, or live writes.
-Release qualification must separately use the published artifacts and chosen
-environment. Generated SDK reference fences are declarations, not executable
-recipes, and are excluded from the snippet checker.
+The source checker compiles guide snippets against built public exports. The published
+checker installs all 21 exact npm versions into an isolated temporary consumer with
+lifecycle scripts disabled, checks integrity/exports/peers/engines against the manifest,
+and runs the same snippet checks. Both execute explicitly offline recipes with HTTP
+disabled. Generated SDK reference fences are declarations and are excluded from
+recipe execution. These checks do not verify live providers, hosted services, or
+transactions.
+
+To document a later release, inspect its source and package READMEs, verify each exact
+version through the npm registry, and update the manifest's source pin and publication
+evidence together. Regenerate the SDK reference and LLM files, update package guides
+and migration notes, then rerun both example gates. Do not relabel a source-only build
+as a verified npm release.

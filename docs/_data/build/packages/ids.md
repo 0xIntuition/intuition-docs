@@ -6,7 +6,7 @@ sidebar_position: 5
 
 Calculate deterministic atom, predicate, triple, counter-triple, and authentication-related IDs.
 
-Candidate source version: **0.1.0-alpha.1**. [Release compatibility](../compatibility.md) explains publication and deployment prerequisites.
+Published alpha version: **0.1.0-alpha.1**. [Release compatibility](../compatibility.md) records npm publication, peer dependencies, and deployment boundaries.
 
 ## Install
 
@@ -38,4 +38,4 @@ These helpers do not register a term. Do not confuse an IID, a protocol ID, and 
 
 ## Source and full contract
 
-[Source and package guide](https://github.com/0xIntuition/packages/tree/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/ids) · [npm package](https://www.npmjs.com/package/@0xintuition/ids). The [machine-readable manifest](/intuition-release.json) lists all declared public subpaths and peer dependencies. Npm links name the intended package; this page does not assert that the candidate has been published.
+[Source and package guide](https://github.com/0xIntuition/packages/tree/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/ids) · [npm package](https://www.npmjs.com/package/@0xintuition/ids/v/0.1.0-alpha.1). The [machine-readable manifest](/intuition-release.json) lists all declared public subpaths and peer dependencies. Exact npm versions, tarball integrity, and observed dist-tags are recorded in the manifest.

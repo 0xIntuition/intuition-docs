@@ -49,4 +49,4 @@ The informative equivalence model also describes class/rung/creation-time tie-br
 
 A valid identifier is a claim about identity, not a certificate that its associated description is correct. Check digits catch malformed values; they do not establish truth. Applications can apply different acceptance policies to the same evidence.
 
-[Normative representation profiles](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/iid-spec/spec/07-representation-profiles.md) · [Informative equivalence architecture](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/iid-spec/spec/08-equivalence.md).
+[Normative representation profiles](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/iid-spec/spec/07-representation-profiles.md) · [Informative equivalence architecture](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/iid-spec/spec/08-equivalence.md).

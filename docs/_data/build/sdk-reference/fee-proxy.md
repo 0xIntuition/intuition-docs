@@ -3,11 +3,11 @@ title: 'FeeProxy URI creation'
 slug: /build/sdk-reference/fee-proxy
 ---
 
-Generated from the upcoming SDK **4.0.0** source. See [release compatibility](../compatibility.md) before installing or connecting to a deployment. Regenerate with `node scripts/generate-package-reference.js /path/to/packages`.
+Generated from the published SDK **4.0.0-alpha.0** source. See [release compatibility](../compatibility.md) before installing or connecting to a deployment. Regenerate with `node scripts/generate-package-reference.js /path/to/packages`.
 
-Import from `@0xintuition/sdk/actions`. [Implementation and internal helpers](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/fee-proxy.ts).
+Import from `@0xintuition/sdk/actions`. [Implementation and internal helpers](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/sdk/src/actions/fee-proxy.ts).
 
-Signatures show the exact accepted inputs and return types. Named input/output structures and dependency-injection types are listed below; viem and protocol types come from their respective packages. Preparation and quote functions can perform RPC reads. **`feeProxyExecutePlan` sends transactions**; the other SDK actions on these pages prepare transactions or read data.
+Signatures show the exact accepted inputs and return types. Named input/output structures and dependency-injection types are listed below; viem and protocol types come from their respective packages. Preparation and quote functions can perform RPC reads. Envelope builders on the action-envelope pages use caller-supplied read context and perform no RPC reads or signing. **`feeProxyExecutePlan` sends transactions**; the other SDK actions on these pages prepare transactions or read data.
 
 ## feeProxyPrepareCreateAtomsWithUrisTx
 
@@ -16,7 +16,7 @@ the live URI bounds and validates every atom's URI list against them, computes t
 affiliate's creation-fee value (so the caller can size `msg.value` and a
 `FeeGuard` cap correctly), and returns the calldata.
 
-[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/fee-proxy.ts#L82)
+[Source](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/sdk/src/actions/fee-proxy.ts#L82)
 
 ```ts
 function feeProxyPrepareCreateAtomsWithUrisTx(
@@ -48,20 +48,20 @@ Public import locations and the definitions used by these signatures and helper 
 
 | Name in this module          | Public import                                                         | Definition                                                                                                                                                                  |
 | ---------------------------- | --------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `FeeGuard`                   | `import type { FeeGuard } from '@0xintuition/periphery'`              | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/periphery/src/fee-proxy/types.ts#L2)                     |
-| `feeProxyPreviewCreationFee` | `import { feeProxyPreviewCreationFee } from '@0xintuition/periphery'` | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/periphery/src/fee-proxy/preview-creation-fee.ts#L12)     |
-| `multiVaultGetAtomUriConfig` | `import { multiVaultGetAtomUriConfig } from '@0xintuition/protocol'`  | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/multivault/get-atom-uri-config.ts#L11) |
-| `ReadConfig`                 | `import type { ReadConfig } from '@0xintuition/protocol'`             | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/types.ts#L3)                                |
+| `FeeGuard`                   | `import type { FeeGuard } from '@0xintuition/periphery'`              | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/periphery/src/fee-proxy/types.ts#L2)                     |
+| `feeProxyPreviewCreationFee` | `import { feeProxyPreviewCreationFee } from '@0xintuition/periphery'` | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/periphery/src/fee-proxy/preview-creation-fee.ts#L12)     |
+| `multiVaultGetAtomUriConfig` | `import { multiVaultGetAtomUriConfig } from '@0xintuition/protocol'`  | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/core/multivault/get-atom-uri-config.ts#L12) |
+| `ReadConfig`                 | `import type { ReadConfig } from '@0xintuition/protocol'`             | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/types.ts#L3)                                |
 | `Address`                    | `import type { Address } from 'viem'`                                 | Owned by the external package.                                                                                                                                              |
 | `Hex`                        | `import type { Hex } from 'viem'`                                     | Owned by the external package.                                                                                                                                              |
 
-## External input and result structures
+## Supporting input and result structures
 
-These declarations belong to the named packages, not to the SDK. Nested supporting types retain their owning source links.
+These declarations retain their owning source links. Internal supporting types describe accepted shapes but are not standalone public imports.
 
 ### FeeGuard
 
-[Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/periphery/src/fee-proxy/types.ts#L2)
+[Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/periphery/src/fee-proxy/types.ts#L2)
 
 ```ts
 export type FeeGuard = {

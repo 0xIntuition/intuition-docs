@@ -6,7 +6,7 @@ sidebar_position: 9
 
 Build atoms and triples with validated, deterministic public helpers.
 
-Candidate source version: **0.1.0-alpha.1**. [Release compatibility](../compatibility.md) explains publication and deployment prerequisites.
+Published alpha version: **0.1.0-alpha.1**. [Release compatibility](../compatibility.md) records npm publication, peer dependencies, and deployment boundaries.
 
 ## Install
 
@@ -40,7 +40,7 @@ Always narrow `BuildResult.success`. Context URIs never affect the atom ID. Insp
 
 ## Builder options and result
 
-`buildIidAnchor` and its alias `buildAtomAnchor` are available from `@0xintuition/primitives/anchor` or the package root. Import the following public types from `@0xintuition/primitives` or `@0xintuition/primitives/types`. These are the pinned [options and result declarations](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/primitives/src/types.ts), with comments omitted:
+`buildIidAnchor` and its alias `buildAtomAnchor` are available from `@0xintuition/primitives/anchor` or the package root. Import the following public types from `@0xintuition/primitives` or `@0xintuition/primitives/types`. These are the pinned [options and result declarations](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/primitives/src/types.ts), with comments omitted:
 
 ```ts
 import type { IdentityClass } from '@0xintuition/iid';
@@ -92,21 +92,21 @@ When `candidateIid` is absent, the builder derives identity from `values` using 
 
 **Candidate mode ignores `options.profile`, including explicit `p0`, `p1`, and `p2`.** It selects P0 for an anchor-eligible candidate, excluding weak account handles, and P1 for other admitted candidates. Check the returned profile and exact bytes before persisting them.
 
-| Path                                             | Requested profile      | Returned profile and bytes                                                   |
-| ------------------------------------------------ | ---------------------- | ---------------------------------------------------------------------------- |
-| Derived, eligible IID                            | omitted                | `p0`; bare canonical IID                                                     |
-| Derived, ineligible IID                          | omitted                | `p1`; typed identity envelope                                                |
-| Derived, eligible IID                            | `p1` or `p2`           | Requested label; both serialize the same identity envelope in this candidate |
-| Derived, ineligible IID or no usable IID         | `p0`                   | Structured error                                                             |
-| Derived, no usable IID and valid fallback fields | omitted, `p1`, or `p2` | `p1`; deterministic classification envelope without `identifier`             |
-| Candidate, eligible IID                          | any or omitted         | `p0`; bare candidate IID, regardless of requested profile                    |
-| Candidate, other admitted IID                    | any or omitted         | `p1`; classification envelope with the candidate `identifier`                |
+| Path                                             | Requested profile      | Returned profile and bytes                                                 |
+| ------------------------------------------------ | ---------------------- | -------------------------------------------------------------------------- |
+| Derived, eligible IID                            | omitted                | `p0`; bare canonical IID                                                   |
+| Derived, ineligible IID                          | omitted                | `p1`; typed identity envelope                                              |
+| Derived, eligible IID                            | `p1` or `p2`           | Requested label; both serialize the same identity envelope in this release |
+| Derived, ineligible IID or no usable IID         | `p0`                   | Structured error                                                           |
+| Derived, no usable IID and valid fallback fields | omitted, `p1`, or `p2` | `p1`; deterministic classification envelope without `identifier`           |
+| Candidate, eligible IID                          | any or omitted         | `p0`; bare candidate IID, regardless of requested profile                  |
+| Candidate, other admitted IID                    | any or omitted         | `p1`; classification envelope with the candidate `identifier`              |
 
-For derived IIDs, explicit P1/P2 currently use the same serializer. P2 does **not** add enriched display fields; a returned `profile: 'p2'` does not prove enrichment. Candidate P1 builds its envelope from classification values and inserts the candidate identifier, so it can differ from the derived identity envelope too. These are [pinned builder behaviors](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/primitives/src/anchor.ts), not promises about a future release.
+For derived IIDs, explicit P1/P2 currently use the same serializer. P2 does **not** add enriched display fields; a returned `profile: 'p2'` does not prove enrichment. Candidate P1 builds its envelope from classification values and inserts the candidate identifier, so it can differ from the derived identity envelope too. These are [pinned builder behaviors](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/primitives/src/anchor.ts), not promises about a future release.
 
 ### Offline profile example
 
-Run as an ESM script with the candidate dependencies. This example performs no HTTP or wallet calls:
+Run as an ESM script with the published dependencies. This example performs no HTTP or wallet calls:
 
 ```js
 import assert from 'node:assert/strict';
@@ -142,4 +142,4 @@ console.log({
 
 ## Source and full contract
 
-[Source and package guide](https://github.com/0xIntuition/packages/tree/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/primitives) · [npm package](https://www.npmjs.com/package/@0xintuition/primitives). The [machine-readable manifest](/intuition-release.json) lists all declared public subpaths and peer dependencies. Npm links name the intended package; this page does not assert that the candidate has been published.
+[Source and package guide](https://github.com/0xIntuition/packages/tree/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/primitives) · [npm package](https://www.npmjs.com/package/@0xintuition/primitives/v/0.1.0-alpha.1). The [machine-readable manifest](/intuition-release.json) lists all declared public subpaths and peer dependencies. Exact npm versions, tarball integrity, and observed dist-tags are recorded in the manifest.

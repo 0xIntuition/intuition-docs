@@ -6,7 +6,7 @@ sidebar_position: 1
 
 Intuition gives applications shared identifiers, a common vocabulary for relationships, a backend for processing and querying those relationships, and an on-chain protocol for publishing terms and expressing economic signals. You can start by modeling data entirely offline, persist it in a Core node, and add wallet interactions when your application needs them.
 
-This guide covers the upcoming package release. The [compatibility manifest](./compatibility.md) pins the source revisions and package versions. Some npm versions and contract capabilities are release candidates; code in a checkout is not proof of a deployed service.
+This guide covers all **21 packages published in the October 28 alpha release**. Start with [installation](./guides/installation.md), then build an atom offline and add only the capabilities your application needs. The [compatibility manifest](./compatibility.md) pins npm artifacts and source; contract and hosted-service capabilities depend on your target environment.
 
 ## Choose a first result
 
@@ -18,6 +18,15 @@ This guide covers the upcoming package release. The [compatibility manifest](./c
 | Add metadata from providers      | [Processing and enrichment](./guides/processing.md) | Explicit classifications, artifacts, and provenance          |
 | Prepare protocol actions         | [On-chain workflow](./guides/onchain.md)            | Reviewed transaction plans with chain, amounts, and receiver |
 | Build with an agent              | [Agent integration contract](./agents.md)           | A bounded task, correct imports, and checkable outcomes      |
+
+## What is new in this release
+
+- Shared [atom-runtime](./packages/atom-runtime.md) composition and [pipeline-runtime](./packages/pipeline-runtime.md) Promise utilities.
+- Reusable parser, classification plugins, provider enrichment, and [an explicit handoff between them](./guides/processing.md).
+- SDK-owned [serializable action envelopes](./guides/action-envelopes.md), a narrower SDK root, and independent SDK/protocol versions.
+- Public identity ladders, Creation Profiles, canonical predicates, and an opt-in policy for preserving historical provider handles.
+
+See the [migration guide](./migration.md) when replacing app-local modules or upgrading SDK v3.
 
 ## How the systems fit
 

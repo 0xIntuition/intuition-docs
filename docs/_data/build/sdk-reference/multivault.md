@@ -3,11 +3,11 @@ title: 'MultiVault actions'
 slug: /build/sdk-reference/multivault
 ---
 
-Generated from the upcoming SDK **4.0.0** source. See [release compatibility](../compatibility.md) before installing or connecting to a deployment. Regenerate with `node scripts/generate-package-reference.js /path/to/packages`.
+Generated from the published SDK **4.0.0-alpha.0** source. See [release compatibility](../compatibility.md) before installing or connecting to a deployment. Regenerate with `node scripts/generate-package-reference.js /path/to/packages`.
 
-Import from `@0xintuition/sdk/actions`. [Implementation and internal helpers](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/multivault.ts).
+Import from `@0xintuition/sdk/actions`. [Implementation and internal helpers](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/sdk/src/actions/multivault.ts).
 
-Signatures show the exact accepted inputs and return types. Named input/output structures and dependency-injection types are listed below; viem and protocol types come from their respective packages. Preparation and quote functions can perform RPC reads. **`feeProxyExecutePlan` sends transactions**; the other SDK actions on these pages prepare transactions or read data.
+Signatures show the exact accepted inputs and return types. Named input/output structures and dependency-injection types are listed below; viem and protocol types come from their respective packages. Preparation and quote functions can perform RPC reads. Envelope builders on the action-envelope pages use caller-supplied read context and perform no RPC reads or signing. **`feeProxyExecutePlan` sends transactions**; the other SDK actions on these pages prepare transactions or read data.
 
 ## multivaultResolveDepositFeeBase
 
@@ -19,7 +19,7 @@ that applies fee rates to the gross amount therefore disagrees with the contract
 deposit, in every fee component at once. Exported because more than one quote needs it, and
 because a consumer reconciling a quote against a receipt needs to know which number was quoted.
 
-[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/multivault.ts#L498)
+[Source](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/sdk/src/actions/multivault.ts#L498)
 
 ```ts
 function multivaultResolveDepositFeeBase(
@@ -49,7 +49,7 @@ two can never sum to the shares actually minted. On an atom it is `atomWalletDep
 to the fee base; on a triple it is `atomDepositFractionForTriple`, waived unless ALL THREE
 underlying atoms are individually above the fee threshold.
 
-[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/multivault.ts#L545)
+[Source](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/sdk/src/actions/multivault.ts#L545)
 
 ```ts
 function multivaultQuoteTermDepositFee(
@@ -84,7 +84,7 @@ Waived while the DEFAULT curve's vault holds fewer shares than `feeThreshold`: f
 into that vault, and donating them into a near-empty share supply would move its price. A quote
 that assumes the fee always applies overstates it.
 
-[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/multivault.ts#L600)
+[Source](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/sdk/src/actions/multivault.ts#L600)
 
 ```ts
 function multivaultWillChargeEntryFee(
@@ -109,7 +109,7 @@ Whether MultiVault will charge its exit fee on a redemption.
 Same threshold as the entry fee, measured on what the default vault would be LEFT with — so
 whether it applies depends on the size of the redemption, not only on the term.
 
-[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/multivault.ts#L625)
+[Source](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/sdk/src/actions/multivault.ts#L625)
 
 ```ts
 function multivaultWillChargeExitFee(
@@ -138,7 +138,7 @@ account. MultiVault's own `previewRedeem` quotes the same hook with the zero add
 curve whose rate keys on the holder's entry tier is a different — and for a slippage floor,
 unusable — number.
 
-[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/multivault.ts#L655)
+[Source](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/sdk/src/actions/multivault.ts#L655)
 
 ```ts
 function multivaultQuoteCurveRedeemFee(
@@ -166,7 +166,7 @@ Defaults: `deps = defaultCurveRedeemFeeDeps`. Dependency arguments are optional 
 
 Read current vault and fee state and return a deposit quote, including expected output and the minimum shares to accept. No transaction is sent.
 
-[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/multivault.ts#L676)
+[Source](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/sdk/src/actions/multivault.ts#L676)
 
 ```ts
 function multivaultQuoteDepositPlan(
@@ -191,7 +191,7 @@ MultiVault deposits exactly `msg.value`, so the transaction value IS the deposit
 `assetsIn`, the amount the quote and its slippage floor were computed for. An explicit `value`
 is passed through as given.
 
-[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/multivault.ts#L757)
+[Source](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/sdk/src/actions/multivault.ts#L757)
 
 ```ts
 function multivaultPrepareDepositTx(
@@ -219,7 +219,7 @@ Defaults: `deps = defaultQuoteDeps`. Dependency arguments are optional test/cust
 
 Read an account balance and vault state for one term/curve pair and return its current position snapshot.
 
-[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/multivault.ts#L788)
+[Source](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/sdk/src/actions/multivault.ts#L788)
 
 ```ts
 function multivaultGetUserPositionSnapshot(
@@ -248,7 +248,7 @@ overstates it. This composes the payout from parts that each know who is asking:
 gross conversion, its protocol fee, its exit fee where that fee actually applies, and the curve's
 own account-aware quote.
 
-[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/multivault.ts#L871)
+[Source](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/sdk/src/actions/multivault.ts#L871)
 
 ```ts
 function multivaultQuoteRedeemPlan(
@@ -275,7 +275,7 @@ Defaults: `deps = defaultRedeemQuoteDeps`. Dependency arguments are optional tes
 
 Prepares a redeem transaction for a specific account, sized against its own quote.
 
-[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/multivault.ts#L939)
+[Source](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/sdk/src/actions/multivault.ts#L939)
 
 ```ts
 function multivaultPrepareRedeemTx(
@@ -301,9 +301,9 @@ Defaults: `deps = defaultRedeemQuoteDeps`. Dependency arguments are optional tes
 
 ## multivaultCreateAndSeedTerm
 
-Prepare ordered atom creation, triple creation, and seed-deposit steps with their quotes and total value. Requires WriteConfig in this candidate, but does not submit the plan.
+Prepare ordered atom creation, triple creation, and seed-deposit steps with their quotes and total value. Requires WriteConfig, but does not submit the plan.
 
-[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/multivault.ts#L969)
+[Source](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/sdk/src/actions/multivault.ts#L969)
 
 ```ts
 function multivaultCreateAndSeedTerm(
@@ -324,7 +324,7 @@ Defaults: `deps = defaultCreateAndSeedDeps`. Dependency arguments are optional t
 
 Read protocol and personal utilization over the requested epochs and return an analytics bundle.
 
-[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/multivault.ts#L1099)
+[Source](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/sdk/src/actions/multivault.ts#L1099)
 
 ```ts
 function multivaultGetUtilizationAnalyticsBundle(
@@ -349,7 +349,7 @@ The approval step and the creation steps have DIFFERENT required signers
 (`creator` vs `caller`); the caller of this function is responsible for routing each
 step to the right signer, in order.
 
-[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/multivault.ts#L1247)
+[Source](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/sdk/src/actions/multivault.ts#L1247)
 
 ```ts
 function multivaultPrepareOnBehalfOfCreationPlan(
@@ -377,7 +377,7 @@ Assembles a consolidated payable `multicall` batch: the `bytes[]` sub-call array
 the `uint256[]` per-sub-call value array must stay aligned and their values must sum
 to exactly `msg.value` — the fiddliest part of building this call by hand.
 
-[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/multivault.ts#L1339)
+[Source](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/sdk/src/actions/multivault.ts#L1339)
 
 ```ts
 function multivaultPrepareMulticallTx(
@@ -394,37 +394,37 @@ Public import locations and the definitions used by these signatures and helper 
 
 | Name in this module                     | Public import                                                                   | Definition                                                                                                                                                                              |
 | --------------------------------------- | ------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `baseCurveHasRedeemFeeHook`             | `import { baseCurveHasRedeemFeeHook } from '@0xintuition/protocol'`             | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/base-curve/has-redeem-fee-hook.ts#L12)             |
-| `baseCurveQuoteRedeemFee`               | `import { baseCurveQuoteRedeemFee } from '@0xintuition/protocol'`               | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/base-curve/quote-redeem-fee.ts#L16)                |
-| `bondingCurveRegistryCurveAddresses`    | `import { bondingCurveRegistryCurveAddresses } from '@0xintuition/protocol'`    | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/bonding-curve-registry/curve-addresses.ts#L12)     |
-| `bondingCurveRegistryPreviewMint`       | `import { bondingCurveRegistryPreviewMint } from '@0xintuition/protocol'`       | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/bonding-curve-registry/preview-mint.ts#L14)        |
-| `multiVaultAtomDepositFractionAmount`   | `import { multiVaultAtomDepositFractionAmount } from '@0xintuition/protocol'`   | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/multivault/atom-deposit-fraction-amount.ts#L12)    |
-| `multiVaultConvertToAssets`             | `import { multiVaultConvertToAssets } from '@0xintuition/protocol'`             | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/multivault/convert-to-assets.ts#L12)               |
-| `multiVaultCurrentEpoch`                | `import { multiVaultCurrentEpoch } from '@0xintuition/protocol'`                | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/multivault/current-epoch.ts#L9)                    |
-| `multiVaultCurrentSharePrice`           | `import { multiVaultCurrentSharePrice } from '@0xintuition/protocol'`           | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/multivault/current-share-price.ts#L12)             |
-| `multiVaultEntryFeeAmount`              | `import { multiVaultEntryFeeAmount } from '@0xintuition/protocol'`              | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/multivault/entry-fee-amount.ts#L12)                |
-| `multiVaultExitFeeAmount`               | `import { multiVaultExitFeeAmount } from '@0xintuition/protocol'`               | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/multivault/exit-fee-amount.ts#L12)                 |
-| `multiVaultGetAtomConfig`               | `import { multiVaultGetAtomConfig } from '@0xintuition/protocol'`               | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/multivault/get-atom-config.ts#L9)                  |
-| `multiVaultGetBondingCurveConfig`       | `import { multiVaultGetBondingCurveConfig } from '@0xintuition/protocol'`       | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/multivault/get-bonding-curve-config.ts#L9)         |
-| `multiVaultGetGeneralConfig`            | `import { multiVaultGetGeneralConfig } from '@0xintuition/protocol'`            | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/multivault/get-general-config.ts#L9)               |
-| `multiVaultGetShares`                   | `import { multiVaultGetShares } from '@0xintuition/protocol'`                   | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/multivault/get-shares.ts#L12)                      |
-| `multiVaultGetTotalUtilizationForEpoch` | `import { multiVaultGetTotalUtilizationForEpoch } from '@0xintuition/protocol'` | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/multivault/get-total-utilization-for-epoch.ts#L12) |
-| `multiVaultGetTriple`                   | `import { multiVaultGetTriple } from '@0xintuition/protocol'`                   | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/multivault/get-triple.ts#L12)                      |
-| `multiVaultGetUserLastActiveEpoch`      | `import { multiVaultGetUserLastActiveEpoch } from '@0xintuition/protocol'`      | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/multivault/get-user-last-active-epoch.ts#L12)      |
-| `multiVaultGetUserUtilizationForEpoch`  | `import { multiVaultGetUserUtilizationForEpoch } from '@0xintuition/protocol'`  | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/multivault/get-user-utilization-for-epoch.ts#L12)  |
-| `multiVaultGetUserUtilizationInEpoch`   | `import { multiVaultGetUserUtilizationInEpoch } from '@0xintuition/protocol'`   | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/multivault/get-user-utilization-in-epoch.ts#L12)   |
-| `multiVaultGetVault`                    | `import { multiVaultGetVault } from '@0xintuition/protocol'`                    | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/multivault/get-vault.ts#L12)                       |
-| `multiVaultIsApprovedToCreate`          | `import { multiVaultIsApprovedToCreate } from '@0xintuition/protocol'`          | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/multivault/is-approved-to-create.ts#L14)           |
-| `multiVaultIsApprovedToDeposit`         | `import { multiVaultIsApprovedToDeposit } from '@0xintuition/protocol'`         | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/multivault/is-approved-to-deposit.ts#L13)          |
-| `multiVaultIsApprovedToRedeem`          | `import { multiVaultIsApprovedToRedeem } from '@0xintuition/protocol'`          | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/multivault/is-approved-to-redeem.ts#L13)           |
-| `multiVaultIsTriple`                    | `import { multiVaultIsTriple } from '@0xintuition/protocol'`                    | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/multivault/is-triple.ts#L12)                       |
-| `multiVaultMaxRedeem`                   | `import { multiVaultMaxRedeem } from '@0xintuition/protocol'`                   | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/multivault/max-redeem.ts#L12)                      |
-| `multiVaultPreviewAtomCreate`           | `import { multiVaultPreviewAtomCreate } from '@0xintuition/protocol'`           | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/multivault/preview-atom-create.ts#L26)             |
-| `multiVaultPreviewDeposit`              | `import { multiVaultPreviewDeposit } from '@0xintuition/protocol'`              | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/multivault/preview-deposit.ts#L26)                 |
-| `multiVaultPreviewTripleCreate`         | `import { multiVaultPreviewTripleCreate } from '@0xintuition/protocol'`         | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/multivault/preview-triple-create.ts#L19)           |
-| `multiVaultProtocolFeeAmount`           | `import { multiVaultProtocolFeeAmount } from '@0xintuition/protocol'`           | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/multivault/protocol-fee-amount.ts#L12)             |
-| `ReadConfig`                            | `import type { ReadConfig } from '@0xintuition/protocol'`                       | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/types.ts#L3)                                            |
-| `WriteConfig`                           | `import type { WriteConfig } from '@0xintuition/protocol'`                      | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/types.ts#L8)                                            |
+| `baseCurveHasRedeemFeeHook`             | `import { baseCurveHasRedeemFeeHook } from '@0xintuition/protocol'`             | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/core/base-curve/has-redeem-fee-hook.ts#L13)             |
+| `baseCurveQuoteRedeemFee`               | `import { baseCurveQuoteRedeemFee } from '@0xintuition/protocol'`               | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/core/base-curve/quote-redeem-fee.ts#L16)                |
+| `bondingCurveRegistryCurveAddresses`    | `import { bondingCurveRegistryCurveAddresses } from '@0xintuition/protocol'`    | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/core/bonding-curve-registry/curve-addresses.ts#L12)     |
+| `bondingCurveRegistryPreviewMint`       | `import { bondingCurveRegistryPreviewMint } from '@0xintuition/protocol'`       | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/core/bonding-curve-registry/preview-mint.ts#L14)        |
+| `multiVaultAtomDepositFractionAmount`   | `import { multiVaultAtomDepositFractionAmount } from '@0xintuition/protocol'`   | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/core/multivault/atom-deposit-fraction-amount.ts#L12)    |
+| `multiVaultConvertToAssets`             | `import { multiVaultConvertToAssets } from '@0xintuition/protocol'`             | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/core/multivault/convert-to-assets.ts#L12)               |
+| `multiVaultCurrentEpoch`                | `import { multiVaultCurrentEpoch } from '@0xintuition/protocol'`                | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/core/multivault/current-epoch.ts#L10)                   |
+| `multiVaultCurrentSharePrice`           | `import { multiVaultCurrentSharePrice } from '@0xintuition/protocol'`           | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/core/multivault/current-share-price.ts#L12)             |
+| `multiVaultEntryFeeAmount`              | `import { multiVaultEntryFeeAmount } from '@0xintuition/protocol'`              | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/core/multivault/entry-fee-amount.ts#L12)                |
+| `multiVaultExitFeeAmount`               | `import { multiVaultExitFeeAmount } from '@0xintuition/protocol'`               | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/core/multivault/exit-fee-amount.ts#L12)                 |
+| `multiVaultGetAtomConfig`               | `import { multiVaultGetAtomConfig } from '@0xintuition/protocol'`               | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/core/multivault/get-atom-config.ts#L10)                 |
+| `multiVaultGetBondingCurveConfig`       | `import { multiVaultGetBondingCurveConfig } from '@0xintuition/protocol'`       | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/core/multivault/get-bonding-curve-config.ts#L10)        |
+| `multiVaultGetGeneralConfig`            | `import { multiVaultGetGeneralConfig } from '@0xintuition/protocol'`            | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/core/multivault/get-general-config.ts#L10)              |
+| `multiVaultGetShares`                   | `import { multiVaultGetShares } from '@0xintuition/protocol'`                   | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/core/multivault/get-shares.ts#L12)                      |
+| `multiVaultGetTotalUtilizationForEpoch` | `import { multiVaultGetTotalUtilizationForEpoch } from '@0xintuition/protocol'` | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/core/multivault/get-total-utilization-for-epoch.ts#L12) |
+| `multiVaultGetTriple`                   | `import { multiVaultGetTriple } from '@0xintuition/protocol'`                   | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/core/multivault/get-triple.ts#L12)                      |
+| `multiVaultGetUserLastActiveEpoch`      | `import { multiVaultGetUserLastActiveEpoch } from '@0xintuition/protocol'`      | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/core/multivault/get-user-last-active-epoch.ts#L12)      |
+| `multiVaultGetUserUtilizationForEpoch`  | `import { multiVaultGetUserUtilizationForEpoch } from '@0xintuition/protocol'`  | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/core/multivault/get-user-utilization-for-epoch.ts#L12)  |
+| `multiVaultGetUserUtilizationInEpoch`   | `import { multiVaultGetUserUtilizationInEpoch } from '@0xintuition/protocol'`   | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/core/multivault/get-user-utilization-in-epoch.ts#L12)   |
+| `multiVaultGetVault`                    | `import { multiVaultGetVault } from '@0xintuition/protocol'`                    | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/core/multivault/get-vault.ts#L12)                       |
+| `multiVaultIsApprovedToCreate`          | `import { multiVaultIsApprovedToCreate } from '@0xintuition/protocol'`          | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/core/multivault/is-approved-to-create.ts#L14)           |
+| `multiVaultIsApprovedToDeposit`         | `import { multiVaultIsApprovedToDeposit } from '@0xintuition/protocol'`         | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/core/multivault/is-approved-to-deposit.ts#L13)          |
+| `multiVaultIsApprovedToRedeem`          | `import { multiVaultIsApprovedToRedeem } from '@0xintuition/protocol'`          | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/core/multivault/is-approved-to-redeem.ts#L13)           |
+| `multiVaultIsTriple`                    | `import { multiVaultIsTriple } from '@0xintuition/protocol'`                    | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/core/multivault/is-triple.ts#L12)                       |
+| `multiVaultMaxRedeem`                   | `import { multiVaultMaxRedeem } from '@0xintuition/protocol'`                   | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/core/multivault/max-redeem.ts#L12)                      |
+| `multiVaultPreviewAtomCreate`           | `import { multiVaultPreviewAtomCreate } from '@0xintuition/protocol'`           | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/core/multivault/preview-atom-create.ts#L26)             |
+| `multiVaultPreviewDeposit`              | `import { multiVaultPreviewDeposit } from '@0xintuition/protocol'`              | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/core/multivault/preview-deposit.ts#L26)                 |
+| `multiVaultPreviewTripleCreate`         | `import { multiVaultPreviewTripleCreate } from '@0xintuition/protocol'`         | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/core/multivault/preview-triple-create.ts#L19)           |
+| `multiVaultProtocolFeeAmount`           | `import { multiVaultProtocolFeeAmount } from '@0xintuition/protocol'`           | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/core/multivault/protocol-fee-amount.ts#L12)             |
+| `ReadConfig`                            | `import type { ReadConfig } from '@0xintuition/protocol'`                       | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/types.ts#L3)                                            |
+| `WriteConfig`                           | `import type { WriteConfig } from '@0xintuition/protocol'`                      | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/types.ts#L8)                                            |
 | `Address`                               | `import type { Address } from 'viem'`                                           | Owned by the external package.                                                                                                                                                          |
 | `Hex`                                   | `import type { Hex } from 'viem'`                                               | Owned by the external package.                                                                                                                                                          |
 

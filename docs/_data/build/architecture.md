@@ -6,15 +6,16 @@ sidebar_position: 3
 
 Use each layer for the work it owns. This keeps application code portable and makes an agent's integration choices reviewable.
 
-| Layer                                                       | Owns                                                                   | Your application supplies                                    |
-| ----------------------------------------------------------- | ---------------------------------------------------------------------- | ------------------------------------------------------------ |
-| `iid-spec`, `iid`, `iid-registry`, `iid-ladder`, `ids`      | Identifier rules, pure resolution, selection policy, content IDs       | Input facts and reconciliation policy                        |
-| `schema-org`, `classifications`, `predicates`, `primitives` | Vocabulary, creation fields, relationships, deterministic builders     | Forms, validation presentation, persistence decision         |
-| `atom-parser`, `atom-classification`, `atom-enrichment`     | Reusable processing engines and plugins                                | Runtime mode, providers, credentials, cache, network policy  |
-| Core                                                        | REST graph API, storage, workers, chain ingestion and projections      | Node configuration, access policy, operations                |
-| `deployments`, `protocol`, `periphery`, `curves`            | Artifacts, contract helpers, encoding and quote math                   | Matching chain/deployment, clients, current state            |
-| `sdk`, `cli`, `react`                                       | Integration reads/plans, deterministic command-line encoding, UI hooks | Signing policy, transaction UX, error recovery               |
-| Main application                                            | Product flows and orchestration                                        | Its own auth, ranking, billing, moderation, and presentation |
+| Layer                                                       | Owns                                                                     | Your application supplies                                         |
+| ----------------------------------------------------------- | ------------------------------------------------------------------------ | ----------------------------------------------------------------- |
+| `iid-spec`, `iid`, `iid-registry`, `iid-ladder`, `ids`      | Identifier rules, pure resolution, selection policy, content IDs         | Input facts and reconciliation policy                             |
+| `schema-org`, `classifications`, `predicates`, `primitives` | Vocabulary, creation fields, relationships, deterministic builders       | Forms, validation presentation, persistence decision              |
+| `atom-parser`, `atom-classification`, `atom-enrichment`     | Reusable processing engines and plugins                                  | Runtime mode, providers, credentials, cache, network policy       |
+| `atom-runtime`, `pipeline-runtime`                          | Shared configuration, memoized engines, Promise concurrency and outcomes | Request cancellation, lifecycle, observability sinks, persistence |
+| Core                                                        | REST graph API, storage, workers, chain ingestion and projections        | Node configuration, access policy, operations                     |
+| `deployments`, `protocol`, `periphery`, `curves`            | Artifacts, contract helpers, encoding and quote math                     | Matching chain/deployment, clients, current state                 |
+| `sdk`, `cli`, `react`                                       | Integration reads/plans, deterministic command-line encoding, UI hooks   | Signing policy, transaction UX, error recovery                    |
+| Main application                                            | Product flows and orchestration                                          | Its own auth, ranking, billing, moderation, and presentation      |
 
 ## Core's two data paths
 

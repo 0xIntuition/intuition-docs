@@ -3,11 +3,11 @@ title: 'FeeProxy plans and execution'
 slug: /build/sdk-reference/fee-proxy-builders
 ---
 
-Generated from the upcoming SDK **4.0.0** source. See [release compatibility](../compatibility.md) before installing or connecting to a deployment. Regenerate with `node scripts/generate-package-reference.js /path/to/packages`.
+Generated from the published SDK **4.0.0-alpha.0** source. See [release compatibility](../compatibility.md) before installing or connecting to a deployment. Regenerate with `node scripts/generate-package-reference.js /path/to/packages`.
 
-Import from `@0xintuition/sdk/actions`. [Implementation and internal helpers](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/fee-proxy-builders.ts).
+Import from `@0xintuition/sdk/actions`. [Implementation and internal helpers](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/sdk/src/actions/fee-proxy-builders.ts).
 
-Signatures show the exact accepted inputs and return types. Named input/output structures and dependency-injection types are listed below; viem and protocol types come from their respective packages. Preparation and quote functions can perform RPC reads. **`feeProxyExecutePlan` sends transactions**; the other SDK actions on these pages prepare transactions or read data.
+Signatures show the exact accepted inputs and return types. Named input/output structures and dependency-injection types are listed below; viem and protocol types come from their respective packages. Preparation and quote functions can perform RPC reads. Envelope builders on the action-envelope pages use caller-supplied read context and perform no RPC reads or signing. **`feeProxyExecutePlan` sends transactions**; the other SDK actions on these pages prepare transactions or read data.
 
 ## feeProxyGetReadiness
 
@@ -22,7 +22,7 @@ Both approvals are signed by `receiver`. Creates need the caller to have approve
 CREATION. Approval steps preserve every bit already granted and merge requirements on the same
 pair into one `approve`, because `approve` overwrites the bitmask.
 
-[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/fee-proxy-builders.ts#L275)
+[Source](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/sdk/src/actions/fee-proxy-builders.ts#L275)
 
 ```ts
 function feeProxyGetReadiness(
@@ -49,7 +49,7 @@ leg quotes `depositVia`; several (or `batch: true`) quote `depositBatchVia`, whi
 fixed fee for the whole batch. First reads FeeProxy's `multiVault()` and throws unless it is
 `configs.multiVault`.
 
-[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/fee-proxy-builders.ts#L477)
+[Source](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/sdk/src/actions/fee-proxy-builders.ts#L477)
 
 ```ts
 function feeProxyQuoteDepositVia(
@@ -74,7 +74,7 @@ MultiVault approvals first, then `depositVia` / `depositBatchVia` carrying the q
 `configs.multiVault`, or when the route has a blocker no approval can fix (paused proxy, inactive
 affiliate, fees over the caps). Send with `feeProxyExecutePlan` or any signer, step by step.
 
-[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/fee-proxy-builders.ts#L611)
+[Source](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/sdk/src/actions/fee-proxy-builders.ts#L611)
 
 ```ts
 function feeProxyBuildDepositViaPlan(
@@ -113,7 +113,7 @@ total is checked against on-chain `previewCreationFee`; any disagreement throws 
 sending a mispriced call. Atoms and triples are separate calls, each paying its own fixed fee.
 First reads FeeProxy's `multiVault()` and throws unless it is `configs.multiVault`.
 
-[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/fee-proxy-builders.ts#L738)
+[Source](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/sdk/src/actions/fee-proxy-builders.ts#L738)
 
 ```ts
 function feeProxyBuildCreateViaPlan(
@@ -143,7 +143,7 @@ next (an approval must be mined before the routed call that needs it). Refuses u
 sending anything, when a step must be signed by a different account — for example a receiver's
 approval in a delegated deposit; send those steps from the receiver's wallet first.
 
-[Source](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/sdk/src/actions/fee-proxy-builders.ts#L979)
+[Source](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/sdk/src/actions/fee-proxy-builders.ts#L979)
 
 ```ts
 function feeProxyExecutePlan(
@@ -167,42 +167,42 @@ Public import locations and the definitions used by these signatures and helper 
 
 | Name in this module             | Public import                                                           | Definition                                                                                                                                                                     |
 | ------------------------------- | ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `FeeGuard`                      | `import type { FeeGuard } from '@0xintuition/periphery'`                | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/periphery/src/fee-proxy/types.ts#L2)                        |
-| `FeeProxyGrossUp`               | `import type { FeeProxyGrossUp } from '@0xintuition/periphery'`         | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/periphery/src/fee-proxy/fee-math.ts#L17)                    |
-| `feeProxyAffiliateConfig`       | `import { feeProxyAffiliateConfig } from '@0xintuition/periphery'`      | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/periphery/src/fee-proxy/affiliate-config.ts#L13)            |
-| `feeProxyMaxFeeBps`             | `import { feeProxyMaxFeeBps } from '@0xintuition/periphery'`            | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/periphery/src/fee-proxy/max-fee-bps.ts#L11)                 |
-| `feeProxyMaxFixedFee`           | `import { feeProxyMaxFixedFee } from '@0xintuition/periphery'`          | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/periphery/src/fee-proxy/max-fixed-fee.ts#L10)               |
-| `feeProxyMultiVault`            | `import { feeProxyMultiVault } from '@0xintuition/periphery'`           | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/periphery/src/fee-proxy/multi-vault.ts#L10)                 |
-| `feeProxyPaused`                | `import { feeProxyPaused } from '@0xintuition/periphery'`               | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/periphery/src/fee-proxy/paused.ts#L10)                      |
-| `feeProxyPendingRefund`         | `import { feeProxyPendingRefund } from '@0xintuition/periphery'`        | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/periphery/src/fee-proxy/pending-refund.ts#L12)              |
-| `feeProxyPreviewCreationFee`    | `import { feeProxyPreviewCreationFee } from '@0xintuition/periphery'`   | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/periphery/src/fee-proxy/preview-creation-fee.ts#L12)        |
-| `feeProxyPreviewDepositFee`     | `import { feeProxyPreviewDepositFee } from '@0xintuition/periphery'`    | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/periphery/src/fee-proxy/preview-deposit-fee.ts#L14)         |
-| `multiVaultCalculateAtomId`     | `import { multiVaultCalculateAtomId } from '@0xintuition/protocol'`     | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/multivault/calculate-atom-id.ts#L12)      |
-| `multiVaultCalculateTripleId`   | `import { multiVaultCalculateTripleId } from '@0xintuition/protocol'`   | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/multivault/calculate-triple-id.ts#L12)    |
-| `multiVaultGetAtomCost`         | `import { multiVaultGetAtomCost } from '@0xintuition/protocol'`         | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/multivault/get-atom-cost.ts#L9)           |
-| `multiVaultGetAtomUriConfig`    | `import { multiVaultGetAtomUriConfig } from '@0xintuition/protocol'`    | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/multivault/get-atom-uri-config.ts#L11)    |
-| `multiVaultGetGeneralConfig`    | `import { multiVaultGetGeneralConfig } from '@0xintuition/protocol'`    | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/multivault/get-general-config.ts#L9)      |
-| `multiVaultGetTripleCost`       | `import { multiVaultGetTripleCost } from '@0xintuition/protocol'`       | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/multivault/get-triple-cost.ts#L9)         |
-| `multiVaultIsApprovedToCreate`  | `import { multiVaultIsApprovedToCreate } from '@0xintuition/protocol'`  | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/multivault/is-approved-to-create.ts#L14)  |
-| `multiVaultIsApprovedToDeposit` | `import { multiVaultIsApprovedToDeposit } from '@0xintuition/protocol'` | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/multivault/is-approved-to-deposit.ts#L13) |
-| `multiVaultIsApprovedToRedeem`  | `import { multiVaultIsApprovedToRedeem } from '@0xintuition/protocol'`  | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/multivault/is-approved-to-redeem.ts#L13)  |
-| `multiVaultPreviewAtomCreate`   | `import { multiVaultPreviewAtomCreate } from '@0xintuition/protocol'`   | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/multivault/preview-atom-create.ts#L26)    |
-| `multiVaultPreviewDeposit`      | `import { multiVaultPreviewDeposit } from '@0xintuition/protocol'`      | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/multivault/preview-deposit.ts#L26)        |
-| `multiVaultPreviewTripleCreate` | `import { multiVaultPreviewTripleCreate } from '@0xintuition/protocol'` | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/core/multivault/preview-triple-create.ts#L19)  |
-| `ReadConfig`                    | `import type { ReadConfig } from '@0xintuition/protocol'`               | [Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/protocol/src/types.ts#L3)                                   |
+| `FeeGuard`                      | `import type { FeeGuard } from '@0xintuition/periphery'`                | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/periphery/src/fee-proxy/types.ts#L2)                        |
+| `FeeProxyGrossUp`               | `import type { FeeProxyGrossUp } from '@0xintuition/periphery'`         | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/periphery/src/fee-proxy/fee-math.ts#L17)                    |
+| `feeProxyAffiliateConfig`       | `import { feeProxyAffiliateConfig } from '@0xintuition/periphery'`      | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/periphery/src/fee-proxy/affiliate-config.ts#L13)            |
+| `feeProxyMaxFeeBps`             | `import { feeProxyMaxFeeBps } from '@0xintuition/periphery'`            | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/periphery/src/fee-proxy/max-fee-bps.ts#L11)                 |
+| `feeProxyMaxFixedFee`           | `import { feeProxyMaxFixedFee } from '@0xintuition/periphery'`          | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/periphery/src/fee-proxy/max-fixed-fee.ts#L10)               |
+| `feeProxyMultiVault`            | `import { feeProxyMultiVault } from '@0xintuition/periphery'`           | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/periphery/src/fee-proxy/multi-vault.ts#L10)                 |
+| `feeProxyPaused`                | `import { feeProxyPaused } from '@0xintuition/periphery'`               | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/periphery/src/fee-proxy/paused.ts#L10)                      |
+| `feeProxyPendingRefund`         | `import { feeProxyPendingRefund } from '@0xintuition/periphery'`        | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/periphery/src/fee-proxy/pending-refund.ts#L12)              |
+| `feeProxyPreviewCreationFee`    | `import { feeProxyPreviewCreationFee } from '@0xintuition/periphery'`   | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/periphery/src/fee-proxy/preview-creation-fee.ts#L12)        |
+| `feeProxyPreviewDepositFee`     | `import { feeProxyPreviewDepositFee } from '@0xintuition/periphery'`    | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/periphery/src/fee-proxy/preview-deposit-fee.ts#L14)         |
+| `multiVaultCalculateAtomId`     | `import { multiVaultCalculateAtomId } from '@0xintuition/protocol'`     | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/core/multivault/calculate-atom-id.ts#L12)      |
+| `multiVaultCalculateTripleId`   | `import { multiVaultCalculateTripleId } from '@0xintuition/protocol'`   | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/core/multivault/calculate-triple-id.ts#L12)    |
+| `multiVaultGetAtomCost`         | `import { multiVaultGetAtomCost } from '@0xintuition/protocol'`         | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/core/multivault/get-atom-cost.ts#L10)          |
+| `multiVaultGetAtomUriConfig`    | `import { multiVaultGetAtomUriConfig } from '@0xintuition/protocol'`    | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/core/multivault/get-atom-uri-config.ts#L12)    |
+| `multiVaultGetGeneralConfig`    | `import { multiVaultGetGeneralConfig } from '@0xintuition/protocol'`    | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/core/multivault/get-general-config.ts#L10)     |
+| `multiVaultGetTripleCost`       | `import { multiVaultGetTripleCost } from '@0xintuition/protocol'`       | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/core/multivault/get-triple-cost.ts#L10)        |
+| `multiVaultIsApprovedToCreate`  | `import { multiVaultIsApprovedToCreate } from '@0xintuition/protocol'`  | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/core/multivault/is-approved-to-create.ts#L14)  |
+| `multiVaultIsApprovedToDeposit` | `import { multiVaultIsApprovedToDeposit } from '@0xintuition/protocol'` | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/core/multivault/is-approved-to-deposit.ts#L13) |
+| `multiVaultIsApprovedToRedeem`  | `import { multiVaultIsApprovedToRedeem } from '@0xintuition/protocol'`  | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/core/multivault/is-approved-to-redeem.ts#L13)  |
+| `multiVaultPreviewAtomCreate`   | `import { multiVaultPreviewAtomCreate } from '@0xintuition/protocol'`   | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/core/multivault/preview-atom-create.ts#L26)    |
+| `multiVaultPreviewDeposit`      | `import { multiVaultPreviewDeposit } from '@0xintuition/protocol'`      | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/core/multivault/preview-deposit.ts#L26)        |
+| `multiVaultPreviewTripleCreate` | `import { multiVaultPreviewTripleCreate } from '@0xintuition/protocol'` | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/core/multivault/preview-triple-create.ts#L19)  |
+| `ReadConfig`                    | `import type { ReadConfig } from '@0xintuition/protocol'`               | [Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/src/types.ts#L3)                                   |
 | `Address`                       | `import type { Address } from 'viem'`                                   | Owned by the external package.                                                                                                                                                 |
 | `Hex`                           | `import type { Hex } from 'viem'`                                       | Owned by the external package.                                                                                                                                                 |
 | `PublicClient`                  | `import type { PublicClient } from 'viem'`                              | Owned by the external package.                                                                                                                                                 |
 | `TransactionReceipt`            | `import type { TransactionReceipt } from 'viem'`                        | Owned by the external package.                                                                                                                                                 |
 | `WalletClient`                  | `import type { WalletClient } from 'viem'`                              | Owned by the external package.                                                                                                                                                 |
 
-## External input and result structures
+## Supporting input and result structures
 
-These declarations belong to the named packages, not to the SDK. Nested supporting types retain their owning source links.
+These declarations retain their owning source links. Internal supporting types describe accepted shapes but are not standalone public imports.
 
 ### FeeGuard
 
-[Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/periphery/src/fee-proxy/types.ts#L2)
+[Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/periphery/src/fee-proxy/types.ts#L2)
 
 ```ts
 export type FeeGuard = {
@@ -213,7 +213,7 @@ export type FeeGuard = {
 
 ### FeeProxyGrossUp
 
-[Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/periphery/src/fee-proxy/fee-math.ts#L17)
+[Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/periphery/src/fee-proxy/fee-math.ts#L17)
 
 ```ts
 export type FeeProxyGrossUp = FeeProxyRoutingSplit & {
@@ -226,7 +226,7 @@ export type FeeProxyGrossUp = FeeProxyRoutingSplit & {
 
 ### FeeProxyRoutingSplit
 
-[Source definition](https://github.com/0xIntuition/packages/blob/1dc7103d2a05f23bc565a81df4b001336ce9ba53/packages/periphery/src/fee-proxy/fee-math.ts#L8)
+[Source definition](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/periphery/src/fee-proxy/fee-math.ts#L8)
 
 ```ts
 export type FeeProxyRoutingSplit = {
