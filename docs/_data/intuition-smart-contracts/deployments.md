@@ -7,9 +7,9 @@ sidebar_position: 1
 
 The Intuition protocol contracts are deployed on both the Base Mainnet and the Intuition Layer 3 network, as well as their respective testnets. Below are the details of the deployed contracts, including their addresses and network configurations.
 
-The protocol and periphery addresses match the [`@0xintuition/deployments`](https://www.npmjs.com/package/@0xintuition/deployments) package, which is the source of truth for contract addresses and ABIs. In code, resolve addresses from the package (for example `getMultiVaultAddressFromChainId(chainId)`) rather than copying them from this page. The timelocks, SafeSingletonFactory and the TRUST bridge hub are listed here for reference only.
+The protocol and periphery addresses match the `alpha` release of the [`@0xintuition/deployments`](https://www.npmjs.com/package/@0xintuition/deployments) package, which is the source of truth for contract addresses and ABIs. In code, resolve addresses from the package (for example `getMultiVaultAddressFromChainId(chainId)`) rather than copying them from this page. The timelocks, SafeSingletonFactory and the TRUST bridge hub are listed here for reference only.
 
-The Upgrades TimelockControllers own the proxy admins, so every contract upgrade waits out their delay: 7 days on mainnet and 1 hour on testnet. The Parameters TimelockController is the only account that can change MultiVault's configuration, with a 3-day delay on mainnet and 1 hour on testnet.
+The Upgrades TimelockControllers own the proxy admins of the protocol contracts, FeeProxy and the USDC and WETH bridge contracts, so those upgrades wait out their delay: 7 days on mainnet and 1 hour on testnet. The TRUST bridge hub and spoke are operated by Caldera. The Parameters TimelockController is the only account that can change MultiVault's configuration, with a 3-day delay on mainnet and 1 hour on testnet.
 
 ## Mainnet
 
@@ -72,7 +72,7 @@ The Upgrades TimelockControllers own the proxy admins, so every contract upgrade
 | EntryPoint                    | 0x4337084D9E255Ff0702461CF8895CE9E3b5Ff108 |
 | FeeProxy                      | 0x847801465DcB17811089107c0051c49E0135F6B8 |
 
-The Intuition Testnet MultiVault runs v1.1.0.
+The Intuition Mainnet and Testnet MultiVaults both run v1.1.0.
 
 ## Periphery
 
@@ -139,6 +139,6 @@ All deployed contracts are verified on their respective block explorers. You can
 
 Contract ABIs can be found in the following locations:
 
-- **npm package**: `@0xintuition/deployments` (addresses, ABIs and bytecode). `@0xintuition/protocol` and `@0xintuition/sdk` re-export the core ABIs and address helpers.
+- **npm package**: `@0xintuition/deployments` (addresses, ABIs and bytecode). `@0xintuition/protocol` re-exports the core ABIs and address helpers, and `@0xintuition/sdk/protocol` makes them available from the SDK.
 - **GitHub**: [0xIntuition/intuition-contracts-v2](https://github.com/0xIntuition/intuition-contracts-v2/tree/main/abis)
 - **Block Explorer**: Available on verified contract pages

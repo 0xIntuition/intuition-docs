@@ -16,7 +16,7 @@ The TrustBonding contract requires users to wrap their TRUST tokens into Wrapped
 
 ### Voting Escrow (veTRUST)
 
-The TrustBonding contract inherits from the popular Voting Escrow mechanism, allowing users to lock their TRUST tokens for a specified period in exchange for veTRUST tokens. These veTRUST tokens represent voting power and can be used to influence governance decisions within the Intuition protocol.
+The TrustBonding contract inherits from the popular Voting Escrow mechanism, allowing users to lock their TRUST tokens for a specified period in exchange for veTRUST tokens. veTRUST determines a user's share of rewards, and is currently being considered as the basis for governance within the Intuition protocol.
 
 The voting escrow mechanism is implemented using the `VotingEscrow` contract, which provides functions for creating locks, increasing lock amounts, and extending lock durations.
 

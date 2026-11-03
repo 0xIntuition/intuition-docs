@@ -14,12 +14,12 @@ The user stays the owner of record:
 
 - On a deposit, MultiVault mints the shares to the receiver the user picks, normally the user.
 - On creation, MultiVault records the user as the creator of each atom and triple, not FeeProxy and not the affiliate.
-- Redemptions do not go through FeeProxy. Users always redeem directly on MultiVault, so no affiliate can stand between a holder and their exit.
+- Redemptions do not go through FeeProxy. Users redeem directly on MultiVault, so no affiliate can stand between a holder and their exit.
 
 FeeProxy is one contract shared by all affiliates. Any address can register as an affiliate, set its own fees within protocol caps, and start routing calls.
 
 :::info Availability
-FeeProxy needs the v1.1.0 MultiVault (`createAtomsFor`, `createTriplesFor` and the CREATION approval). It goes live on each network after that network's MultiVault upgrade. See [Deployments](#deployments).
+FeeProxy needs the v1.1.0 MultiVault (`createAtomsFor`, `createTriplesFor` and the CREATION approval). It is live on Intuition Mainnet and Testnet. See [Deployments](#deployments).
 :::
 
 ## How a routed call works
@@ -70,6 +70,8 @@ forwardedAssets = grossAssets - affiliateFee
 - **Batch and multi-term calls charge the fee once per call**, on the sum of all legs: one percentage cut plus one flat fee, not one per atom, triple or vault. FeeProxy then splits the forwarded total across legs in proportion to each leg's gross amount. Rounding dust goes to the last leg.
 - Every leg must be non-zero, and each forwarded leg must still meet MultiVault's own requirements (minimum deposit, atom or triple cost). A leg that falls short reverts the whole call. An atom or triple that receives exactly 1 wei above its creation cost can also revert: when more than one MultiVault fee applies, each rounds up to 1 wei and together they exceed it. Check such a deposit with MultiVault's preview first.
 - `minShares` is passed to MultiVault unchanged, so it applies to the **post-fee** amount. Size it for `forwardedAssets`, not `grossAssets`.
+
+For a diagram of how a deposit is split and example fee configurations, see [How the fees work](/docs/interaction-guide/fee-proxy-integration#how-the-fees-work).
 
 ### Protocol caps
 
@@ -260,7 +262,7 @@ Affiliates need no role. They manage only their own row.
 | Still works | `claimRefund`, `claimRefundTo`, `updateAffiliateFees`, `updateFeeRecipient`, admin setters, pause controls | Everything else, including the affiliate's own updates |
 | Reversed by | `unpause` (admin)                                                                                          | `unpauseAffiliate` (admin)                             |
 
-Neither pause affects positions on MultiVault: users redeem directly on MultiVault at all times. Unpausing an affiliate does not re-check its fees against the caps; if a cap was lowered in the meantime, the affiliate must update its fees before routing works again.
+Neither pause affects positions on MultiVault, and users redeem directly on MultiVault. MultiVault can be paused separately in an emergency. Unpausing an affiliate does not re-check its fees against the caps; if a cap was lowered in the meantime, the affiliate must update its fees before routing works again.
 
 ### Events
 
@@ -296,7 +298,7 @@ MultiVault emits its own `Deposited`, `AtomCreated` and `TripleCreated` events f
 
 The full list of protocol contracts is on the [Deployments](/docs/intuition-smart-contracts/deployments) page.
 
-**ABI:** `FeeProxyAbi`, exported by `@0xintuition/periphery` and published as `abis/FeeProxy.ts` in the [intuition-contracts-v2](https://github.com/0xIntuition/intuition-contracts-v2/tree/main/abis) repository with the v1.1.0 release.
+**ABI:** `FeeProxyAbi`, exported by `@0xintuition/periphery` and published as `abis/FeeProxy.ts` in the [intuition-contracts-v2](https://github.com/0xIntuition/intuition-contracts-v2/tree/main/abis) repository.
 
 **Audit:** FeeProxy was audited as part of the v1.1.0 release. See the Diligence v1.1.0 report on the [Audit Reports](/docs/intuition-smart-contracts/audit-reports) page.
 

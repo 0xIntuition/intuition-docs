@@ -24,13 +24,13 @@ Function selectors, argument types and event signatures of the v1.0 functions ar
 
 ## SDK setup
 
-The examples on this page use `@0xintuition/sdk` and `viem`. The SDK resolves the MultiVault address from the chain ID:
+The examples on this page use the `alpha` release of `@0xintuition/sdk` (`npm install @0xintuition/sdk@alpha viem`), which exports most of these helpers from `@0xintuition/sdk/protocol`. The SDK resolves the MultiVault address from the chain ID:
 
 ```typescript title="multiVault.ts"
 import {
   getMultiVaultAddressFromChainId,
   intuitionTestnet,
-} from '@0xintuition/sdk';
+} from '@0xintuition/sdk/protocol';
 import type { Address, PublicClient, WalletClient } from 'viem';
 
 // Use intuitionMainnet.id for Intuition Mainnet.
@@ -195,7 +195,7 @@ import {
   multiVaultGetAtomCost,
   multiVaultPreviewDeposit,
   multiVaultRedeem,
-} from '@0xintuition/sdk';
+} from '@0xintuition/sdk/protocol';
 import { type Hex, parseEther } from 'viem';
 
 export async function createAtom(
@@ -287,7 +287,7 @@ import {
   multiVaultIsApprovedToCreate,
   multiVaultIsApprovedToDeposit,
   multiVaultIsApprovedToRedeem,
-} from '@0xintuition/sdk';
+} from '@0xintuition/sdk/protocol';
 import type { Address, Hex, PublicClient, WalletClient } from 'viem';
 
 import { readConfig, writeConfig } from './multiVault';
@@ -358,12 +358,14 @@ This creates an atom, with a first deposit on the default curve (curve 1), and o
 ```typescript title="createAndDeposit.ts"
 import {
   calculateAtomId,
+  multivaultPrepareMulticallTx,
+} from '@0xintuition/sdk';
+import {
   multiVaultCreateAtomsEncode,
   multiVaultDepositEncode,
   multiVaultGetAtomCost,
   multiVaultMulticall,
-  multivaultPrepareMulticallTx,
-} from '@0xintuition/sdk';
+} from '@0xintuition/sdk/protocol';
 import { parseEther, type PublicClient, toHex, type WalletClient } from 'viem';
 
 import { readConfig, writeConfig } from './multiVault';
@@ -448,7 +450,7 @@ import {
   MultiVaultAbi,
   multiVaultAccumulatedAtomWalletDepositFees,
   multiVaultComputeAtomWalletAddr,
-} from '@0xintuition/sdk';
+} from '@0xintuition/sdk/protocol';
 import type { Hex, PublicClient } from 'viem';
 
 import { readConfig } from './multiVault';

@@ -7,7 +7,7 @@ sidebar_position: 5
 
 The Intuition protocol smart contracts utilize a configuration system that allows for dynamic adjustment of various parameters effecting the behavior of the protocol. This document outlines the key configuration parameters and fees associated with the **mainnet Intuition protocol** deployment.
 
-The smart contract configurations and parameters can be adjusted by governance through onchain proposals, allowing for flexibility and adaptability as the protocol evolves. From v1.1.0, every MultiVault configuration change goes through the Parameters TimelockController (see [Who can change the configuration](#who-can-change-the-configuration)).
+The smart contract configurations and parameters can be adjusted onchain by the admin multisig, in many cases through a timelock, allowing for flexibility and adaptability as the protocol evolves. From v1.1.0, every MultiVault configuration change goes through the Parameters TimelockController (see [Who can change the configuration](#who-can-change-the-configuration)).
 
 ## MultiVault
 
@@ -50,7 +50,7 @@ The total fees for 100 TRUST deposit would be 0.5 TRUST (entry fee) + 1.25 TRUST
 
 ### Low-Level Configuration Parameters
 
-The Intuition Smart Contracts also include several low-level configuration parameters that can be adjusted by governance to fine-tune the protocol's behavior. These parameters include:
+The Intuition Smart Contracts also include several low-level configuration parameters that can be adjusted through the Parameters TimelockController to fine-tune the protocol's behavior. These parameters include:
 
 - **Fee Denominator:** 10000
 - **Minimum Shares** : 1e6 <span className='text-xs'>(1,000,000 WEI)</span>
@@ -65,7 +65,7 @@ The Intuition Smart Contracts also include several low-level configuration param
 - **Max URIs per Atom:** 5
 - **Max URI Length:** 700 bytes
 
-These are the defaults that apply until governance sets other values with `setAtomUriConfig`. Neither limit can be set to 0.
+These are the defaults that apply until the Parameters TimelockController sets other values with `setAtomUriConfig`. Neither limit can be set to 0.
 
 ### Who can change the configuration
 
@@ -121,4 +121,4 @@ The Offset Progressive Curve is used to calculate the amount of shares minted wh
 - **Slope:** 1e17
 - **Offset:** 3e19
 
-Read them on-chain with `SLOPE()` and `OFFSET()`. The OffsetProgressiveCurve parameters are fixed and cannot be changed by governance.
+Read them on-chain with `SLOPE()` and `OFFSET()`. The OffsetProgressiveCurve parameters are fixed and cannot be changed.

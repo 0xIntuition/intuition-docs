@@ -18299,18 +18299,58 @@ It also covers creating atoms and triples through FeeProxy, reading your affilia
 
 The SDK helpers below do the bookkeeping that is easy to get wrong by hand: they read the affiliate's current fees, pin the `FeeGuard` to them, keep existing MultiVault approvals when adding new ones, size creation amounts so every atom or triple still gets its full cost and deposit after the fee, and preview each call before you send it.
 
+## How the fees work
+
+A routed deposit pays two sets of fees: the affiliate fee, which you set, and MultiVault's own fees, which apply to every deposit with or without FeeProxy. The affiliate fee comes out first, and MultiVault charges its fees on what is left.
+
+This is a 100 TRUST deposit into an existing atom, with an affiliate fee of 1% plus 0.5 TRUST:
+
+```mermaid
+flowchart TD
+    A["User sends 100 TRUST"] --> B["Affiliate fee: 1.5 TRUST<br/>goes to your fee recipient"]
+    A --> C["Forwarded to MultiVault: 98.5 TRUST"]
+    C --> D["Protocol fee: 1.23125 TRUST (1.25%)"]
+    C --> E["Entry fee: 0.4925 TRUST (0.5%)<br/>stays in the vault"]
+    C --> F["Atom wallet fee: 0.4925 TRUST (0.5%)"]
+    C --> G["Buys the user's shares: 96.28375 TRUST"]
+```
+
+MultiVault's rates are the current mainnet values, and the entry fee only applies once the vault has passed its fee threshold. A deposit into a triple pays no atom wallet fee. It pays the 0.9% atom deposit fraction instead, once all three underlying atoms have passed the threshold. See [Configuration](https://docs.intuition.systems/docs/intuition-smart-contracts/configuration) for the details.
+
+### Example fee configurations
+
+| Configuration          | `depositBps` | `depositFixedFee` | Fee on 100 TRUST | Fee on 1 TRUST |
+| ---------------------- | ------------ | ----------------- | ---------------- | -------------- |
+| No fee                 | 0            | 0                 | 0                | 0              |
+| 1% only                | 100          | 0                 | 1 TRUST          | 0.01 TRUST     |
+| 0.5 TRUST flat only    | 0            | 0.5 TRUST         | 0.5 TRUST        | 0.5 TRUST      |
+| 1% plus 0.5 TRUST flat | 100          | 0.5 TRUST         | 1.5 TRUST        | 0.51 TRUST     |
+
+- **Percentage or flat:** a percentage scales with the deposit. A flat fee weighs heavily on small deposits: 0.5 TRUST is half of a 1 TRUST deposit.
+- **Batches:** the fee is charged once per call. 100 TRUST across four vaults with 1% plus 0.5 TRUST pays 1.5 TRUST in total, not per vault.
+- **Creation:** `creationBps` and `creationFixedFee` work the same way for creating atoms and triples, and you set them separately.
+- **Limits:** on mainnet today the caps are 20% (`maxFeeBps()`) and 50 TRUST (`maxFixedFee()`), and registering costs 100 TRUST (`registrationFee()`). The admin can change these, so read them on-chain. A fee at or above the gross amount reverts with `FeeProxy_FeeExceedsGross`.
+
+### Withdrawals
+
+FeeProxy has no redeem path, so affiliates earn no fee on withdrawals. Users redeem on MultiVault directly, which charges its protocol fee (1.25%) and, if the vault stays above the fee threshold after the redemption, its exit fee (0.75%). With both fees, redeeming shares worth 100 TRUST returns 98 TRUST.
+
 ## Prerequisites
 
-- `@0xintuition/sdk`, `@0xintuition/periphery` and `viem`, at the versions that include the FeeProxy helpers.
+- `@0xintuition/sdk`, `@0xintuition/periphery` and `viem`. The FeeProxy helpers are in alpha releases for now, published under the `alpha` tag until the stable release, so install with the command below.
 - A viem `publicClient` and `walletClient` for Intuition Testnet or Mainnet. See the [Overview](https://docs.intuition.systems/docs/interaction-guide/overview) for network setup.
 - A FeeProxy deployment on your network. It is live on Intuition Mainnet and Testnet; see the [contract page](https://docs.intuition.systems/docs/intuition-smart-contracts/fee-proxy#deployments). The SDK resolves both addresses from the chain ID, so you never paste one by hand.
+
+```bash
+npm install @0xintuition/sdk@alpha @0xintuition/periphery@alpha viem
+```
 
 ```typescript title="feeProxy.ts"
 import { getFeeProxyAddressFromChainId } from '@0xintuition/periphery';
 import {
   getMultiVaultAddressFromChainId,
   intuitionTestnet,
-} from '@0xintuition/sdk';
+} from '@0xintuition/sdk/protocol';
 import type { Address, Hex, PublicClient, WalletClient } from 'viem';
 
 // Pick the network once: intuitionTestnet.id to try things out, intuitionMainnet.id for production.
@@ -18581,20 +18621,20 @@ For creation, sizing the gross amounts by hand is error-prone with more than one
 
 ## Common errors
 
-| Error                                                                    | Cause                                                                               | Fix                                                                                   |
-| ------------------------------------------------------------------------ | ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
-| `FeeProxy_ProxyNotApprovedForDeposit`                                    | The receiver has not approved FeeProxy for `DEPOSIT`.                               | Run Step 2 from the receiver's wallet.                                                |
-| `FeeProxy_ProxyNotApprovedForCreation`                                   | The caller has not approved FeeProxy for `CREATION`.                                | Run Step 2 with `kinds: ['create']`.                                                  |
-| `FeeProxy_ReceiverNotApproved`                                           | Depositing for someone else who has not approved the caller.                        | The receiver approves the caller for `DEPOSIT` on MultiVault, or deposit to yourself. |
-| `FeeProxy_AffiliateNotRegistered` / `FeeProxy_AffiliatePaused`           | The affiliate cannot route right now.                                               | Readiness reports this as a blocker.                                                  |
-| `FeeProxy_BpsExceedsCallerGuard` / `FeeProxy_FixedFeeExceedsCallerGuard` | The affiliate raised its fee after the quote.                                       | Build a new plan, show the new fee, and retry.                                        |
-| `FeeProxy_BpsExceedsCap` / `FeeProxy_FixedFeeExceedsCap`                 | The affiliate's fee is above a protocol cap (for example, after a cap was lowered). | The affiliate lowers its fee with `feeProxyUpdateAffiliateFees`.                      |
-| `FeeProxy_InsufficientValue`                                             | `msg.value` is below the gross total.                                               | Send the plan's `value`.                                                              |
-| `FeeProxy_FeeExceedsGross`                                               | The fee would take the whole amount.                                                | Increase the gross amount.                                                            |
-| `FeeProxy_RegistrationFeeMismatch`                                       | `msg.value` is not exactly `registrationFee()`.                                     | Read `registrationFee()` and send that amount.                                        |
-| `EnforcedPause`                                                          | FeeProxy is globally paused.                                                        | Wait for the protocol to unpause. Users can still redeem on MultiVault.               |
-| Arithmetic underflow (`0x11`) on creation                                | 1 wei above creation cost, and MultiVault's rounded-up fees exceeded it.            | Use a deposit of 0, or of at least a few wei.                                         |
-| MultiVault errors (slippage, minimum deposit, atom exists)               | The routed MultiVault call reverted.                                                | The whole call reverted and no fee was charged. Fix the input and retry.              |
+| Error                                                                    | Cause                                                                               | Fix                                                                                          |
+| ------------------------------------------------------------------------ | ----------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| `FeeProxy_ProxyNotApprovedForDeposit`                                    | The receiver has not approved FeeProxy for `DEPOSIT`.                               | Run Step 2 from the receiver's wallet.                                                       |
+| `FeeProxy_ProxyNotApprovedForCreation`                                   | The caller has not approved FeeProxy for `CREATION`.                                | Run Step 2 with `kinds: ['create']`.                                                         |
+| `FeeProxy_ReceiverNotApproved`                                           | Depositing for someone else who has not approved the caller.                        | The receiver approves the caller for `DEPOSIT` on MultiVault, or deposit to yourself.        |
+| `FeeProxy_AffiliateNotRegistered` / `FeeProxy_AffiliatePaused`           | The affiliate cannot route right now.                                               | Readiness reports this as a blocker.                                                         |
+| `FeeProxy_BpsExceedsCallerGuard` / `FeeProxy_FixedFeeExceedsCallerGuard` | The affiliate raised its fee after the quote.                                       | Build a new plan, show the new fee, and retry.                                               |
+| `FeeProxy_BpsExceedsCap` / `FeeProxy_FixedFeeExceedsCap`                 | The affiliate's fee is above a protocol cap (for example, after a cap was lowered). | The affiliate lowers its fee with `feeProxyUpdateAffiliateFees`.                             |
+| `FeeProxy_InsufficientValue`                                             | `msg.value` is below the gross total.                                               | Send the plan's `value`.                                                                     |
+| `FeeProxy_FeeExceedsGross`                                               | The fee would take the whole amount.                                                | Increase the gross amount.                                                                   |
+| `FeeProxy_RegistrationFeeMismatch`                                       | `msg.value` is not exactly `registrationFee()`.                                     | Read `registrationFee()` and send that amount.                                               |
+| `EnforcedPause`                                                          | FeeProxy is globally paused.                                                        | Wait for the protocol to unpause. A FeeProxy pause does not block redemptions on MultiVault. |
+| Arithmetic underflow (`0x11`) on creation                                | 1 wei above creation cost, and MultiVault's rounded-up fees exceeded it.            | Use a deposit of 0, or of at least a few wei.                                                |
+| MultiVault errors (slippage, minimum deposit, atom exists)               | The routed MultiVault call reverted.                                                | The whole call reverted and no fee was charged. Fix the input and retry.                     |
 
 ## Next steps
 
@@ -28793,6 +28833,14 @@ Source: https://docs.intuition.systems/docs/intuition-smart-contracts/audit-repo
 
 This page contains security audit reports for Intuition smart contracts. All contracts undergo rigorous security assessments before deployment.
 
+### Intuition Core v1.1.0 Upgrade Audit | Diligence
+#### September 2026
+- [Diligence Audit Report - 3](https://github.com/0xIntuition/intuition-contracts-v2/blob/main/audits/Diligence-Audit-Report-3.pdf)
+
+### Intuition V2 Contracts Audit | Code4rena
+#### April 2026
+- [Code4rena Audit Report](https://github.com/0xIntuition/intuition-contracts-v2/blob/main/audits/CodeArena-audit-report-April-2026.pdf)
+
 ### Intuition TRUST Token, Bonding and Emissions Audit | Diligence
 #### September 2025
 - [Diligence Audit Report - 1](https://github.com/0xIntuition/intuition-contracts-v2/blob/main/audits/Diligence-Audit-Report-1.pdf)
@@ -28811,7 +28859,7 @@ Source: https://docs.intuition.systems/docs/intuition-smart-contracts/configurat
 
 The Intuition protocol smart contracts utilize a configuration system that allows for dynamic adjustment of various parameters effecting the behavior of the protocol. This document outlines the key configuration parameters and fees associated with the **mainnet Intuition protocol** deployment.
 
-The smart contract configurations and parameters can be adjusted by governance through onchain proposals, allowing for flexibility and adaptability as the protocol evolves. From v1.1.0, every MultiVault configuration change goes through the Parameters TimelockController (see [Who can change the configuration](https://docs.intuition.systems/docs/intuition-smart-contracts/configuration#who-can-change-the-configuration)).
+The smart contract configurations and parameters can be adjusted onchain by the admin multisig, in many cases through a timelock, allowing for flexibility and adaptability as the protocol evolves. From v1.1.0, every MultiVault configuration change goes through the Parameters TimelockController (see [Who can change the configuration](https://docs.intuition.systems/docs/intuition-smart-contracts/configuration#who-can-change-the-configuration)).
 
 ## MultiVault
 
@@ -28854,7 +28902,7 @@ The total fees for 100 TRUST deposit would be 0.5 TRUST (entry fee) + 1.25 TRUST
 
 ### Low-Level Configuration Parameters
 
-The Intuition Smart Contracts also include several low-level configuration parameters that can be adjusted by governance to fine-tune the protocol's behavior. These parameters include:
+The Intuition Smart Contracts also include several low-level configuration parameters that can be adjusted through the Parameters TimelockController to fine-tune the protocol's behavior. These parameters include:
 
 - **Fee Denominator:** 10000
 - **Minimum Shares** : 1e6 (1,000,000 WEI)
@@ -28869,7 +28917,7 @@ The Intuition Smart Contracts also include several low-level configuration param
 - **Max URIs per Atom:** 5
 - **Max URI Length:** 700 bytes
 
-These are the defaults that apply until governance sets other values with `setAtomUriConfig`. Neither limit can be set to 0.
+These are the defaults that apply until the Parameters TimelockController sets other values with `setAtomUriConfig`. Neither limit can be set to 0.
 
 ### Who can change the configuration
 
@@ -28925,7 +28973,7 @@ The Offset Progressive Curve is used to calculate the amount of shares minted wh
 - **Slope:** 1e17
 - **Offset:** 3e19
 
-Read them on-chain with `SLOPE()` and `OFFSET()`. The OffsetProgressiveCurve parameters are fixed and cannot be changed by governance.
+Read them on-chain with `SLOPE()` and `OFFSET()`. The OffsetProgressiveCurve parameters are fixed and cannot be changed.
 
 # Contract Deployments
 
@@ -28933,9 +28981,9 @@ Source: https://docs.intuition.systems/docs/intuition-smart-contracts/deployment
 
 The Intuition protocol contracts are deployed on both the Base Mainnet and the Intuition Layer 3 network, as well as their respective testnets. Below are the details of the deployed contracts, including their addresses and network configurations.
 
-The protocol and periphery addresses match the [`@0xintuition/deployments`](https://www.npmjs.com/package/@0xintuition/deployments) package, which is the source of truth for contract addresses and ABIs. In code, resolve addresses from the package (for example `getMultiVaultAddressFromChainId(chainId)`) rather than copying them from this page. The timelocks, SafeSingletonFactory and the TRUST bridge hub are listed here for reference only.
+The protocol and periphery addresses match the `alpha` release of the [`@0xintuition/deployments`](https://www.npmjs.com/package/@0xintuition/deployments) package, which is the source of truth for contract addresses and ABIs. In code, resolve addresses from the package (for example `getMultiVaultAddressFromChainId(chainId)`) rather than copying them from this page. The timelocks, SafeSingletonFactory and the TRUST bridge hub are listed here for reference only.
 
-The Upgrades TimelockControllers own the proxy admins, so every contract upgrade waits out their delay: 7 days on mainnet and 1 hour on testnet. The Parameters TimelockController is the only account that can change MultiVault's configuration, with a 3-day delay on mainnet and 1 hour on testnet.
+The Upgrades TimelockControllers own the proxy admins of the protocol contracts, FeeProxy and the USDC and WETH bridge contracts, so those upgrades wait out their delay: 7 days on mainnet and 1 hour on testnet. The TRUST bridge hub and spoke are operated by Caldera. The Parameters TimelockController is the only account that can change MultiVault's configuration, with a 3-day delay on mainnet and 1 hour on testnet.
 
 ## Mainnet
 
@@ -28998,7 +29046,7 @@ The Upgrades TimelockControllers own the proxy admins, so every contract upgrade
 | EntryPoint                    | 0x4337084D9E255Ff0702461CF8895CE9E3b5Ff108 |
 | FeeProxy                      | 0x847801465DcB17811089107c0051c49E0135F6B8 |
 
-The Intuition Testnet MultiVault runs v1.1.0.
+The Intuition Mainnet and Testnet MultiVaults both run v1.1.0.
 
 ## Periphery
 
@@ -29065,7 +29113,7 @@ All deployed contracts are verified on their respective block explorers. You can
 
 Contract ABIs can be found in the following locations:
 
-- **npm package**: `@0xintuition/deployments` (addresses, ABIs and bytecode). `@0xintuition/protocol` and `@0xintuition/sdk` re-export the core ABIs and address helpers.
+- **npm package**: `@0xintuition/deployments` (addresses, ABIs and bytecode). `@0xintuition/protocol` re-exports the core ABIs and address helpers, and `@0xintuition/sdk/protocol` makes them available from the SDK.
 - **GitHub**: [0xIntuition/intuition-contracts-v2](https://github.com/0xIntuition/intuition-contracts-v2/tree/main/abis)
 - **Block Explorer**: Available on verified contract pages
 
@@ -29079,11 +29127,11 @@ The user stays the owner of record:
 
 - On a deposit, MultiVault mints the shares to the receiver the user picks, normally the user.
 - On creation, MultiVault records the user as the creator of each atom and triple, not FeeProxy and not the affiliate.
-- Redemptions do not go through FeeProxy. Users always redeem directly on MultiVault, so no affiliate can stand between a holder and their exit.
+- Redemptions do not go through FeeProxy. Users redeem directly on MultiVault, so no affiliate can stand between a holder and their exit.
 
 FeeProxy is one contract shared by all affiliates. Any address can register as an affiliate, set its own fees within protocol caps, and start routing calls.
 
-FeeProxy needs the v1.1.0 MultiVault (`createAtomsFor`, `createTriplesFor` and the CREATION approval). It goes live on each network after that network's MultiVault upgrade. See [Deployments](https://docs.intuition.systems/docs/intuition-smart-contracts/fee-proxy#deployments).
+FeeProxy needs the v1.1.0 MultiVault (`createAtomsFor`, `createTriplesFor` and the CREATION approval). It is live on Intuition Mainnet and Testnet. See [Deployments](https://docs.intuition.systems/docs/intuition-smart-contracts/fee-proxy#deployments).
 
 ## How a routed call works
 
@@ -29133,6 +29181,8 @@ forwardedAssets = grossAssets - affiliateFee
 - **Batch and multi-term calls charge the fee once per call**, on the sum of all legs: one percentage cut plus one flat fee, not one per atom, triple or vault. FeeProxy then splits the forwarded total across legs in proportion to each leg's gross amount. Rounding dust goes to the last leg.
 - Every leg must be non-zero, and each forwarded leg must still meet MultiVault's own requirements (minimum deposit, atom or triple cost). A leg that falls short reverts the whole call. An atom or triple that receives exactly 1 wei above its creation cost can also revert: when more than one MultiVault fee applies, each rounds up to 1 wei and together they exceed it. Check such a deposit with MultiVault's preview first.
 - `minShares` is passed to MultiVault unchanged, so it applies to the **post-fee** amount. Size it for `forwardedAssets`, not `grossAssets`.
+
+For a diagram of how a deposit is split and example fee configurations, see [How the fees work](https://docs.intuition.systems/docs/interaction-guide/fee-proxy-integration#how-the-fees-work).
 
 ### Protocol caps
 
@@ -29319,7 +29369,7 @@ Affiliates need no role. They manage only their own row.
 | Still works | `claimRefund`, `claimRefundTo`, `updateAffiliateFees`, `updateFeeRecipient`, admin setters, pause controls | Everything else, including the affiliate's own updates |
 | Reversed by | `unpause` (admin)                                                                                          | `unpauseAffiliate` (admin)                             |
 
-Neither pause affects positions on MultiVault: users redeem directly on MultiVault at all times. Unpausing an affiliate does not re-check its fees against the caps; if a cap was lowered in the meantime, the affiliate must update its fees before routing works again.
+Neither pause affects positions on MultiVault, and users redeem directly on MultiVault. MultiVault can be paused separately in an emergency. Unpausing an affiliate does not re-check its fees against the caps; if a cap was lowered in the meantime, the affiliate must update its fees before routing works again.
 
 ### Events
 
@@ -29355,9 +29405,9 @@ MultiVault emits its own `Deposited`, `AtomCreated` and `TripleCreated` events f
 
 The full list of protocol contracts is on the [Deployments](https://docs.intuition.systems/docs/intuition-smart-contracts/deployments) page.
 
-**ABI:** `FeeProxyAbi`, exported by `@0xintuition/periphery` and published as `abis/FeeProxy.ts` in the [intuition-contracts-v2](https://github.com/0xIntuition/intuition-contracts-v2/tree/main/abis) repository with the v1.1.0 release.
+**ABI:** `FeeProxyAbi`, exported by `@0xintuition/periphery` and published as `abis/FeeProxy.ts` in the [intuition-contracts-v2](https://github.com/0xIntuition/intuition-contracts-v2/tree/main/abis) repository.
 
-**Audit:** FeeProxy was audited as part of the v1.1.0 release. The report will be linked on the [Audit Reports](https://docs.intuition.systems/docs/intuition-smart-contracts/audit-reports) page when it is published.
+**Audit:** FeeProxy was audited as part of the v1.1.0 release. See the Diligence v1.1.0 report on the [Audit Reports](https://docs.intuition.systems/docs/intuition-smart-contracts/audit-reports) page.
 
 ## Integration guide
 
@@ -29437,11 +29487,11 @@ Every atom has its own **AtomWallet**, an ERC-4337 smart account. Deposits into 
 
 - **AtomWalletFactory** computes each wallet's deterministic address and deploys the wallet on request. Anyone can deploy a wallet.
 - **AtomWallet** is the smart account itself. All atom wallets share one implementation through an upgradeable beacon.
-- **AtomWarden** owns every atom wallet until it is claimed, and hands ownership to the right account once. An account can claim the wallet of the atom for its own address, a claim can be signed by AtomWarden's signers, an atom's creator can claim after a waiting period, and an operator can grant ownership. See [Atom wallets and AtomWarden](https://docs.intuition.systems/docs/intuition-smart-contracts/multivault#atom-wallets-and-atomwarden).
+- **AtomWarden** owns every atom wallet until it is claimed, and hands ownership to the right account once. An account can claim the wallet of the atom for its own address, a claim can be signed by AtomWarden's signers, an atom's creator can claim after a waiting period (one year on mainnet), and an operator can grant ownership. See [Atom wallets and AtomWarden](https://docs.intuition.systems/docs/intuition-smart-contracts/multivault#atom-wallets-and-atomwarden).
 
 ## Trust Token
 
-The Trust Token contract is an ERC-20 compliant token that serves as the native utility token within the Intuition ecosystem. It is used for deposits, staking, governance, and accessing various features of the platform.
+The Trust Token contract is an ERC-20 compliant token that serves as the native utility token within the Intuition ecosystem. It is used for deposits, staking, and accessing various features of the platform, with governance currently being considered.
 
 - **ERC-20 Compliance**: Fully compliant with the ERC-20 standard
 - **Minting and Burning**: Controlled minting and burning of tokens
@@ -29457,12 +29507,12 @@ The Wrapped Trust contract is an ERC-20 compliant token that lives on the Intuit
 
 ## Trust Bonding
 
-The Trust Bonding contract is a smart contract introduced in V2. Inheriting from the Curve VotingEscrow contract, it enables staking of Wrapped Trust to earn rewards and participate in governance. Key features include:
+The Trust Bonding contract is a smart contract introduced in V2. Inheriting from the Curve VotingEscrow contract, it enables staking of Wrapped Trust to earn rewards, with governance participation currently being considered. Key features include:
 
 - **Staking**: Users can stake Wrapped Trust to earn rewards
-- **Locking**: Users can lock their stake for a specified duration to increase voting power
+- **Locking**: Users can lock their stake for a specified duration to increase their veTRUST balance
 - **Rewards**: Users earn rewards based on their stake and lock duration
-- **Governance**: Stakers can participate in governance decisions
+- **Governance**: Stakers can participate in governance decisions (currently being considered)
 
 ## Bonding Curve Registry
 
@@ -29472,7 +29522,7 @@ The Bonding Curve Registry contract is a registry for bonding curve implementati
 - **Lookup**: The MultiVault contract can look up bonding curve implementations by ID
 - **Management**: The registry can be managed by the contract owner
 
-Two curves are registered: **LinearCurve** (curve ID 1, the default curve for new atoms and triples) and **OffsetProgressiveCurve** (curve ID 2). See [Configurations & Fees](https://docs.intuition.systems/docs/intuition-smart-contracts/configuration#bonding-curves).
+On mainnet, two curves are registered: **LinearCurve** (curve ID 1, the default curve for new atoms and triples) and **OffsetProgressiveCurve** (curve ID 2). See [Configurations & Fees](https://docs.intuition.systems/docs/intuition-smart-contracts/configuration#bonding-curves).
 
 ## BaseEmissionsController
 
@@ -29492,16 +29542,18 @@ The SatelliteEmissionsController contract is responsible for managing the emissi
 
 ## Governance
 
-The protocol contracts are upgradeable, and two timelocks control changes to them:
+The protocol contracts are upgradeable. Contract upgrades and MultiVault configuration changes go through two timelocks, and some other changes do not require a timelock:
 
 - **Upgrades TimelockController** owns the proxy admins and the atom wallet beacon. A contract upgrade can run only after the timelock's delay (7 days on mainnet).
 - **Parameters TimelockController** is, from v1.1.0, the only address that can change MultiVault's configuration: the general, atom, triple, wallet, fee and bonding curve settings, and the atom URI limits. Any other caller gets `MultiVault_OnlyTimelock`. A change can run only after the timelock's delay (3 days on mainnet).
 
-On mainnet, a multisig proposes every timelocked change, so each change is public on-chain for the whole delay before it takes effect. Pausing does not go through the timelocks: on MultiVault, a `PAUSER_ROLE` holder can pause, and only the admin can unpause.
+On mainnet, a multisig proposes every timelocked change, so each change is public on-chain for the whole delay before it takes effect. Pausing does not go through the timelocks: on MultiVault, a `PAUSER_ROLE` holder can pause, and only the admin can unpause. Registering a new bonding curve does not go through them either: the registry owner adds curves directly.
+
+There is no token vote today. Token-holder governance is currently being considered, and its form may change.
 
 ## Periphery
 
-Periphery contracts provide auxiliary functions around the core protocol, such as routing deposits with an app's fee or minting emissions. Users can always use the core contracts directly.
+Periphery contracts provide auxiliary functions around the core protocol, such as routing deposits with an app's fee or minting emissions. Users can use the core contracts directly.
 
 ## FeeProxy
 
@@ -29514,13 +29566,12 @@ The FeeProxy contract, introduced in v1.1.0, lets apps (affiliates) route a user
 
 ## EmissionsAutomationAdapter
 
-The EmissionsAutomationAdapter contract on Base is the contract that automation keepers call to start each epoch's emissions. For each epoch, it mints that epoch's TRUST and bridges it to the Intuition Network through the BaseEmissionsController.
+The EmissionsAutomationAdapter contract on Base is the contract an automation keeper can call to start each epoch's emissions. For each epoch, it mints that epoch's TRUST and bridges it to the Intuition Network through the BaseEmissionsController.
 
 - **Keeper-only**: Only an address with `UPKEEP_ROLE` can call `performUpkeep`
 - **Once per epoch**: `checkUpkeep` reports whether the current epoch is still unminted, and `performUpkeep` does nothing for an epoch that is already minted
-- **Pausable**: The admin can pause and unpause it, which stops automated minting without changing the BaseEmissionsController
 
-Integrators do not call this contract. It emits `UpkeepPerformed(epochNumber)` on Base each time it mints an epoch.
+Integrators do not call this contract.
 
 # MultiVault.sol
 
@@ -29539,13 +29590,13 @@ Function selectors, argument types and event signatures of the v1.0 functions ar
 
 ## SDK setup
 
-The examples on this page use `@0xintuition/sdk` and `viem`. The SDK resolves the MultiVault address from the chain ID:
+The examples on this page use the `alpha` release of `@0xintuition/sdk` (`npm install @0xintuition/sdk@alpha viem`), which exports most of these helpers from `@0xintuition/sdk/protocol`. The SDK resolves the MultiVault address from the chain ID:
 
 ```typescript title="multiVault.ts"
 import {
   getMultiVaultAddressFromChainId,
   intuitionTestnet,
-} from '@0xintuition/sdk';
+} from '@0xintuition/sdk/protocol';
 import type { Address, PublicClient, WalletClient } from 'viem';
 
 // Use intuitionMainnet.id for Intuition Mainnet.
@@ -29710,7 +29761,7 @@ import {
   multiVaultGetAtomCost,
   multiVaultPreviewDeposit,
   multiVaultRedeem,
-} from '@0xintuition/sdk';
+} from '@0xintuition/sdk/protocol';
 import { type Hex, parseEther } from 'viem';
 
 export async function createAtom(
@@ -29800,7 +29851,7 @@ import {
   multiVaultIsApprovedToCreate,
   multiVaultIsApprovedToDeposit,
   multiVaultIsApprovedToRedeem,
-} from '@0xintuition/sdk';
+} from '@0xintuition/sdk/protocol';
 import type { Address, Hex, PublicClient, WalletClient } from 'viem';
 
 import { readConfig, writeConfig } from './multiVault';
@@ -29871,12 +29922,14 @@ This creates an atom, with a first deposit on the default curve (curve 1), and o
 ```typescript title="createAndDeposit.ts"
 import {
   calculateAtomId,
+  multivaultPrepareMulticallTx,
+} from '@0xintuition/sdk';
+import {
   multiVaultCreateAtomsEncode,
   multiVaultDepositEncode,
   multiVaultGetAtomCost,
   multiVaultMulticall,
-  multivaultPrepareMulticallTx,
-} from '@0xintuition/sdk';
+} from '@0xintuition/sdk/protocol';
 import { parseEther, type PublicClient, toHex, type WalletClient } from 'viem';
 
 import { readConfig, writeConfig } from './multiVault';
@@ -29961,7 +30014,7 @@ import {
   MultiVaultAbi,
   multiVaultAccumulatedAtomWalletDepositFees,
   multiVaultComputeAtomWalletAddr,
-} from '@0xintuition/sdk';
+} from '@0xintuition/sdk/protocol';
 import type { Hex, PublicClient } from 'viem';
 
 import { readConfig } from './multiVault';
@@ -30132,7 +30185,7 @@ The TrustBonding contract requires users to wrap their TRUST tokens into Wrapped
 
 ### Voting Escrow (veTRUST)
 
-The TrustBonding contract inherits from the popular Voting Escrow mechanism, allowing users to lock their TRUST tokens for a specified period in exchange for veTRUST tokens. These veTRUST tokens represent voting power and can be used to influence governance decisions within the Intuition protocol.
+The TrustBonding contract inherits from the popular Voting Escrow mechanism, allowing users to lock their TRUST tokens for a specified period in exchange for veTRUST tokens. veTRUST determines a user's share of rewards, and is currently being considered as the basis for governance within the Intuition protocol.
 
 The voting escrow mechanism is implemented using the `VotingEscrow` contract, which provides functions for creating locks, increasing lock amounts, and extending lock durations.
 
@@ -35286,7 +35339,7 @@ import { getMultiVaultAddressFromChainId, intuitionTestnet, intuitionMainnet } f
 
 // Testnet
 const testnetAddress = getMultiVaultAddressFromChainId(intuitionTestnet.id)
-// Returns: '0x2Ece8D4dEdcB9918A398528f3fa4688b1d2CAB91'
+// Returns: '0xF76d6976DeBFbB012ebc53e925BC4AEFCaA7C6c6' (alpha release)
 
 // Mainnet
 const mainnetAddress = getMultiVaultAddressFromChainId(intuitionMainnet.id)
@@ -35979,27 +36032,28 @@ The Intuition protocol contracts are deployed on both the Base Mainnet and the I
 | Contract Name               | Address                                    |
 |-----------------------------|--------------------------------------------|
 | TestTrust                   | 0xA54b4E6e356b963Ee00d1C947f478d9194a1a210 |
-| Upgrades TimelockController | 0x9099BC9fd63B01F94528B60CEEB336C679eb6d52 |
-| BaseEmissionsController     | 0xC14773Aae24aA60CB8F261995405C28f6D742DCf |
+| Upgrades TimelockController | 0xE16E8e10664d399D36D2220fFA763e9367980507 |
+| BaseEmissionsController     | 0x6B96fB3867b666A7957fa589866627ea902ec2C6 |
 
 ### Intuition Testnet (L3)
 
 | Contract Name                 | Address                                    |
 |-------------------------------|--------------------------------------------|
 | WrappedTrust                  | 0xDE80b6EE63f7D809427CA350e30093F436A0fe35 |
-| Upgrades TimelockController   | 0x59B7EaB1cFA47F8E61606aDf79a6b7B5bBF1aF26 |
-| Parameters TimelockController | 0xcCB113bfFf493d80F32Fb799Dca23686a04302A7 |
-| MultiVault                    | 0x2Ece8D4dEdcB9918A398528f3fa4688b1d2CAB91 |
-| AtomWalletFactory             | 0xa4e96c6dB8Dd3314c64bF9d0E845A4905a8705d4 |
-| AtomWalletBeacon              | 0x4B0aC884843576dBA0B0fda925f202aB8b546E33 |
-| AtomWarden                    | 0x040B7760EFDEd7e933CFf419224b57DFB9Eb4488 |
-| SatelliteEmissionsController  | 0xD3be4d1E56866b98f30Ae6C326F14EF9c6ffBBDF |
-| TrustBonding                  | 0x75dD32b522c89566265eA32ecb50b4Fc4d00ADc7 |
-| BondingCurveRegistry          | 0x2AFC4949Dd3664219AA2c20133771658E93892A1 |
-| LinearCurve                   | 0x6df5eecd9B14E31C98A027b8634876E4805F71B0 |
-| OffsetProgressiveCurve        | 0xE65EcaAF5964aC0d94459A66A59A8B9eBCE42CbB |
+| Upgrades TimelockController   | 0xc7721c865ba0bDf760073594922434Edc0C2d200 |
+| Parameters TimelockController | 0x50B874C22e4D54db9ACeE181bF2D5a0663D2D70A |
+| MultiVault                    | 0xF76d6976DeBFbB012ebc53e925BC4AEFCaA7C6c6 |
+| AtomWalletFactory             | 0x900cff1007055c850FB48695a3CB121290d6f17b |
+| AtomWalletBeacon              | 0x16deCCF5484bE9FFb5c8a2d800E0fdf27b876012 |
+| AtomWarden                    | 0xf3f875E0d390C9bA8Aa21881E983baDe91866A38 |
+| SatelliteEmissionsController  | 0x2f4ef00b05f5AA9976154125Cc46D47CAB75B1b7 |
+| TrustBonding                  | 0x9E79446fE4B1683eF1678654554535a9c90B1C3D |
+| BondingCurveRegistry          | 0xb3bfd62d259E07d623844fC7bDB7D54F74Ff9052 |
+| LinearCurve                   | 0x7499bFa918DBc73Ace4A05D6194a5Cd343AE32Dd |
+| OffsetProgressiveCurve        | 0x96bb9020ba4D027E42C29eCB3CEcc2471E505E6C |
 | Multicall3                    | 0xcA11bde05977b3631167028862bE2a173976CA11 |
 | EntryPoint                    | 0x4337084D9E255Ff0702461CF8895CE9E3b5Ff108 |
+| FeeProxy                      | 0x847801465DcB17811089107c0051c49E0135F6B8 |
 
 ## Network Details
 

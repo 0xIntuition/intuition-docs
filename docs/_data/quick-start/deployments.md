@@ -42,27 +42,28 @@ The Intuition protocol contracts are deployed on both the Base Mainnet and the I
 | Contract Name               | Address                                    |
 |-----------------------------|--------------------------------------------|
 | TestTrust                   | 0xA54b4E6e356b963Ee00d1C947f478d9194a1a210 |
-| Upgrades TimelockController | 0x9099BC9fd63B01F94528B60CEEB336C679eb6d52 |
-| BaseEmissionsController     | 0xC14773Aae24aA60CB8F261995405C28f6D742DCf |
+| Upgrades TimelockController | 0xE16E8e10664d399D36D2220fFA763e9367980507 |
+| BaseEmissionsController     | 0x6B96fB3867b666A7957fa589866627ea902ec2C6 |
 
 ### Intuition Testnet (L3)
 
 | Contract Name                 | Address                                    |
 |-------------------------------|--------------------------------------------|
 | WrappedTrust                  | 0xDE80b6EE63f7D809427CA350e30093F436A0fe35 |
-| Upgrades TimelockController   | 0x59B7EaB1cFA47F8E61606aDf79a6b7B5bBF1aF26 |
-| Parameters TimelockController | 0xcCB113bfFf493d80F32Fb799Dca23686a04302A7 |
-| MultiVault                    | 0x2Ece8D4dEdcB9918A398528f3fa4688b1d2CAB91 |
-| AtomWalletFactory             | 0xa4e96c6dB8Dd3314c64bF9d0E845A4905a8705d4 |
-| AtomWalletBeacon              | 0x4B0aC884843576dBA0B0fda925f202aB8b546E33 |
-| AtomWarden                    | 0x040B7760EFDEd7e933CFf419224b57DFB9Eb4488 |
-| SatelliteEmissionsController  | 0xD3be4d1E56866b98f30Ae6C326F14EF9c6ffBBDF |
-| TrustBonding                  | 0x75dD32b522c89566265eA32ecb50b4Fc4d00ADc7 |
-| BondingCurveRegistry          | 0x2AFC4949Dd3664219AA2c20133771658E93892A1 |
-| LinearCurve                   | 0x6df5eecd9B14E31C98A027b8634876E4805F71B0 |
-| OffsetProgressiveCurve        | 0xE65EcaAF5964aC0d94459A66A59A8B9eBCE42CbB |
+| Upgrades TimelockController   | 0xc7721c865ba0bDf760073594922434Edc0C2d200 |
+| Parameters TimelockController | 0x50B874C22e4D54db9ACeE181bF2D5a0663D2D70A |
+| MultiVault                    | 0xF76d6976DeBFbB012ebc53e925BC4AEFCaA7C6c6 |
+| AtomWalletFactory             | 0x900cff1007055c850FB48695a3CB121290d6f17b |
+| AtomWalletBeacon              | 0x16deCCF5484bE9FFb5c8a2d800E0fdf27b876012 |
+| AtomWarden                    | 0xf3f875E0d390C9bA8Aa21881E983baDe91866A38 |
+| SatelliteEmissionsController  | 0x2f4ef00b05f5AA9976154125Cc46D47CAB75B1b7 |
+| TrustBonding                  | 0x9E79446fE4B1683eF1678654554535a9c90B1C3D |
+| BondingCurveRegistry          | 0xb3bfd62d259E07d623844fC7bDB7D54F74Ff9052 |
+| LinearCurve                   | 0x7499bFa918DBc73Ace4A05D6194a5Cd343AE32Dd |
+| OffsetProgressiveCurve        | 0x96bb9020ba4D027E42C29eCB3CEcc2471E505E6C |
 | Multicall3                    | 0xcA11bde05977b3631167028862bE2a173976CA11 |
 | EntryPoint                    | 0x4337084D9E255Ff0702461CF8895CE9E3b5Ff108 |
+| FeeProxy                      | 0x847801465DcB17811089107c0051c49E0135F6B8 |
 
 ## Network Details
 

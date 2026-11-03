@@ -18,18 +18,58 @@ It also covers creating atoms and triples through FeeProxy, reading your affilia
 
 The SDK helpers below do the bookkeeping that is easy to get wrong by hand: they read the affiliate's current fees, pin the `FeeGuard` to them, keep existing MultiVault approvals when adding new ones, size creation amounts so every atom or triple still gets its full cost and deposit after the fee, and preview each call before you send it.
 
+## How the fees work
+
+A routed deposit pays two sets of fees: the affiliate fee, which you set, and MultiVault's own fees, which apply to every deposit with or without FeeProxy. The affiliate fee comes out first, and MultiVault charges its fees on what is left.
+
+This is a 100 TRUST deposit into an existing atom, with an affiliate fee of 1% plus 0.5 TRUST:
+
+```mermaid
+flowchart TD
+    A["User sends 100 TRUST"] --> B["Affiliate fee: 1.5 TRUST<br/>goes to your fee recipient"]
+    A --> C["Forwarded to MultiVault: 98.5 TRUST"]
+    C --> D["Protocol fee: 1.23125 TRUST (1.25%)"]
+    C --> E["Entry fee: 0.4925 TRUST (0.5%)<br/>stays in the vault"]
+    C --> F["Atom wallet fee: 0.4925 TRUST (0.5%)"]
+    C --> G["Buys the user's shares: 96.28375 TRUST"]
+```
+
+MultiVault's rates are the current mainnet values, and the entry fee only applies once the vault has passed its fee threshold. A deposit into a triple pays no atom wallet fee. It pays the 0.9% atom deposit fraction instead, once all three underlying atoms have passed the threshold. See [Configuration](/docs/intuition-smart-contracts/configuration) for the details.
+
+### Example fee configurations
+
+| Configuration          | `depositBps` | `depositFixedFee` | Fee on 100 TRUST | Fee on 1 TRUST |
+| ---------------------- | ------------ | ----------------- | ---------------- | -------------- |
+| No fee                 | 0            | 0                 | 0                | 0              |
+| 1% only                | 100          | 0                 | 1 TRUST          | 0.01 TRUST     |
+| 0.5 TRUST flat only    | 0            | 0.5 TRUST         | 0.5 TRUST        | 0.5 TRUST      |
+| 1% plus 0.5 TRUST flat | 100          | 0.5 TRUST         | 1.5 TRUST        | 0.51 TRUST     |
+
+- **Percentage or flat:** a percentage scales with the deposit. A flat fee weighs heavily on small deposits: 0.5 TRUST is half of a 1 TRUST deposit.
+- **Batches:** the fee is charged once per call. 100 TRUST across four vaults with 1% plus 0.5 TRUST pays 1.5 TRUST in total, not per vault.
+- **Creation:** `creationBps` and `creationFixedFee` work the same way for creating atoms and triples, and you set them separately.
+- **Limits:** on mainnet today the caps are 20% (`maxFeeBps()`) and 50 TRUST (`maxFixedFee()`), and registering costs 100 TRUST (`registrationFee()`). The admin can change these, so read them on-chain. A fee at or above the gross amount reverts with `FeeProxy_FeeExceedsGross`.
+
+### Withdrawals
+
+FeeProxy has no redeem path, so affiliates earn no fee on withdrawals. Users redeem on MultiVault directly, which charges its protocol fee (1.25%) and, if the vault stays above the fee threshold after the redemption, its exit fee (0.75%). With both fees, redeeming shares worth 100 TRUST returns 98 TRUST.
+
 ## Prerequisites
 
-- `@0xintuition/sdk`, `@0xintuition/periphery` and `viem`, at the versions that include the FeeProxy helpers.
+- `@0xintuition/sdk`, `@0xintuition/periphery` and `viem`. The FeeProxy helpers are in alpha releases for now, published under the `alpha` tag until the stable release, so install with the command below.
 - A viem `publicClient` and `walletClient` for Intuition Testnet or Mainnet. See the [Overview](/docs/interaction-guide/overview) for network setup.
 - A FeeProxy deployment on your network. It is live on Intuition Mainnet and Testnet; see the [contract page](/docs/intuition-smart-contracts/fee-proxy#deployments). The SDK resolves both addresses from the chain ID, so you never paste one by hand.
+
+```bash
+npm install @0xintuition/sdk@alpha @0xintuition/periphery@alpha viem
+```
 
 ```typescript title="feeProxy.ts"
 import { getFeeProxyAddressFromChainId } from '@0xintuition/periphery';
 import {
   getMultiVaultAddressFromChainId,
   intuitionTestnet,
-} from '@0xintuition/sdk';
+} from '@0xintuition/sdk/protocol';
 import type { Address, Hex, PublicClient, WalletClient } from 'viem';
 
 // Pick the network once: intuitionTestnet.id to try things out, intuitionMainnet.id for production.
@@ -302,20 +342,20 @@ For creation, sizing the gross amounts by hand is error-prone with more than one
 
 ## Common errors
 
-| Error                                                                    | Cause                                                                               | Fix                                                                                   |
-| ------------------------------------------------------------------------ | ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
-| `FeeProxy_ProxyNotApprovedForDeposit`                                    | The receiver has not approved FeeProxy for `DEPOSIT`.                               | Run Step 2 from the receiver's wallet.                                                |
-| `FeeProxy_ProxyNotApprovedForCreation`                                   | The caller has not approved FeeProxy for `CREATION`.                                | Run Step 2 with `kinds: ['create']`.                                                  |
-| `FeeProxy_ReceiverNotApproved`                                           | Depositing for someone else who has not approved the caller.                        | The receiver approves the caller for `DEPOSIT` on MultiVault, or deposit to yourself. |
-| `FeeProxy_AffiliateNotRegistered` / `FeeProxy_AffiliatePaused`           | The affiliate cannot route right now.                                               | Readiness reports this as a blocker.                                                  |
-| `FeeProxy_BpsExceedsCallerGuard` / `FeeProxy_FixedFeeExceedsCallerGuard` | The affiliate raised its fee after the quote.                                       | Build a new plan, show the new fee, and retry.                                        |
-| `FeeProxy_BpsExceedsCap` / `FeeProxy_FixedFeeExceedsCap`                 | The affiliate's fee is above a protocol cap (for example, after a cap was lowered). | The affiliate lowers its fee with `feeProxyUpdateAffiliateFees`.                      |
-| `FeeProxy_InsufficientValue`                                             | `msg.value` is below the gross total.                                               | Send the plan's `value`.                                                              |
-| `FeeProxy_FeeExceedsGross`                                               | The fee would take the whole amount.                                                | Increase the gross amount.                                                            |
-| `FeeProxy_RegistrationFeeMismatch`                                       | `msg.value` is not exactly `registrationFee()`.                                     | Read `registrationFee()` and send that amount.                                        |
-| `EnforcedPause`                                                          | FeeProxy is globally paused.                                                        | Wait for the protocol to unpause. Users can still redeem on MultiVault.               |
-| Arithmetic underflow (`0x11`) on creation                                | 1 wei above creation cost, and MultiVault's rounded-up fees exceeded it.            | Use a deposit of 0, or of at least a few wei.                                         |
-| MultiVault errors (slippage, minimum deposit, atom exists)               | The routed MultiVault call reverted.                                                | The whole call reverted and no fee was charged. Fix the input and retry.              |
+| Error                                                                    | Cause                                                                               | Fix                                                                                          |
+| ------------------------------------------------------------------------ | ----------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| `FeeProxy_ProxyNotApprovedForDeposit`                                    | The receiver has not approved FeeProxy for `DEPOSIT`.                               | Run Step 2 from the receiver's wallet.                                                       |
+| `FeeProxy_ProxyNotApprovedForCreation`                                   | The caller has not approved FeeProxy for `CREATION`.                                | Run Step 2 with `kinds: ['create']`.                                                         |
+| `FeeProxy_ReceiverNotApproved`                                           | Depositing for someone else who has not approved the caller.                        | The receiver approves the caller for `DEPOSIT` on MultiVault, or deposit to yourself.        |
+| `FeeProxy_AffiliateNotRegistered` / `FeeProxy_AffiliatePaused`           | The affiliate cannot route right now.                                               | Readiness reports this as a blocker.                                                         |
+| `FeeProxy_BpsExceedsCallerGuard` / `FeeProxy_FixedFeeExceedsCallerGuard` | The affiliate raised its fee after the quote.                                       | Build a new plan, show the new fee, and retry.                                               |
+| `FeeProxy_BpsExceedsCap` / `FeeProxy_FixedFeeExceedsCap`                 | The affiliate's fee is above a protocol cap (for example, after a cap was lowered). | The affiliate lowers its fee with `feeProxyUpdateAffiliateFees`.                             |
+| `FeeProxy_InsufficientValue`                                             | `msg.value` is below the gross total.                                               | Send the plan's `value`.                                                                     |
+| `FeeProxy_FeeExceedsGross`                                               | The fee would take the whole amount.                                                | Increase the gross amount.                                                                   |
+| `FeeProxy_RegistrationFeeMismatch`                                       | `msg.value` is not exactly `registrationFee()`.                                     | Read `registrationFee()` and send that amount.                                               |
+| `EnforcedPause`                                                          | FeeProxy is globally paused.                                                        | Wait for the protocol to unpause. A FeeProxy pause does not block redemptions on MultiVault. |
+| Arithmetic underflow (`0x11`) on creation                                | 1 wei above creation cost, and MultiVault's rounded-up fees exceeded it.            | Use a deposit of 0, or of at least a few wei.                                                |
+| MultiVault errors (slippage, minimum deposit, atom exists)               | The routed MultiVault call reverted.                                                | The whole call reverted and no fee was charged. Fix the input and retry.                     |
 
 ## Next steps
 

@@ -78,11 +78,11 @@ Every atom has its own **AtomWallet**, an ERC-4337 smart account. Deposits into 
 
 - **AtomWalletFactory** computes each wallet's deterministic address and deploys the wallet on request. Anyone can deploy a wallet.
 - **AtomWallet** is the smart account itself. All atom wallets share one implementation through an upgradeable beacon.
-- **AtomWarden** owns every atom wallet until it is claimed, and hands ownership to the right account once. An account can claim the wallet of the atom for its own address, a claim can be signed by AtomWarden's signers, an atom's creator can claim after a waiting period, and an operator can grant ownership. See [Atom wallets and AtomWarden](/docs/intuition-smart-contracts/multivault#atom-wallets-and-atomwarden).
+- **AtomWarden** owns every atom wallet until it is claimed, and hands ownership to the right account once. An account can claim the wallet of the atom for its own address, a claim can be signed by AtomWarden's signers, an atom's creator can claim after a waiting period (one year on mainnet), and an operator can grant ownership. See [Atom wallets and AtomWarden](/docs/intuition-smart-contracts/multivault#atom-wallets-and-atomwarden).
 
 # Trust Token
 
-The Trust Token contract is an ERC-20 compliant token that serves as the native utility token within the Intuition ecosystem. It is used for deposits, staking, governance, and accessing various features of the platform.
+The Trust Token contract is an ERC-20 compliant token that serves as the native utility token within the Intuition ecosystem. It is used for deposits, staking, and accessing various features of the platform, with governance currently being considered.
 
 - **ERC-20 Compliance**: Fully compliant with the ERC-20 standard
 - **Minting and Burning**: Controlled minting and burning of tokens
@@ -98,12 +98,12 @@ The Wrapped Trust contract is an ERC-20 compliant token that lives on the Intuit
 
 # Trust Bonding
 
-The Trust Bonding contract is a smart contract introduced in V2. Inheriting from the Curve VotingEscrow contract, it enables staking of Wrapped Trust to earn rewards and participate in governance. Key features include:
+The Trust Bonding contract is a smart contract introduced in V2. Inheriting from the Curve VotingEscrow contract, it enables staking of Wrapped Trust to earn rewards, with governance participation currently being considered. Key features include:
 
 - **Staking**: Users can stake Wrapped Trust to earn rewards
-- **Locking**: Users can lock their stake for a specified duration to increase voting power
+- **Locking**: Users can lock their stake for a specified duration to increase their veTRUST balance
 - **Rewards**: Users earn rewards based on their stake and lock duration
-- **Governance**: Stakers can participate in governance decisions
+- **Governance**: Stakers can participate in governance decisions (currently being considered)
 
 # Bonding Curve Registry
 
@@ -113,7 +113,7 @@ The Bonding Curve Registry contract is a registry for bonding curve implementati
 - **Lookup**: The MultiVault contract can look up bonding curve implementations by ID
 - **Management**: The registry can be managed by the contract owner
 
-Two curves are registered: **LinearCurve** (curve ID 1, the default curve for new atoms and triples) and **OffsetProgressiveCurve** (curve ID 2). See [Configurations & Fees](/docs/intuition-smart-contracts/configuration#bonding-curves).
+On mainnet, two curves are registered: **LinearCurve** (curve ID 1, the default curve for new atoms and triples) and **OffsetProgressiveCurve** (curve ID 2). See [Configurations & Fees](/docs/intuition-smart-contracts/configuration#bonding-curves).
 
 # BaseEmissionsController
 
@@ -133,16 +133,18 @@ The SatelliteEmissionsController contract is responsible for managing the emissi
 
 # Governance
 
-The protocol contracts are upgradeable, and two timelocks control changes to them:
+The protocol contracts are upgradeable. Contract upgrades and MultiVault configuration changes go through two timelocks, and some other changes do not require a timelock:
 
 - **Upgrades TimelockController** owns the proxy admins and the atom wallet beacon. A contract upgrade can run only after the timelock's delay (7 days on mainnet).
 - **Parameters TimelockController** is, from v1.1.0, the only address that can change MultiVault's configuration: the general, atom, triple, wallet, fee and bonding curve settings, and the atom URI limits. Any other caller gets `MultiVault_OnlyTimelock`. A change can run only after the timelock's delay (3 days on mainnet).
 
-On mainnet, a multisig proposes every timelocked change, so each change is public on-chain for the whole delay before it takes effect. Pausing does not go through the timelocks: on MultiVault, a `PAUSER_ROLE` holder can pause, and only the admin can unpause.
+On mainnet, a multisig proposes every timelocked change, so each change is public on-chain for the whole delay before it takes effect. Pausing does not go through the timelocks: on MultiVault, a `PAUSER_ROLE` holder can pause, and only the admin can unpause. Registering a new bonding curve does not go through them either: the registry owner adds curves directly.
+
+There is no token vote today. Token-holder governance is currently being considered, and its form may change.
 
 # Periphery
 
-Periphery contracts provide auxiliary functions around the core protocol, such as routing deposits with an app's fee or minting emissions. Users can always use the core contracts directly.
+Periphery contracts provide auxiliary functions around the core protocol, such as routing deposits with an app's fee or minting emissions. Users can use the core contracts directly.
 
 ## FeeProxy
 
@@ -155,10 +157,9 @@ The FeeProxy contract, introduced in v1.1.0, lets apps (affiliates) route a user
 
 ## EmissionsAutomationAdapter
 
-The EmissionsAutomationAdapter contract on Base is the contract that automation keepers call to start each epoch's emissions. For each epoch, it mints that epoch's TRUST and bridges it to the Intuition Network through the BaseEmissionsController.
+The EmissionsAutomationAdapter contract on Base is the contract an automation keeper can call to start each epoch's emissions. For each epoch, it mints that epoch's TRUST and bridges it to the Intuition Network through the BaseEmissionsController.
 
 - **Keeper-only**: Only an address with `UPKEEP_ROLE` can call `performUpkeep`
 - **Once per epoch**: `checkUpkeep` reports whether the current epoch is still unminted, and `performUpkeep` does nothing for an epoch that is already minted
-- **Pausable**: The admin can pause and unpause it, which stops automated minting without changing the BaseEmissionsController
 
-Integrators do not call this contract. It emits `UpkeepPerformed(epochNumber)` on Base each time it mints an epoch.
+Integrators do not call this contract.
