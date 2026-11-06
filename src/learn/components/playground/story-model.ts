@@ -822,9 +822,11 @@ const BACK_HOME = {
 
 /**
  * How far round the cloud from the front, in spacings, its other side is:
- * the side facing away from the story, where none of its atoms stand.
+ * the side facing away from the story, where none of its atoms stand, nor
+ * the optimists' further ones: two and a half spacings past straight behind,
+ * where the last triple has room.
  */
-const OTHER_SIDE = 1.55 + Math.PI / SPACING;
+const OTHER_SIDE = 4.05 + Math.PI / SPACING;
 
 /** The whole cloud in view from its other side, head on. */
 const OTHER_SIDE_VIEW: Camera = {
@@ -844,6 +846,25 @@ export const THE_WAY_ON: AtomId = 'startBuilding';
 const WIDER_GRAPH: During = [0.55, 0.9];
 
 /** Every atom of the story, all set back as the film ends. */
+/**
+ * The optimists' further atoms, and the one graph as their globe was, with
+ * their further claims: from the globes becoming one again to the atom
+ * again. A test.
+ */
+const OPTIMISTS_ATOMS = Object.fromEntries(
+  Object.entries(PERSPECTIVES_ATOMS).filter(
+    ([id]) => !PESSIMISTS_ATOM_IDS.includes(id as AtomId),
+  ),
+) as Partial<Record<AtomId, AtomState>>;
+const OPTIMISTS_GRAPH: StageState = {
+  ...ONE_GRAPH,
+  atoms: { ...ONE_GRAPH.atoms, ...OPTIMISTS_ATOMS },
+  triples: {
+    ...ONE_GRAPH.triples,
+    ...Object.fromEntries(OPTIMISTS_TRIPLES.map((id) => [id, {}])),
+  },
+};
+
 const STORY_ATOM_IDS = Object.keys(ONE_GRAPH.atoms) as AtomId[];
 
 /**
@@ -922,6 +943,9 @@ function crowdOf(count: number, seed: number): CrowdAtom[] {
   // Clear of the story's atoms, and of the way on's whole line.
   const taken: Vec3[] = [
     ...Object.values(ONE_GRAPH.atoms).map((atom) => atom.at),
+    ...Object.values(OPTIMISTS_ATOMS).flatMap((atom) =>
+      atom === undefined ? [] : [atom.at],
+    ),
     ...Array.from({ length: 21 }, (_, index) =>
       onEquator(OTHER_SIDE - LAST_SPACING + (2 * LAST_SPACING * index) / 20),
     ),
@@ -1854,7 +1878,7 @@ const BEAT_SPECS: readonly BeatSpec[] = [
     // each of its atoms onto the same atom, as the cloud moves to the
     // middle, the size it was beside the copy.
     motionMs: 3600,
-    stage: { ...ONE_GRAPH, enrichment: ONE_ATOM },
+    stage: { ...OPTIMISTS_GRAPH, enrichment: ONE_ATOM },
   },
   {
     id: 'from-the-graph',
@@ -1868,7 +1892,7 @@ const BEAT_SPECS: readonly BeatSpec[] = [
     // the other side, the card coming in as it nears; then the data of his
     // triples from the graph, one row after another.
     motionMs: 6400,
-    stage: { ...ONE_GRAPH, enrichment: FROM_THE_GRAPH },
+    stage: { ...OPTIMISTS_GRAPH, enrichment: FROM_THE_GRAPH },
   },
   {
     id: 'enrichment',
@@ -1881,7 +1905,7 @@ const BEAT_SPECS: readonly BeatSpec[] = [
     // the page comes in under it; and its data flows from its sections into
     // the card, which grows a row for each.
     motionMs: 9000,
-    stage: { ...ONE_GRAPH, enrichment: FROM_A_PAGE },
+    stage: { ...OPTIMISTS_GRAPH, enrichment: FROM_A_PAGE },
   },
   {
     id: 'atom-again',
@@ -1898,9 +1922,9 @@ const BEAT_SPECS: readonly BeatSpec[] = [
     // civilization shall arrives at its front, the subject alone.
     motionMs: 8000,
     stage: {
-      ...ONE_GRAPH,
+      ...OPTIMISTS_GRAPH,
       atoms: {
-        ...ONE_GRAPH.atoms,
+        ...OPTIMISTS_GRAPH.atoms,
         civilization: {
           at: LAST_TRIPLE.startBuilding,
           role: 'identity',
@@ -1908,7 +1932,10 @@ const BEAT_SPECS: readonly BeatSpec[] = [
         },
       },
       triples: {},
-      setBack: STORY_ATOM_IDS,
+      setBack: [
+        ...STORY_ATOM_IDS,
+        ...(Object.keys(OPTIMISTS_ATOMS) as AtomId[]),
+      ],
       // All of the story steps back together, Elon Musk with it, by the
       // time he is back in the graph.
       setBackDuring: [0.3, 0.75],
@@ -1930,9 +1957,9 @@ const BEAT_SPECS: readonly BeatSpec[] = [
     // quieten, for the predicate, the way on, to stand out.
     motionMs: LAST_BEAT_MS,
     stage: {
-      ...ONE_GRAPH,
+      ...OPTIMISTS_GRAPH,
       atoms: {
-        ...ONE_GRAPH.atoms,
+        ...OPTIMISTS_GRAPH.atoms,
         // The subject makes room first, so the names never meet on the way.
         civilization: {
           at: LAST_TRIPLE.civilization,
@@ -1953,7 +1980,10 @@ const BEAT_SPECS: readonly BeatSpec[] = [
       triples: {
         civilizationStartBuilding: { during: ofLastBeat(LAST_BEAT.line) },
       },
-      setBack: STORY_ATOM_IDS,
+      setBack: [
+        ...STORY_ATOM_IDS,
+        ...(Object.keys(OPTIMISTS_ATOMS) as AtomId[]),
+      ],
       // Slowly, the claim held whole a while: the way on grows as they
       // quieten.
       quiet: {

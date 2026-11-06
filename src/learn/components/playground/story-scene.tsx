@@ -136,6 +136,12 @@ const DEPTH_OF_FIELD = { blurPx: 4, fade: 0.4, risePx: 106 } as const;
  */
 const FAR_SIDE_BLUR_PX = 16;
 /**
+ * How deep a band round the cloud's edge, as a depth either side of it,
+ * where an atom or a line fades from the sharp canvas into the far one,
+ * so one on the edge never jumps between them as the cloud turns.
+ */
+const EDGE_BAND = 0.1;
+/**
  * The plane's zoom: the closest it comes when a claim is small, and the
  * least at which its words still read. Below that, on a narrow screen, it
  * stays at the least and follows the newest triple.
@@ -2968,9 +2974,11 @@ export function StoryScene(props: StorySceneProps): ReactNode {
       // Side by side, the two stand right under their menus, the menus at
       // the top of the film, as large as the room under them allows.
       const { other } = state.props.scene;
-      // The far side out of focus only while the two globes stand: in the
-      // other chapters an atom just round the cloud's edge would blur.
-      const farSide = other === null ? context : far;
+      // The far side out of focus while the two globes stand, and on the
+      // globe they become again, through the atom again: in the earlier
+      // chapters an atom just round the cloud's edge would blur.
+      const farSide =
+        other === null && state.props.scene.enrichment === null ? context : far;
       const aside = other?.aside ?? 0;
       const cells = cellsOf(width, height);
       const reachShare = EYE_DISTANCE / Math.sqrt(EYE_DISTANCE ** 2 - 1);
@@ -3236,6 +3244,30 @@ export function StoryScene(props: StorySceneProps): ReactNode {
         ending?: Ending,
       ): Line[] => {
         const detail = sketch?.detail ?? 1;
+        // How much of what stands at depth `z` is drawn sharp, 0 to 1: all of
+        // it in front, none behind, fading across the edge (`EDGE_BAND`).
+        const nearShare = (z: number): number =>
+          farSide === context
+            ? 1
+            : Math.min(Math.max((z + EDGE_BAND) / (2 * EDGE_BAND), 0), 1);
+        // Draws a shape at depth `z`, at `alpha`: its sharp share on the
+        // canvas, the rest on the far one, out of focus.
+        const drawAtDepth = (
+          z: number,
+          alpha: number,
+          draw: (target: CanvasRenderingContext2D) => void,
+        ): void => {
+          const near = nearShare(z);
+          for (const [target, share] of [
+            [context, near],
+            [farSide, 1 - near],
+          ] as const) {
+            if (share > 0) {
+              target.globalAlpha = alpha * share;
+              draw(target);
+            }
+          }
+        };
         // An atom in none of its triples, its shape and its name, set back;
         // one shown quieter, quieter.
         const showing = (id: AtomId, part: keyof typeof SET_BACK): number =>
@@ -3380,7 +3412,7 @@ export function StoryScene(props: StorySceneProps): ReactNode {
           } else {
             // Its part on the far side of the globe on the far canvas, out
             // of focus; its part on the near side sharp.
-            const isNear = projected.map(({ z }) => (z >= 0 ? 1 : 0));
+            const isNear = projected.map(({ z }) => nearShare(z));
             for (const [target, fade] of [
               [context, isNear],
               [farSide, isNear.map((near) => 1 - near)],
@@ -3433,18 +3465,20 @@ export function StoryScene(props: StorySceneProps): ReactNode {
               }))
             : [];
         for (const { atom, at } of crowd) {
-          const target = at.z < 0 ? farSide : context;
-          target.globalAlpha =
+          drawAtDepth(
+            at.z,
             opacity *
-            SET_BACK.shape *
-            crowdShown *
-            (0.2 + 0.8 * frontness(at.z));
-          drawShape(
-            target,
-            at.x,
-            at.y,
-            ATOM_SHARE * radius * at.scale * (0.55 + 0.45 * crowdShown),
-            { from: atom.role, to: atom.role, progress: 1 },
+              SET_BACK.shape *
+              crowdShown *
+              (0.2 + 0.8 * frontness(at.z)),
+            (target) =>
+              drawShape(
+                target,
+                at.x,
+                at.y,
+                ATOM_SHARE * radius * at.scale * (0.55 + 0.45 * crowdShown),
+                { from: atom.role, to: atom.role, progress: 1 },
+              ),
           );
         }
 
@@ -3470,10 +3504,11 @@ export function StoryScene(props: StorySceneProps): ReactNode {
             wayShape = { x: at.x, y: at.y, size, role: atom.role, alpha };
           }
           // On the far side of the cloud, out of focus.
-          const target = at.z < 0 ? farSide : context;
-          target.globalAlpha = alpha;
-          drawShape(target, at.x, at.y, size, atom.role);
+          drawAtDepth(at.z, alpha, (target) =>
+            drawShape(target, at.x, at.y, size, atom.role),
+          );
         }
+        context.globalAlpha = 1;
         far.globalAlpha = 1;
 
         // Their names, in ink badges under them, after the shape arrives, and
