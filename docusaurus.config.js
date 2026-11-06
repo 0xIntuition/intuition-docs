@@ -282,6 +282,7 @@ const config = {
   themes: ['@docusaurus/theme-live-codeblock', '@docusaurus/theme-mermaid'],
   clientModules: [
     require.resolve('./src/client/set-framework.js'),
+    require.resolve('./src/learn/landing-gate.ts'),
   ],
   scripts: [{ src: 'https://cdn.statuspage.io/se-v2.js', async: true }],
   markdown: {
@@ -341,9 +342,11 @@ const config = {
         hideOnScroll: false,
         items: [
           {
-            label: 'Documentation',
-            to: 'docs',
-            className: 'guides-top-header',
+            label: 'Learn',
+            to: 'pathname:///',
+            target: '_self',
+            activeBaseRegex: '^/$',
+            className: 'guides-top-header navbar-learn',
             position: 'left',
           },
           {

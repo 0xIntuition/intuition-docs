@@ -1,0 +1,317 @@
+/*
+ * The film's styles, copied from Learn (`src/app/globals.css`), the film's
+ * source of truth, with Tailwind 4. Docusaurus's own Tailwind 3 never reads
+ * this file or the film's components (see `plugins/tailwind-plugin.cjs`).
+ */
+@layer theme, base, components, utilities;
+@import 'tailwindcss-v4/theme.css' layer(theme);
+@import 'tailwindcss-v4/utilities.css' layer(utilities) source(none);
+@source './';
+
+/*
+ * Tailwind's reset for the film alone, under its wrapper (`film-page.tsx`):
+ * the docs share this stylesheet, Docusaurus bundling all CSS in one. Its
+ * rules for the page's root, `html`, go on the wrapper.
+ */
+@layer base {
+  .learn-film {
+    line-height: 1.5;
+    -webkit-text-size-adjust: 100%;
+    tab-size: 4;
+    font-family: var(--default-font-family);
+    font-feature-settings: var(--default-font-feature-settings, normal);
+    font-variation-settings: var(--default-font-variation-settings, normal);
+    -webkit-tap-highlight-color: transparent;
+    color-scheme: light;
+
+    @import 'tailwindcss-v4/preflight.css';
+  }
+}
+
+/*
+ * Inside the film, none of the docs' own styles. Their theme's and their
+ * Tailwind 3's are unlayered, so they outrank the film's, which sit in
+ * layers: here every element sets them aside and takes the film's alone,
+ * as on Learn. `all` leaves custom properties be, and both Tailwinds keep
+ * their workings in the same `--tw-*` ones, so those are set aside by name:
+ * every one in the built stylesheet.
+ */
+.learn-film :is(*, :hover, :focus-visible, :active) {
+  all: revert-layer;
+  --tw-backdrop-blur: revert-layer;
+  --tw-backdrop-brightness: revert-layer;
+  --tw-backdrop-contrast: revert-layer;
+  --tw-backdrop-grayscale: revert-layer;
+  --tw-backdrop-hue-rotate: revert-layer;
+  --tw-backdrop-invert: revert-layer;
+  --tw-backdrop-opacity: revert-layer;
+  --tw-backdrop-saturate: revert-layer;
+  --tw-backdrop-sepia: revert-layer;
+  --tw-bg-opacity: revert-layer;
+  --tw-blur: revert-layer;
+  --tw-border-opacity: revert-layer;
+  --tw-border-spacing-x: revert-layer;
+  --tw-border-spacing-y: revert-layer;
+  --tw-border-style: revert-layer;
+  --tw-brightness: revert-layer;
+  --tw-contain-layout: revert-layer;
+  --tw-contain-paint: revert-layer;
+  --tw-contain-size: revert-layer;
+  --tw-contain-style: revert-layer;
+  --tw-contrast: revert-layer;
+  --tw-drop-shadow: revert-layer;
+  --tw-drop-shadow-alpha: revert-layer;
+  --tw-drop-shadow-color: revert-layer;
+  --tw-drop-shadow-size: revert-layer;
+  --tw-duration: revert-layer;
+  --tw-ease: revert-layer;
+  --tw-font-weight: revert-layer;
+  --tw-gradient-from: revert-layer;
+  --tw-gradient-from-position: revert-layer;
+  --tw-gradient-stops: revert-layer;
+  --tw-gradient-to: revert-layer;
+  --tw-gradient-to-position: revert-layer;
+  --tw-gradient-via-position: revert-layer;
+  --tw-grayscale: revert-layer;
+  --tw-hue-rotate: revert-layer;
+  --tw-inset-ring-color: revert-layer;
+  --tw-inset-ring-shadow: revert-layer;
+  --tw-inset-shadow: revert-layer;
+  --tw-inset-shadow-alpha: revert-layer;
+  --tw-inset-shadow-color: revert-layer;
+  --tw-invert: revert-layer;
+  --tw-leading: revert-layer;
+  --tw-numeric-figure: revert-layer;
+  --tw-numeric-fraction: revert-layer;
+  --tw-numeric-spacing: revert-layer;
+  --tw-opacity: revert-layer;
+  --tw-ordinal: revert-layer;
+  --tw-outline-style: revert-layer;
+  --tw-pan-x: revert-layer;
+  --tw-pan-y: revert-layer;
+  --tw-pinch-zoom: revert-layer;
+  --tw-placeholder-opacity: revert-layer;
+  --tw-ring-color: revert-layer;
+  --tw-ring-inset: revert-layer;
+  --tw-ring-offset-color: revert-layer;
+  --tw-ring-offset-shadow: revert-layer;
+  --tw-ring-offset-width: revert-layer;
+  --tw-ring-shadow: revert-layer;
+  --tw-rotate: revert-layer;
+  --tw-rotate-x: revert-layer;
+  --tw-rotate-y: revert-layer;
+  --tw-rotate-z: revert-layer;
+  --tw-saturate: revert-layer;
+  --tw-scale-x: revert-layer;
+  --tw-scale-y: revert-layer;
+  --tw-scale-z: revert-layer;
+  --tw-scroll-snap-strictness: revert-layer;
+  --tw-sepia: revert-layer;
+  --tw-shadow: revert-layer;
+  --tw-shadow-alpha: revert-layer;
+  --tw-shadow-color: revert-layer;
+  --tw-shadow-colored: revert-layer;
+  --tw-skew-x: revert-layer;
+  --tw-skew-y: revert-layer;
+  --tw-slashed-zero: revert-layer;
+  --tw-space-y-reverse: revert-layer;
+  --tw-text-opacity: revert-layer;
+  --tw-tracking: revert-layer;
+  --tw-translate-x: revert-layer;
+  --tw-translate-y: revert-layer;
+  --tw-translate-z: revert-layer;
+}
+
+/*
+ * The tokens the film is drawn in, light, as Learn has them (there
+ * `--wave-docs-*`, from `@waveso/docs/styles.css`).
+ */
+:root {
+  --learn-bg: oklch(1 0 0);
+  --learn-bg-subtle: oklch(0.985 0.002 260);
+  --learn-border: oklch(0.91 0.006 262);
+  --learn-border-strong: oklch(0.84 0.008 262);
+  --learn-fg: oklch(0.25 0.02 262);
+  --learn-fg-muted: oklch(0.45 0.02 262);
+  --learn-font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI',
+    Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --learn-font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo,
+    Consolas, 'Liberation Mono', monospace;
+  --learn-radius: 0.625rem;
+}
+
+/* Where squircles are drawn, a rounder radius, as Learn's stylesheet has it. */
+@supports (corner-shape: squircle) {
+  :root {
+    --learn-radius: 1rem;
+  }
+}
+
+/*
+ * The entrance's "Play" button, as Learn has it (there
+ * `.wave-docs-hero__action`, from `@waveso/docs/styles.css`).
+ */
+@layer components {
+  .learn-hero__action {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    padding-inline: 1.25rem;
+    border: 1px solid transparent;
+    border-radius: var(--learn-radius);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .learn-hero__action[data-variant='primary'] {
+    background-color: var(--learn-accent);
+    color: var(--learn-accent-fg);
+  }
+
+  .learn-hero__action[data-variant='primary']:hover {
+    background-color: var(--learn-accent-hover);
+  }
+
+  .learn-hero__action:focus-visible {
+    outline: 2px solid var(--learn-accent);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .learn-hero__action {
+      transition:
+        background-color 120ms ease-out,
+        border-color 120ms ease-out;
+    }
+  }
+
+  @supports (corner-shape: squircle) {
+    .learn-hero__action {
+      corner-shape: squircle;
+    }
+  }
+}
+
+/*
+ * The film's colours and typefaces, each an alias of a token above, so
+ * Tailwind gets utilities for them (`bg-bg`, `text-fg-muted`,
+ * `border-border`).
+ */
+@theme {
+  --color-bg: var(--learn-bg);
+  --color-bg-subtle: var(--learn-bg-subtle);
+  --color-border: var(--learn-border);
+  --color-border-strong: var(--learn-border-strong);
+  --color-fg: var(--learn-fg);
+  --color-fg-muted: var(--learn-fg-muted);
+  --color-accent: var(--learn-accent);
+  --color-accent-hover: var(--learn-accent-hover);
+  --color-accent-fg: var(--learn-accent-fg);
+
+  --font-sans: var(--learn-font-sans);
+  --font-mono: var(--learn-font-mono);
+
+  /*
+   * The film's motion. Every one is applied behind `motion-safe:`, so none
+   * runs for a reader who asked for reduced motion. None but the pulse has
+   * a last keyframe, so each ends on the element's own style.
+   */
+  /* A caption of the playground's story, as its beat starts. */
+  --animate-caption-arrive: caption-arrive 500ms ease-out both;
+  /*
+   * The playground's way on, the film's last predicate, once its triple
+   * has formed: a ring in the predicate's green, `--way-pulse`, that grows
+   * out of it and fades, again and again: go.
+   */
+  --animate-way-pulse: way-pulse 1.6s ease-out infinite;
+
+  @keyframes caption-arrive {
+    from {
+      opacity: 0;
+    }
+  }
+
+  @keyframes way-pulse {
+    from {
+      box-shadow: 0 0 0 0 color-mix(in srgb, var(--way-pulse) 70%, transparent);
+    }
+    to {
+      box-shadow: 0 0 0 14px transparent;
+    }
+  }
+}
+
+/*
+ * How far the reader has reached for the playground's controls as the film
+ * ends, 0 to 1: registered, so it eases on its own, while the controls'
+ * fade with the film follows it frame for frame.
+ */
+@property --reach {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 0;
+}
+
+/*
+ * Graphite: Intuition's mono palette, from white to near black with a cool,
+ * slightly violet cast, in Tailwind's steps (`bg-graphite-900`,
+ * `text-graphite-500`). Static, so every step is a CSS variable even where no
+ * utility uses it yet.
+ */
+@theme static {
+  --color-graphite-0: #ffffff;
+  --color-graphite-50: #f2f3f7;
+  --color-graphite-100: #e2e2ea;
+  --color-graphite-200: #c6cbd9;
+  --color-graphite-300: #9a9aaf;
+  --color-graphite-400: #7e7e8f;
+  --color-graphite-500: #656575;
+  --color-graphite-600: #535362;
+  --color-graphite-700: #2e2e3a;
+  --color-graphite-800: #262631;
+  --color-graphite-900: #16161e;
+  --color-graphite-950: #07070c;
+}
+
+/*
+ * The accent in graphite, as on Learn: near black, for links, buttons and
+ * the playground's timeline.
+ */
+:root {
+  --learn-accent: var(--color-graphite-900);
+  --learn-accent-hover: var(--color-graphite-700);
+  --learn-accent-fg: var(--color-graphite-0);
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex h-9 items-center justify-center rounded-md px-4 text-sm font-medium outline-offset-2 outline-accent focus-visible:outline-2 disabled:opacity-40;
+  }
+
+  .btn-primary {
+    @apply bg-accent text-accent-fg not-disabled:hover:bg-accent-hover;
+  }
+
+  .btn-secondary {
+    @apply border border-border-strong text-fg not-disabled:hover:bg-bg-subtle;
+  }
+
+  /* A text input or a select. */
+  .field {
+    @apply h-9 rounded-md border border-border-strong bg-bg-subtle px-3 text-sm text-fg outline-offset-2 outline-accent placeholder:text-fg-muted focus-visible:outline-2;
+  }
+
+  /* The playground's first input, the one the whole step is about. */
+  .field-lg {
+    @apply h-14 rounded-lg px-4 text-xl;
+  }
+
+  /*
+   * The playground's card. Opaque, so it reads cleanly over the field, and
+   * set off from it by its border alone.
+   */
+  .panel {
+    @apply rounded-2xl border border-border bg-bg;
+  }
+}

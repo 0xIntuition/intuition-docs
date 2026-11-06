@@ -28,6 +28,9 @@ function webpackPlugin(context, options) {
           },
           alias: {
             process: 'process/browser.js',
+            // The onboarding film, copied from Learn, imports its own files
+            // from `@/`, as it does there.
+            '@': require('path').join(__dirname, '..', 'src', 'learn'),
           },
         },
       };
