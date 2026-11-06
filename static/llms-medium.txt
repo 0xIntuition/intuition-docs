@@ -3771,7 +3771,7 @@ const depositConfig = {
 ---
 title: "Integrate FeeProxy"
 description: "Register as a FeeProxy affiliate, check a user's readiness, and route deposits and atom or triple creation through FeeProxy with the Intuition SDK"
-last_updated: "2026-10-20T17:53:35+02:00"
+last_updated: "2026-11-06T22:04:45+01:00"
 source: "https://docs.intuition.systems/docs/interaction-guide/fee-proxy-integration"
 ---
 
@@ -5023,7 +5023,7 @@ Deposit assets into a single vault.
 ---
 title: "Audit Reports"
 description: "Security audit reports for Intuition smart contracts"
-last_updated: "2026-10-20T21:25:23+02:00"
+last_updated: "2026-11-06T22:04:45+01:00"
 source: "https://docs.intuition.systems/docs/intuition-smart-contracts/audit-reports"
 ---
 
@@ -5056,7 +5056,7 @@ This page contains security audit reports for Intuition smart contracts. All con
 ---
 title: "Configurations & Fees"
 description: "The Intuition protocol smart contracts utilize a configuration system that allows for dynamic adjustment of various parameters effecting the behavior of the protocol. This document outlines the key..."
-last_updated: "2026-10-20T17:53:35+02:00"
+last_updated: "2026-11-06T22:04:45+01:00"
 source: "https://docs.intuition.systems/docs/intuition-smart-contracts/configuration"
 ---
 
@@ -5075,7 +5075,7 @@ The smart contract configurations and parameters can be adjusted onchain by the 
 ---
 title: "Contract Deployments"
 description: "The Intuition protocol contracts are deployed on both the Base Mainnet and the Intuition Layer 3 network, as well as their respective testnets. Below are the details of the deployed contracts,..."
-last_updated: "2026-10-20T17:53:35+02:00"
+last_updated: "2026-11-06T22:04:45+01:00"
 source: "https://docs.intuition.systems/docs/intuition-smart-contracts/deployments"
 ---
 
@@ -5090,7 +5090,7 @@ The protocol and periphery addresses match the `alpha` release of the [`@0xintui
 ---
 title: "FeeProxy.sol"
 description: "Documentation for the FeeProxy smart contract, which lets apps route deposits and atom/triple creation to MultiVault while charging their own fee"
-last_updated: "2026-10-21T14:50:09+02:00"
+last_updated: "2026-11-06T22:04:45+01:00"
 source: "https://docs.intuition.systems/docs/intuition-smart-contracts/fee-proxy"
 ---
 
@@ -5108,7 +5108,7 @@ The user stays the owner of record:
 ---
 title: "Contract Architecture Overview"
 description: "Overview of Intuition's smart contract architecture and design patterns"
-last_updated: "2026-10-20T17:53:35+02:00"
+last_updated: "2026-11-06T22:04:45+01:00"
 source: "https://docs.intuition.systems/docs/intuition-smart-contracts"
 ---
 
@@ -5129,7 +5129,7 @@ The contracts live on two chains:
 ---
 title: "MultiVault.sol"
 description: "Documentation for the MultiVault smart contract, including multicall, creating on behalf of another account, approvals and atom wallets"
-last_updated: "2026-10-20T17:53:35+02:00"
+last_updated: "2026-11-06T22:04:45+01:00"
 source: "https://docs.intuition.systems/docs/intuition-smart-contracts/multivault"
 ---
 
@@ -5145,7 +5145,7 @@ The MultiVault contract is the core economic engine of the Intuition protocol. I
 ---
 title: "TrustBonding.sol"
 description: "Documentation for the TrustBonding smart contract"
-last_updated: "2026-10-20T17:53:35+02:00"
+last_updated: "2026-11-06T22:04:45+01:00"
 source: "https://docs.intuition.systems/docs/intuition-smart-contracts/trust-bonding"
 ---
 
@@ -6117,7 +6117,7 @@ Complete workflows for tracking rewards and utilization in the Trust Bonding sys
 ---
 title: "Configuration"
 description: "Configure clients, networks, and contract addresses for the Intuition Protocol"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-11-06T22:04:45+01:00"
 source: "https://docs.intuition.systems/docs/protocol/getting-started/configuration"
 ---
 
@@ -6223,7 +6223,7 @@ Every atom and triple has an associated vault for staking:
 ---
 title: "Contract Deployments"
 description: "The Intuition protocol contracts are deployed on both the Base Mainnet and the Intuition Layer 3 network, as well as their respective testnets. Below are the details of the deployed contracts,..."
-last_updated: "2026-08-04T11:51:50-04:00"
+last_updated: "2026-11-06T22:04:45+01:00"
 source: "https://docs.intuition.systems/docs/quick-start/deployments"
 ---
 
