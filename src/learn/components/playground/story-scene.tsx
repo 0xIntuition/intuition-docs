@@ -2968,6 +2968,9 @@ export function StoryScene(props: StorySceneProps): ReactNode {
       // Side by side, the two stand right under their menus, the menus at
       // the top of the film, as large as the room under them allows.
       const { other } = state.props.scene;
+      // The far side out of focus only while the two globes stand: in the
+      // other chapters an atom just round the cloud's edge would blur.
+      const farSide = other === null ? context : far;
       const aside = other?.aside ?? 0;
       const cells = cellsOf(width, height);
       const reachShare = EYE_DISTANCE / Math.sqrt(EYE_DISTANCE ** 2 - 1);
@@ -3364,23 +3367,27 @@ export function StoryScene(props: StorySceneProps): ReactNode {
           const comeOut = isWhole
             ? Math.min(outSubject.amount, outPredicate.amount, outObject.amount)
             : 0;
-          // Its part on the far side of the cloud on the far canvas, out of
-          // focus; its part on the near side sharp.
-          const isNear = projected.map(({ z }) => (z >= 0 ? 1 : 0));
-          for (const [target, fade] of [
-            [context, isNear],
-            [far, isNear.map((near) => 1 - near)],
-          ] as const) {
-            if (fade.some((shown) => shown > 0)) {
-              drawLine(target, {
-                id: triple.id,
-                points,
-                units,
-                progress: triple.progress,
-                alpha: nearness * (1 - comeOut) * opacity,
-                flow: cloudFlow,
-                fade,
-              });
+          const bond = {
+            id: triple.id,
+            points,
+            units,
+            progress: triple.progress,
+            alpha: nearness * (1 - comeOut) * opacity,
+            flow: cloudFlow,
+          };
+          if (farSide === context) {
+            drawLine(context, bond);
+          } else {
+            // Its part on the far side of the globe on the far canvas, out
+            // of focus; its part on the near side sharp.
+            const isNear = projected.map(({ z }) => (z >= 0 ? 1 : 0));
+            for (const [target, fade] of [
+              [context, isNear],
+              [farSide, isNear.map((near) => 1 - near)],
+            ] as const) {
+              if (fade.some((shown) => shown > 0)) {
+                drawLine(target, { ...bond, fade });
+              }
             }
           }
           if (isWhole) {
@@ -3426,7 +3433,7 @@ export function StoryScene(props: StorySceneProps): ReactNode {
               }))
             : [];
         for (const { atom, at } of crowd) {
-          const target = at.z < 0 ? far : context;
+          const target = at.z < 0 ? farSide : context;
           target.globalAlpha =
             opacity *
             SET_BACK.shape *
@@ -3463,7 +3470,7 @@ export function StoryScene(props: StorySceneProps): ReactNode {
             wayShape = { x: at.x, y: at.y, size, role: atom.role, alpha };
           }
           // On the far side of the cloud, out of focus.
-          const target = at.z < 0 ? far : context;
+          const target = at.z < 0 ? farSide : context;
           target.globalAlpha = alpha;
           drawShape(target, at.x, at.y, size, atom.role);
         }
