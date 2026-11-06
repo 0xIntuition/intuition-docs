@@ -2389,7 +2389,9 @@ table td, table th {
 
   article thead tr th,
   article tbody tr td {
-    flex: 1 !important;
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
     width: auto !important;
-  } 
+    overflow-wrap: anywhere;
+  }
 }
