@@ -3,7 +3,15 @@ title: AI Skills
 sidebar_label: AI Skills
 sidebar_position: 8
 description: Install Intuition agent skills for Claude Code, Codex, and compatible AI coding agents
-keywords: [ai skills, agent skills, Claude Code, Codex, protocol transactions, unsigned transactions]
+keywords:
+  [
+    ai skills,
+    agent skills,
+    Claude Code,
+    Codex,
+    protocol transactions,
+    unsigned transactions,
+  ]
 ---
 
 # AI Skills
@@ -42,19 +50,29 @@ Once installed, call the skill from within your agent session:
 /intuition
 ```
 
+Install the ERC-8004 partner-planning skill at its released version:
+
+```bash
+npx skills add 0xIntuition/agent-skills#erc8004-agent-layer-v0.1.0 \
+  --skill erc8004-agent-layer
+```
+
+Then invoke it with `/erc8004-agent-layer` or name it in your request. It returns a canonical no-write semantic plan and stops before protocol preparation.
+
 Agents can also invoke the skill autonomously when their runtime supports skills, allowing Hermes-style agents and other AI features to use Intuition context without a manual slash command.
 
-## Current Skill
+## Current Skills
 
-| Skill | Purpose | Repository |
-| --- | --- | --- |
-| `intuition` | Canonical reference for Intuition Protocol transactions, ABIs, encoding, addresses, and value calculations. | [agent-skills](https://github.com/0xIntuition/agent-skills/tree/main/skills/intuition) |
+| Skill                 | Purpose                                                                                                                      | Repository                                                                                       |
+| --------------------- | ---------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| `intuition`           | Canonical reference for Intuition Protocol transactions, ABIs, encoding, addresses, and value calculations.                  | [agent-skills](https://github.com/0xIntuition/agent-skills/tree/main/skills/intuition)           |
+| `erc8004-agent-layer` | Plans ERC-8004 partner integrations with canonical registry IDs, trust-pattern Triples, deduplication checks, and no writes. | [agent-skills](https://github.com/0xIntuition/agent-skills/tree/main/skills/erc8004-agent-layer) |
 
-The repository is structured to support more skills over time, but `intuition` is the current public protocol skill.
+Use `erc8004-agent-layer` first to decide what the integration means. After you accept its terminal semantic plan, start a new request with `intuition` for protocol preview or execution mechanics. See the [ERC-8004 Agent Layer Partner Guide](/docs/erc-8004-agent-layer) for the complete guided and manual workflows.
 
 ## Important Boundary
 
-The skills produce unsigned transaction parameters. Your application, wallet, or backend signing flow remains responsible for:
+The core `intuition` skill can produce unsigned transaction parameters. Your application, wallet, or backend signing flow remains responsible for:
 
 - Choosing the signer.
 - Presenting the transaction to the user or signing infrastructure.
@@ -62,6 +80,8 @@ The skills produce unsigned transaction parameters. Your application, wallet, or
 - Confirming and handling receipt data.
 
 Treat `main` as a moving branch. For production agent workflows, pin installs to a Git tag or commit SHA once a release is selected. You can find the latest version and release information in the [GitHub releases page](https://github.com/0xintuition/agent-skills/releases).
+
+The ERC-8004 skill has a stricter boundary: its first turn ends at a no-write semantic plan. Approval does not carry across phases. Metadata pinning, testnet execution, mainnet preview, and mainnet execution each require a later, explicit instruction; mainnet execution always requires explicit mainnet approval.
 
 ## When to Use AI Skills vs MCP
 
