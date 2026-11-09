@@ -1,58 +1,43 @@
 ---
-title: 'Build with the Intuition knowledge graph'
+title: 'Build with Intuition V2'
+sidebar_label: 'Overview'
 slug: /build/overview
-sidebar_position: 1
 ---
 
-Intuition gives applications shared identifiers, a common vocabulary for relationships, a backend for processing and querying those relationships, and an on-chain protocol for publishing terms and expressing economic signals. You can start by modeling data entirely offline, persist it in a Core node, and add wallet interactions when your application needs them.
+Build applications that identify the same entities, share relationships, and let people signal what they trust. Start with a small graph in your application, then add provider metadata, shared queries, or on-chain interactions as you need them.
 
-This guide covers all **21 packages published in the October 28 alpha release**. Start with [installation](./guides/installation.md), then build an atom offline and add only the capabilities your application needs. The [compatibility manifest](./compatibility.md) pins npm artifacts and source; contract and hosted-service capabilities depend on your target environment.
+These guides introduce the **Intuition V2 developer experience**. The libraries are published independently on npm; installation examples specify the exact alpha versions they use. See [versions and compatibility](./compatibility.md) when setting up or upgrading a project.
 
-## Choose a first result
+## Build your first graph
 
-| You want to…                     | Start here                                          | Result                                                       |
-| -------------------------------- | --------------------------------------------------- | ------------------------------------------------------------ |
-| Give an entity a stable identity | [Build your first atom](./guides/first-atom.md)     | Canonical data, hex bytes, deterministic ID; no credentials  |
-| Store and query a graph          | [Core REST cookbook](./guides/core-rest.md)         | Attributed off-chain atoms and triples in your node          |
-| Build a creation form            | [Creation Profiles](./guides/creation-profiles.md)  | Fields and relationship suggestions from shared package data |
-| Add metadata from providers      | [Processing and enrichment](./guides/processing.md) | Explicit classifications, artifacts, and provenance          |
-| Prepare protocol actions         | [On-chain workflow](./guides/onchain.md)            | Reviewed transaction plans with chain, amounts, and receiver |
-| Build with an agent              | [Agent integration contract](./agents.md)           | A bounded task, correct imports, and checkable outcomes      |
+1. **[Understand the building blocks](./concepts.md).** Learn how atoms identify entities, triples connect them, and signals express conviction.
+2. **[Create your first atom](./guides/first-atom.md).** Turn a recording identifier into canonical bytes and a deterministic ID. Run it locally with Node.
+3. **[Build a music catalog](./guides/music-catalog.md).** Connect a recording to an artist, deduplicate imports, and keep display metadata separate from identity.
 
-## What is new in this release
+The first two code guides run offline. You can learn the data model before connecting a wallet or choosing a backend.
 
-- Shared [atom-runtime](./packages/atom-runtime.md) composition and [pipeline-runtime](./packages/pipeline-runtime.md) Promise utilities.
-- Reusable parser, classification plugins, provider enrichment, and [an explicit handoff between them](./guides/processing.md).
-- SDK-owned [serializable action envelopes](./guides/action-envelopes.md), a narrower SDK root, and independent SDK/protocol versions.
-- Public identity ladders, Creation Profiles, canonical predicates, and an opt-in policy for preserving historical provider handles.
+## Extend your application
 
-See the [migration guide](./migration.md) when replacing app-local modules or upgrading SDK v3.
+| Your next feature            | Guide                                              | What you will build                                                       |
+| ---------------------------- | -------------------------------------------------- | ------------------------------------------------------------------------- |
+| Let users add entities       | [Create forms](./guides/creation-profiles.md)      | Fields and relationship suggestions from shared classification data       |
+| Recognize and enrich inputs  | [Process and enrich atoms](./guides/processing.md) | A parser, classifier, and provider pipeline with explicit result handling |
+| Display existing graph data  | [Query the graph](./guides/sdk-reads.md)           | Hosted API lookups by atom or triple ID                                   |
+| Publish terms or add signals | [Prepare on-chain actions](./guides/onchain.md)    | Quotes and transaction requests for a wallet to review                    |
+| Store your own graph         | [Persist with Core REST](./guides/core-rest.md)    | Attributed records in a self-hosted graph backend                         |
 
-## How the systems fit
+## Choose how to integrate
 
 ```mermaid
 flowchart LR
-  A[Application or agent] --> B[Identity and modeling packages]
-  B --> C[Canonical atom bytes and triple IDs]
-  C --> D[Core REST writes]
-  C --> E[SDK action plans]
-  E --> F[Wallet and contracts]
-  F --> G[Indexer and projections]
-  G --> H[Core knowledge graph]
-  D --> H
-  H --> I[Parse classify enrich workers]
-  I --> H
-  H --> J[Core REST reads]
-  J --> A
-  K[Hosted GraphQL API] --> A
+  A[Your application] --> B[Model atoms and triples]
+  B --> C[Enrich metadata]
+  B --> D[Store in your backend]
+  B --> E[Publish through a wallet]
+  E --> F[Query indexed graph data]
+  F --> A
 ```
 
-The hosted GraphQL API is a separate query contract. Do not assume a Core REST server implements it. An application can use either read surface, or adapt both deliberately.
+Your application chooses which steps it needs. Local identifiers are useful on their own. Enrichment adds context; persistence makes records available to readers; publishing and signaling add on-chain state. Each has a separate API and lifecycle.
 
-## Why shared identity matters
-
-Imagine a music discovery application and an independent reputation application. Both can derive the same canonical ISRC-based atom for a recording. Each application adds its own relationships and presentation without inventing a new identity for the recording. A Core node can enrich it from available providers, while contracts can register the same bytes and their associated vaults.
-
-The opportunity is composable applications: curation and discovery, research graphs, portable collections, contextual reputation, and agents that explain which entities and evidence informed a result. Shared identifiers make joins possible. They do not establish that a claim is true, grant access to another node's private records, or make every node automatically replicate every fact.
-
-See [application patterns](./application-patterns.md) for designs and the decisions each application still owns.
+Use **[Packages](./packages/index.md)** to choose libraries and look up their APIs. Use **[API reference](./sdk-reference/index.md)** for SDK function signatures. For architecture choices and complete application ideas, continue with [application architecture](./architecture.md) and [application patterns](./application-patterns.md).

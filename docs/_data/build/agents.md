@@ -1,5 +1,6 @@
 ---
-title: 'Agent integration contract'
+title: 'Build with AI agents'
+sidebar_label: 'Build with AI agents'
 slug: /build/agents
 sidebar_position: 8
 ---
@@ -10,7 +11,7 @@ Start a coding agent with a specific outcome, the release manifest, and the rele
 
 1. [Compatibility and source manifest](./compatibility.md).
 2. [System boundaries](./architecture.md) and [identity semantics](./concepts.md).
-3. [Package map](./packages/index.md), then the selected guidebook.
+3. [Package map](./packages/index.md), then the selected package reference.
 4. The recipe and its [SDK function signatures](./sdk-reference/api.md), if used.
 
 Machine-readable entrypoints: [release manifest](/intuition-release.json), [documentation index](/llms.txt), and [complete documentation text](/llms-full.txt). The manifest records verified npm versions, artifact integrity, public subpaths, and the matching source. Publication does not establish deployment compatibility.
@@ -42,8 +43,7 @@ For a persistence task, add the target Core URL, credential injection mechanism,
 - `createIntuitionApiClient` uses the hosted GraphQL contract, not Core REST.
 - Preparing a transaction is distinct from submitting it. `feeProxyExecutePlan` submits.
 - An off-chain Core write, a successful receipt, and an indexed record are separate outcomes.
-- Main-app internal packages and routers are not public integration APIs.
-- A missing package version is a release prerequisite. Do not silently fall back to SDK v3 or fabricate an import.
+- Check the installed package version before selecting an import or example.
 
 ## Verification contract
 

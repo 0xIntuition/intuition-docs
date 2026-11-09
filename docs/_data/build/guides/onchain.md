@@ -1,5 +1,6 @@
 ---
 title: 'Plan an on-chain write and observe its result'
+sidebar_label: 'Prepare on-chain actions'
 slug: /build/guides/onchain
 sidebar_position: 5
 ---

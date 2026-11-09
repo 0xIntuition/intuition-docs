@@ -1,12 +1,13 @@
 ---
-title: '@0xintuition/sdk guide'
+title: '@0xintuition/sdk'
+sidebar_label: 'SDK'
 slug: /build/packages/sdk
 sidebar_position: 19
 ---
 
 Build integrations with hosted GraphQL reads, deterministic utilities, and explicit on-chain action plans.
 
-Published alpha version: **4.0.0-alpha.0**. [Release compatibility](../compatibility.md) records npm publication, peer dependencies, and deployment boundaries.
+Version **4.0.0-alpha.0** · [npm](https://www.npmjs.com/package/@0xintuition/sdk/v/4.0.0-alpha.0) · [Compatibility](../compatibility.md)
 
 ## Install
 
@@ -16,7 +17,7 @@ npm install @0xintuition/sdk@4.0.0-alpha.0 viem@^2
 
 Use ESM imports. Required peers: `viem ^2.0.0`.
 
-## Main surface
+## API overview
 
 | Export or operation                | Purpose                                     |
 | ---------------------------------- | ------------------------------------------- |
@@ -25,7 +26,7 @@ Use ESM imports. Required peers: `viem ^2.0.0`.
 | `feeProxyBuildCreateViaPlan`       | Signer-attributed routed creation plan      |
 | `feeProxyExecutePlan`              | Submits transactions and waits for receipts |
 
-## First use
+## Example
 
 ```ts
 import {
@@ -38,9 +39,9 @@ const api = createIntuitionApiClient({
 // Calling api.atoms.getById({ termId }) makes an HTTP request.
 ```
 
-## Integration decisions
+## Usage notes
 
-This is the SDK 4 alpha release. It does not own IPFS uploads, framework hooks, general search, or product auth. The existing SDK v3 examples on this site are a separate generation. See the full function reference for exact parameter and result types.
+Use this package for hosted graph reads and protocol actions. Add the [React package](./react.md) for hooks and an application-owned storage provider for uploads. If your project uses `@0xintuition/sdk@3.0.1`, follow the [upgrade guide](../migration.md) before copying these imports. See the [API reference](../sdk-reference/index.md) for parameter and result types.
 
 [API client reference](../sdk-reference/api.md) · [MultiVault](../sdk-reference/multivault.md) · [FeeProxy](../sdk-reference/fee-proxy-builders.md) · [Dynamic fees](../sdk-reference/dynamic-fee-curve.md) · [TrustBonding](../sdk-reference/trust-bonding.md) · [Portfolio](../sdk-reference/portfolio.md).
 
@@ -50,6 +51,6 @@ Pure `*Envelope` builders and the `AgentActionEnvelope` schema now belong to `sd
 
 The SDK root exports SDK-owned APIs and selected ID/configuration types. It no longer re-exports the entire protocol or ID package. Import low-level functions from `protocol` or `sdk/protocol`, deterministic IDs from `ids`, canonical predicate data from `predicates`, and math from `curves`. See [migration](../migration.md).
 
-## Source and full contract
+## Further reading
 
-[Source and package guide](https://github.com/0xIntuition/packages/tree/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/sdk) · [npm package](https://www.npmjs.com/package/@0xintuition/sdk/v/4.0.0-alpha.0). The [machine-readable manifest](/intuition-release.json) lists all declared public subpaths and peer dependencies. Exact npm versions, tarball integrity, and observed dist-tags are recorded in the manifest.
+[Source and package guide](https://github.com/0xIntuition/packages/tree/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/sdk) · [npm package](https://www.npmjs.com/package/@0xintuition/sdk/v/4.0.0-alpha.0).

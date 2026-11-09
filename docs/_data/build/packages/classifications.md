@@ -1,12 +1,13 @@
 ---
-title: '@0xintuition/classifications guide'
+title: '@0xintuition/classifications'
+sidebar_label: 'Classifications'
 slug: /build/packages/classifications
 sidebar_position: 7
 ---
 
 Use canonical entity specifications, identity ladders, Creation Profiles, discovery metadata, and atom-data builders.
 
-Published alpha version: **0.1.0-alpha.1**. [Release compatibility](../compatibility.md) records npm publication, peer dependencies, and deployment boundaries.
+Version **0.1.0-alpha.1** · [npm](https://www.npmjs.com/package/@0xintuition/classifications/v/0.1.0-alpha.1) · [Compatibility](../compatibility.md)
 
 ## Install
 
@@ -16,7 +17,7 @@ npm install @0xintuition/classifications@0.1.0-alpha.1 viem@^2
 
 Use ESM imports. Required peers: `viem ^2.0.0`.
 
-## Main surface
+## API overview
 
 | Export or operation                            | Purpose                                                  |
 | ---------------------------------------------- | -------------------------------------------------------- |
@@ -26,7 +27,7 @@ Use ESM imports. Required peers: `viem ^2.0.0`.
 | `deriveClassificationIdentifier(slug, values)` | IID ladder result or undefined                           |
 | `buildAtomData(slug, values)`                  | Serialized descriptive atom data                         |
 
-## First use
+## Example
 
 ```ts
 import { musicRecordingCreationProfile } from '@0xintuition/classifications/creation/music-recording';
@@ -36,7 +37,7 @@ console.log(
 );
 ```
 
-## Integration decisions
+## Usage notes
 
 Canonical slug, schema type, display name, and engine category are separate values. Use Creation Profiles for fields and recommended relationships; use primitives/anchor for identifier-first atom bytes.
 
@@ -50,6 +51,6 @@ Use `getClassificationLabel` for display names, `getClassificationByType` for ex
 
 Use generated `/creation/<slug>` profiles for known forms; use root discovery and metadata-matrix helpers for dynamic tools. The viem peer is required through the IID derivation dependency.
 
-## Source and full contract
+## Further reading
 
-[Source and package guide](https://github.com/0xIntuition/packages/tree/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/classifications) · [npm package](https://www.npmjs.com/package/@0xintuition/classifications/v/0.1.0-alpha.1). The [machine-readable manifest](/intuition-release.json) lists all declared public subpaths and peer dependencies. Exact npm versions, tarball integrity, and observed dist-tags are recorded in the manifest.
+[Source and package guide](https://github.com/0xIntuition/packages/tree/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/classifications) · [npm package](https://www.npmjs.com/package/@0xintuition/classifications/v/0.1.0-alpha.1).

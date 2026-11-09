@@ -1,5 +1,6 @@
 ---
-title: '@0xintuition/pipeline-runtime guide'
+title: '@0xintuition/pipeline-runtime'
+sidebar_label: 'Pipeline runtime'
 slug: /build/packages/pipeline-runtime
 sidebar_position: 14
 ---

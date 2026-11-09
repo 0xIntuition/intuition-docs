@@ -1,5 +1,6 @@
 ---
 title: 'Use the SDK hosted GraphQL read client'
+sidebar_label: 'Query the graph'
 slug: /build/guides/sdk-reads
 sidebar_position: 6
 ---

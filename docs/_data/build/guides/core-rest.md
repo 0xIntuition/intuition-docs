@@ -1,5 +1,6 @@
 ---
 title: 'Create and query an off-chain graph with Core'
+sidebar_label: 'Persist with Core REST'
 slug: /build/guides/core-rest
 sidebar_position: 3
 ---

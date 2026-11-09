@@ -1,5 +1,6 @@
 ---
 title: 'Build a deterministic atom offline'
+sidebar_label: 'Create your first atom'
 slug: /build/guides/first-atom
 sidebar_position: 1
 ---
@@ -49,4 +50,4 @@ Keep `data`, `dataHex`, `id`, the selected profile, and the original identity ev
 
 Check `success` before reading `value`. Invalid or noncanonical candidates, incompatible representation requests, missing fallback fields, and URI policy violations produce actionable errors. Do not silently replace an error with a random ID. For fallback envelopes `iid` can be `null`; the atom still has deterministic bytes and an ID.
 
-Next: [build a relationship](./creation-profiles.md) or [persist the atom in Core](./core-rest.md).
+Next: [build a music catalog](./music-catalog.md) to connect this atom to an artist and keep presentation metadata separate.

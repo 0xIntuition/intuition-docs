@@ -80,6 +80,7 @@ try {
     'guides/processing-plugins.md': [1],
     'guides/action-envelopes.md': [1],
     'packages/atom-runtime.md': [1],
+    'packages/iid-ladder.md': [1],
     'packages/pipeline-runtime.md': [1],
   };
   for (const file of walk(path.join(root, 'docs/_data/build'))) {
@@ -165,36 +166,25 @@ try {
       throw new Error(`Offline recipe failed: ${relative} (fence ${ordinal})`);
     }
   }
-  const first = fs
-    .readFileSync(
-      path.join(root, 'docs/_data/build/guides/first-atom.md'),
-      'utf8',
-    )
-    .match(/```js\n([\s\S]*?)```/)[1];
-  fs.writeFileSync(
-    path.join(temp, 'first-atom.mjs'),
-    "globalThis.fetch = () => { throw new Error('Offline recipe attempted HTTP'); };\n" +
-      first,
-  );
-  execFileSync(process.execPath, [path.join(temp, 'first-atom.mjs')], {
-    stdio: 'inherit',
-  });
-  const profiles = fs
-    .readFileSync(
-      path.join(root, 'docs/_data/build/packages/primitives.md'),
-      'utf8',
-    )
-    .match(/```js\n([\s\S]*?)```/)[1];
-  fs.writeFileSync(
-    path.join(temp, 'profiles.mjs'),
-    "globalThis.fetch = () => { throw new Error('Offline recipe attempted HTTP'); };\n" +
-      profiles,
-  );
-  execFileSync(process.execPath, [path.join(temp, 'profiles.mjs')], {
-    stdio: 'inherit',
-  });
+  const javascriptRecipes = [
+    'guides/first-atom.md',
+    'guides/music-catalog.md',
+    'packages/primitives.md',
+  ];
+  for (const [index, relative] of javascriptRecipes.entries()) {
+    const file = path.join(root, 'docs/_data/build', relative);
+    const snippet = fs.readFileSync(file, 'utf8').match(/```js\n([\s\S]*?)```/);
+    if (!snippet) throw new Error(`Missing JavaScript recipe: ${relative}`);
+    const executable = path.join(temp, `offline-javascript-${index}.mjs`);
+    fs.writeFileSync(executable, snippet[1]);
+    execFileSync(process.execPath, ['--import', guard, executable], {
+      stdio: 'pipe',
+      timeout: 30_000,
+    });
+    console.log(`Offline recipe passed: ${relative}`);
+  }
   console.log(
-    `Passed ${count} TypeScript snippets against ${installed ? 'installed npm artifacts' : 'local built exports'}; offline identity/context and derived/candidate profile assertions passed. No live-service verification is implied.`,
+    `Passed ${count} TypeScript snippets against ${installed ? 'installed npm artifacts' : 'local built exports'}; ${offline.length + javascriptRecipes.length} offline recipes passed. No live-service verification is implied.`,
   );
 } finally {
   fs.rmSync(temp, { recursive: true, force: true });

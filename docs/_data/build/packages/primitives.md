@@ -1,12 +1,13 @@
 ---
-title: '@0xintuition/primitives guide'
+title: '@0xintuition/primitives'
+sidebar_label: 'Primitives'
 slug: /build/packages/primitives
 sidebar_position: 9
 ---
 
 Build atoms and triples with validated, deterministic public helpers.
 
-Published alpha version: **0.1.0-alpha.1**. [Release compatibility](../compatibility.md) records npm publication, peer dependencies, and deployment boundaries.
+Version **0.1.0-alpha.1** · [npm](https://www.npmjs.com/package/@0xintuition/primitives/v/0.1.0-alpha.1) · [Compatibility](../compatibility.md)
 
 ## Install
 
@@ -16,7 +17,7 @@ npm install @0xintuition/primitives@0.1.0-alpha.1 viem@^2
 
 Use ESM imports. Required peers: `viem ^2.0.0`.
 
-## Main surface
+## API overview
 
 | Export or operation                            | Purpose                                                             |
 | ---------------------------------------------- | ------------------------------------------------------------------- |
@@ -25,7 +26,7 @@ Use ESM imports. Required peers: `viem ^2.0.0`.
 | `buildEthereumAccount(values)`                 | Validated compatibility atom builder                                |
 | `buildTripleByName(subjectId, name, objectId)` | BuildResult resolving a canonical predicate                         |
 
-## First use
+## Example
 
 ```ts
 import { buildIidAnchor } from '@0xintuition/primitives/anchor';
@@ -34,7 +35,7 @@ if (!built.success) throw new Error(built.errors.join('; '));
 console.log(built.value);
 ```
 
-## Integration decisions
+## Usage notes
 
 Always narrow `BuildResult.success`. Context URIs never affect the atom ID. Inspect the returned `profile`, `data`, and `id` before persistence; the requested profile alone does not describe the serialized bytes.
 
@@ -140,6 +141,6 @@ console.log({
 });
 ```
 
-## Source and full contract
+## Further reading
 
-[Source and package guide](https://github.com/0xIntuition/packages/tree/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/primitives) · [npm package](https://www.npmjs.com/package/@0xintuition/primitives/v/0.1.0-alpha.1). The [machine-readable manifest](/intuition-release.json) lists all declared public subpaths and peer dependencies. Exact npm versions, tarball integrity, and observed dist-tags are recorded in the manifest.
+[Source and package guide](https://github.com/0xIntuition/packages/tree/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/primitives) · [npm package](https://www.npmjs.com/package/@0xintuition/primitives/v/0.1.0-alpha.1).

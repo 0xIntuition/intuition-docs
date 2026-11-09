@@ -1,12 +1,13 @@
 ---
-title: '@0xintuition/atom-parser guide'
+title: '@0xintuition/atom-parser'
+sidebar_label: 'Atom parser'
 slug: /build/packages/atom-parser
 sidebar_position: 10
 ---
 
 Detect and normalize IIDs, raw strings, JSON objects/arrays, URLs, IPFS, addresses, names, and ISBNs.
 
-Published alpha version: **0.1.0-alpha.0**. [Release compatibility](../compatibility.md) records npm publication, peer dependencies, and deployment boundaries.
+Version **0.1.0-alpha.0** · [npm](https://www.npmjs.com/package/@0xintuition/atom-parser/v/0.1.0-alpha.0) · [Compatibility](../compatibility.md)
 
 ## Install
 
@@ -16,7 +17,7 @@ npm install @0xintuition/atom-parser@0.1.0-alpha.0
 
 Use ESM imports.
 
-## Main surface
+## API overview
 
 | Export or operation          | Purpose                                       |
 | ---------------------------- | --------------------------------------------- |
@@ -25,7 +26,7 @@ Use ESM imports.
 | `inspectRemote`              | Bounded remote content inspection             |
 | `ParseError`                 | Structured input/configuration errors         |
 
-## First use
+## Example
 
 ```ts
 import { parseAtom } from '@0xintuition/atom-parser';
@@ -55,10 +56,10 @@ Defaults bound input to 16,384 UTF-8 bytes, redirects to 3, response bytes to 1 
 
 Remote outcomes include `success`, `skipped`, `denied`, `timeout`, `error`, `oversized`, and `redirect_limit_exceeded`; inspect `remote` and `warnings` rather than assuming a URL was fetched. Invalid top-level input throws `ParseError` with codes such as `EMPTY_INPUT` and `INPUT_TOO_LARGE`.
 
-## Integration decisions
+## Usage notes
 
 URL/IPFS inspection is on by default; set `remoteFetch: false` for local detection. The published Node transport resolves DNS, rejects restricted destinations by default, and pins the vetted address while preserving the hostname for TLS. It repeats policy checks for redirects. If you inject a custom fetcher through `inspectRemote`, it must honor the pinned request contract; application egress policy remains your responsibility. Use Node 22+ for the complete parser workflow.
 
-## Source and full contract
+## Further reading
 
-[Source and package guide](https://github.com/0xIntuition/packages/tree/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/atom-parser) · [npm package](https://www.npmjs.com/package/@0xintuition/atom-parser/v/0.1.0-alpha.0). The [machine-readable manifest](/intuition-release.json) lists all declared public subpaths and peer dependencies. Exact npm versions, tarball integrity, and observed dist-tags are recorded in the manifest.
+[Source and package guide](https://github.com/0xIntuition/packages/tree/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/atom-parser) · [npm package](https://www.npmjs.com/package/@0xintuition/atom-parser/v/0.1.0-alpha.0).

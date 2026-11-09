@@ -1,10 +1,11 @@
 ---
 title: 'Build serializable action plans for applications and agents'
+sidebar_label: 'Share action envelopes'
 slug: /build/guides/action-envelopes
 sidebar_position: 7
 ---
 
-SDK 4 owns the client-free action-envelope builders formerly exported by the CLI. They take explicit inputs and caller-supplied read context, then return JSON-serializable steps for a separate executor. They perform no RPC requests, signatures, or transaction submission.
+The SDK provides the client-free action-envelope builders formerly exported by the CLI. They take explicit inputs and caller-supplied read context, then return JSON-serializable steps for a separate executor. They perform no RPC requests, signatures, or transaction submission.
 
 ```sh
 npm install @0xintuition/sdk@4.0.0-alpha.0 @0xintuition/protocol@3.0.0-alpha.0 viem@^2

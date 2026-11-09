@@ -252,7 +252,7 @@ async function main() {
             .replaceAll('/', '-');
     const link = `https://github.com/0xIntuition/packages/blob/${commit}/${sourcePath}`;
     let md = `---\ntitle: ${JSON.stringify(title)}\nslug: /build/sdk-reference/${slug}\n---\n\n`;
-    md += `Generated from the published SDK **${sdkVersion}** source. See [release compatibility](../compatibility.md) before installing or connecting to a deployment. Regenerate with \`node scripts/generate-package-reference.js /path/to/packages\`.\n\nImport from \`@0xintuition/sdk/${subpath}\`. [Implementation and internal helpers](${link}).\n\n`;
+    md += `API for \`@0xintuition/sdk@${sdkVersion}\`. [Compatibility](../compatibility.md) · [Source](${link}).\n\nImport from \`@0xintuition/sdk/${subpath}\`.\n\n`;
     md +=
       'Signatures show the exact accepted inputs and return types. Named input/output structures and dependency-injection types are listed below; viem and protocol types come from their respective packages. Preparation and quote functions can perform RPC reads. Envelope builders on the action-envelope pages use caller-supplied read context and perform no RPC reads or signing. **`feeProxyExecutePlan` sends transactions**; the other SDK actions on these pages prepare transactions or read data.\n\n';
     const types = [];

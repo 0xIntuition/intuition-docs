@@ -1,12 +1,13 @@
 ---
-title: '@0xintuition/atom-enrichment guide'
+title: '@0xintuition/atom-enrichment'
+sidebar_label: 'Atom enrichment'
 slug: /build/packages/atom-enrichment
 sidebar_position: 12
 ---
 
 Execute selected enrichment providers and extract fields from artifacts.
 
-Published alpha version: **0.1.0-alpha.0**. [Release compatibility](../compatibility.md) records npm publication, peer dependencies, and deployment boundaries.
+Version **0.1.0-alpha.0** · [npm](https://www.npmjs.com/package/@0xintuition/atom-enrichment/v/0.1.0-alpha.0) · [Compatibility](../compatibility.md)
 
 ## Install
 
@@ -16,7 +17,7 @@ npm install @0xintuition/atom-enrichment@0.1.0-alpha.0
 
 Use ESM imports.
 
-## Main surface
+## API overview
 
 | Export or operation                 | Purpose                                                |
 | ----------------------------------- | ------------------------------------------------------ |
@@ -25,7 +26,7 @@ Use ESM imports.
 | `createMemoryCacheAdapter(options)` | Bounded process-local cache adapter                    |
 | `runPluginConformanceSuite`         | Test-only conformance helper from /testing             |
 
-## First use
+## Example
 
 ```ts
 import {
@@ -39,7 +40,7 @@ const engine = createEnrichmentEngine({
 // Add approved provider plugins before calling engine.enrich with a classified input.
 ```
 
-## Integration decisions
+## Usage notes
 
 The caller owns credentials, transport, retries, scheduling, and persistence. Provider payload validation does not replace the canonical classification registry. Imports alone do not fetch data.
 
@@ -53,6 +54,6 @@ An enrichment run returns `status`, `artifacts`, `errors`, `skipped`, and `timin
 
 Continue with the [complete processing recipe](../guides/processing.md) and [provider/plugin guide](../guides/processing-plugins.md).
 
-## Source and full contract
+## Further reading
 
-[Source and package guide](https://github.com/0xIntuition/packages/tree/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/atom-enrichment) · [npm package](https://www.npmjs.com/package/@0xintuition/atom-enrichment/v/0.1.0-alpha.0). The [machine-readable manifest](/intuition-release.json) lists all declared public subpaths and peer dependencies. Exact npm versions, tarball integrity, and observed dist-tags are recorded in the manifest.
+[Source and package guide](https://github.com/0xIntuition/packages/tree/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/atom-enrichment) · [npm package](https://www.npmjs.com/package/@0xintuition/atom-enrichment/v/0.1.0-alpha.0).

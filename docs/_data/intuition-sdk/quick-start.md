@@ -7,9 +7,8 @@ keywords: [sdk, quick start, tutorial, atom, triple, create, example]
 ---
 
 :::note SDK generation
-This page documents the existing SDK v3 integration. For the published SDK 4 alpha, identity packages, and Core workflows, start with [Build with the knowledge graph](/docs/build/overview) and the [migration guide](/docs/build/migration).
+These examples use `@0xintuition/sdk@3.0.1`. For the current Intuition V2 package guides, start with [Build with Intuition](/docs/build/overview). Use the [upgrade guide](/docs/build/migration) when moving an existing integration to the documented alpha packages.
 :::
-
 
 # Quick Start
 
@@ -59,29 +58,29 @@ import {
   createAtomFromString,
   createTripleStatement,
   getAtomDetails,
-} from '@0xintuition/sdk'
-import { API_URL_DEV } from '@0xintuition/graphql'
-import { createPublicClient, createWalletClient, http, parseEther } from 'viem'
-import { privateKeyToAccount } from 'viem/accounts'
+} from '@0xintuition/sdk';
+import { API_URL_DEV } from '@0xintuition/graphql';
+import { createPublicClient, createWalletClient, http, parseEther } from 'viem';
+import { privateKeyToAccount } from 'viem/accounts';
 
 // Setup account and clients
-const account = privateKeyToAccount('0xYOUR_PRIVATE_KEY')
+const account = privateKeyToAccount('0xYOUR_PRIVATE_KEY');
 
 // SDK reads default to mainnet; keep reads paired with the testnet write chain.
-configureSdk({ apiUrl: API_URL_DEV })
+configureSdk({ apiUrl: API_URL_DEV });
 
 const publicClient = createPublicClient({
   chain: intuitionTestnet,
   transport: http(),
-})
+});
 
 const walletClient = createWalletClient({
   chain: intuitionTestnet,
   transport: http(),
   account,
-})
+});
 
-const address = getMultiVaultAddressFromChainId(intuitionTestnet.id)
+const address = getMultiVaultAddressFromChainId(intuitionTestnet.id);
 ```
 
 `configureSdk` controls the GraphQL endpoint used by SDK read helpers. Use `API_URL_PROD` instead when the Viem clients target `intuitionMainnet`.
@@ -95,13 +94,13 @@ Create an atom from a simple string:
 const atom = await createAtomFromString(
   { walletClient, publicClient, address },
   'TypeScript',
-  parseEther('0.01') // Optional: additional 0.01 tTRUST signal
-)
+  parseEther('0.01'), // Optional: additional 0.01 tTRUST signal
+);
 
-console.log('Created atom!')
-console.log('Atom ID:', atom.state.termId)
-console.log('Transaction:', atom.transactionHash)
-console.log('URI:', atom.uri)
+console.log('Created atom!');
+console.log('Atom ID:', atom.state.termId);
+console.log('Transaction:', atom.transactionHash);
+console.log('URI:', atom.uri);
 ```
 
 Expected output:
@@ -119,18 +118,18 @@ Fetch the atom details from the Intuition API:
 
 ```typescript
 // Wait a moment for indexing
-await new Promise(resolve => setTimeout(resolve, 2000))
+await new Promise((resolve) => setTimeout(resolve, 2000));
 
 // Query atom details
-const details = await getAtomDetails(atom.state.termId)
-if (!details) throw new Error('Created atom was not found on the testnet API')
+const details = await getAtomDetails(atom.state.termId);
+if (!details) throw new Error('Created atom was not found on the testnet API');
 
-const vault = details.term?.vaults[0]
+const vault = details.term?.vaults[0];
 
-console.log('Atom Details:')
-console.log('- Label:', details.label)
-console.log('- Creator:', details.creator?.label ?? details.creator_id)
-console.log('- Vault Shares:', vault?.total_shares)
+console.log('Atom Details:');
+console.log('- Label:', details.label);
+console.log('- Creator:', details.creator?.label ?? details.creator_id);
+console.log('- Vault Shares:', vault?.total_shares);
 ```
 
 ## Step 4: Create a Triple
@@ -141,36 +140,36 @@ Create a triple (statement) connecting three atoms:
 // Create three atoms
 const alice = await createAtomFromString(
   { walletClient, publicClient, address },
-  'Alice'
-)
+  'Alice',
+);
 
 const follows = await createAtomFromString(
   { walletClient, publicClient, address },
-  'follows'
-)
+  'follows',
+);
 
 const bob = await createAtomFromString(
   { walletClient, publicClient, address },
-  'Bob'
-)
+  'Bob',
+);
 
 // Create triple: "Alice follows Bob"
 const triple = await createTripleStatement(
   { walletClient, publicClient, address },
   {
     args: [
-      [alice.state.termId],    // subjects
-      [follows.state.termId],  // predicates
-      [bob.state.termId],      // objects
-      [parseEther('0.1')],     // deposit per triple
+      [alice.state.termId], // subjects
+      [follows.state.termId], // predicates
+      [bob.state.termId], // objects
+      [parseEther('0.1')], // deposit per triple
     ],
-    value: parseEther('0.1'),  // total transaction value
-  }
-)
+    value: parseEther('0.1'), // total transaction value
+  },
+);
 
-console.log('Created triple!')
-console.log('Triple ID:', triple.state[0].args.termId)
-console.log('Transaction:', triple.transactionHash)
+console.log('Created triple!');
+console.log('Triple ID:', triple.state[0].args.termId);
+console.log('Transaction:', triple.transactionHash);
 ```
 
 ## Complete Example
@@ -185,66 +184,67 @@ import {
   createAtomFromString,
   createTripleStatement,
   getAtomDetails,
-} from '@0xintuition/sdk'
-import { API_URL_DEV } from '@0xintuition/graphql'
-import { createPublicClient, createWalletClient, http, parseEther } from 'viem'
-import { privateKeyToAccount } from 'viem/accounts'
+} from '@0xintuition/sdk';
+import { API_URL_DEV } from '@0xintuition/graphql';
+import { createPublicClient, createWalletClient, http, parseEther } from 'viem';
+import { privateKeyToAccount } from 'viem/accounts';
 
 async function main() {
   // Setup
-  const account = privateKeyToAccount(process.env.PRIVATE_KEY as `0x${string}`)
+  const account = privateKeyToAccount(process.env.PRIVATE_KEY as `0x${string}`);
 
   // SDK reads default to mainnet; keep reads paired with the testnet write chain.
-  configureSdk({ apiUrl: API_URL_DEV })
+  configureSdk({ apiUrl: API_URL_DEV });
 
   const publicClient = createPublicClient({
     chain: intuitionTestnet,
     transport: http(),
-  })
+  });
 
   const walletClient = createWalletClient({
     chain: intuitionTestnet,
     transport: http(),
     account,
-  })
+  });
 
-  const address = getMultiVaultAddressFromChainId(intuitionTestnet.id)
+  const address = getMultiVaultAddressFromChainId(intuitionTestnet.id);
 
   // Create an atom
-  console.log('Creating atom...')
+  console.log('Creating atom...');
   const atom = await createAtomFromString(
     { walletClient, publicClient, address },
     'TypeScript',
-    parseEther('0.01')
-  )
+    parseEther('0.01'),
+  );
 
-  console.log('✓ Atom created:', atom.state.termId)
+  console.log('✓ Atom created:', atom.state.termId);
 
   // Wait for indexing
-  await new Promise(resolve => setTimeout(resolve, 2000))
+  await new Promise((resolve) => setTimeout(resolve, 2000));
 
   // Query details
-  const details = await getAtomDetails(atom.state.termId)
-  if (!details) throw new Error('Created atom was not found on the testnet API')
-  console.log('✓ Atom label:', details.label)
+  const details = await getAtomDetails(atom.state.termId);
+  if (!details)
+    throw new Error('Created atom was not found on the testnet API');
+  console.log('✓ Atom label:', details.label);
 
   // Create three atoms for a triple
-  console.log('\nCreating atoms for triple...')
+  console.log('\nCreating atoms for triple...');
   const alice = await createAtomFromString(
     { walletClient, publicClient, address },
-    'Alice'
-  )
+    'Alice',
+  );
   const follows = await createAtomFromString(
     { walletClient, publicClient, address },
-    'follows'
-  )
+    'follows',
+  );
   const bob = await createAtomFromString(
     { walletClient, publicClient, address },
-    'Bob'
-  )
+    'Bob',
+  );
 
   // Create triple
-  console.log('Creating triple...')
+  console.log('Creating triple...');
   const triple = await createTripleStatement(
     { walletClient, publicClient, address },
     {
@@ -255,19 +255,19 @@ async function main() {
         [parseEther('0.1')],
       ],
       value: parseEther('0.1'),
-    }
-  )
+    },
+  );
 
-  console.log('✓ Triple created:', triple.state[0].args.termId)
-  console.log('\nSuccess! You created your first atom and triple.')
+  console.log('✓ Triple created:', triple.state[0].args.termId);
+  console.log('\nSuccess! You created your first atom and triple.');
 }
 
 main()
   .then(() => process.exit(0))
   .catch((error) => {
-    console.error('Error:', error)
-    process.exit(1)
-  })
+    console.error('Error:', error);
+    process.exit(1);
+  });
 ```
 
 ## Run the Example
@@ -312,19 +312,23 @@ Each atom and triple has a vault for deposits:
 Now that you've created your first atom and triple, explore:
 
 ### Atom Operations
+
 - [**Create from Thing**](/docs/intuition-sdk/atoms-guide) - Create rich entities with metadata
 - [**Create from Ethereum Account**](/docs/intuition-sdk/atoms-guide) - Create identity atoms
 - [**Batch Creation**](/docs/intuition-sdk/atoms-guide) - Create multiple atoms efficiently
 
 ### Triple Operations
+
 - [**Querying Triples**](/docs/intuition-sdk/triples-guide) - Fetch triple details
 - [**Counter Triples**](/docs/intuition-sdk/triples-guide) - Work with opposing positions
 
 ### Vault Operations
+
 - [**Deposits**](/docs/intuition-sdk/vaults-guide) - Deposit into vaults
 - [**Redemptions**](/docs/intuition-sdk/vaults-guide) - Redeem shares
 
 ### Search & Discovery
+
 - [**Global Search**](/docs/intuition-sdk/search-guide) - Search across all entities
 
 ## Common Issues
@@ -342,7 +346,7 @@ If your transaction reverts, check:
 The Intuition API may take a few seconds to index new entities. Add a delay before querying:
 
 ```typescript
-await new Promise(resolve => setTimeout(resolve, 2000))
+await new Promise((resolve) => setTimeout(resolve, 2000));
 ```
 
 ### Network Errors
@@ -350,8 +354,8 @@ await new Promise(resolve => setTimeout(resolve, 2000))
 Ensure you're connected to the correct network:
 
 ```typescript
-console.log('Network:', intuitionTestnet.name)
-console.log('Chain ID:', intuitionTestnet.id)
+console.log('Network:', intuitionTestnet.name);
+console.log('Chain ID:', intuitionTestnet.id);
 ```
 
 ## See Also

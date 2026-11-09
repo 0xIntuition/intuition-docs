@@ -1,59 +1,46 @@
 ---
-title: 'Packages, Core, contracts, and application boundaries'
+title: 'Design your Intuition application'
+sidebar_label: 'Application architecture'
 slug: /build/architecture
-sidebar_position: 3
 ---
 
-Use each layer for the work it owns. This keeps application code portable and makes an agent's integration choices reviewable.
+An Intuition application combines local data modeling with the services it needs for reads, persistence, metadata, and transactions. Choose those services according to the feature you are building.
 
-| Layer                                                       | Owns                                                                     | Your application supplies                                         |
-| ----------------------------------------------------------- | ------------------------------------------------------------------------ | ----------------------------------------------------------------- |
-| `iid-spec`, `iid`, `iid-registry`, `iid-ladder`, `ids`      | Identifier rules, pure resolution, selection policy, content IDs         | Input facts and reconciliation policy                             |
-| `schema-org`, `classifications`, `predicates`, `primitives` | Vocabulary, creation fields, relationships, deterministic builders       | Forms, validation presentation, persistence decision              |
-| `atom-parser`, `atom-classification`, `atom-enrichment`     | Reusable processing engines and plugins                                  | Runtime mode, providers, credentials, cache, network policy       |
-| `atom-runtime`, `pipeline-runtime`                          | Shared configuration, memoized engines, Promise concurrency and outcomes | Request cancellation, lifecycle, observability sinks, persistence |
-| Core                                                        | REST graph API, storage, workers, chain ingestion and projections        | Node configuration, access policy, operations                     |
-| `deployments`, `protocol`, `periphery`, `curves`            | Artifacts, contract helpers, encoding and quote math                     | Matching chain/deployment, clients, current state                 |
-| `sdk`, `cli`, `react`                                       | Integration reads/plans, deterministic command-line encoding, UI hooks   | Signing policy, transaction UX, error recovery                    |
-| Main application                                            | Product flows and orchestration                                          | Its own auth, ranking, billing, moderation, and presentation      |
+## Start with the application data model
 
-## Core's two data paths
+Use [primitives](./packages/primitives.md) to build atoms and triples, [classifications](./packages/classifications.md) for entity types and forms, and [predicates](./packages/predicates.md) for relationships. These operations run locally and produce data your application can store or publish later.
 
-```mermaid
-flowchart TB
-  CH[Chain events] --> IX[Rust indexer]
-  IX --> TS[Timescale event store]
-  TS --> PR[Checkpointed projections]
-  PR --> MK[Market read models]
-  PR --> KG[Postgres knowledge graph]
-  API[Key-attributed REST writes] --> KG
-  KG --> W[Lease-based workers]
-  W --> KG
-  KG --> READ[REST graph reads]
-  AS[Stateless atom-services] --> R[Classification and enrichment response]
-```
+Keep canonical atom bytes alongside the atom ID. Store labels, images, provider observations, and application-specific state separately. The [music catalog tutorial](./guides/music-catalog.md) shows this separation in a small application object.
 
-Postgres-KG stores atoms, triples, predicates, artifacts, accounts, and attribution. The event store and market projections track chain events, vaults, positions, and signals. Deterministic term IDs connect the models; there is no cross-database foreign key guaranteeing they advance together. The graph can be used without chain indexing.
+## Choose a read and storage API
 
-Atom-services is a separate stateless HTTP service for classification/enrichment. Calling it does not persist a graph record. Running a package engine likewise does not start a worker, provision a database, or write a term.
+| Requirement                                        | Integration                                                                          | What to configure                                        |
+| -------------------------------------------------- | ------------------------------------------------------------------------------------ | -------------------------------------------------------- |
+| Read the hosted, indexed graph                     | [SDK API client](./guides/sdk-reads.md) or [GraphQL API](/docs/graphql-api/overview) | Mainnet or testnet endpoint and queries                  |
+| Own the graph database and write off-chain records | [Core REST](./guides/core-rest.md)                                                   | A running Core node, authentication, and its API version |
+| Keep a local catalog or prototype                  | Your application storage                                                             | Serialization, deduplication, and provenance             |
+| Read current contract state                        | [Protocol](./packages/protocol.md) or [SDK actions](./guides/onchain.md)             | Chain, RPC client, and contract address                  |
 
-## Public integration versus product internals
+**Intuition Core** is a self-hosted graph backend with REST APIs for records and processing. Use it when your application needs to ingest and query its own graph. It is optional for local modeling and hosted GraphQL reads. Core REST and hosted GraphQL have different request and response contracts; choose an adapter for each API you use.
 
-An application can derive WebPage identity from URL facts and attach extracted title/image to presentation data separately. A provider-backed picker can combine provider candidates with category identity policy. These patterns keep a metadata refresh from changing the target of existing relationships.
+A locally derived ID does not guarantee that a hosted API has indexed the corresponding term. Handle missing records and the delay between transaction confirmation and indexing.
 
-App-local routers, authentication packages, database actions, and UI models are not public SDK contracts. Third-party builders should use the [Core API](./guides/core-rest.md) and [public packages](./packages/index.md), then implement their own application adapter. The [creation guide](./guides/creation-profiles.md) shows the public imports for that adapter.
+## Place processing in the right runtime
 
-## Query surface selection
+Use [atom-parser](./packages/atom-parser.md) to recognize an input, [atom-classification](./packages/atom-classification.md) to determine its type, and [atom-enrichment](./packages/atom-enrichment.md) to retrieve provider metadata. [Atom runtime](./packages/atom-runtime.md) composes engines and caches when you want a shared setup.
 
-- **Core REST:** your node's atoms, triples, artifacts, pipeline state, events, and schema metadata.
-- **SDK API client:** a narrow set of lookups over the hosted GraphQL schema, returning normalized models.
-- **GraphQL documentation elsewhere on this site:** the established hosted schema; this does not imply Core hosts that schema.
-- **Contract reads:** current protocol state at the selected RPC and block. These can lead indexed data.
+Local parsing and compatible classification plugins can run in a browser. Network inspection and providers that require secrets belong on your server. Configure credentials, timeouts, cache lifetime, and cancellation explicitly. Return accepted fields and their provenance to the client; let your application decide when to persist them.
 
-A Core-native GraphQL contract is tracked as separate roadmap work. Do not send the SDK's generated GraphQL operations to `/api/atoms` or infer a new Core `/graphql` endpoint.
+See [processing and enrichment](./guides/processing.md) for the handoff between stages and [custom processing](./guides/processing-plugins.md) for plugins and providers.
 
-## Failure and consistency model
+## Add wallet interactions
 
-Keep separate UI states for a missing record, a pending projection, an enrichment failure, and a transaction revert. Use finite retries and observable status. Core's workers reclaim expired leases and maintain stage attempts; applications still need a timeout and recovery path. A provider timeout can leave identity and relationships intact.
+Use SDK actions to quote and prepare operations, or protocol wrappers for direct contract calls. Present the chain, destination, amounts, and receiver before asking a wallet to sign. Track submission, receipt, and indexed visibility as separate states.
 
-[Core architecture source](https://github.com/0xIntuition/intuition-core/blob/eebba114666ba2373690f2beb7dce565aa16f0b7/docs/architecture.md).
+For a backend or agent that prepares work for another executor, [action envelopes](./guides/action-envelopes.md) provide serializable plans. The executor still validates the destination and authorizes the transaction.
+
+Only enable operations supported by the selected contract deployment. [Versions and compatibility](./compatibility.md) explains package peers and contract capability checks; [React hooks](./packages/react.md) supply transaction lifecycle state for React applications.
+
+## Keep ownership explicit
+
+Your application owns authentication, authorization, storage access, provider credentials, and the interpretation of claims and signals. Shared packages supply common representations and operations. Design your API so users can see which records were imported, which claims were attributed to an account, and which actions were confirmed on-chain.

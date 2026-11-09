@@ -1,5 +1,6 @@
 ---
 title: 'Install the packages for your application'
+sidebar_label: 'Installation and setup'
 slug: /build/guides/installation
 sidebar_position: 0
 ---
@@ -58,4 +59,4 @@ The hook package supports React 18+; use your application's matching React/rende
 
 Compile Node examples with `module: "NodeNext"`, `moduleResolution: "NodeNext"`, `target: "ES2022"`, and `strict: true`. Bundler applications can use their framework's ESM-aware resolver. Upstream consumer checks set `skipLibCheck: true` because the wagmi declaration graph has upstream type errors without it.
 
-Commit the lockfile after installing. For `ERR_PACKAGE_PATH_NOT_EXPORTED`, choose an entrypoint from the [manifest](/intuition-release.json), rather than importing `src/` or `dist/` internals. For a missing export, check the installed version and the [SDK migration map](../migration.md); SDK v3 and v4 have different root exports.
+Commit the lockfile after installing. For `ERR_PACKAGE_PATH_NOT_EXPORTED`, choose an entrypoint from the [manifest](/intuition-release.json), rather than importing `src/` or `dist/` internals. For a missing export, check the installed version and the [SDK migration map](../migration.md); `@0xintuition/sdk@3.0.1` and `4.0.0-alpha.0` expose different root exports.

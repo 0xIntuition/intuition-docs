@@ -1,5 +1,6 @@
 ---
 title: 'Parse, classify, and enrich without changing identity'
+sidebar_label: 'Process and enrich atoms'
 slug: /build/guides/processing
 sidebar_position: 4
 ---
@@ -154,7 +155,7 @@ Extraction can perform additional lookups; supply `fetcher` and `signal` when yo
 
 ## Use Core's stateless service
 
-For the pinned [Core baseline](../compatibility.md), atom-services exposes `POST /v1/classify` with `{ "input": "…" }`, and `POST /v1/process` with `{ "rawInput": "…" }`. Processing does not persist a graph record. This service uses local port 4010, separate from the Query API. Persist accepted results through the [Core REST guide](./core-rest.md).
+The [documented Core service](../compatibility.md) exposes `POST /v1/classify` with `{ "input": "…" }`, and `POST /v1/process` with `{ "rawInput": "…" }`. Processing does not persist a graph record. This service uses local port 4010, separate from the Query API. Persist accepted results through the [Core REST guide](./core-rest.md).
 
 ## Extend the pipeline
 

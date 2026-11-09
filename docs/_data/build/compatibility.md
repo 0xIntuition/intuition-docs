@@ -1,50 +1,52 @@
 ---
-title: 'Published versions and compatibility'
+title: Versions and compatibility
+sidebar_label: Versions and compatibility
 slug: /build/compatibility
-sidebar_position: 10
 ---
 
-These guides target the **October 28, 2026 alpha release** of all 21 public packages. npm publication, exact versions, exports, peers, and source provenance were checked on **November 2, 2026**. The [release manifest](/intuition-release.json) records each artifact's tarball URL, SHA-512 integrity, publication time, and observed dist-tags.
+**Intuition V2** names the developer experience covered by these guides. Each npm package has its own version: for example, the documented SDK is `4.0.0-alpha.0` and protocol is `3.0.0-alpha.0`. Those npm major numbers do not rename the product generation.
 
-## Install the documented release
+These guides use the 21 alpha packages published on October 28, 2026. Alpha interfaces can change between releases. Pin the versions shown in the examples and commit your lockfile.
 
-Use exact versions from the [package catalog](./packages/index.md). All 21 releases are on the `alpha` tag, but `latest` is not consistently the same release. In particular, untagged SDK installs still select `3.0.1`, protocol selects `2.0.3`, and CLI selects `0.0.0` at the time of verification. SDK and protocol use independent major versions.
+## Install the documented versions
+
+Follow [installation and setup](./guides/installation.md) for the dependency set your workflow needs. An untagged install may select an earlier API. On November 2, 2026, npm's `latest` tag selected SDK `3.0.1`, protocol `2.0.3`, and CLI `0.0.0`; the versions in this guide used the `alpha` tag.
 
 ```sh
 npm install @0xintuition/sdk@4.0.0-alpha.0 @0xintuition/protocol@3.0.0-alpha.0 viem@^2
 ```
 
-For reproducible applications, commit your package-manager lockfile. Use named ESM imports; these packages do not ship CommonJS `require` entrypoints. Start with Node 22+ for the complete guide set, including remote parsing. The SDK and processing composition packages declare Node 20+ support. Use browser-compatible entrypoints and plugins when integrating a web application; keep server providers and credentials on your backend.
+The [package catalog](./packages/index.md) links to every documented npm version. The [release manifest](/intuition-release.json) records exact versions, public exports, peer dependencies, and artifact integrity for reproducible installs.
 
-## Source and publication evidence
+## Runtime and dependencies
 
-| Repository                                                                                                    | Baseline                                                            | Scope                                    |
-| ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- | ---------------------------------------- |
-| [packages](https://github.com/0xIntuition/packages/tree/dde4fdf5774447b84cd0b820593fb0db7366e58d)             | October 28 alpha release; npm `gitHead` matches the selected source | Public package exports and SDK reference |
-| [intuition-core](https://github.com/0xIntuition/intuition-core/tree/eebba114666ba2373690f2beb7dce565aa16f0b7) | Existing Core guide baseline                                        | REST, persistence, workers, and indexing |
+Use named ESM imports; these releases do not provide CommonJS `require` entrypoints. Node 22+ supports the complete guide set, including remote parsing. SDK and processing composition packages declare Node 20+ support.
 
-The package update does not repin Core or prove that a hosted service has adopted it. Core REST recipes remain tied to their linked revision. The npm version pages for [SDK](https://www.npmjs.com/package/@0xintuition/sdk/v/4.0.0-alpha.0), [protocol](https://www.npmjs.com/package/@0xintuition/protocol/v/3.0.0-alpha.0), and every package in the catalog identify the installable artifacts.
+| Integration                           | Requirements                                                                                          |
+| ------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| Identity, modeling, SDK, and protocol | viem 2 where declared; install the peers in each package's setup instructions                         |
+| React hooks                           | React 18+, wagmi 2+, TanStack Query 5+, viem 2, protocol `3.0.0-alpha.0`, deployments `0.1.0-alpha.1` |
+| Parser remote inspection              | Node-compatible DNS and pinned HTTP transport, Fetch, and Web Streams                                 |
+| Classification and enrichment         | Plugins compatible with your runtime, provider settings, and cache policy                             |
+| SDK API reads                         | A hosted GraphQL endpoint for the selected network                                                    |
+| Core REST                             | A running Core node, its API version, and credentials for the configured access mode                  |
 
-## Choose compatible dependencies
+The React examples use the wagmi 2 API. Use your application's matching React and renderer versions. For web applications, select browser-compatible entrypoints and plugins, and keep provider secrets on a backend.
 
-| Surface                              | Required integration                                                                                                                                                    |
-| ------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Identity/modeling and SDK/protocol   | viem 2 where declared; exact internal alpha dependencies are published together                                                                                         |
-| React hooks                          | `react >=18`, `wagmi >=2`, `@tanstack/react-query >=5`, viem 2, protocol `3.0.0-alpha.0`, deployments `0.1.0-alpha.1`; upstream tests exercise React 19/wagmi 2/Query 5 |
-| Parser remote inspection             | Node-compatible DNS and pinned HTTP transport, Fetch/Web Streams; disable remote inspection for local detection                                                         |
-| Classifier, enricher, shared runtime | Explicit provider settings, runtime-compatible plugins, credentials, and cache policy                                                                                   |
-| SDK API reads                        | Hosted GraphQL schema; explicit mainnet/testnet URL                                                                                                                     |
-| Core Query API                       | REST node, migrations, credentials, and indexing configuration; local default port 3000                                                                                 |
-| Core atom-services                   | Stateless classification/enrichment HTTP service; local default port 4010                                                                                               |
+The manifest lists each package's declared `peers` and `engines`. TypeScript example checks use `strict: true` and `skipLibCheck: true`.
 
-The manifest's per-package `peers` and `engines` are the authoritative declared ranges. A package without `engines` does not thereby promise every runtime. The snippet checks use strict TypeScript with `skipLibCheck: true`, matching the upstream consumer checks.
+## Match contract operations to a deployment
 
-## Contract capabilities remain deployment-specific
+The deployments package includes artifacts from `contracts-v2@1.1.0-alpha.1` and `contracts-v2-periphery@1.1.0-alpha.0`. Check that your target chain's contract implementation supports an operation before enabling it. URI creation, payable multicall, dynamic-fee, and on-behalf-of operations require compatible deployments.
 
-The deployment package includes artifacts from `contracts-v2@1.1.0-alpha.1` and `contracts-v2-periphery@1.1.0-alpha.0`. Publishing these libraries does not upgrade a contract. Verify the destination chain's implementation before using URI creation, payable multicall, dynamic-fee, or on-behalf-of operations.
+The published catalog does not provide a TrustSwapAndBridgeRouter address; that address lookup throws. FeeProxy and other bridge helpers are separate capabilities. Use the [deployments reference](./packages/deployments.md) and [contract artifact details](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/docs/contract-artifacts.md) to select the correct ABI and address.
 
-The published catalog deliberately withholds the TrustSwapAndBridgeRouter address pending a compatible deployment; its lookup throws. FeeProxy and other bridge helpers are separate capabilities. Use the [deployment guide](./packages/deployments.md) and the pinned [artifact provenance](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/docs/contract-artifacts.md) when selecting addresses.
+## Match the API to your backend
 
-## Upgrade existing applications
+The SDK API client uses hosted GraphQL. Core offers a separate REST contract for a self-hosted graph. Installing an npm package does not change the API running on either service.
 
-The site's SDK v3 and hosted GraphQL documentation remains available for existing integrations. For SDK 4, start with [migration](./migration.md), then [installation](./guides/installation.md). Source and npm artifact checks verify the library contract; provider availability, your credentials, hosted APIs, and deployed contract behavior still depend on your environment.
+[Core REST examples](./guides/core-rest.md) describe the [linked Core source version](https://github.com/0xIntuition/intuition-core/tree/eebba114666ba2373690f2beb7dce565aa16f0b7). Check your node's schema and configuration before using them. The Query API uses local port 3000 by default; the separate atom processing service uses port 4010.
+
+## Upgrade an existing application
+
+Follow the [upgrade guide](./migration.md) to replace imports, check identity fixtures, and update peer dependencies. The [earlier SDK examples](/docs/intuition-sdk/quick-start) remain available for applications using `@0xintuition/sdk@3.0.1`.

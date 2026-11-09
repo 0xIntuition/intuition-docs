@@ -1,5 +1,6 @@
 ---
 title: Representation and identity resolution
+sidebar_label: 'Identity and representations'
 slug: /build/identity-resolution
 sidebar_position: 3
 ---

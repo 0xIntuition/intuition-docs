@@ -1,5 +1,6 @@
 ---
-title: '@0xintuition/atom-runtime guide'
+title: '@0xintuition/atom-runtime'
+sidebar_label: 'Atom runtime'
 slug: /build/packages/atom-runtime
 sidebar_position: 13
 ---

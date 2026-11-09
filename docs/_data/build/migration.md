@@ -1,10 +1,11 @@
 ---
-title: 'Upgrade SDK v3 and app-local processing helpers'
+title: 'Upgrade an existing integration'
+sidebar_label: 'Upgrade an integration'
 slug: /build/migration
 sidebar_position: 9
 ---
 
-The October 28 release publishes SDK **4.0.0-alpha.0** and protocol **3.0.0-alpha.0**, plus the semantic, identity, and processing packages in the [catalog](./packages/index.md). These are independent version lines. Keep the existing SDK v3 integration until you have replaced its imports and checked your application's identity fixtures.
+This guide maps existing imports to the packages used in the Intuition V2 developer guides: `@0xintuition/sdk@4.0.0-alpha.0`, `@0xintuition/protocol@3.0.0-alpha.0`, and the libraries in the [catalog](./packages/index.md). Package versions are independent of the V2 product name. Alpha APIs can change; check imports and stored identity fixtures when upgrading, including from `@0xintuition/sdk@3.0.1`.
 
 ## Update public imports
 
@@ -48,6 +49,6 @@ The published ABIs include URI-aware creation, on-behalf-of creation, and payabl
 2. Compile against emitted npm declarations and compare identity fixtures.
 3. Handle null handoffs, missing records, partial enrichment, provider failure, and cancellation.
 4. Check the selected API schema and chain/deployment separately from package publication.
-5. Keep the previous reader path for historical atoms and label SDK v3 guides for existing consumers.
+5. Keep readers for historical atoms and test them against stored identity fixtures.
 
-Core REST documentation retains its [separately pinned baseline](./compatibility.md). This package release does not assert that a Core node, hosted API, or application deployment has upgraded with it.
+If you also use Core REST, check the API version running on your node. Package installation and backend deployment are separate steps.

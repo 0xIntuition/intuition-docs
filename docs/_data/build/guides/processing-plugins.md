@@ -1,10 +1,11 @@
 ---
 title: 'Extend classification and provider enrichment'
+sidebar_label: 'Extend processing'
 slug: /build/guides/processing-plugins
 sidebar_position: 5
 ---
 
-Build extensions against the public package APIs so your application can share the processing engine without depending on Core internals. Keep classification rules, provider acquisition, and graph persistence separate.
+Add your own entity classifier or metadata provider to the processing engine. A classifier recognizes an entity; a provider fetches additional information. Your application decides which results to persist.
 
 ## Add a local classifier and resolver
 
@@ -82,7 +83,7 @@ The engine supplies missing provider/plugin/timestamp metadata. A classification
 
 Classifiers should match deterministically. Resolvers should emit canonical `classifications`; legacy `atoms` are still accepted for compatibility, and the engine checks parity when both are supplied. Register emitted types, declare dependencies and runtime capabilities, and keep network permissions explicit. AI-capable plugins require a server runtime and AI permission.
 
-Read the pinned [authoring contract](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/atom-classification/docs/plugin-authoring.md), [publishable boundary](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/atom-classification/docs/publishable-boundary.md), and [type collision policy](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/atom-classification/docs/type-registration-and-collision-policy.md). The [external example](https://github.com/0xIntuition/packages/tree/dde4fdf5774447b84cd0b820593fb0db7366e58d/examples/atom-classification-plugin) is private example source, not an npm package.
+Read the pinned [authoring contract](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/atom-classification/docs/plugin-authoring.md), [publishable boundary](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/atom-classification/docs/publishable-boundary.md), and [type collision policy](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/atom-classification/docs/type-registration-and-collision-policy.md). The [external example](https://github.com/0xIntuition/packages/tree/dde4fdf5774447b84cd0b820593fb0db7366e58d/examples/atom-classification-plugin) contains a complete plugin you can copy into your project.
 
 ## Add an enrichment provider
 

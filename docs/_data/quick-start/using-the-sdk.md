@@ -5,18 +5,19 @@ title: Using the SDK
 ---
 
 :::note SDK generation
-This page documents the existing SDK v3 integration. For the published SDK 4 alpha, identity packages, and Core workflows, start with [Build with the knowledge graph](/docs/build/overview) and the [migration guide](/docs/build/migration).
+These examples use `@0xintuition/sdk@3.0.1`. For the current Intuition V2 package guides, start with [Build with Intuition](/docs/build/overview). Use the [upgrade guide](/docs/build/migration) when moving an existing integration to the documented alpha packages.
 :::
 
 # Intuition SDK Quick Start
 
-Get started building with Intuition in minutes. 
+Get started building with Intuition in minutes.
 
 This guide provides direct code snippets to create atoms, triples, and signal on them.
 
 Before starting development, we recommend adding the Intuition Testnet and Mainnet networks to your preferred wallet. You can find the networks in the [Network Details](/docs/quick-start/network-details) page.
 
 ## Installation
+
 In most cases, you will only need to install the `@0xintuition/sdk` package. This package provides a high-level API for interacting with the Intuition protocol, plus exports the core `@0xintuition/protocol` and `@0xintuition/graphql` functionality.
 
 import Tabs from '@theme/Tabs';
@@ -133,71 +134,79 @@ bun add @0xintuition/protocol@latest @0xintuition/graphql@latest
 
 :::info Version Compatibility
 This guide uses the v2 contract architecture and requires the following package versions:
+
 - [`@0xintuition/sdk@^3.0.0`](https://www.npmjs.com/package/@0xintuition/sdk)
 - [`@0xintuition/protocol@^2.0.0`](https://www.npmjs.com/package/@0xintuition/protocol)
 - [`@0xintuition/graphql@^3.0.0`](https://www.npmjs.com/package/@0xintuition/graphql)
-:::
+  :::
 
 ### Setup A Public and Wallet Provider
+
 The Intuition SDK is designed to work with the [viem](https://viem.sh/) library. You will need to setup a public client and a wallet client to interact with the Intuition contracts via the `@0xintuition/sdk` and `@0xintuition/protocol` packages.
 
 ### Setup a Public Client
 
 Testnet
+
 ```typescript
-import { intuitionTestnet } from '@0xintuition/sdk' // or `@0xintuition/protocol`
-import { createPublicClient, http } from 'viem'
+import { intuitionTestnet } from '@0xintuition/sdk'; // or `@0xintuition/protocol`
+import { createPublicClient, http } from 'viem';
 
 export const publicClient = createPublicClient({
   chain: intuitionTestnet,
   transport: http(),
-})
+});
 ```
 
 Mainnet
+
 ```typescript
-import { intuitionMainnet } from '@0xintuition/sdk' // or `@0xintuition/protocol`
-import { createPublicClient, http } from 'viem'
+import { intuitionMainnet } from '@0xintuition/sdk'; // or `@0xintuition/protocol`
+import { createPublicClient, http } from 'viem';
 export const publicClient = createPublicClient({
   chain: intuitionMainnet,
   transport: http(),
-})
+});
 ```
 
 ### Setup a Wallet Client
+
 If you are using wagmi, you can use the `useWalletClient` hook and do not need to set up a wallet client manually. The snippets below show Node/server clients using an RPC transport and a local account.
 
 Use only a disposable development key in a literal placeholder like this; never hardcode or commit a real private key. Production applications should load signing credentials from a secure secret manager.
 
 #### Testnet (Node/server)
-When developing an application use the `intuitionTestnet` chain.
-```typescript
-import { intuitionTestnet } from '@0xintuition/sdk' // or `@0xintuition/protocol`
-import { createWalletClient, http } from 'viem'
-import { privateKeyToAccount } from 'viem/accounts'
 
-const account = privateKeyToAccount('0x...')
+When developing an application use the `intuitionTestnet` chain.
+
+```typescript
+import { intuitionTestnet } from '@0xintuition/sdk'; // or `@0xintuition/protocol`
+import { createWalletClient, http } from 'viem';
+import { privateKeyToAccount } from 'viem/accounts';
+
+const account = privateKeyToAccount('0x...');
 export const walletClient = createWalletClient({
   chain: intuitionTestnet,
   account,
   transport: http(),
-})
+});
 ```
 
 #### Mainnet (Node/server)
+
 When deploying to production remember to use the `intuitionMainnet` chain.
 
 ```typescript
-import { intuitionMainnet } from '@0xintuition/sdk' // or `@0xintuition/protocol`
-import { createWalletClient, http } from 'viem'
-import { privateKeyToAccount } from 'viem/accounts'
+import { intuitionMainnet } from '@0xintuition/sdk'; // or `@0xintuition/protocol`
+import { createWalletClient, http } from 'viem';
+import { privateKeyToAccount } from 'viem/accounts';
 
-const account = privateKeyToAccount('0x...')
+const account = privateKeyToAccount('0x...');
 export const walletClient = createWalletClient({
   chain: intuitionMainnet,
   account,
   transport: http(),
-})
+});
 ```
 
 ### Pair SDK Reads with the Selected Network
@@ -205,15 +214,16 @@ export const walletClient = createWalletClient({
 SDK read helpers use the mainnet GraphQL API by default. Because the examples below write to Intuition Testnet, configure the testnet read endpoint once during application startup so newly created data is queried from the same network:
 
 ```typescript
-import { configureSdk } from '@0xintuition/sdk'
-import { API_URL_DEV } from '@0xintuition/graphql'
+import { configureSdk } from '@0xintuition/sdk';
+import { API_URL_DEV } from '@0xintuition/graphql';
 
-configureSdk({ apiUrl: API_URL_DEV })
+configureSdk({ apiUrl: API_URL_DEV });
 ```
 
 Use `API_URL_PROD` instead when your public and wallet clients target `intuitionMainnet`.
 
 # Adding Data to the Knowledge Graph
+
 Data in the Intuition protocol is represented as atoms and triples. As a developer you will help users create atoms and triples in the protocol via onchain smart contracts, and retrieving data from the knowledge graph via offchain services.
 
 ## Create Atoms
@@ -255,7 +265,7 @@ function CreateAtom() {
 ### Create an Atom from a Thing (with metadata)
 
 ```typescript
-import { createAtomFromThing } from '@0xintuition/sdk'
+import { createAtomFromThing } from '@0xintuition/sdk';
 
 const result = await createAtomFromThing(
   { walletClient, publicClient, address },
@@ -264,22 +274,22 @@ const result = await createAtomFromThing(
     name: 'Example Project',
     description: 'A cool Web3 project',
     image: 'https://example.com/image.png',
-  }
-)
+  },
+);
 ```
 
 ### Create an Atom from Ethereum Account
 
 ```typescript
-import { createAtomFromEthereumAccount } from '@0xintuition/sdk'
+import { createAtomFromEthereumAccount } from '@0xintuition/sdk';
 
 const result = await createAtomFromEthereumAccount(
   { walletClient, publicClient, address },
   {
     address: '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045',
     chainId: 1, // Mainnet
-  }
-)
+  },
+);
 ```
 
 ## Reading Data
@@ -289,13 +299,13 @@ const result = await createAtomFromEthereumAccount(
 Retrieve detailed information about an atom using its ID:
 
 ```typescript
-import { getAtomDetails } from '@0xintuition/sdk'
+import { getAtomDetails } from '@0xintuition/sdk';
 
 const atomData = await getAtomDetails(
-  '0x906527aae4af914b1ac01ff9adfdda5dafde3b5e21f84045e0660b0a15c07769'
-)
+  '0x906527aae4af914b1ac01ff9adfdda5dafde3b5e21f84045e0660b0a15c07769',
+);
 
-console.log('Atom data:', atomData)
+console.log('Atom data:', atomData);
 // Returns atom information including metadata, vault details, and more
 ```
 
@@ -304,13 +314,13 @@ console.log('Atom data:', atomData)
 Retrieve information about a triple relationship:
 
 ```typescript
-import { getTripleDetails } from '@0xintuition/sdk'
+import { getTripleDetails } from '@0xintuition/sdk';
 
 const tripleData = await getTripleDetails(
-  '0xc4e64dbc3d69293d28259653d9b15d2ab3f6aa1aa0b1a489e5250974cd089730'
-)
+  '0xc4e64dbc3d69293d28259653d9b15d2ab3f6aa1aa0b1a489e5250974cd089730',
+);
 
-console.log('Triple data:', tripleData)
+console.log('Triple data:', tripleData);
 // Returns subject, predicate, object atoms and relationship metadata
 ```
 
@@ -319,16 +329,16 @@ console.log('Triple data:', tripleData)
 Perform a global search across atoms, triples, accounts, and collections:
 
 ```typescript
-import { globalSearch } from '@0xintuition/sdk'
+import { globalSearch } from '@0xintuition/sdk';
 
 const results = await globalSearch('ethereum', {
   atomsLimit: 10,
   accountsLimit: 5,
   triplesLimit: 10,
   collectionsLimit: 5,
-})
+});
 
-console.log('Search results:', results)
+console.log('Search results:', results);
 ```
 
 ### Read On-Chain Atom Data
@@ -336,14 +346,14 @@ console.log('Search results:', results)
 Read atom data directly from the smart contract:
 
 ```typescript
-import { getAtom } from '@0xintuition/protocol'
+import { getAtom } from '@0xintuition/protocol';
 
 const atomOnChain = await getAtom(
   { publicClient, address },
-  { args: [BigInt(atomId)] }
-)
+  { args: [BigInt(atomId)] },
+);
 
-console.log('On-chain atom:', atomOnChain)
+console.log('On-chain atom:', atomOnChain);
 // Returns [walletAddress, vaultId, atomData]
 ```
 
@@ -354,38 +364,34 @@ If Atoms are the words in Intuition's global dictionary, Triples are the sentenc
 [Learn more about Triples →](/docs/intuition-concepts/primitives/Triples/fundamentals)
 
 ```typescript
-import { createAtomFromString, createTripleStatement } from '@0xintuition/sdk'
+import { createAtomFromString, createTripleStatement } from '@0xintuition/sdk';
 
 // First create three atoms
 const subject = await createAtomFromString(
   { walletClient, publicClient, address },
-  'Alice'
-)
+  'Alice',
+);
 
 const predicate = await createAtomFromString(
   { walletClient, publicClient, address },
-  'knows'
-)
+  'knows',
+);
 
 const object = await createAtomFromString(
   { walletClient, publicClient, address },
-  'Bob'
-)
+  'Bob',
+);
 
 // Create the triple: "Alice knows Bob"
 const triple = await createTripleStatement(
   { walletClient, publicClient, address },
   {
-    args: [
-      subject.state.termId,
-      predicate.state.termId,
-      object.state.termId
-    ],
+    args: [subject.state.termId, predicate.state.termId, object.state.termId],
     value: 1000000000000000000n, // 1 TRUST deposit in wei
-  }
-)
+  },
+);
 
-console.log('Triple created:', triple.transactionHash)
+console.log('Triple created:', triple.transactionHash);
 ```
 
 ## Signaling (Staking on Atoms/Triples)
@@ -397,7 +403,7 @@ Signals represent the trust, confidence, or relevance that the community assigns
 ### Deposit (Signal Support)
 
 ```typescript
-import { deposit } from '@0xintuition/protocol'
+import { deposit } from '@0xintuition/protocol';
 
 // Deposit on an atom or triple vault
 const txHash = await deposit(
@@ -406,19 +412,19 @@ const txHash = await deposit(
     args: [
       BigInt(vaultId), // The vault ID (atom or triple)
       BigInt(depositAmount), // Amount in wei
-      walletClient.account.address // Receiver address
+      walletClient.account.address, // Receiver address
     ],
     value: BigInt(depositAmount),
-  }
-)
+  },
+);
 
-console.log('Deposited:', txHash)
+console.log('Deposited:', txHash);
 ```
 
 ### Redeem (Remove Signal)
 
 ```typescript
-import { redeem } from '@0xintuition/protocol'
+import { redeem } from '@0xintuition/protocol';
 
 // Redeem from a vault
 const txHash = await redeem(
@@ -429,11 +435,11 @@ const txHash = await redeem(
       BigInt(sharesToRedeem), // Amount of shares to redeem
       walletClient.account.address, // Receiver address
       walletClient.account.address, // Owner address
-    ]
-  }
-)
+    ],
+  },
+);
 
-console.log('Redeemed:', txHash)
+console.log('Redeemed:', txHash);
 ```
 
 ### Preview Redeem
@@ -441,15 +447,15 @@ console.log('Redeemed:', txHash)
 Preview how many assets you'll receive when redeeming shares:
 
 ```typescript
-import { previewRedeem } from '@0xintuition/protocol'
+import { previewRedeem } from '@0xintuition/protocol';
 
 // Preview redeem to see assets received
 const assetsToReceive = await previewRedeem(
   { walletClient, publicClient, address },
-  { args: [BigInt(vaultId), BigInt(sharesToRedeem)] }
-)
+  { args: [BigInt(vaultId), BigInt(sharesToRedeem)] },
+);
 
-console.log('Assets you will receive:', assetsToReceive)
+console.log('Assets you will receive:', assetsToReceive);
 ```
 
 ## Complete Example Component
@@ -518,7 +524,7 @@ function IntuitionQuickstart() {
 Create multiple atoms in a single transaction for efficiency and gas savings:
 
 ```typescript
-import { batchCreateAtomsFromThings } from '@0xintuition/sdk'
+import { batchCreateAtomsFromThings } from '@0xintuition/sdk';
 
 // Batch create multiple atoms at once
 const atomData = [
@@ -540,16 +546,16 @@ const atomData = [
     description: 'Third amazing project',
     image: 'https://example.com/project3.png',
   },
-]
+];
 
 const result = await batchCreateAtomsFromThings(
   { walletClient, publicClient, address },
   atomData,
-  1000000000000000000n // Optional: additional 1 TRUST signal per atom
-)
+  1000000000000000000n, // Optional: additional 1 TRUST signal per atom
+);
 
-console.log('Created atoms:', result.state)
-console.log('Transaction:', result.transactionHash)
+console.log('Created atoms:', result.state);
+console.log('Transaction:', result.transactionHash);
 ```
 
 ### Batch Create Triples
@@ -557,22 +563,22 @@ console.log('Transaction:', result.transactionHash)
 Create multiple triple relationships in a single transaction:
 
 ```typescript
-import { batchCreateTripleStatements } from '@0xintuition/sdk'
+import { batchCreateTripleStatements } from '@0xintuition/sdk';
 
 // Assuming you have atom IDs already created
 const tripleData = [
   [subjectId1, predicateId1, objectId1], // Triple 1
   [subjectId2, predicateId2, objectId2], // Triple 2
   [subjectId3, predicateId3, objectId3], // Triple 3
-]
+];
 
 const result = await batchCreateTripleStatements(
   { walletClient, publicClient, address },
   tripleData,
-  1000000000000000000n // Optional: 1 TRUST deposit
-)
+  1000000000000000000n, // Optional: 1 TRUST deposit
+);
 
-console.log('Created triples:', result.state)
+console.log('Created triples:', result.state);
 ```
 
 ### Batch Deposit
@@ -580,21 +586,21 @@ console.log('Created triples:', result.state)
 Deposit on multiple vaults (atoms or triples) in a single transaction:
 
 ```typescript
-import { batchDepositStatement } from '@0xintuition/sdk'
+import { batchDepositStatement } from '@0xintuition/sdk';
 
 // Deposit on multiple vaults at once
 const depositData = [
   [vaultId1, vaultId2, vaultId3], // Vault IDs
   [amount1, amount2, amount3], // Amounts in wei
   [receiverAddress, receiverAddress, receiverAddress], // Receiver addresses
-]
+];
 
 const result = await batchDepositStatement(
   { walletClient, publicClient, address },
-  depositData
-)
+  depositData,
+);
 
-console.log('Batch deposit completed:', result.transactionHash)
+console.log('Batch deposit completed:', result.transactionHash);
 ```
 
 :::tip Gas Optimization
@@ -622,7 +628,6 @@ Now that you know the basics, explore what you can build:
 - **[Smart Contracts](/docs/protocol/getting-started/overview)** - Contract architecture and ABIs
 - **[GraphQL API](/docs/graphql-api/overview)** - Query the knowledge graph
 - **[Join the Community](/docs/resources/community-and-support)** - Get help and share ideas
-
 
 :::tip Not sure which tool to use?
 Check out [Choose Your Path](/docs/getting-started/choose-your-path) to find the best starting point for your project.

@@ -1,12 +1,13 @@
 ---
-title: '@0xintuition/protocol guide'
+title: '@0xintuition/protocol'
+sidebar_label: 'Protocol'
 slug: /build/packages/protocol
 sidebar_position: 16
 ---
 
 Call or encode core protocol contracts with explicit viem clients and deployment configuration.
 
-Published alpha version: **3.0.0-alpha.0**. [Release compatibility](../compatibility.md) records npm publication, peer dependencies, and deployment boundaries.
+Version **3.0.0-alpha.0** · [npm](https://www.npmjs.com/package/@0xintuition/protocol/v/3.0.0-alpha.0) · [Compatibility](../compatibility.md)
 
 ## Install
 
@@ -16,7 +17,7 @@ npm install @0xintuition/protocol@3.0.0-alpha.0 viem@^2
 
 Use ESM imports. Required peers: `viem ^2.0.0`.
 
-## Main surface
+## API overview
 
 | Export or operation             | Purpose                               |
 | ------------------------------- | ------------------------------------- |
@@ -25,11 +26,11 @@ Use ESM imports. Required peers: `viem ^2.0.0`.
 | `multiVaultCreateAtomsWithUris` | URI-aware atom registration wrapper   |
 | `multiVaultDepositEncode`       | Pure calldata encoder for a deposit   |
 
-## First use
+## Example
 
 Start with the [on-chain guide](../guides/onchain.md), configure the matching deployment and viem clients, then choose read, encode, or write behavior deliberately. The [upstream guide](https://github.com/0xIntuition/packages/tree/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol/README.md) contains the contract wrapper conventions.
 
-## Integration decisions
+## Usage notes
 
 Read wrappers call RPC. Write wrappers can submit transactions; Encode helpers only build calldata. Periphery bridges and FeeProxy live in periphery. Use sdk/actions when you need a higher-level quote or plan.
 
@@ -42,6 +43,6 @@ Read wrappers call RPC. Write wrappers can submit transactions; Encode helpers o
 
 The core includes MultiVault, TrustBonding, WrappedTrust, and related contracts. ABIs and deployment metadata come from `deployments`; `/contracts` also exposes contract artifacts and bytecode. Periphery FeeProxy and bridge wrappers live in the separate `periphery` package. See the [SDK envelope guide](../guides/action-envelopes.md) for application-level batching.
 
-## Source and full contract
+## Further reading
 
-[Source and package guide](https://github.com/0xIntuition/packages/tree/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol) · [npm package](https://www.npmjs.com/package/@0xintuition/protocol/v/3.0.0-alpha.0). The [machine-readable manifest](/intuition-release.json) lists all declared public subpaths and peer dependencies. Exact npm versions, tarball integrity, and observed dist-tags are recorded in the manifest.
+[Source and package guide](https://github.com/0xIntuition/packages/tree/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/protocol) · [npm package](https://www.npmjs.com/package/@0xintuition/protocol/v/3.0.0-alpha.0).

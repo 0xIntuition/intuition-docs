@@ -1,61 +1,53 @@
 ---
-title: 'Identity, representations, relationships, and signals'
+title: 'Understand atoms, triples, and signals'
+sidebar_label: 'Building blocks'
 slug: /build/concepts
-sidebar_position: 2
 ---
 
-An application needs to distinguish the thing being described, its serialized representation, and the claims people make about it.
+A knowledge graph describes entities and the relationships between them. In Intuition, an **atom** identifies a thing, a **triple** expresses a relationship, and a **signal** records an economic position on an atom or triple.
 
-| Concept        | What it means                                                                | What it does not establish                                 |
-| -------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------- |
-| IID            | A canonical `int:<scheme>:<value>` identifier derived under registered rules | That an atom exists in a database or contract              |
-| Atom data      | Exact bytes describing an entity or anchoring an IID                         | That every equivalent description has identical bytes      |
-| Atom ID        | Deterministic protocol hash of those exact bytes                             | A mutable record identifier that survives payload edits    |
-| Classification | Shared entity specification, such as `music-recording`                       | A guarantee that a provider's answer is correct            |
-| Predicate      | An atom identifying a relationship, with shared semantic metadata            | A database column name or arbitrary UI label               |
-| Triple         | Subject, predicate, and object term IDs forming a claim                      | An independently verified fact                             |
-| URI context    | Ordered, validated references associated with an anchor                      | A component of the anchor's atom ID                        |
-| Artifact       | A provider's processing output with provenance and status                    | New identity bytes that should overwrite the original atom |
-| Vault          | Assets and shares for a term on a particular curve                           | A universal or objective truth score                       |
-
-## Identity and representation profiles
-
-An IID describes identity; the representation profile determines what bytes an atom stores. P0 uses an eligible canonical IID directly. P1 carries a typed envelope. P2 is the specification’s opt-in enriched representation: a typed identity envelope plus descriptive fields. The current anchor builder serializes the same identified envelope bytes for explicit P1 and P2 requests; requesting P2 does not automatically attach every descriptive input. Profile metadata is not itself serialized. This is a builder limitation to account for, not a redefinition of P2. See [representation and equivalence](./identity-resolution.md) before choosing a richer payload.
+Imagine a music catalog. A recording and an artist are atoms. “This recording is by this artist” is a triple. People can add signals to the resulting terms through the protocol.
 
 ```mermaid
-flowchart TD
-  A[Known entity facts] --> B[Classification identity ladder]
-  B --> C{Eligible canonical IID?}
-  C -->|Yes| D[P0 bare IID when selected]
-  C -->|Requires type or recipe| E[P1 typed envelope]
-  C -->|No usable IID| F[Validated descriptive fallback]
-  D --> G[Exact UTF-8 atom bytes]
-  E --> G
-  F --> G
-  G --> H[Deterministic atom ID]
-  I[URI context and provider artifacts] -. separate from identity .-> H
+flowchart LR
+  A[Recording atom] -->|by artist| B[Artist atom]
 ```
 
-Use the package builder instead of reimplementing JSON ordering or normalization. Whitespace, property order, schema context spelling, and string forms can change an envelope's ID. Enriching a display label should not silently change its identity.
+## Identify an entity
 
-`inspectIntuitionId` reports validity and anchor eligibility separately. Bare Wikidata QIDs are polymorphic and cannot be bare P0 anchors. Active typed bindings such as `int:wd:film:Q188035` can be eligible. Class C (`gen1`), registered provider-local Class D identifiers, and weak account handles require richer representations. `candidateIid` is a distinct builder path with its own validation; it is not a general-purpose way to bypass the normal ladder.
+An atom is defined by its exact data bytes. The same bytes produce the same atom ID; changing those bytes changes the ID. Applications can therefore refer to the same atom without coordinating a database-generated key.
 
-## Ladders and aliases
+An **Intuition identifier (IID)** gives supported kinds of entities a canonical identity string. For example, a recording with ISRC `USRC17607839` has the IID `int:isrc:USRC17607839`. The [primitives package](./packages/primitives.md) can select that identity and turn it into atom bytes and an ID.
 
-An identity ladder tries stronger identifiers before weaker ones. The `iid` engine evaluates a declared classification ladder. `iid-ladder` projects provider/import inputs using category policy. They share rules but accept different input shapes.
+| Value                                    | What your application uses it for                  |
+| ---------------------------------------- | -------------------------------------------------- |
+| IID, such as `int:isrc:USRC17607839`     | Recognize an entity across imports and providers   |
+| Atom data                                | The canonical representation to persist or publish |
+| Atom ID                                  | Join graph records and address protocol terms      |
+| Metadata, such as a title or cover image | Display and refresh information about the entity   |
 
-An alias is useful evidence for matching. It need not be eligible as the primary identifier. A `sameAs` relationship or field is an assertion that an application must evaluate; it does not collapse IDs or automatically merge on-chain positions. Keep the identity candidates and provenance when reconciling duplicates.
+Deriving an ID is a local calculation. The atom becomes a stored or on-chain record only when your application writes it to that destination.
 
-## Relationships and context
+## Describe relationships
 
-A triple's subject and object refer to terms. Nested triples let applications make claims about claims. Predicates supply canonical payloads and IDs; classification metadata recommends meaningful targets. Recommendations in a form are not a protocol-level authorization policy.
+A triple has three atom IDs: **subject**, **predicate**, and **object**. For a recording's artist, the recording is the subject, “by artist” is the predicate, and the artist is the object.
 
-The shared `I` subject is the literal UTF-8 string `I`, exported as `I_SUBJECT_ID` by `ids`. It supports patterns such as `I → follow → account`. Attribution belongs to the account creating or signaling on the claim; `I` is not a new identifier for each user.
+Predicates are atoms too. Use the [shared predicate vocabulary](./packages/predicates.md) so applications use the same bytes and IDs for the same relationship. A different predicate label or description can identify a different atom.
 
-## On-chain and off-chain state
+The triple ID is deterministic from its three IDs. Attribution, evidence, timestamps, and confidence describe a claim about that relationship; your storage or application must preserve them separately as appropriate.
 
-A Core write creates an off-chain graph record. Registering identical atom bytes on-chain produces the same protocol ID, but requires a separate transaction. Core observes indexed events and updates its read model later. Transaction submission, successful receipt, indexing, projection, and enrichment are distinct states.
+## Add context without changing identity
 
-Signals and positions add economic context to claims. An application chooses how to rank or display that context. Preserve the account, term, curve, time, and source behind a ranking instead of presenting a balance as proof of truth.
+A **classification** describes the kind of entity, such as `MusicRecording`. Classification specifications provide identity rules and form fields. **Enrichment** retrieves additional information from providers, such as an image or external reference.
 
-For the exact profile rules, read the [pinned IID specification](https://github.com/0xIntuition/packages/blob/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/iid-spec/explainer.md).
+Keep refreshable fields separate from canonical identity. Updating a cover image should update the displayed metadata, rather than create a new identity for the recording. Retain provenance so readers can tell which provider supplied a field.
+
+Some entities have strong identifiers; others need a URL or a derived identity based on their fields. See [identity and representations](./identity-resolution.md) for selection rules, representation profiles, and handling equivalence between existing atoms.
+
+## Add signals
+
+The on-chain protocol associates terms with vaults. Deposits and redemptions change positions and express economic conviction. Their meaning in your product—ranking a recommendation, weighting a reputation score, or curating a list—is a design decision.
+
+A shared ID makes records joinable. A signal makes a position observable. Neither alone establishes that a claim is true; explain how your application evaluates evidence and uses those positions.
+
+Continue with [your first atom](./guides/first-atom.md), then [build a music catalog](./guides/music-catalog.md) to connect these concepts in code.

@@ -57,12 +57,14 @@ These primitives work together to create a structured, queryable, and economical
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/0xIntuition/intuition-docs.git
    cd intuition-docs
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
@@ -131,32 +133,34 @@ intuition-docs/
 ```
 
 **How it works**:
+
 - Files in `docs/_data/` are served at `/docs/*` routes
 - Example: `docs/_data/getting-started/overview.md` → `/docs/getting-started/overview`
 - The sidebar navigation is auto-generated based on folder structure and frontmatter
 
 ## Available Scripts
 
-| Script | Command | Description |
-|--------|---------|-------------|
-| **Development** | | |
-| `npm run dev` | `docusaurus start --no-open` | Start dev server without opening browser |
-| `npm start` | `docusaurus start` | Start dev server and open browser |
-| **Building** | | |
-| `npm run build` | `docusaurus build` | Build production site |
-| `npm run serve` | `docusaurus serve` | Serve production build locally |
-| `npm run clear` | `docusaurus clear` | Clear Docusaurus cache |
-| **Code Quality** | | |
-| `npm run lint` | `eslint . --ext .js,.ts,.jsx,.tsx` | Run ESLint |
-| `npm run lint:fix` | `npm run lint -- --fix` | Fix ESLint errors automatically |
-| `npm run format` | `prettier -w src docs` | Format code with Prettier |
-| `npm run format:docs` | `prettier -w docs` | Format only documentation files |
-| `npm run typecheck` | `tsc` | Run TypeScript type checking |
-| **Other** | | |
-| `npm run deploy` | `docusaurus deploy` | Deploy to hosting |
-| `npm run swizzle` | `docusaurus swizzle` | Eject Docusaurus components |
+| Script                | Command                            | Description                              |
+| --------------------- | ---------------------------------- | ---------------------------------------- |
+| **Development**       |                                    |                                          |
+| `npm run dev`         | `docusaurus start --no-open`       | Start dev server without opening browser |
+| `npm start`           | `docusaurus start`                 | Start dev server and open browser        |
+| **Building**          |                                    |                                          |
+| `npm run build`       | `docusaurus build`                 | Build production site                    |
+| `npm run serve`       | `docusaurus serve`                 | Serve production build locally           |
+| `npm run clear`       | `docusaurus clear`                 | Clear Docusaurus cache                   |
+| **Code Quality**      |                                    |                                          |
+| `npm run lint`        | `eslint . --ext .js,.ts,.jsx,.tsx` | Run ESLint                               |
+| `npm run lint:fix`    | `npm run lint -- --fix`            | Fix ESLint errors automatically          |
+| `npm run format`      | `prettier -w src docs`             | Format code with Prettier                |
+| `npm run format:docs` | `prettier -w docs`                 | Format only documentation files          |
+| `npm run typecheck`   | `tsc`                              | Run TypeScript type checking             |
+| **Other**             |                                    |                                          |
+| `npm run deploy`      | `docusaurus deploy`                | Deploy to hosting                        |
+| `npm run swizzle`     | `docusaurus swizzle`               | Eject Docusaurus components              |
 
 **Additional Commands**:
+
 ```bash
 # Check spelling in documentation
 npx cspell docs/**/*.mdx
@@ -263,6 +267,7 @@ This documentation site is built with:
 We welcome contributions to improve our documentation! Whether you're fixing typos, adding examples, improving clarity, or creating new guides, your input helps make Intuition more accessible to everyone.
 
 **Ways to contribute**:
+
 - 🐛 Report issues or broken links
 - 📝 Improve existing documentation
 - ✨ Add new guides and tutorials
@@ -270,12 +275,14 @@ We welcome contributions to improve our documentation! Whether you're fixing typ
 - 💡 Suggest new content
 
 Please see our [Contributing Guidelines](/docs/contribution-guidelines) for:
+
 - How to submit pull requests
 - Documentation style guide and standards
 - Content review process
 - Community guidelines
 
 **Quick contribution workflow**:
+
 1. Fork this repository
 2. Create a feature branch: `git checkout -b docs/your-improvement`
 3. Make your changes and test locally with `npm run dev`
@@ -291,15 +298,16 @@ Copyright © Intuition Systems Inc. since 2023. All rights reserved.
 
 ---
 
-**Ready to start building?** 
-- 🚀 [Quick Start Guide](/docs/quick-start) 
+**Ready to start building?**
+
+- 🚀 [Quick Start Guide](/docs/quick-start)
 - 📚 [SDK Documentation](/docs/intuition-sdk)
 - 🔧 [Developer Tools](/docs/protocol)
 - 💬 [Join our Community](/docs/resources/community-and-support)
 
 ## Published package documentation
 
-The `docs/_data/build` area covers the 21 packages published in the October 28, 2026 alpha release. Start at the [developer guide](https://docs.intuition.systems/docs/build/overview). `static/intuition-release.json` records exact versions, npm publication evidence, artifact integrity, and public exports. Core REST keeps its separate source baseline; existing SDK v3 pages remain labeled.
+The `docs/_data/build` area covers the 21 packages published in the October 28, 2026 alpha release. Start at the [developer guide](https://docs.intuition.systems/docs/build/overview). `static/intuition-release.json` records exact versions, npm publication evidence, artifact integrity, and public exports. The sidebar separates Build with Intuition, Packages, and API reference while preserving page URLs. V2 names the developer experience; exact npm versions remain in installation and compatibility details. Earlier SDK examples are labeled with their dependency version.
 
 With a clean checkout of the selected public packages revision and its packages
 built, use:

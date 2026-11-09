@@ -1,12 +1,13 @@
 ---
-title: '@0xintuition/curves guide'
+title: '@0xintuition/curves'
+sidebar_label: 'Curves'
 slug: /build/packages/curves
 sidebar_position: 18
 ---
 
 Calculate local curve previews and exact-net gross-up quotes using explicit state and parameters.
 
-Published alpha version: **0.1.0-alpha.1**. [Release compatibility](../compatibility.md) records npm publication, peer dependencies, and deployment boundaries.
+Version **0.1.0-alpha.1** · [npm](https://www.npmjs.com/package/@0xintuition/curves/v/0.1.0-alpha.1) · [Compatibility](../compatibility.md)
 
 ## Install
 
@@ -16,7 +17,7 @@ npm install @0xintuition/curves@0.1.0-alpha.1
 
 Use ESM imports.
 
-## Main surface
+## API overview
 
 | Export or operation         | Purpose                                         |
 | --------------------------- | ----------------------------------------------- |
@@ -25,7 +26,7 @@ Use ESM imports.
 | `grossUpTripleDeposit`      | Gross amount for an exact net triple deposit    |
 | `dynamicFeeQuoteDepositFee` | Dynamic-fee preview from explicit configuration |
 
-## First use
+## Example
 
 ```ts
 import { createLinearCurve } from '@0xintuition/curves';
@@ -37,7 +38,7 @@ console.log(
 );
 ```
 
-## Integration decisions
+## Usage notes
 
 Use bigint base units and current fee/curve configuration. Quotes are not execution guarantees. Exact contract parity and overflow/revert behavior are release qualification gates; an exact-net solution need not be the smallest gross solution.
 
@@ -49,6 +50,6 @@ Dynamic-fee helpers include tier ladders and deposit bands, lot-aware redemption
 
 Gross-up uses bounded logarithmic search; `fixupIterations` counts search steps. Rounding can yield multiple gross solutions for one exact net amount, so the result does not promise the smallest wallet debit.
 
-## Source and full contract
+## Further reading
 
-[Source and package guide](https://github.com/0xIntuition/packages/tree/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/curves) · [npm package](https://www.npmjs.com/package/@0xintuition/curves/v/0.1.0-alpha.1). The [machine-readable manifest](/intuition-release.json) lists all declared public subpaths and peer dependencies. Exact npm versions, tarball integrity, and observed dist-tags are recorded in the manifest.
+[Source and package guide](https://github.com/0xIntuition/packages/tree/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/curves) · [npm package](https://www.npmjs.com/package/@0xintuition/curves/v/0.1.0-alpha.1).

@@ -1,35 +1,63 @@
 ---
-title: 'Choose the packages your application needs'
+title: 'Packages'
+sidebar_label: 'Overview'
 slug: /build/packages/index
-sidebar_position: 0
 ---
 
-Install the smallest layer that supplies your workflow. All names below refer to the 21 npm packages published October 28, 2026; Core's private database and worker packages are service implementation details.
+Choose libraries by the feature you are building. Most applications start with **Primitives** for a data model, **SDK** for graph reads and transactions, or **React** for protocol hooks. Add other packages as your application needs their APIs.
 
-| Package                                                      | Responsibility                                                                                                                                            | Published version                                                                                 |
-| ------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| [@0xintuition/iid-spec](./iid-spec.md)                       | The normative identifier specification and conformance corpus. Read it when implementing an identifier producer or comparing independent implementations. | [`0.1.0-alpha.0`](https://www.npmjs.com/package/@0xintuition/iid-spec/v/0.1.0-alpha.0)            |
-| [@0xintuition/iid](./iid.md)                                 | Parse, inspect, canonicalize, and derive Intuition identifiers entirely offline.                                                                          | [`0.1.0-alpha.0`](https://www.npmjs.com/package/@0xintuition/iid/v/0.1.0-alpha.0)                 |
-| [@0xintuition/iid-registry](./iid-registry.md)               | Resolve identifier meaning and provider capabilities without HTTP or credentials.                                                                         | [`0.1.0-alpha.0`](https://www.npmjs.com/package/@0xintuition/iid-registry/v/0.1.0-alpha.0)        |
-| [@0xintuition/iid-ladder](./iid-ladder.md)                   | Choose canonical identities from application, provider, seed, and import inputs.                                                                          | [`0.1.0-alpha.0`](https://www.npmjs.com/package/@0xintuition/iid-ladder/v/0.1.0-alpha.0)          |
-| [@0xintuition/ids](./ids.md)                                 | Calculate deterministic atom, predicate, triple, counter-triple, and authentication-related IDs.                                                          | [`0.1.0-alpha.1`](https://www.npmjs.com/package/@0xintuition/ids/v/0.1.0-alpha.1)                 |
-| [@0xintuition/schema-org](./schema-org.md)                   | Look up the pinned schema.org vocabulary and inherited properties for forms and tooling.                                                                  | [`0.1.0-alpha.1`](https://www.npmjs.com/package/@0xintuition/schema-org/v/0.1.0-alpha.1)          |
-| [@0xintuition/classifications](./classifications.md)         | Use canonical entity specifications, identity ladders, Creation Profiles, discovery metadata, and atom-data builders.                                     | [`0.1.0-alpha.1`](https://www.npmjs.com/package/@0xintuition/classifications/v/0.1.0-alpha.1)     |
-| [@0xintuition/predicates](./predicates.md)                   | Use shared relationship vocabulary, canonical predicate data and IDs, semantic flags, and display helpers.                                                | [`0.1.0-alpha.1`](https://www.npmjs.com/package/@0xintuition/predicates/v/0.1.0-alpha.1)          |
-| [@0xintuition/primitives](./primitives.md)                   | Build atoms and triples with validated, deterministic public helpers.                                                                                     | [`0.1.0-alpha.1`](https://www.npmjs.com/package/@0xintuition/primitives/v/0.1.0-alpha.1)          |
-| [@0xintuition/atom-parser](./atom-parser.md)                 | Detect and normalize IIDs, JSON, URLs, IPFS, addresses, names, ISBNs, and text.                                                                           | [`0.1.0-alpha.0`](https://www.npmjs.com/package/@0xintuition/atom-parser/v/0.1.0-alpha.0)         |
-| [@0xintuition/atom-classification](./atom-classification.md) | Compose a plugin-based classification engine for client, progressive, or server execution.                                                                | [`0.1.0-alpha.0`](https://www.npmjs.com/package/@0xintuition/atom-classification/v/0.1.0-alpha.0) |
-| [@0xintuition/atom-enrichment](./atom-enrichment.md)         | Execute selected enrichment providers and extract fields from artifacts.                                                                                  | [`0.1.0-alpha.0`](https://www.npmjs.com/package/@0xintuition/atom-enrichment/v/0.1.0-alpha.0)     |
-| [@0xintuition/atom-runtime](./atom-runtime.md)               | Shared processing configuration, presets, caches, and memoized classification/enrichment engines.                                                         | [`0.1.0-alpha.0`](https://www.npmjs.com/package/@0xintuition/atom-runtime/v/0.1.0-alpha.0)        |
-| [@0xintuition/pipeline-runtime](./pipeline-runtime.md)       | Promise concurrency, cancellation, circuit breaking, cache and provider observation contracts.                                                            | [`0.1.0-alpha.0`](https://www.npmjs.com/package/@0xintuition/pipeline-runtime/v/0.1.0-alpha.0)    |
-| [@0xintuition/deployments](./deployments.md)                 | Resolve the shared ABI, bytecode, address, and chain metadata consumed by all protocol packages.                                                          | [`0.1.0-alpha.1`](https://www.npmjs.com/package/@0xintuition/deployments/v/0.1.0-alpha.1)         |
-| [@0xintuition/protocol](./protocol.md)                       | Call or encode core protocol contracts with explicit viem clients and deployment configuration.                                                           | [`3.0.0-alpha.0`](https://www.npmjs.com/package/@0xintuition/protocol/v/3.0.0-alpha.0)            |
-| [@0xintuition/periphery](./periphery.md)                     | Use direct FeeProxy, router, and meta-bridge wrappers and encoders.                                                                                       | [`0.1.0-alpha.1`](https://www.npmjs.com/package/@0xintuition/periphery/v/0.1.0-alpha.1)           |
-| [@0xintuition/curves](./curves.md)                           | Calculate local curve previews and exact-net gross-up quotes using explicit state and parameters.                                                         | [`0.1.0-alpha.1`](https://www.npmjs.com/package/@0xintuition/curves/v/0.1.0-alpha.1)              |
-| [@0xintuition/sdk](./sdk.md)                                 | Build integrations with hosted GraphQL reads, deterministic utilities, and explicit on-chain action plans.                                                | [`4.0.0-alpha.0`](https://www.npmjs.com/package/@0xintuition/sdk/v/4.0.0-alpha.0)                 |
-| [@0xintuition/cli](./cli.md)                                 | Discover encoders and produce deterministic calldata; older plan imports are deprecated aliases for SDK envelopes.                                        | [`0.1.0-alpha.0`](https://www.npmjs.com/package/@0xintuition/cli/v/0.1.0-alpha.0)                 |
-| [@0xintuition/react](./react.md)                             | Compose protocol read/write hooks and observable transaction lifecycle state in React.                                                                    | [`0.1.0-alpha.1`](https://www.npmjs.com/package/@0xintuition/react/v/0.1.0-alpha.1)               |
+Follow [installation and setup](../guides/installation.md) for copyable dependency sets. If you are new to the model, start with [Build with Intuition](../overview.md) and return here when you need a specific API.
 
-Follow [installation by workflow](../guides/installation.md). Start with `primitives` for an offline atom, `classifications` for a form, `sdk` for a protocol integration, or Core REST for graph persistence. Add processing engines when you own their runtime. The existing `@0xintuition/graphql` hosted-schema tooling belongs to the earlier documentation surface and is not one of this repository's new package artifacts.
+All package names use the `@0xintuition/` npm scope. These pages document the published alpha packages for the Intuition V2 developer experience. Package version numbers are independent; [versions and compatibility](../compatibility.md) lists the supported combinations.
 
-Do not install private Core packages as if they were public SDKs. Use the [system map](../architecture.md) and [compatibility matrix](../compatibility.md) to choose the correct boundary.
+## Application integration
+
+| Package             | Use it to                                                              | npm                                                                               |
+| ------------------- | ---------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| [SDK](./sdk.md)     | Query graph data, quote protocol operations, and prepare transactions. | [4.0.0-alpha.0](https://www.npmjs.com/package/@0xintuition/sdk/v/4.0.0-alpha.0)   |
+| [React](./react.md) | Use protocol hooks and transaction lifecycle state in React.           | [0.1.0-alpha.1](https://www.npmjs.com/package/@0xintuition/react/v/0.1.0-alpha.1) |
+| [CLI](./cli.md)     | Inspect contract encoders and generate calldata from a terminal.       | [0.1.0-alpha.0](https://www.npmjs.com/package/@0xintuition/cli/v/0.1.0-alpha.0)   |
+
+## Data modeling
+
+| Package                                 | Use it to                                                       | npm                                                                                         |
+| --------------------------------------- | --------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| [Primitives](./primitives.md)           | Build atoms and triples from validated input.                   | [0.1.0-alpha.1](https://www.npmjs.com/package/@0xintuition/primitives/v/0.1.0-alpha.1)      |
+| [Classifications](./classifications.md) | Use shared entity types, identity rules, and Creation Profiles. | [0.1.0-alpha.1](https://www.npmjs.com/package/@0xintuition/classifications/v/0.1.0-alpha.1) |
+| [Predicates](./predicates.md)           | Use canonical relationship vocabulary and predicate IDs.        | [0.1.0-alpha.1](https://www.npmjs.com/package/@0xintuition/predicates/v/0.1.0-alpha.1)      |
+| [Schema.org](./schema-org.md)           | Look up schema.org types and inherited properties.              | [0.1.0-alpha.1](https://www.npmjs.com/package/@0xintuition/schema-org/v/0.1.0-alpha.1)      |
+
+## Identity
+
+| Package                            | Use it to                                                            | npm                                                                                      |
+| ---------------------------------- | -------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| [IID](./iid.md)                    | Parse, validate, and derive Intuition identifiers.                   | [0.1.0-alpha.0](https://www.npmjs.com/package/@0xintuition/iid/v/0.1.0-alpha.0)          |
+| [IDs](./ids.md)                    | Calculate deterministic atom, triple, and counter-triple IDs.        | [0.1.0-alpha.1](https://www.npmjs.com/package/@0xintuition/ids/v/0.1.0-alpha.1)          |
+| [IID ladder](./iid-ladder.md)      | Select an identity from provider and application inputs.             | [0.1.0-alpha.0](https://www.npmjs.com/package/@0xintuition/iid-ladder/v/0.1.0-alpha.0)   |
+| [IID registry](./iid-registry.md)  | Look up identifier meaning and provider capabilities.                | [0.1.0-alpha.0](https://www.npmjs.com/package/@0xintuition/iid-registry/v/0.1.0-alpha.0) |
+| [IID specification](./iid-spec.md) | Implement the identifier specification and run conformance fixtures. | [0.1.0-alpha.0](https://www.npmjs.com/package/@0xintuition/iid-spec/v/0.1.0-alpha.0)     |
+
+## Processing
+
+| Package                                         | Use it to                                                      | npm                                                                                             |
+| ----------------------------------------------- | -------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| [Atom parser](./atom-parser.md)                 | Recognize IIDs, URLs, JSON, addresses, names, and text.        | [0.1.0-alpha.0](https://www.npmjs.com/package/@0xintuition/atom-parser/v/0.1.0-alpha.0)         |
+| [Atom classification](./atom-classification.md) | Classify entities with local or server plugins.                | [0.1.0-alpha.0](https://www.npmjs.com/package/@0xintuition/atom-classification/v/0.1.0-alpha.0) |
+| [Atom enrichment](./atom-enrichment.md)         | Fetch provider artifacts and extract metadata with provenance. | [0.1.0-alpha.0](https://www.npmjs.com/package/@0xintuition/atom-enrichment/v/0.1.0-alpha.0)     |
+| [Atom runtime](./atom-runtime.md)               | Compose processing engines, presets, and caches.               | [0.1.0-alpha.0](https://www.npmjs.com/package/@0xintuition/atom-runtime/v/0.1.0-alpha.0)        |
+| [Pipeline runtime](./pipeline-runtime.md)       | Manage concurrency, cancellation, and provider outcomes.       | [0.1.0-alpha.0](https://www.npmjs.com/package/@0xintuition/pipeline-runtime/v/0.1.0-alpha.0)    |
+
+## Contracts
+
+| Package                         | Use it to                                                          | npm                                                                                     |
+| ------------------------------- | ------------------------------------------------------------------ | --------------------------------------------------------------------------------------- |
+| [Protocol](./protocol.md)       | Read, encode, and call protocol contracts with viem.               | [3.0.0-alpha.0](https://www.npmjs.com/package/@0xintuition/protocol/v/3.0.0-alpha.0)    |
+| [Deployments](./deployments.md) | Resolve contract ABIs, bytecode, addresses, and chain metadata.    | [0.1.0-alpha.1](https://www.npmjs.com/package/@0xintuition/deployments/v/0.1.0-alpha.1) |
+| [Periphery](./periphery.md)     | Use FeeProxy, router, and bridge contract wrappers.                | [0.1.0-alpha.1](https://www.npmjs.com/package/@0xintuition/periphery/v/0.1.0-alpha.1)   |
+| [Curves](./curves.md)           | Calculate curve previews and exact-net quotes from supplied state. | [0.1.0-alpha.1](https://www.npmjs.com/package/@0xintuition/curves/v/0.1.0-alpha.1)      |
+
+## Combine packages in an application
+
+[Build a music catalog](../guides/music-catalog.md) brings identity, entity types, and relationships together. [Processing and enrichment](../guides/processing.md) adds provider metadata. [On-chain actions](../guides/onchain.md) takes the resulting terms into a wallet flow.
+
+For an existing integration, use the [upgrade guide](../migration.md) to map imports and preserve stored identities.

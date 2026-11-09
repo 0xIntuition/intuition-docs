@@ -1,5 +1,6 @@
 ---
 title: 'Build creation forms and relationship suggestions'
+sidebar_label: 'Build creation forms'
 slug: /build/guides/creation-profiles
 sidebar_position: 2
 ---

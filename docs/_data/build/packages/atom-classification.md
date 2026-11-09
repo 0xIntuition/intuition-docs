@@ -1,12 +1,13 @@
 ---
-title: '@0xintuition/atom-classification guide'
+title: '@0xintuition/atom-classification'
+sidebar_label: 'Atom classification'
 slug: /build/packages/atom-classification
 sidebar_position: 11
 ---
 
 Compose a plugin-based classification engine for client, progressive, or server execution.
 
-Published alpha version: **0.1.0-alpha.0**. [Release compatibility](../compatibility.md) records npm publication, peer dependencies, and deployment boundaries.
+Version **0.1.0-alpha.0** · [npm](https://www.npmjs.com/package/@0xintuition/atom-classification/v/0.1.0-alpha.0) · [Compatibility](../compatibility.md)
 
 ## Install
 
@@ -16,7 +17,7 @@ npm install @0xintuition/atom-classification@0.1.0-alpha.0
 
 Use ESM imports.
 
-## Main surface
+## API overview
 
 | Export or operation             | Purpose                                 |
 | ------------------------------- | --------------------------------------- |
@@ -25,7 +26,7 @@ Use ESM imports.
 | `createTypeProfilesPlugin()`    | Runtime type-profile plugin             |
 | `defaultClassificationPreset()` | Explicit default plugin selection       |
 
-## First use
+## Example
 
 ```ts
 import {
@@ -45,7 +46,7 @@ console.log(
 );
 ```
 
-## Integration decisions
+## Usage notes
 
 Creating an engine does not enable all plugins or persist results. This runtime is distinct from classifications, which owns canonical entity specifications. Keep provider credentials on the server.
 
@@ -75,6 +76,6 @@ console.log(outcome.kind);
 
 Public plugin factories are available through `/plugins` and the explicit `/plugins/<provider>` exports. `/plugin-api`, `/type-registry`, `/testing`, `/outcome`, `/adapters/upstash`, and the transport/observation subpaths support extension and integration. Use the manifest for the exact list; not every plugin has a dedicated subpath.
 
-## Source and full contract
+## Further reading
 
-[Source and package guide](https://github.com/0xIntuition/packages/tree/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/atom-classification) · [npm package](https://www.npmjs.com/package/@0xintuition/atom-classification/v/0.1.0-alpha.0). The [machine-readable manifest](/intuition-release.json) lists all declared public subpaths and peer dependencies. Exact npm versions, tarball integrity, and observed dist-tags are recorded in the manifest.
+[Source and package guide](https://github.com/0xIntuition/packages/tree/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/atom-classification) · [npm package](https://www.npmjs.com/package/@0xintuition/atom-classification/v/0.1.0-alpha.0).

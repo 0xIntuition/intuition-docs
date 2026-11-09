@@ -1,5 +1,6 @@
 ---
 title: 'What to build with a shared knowledge graph'
+sidebar_label: 'Application patterns'
 slug: /build/application-patterns
 sidebar_position: 7
 ---

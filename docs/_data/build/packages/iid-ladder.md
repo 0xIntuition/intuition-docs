@@ -1,12 +1,13 @@
 ---
-title: '@0xintuition/iid-ladder guide'
+title: '@0xintuition/iid-ladder'
+sidebar_label: 'IID ladder'
 slug: /build/packages/iid-ladder
 sidebar_position: 4
 ---
 
-Choose canonical identities from application, provider, seed, and import inputs.
+Select one canonical identifier when an import contains several possible identifiers. Use the ladder before building an atom when your application receives provider records, URLs, or user-supplied identity facts.
 
-Published alpha version: **0.1.0-alpha.0**. [Release compatibility](../compatibility.md) records npm publication, peer dependencies, and deployment boundaries.
+Version **0.1.0-alpha.0** · [npm](https://www.npmjs.com/package/@0xintuition/iid-ladder/v/0.1.0-alpha.0) · [Compatibility](../compatibility.md)
 
 ## Install
 
@@ -16,7 +17,7 @@ npm install @0xintuition/iid-ladder@0.1.0-alpha.0
 
 Use ESM imports.
 
-## Main surface
+## API overview
 
 | Export or operation                                    | Purpose                                                                 |
 | ------------------------------------------------------ | ----------------------------------------------------------------------- |
@@ -25,16 +26,26 @@ Use ESM imports.
 | `iidForIdentityRung(token, value, primarySchemaType?)` | Canonical matching alias or undefined                                   |
 | `resolveWikidataP31Identity(p31)`                      | Schema type and eligible typed Wikidata binding from supplied classes   |
 
-## First use
+## Example
 
 ```ts
 import { projectIdentifierLadder } from '@0xintuition/iid-ladder';
-console.log(
-  projectIdentifierLadder({ strongIdentifiers: { isrc: 'USRC17607839' } }),
-);
+const result = projectIdentifierLadder({
+  strongIdentifiers: { isrc: 'USRC17607839' },
+});
+if (result.iid === null) {
+  // Let the user supply more identity evidence or choose an envelope.
+  console.log({ needsReview: true, reason: result.reason });
+} else {
+  console.log({ iid: result.iid, selectedFrom: result.rung });
+}
 ```
 
-## Integration decisions
+This input selects `{ iid: 'int:isrc:USRC17607839', rung: 'strong' }`. Handle the null branch for imports without a usable identifier; the `reason` explains why the ladder selected an envelope fallback.
+
+The result is an identity choice. To produce canonical bytes and an atom ID, continue with the [anchor builder](./primitives.md) and the [music catalog tutorial](../guides/music-catalog.md).
+
+## Usage notes
 
 Category policy distinguishes primary identities from matching-only aliases. The result does not record aliases or serialize atom bytes. Unknown provider namespaces are not silently promoted to registered strong identities.
 
@@ -51,6 +62,6 @@ const ladder = createLadder({ providerLocalHandles: 'mint' });
 
 Minting only changes the known unregistered-provider fallback. Strong identity precedence, invalid-handle rejection, alias-only behavior, and unknown-prefix handling stay intact. A minted result is labeled `rung: 'handle'` for compatibility and carries no separate origin flag. It is not automatically a registered Class D IID, spec-valid identifier, or eligible P0 anchor. Already-prefixed unregistered `int:` input is not newly admitted. Preserve the policy alongside stored results.
 
-## Source and full contract
+## Further reading
 
-[Source and package guide](https://github.com/0xIntuition/packages/tree/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/iid-ladder) · [npm package](https://www.npmjs.com/package/@0xintuition/iid-ladder/v/0.1.0-alpha.0). The [machine-readable manifest](/intuition-release.json) lists all declared public subpaths and peer dependencies. Exact npm versions, tarball integrity, and observed dist-tags are recorded in the manifest.
+[Source and package guide](https://github.com/0xIntuition/packages/tree/dde4fdf5774447b84cd0b820593fb0db7366e58d/packages/iid-ladder) · [npm package](https://www.npmjs.com/package/@0xintuition/iid-ladder/v/0.1.0-alpha.0).
