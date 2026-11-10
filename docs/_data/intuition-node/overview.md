@@ -2,6 +2,9 @@
 sidebar_position: 1
 ---
 
+For the upcoming Core and package architecture, read [the system map](/docs/build/architecture) and [Core REST cookbook](/docs/build/guides/core-rest). They distinguish Core REST from the hosted GraphQL API.
+
+
 # Overview
 
 Learn how to set up and run your own Intuition node to participate in the network using the official Rust implementation.

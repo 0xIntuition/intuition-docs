@@ -21,6 +21,10 @@ keywords:
   ]
 ---
 
+:::note SDK generation
+These examples use `@0xintuition/sdk@3.0.1`. For the current Intuition V2 package guides, start with [Build with Intuition](/docs/build/overview). Use the [upgrade guide](/docs/build/migration) when moving an existing integration to the documented alpha packages.
+:::
+
 # Installation & Setup
 
 The Intuition SDK is a comprehensive TypeScript library for building applications on the Intuition protocol. This guide covers installation, configuration, and getting your development environment ready.
@@ -157,9 +161,7 @@ import {
 import { createPublicClient, createWalletClient, http } from 'viem';
 import { privateKeyToAccount } from 'viem/accounts';
 
-const account = privateKeyToAccount(
-  process.env.PRIVATE_KEY as `0x${string}`,
-);
+const account = privateKeyToAccount(process.env.PRIVATE_KEY as `0x${string}`);
 const publicClient = createPublicClient({
   chain: intuitionTestnet,
   transport: http(),
@@ -448,10 +450,7 @@ For direct Pinata upload operations, you'll need a Pinata API token:
 3. Pass it in the config when using direct Pinata upload functions
 
 ```typescript
-import {
-  createAtomFromIpfsUpload,
-  type WriteConfig,
-} from '@0xintuition/sdk';
+import { createAtomFromIpfsUpload, type WriteConfig } from '@0xintuition/sdk';
 
 async function createProjectAtom(config: WriteConfig) {
   return createAtomFromIpfsUpload(

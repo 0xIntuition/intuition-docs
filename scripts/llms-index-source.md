@@ -1,4 +1,5 @@
 <!-- Curated index source. The generator appends the Optional directory; every claim must stay literally true. -->
+
 # Intuition
 
 > Intuition is a permissionless protocol for creating verifiable, tokenized attestations on a Layer 3 blockchain. Developers build context-aware applications using semantic triples (subject-predicate-object relationships) backed by economic incentives through bonding curves. The three core primitives are Atoms (universal identifiers), Triples (structured claims), and Signals (staked conviction).
@@ -6,10 +7,25 @@
 - [llms-full.txt](https://docs.intuition.systems/llms-full.txt): Complete documentation with full page content for deep reference
 - [llms-medium.txt](https://docs.intuition.systems/llms-medium.txt): Condensed summaries with metadata — fits in a single context window
 
+## Build with Intuition
+
+- [Start here](https://docs.intuition.systems/docs/build/overview): Intuition V2 concepts and a progression from local modeling to application integration
+- [Build a music catalog](https://docs.intuition.systems/docs/build/guides/music-catalog): Runnable example combining identities, classifications, predicates, and triples
+- [Packages](https://docs.intuition.systems/docs/build/packages/index): Twenty-one public packages, responsibilities, public imports, and exact npm versions
+- [Compatibility](https://docs.intuition.systems/docs/build/compatibility): Verified npm publication, version/tag selection, runtime requirements, and deployment boundaries
+- [Release manifest](https://docs.intuition.systems/intuition-release.json): Verified npm versions, exports, peers, integrity, and source provenance
+- [Build with AI agents](https://docs.intuition.systems/docs/build/agents): Task briefs and verification for agent-assisted application development
+- [API reference](https://docs.intuition.systems/docs/build/sdk-reference/index): Source-generated signatures, inputs, outputs, and effects
+
+- [Install by workflow](https://docs.intuition.systems/docs/build/guides/installation): Offline modeling, server processing, SDK, and React dependency sets
+- [Processing](https://docs.intuition.systems/docs/build/guides/processing): Shared runtime, classifier handoff, enrichment, and field provenance
+- [Action envelopes](https://docs.intuition.systems/docs/build/guides/action-envelopes): Serializable SDK-owned plans and separate execution
+- [Migration](https://docs.intuition.systems/docs/build/migration): SDK root changes, CLI aliases, processing extraction, and identity preservation
+
 ## Quick Start
 
 - [Choose Your Path](https://docs.intuition.systems/docs/getting-started/choose-your-path): Decision tree — routes to SDK, GraphQL, Protocol, or concepts based on your goal
-- [SDK Quick Start](https://docs.intuition.systems/docs/quick-start/using-the-sdk): Install the SDK, create atoms and triples, run your first example
+- [Earlier SDK quick start (3.0.1)](https://docs.intuition.systems/docs/quick-start/using-the-sdk): Install the SDK, create atoms and triples, run your first example
 - [Network Details](https://docs.intuition.systems/docs/quick-start/network-details): Chain IDs, RPC endpoints, and block explorers for mainnet and testnet
 - [Contract Deployments](https://docs.intuition.systems/docs/quick-start/deployments): All contract addresses for mainnet and testnet
 - [Testnet Faucet](https://docs.intuition.systems/docs/quick-start/testnet-faucet): Get test tokens for development
@@ -32,7 +48,7 @@
 
 Use the SDK for frontend/full-stack apps, GraphQL for read-heavy queries, Protocol package for direct contract interaction, and the Interaction Guide for low-level call patterns.
 
-- [SDK Overview](https://docs.intuition.systems/docs/intuition-sdk/quick-start): TypeScript/JavaScript SDK — atoms, triples, signals, vaults, search, and batch operations
+- [Earlier SDK examples (3.0.1)](https://docs.intuition.systems/docs/intuition-sdk/quick-start): TypeScript/JavaScript SDK — atoms, triples, signals, vaults, search, and batch operations
 - [GraphQL API](https://docs.intuition.systems/docs/graphql-api/overview): Query the knowledge graph — atoms, triples, vaults, positions, activity, and subscriptions
 - [Smart Contracts](https://docs.intuition.systems/docs/intuition-smart-contracts): Contract architecture — MultiVault, Trust Token, Trust Bonding, and bonding curves
 - [Contract Interactions](https://docs.intuition.systems/docs/interaction-guide/overview): Low-level patterns for creating atoms/triples, depositing, and reading vault state

@@ -12,9 +12,11 @@ on:
       - 'static/llms-full.txt'
       - 'static/llms-medium.txt'
       - 'docusaurus.config.js'
-      - 'scripts/validate-internal-links.js'
-      - 'scripts/generate-llms-full.js'
-      - 'scripts/generate-llms-full.test.js'
+      - 'sidebars.js'
+      - 'scripts/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/check-links.yml'
       - '.github/workflows/generate-llms-txt.yml'
 
 permissions:
@@ -27,13 +29,20 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
       - name: Validate internal /docs/ links
         run: node scripts/validate-internal-links.js
 
       - name: Validate llms coverage
         run: npm run validate-llms-coverage
 
-      - name: Run llms generator tests
+      - name: Run documentation tests
         run: npm run test
 
   build:
