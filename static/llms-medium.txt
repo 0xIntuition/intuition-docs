@@ -3771,7 +3771,7 @@ const depositConfig = {
 ---
 title: "Integrate FeeProxy"
 description: "Register as a FeeProxy affiliate, check a user's readiness, and route deposits and atom or triple creation through FeeProxy with the Intuition SDK"
-last_updated: "2026-10-20T17:53:35+02:00"
+last_updated: "2026-11-06T22:04:45+01:00"
 source: "https://docs.intuition.systems/docs/interaction-guide/fee-proxy-integration"
 ---
 
@@ -5023,7 +5023,7 @@ Deposit assets into a single vault.
 ---
 title: "Audit Reports"
 description: "Security audit reports for Intuition smart contracts"
-last_updated: "2026-10-20T21:25:23+02:00"
+last_updated: "2026-11-06T22:04:45+01:00"
 source: "https://docs.intuition.systems/docs/intuition-smart-contracts/audit-reports"
 ---
 
@@ -5031,7 +5031,7 @@ source: "https://docs.intuition.systems/docs/intuition-smart-contracts/audit-rep
 
 ## Overview
 
-This page contains security audit reports for Intuition smart contracts. All contracts undergo rigorous security assessments before deployment.
+This page contains security audit reports for Intuition smart contracts.
 
 ### Intuition Core v1.1.0 Upgrade Audit | Diligence
 #### September 2026
@@ -5056,7 +5056,7 @@ This page contains security audit reports for Intuition smart contracts. All con
 ---
 title: "Configurations & Fees"
 description: "The Intuition protocol smart contracts utilize a configuration system that allows for dynamic adjustment of various parameters effecting the behavior of the protocol. This document outlines the key..."
-last_updated: "2026-10-20T17:53:35+02:00"
+last_updated: "2026-11-06T22:04:45+01:00"
 source: "https://docs.intuition.systems/docs/intuition-smart-contracts/configuration"
 ---
 
@@ -5075,7 +5075,7 @@ The smart contract configurations and parameters can be adjusted onchain by the 
 ---
 title: "Contract Deployments"
 description: "The Intuition protocol contracts are deployed on both the Base Mainnet and the Intuition Layer 3 network, as well as their respective testnets. Below are the details of the deployed contracts,..."
-last_updated: "2026-10-20T17:53:35+02:00"
+last_updated: "2026-11-06T22:04:45+01:00"
 source: "https://docs.intuition.systems/docs/intuition-smart-contracts/deployments"
 ---
 
@@ -5083,14 +5083,14 @@ source: "https://docs.intuition.systems/docs/intuition-smart-contracts/deploymen
 
 The Intuition protocol contracts are deployed on both the Base Mainnet and the Intuition Layer 3 network, as well as their respective testnets. Below are the details of the deployed contracts, including their addresses and network configurations.
 
-The protocol and periphery addresses match the `alpha` release of the [`@0xintuition/deployments`](https://www.npmjs.com/package/@0xintuition/deployments) package, which is the source of truth for contract addresses and ABIs. In code, resolve addresses from the package (for example `getMultiVaultAddressFromChainId(chainId)`) rather than copying them from this page. The timelocks, SafeSingletonFactory and the TRUST bridge hub are listed here for reference only.
+The protocol and periphery addresses match the `alpha` release of the [`@0xintuition/deployments`](https://www.npmjs.com/package/@0xintuition/deployments) package, which is the source of truth for contract addresses and ABIs. In code, resolve addresses from the package (for example `getMultiVaultAddressFromChainId(chainId)`) rather than copying them from this page. The timelocks, the governance contracts, SafeSingletonFactory and the TRUST bridge hub are listed here for reference only.
 
 [... see full docs for complete content]
 
 ---
 title: "FeeProxy.sol"
 description: "Documentation for the FeeProxy smart contract, which lets apps route deposits and atom/triple creation to MultiVault while charging their own fee"
-last_updated: "2026-10-21T14:50:09+02:00"
+last_updated: "2026-11-06T22:04:45+01:00"
 source: "https://docs.intuition.systems/docs/intuition-smart-contracts/fee-proxy"
 ---
 
@@ -5106,9 +5106,28 @@ The user stays the owner of record:
 [... see full docs for complete content]
 
 ---
+title: "Governance"
+description: "How veTRUST holders can veto protocol upgrades and parameter changes on Intuition Mainnet, and how to cast a veto"
+source: "https://docs.intuition.systems/docs/intuition-smart-contracts/governance"
+---
+
+# Governance
+
+Contract upgrades and configuration changes on Intuition Mainnet go through two timelocks: the Upgrades TimelockController and the Parameters TimelockController. A governance DAO holds the executor role on both, and veTRUST holders can veto any change the DAO would execute.
+
+The model is optimistic. The admin multisig proposes a change, and the change can execute unless veTRUST holders veto it.
+
+| Role                                     | Holder                                                   |
+| ---------------------------------------- | -------------------------------------------------------- |
+| Creates proposals                        | The admin multisig (4 of 8 signatures)                   |
+| Can veto                                 | Any address that held veTRUST at the proposal's snapshot |
+
+[... see full docs for complete content]
+
+---
 title: "Contract Architecture Overview"
 description: "Overview of Intuition's smart contract architecture and design patterns"
-last_updated: "2026-10-20T17:53:35+02:00"
+last_updated: "2026-11-06T22:04:45+01:00"
 source: "https://docs.intuition.systems/docs/intuition-smart-contracts"
 ---
 
@@ -5121,15 +5140,15 @@ The contracts live on two chains:
 - **Intuition Network (L3):** the protocol itself (MultiVault, the bonding curves, atom wallets, TrustBonding and the emissions receiver) and the periphery contracts built on it.
 - **Base:** the TRUST token and the BaseEmissionsController, which mints new TRUST and bridges it to the Intuition Network.
 
-| Group               | Contracts                                                                                |
-| ------------------- | ---------------------------------------------------------------------------------------- |
+| Group               | Contracts                                                                                                         |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------- |
 
 [... see full docs for complete content]
 
 ---
 title: "MultiVault.sol"
 description: "Documentation for the MultiVault smart contract, including multicall, creating on behalf of another account, approvals and atom wallets"
-last_updated: "2026-10-20T17:53:35+02:00"
+last_updated: "2026-11-06T22:04:45+01:00"
 source: "https://docs.intuition.systems/docs/intuition-smart-contracts/multivault"
 ---
 
@@ -5145,7 +5164,7 @@ The MultiVault contract is the core economic engine of the Intuition protocol. I
 ---
 title: "TrustBonding.sol"
 description: "Documentation for the TrustBonding smart contract"
-last_updated: "2026-10-20T17:53:35+02:00"
+last_updated: "2026-11-06T22:04:45+01:00"
 source: "https://docs.intuition.systems/docs/intuition-smart-contracts/trust-bonding"
 ---
 
@@ -6117,7 +6136,7 @@ Complete workflows for tracking rewards and utilization in the Trust Bonding sys
 ---
 title: "Configuration"
 description: "Configure clients, networks, and contract addresses for the Intuition Protocol"
-last_updated: "2026-01-05T17:16:01-08:00"
+last_updated: "2026-11-06T22:04:45+01:00"
 source: "https://docs.intuition.systems/docs/protocol/getting-started/configuration"
 ---
 
@@ -6223,7 +6242,7 @@ Every atom and triple has an associated vault for staking:
 ---
 title: "Contract Deployments"
 description: "The Intuition protocol contracts are deployed on both the Base Mainnet and the Intuition Layer 3 network, as well as their respective testnets. Below are the details of the deployed contracts,..."
-last_updated: "2026-08-04T11:51:50-04:00"
+last_updated: "2026-11-06T22:04:45+01:00"
 source: "https://docs.intuition.systems/docs/quick-start/deployments"
 ---
 
@@ -6235,9 +6254,11 @@ The Intuition protocol contracts are deployed on both the Base Mainnet and the I
 
 ### Base Mainnet
 
-| Contract      | Address                                    |
-|---------------|--------------------------------------------|
-| Trust (ERC20) | 0x6cd905dF2Ed214b22e0d48FF17CD4200C1C6d8A3 |
+| Contract Name               | Address                                    |
+|-----------------------------|--------------------------------------------|
+| Trust (ERC20)               | 0x6cd905dF2Ed214b22e0d48FF17CD4200C1C6d8A3 |
+| BaseEmissionsController     | 0x7745bDEe668501E5eeF7e9605C746f9cDfb60667 |
+| Upgrades TimelockController | 0x1E442BbB08c98100b18fa830a88E8A57b5dF9157 |
 
 ### Intuition Mainnet (L3)
 
@@ -6246,9 +6267,7 @@ The Intuition protocol contracts are deployed on both the Base Mainnet and the I
 | WrappedTrust                  | 0x81cFb09cb44f7184Ad934C09F82000701A4bF672 |
 | Upgrades TimelockController   | 0x321e5d4b20158648dFd1f360A79CAFc97190bAd1 |
 | Parameters TimelockController | 0x71b0F1ABebC2DaA0b7B5C3f9b72FAa1cd9F35FEA |
-| MultiVault                    | 0x6E35cF57A41fA15eA0EaE9C33e751b01A784Fe7e |
-| AtomWalletFactory             | 0x33827373a7D1c7C78a01094071C2f6CE74253B9B |
-| AtomWalletBeacon              | 0xC23cD55CF924b3FE4b97deAA0EAF222a5082A1FF |
+| DAO (governance)              | 0x9c965C3D39beb6293ca92cd35e552963e913F4Fd |
 
 [... see full docs for complete content]
 

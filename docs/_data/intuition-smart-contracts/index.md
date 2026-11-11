@@ -48,13 +48,13 @@ flowchart LR
     MultiVault -- reads epochs --> TB
 ```
 
-| Group               | Contracts                                                                                |
-| ------------------- | ---------------------------------------------------------------------------------------- |
-| Core                | MultiVault, BondingCurveRegistry, LinearCurve, OffsetProgressiveCurve                    |
-| Atom wallets        | AtomWalletFactory, AtomWallet (one per atom, behind a beacon), AtomWarden                |
-| Token and emissions | Trust, WrappedTrust, TrustBonding, BaseEmissionsController, SatelliteEmissionsController |
-| Governance          | Upgrades TimelockController, Parameters TimelockController                               |
-| Periphery           | FeeProxy, EmissionsAutomationAdapter                                                     |
+| Group               | Contracts                                                                                                         |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| Core                | MultiVault, BondingCurveRegistry, LinearCurve, OffsetProgressiveCurve                                             |
+| Atom wallets        | AtomWalletFactory, AtomWallet (one per atom, behind a beacon), AtomWarden                                         |
+| Token and emissions | Trust, WrappedTrust, TrustBonding, BaseEmissionsController, SatelliteEmissionsController                          |
+| Governance          | Upgrades TimelockController, Parameters TimelockController, DAO, OptimisticTokenVotingPlugin, VeTrustVotesAdapter |
+| Periphery           | FeeProxy, EmissionsAutomationAdapter                                                                              |
 
 All addresses are on the [Deployments](/docs/intuition-smart-contracts/deployments) page.
 
@@ -82,7 +82,7 @@ Every atom has its own **AtomWallet**, an ERC-4337 smart account. Deposits into 
 
 # Trust Token
 
-The Trust Token contract is an ERC-20 compliant token that serves as the native utility token within the Intuition ecosystem. It is used for deposits, staking, and accessing various features of the platform, with governance currently being considered.
+The Trust Token contract is an ERC-20 compliant token that serves as the native utility token within the Intuition ecosystem. It is used for deposits, staking, and accessing various features of the platform. Locked in TrustBonding as veTRUST, it carries voting power in [governance](/docs/intuition-smart-contracts/governance).
 
 - **ERC-20 Compliance**: Fully compliant with the ERC-20 standard
 - **Minting and Burning**: Controlled minting and burning of tokens
@@ -98,12 +98,12 @@ The Wrapped Trust contract is an ERC-20 compliant token that lives on the Intuit
 
 # Trust Bonding
 
-The Trust Bonding contract is a smart contract introduced in V2. Inheriting from the Curve VotingEscrow contract, it enables staking of Wrapped Trust to earn rewards, with governance participation currently being considered. Key features include:
+The Trust Bonding contract is a smart contract introduced in V2. Inheriting from the Curve VotingEscrow contract, it enables staking of Wrapped Trust to earn rewards, and its veTRUST balances are the voting power in governance. Key features include:
 
 - **Staking**: Users can stake Wrapped Trust to earn rewards
 - **Locking**: Users can lock their stake for a specified duration to increase their veTRUST balance
 - **Rewards**: Users earn rewards based on their stake and lock duration
-- **Governance**: Stakers can participate in governance decisions (currently being considered)
+- **Governance**: veTRUST holders can veto governance proposals. See [Governance](/docs/intuition-smart-contracts/governance)
 
 # Bonding Curve Registry
 
@@ -140,7 +140,7 @@ The protocol contracts are upgradeable. Contract upgrades and MultiVault configu
 
 On mainnet, a multisig proposes every timelocked change, so each change is public on-chain for the whole delay before it takes effect. Pausing does not go through the timelocks: on MultiVault, a `PAUSER_ROLE` holder can pause, and only the admin can unpause. Registering a new bonding curve does not go through them either: the registry owner adds curves directly.
 
-There is no token vote today. Token-holder governance is currently being considered, and its form may change.
+On Intuition Mainnet, a governance DAO is also an executor on both timelocks, and veTRUST holders can veto the proposals it executes. See [Governance](/docs/intuition-smart-contracts/governance).
 
 # Periphery
 
