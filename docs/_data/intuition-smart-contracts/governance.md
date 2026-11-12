@@ -81,7 +81,7 @@ The veto settings can be changed only through a proposal that is not vetoed.
 These powers do not go through a proposal:
 
 - The admin multisig can execute timelocked changes directly, as described above.
-- Pausing is instant. On MultiVault, TrustBonding, AtomWarden and FeeProxy, the admin multisig can pause and unpause.
+- Pausing is instant. On MultiVault, TrustBonding, AtomWarden and FeeProxy, the admin multisig can pause and unpause. A separate pauser multisig (2 of 8, the same signers) can pause MultiVault, TrustBonding and FeeProxy, so an emergency pause needs only two signatures. It cannot unpause: only the admin multisig can.
 - The BondingCurveRegistry owner registers new bonding curves directly.
 - On TrustBonding, the admin multisig can end all locks at once, making every lock withdrawable, and it decides which contracts can lock.
 - The admin multisig holds admin roles with no delay on AtomWarden and SatelliteEmissionsController, and sets FeeProxy's fee caps and registration fee.
@@ -169,15 +169,16 @@ cast call $TIMELOCK "isOperationReady(bytes32)(bool)" $OPERATION_ID --rpc-url $R
 
 All on Intuition Mainnet (chain ID 1155) and verified on the [explorer](https://explorer.intuition.systems).
 
-| Contract                                  | Address                                                                                                                               |
-| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| DAO (governance)                          | [`0x9c965C3D39beb6293ca92cd35e552963e913F4Fd`](https://explorer.intuition.systems/address/0x9c965C3D39beb6293ca92cd35e552963e913F4Fd) |
-| OptimisticTokenVotingPlugin (veto plugin) | [`0x013d36E344ce912440Bc615f774fAD73F7d62c3D`](https://explorer.intuition.systems/address/0x013d36E344ce912440Bc615f774fAD73F7d62c3D) |
-| VeTrustVotesAdapter                       | [`0x83d2c9D0fc344598166533dd306034ae8E75bD0f`](https://explorer.intuition.systems/address/0x83d2c9D0fc344598166533dd306034ae8E75bD0f) |
-| Upgrades TimelockController               | [`0x321e5d4b20158648dFd1f360A79CAFc97190bAd1`](https://explorer.intuition.systems/address/0x321e5d4b20158648dFd1f360A79CAFc97190bAd1) |
-| Parameters TimelockController             | [`0x71b0F1ABebC2DaA0b7B5C3f9b72FAa1cd9F35FEA`](https://explorer.intuition.systems/address/0x71b0F1ABebC2DaA0b7B5C3f9b72FAa1cd9F35FEA) |
-| TrustBonding (veTRUST)                    | [`0x635bBD1367B66E7B16a21D6E5A63C812fFC00617`](https://explorer.intuition.systems/address/0x635bBD1367B66E7B16a21D6E5A63C812fFC00617) |
-| Admin multisig (Safe, 4 of 8)             | [`0xbeA18ab4c83a12be25f8AA8A10D8747A07Cdc6eb`](https://explorer.intuition.systems/address/0xbeA18ab4c83a12be25f8AA8A10D8747A07Cdc6eb) |
+| Contract                                   | Address                                                                                                                               |
+| ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------- |
+| DAO (governance)                           | [`0x9c965C3D39beb6293ca92cd35e552963e913F4Fd`](https://explorer.intuition.systems/address/0x9c965C3D39beb6293ca92cd35e552963e913F4Fd) |
+| OptimisticTokenVotingPlugin (veto plugin)  | [`0x013d36E344ce912440Bc615f774fAD73F7d62c3D`](https://explorer.intuition.systems/address/0x013d36E344ce912440Bc615f774fAD73F7d62c3D) |
+| VeTrustVotesAdapter                        | [`0x83d2c9D0fc344598166533dd306034ae8E75bD0f`](https://explorer.intuition.systems/address/0x83d2c9D0fc344598166533dd306034ae8E75bD0f) |
+| Upgrades TimelockController                | [`0x321e5d4b20158648dFd1f360A79CAFc97190bAd1`](https://explorer.intuition.systems/address/0x321e5d4b20158648dFd1f360A79CAFc97190bAd1) |
+| Parameters TimelockController              | [`0x71b0F1ABebC2DaA0b7B5C3f9b72FAa1cd9F35FEA`](https://explorer.intuition.systems/address/0x71b0F1ABebC2DaA0b7B5C3f9b72FAa1cd9F35FEA) |
+| TrustBonding (veTRUST)                     | [`0x635bBD1367B66E7B16a21D6E5A63C812fFC00617`](https://explorer.intuition.systems/address/0x635bBD1367B66E7B16a21D6E5A63C812fFC00617) |
+| Admin multisig (Safe, 4 of 8)              | [`0xbeA18ab4c83a12be25f8AA8A10D8747A07Cdc6eb`](https://explorer.intuition.systems/address/0xbeA18ab4c83a12be25f8AA8A10D8747A07Cdc6eb) |
+| Pauser multisig (Safe, 2 of 8, pause only) | [`0x38F6bb834D1e6fd92D3E9C849d4E62faAfd6E577`](https://explorer.intuition.systems/address/0x38F6bb834D1e6fd92D3E9C849d4E62faAfd6E577) |
 
 The DAO and the veto plugin are ERC-1967 proxies. VeTrustVotesAdapter is a small read-only contract that reports veTRUST balances from TrustBonding at past times in the votes interface the plugin reads.
 

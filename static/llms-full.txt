@@ -29062,9 +29062,11 @@ Source: https://docs.intuition.systems/docs/intuition-smart-contracts/deployment
 
 The Intuition protocol contracts are deployed on both the Base Mainnet and the Intuition Layer 3 network, as well as their respective testnets. Below are the details of the deployed contracts, including their addresses and network configurations.
 
-The protocol and periphery addresses match the `alpha` release of the [`@0xintuition/deployments`](https://www.npmjs.com/package/@0xintuition/deployments) package, which is the source of truth for contract addresses and ABIs. In code, resolve addresses from the package (for example `getMultiVaultAddressFromChainId(chainId)`) rather than copying them from this page. The timelocks, the governance contracts, SafeSingletonFactory and the TRUST bridge hub are listed here for reference only.
+The protocol and periphery addresses match the `alpha` release of the [`@0xintuition/deployments`](https://www.npmjs.com/package/@0xintuition/deployments) package, which is the source of truth for contract addresses and ABIs. In code, resolve addresses from the package (for example `getMultiVaultAddressFromChainId(chainId)`) rather than copying them from this page. The timelocks, the governance contracts, the admin multisig, the pauser multisig, SafeSingletonFactory and the TRUST bridge hub are listed here for reference only.
 
 The Upgrades TimelockControllers own the proxy admins of the protocol contracts, FeeProxy and the USDC and WETH bridge contracts, so those upgrades wait out their delay: 7 days on mainnet and 1 hour on testnet. The TRUST bridge hub and spoke are operated by Caldera. The Parameters TimelockController is the only account that can change MultiVault's configuration, with a 3-day delay on mainnet and 1 hour on testnet. On Intuition Mainnet, the governance DAO is also an executor on both timelocks, and veTRUST holders can veto the proposals it executes. See [Governance](https://docs.intuition.systems/docs/intuition-smart-contracts/governance).
+
+On Intuition Mainnet, the admin multisig (Safe, 4 of 8) holds the admin roles on the protocol contracts. The pauser multisig (Safe, 2 of 8, the same signers) can only pause MultiVault, TrustBonding and FeeProxy. Unpausing needs the admin multisig. On Base, a separate admin multisig (Safe, 4 of 8, the same signers) holds the admin roles on Trust and BaseEmissionsController, and proposes, executes and cancels operations on the Base Upgrades TimelockController.
 
 ## Mainnet
 
@@ -29075,6 +29077,7 @@ The Upgrades TimelockControllers own the proxy admins of the protocol contracts,
 | Trust (ERC20)               | 0x6cd905dF2Ed214b22e0d48FF17CD4200C1C6d8A3 |
 | BaseEmissionsController     | 0x7745bDEe668501E5eeF7e9605C746f9cDfb60667 |
 | Upgrades TimelockController | 0x1E442BbB08c98100b18fa830a88E8A57b5dF9157 |
+| Admin multisig (4 of 8)     | 0xCa66d181c76eAE6439B90Fb5f73bF6252107AE4E |
 
 ### Intuition Mainnet (L3)
 
@@ -29086,6 +29089,8 @@ The Upgrades TimelockControllers own the proxy admins of the protocol contracts,
 | DAO (governance)              | 0x9c965C3D39beb6293ca92cd35e552963e913F4Fd |
 | OptimisticTokenVotingPlugin   | 0x013d36E344ce912440Bc615f774fAD73F7d62c3D |
 | VeTrustVotesAdapter           | 0x83d2c9D0fc344598166533dd306034ae8E75bD0f |
+| Admin multisig (4 of 8)       | 0xbeA18ab4c83a12be25f8AA8A10D8747A07Cdc6eb |
+| Pauser multisig (2 of 8)      | 0x38F6bb834D1e6fd92D3E9C849d4E62faAfd6E577 |
 | MultiVault                    | 0x6E35cF57A41fA15eA0EaE9C33e751b01A784Fe7e |
 | AtomWalletFactory             | 0x33827373a7D1c7C78a01094071C2f6CE74253B9B |
 | AtomWalletBeacon              | 0xC23cD55CF924b3FE4b97deAA0EAF222a5082A1FF |
@@ -29441,7 +29446,7 @@ The stats count each successful routed call once, so a batch is one transaction.
 | `DEFAULT_ADMIN_ROLE` | `setMaxFeeBps`, `setMaxFixedFee`, `setRegistrationFee`, `unpause`, `unpauseAffiliate`, and grant or revoke roles. |
 | `PAUSER_ROLE`        | `pause`, `pauseAffiliate`.                                                                                        |
 
-At deployment, the admin receives both roles. Unpausing needs the admin role on purpose: a pauser can stop the contract or an affiliate, but cannot restart either on its own.
+At deployment, the admin receives both roles. On Intuition Mainnet, a separate pauser multisig also holds `PAUSER_ROLE`. Unpausing needs the admin role on purpose: a pauser can stop the contract or an affiliate, but cannot restart either on its own.
 
 Affiliates need no role. They manage only their own row.
 
@@ -29572,7 +29577,7 @@ The veto settings can be changed only through a proposal that is not vetoed.
 These powers do not go through a proposal:
 
 - The admin multisig can execute timelocked changes directly, as described above.
-- Pausing is instant. On MultiVault, TrustBonding, AtomWarden and FeeProxy, the admin multisig can pause and unpause.
+- Pausing is instant. On MultiVault, TrustBonding, AtomWarden and FeeProxy, the admin multisig can pause and unpause. A separate pauser multisig (2 of 8, the same signers) can pause MultiVault, TrustBonding and FeeProxy, so an emergency pause needs only two signatures. It cannot unpause: only the admin multisig can.
 - The BondingCurveRegistry owner registers new bonding curves directly.
 - On TrustBonding, the admin multisig can end all locks at once, making every lock withdrawable, and it decides which contracts can lock.
 - The admin multisig holds admin roles with no delay on AtomWarden and SatelliteEmissionsController, and sets FeeProxy's fee caps and registration fee.
@@ -29660,15 +29665,16 @@ cast call $TIMELOCK "isOperationReady(bytes32)(bool)" $OPERATION_ID --rpc-url $R
 
 All on Intuition Mainnet (chain ID 1155) and verified on the [explorer](https://explorer.intuition.systems).
 
-| Contract                                  | Address                                                                                                                               |
-| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| DAO (governance)                          | [`0x9c965C3D39beb6293ca92cd35e552963e913F4Fd`](https://explorer.intuition.systems/address/0x9c965C3D39beb6293ca92cd35e552963e913F4Fd) |
-| OptimisticTokenVotingPlugin (veto plugin) | [`0x013d36E344ce912440Bc615f774fAD73F7d62c3D`](https://explorer.intuition.systems/address/0x013d36E344ce912440Bc615f774fAD73F7d62c3D) |
-| VeTrustVotesAdapter                       | [`0x83d2c9D0fc344598166533dd306034ae8E75bD0f`](https://explorer.intuition.systems/address/0x83d2c9D0fc344598166533dd306034ae8E75bD0f) |
-| Upgrades TimelockController               | [`0x321e5d4b20158648dFd1f360A79CAFc97190bAd1`](https://explorer.intuition.systems/address/0x321e5d4b20158648dFd1f360A79CAFc97190bAd1) |
-| Parameters TimelockController             | [`0x71b0F1ABebC2DaA0b7B5C3f9b72FAa1cd9F35FEA`](https://explorer.intuition.systems/address/0x71b0F1ABebC2DaA0b7B5C3f9b72FAa1cd9F35FEA) |
-| TrustBonding (veTRUST)                    | [`0x635bBD1367B66E7B16a21D6E5A63C812fFC00617`](https://explorer.intuition.systems/address/0x635bBD1367B66E7B16a21D6E5A63C812fFC00617) |
-| Admin multisig (Safe, 4 of 8)             | [`0xbeA18ab4c83a12be25f8AA8A10D8747A07Cdc6eb`](https://explorer.intuition.systems/address/0xbeA18ab4c83a12be25f8AA8A10D8747A07Cdc6eb) |
+| Contract                                   | Address                                                                                                                               |
+| ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------- |
+| DAO (governance)                           | [`0x9c965C3D39beb6293ca92cd35e552963e913F4Fd`](https://explorer.intuition.systems/address/0x9c965C3D39beb6293ca92cd35e552963e913F4Fd) |
+| OptimisticTokenVotingPlugin (veto plugin)  | [`0x013d36E344ce912440Bc615f774fAD73F7d62c3D`](https://explorer.intuition.systems/address/0x013d36E344ce912440Bc615f774fAD73F7d62c3D) |
+| VeTrustVotesAdapter                        | [`0x83d2c9D0fc344598166533dd306034ae8E75bD0f`](https://explorer.intuition.systems/address/0x83d2c9D0fc344598166533dd306034ae8E75bD0f) |
+| Upgrades TimelockController                | [`0x321e5d4b20158648dFd1f360A79CAFc97190bAd1`](https://explorer.intuition.systems/address/0x321e5d4b20158648dFd1f360A79CAFc97190bAd1) |
+| Parameters TimelockController              | [`0x71b0F1ABebC2DaA0b7B5C3f9b72FAa1cd9F35FEA`](https://explorer.intuition.systems/address/0x71b0F1ABebC2DaA0b7B5C3f9b72FAa1cd9F35FEA) |
+| TrustBonding (veTRUST)                     | [`0x635bBD1367B66E7B16a21D6E5A63C812fFC00617`](https://explorer.intuition.systems/address/0x635bBD1367B66E7B16a21D6E5A63C812fFC00617) |
+| Admin multisig (Safe, 4 of 8)              | [`0xbeA18ab4c83a12be25f8AA8A10D8747A07Cdc6eb`](https://explorer.intuition.systems/address/0xbeA18ab4c83a12be25f8AA8A10D8747A07Cdc6eb) |
+| Pauser multisig (Safe, 2 of 8, pause only) | [`0x38F6bb834D1e6fd92D3E9C849d4E62faAfd6E577`](https://explorer.intuition.systems/address/0x38F6bb834D1e6fd92D3E9C849d4E62faAfd6E577) |
 
 The DAO and the veto plugin are ERC-1967 proxies. VeTrustVotesAdapter is a small read-only contract that reports veTRUST balances from TrustBonding at past times in the votes interface the plugin reads.
 
@@ -29811,7 +29817,7 @@ The protocol contracts are upgradeable. Contract upgrades and MultiVault configu
 - **Upgrades TimelockController** owns the proxy admins and the atom wallet beacon. A contract upgrade can run only after the timelock's delay (7 days on mainnet).
 - **Parameters TimelockController** is, from v1.1.0, the only address that can change MultiVault's configuration: the general, atom, triple, wallet, fee and bonding curve settings, and the atom URI limits. Any other caller gets `MultiVault_OnlyTimelock`. A change can run only after the timelock's delay (3 days on mainnet).
 
-On mainnet, a multisig proposes every timelocked change, so each change is public on-chain for the whole delay before it takes effect. Pausing does not go through the timelocks: on MultiVault, a `PAUSER_ROLE` holder can pause, and only the admin can unpause. Registering a new bonding curve does not go through them either: the registry owner adds curves directly.
+On mainnet, a multisig proposes every timelocked change, so each change is public on-chain for the whole delay before it takes effect. Pausing does not go through the timelocks: on MultiVault, TrustBonding and FeeProxy, a `PAUSER_ROLE` holder can pause, and only the admin can unpause. On mainnet, both the admin multisig and a separate 2-of-8 pauser multisig hold `PAUSER_ROLE`. Registering a new bonding curve does not go through them either: the registry owner adds curves directly.
 
 On Intuition Mainnet, a governance DAO is also an executor on both timelocks, and veTRUST holders can veto the proposals it executes. See [Governance](https://docs.intuition.systems/docs/intuition-smart-contracts/governance).
 
@@ -36294,6 +36300,7 @@ The Intuition protocol contracts are deployed on both the Base Mainnet and the I
 | Trust (ERC20)               | 0x6cd905dF2Ed214b22e0d48FF17CD4200C1C6d8A3 |
 | BaseEmissionsController     | 0x7745bDEe668501E5eeF7e9605C746f9cDfb60667 |
 | Upgrades TimelockController | 0x1E442BbB08c98100b18fa830a88E8A57b5dF9157 |
+| Admin multisig (4 of 8)     | 0xCa66d181c76eAE6439B90Fb5f73bF6252107AE4E |
 
 ### Intuition Mainnet (L3)
 
@@ -36305,6 +36312,8 @@ The Intuition protocol contracts are deployed on both the Base Mainnet and the I
 | DAO (governance)              | 0x9c965C3D39beb6293ca92cd35e552963e913F4Fd |
 | OptimisticTokenVotingPlugin   | 0x013d36E344ce912440Bc615f774fAD73F7d62c3D |
 | VeTrustVotesAdapter           | 0x83d2c9D0fc344598166533dd306034ae8E75bD0f |
+| Admin multisig (4 of 8)       | 0xbeA18ab4c83a12be25f8AA8A10D8747A07Cdc6eb |
+| Pauser multisig (2 of 8)      | 0x38F6bb834D1e6fd92D3E9C849d4E62faAfd6E577 |
 | MultiVault                    | 0x6E35cF57A41fA15eA0EaE9C33e751b01A784Fe7e |
 | AtomWalletFactory             | 0x33827373a7D1c7C78a01094071C2f6CE74253B9B |
 | AtomWalletBeacon              | 0xC23cD55CF924b3FE4b97deAA0EAF222a5082A1FF |

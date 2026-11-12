@@ -138,7 +138,7 @@ The protocol contracts are upgradeable. Contract upgrades and MultiVault configu
 - **Upgrades TimelockController** owns the proxy admins and the atom wallet beacon. A contract upgrade can run only after the timelock's delay (7 days on mainnet).
 - **Parameters TimelockController** is, from v1.1.0, the only address that can change MultiVault's configuration: the general, atom, triple, wallet, fee and bonding curve settings, and the atom URI limits. Any other caller gets `MultiVault_OnlyTimelock`. A change can run only after the timelock's delay (3 days on mainnet).
 
-On mainnet, a multisig proposes every timelocked change, so each change is public on-chain for the whole delay before it takes effect. Pausing does not go through the timelocks: on MultiVault, a `PAUSER_ROLE` holder can pause, and only the admin can unpause. Registering a new bonding curve does not go through them either: the registry owner adds curves directly.
+On mainnet, a multisig proposes every timelocked change, so each change is public on-chain for the whole delay before it takes effect. Pausing does not go through the timelocks: on MultiVault, TrustBonding and FeeProxy, a `PAUSER_ROLE` holder can pause, and only the admin can unpause. On mainnet, both the admin multisig and a separate 2-of-8 pauser multisig hold `PAUSER_ROLE`. Registering a new bonding curve does not go through them either: the registry owner adds curves directly.
 
 On Intuition Mainnet, a governance DAO is also an executor on both timelocks, and veTRUST holders can veto the proposals it executes. See [Governance](/docs/intuition-smart-contracts/governance).
 

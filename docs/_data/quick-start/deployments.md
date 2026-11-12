@@ -16,6 +16,7 @@ The Intuition protocol contracts are deployed on both the Base Mainnet and the I
 | Trust (ERC20)               | 0x6cd905dF2Ed214b22e0d48FF17CD4200C1C6d8A3 |
 | BaseEmissionsController     | 0x7745bDEe668501E5eeF7e9605C746f9cDfb60667 |
 | Upgrades TimelockController | 0x1E442BbB08c98100b18fa830a88E8A57b5dF9157 |
+| Admin multisig (4 of 8)     | 0xCa66d181c76eAE6439B90Fb5f73bF6252107AE4E |
 
 ### Intuition Mainnet (L3)
 
@@ -27,6 +28,8 @@ The Intuition protocol contracts are deployed on both the Base Mainnet and the I
 | DAO (governance)              | 0x9c965C3D39beb6293ca92cd35e552963e913F4Fd |
 | OptimisticTokenVotingPlugin   | 0x013d36E344ce912440Bc615f774fAD73F7d62c3D |
 | VeTrustVotesAdapter           | 0x83d2c9D0fc344598166533dd306034ae8E75bD0f |
+| Admin multisig (4 of 8)       | 0xbeA18ab4c83a12be25f8AA8A10D8747A07Cdc6eb |
+| Pauser multisig (2 of 8)      | 0x38F6bb834D1e6fd92D3E9C849d4E62faAfd6E577 |
 | MultiVault                    | 0x6E35cF57A41fA15eA0EaE9C33e751b01A784Fe7e |
 | AtomWalletFactory             | 0x33827373a7D1c7C78a01094071C2f6CE74253B9B |
 | AtomWalletBeacon              | 0xC23cD55CF924b3FE4b97deAA0EAF222a5082A1FF |
