@@ -7,9 +7,11 @@ sidebar_position: 1
 
 The Intuition protocol contracts are deployed on both the Base Mainnet and the Intuition Layer 3 network, as well as their respective testnets. Below are the details of the deployed contracts, including their addresses and network configurations.
 
-The protocol and periphery addresses match the `alpha` release of the [`@0xintuition/deployments`](https://www.npmjs.com/package/@0xintuition/deployments) package, which is the source of truth for contract addresses and ABIs. In code, resolve addresses from the package (for example `getMultiVaultAddressFromChainId(chainId)`) rather than copying them from this page. The timelocks, SafeSingletonFactory and the TRUST bridge hub are listed here for reference only.
+The protocol and periphery addresses match the `alpha` release of the [`@0xintuition/deployments`](https://www.npmjs.com/package/@0xintuition/deployments) package, which is the source of truth for contract addresses and ABIs. In code, resolve addresses from the package (for example `getMultiVaultAddressFromChainId(chainId)`) rather than copying them from this page. The timelocks, the governance contracts, the admin multisig, the pauser multisig, SafeSingletonFactory and the TRUST bridge hub are listed here for reference only.
 
-The Upgrades TimelockControllers own the proxy admins of the protocol contracts, FeeProxy and the USDC and WETH bridge contracts, so those upgrades wait out their delay: 7 days on mainnet and 1 hour on testnet. The TRUST bridge hub and spoke are operated by Caldera. The Parameters TimelockController is the only account that can change MultiVault's configuration, with a 3-day delay on mainnet and 1 hour on testnet.
+The Upgrades TimelockControllers own the proxy admins of the protocol contracts, FeeProxy and the USDC and WETH bridge contracts, so those upgrades wait out their delay: 7 days on mainnet and 1 hour on testnet. The TRUST bridge hub and spoke are operated by Caldera. The Parameters TimelockController is the only account that can change MultiVault's configuration, with a 3-day delay on mainnet and 1 hour on testnet. On Intuition Mainnet, the governance DAO is also an executor on both timelocks, and veTRUST holders can veto the proposals it executes. See [Governance](/docs/intuition-smart-contracts/governance).
+
+On Intuition Mainnet, the admin multisig (Safe, 4 of 8) holds the admin roles on the protocol contracts. The pauser multisig (Safe, 2 of 8, the same signers) can only pause MultiVault, TrustBonding and FeeProxy. Unpausing needs the admin multisig. On Base, a separate admin multisig (Safe, 4 of 8, the same signers) holds the admin roles on Trust and BaseEmissionsController, and proposes, executes and cancels operations on the Base Upgrades TimelockController.
 
 ## Mainnet
 
@@ -20,6 +22,7 @@ The Upgrades TimelockControllers own the proxy admins of the protocol contracts,
 | Trust (ERC20)               | 0x6cd905dF2Ed214b22e0d48FF17CD4200C1C6d8A3 |
 | BaseEmissionsController     | 0x7745bDEe668501E5eeF7e9605C746f9cDfb60667 |
 | Upgrades TimelockController | 0x1E442BbB08c98100b18fa830a88E8A57b5dF9157 |
+| Admin multisig (4 of 8)     | 0xCa66d181c76eAE6439B90Fb5f73bF6252107AE4E |
 
 ### Intuition Mainnet (L3)
 
@@ -28,6 +31,11 @@ The Upgrades TimelockControllers own the proxy admins of the protocol contracts,
 | WrappedTrust                  | 0x81cFb09cb44f7184Ad934C09F82000701A4bF672 |
 | Upgrades TimelockController   | 0x321e5d4b20158648dFd1f360A79CAFc97190bAd1 |
 | Parameters TimelockController | 0x71b0F1ABebC2DaA0b7B5C3f9b72FAa1cd9F35FEA |
+| DAO (governance)              | 0x9c965C3D39beb6293ca92cd35e552963e913F4Fd |
+| OptimisticTokenVotingPlugin   | 0x013d36E344ce912440Bc615f774fAD73F7d62c3D |
+| VeTrustVotesAdapter           | 0x83d2c9D0fc344598166533dd306034ae8E75bD0f |
+| Admin multisig (4 of 8)       | 0xbeA18ab4c83a12be25f8AA8A10D8747A07Cdc6eb |
+| Pauser multisig (2 of 8)      | 0x38F6bb834D1e6fd92D3E9C849d4E62faAfd6E577 |
 | MultiVault                    | 0x6E35cF57A41fA15eA0EaE9C33e751b01A784Fe7e |
 | AtomWalletFactory             | 0x33827373a7D1c7C78a01094071C2f6CE74253B9B |
 | AtomWalletBeacon              | 0xC23cD55CF924b3FE4b97deAA0EAF222a5082A1FF |

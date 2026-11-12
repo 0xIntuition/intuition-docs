@@ -111,7 +111,7 @@ Gas costs on Intuition are dramatically lower than Ethereum:
 **$TRUST** is the native token of Intuition Network:
 - **Gas fees** - Pay for transactions
 - **Staking** - Signal on atoms and triples
-- **Governance** - (Coming soon)
+- **Governance** - Locked as veTRUST, it gives holders voting power in governance. See [Governance](/docs/intuition-smart-contracts/governance)
 
 See [Signals](/docs/intuition-concepts/primitives/Signals/fundamentals) for information about staking and token usage.
 
