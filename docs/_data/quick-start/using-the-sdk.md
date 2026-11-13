@@ -25,28 +25,28 @@ The `@0xintuition/sdk` package is the only required package to get started.
 <TabItem value="npm" label="npm" default>
 
 ```bash
-npm install @0xintuition/sdk@latest
+npm install @0xintuition/sdk@3.0.1
 ```
 
 </TabItem>
 <TabItem value="pnpm" label="pnpm">
 
 ```bash
-pnpm add @0xintuition/sdk@latest
+pnpm add @0xintuition/sdk@3.0.1
 ```
 
 </TabItem>
 <TabItem value="yarn" label="yarn">
 
 ```bash
-yarn add @0xintuition/sdk@latest
+yarn add @0xintuition/sdk@3.0.1
 ```
 
 </TabItem>
 <TabItem value="bun" label="bun">
 
 ```bash
-bun add @0xintuition/sdk@latest
+bun add @0xintuition/sdk@3.0.1
 ```
 
 </TabItem>
@@ -58,28 +58,28 @@ If you're starting a new project entirely, be sure to install the required peer 
 <TabItem value="npm" label="npm" default>
 
 ```bash
-npm install @0xintuition/sdk@latest viem@latest
+npm install @0xintuition/sdk@3.0.1 viem@latest
 ```
 
 </TabItem>
 <TabItem value="pnpm" label="pnpm">
 
 ```bash
-pnpm add @0xintuition/sdk@latest viem@latest
+pnpm add @0xintuition/sdk@3.0.1 viem@latest
 ```
 
 </TabItem>
 <TabItem value="yarn" label="yarn">
 
 ```bash
-yarn add @0xintuition/sdk@latest viem@latest
+yarn add @0xintuition/sdk@3.0.1 viem@latest
 ```
 
 </TabItem>
 <TabItem value="bun" label="bun">
 
 ```bash
-bun add @0xintuition/sdk@latest viem@latest
+bun add @0xintuition/sdk@3.0.1 viem@latest
 ```
 
 </TabItem>
@@ -93,28 +93,28 @@ If you need to interact with the Intuition contracts directly, you will need to 
 <TabItem value="npm" label="npm" default>
 
 ```bash
-npm install @0xintuition/protocol@latest @0xintuition/graphql@latest
+npm install @0xintuition/protocol@2.0.3 @0xintuition/graphql@3.0.1
 ```
 
 </TabItem>
 <TabItem value="pnpm" label="pnpm">
 
 ```bash
-pnpm add @0xintuition/protocol@latest @0xintuition/graphql@latest
+pnpm add @0xintuition/protocol@2.0.3 @0xintuition/graphql@3.0.1
 ```
 
 </TabItem>
 <TabItem value="yarn" label="yarn">
 
 ```bash
-yarn add @0xintuition/protocol@latest @0xintuition/graphql@latest
+yarn add @0xintuition/protocol@2.0.3 @0xintuition/graphql@3.0.1
 ```
 
 </TabItem>
 <TabItem value="bun" label="bun">
 
 ```bash
-bun add @0xintuition/protocol@latest @0xintuition/graphql@latest
+bun add @0xintuition/protocol@2.0.3 @0xintuition/graphql@3.0.1
 ```
 
 </TabItem>
