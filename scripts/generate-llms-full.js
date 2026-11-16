@@ -2,30 +2,31 @@
 'use strict';
 
 /**
- * Generate llms.txt, llms-full.txt, and llms-medium.txt from docs/_data/ markdown files.
+ * Generate llms.txt, llms-full.txt, and llms-medium.txt from each configured documentation tree.
  *
  * Produces structured text files with cleaned content, correct canonical
  * Docusaurus URLs (frontmatter-aware), and metadata where appropriate.
  *
  * Usage:
- *   node scripts/generate-llms-full.js                # generate all output files
+ *   node scripts/generate-llms-full.js --version all # both versions (default)
+ *   node scripts/generate-llms-full.js --version v1  # one version
  *   node scripts/generate-llms-full.js --full-only    # only llms-full.txt
  *   node scripts/generate-llms-full.js --medium-only  # only llms-medium.txt
  *   node scripts/generate-llms-full.js --index-only   # only llms.txt
- *   node scripts/generate-llms-full.js --stdout       # print llms-full.txt to stdout
+ *   node scripts/generate-llms-full.js --version current --stdout # one full bundle
  *
  * Zero external dependencies — uses only Node.js built-ins.
  */
 
 const fs = require('fs');
 const path = require('path');
-const { execSync } = require('child_process');
+const { execFileSync } = require('child_process');
+const { versions, getVersion } = require('../docs-versions.config');
+const { readDocs, normalizeRoute } = require('./lib/docs-tree');
 
 const ROOT = path.resolve(__dirname, '..');
-const DOCS_DIR = path.join(ROOT, 'docs', '_data');
-const STATIC_DIR = path.join(ROOT, 'static');
+const V1_TIMESTAMPS_PATH = path.join(__dirname, 'llms-v1-last-updated.json');
 const BASE_URL = 'https://docs.intuition.systems';
-const INDEX_SOURCE_PATH = path.join(__dirname, 'llms-index-source.md');
 // The curated source already ends with an `## Optional` section, so the
 // directory is emitted inside it rather than under a second heading.
 const INDEX_DIRECTORY_INTRO =
@@ -36,24 +37,13 @@ const ROUTE_EXCLUSION_LIST = Object.freeze({
 });
 
 // ---------------------------------------------------------------------------
-// Utilities (mirrored from validate-internal-links.js)
+// URL utilities (routes and metadata come from the shared docs reader)
 // ---------------------------------------------------------------------------
 
-function walkDir(dir) {
-  let results = [];
-  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-    const full = path.join(dir, entry.name);
-    if (entry.isDirectory()) {
-      results = results.concat(walkDir(full));
-    } else {
-      results.push(full);
-    }
-  }
-  return results;
-}
-
-function isEligibleDocFile(file) {
-  const relativeParts = path.relative(DOCS_DIR, file).split(path.sep);
+function isEligibleDocFile(file, version = versions.current, rootDir = ROOT) {
+  const relativeParts = path
+    .relative(path.resolve(rootDir, version.docsDir), file)
+    .split(path.sep);
   const basename = relativeParts[relativeParts.length - 1];
   const ext = path.extname(basename).toLowerCase();
 
@@ -69,19 +59,6 @@ function isEligibleDocFile(file) {
     return false;
   }
   return ext === '.md' || ext === '.mdx';
-}
-
-function normalizeDocPath(docPath) {
-  if (!docPath) return '/docs';
-  let normalized = docPath.replace(/\\/g, '/');
-  if (!normalized.startsWith('/')) {
-    normalized = `/${normalized}`;
-  }
-  normalized = normalized.replace(/\/+/g, '/');
-  if (normalized !== '/' && normalized.endsWith('/')) {
-    normalized = normalized.slice(0, -1);
-  }
-  return normalized;
 }
 
 function absolutizeUrl(href, pageUrl = BASE_URL) {
@@ -107,7 +84,7 @@ function splitLinkTarget(href) {
 }
 
 function normalizeRoutePath(routePath) {
-  let normalized = normalizeDocPath(routePath);
+  let normalized = normalizeRoute(routePath);
   normalized = normalized.replace(/\.(md|mdx)$/i, '');
   return normalized;
 }
@@ -130,7 +107,7 @@ function resolveSourceRelativeDocRoute(hrefPath, sourceFile, routeMaps) {
   if (!sourceFile || !hrefPath) return null;
 
   const targetPath = path.resolve(path.dirname(sourceFile), hrefPath);
-  const rel = path.relative(DOCS_DIR, targetPath);
+  const rel = path.relative(routeMaps.docsDir, targetPath);
   if (rel.startsWith('..') || path.isAbsolute(rel)) {
     return null;
   }
@@ -166,7 +143,12 @@ function resolveContentUrl(
     return `${pageUrl}${trimmed}`;
   }
 
-  if (pathPart.startsWith('/docs') && routeMaps) {
+  if (
+    routeMaps &&
+    Object.values(versions).some((version) =>
+      isWithinRoute(pathPart, version.routeBase),
+    )
+  ) {
     const route = resolveDocRoutePath(pathPart, routeMaps);
     return route ? `${BASE_URL}${route}${suffix}` : null;
   }
@@ -219,59 +201,8 @@ function textFromHtml(value) {
     .trim();
 }
 
-function parseFrontMatter(content) {
-  const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/);
-  if (!match) return { attributes: {}, body: content };
-
-  const frontMatter = {};
-  const lines = match[1].split(/\r?\n/);
-  for (const line of lines) {
-    const m = line.match(/^\s*([A-Za-z0-9_-]+)\s*:\s*(.+?)\s*$/);
-    if (!m) continue;
-    const key = m[1];
-    let value = m[2].trim();
-
-    if (
-      (value.startsWith('"') && value.endsWith('"')) ||
-      (value.startsWith("'") && value.endsWith("'"))
-    ) {
-      value = value.slice(1, -1);
-    }
-
-    frontMatter[key] = value;
-  }
-
-  const body = content.slice(match[0].length);
-  return { attributes: frontMatter, body };
-}
-
-function resolveDocRoute({ dirPath, basename, frontMatter }) {
-  const fmId = frontMatter.id ? String(frontMatter.id).trim() : '';
-  const fmSlug = frontMatter.slug ? String(frontMatter.slug).trim() : '';
-
-  if (fmSlug) {
-    if (fmSlug.startsWith('/docs/')) {
-      return normalizeDocPath(fmSlug);
-    }
-    if (fmSlug.startsWith('/')) {
-      return normalizeDocPath(`/docs${fmSlug}`);
-    }
-    if (dirPath) {
-      return normalizeDocPath(`/docs/${dirPath}/${fmSlug}`);
-    }
-    return normalizeDocPath(`/docs/${fmSlug}`);
-  }
-
-  if (basename === 'index') {
-    return dirPath ? normalizeDocPath(`/docs/${dirPath}`) : '/docs';
-  }
-
-  const routeSegment = fmId || basename;
-
-  if (dirPath) {
-    return normalizeDocPath(`/docs/${dirPath}/${routeSegment}`);
-  }
-  return normalizeDocPath(`/docs/${routeSegment}`);
+function isWithinRoute(route, base) {
+  return route === base || route.startsWith(`${base}/`);
 }
 
 // ---------------------------------------------------------------------------
@@ -366,33 +297,37 @@ function titleCase(str) {
 // Git last_updated extraction (batch for performance)
 // ---------------------------------------------------------------------------
 
-function getLastUpdatedMap() {
+function getLastUpdatedMap(version = versions.current, rootDir = ROOT) {
+  if (version.name === 'v1') {
+    // Frozen provenance is captured from the source tree before the snapshot move.
+    return new Map(
+      Object.entries(JSON.parse(fs.readFileSync(V1_TIMESTAMPS_PATH, 'utf8'))),
+    );
+  }
   const map = new Map();
   try {
-    // Get last commit date for all files in docs/_data in one git call
-    const output = execSync(
-      'git log --format="%aI" --name-only -- docs/_data/',
-      { cwd: ROOT, encoding: 'utf-8', maxBuffer: 10 * 1024 * 1024 },
+    const output = execFileSync(
+      'git',
+      ['log', '--format=%aI', '--name-only', '--', version.docsDir],
+      {
+        cwd: rootDir,
+        encoding: 'utf8',
+        maxBuffer: 10 * 1024 * 1024,
+        stdio: ['ignore', 'pipe', 'pipe'],
+      },
     );
-
+    const prefix = `${version.docsDir}/`;
     let currentDate = '';
     for (const line of output.split('\n')) {
       const trimmed = line.trim();
-      if (!trimmed) continue;
-
-      // ISO date line
-      if (/^\d{4}-\d{2}-\d{2}T/.test(trimmed)) {
-        currentDate = trimmed;
-        continue;
-      }
-
-      // File path line — only record the FIRST (most recent) date per file
-      if (trimmed.startsWith('docs/_data/') && !map.has(trimmed)) {
-        map.set(trimmed, currentDate);
+      if (/^\d{4}-\d{2}-\d{2}T/.test(trimmed)) currentDate = trimmed;
+      else if (trimmed.startsWith(prefix)) {
+        const relative = trimmed.slice(prefix.length);
+        if (!map.has(relative)) map.set(relative, currentDate);
       }
     }
   } catch {
-    // Git not available or not a repo — skip last_updated
+    // Current docs may be generated from an archive without git history.
   }
   return map;
 }
@@ -715,38 +650,29 @@ function cleanContent(
 // Section parsing — shared across output formats
 // ---------------------------------------------------------------------------
 
-function buildDocRouteMaps(docFiles) {
-  const routeByFile = new Map();
+function buildDocRouteMaps(records, version, rootDir = ROOT) {
   const routeBySourcePath = new Map();
   const routeByLowerSourcePath = new Map();
   const routeByLowerCase = new Map();
-  const validRoutes = new Set(['/docs']);
+  const validRoutes = new Set();
 
-  for (const file of docFiles) {
-    const rel = path.relative(DOCS_DIR, file);
-
-    const withoutExt = rel.replace(/\.(md|mdx)$/i, '');
-    const parts = withoutExt.split(path.sep);
-    const dirPath = parts.slice(0, -1).join('/');
-    const baseNameNoExt = parts[parts.length - 1];
-    const content = fs.readFileSync(file, 'utf-8');
-    const { attributes: frontMatter } = parseFrontMatter(content);
-    const route = resolveDocRoute({
-      dirPath,
-      basename: baseNameNoExt,
-      frontMatter,
-    });
-    const sourcePath = withoutExt.split(path.sep).join('/');
-
-    routeByFile.set(file, route);
-    routeBySourcePath.set(sourcePath, route);
-    routeByLowerSourcePath.set(sourcePath.toLowerCase(), route);
-    routeByLowerCase.set(route.toLowerCase(), route);
-    validRoutes.add(route);
+  // Body cross-links can intentionally lead to either version. Source sections
+  // themselves still come exclusively from the selected tree.
+  for (const entry of Object.values(versions)) {
+    for (const record of readDocs(rootDir, entry)) {
+      validRoutes.add(record.route);
+      routeByLowerCase.set(record.route.toLowerCase(), record.route);
+    }
   }
-
+  for (const record of records) {
+    const sourcePath = record.relativePath.replace(/\.(md|mdx)$/i, '');
+    routeBySourcePath.set(sourcePath, record.route);
+    routeByLowerSourcePath.set(sourcePath.toLowerCase(), record.route);
+    routeByLowerCase.set(record.route.toLowerCase(), record.route);
+    validRoutes.add(record.route);
+  }
   return {
-    routeByFile,
+    docsDir: path.resolve(rootDir, version.docsDir),
     routeBySourcePath,
     routeByLowerSourcePath,
     routeByLowerCase,
@@ -754,90 +680,65 @@ function buildDocRouteMaps(docFiles) {
   };
 }
 
-function parseSections() {
-  const lastUpdatedMap = getLastUpdatedMap();
+function parseSections(versionName = 'current', { rootDir = ROOT } = {}) {
+  const version =
+    typeof versionName === 'string' ? getVersion(versionName) : versionName;
+  const lastUpdatedMap = getLastUpdatedMap(version, rootDir);
+  const records = readDocs(rootDir, version).filter((record) =>
+    isEligibleDocFile(record.absolutePath, version, rootDir),
+  );
+  const routeMaps = buildDocRouteMaps(records, version, rootDir);
 
-  const allFiles = walkDir(DOCS_DIR);
-  const docFiles = allFiles.filter(isEligibleDocFile).sort();
-
-  const routeMaps = buildDocRouteMaps(docFiles);
-  const sections = [];
-
-  for (const file of docFiles) {
-    const rawContent = fs.readFileSync(file, 'utf-8');
-    const { attributes: frontMatter, body } = parseFrontMatter(rawContent);
-
-    const rel = path.relative(DOCS_DIR, file);
-    const withoutExt = rel.replace(/\.(md|mdx)$/, '');
-    const parts = withoutExt.split(path.sep);
-    const dirPath = parts.slice(0, -1).join('/');
-    const baseNameNoExt = parts[parts.length - 1];
-
-    const route =
-      routeMaps.routeByFile.get(file) ||
-      resolveDocRoute({
-        dirPath,
-        basename: baseNameNoExt,
-        frontMatter,
-      });
-
+  return records.map((record) => {
+    const {
+      id,
+      route,
+      relativePath,
+      absolutePath: sourceFile,
+      frontMatter,
+      body,
+    } = record;
     const url = `${BASE_URL}${route}`;
-    const title = extractTitle(frontMatter, body, file);
+    const title = extractTitle(frontMatter, body, sourceFile);
     const description = extractDescription(frontMatter, body);
-
-    // Get last_updated from git
-    const gitKey = `docs/_data/${rel}`;
-    const lastUpdated = lastUpdatedMap.get(gitKey) || '';
-
-    // Clean content (full version — preserves code blocks)
-    const cleanedFull = cleanContent(body, title, {
-      pageUrl: url,
-      sourceFile: file,
-      routeMaps,
-    });
-
-    // Clean content (medium version — strips code blocks)
-    const cleanedMedium = cleanContent(body, title, {
-      stripCodeBlocks: true,
-      pageUrl: url,
-      sourceFile: file,
-      routeMaps,
-    });
-
-    // Skip files with very little content
-    const nonEmptyLines = cleanedFull
-      .split('\n')
-      .filter((l) => l.trim().length > 0);
-    if (nonEmptyLines.length < 3) {
-      continue;
+    const lastUpdated = lastUpdatedMap.get(relativePath) || '';
+    if (version.name === 'v1' && !lastUpdated) {
+      throw new Error(`Missing frozen V1 last_updated for ${relativePath}`);
     }
-
-    sections.push({
+    const context = { pageUrl: url, sourceFile, routeMaps };
+    return {
+      id,
       title,
       description,
       url,
       route,
-      sourceFile: file,
+      relativePath,
+      sourceFile,
       lastUpdated,
-      contentFull: cleanedFull,
-      contentMedium: cleanedMedium,
-    });
-  }
-
-  return sections;
+      frontMatter,
+      contentFull: cleanContent(body, title, context),
+      contentMedium: cleanContent(body, title, {
+        ...context,
+        stripCodeBlocks: true,
+      }),
+    };
+  });
 }
 
 // ---------------------------------------------------------------------------
 // Output formatters
 // ---------------------------------------------------------------------------
 
-function readCuratedIndexSource() {
-  const source = fs.readFileSync(INDEX_SOURCE_PATH, 'utf-8');
+function readCuratedIndexSource(version = versions.current) {
+  const source = fs.readFileSync(
+    path.join(ROOT, version.llmsIndexSource),
+    'utf-8',
+  );
   return source.replace(/<!--[\s\S]*?-->\r?\n?/g, '');
 }
 
-function generateIndexTxt(sections) {
-  const curated = readCuratedIndexSource();
+function generateIndexTxt(sections, version = versions.current) {
+  const curated = readCuratedIndexSource(version);
   // Route sorting makes the generated directory deterministic across file-system walks.
   const directory = [...sections]
     .sort((a, b) => (a.route < b.route ? -1 : a.route > b.route ? 1 : 0))
@@ -861,31 +762,48 @@ function formatMetadataBlock({ title, description, url, lastUpdated }) {
   return block;
 }
 
-function generateFullTxt(sections) {
-  const preamble = `# Intuition Protocol - Complete Documentation
+function llmsUrl(version, name = 'llms.txt') {
+  const relative = path
+    .relative(versions.current.llmsDir, version.llmsDir)
+    .split(path.sep)
+    .join('/');
+  return `${BASE_URL}/${relative ? `${relative}/` : ''}${name}`;
+}
 
-> This file contains comprehensive documentation for the Intuition protocol, including all guides, API references, and technical documentation.
+function versionScope(version) {
+  return version.name === 'v1'
+    ? 'V1 covers the `intuition-ts` packages and `intuition-rs` services.'
+    : 'V2 covers the packages in the release manifest and Intuition Core.';
+}
 
-Intuition is a permissionless protocol for creating verifiable, tokenized attestations on a Layer 3 blockchain. Developers build context-aware applications using semantic triples (subject-predicate-object relationships) backed by economic incentives through bonding curves.
+function generateHeader(version, format = 'index') {
+  const suffix =
+    format === 'full'
+      ? ' — full text'
+      : format === 'medium'
+        ? ' — condensed'
+        : '';
+  const other = Object.values(versions).find(
+    (entry) => entry.name !== version.name,
+  );
+  const lines = [
+    `# Intuition Docs (${version.label})${suffix}`,
+    '',
+    `Version: ${version.label}`,
+    `Scope: ${versionScope(version)}`,
+  ];
+  if (version.isDefault) {
+    lines.push(
+      'The V2 packages are published as stable npm releases and Intuition Core is a release candidate.',
+    );
+  }
+  lines.push(`Other versions: ${other.label} — ${llmsUrl(other)}`);
+  return lines.join('\n') + '\n';
+}
 
-## Key Concepts
-
-- **Atoms**: Universal identifiers for any entity, concept, or piece of data — the nodes in the knowledge graph
-- **Triples**: Subject-predicate-object claims connecting atoms — the edges in the knowledge graph
-- **Signals**: Staked conviction (deposits/redemptions) on atoms and triples — the weights in the knowledge graph
-
-## Routing Guide
-
-- SDK docs: ${BASE_URL}/docs/intuition-sdk/
-- GraphQL API: ${BASE_URL}/docs/graphql-api/
-- Smart Contracts: ${BASE_URL}/docs/intuition-smart-contracts/
-- Protocol package: ${BASE_URL}/docs/protocol/
-- Tutorials: ${BASE_URL}/docs/tutorials/
-- Core concepts: ${BASE_URL}/docs/intuition-concepts/
-
-For a curated index of the most important pages, see: ${BASE_URL}/llms.txt
-
-Because this file is large, agents should prefer ${BASE_URL}/llms.txt first, then fetch specific pages or chunk this file by page sections. Each page section starts with a single H1 followed by a \`Source:\` line.
+function generateFullTxt(sections, version = versions.current) {
+  const preamble = `${generateHeader(version, 'full')}
+Prefer the curated index at ${llmsUrl(version)}, then fetch specific pages or chunk this file by page sections. Each page section starts with a single H1 followed by a \`Source:\` line.
 `;
 
   const body = sections
@@ -920,13 +838,9 @@ function truncatePreservingStructure(content, maxWords) {
   return output;
 }
 
-function generateMediumTxt(sections) {
-  const preamble = `# Intuition Protocol - Documentation Summary
-
-> Condensed reference for the Intuition protocol. Each section includes metadata and prose content without code examples. For full content with code, see: ${BASE_URL}/llms-full.txt
-> For a curated navigation index, see: ${BASE_URL}/llms.txt
-
-Intuition is a permissionless protocol for creating verifiable, tokenized attestations on a Layer 3 blockchain. The three core primitives are Atoms (universal identifiers), Triples (structured claims), and Signals (staked conviction).
+function generateMediumTxt(sections, version = versions.current) {
+  const preamble = `${generateHeader(version, 'medium')}
+Condensed reference with metadata and prose, without code examples. For full content with code, see ${llmsUrl(version, 'llms-full.txt')}. For curated navigation, see ${llmsUrl(version)}.
 `;
 
   const body = sections
@@ -945,61 +859,62 @@ Intuition is a permissionless protocol for creating verifiable, tokenized attest
 // Main
 // ---------------------------------------------------------------------------
 
+function selectedVersions(args) {
+  const flag = args.indexOf('--version');
+  const name = flag === -1 ? 'all' : args[flag + 1];
+  if (!['current', 'v1', 'all'].includes(name)) {
+    throw new Error('--version must be current, v1, or all');
+  }
+  return name === 'all' ? Object.values(versions) : [getVersion(name)];
+}
+
 function main() {
   const args = process.argv.slice(2);
+  const selected = selectedVersions(args);
   const toStdout = args.includes('--stdout');
+  if (toStdout && selected.length !== 1) {
+    throw new Error('--stdout requires --version current or --version v1');
+  }
   const fullOnly = args.includes('--full-only');
   const mediumOnly = args.includes('--medium-only');
   const indexOnly = args.includes('--index-only');
-
-  const doFull = !indexOnly && (!mediumOnly || fullOnly);
-  const doMedium = !indexOnly && (!fullOnly || mediumOnly);
-  const doIndex = indexOnly || (!fullOnly && !mediumOnly);
-
-  // Parse all sections once
-  const sections = parseSections();
-
-  // Generate llms-full.txt
-  if (doFull) {
-    const fullContent = generateFullTxt(sections);
-
+  const outputs = [
+    ['llms-full.txt', generateFullTxt, !indexOnly && (!mediumOnly || fullOnly)],
+    [
+      'llms-medium.txt',
+      generateMediumTxt,
+      !indexOnly && (!fullOnly || mediumOnly),
+    ],
+    ['llms.txt', generateIndexTxt, indexOnly || (!fullOnly && !mediumOnly)],
+  ];
+  for (const version of selected) {
+    const sections = parseSections(version);
+    if (!sections.length)
+      throw new Error(`No authored pages found for ${version.label}`);
     if (toStdout) {
-      process.stdout.write(fullContent);
-      return;
+      process.stdout.write(generateFullTxt(sections, version));
+      continue;
     }
-
-    const fullPath = path.join(STATIC_DIR, 'llms-full.txt');
-    fs.writeFileSync(fullPath, fullContent, 'utf-8');
-    const fullSizeKB = Math.round(fs.statSync(fullPath).size / 1024);
-    console.log(
-      `Generated ${fullPath} (${sections.length} sections, ${fullSizeKB}KB)`,
-    );
-  }
-
-  // Generate llms-medium.txt
-  if (doMedium) {
-    const mediumContent = generateMediumTxt(sections);
-    const mediumPath = path.join(STATIC_DIR, 'llms-medium.txt');
-    fs.writeFileSync(mediumPath, mediumContent, 'utf-8');
-    const mediumSizeKB = Math.round(fs.statSync(mediumPath).size / 1024);
-    console.log(
-      `Generated ${mediumPath} (${sections.length} sections, ${mediumSizeKB}KB)`,
-    );
-  }
-  // Generate llms.txt
-  if (doIndex) {
-    const indexContent = generateIndexTxt(sections);
-    const indexPath = path.join(STATIC_DIR, 'llms.txt');
-    fs.writeFileSync(indexPath, indexContent, 'utf-8');
-    const indexSizeKB = Math.round(fs.statSync(indexPath).size / 1024);
-    console.log(
-      `Generated ${indexPath} (${sections.length} routes, ${indexSizeKB}KB)`,
-    );
+    const outputDir = path.join(ROOT, version.llmsDir);
+    fs.mkdirSync(outputDir, { recursive: true });
+    for (const [filename, generate, enabled] of outputs) {
+      if (!enabled) continue;
+      const outputPath = path.join(outputDir, filename);
+      fs.writeFileSync(outputPath, generate(sections, version), 'utf8');
+      console.log(
+        `Generated ${outputPath} (${sections.length} ${version.label} pages, ${Math.round(fs.statSync(outputPath).size / 1024)}KB)`,
+      );
+    }
   }
 }
 
 if (require.main === module) {
-  main();
+  try {
+    main();
+  } catch (error) {
+    console.error(error.message);
+    process.exitCode = 1;
+  }
 }
 
 module.exports = {
@@ -1007,10 +922,16 @@ module.exports = {
   parseSections,
   serializeMdxComponents,
   BASE_URL,
-  DOCS_DIR,
   INDEX_DIRECTORY_INTRO,
   ROUTE_EXCLUSION_LIST,
   generateIndexTxt,
+  generateFullTxt,
+  generateMediumTxt,
+  generateHeader,
+  versionScope,
+  llmsUrl,
+  selectedVersions,
+  getLastUpdatedMap,
   getEligibleSections: parseSections,
   isEligibleDocFile,
   readCuratedIndexSource,

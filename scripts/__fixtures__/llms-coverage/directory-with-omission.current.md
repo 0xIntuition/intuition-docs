@@ -1,4 +1,4 @@
-# Coverage omission fixture
+# V2 coverage omission fixture
 
 ## Optional
 
