@@ -99,41 +99,40 @@ The built site will be in the `build/` directory.
 
 ## Documentation Structure
 
-This repository uses [Docusaurus](https://docusaurus.io/) to generate a static documentation site. The documentation content is organized as follows:
+This repository uses [Docusaurus](https://docusaurus.io/) with native docs versioning. V2 is the default at `/docs` and covers the new generation of Intuition packages and Intuition Core. V1 at `/docs/v1` preserves the documentation for the `intuition-ts` packages and `intuition-rs` services.
 
 ```
 intuition-docs/
 ├── docs/
-│   └── _data/                      # Main documentation content (routes to /docs/*)
-│       ├── getting-started/        # Introduction and onboarding
-│       ├── quick-start/            # Quick start guides
-│       ├── intuition-sdk/          # SDK documentation and guides
-│       ├── intuition-smart-contracts/  # Smart contracts documentation
-│       ├── intuition-network/      # Network information and setup
-│       ├── intuition-node/         # Node operation guides
-│       ├── graphql-api/            # GraphQL API reference
-│       ├── protocol/               # Protocol primitives and concepts
-│       ├── intuition-concepts/     # Core concepts and architecture
-│       ├── interaction-guide/      # How-to guides for common tasks
-│       ├── tutorials/              # Step-by-step tutorials and use cases
-│       ├── experimental-applications/  # Experimental integrations
-│       └── resources/              # Glossary, FAQ, and community resources
+│   └── _data/                      # Current V2 content
+│       ├── index.md                # /docs
+│       ├── agents/skills.md        # /docs/agents/skills
+│       └── community/index.md      # /docs/community
+├── _data_versioned_docs/
+│   └── version-v1/                 # Preserved V1 content at /docs/v1
+├── _data_versioned_sidebars/
+│   └── version-v1-sidebars.json     # Frozen V1 sidebar
+├── _data_versions.json             # Native Docusaurus version inventory
 ├── src/                            # Custom React components and styling
 │   ├── components/                 # Reusable UI components
 │   ├── css/                        # Custom CSS and Tailwind styles
 │   └── pages/                      # Custom pages
 ├── static/                         # Static assets (images, files, etc.)
 │   ├── img/                        # Images and icons
-│   └── llms-full.txt               # LLM-optimized documentation
+│   ├── llms{,-medium,-full}.txt     # V2 agent documentation bundles
+│   └── docs/v1/                    # V1 agent documentation bundles
+├── docs-versions.config.js         # Shared version paths, labels, and metadata
 ├── docusaurus.config.js            # Docusaurus configuration
-├── sidebars.js                     # Sidebar navigation configuration
+├── sidebars.js                     # Authored V2 sidebar
 └── package.json                    # Dependencies and scripts
 ```
 
 **How it works**:
-- Files in `docs/_data/` are served at `/docs/*` routes
-- Example: `docs/_data/getting-started/overview.md` → `/docs/getting-started/overview`
-- The sidebar navigation is auto-generated based on folder structure and frontmatter
+
+- `docs/_data/` contains only V2 pages. File paths determine routes, with `index.md` serving as a section landing page.
+- `_data_versioned_docs/version-v1/` contains the preserved V1 snapshot, served under `/docs/v1` with its frozen sidebar.
+- `docs-versions.config.js` is the shared source for version names, labels, content directories, route bases, agent-bundle locations, search tags, and the V1 snapshot commit. The site configuration and scripts read it.
+- `sidebars.js` lists the shipped V2 pages in their intended order.
 
 ## Available Scripts
 
@@ -221,12 +220,17 @@ npm run write-heading-ids
 
 ## For AI Agents
 
-This documentation is optimized for AI agent access with specialized formats:
+Each version has an index, a condensed bundle, and a full-text bundle. The root URLs contain V2; use the `/docs/v1` URLs for V1.
 
-- **[llms.txt](https://docs.intuition.systems/llms.txt)** — Concise documentation index for LLM consumption
-- **[llms-full.txt](https://docs.intuition.systems/llms-full.txt)** — Complete documentation in LLM-friendly format
+| Format | V2 | V1 |
+| --- | --- | --- |
+| Index | [/llms.txt](https://docs.intuition.systems/llms.txt) | [/docs/v1/llms.txt](https://docs.intuition.systems/docs/v1/llms.txt) |
+| Condensed | [/llms-medium.txt](https://docs.intuition.systems/llms-medium.txt) | [/docs/v1/llms-medium.txt](https://docs.intuition.systems/docs/v1/llms-medium.txt) |
+| Full text | [/llms-full.txt](https://docs.intuition.systems/llms-full.txt) | [/docs/v1/llms-full.txt](https://docs.intuition.systems/docs/v1/llms-full.txt) |
 
-These files follow the [llms.txt standard](https://llmstxt.org/) for AI-readable documentation.
+Each bundle identifies its version and links to the other version's index. The index follows the [llms.txt standard](https://llmstxt.org/) and currently links to HTML documentation pages.
+
+Per-page Markdown exports are scheduled for Phase 3 and are not available in this foundation checkpoint. That phase adds a `.md` suffix to each documentation route for its Markdown URL, including `/docs.md` for the V2 home, and updates the indexes to use those URLs.
 
 ## Technology Stack
 
