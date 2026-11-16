@@ -22,6 +22,10 @@ const os = require('os');
 const path = require('path');
 const { spawnSync } = require('child_process');
 const { versions } = require('../docs-versions.config');
+const {
+  readCodeFences,
+  INTUITION_IMPORT_PATTERN,
+} = require('./lib/markdown-fences');
 
 const ROOT = path.resolve(__dirname, '..');
 const CONFIG_PATH = path.join(__dirname, 'sdk-examples.config.json');
@@ -327,52 +331,76 @@ function extractExamplesFromSource(
   const coverage = emptyCoverage();
   const candidates = [];
   const lines = splitSourceLines(source);
+  const currentSource = relativeFile.startsWith(`${versions.current.docsDir}/`);
+  const useCurrentFences = version === 'v2' || currentSource;
 
-  for (let index = 0; index < lines.length; index++) {
-    const opening = lines[index].text.match(
-      /^\s*(`{3,})(?:typescript|tsx|ts)\b.*$/i,
-    );
-    if (!opening) continue;
-    coverage.found++;
-
-    const fenceLine = index + 1;
-    const content = [];
-    const closingPattern = closingFencePattern(opening[1]);
-    let closingIndex = index + 1;
-    while (
-      closingIndex < lines.length &&
-      !closingPattern.test(lines[closingIndex].text)
-    ) {
-      content.push(lines[closingIndex].text);
-      closingIndex++;
+  if (useCurrentFences) {
+    for (const fence of readCodeFences(source)) {
+      if (!/^(?:typescript|tsx|ts)\b/i.test(fence.info)) continue;
+      coverage.found++;
+      if (!fence.closed)
+        throw new Error(
+          `Unclosed TypeScript fence at ${relativeFile}:${fence.fenceLine}`,
+        );
+      candidates.push({
+        sourceFile: relativeFile,
+        fenceLine: fence.fenceLine,
+        code: fence.code,
+        contentHash: hashFenceContent(fence.rawCode),
+        skipped: fence.previousLine === skipComment,
+        markedV1: fence.previousLine === '<!-- docs-typecheck: v1 -->',
+      });
     }
-
-    if (closingIndex === lines.length) {
-      throw new Error(
-        `Unclosed TypeScript fence at ${relativeFile}:${fenceLine}`,
+  } else
+    for (let index = 0; index < lines.length; index++) {
+      const opening = lines[index].text.match(
+        /^\s*(`{3,})(?:typescript|tsx|ts)\b.*$/i,
       );
-    }
+      if (!opening) continue;
+      coverage.found++;
 
-    const code = content.join('\n');
-    const rawCode = source.slice(lines[index].end, lines[closingIndex].start);
-    candidates.push({
-      sourceFile: relativeFile,
-      fenceLine,
-      code,
-      contentHash: hashFenceContent(rawCode),
-      skipped: index > 0 && lines[index - 1].text.trim() === skipComment,
-      markedV1:
-        index > 0 &&
-        lines[index - 1].text.trim() === '<!-- docs-typecheck: v1 -->',
-    });
-    index = closingIndex;
-  }
+      const fenceLine = index + 1;
+      const content = [];
+      const closingPattern = closingFencePattern(opening[1]);
+      let closingIndex = index + 1;
+      while (
+        closingIndex < lines.length &&
+        !closingPattern.test(lines[closingIndex].text)
+      ) {
+        content.push(lines[closingIndex].text);
+        closingIndex++;
+      }
+
+      if (closingIndex === lines.length) {
+        throw new Error(
+          `Unclosed TypeScript fence at ${relativeFile}:${fenceLine}`,
+        );
+      }
+
+      const code = content.join('\n');
+      const rawCode = source.slice(lines[index].end, lines[closingIndex].start);
+      candidates.push({
+        sourceFile: relativeFile,
+        fenceLine,
+        code,
+        contentHash: hashFenceContent(rawCode),
+        skipped: index > 0 && lines[index - 1].text.trim() === skipComment,
+        markedV1:
+          index > 0 &&
+          lines[index - 1].text.trim() === '<!-- docs-typecheck: v1 -->',
+      });
+      index = closingIndex;
+    }
 
   const extractedCandidates = [];
   for (const candidate of candidates) {
-    const currentSource = relativeFile.startsWith(
-      `${versions.current.docsDir}/`,
-    );
+    const hasImport = (
+      useCurrentFences ? INTUITION_IMPORT_PATTERN : IMPORT_PATTERN
+    ).test(candidate.code);
+    if (useCurrentFences && candidate.skipped && hasImport)
+      throw new Error(
+        `An Intuition import fence may not skip typechecking at ${relativeFile}:${candidate.fenceLine}`,
+      );
     if (
       (version === 'v2' && candidate.markedV1) ||
       (version === 'v1' && currentSource && !candidate.markedV1)
@@ -380,7 +408,7 @@ function extractExamplesFromSource(
       coverage.excludedByCriterion++;
     } else if (candidate.skipped) {
       coverage.skippedByAnnotation++;
-    } else if (IMPORT_PATTERN.test(candidate.code)) {
+    } else if (hasImport) {
       extractedCandidates.push(candidate);
     } else {
       coverage.excludedByCriterion++;

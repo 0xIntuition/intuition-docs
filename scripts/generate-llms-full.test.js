@@ -20,6 +20,7 @@ const {
   readCuratedIndexSource,
   getLastUpdatedMap,
   BASE_URL,
+  llmsUrl,
 } = require('./generate-llms-full');
 
 test('serializes tab labels and preserves fenced code blocks', () => {
@@ -275,6 +276,42 @@ test('V1 keeps 230 served pages from 231 timestamped source files, all with froz
     assert.ok(Number.isFinite(Date.parse(section.lastUpdated)));
     assert.ok(section.url.startsWith(`${BASE_URL}${versions.v1.routeBase}`));
   }
+});
+
+test('all six static llms links survive serialization without allowing unknown doc routes', (t) => {
+  const root = fixtureRoot(t);
+  const urls = Object.values(versions).flatMap((version) =>
+    ['llms.txt', 'llms-medium.txt', 'llms-full.txt'].map((name) =>
+      llmsUrl(version, name),
+    ),
+  );
+  const body = urls
+    .map((url, i) => `[Bundle ${i}](${new URL(url).pathname}?download=1#top)`)
+    .join('\n');
+  writeDoc(
+    root,
+    versions.current,
+    'index.md',
+    `---\ntitle: Current\n---\n${body}\n[Missing doc](${versions.current.routeBase}/does-not-exist)\n[Missing bundle](${versions.v1.routeBase}/llms-extra.txt)\n`,
+  );
+  const [home] = parseSections('current', { rootDir: root });
+  for (const [i, url] of urls.entries())
+    assert.ok(
+      home.contentFull.includes(`[Bundle ${i}](${url}?download=1#top)`),
+    );
+  assert.doesNotMatch(home.contentFull, /does-not-exist|llms-extra\.txt/);
+  assert.match(home.contentFull, /Missing doc\nMissing bundle/);
+});
+
+test('the actual V2 home retains its V1 documentation index body link', () => {
+  const home = parseSections('current').find(
+    (section) => section.id === 'index',
+  );
+  assert.ok(
+    home.contentFull.includes(
+      `[V1 documentation index](${llmsUrl(versions.v1)})`,
+    ),
+  );
 });
 
 for (const version of Object.values(versions)) {

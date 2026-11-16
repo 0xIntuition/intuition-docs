@@ -2,7 +2,7 @@
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Documentation](https://img.shields.io/badge/docs-docs.intuition.systems-brightgreen)](https://docs.intuition.systems)
-[![Node Version](https://img.shields.io/badge/node-%3E%3D18.0-brightgreen)](https://nodejs.org)
+[![Node Version](https://img.shields.io/badge/node-%3E%3D22.18.0-brightgreen)](https://nodejs.org)
 
 Welcome to the official documentation repository for **Intuition** — the world's first open, semantic, and decentralized knowledge graph. This repository contains comprehensive guides, API references, and developer resources for building with the trust protocol that's revolutionizing how we create, verify, and share knowledge online.
 
@@ -50,7 +50,7 @@ These primitives work together to create a structured, queryable, and economical
 
 ### Prerequisites
 
-- **Node.js** >= 18.0 (< 25.0.0)
+- **Node.js** >= 22.18.0 (< 25.0.0)
 - **npm** or **yarn** package manager
 - **Git** for version control
 

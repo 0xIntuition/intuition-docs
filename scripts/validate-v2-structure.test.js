@@ -236,6 +236,34 @@ test('planned dependency may precede the referenced page; unknown manifest packa
     /unknown manifest/,
   );
 });
+test('FR-67 covers tilde and long fences without treating a shorter delimiter as a close', () => {
+  const errors = (body) =>
+    validateDocs([doc('index.md', {}, body)], { launchRows: rows });
+  for (const marker of ['~~~', '~~~~', '````']) {
+    assert.match(
+      errors(
+        `<!-- docs-typecheck: skip -->\n${marker}ts\nimport { x } from "@0xintuition/sdk";\n${marker}${marker[0]}`,
+      ).join('\n'),
+      /Intuition import fence/,
+    );
+    assert.deepEqual(
+      errors(
+        `<!-- docs-typecheck: skip -->\n${marker}ts\nconst value = 1;\n${marker}${marker[0]}`,
+      ),
+      [],
+    );
+  }
+  assert.match(
+    errors(
+      '<!-- docs-typecheck: skip -->\n~~~~ts\n~~~\nimport { x } from "@0xintuition/sdk";\n~~~~',
+    ).join('\n'),
+    /Intuition import fence/,
+  );
+  assert.match(
+    errors('~~~ts\nconst value = 1;\n```').join('\n'),
+    /Unclosed TypeScript fence/,
+  );
+});
 test('source mismatches use normalized planned routes, complete records and exact initial statuses', () => {
   const records = JSON.parse(
     fs.readFileSync(`${__dirname}/source-mismatches.json`, 'utf8'),

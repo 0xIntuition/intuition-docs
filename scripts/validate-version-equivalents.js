@@ -7,7 +7,7 @@ const ROOT = path.resolve(__dirname, '..');
 const SEEDS = [
   { v1: 'index', v2: 'index' },
   { v1: 'getting-started/ai-skills', v2: 'agents/skills' },
-  { v1: 'resources/community-and-support/community', v2: 'community/index' },
+  { v1: 'resources/community-and-support', v2: 'community/index' },
 ];
 function readGlobalVersions(globalData) {
   const loaded =

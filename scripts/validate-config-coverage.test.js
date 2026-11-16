@@ -167,6 +167,56 @@ test('SDK extractors keep V1 marked migration fences separate from V2', () => {
     1,
   );
 });
+test('V2 extracts tilde and longer TypeScript fences, requiring a matching close', () => {
+  const extract = (source) =>
+    extractExamplesFromSource(
+      `${current}/index.md`,
+      source,
+      '<!-- docs-typecheck: skip -->',
+      { version: 'v2' },
+    );
+  for (const marker of ['~~~', '~~~~', '````']) {
+    const source = `${marker} ts title="Example"\n${code}${marker}${marker[0]}\n`;
+    const { examples, coverage } = extract(source);
+    assert.equal(coverage.found, 1);
+    assert.equal(examples.length, 1);
+    assert.equal(examples[0].code, code.trimEnd());
+    assert.equal(examples[0].fenceLine, 1);
+    assert.throws(
+      () => extract(`<!-- docs-typecheck: skip -->\n${source}`),
+      /may not skip typechecking/,
+    );
+  }
+  assert.throws(
+    () => extract(`~~~~ts\n${code}~~~\n`),
+    /Unclosed TypeScript fence/,
+  );
+  assert.throws(
+    () => extract(`~~~ts\n${code}\`\`\`\n`),
+    /Unclosed TypeScript fence/,
+  );
+  // A shorter fence is content and cannot hide the import after it.
+  assert.match(
+    extract(`~~~~ts\n~~~\n${code}~~~~\n`).examples[0].code,
+    /@0xintuition/,
+  );
+  // A TypeScript-looking block inside a Markdown example is not executable TS.
+  assert.equal(
+    extract(`~~~~markdown\n~~~ts\n${code}~~~\n~~~~\n`).coverage.found,
+    0,
+  );
+  const bad = extract(
+    '~~~ts\nimport { nonexistentFixRoundExport } from "@0xintuition/sdk";\n~~~',
+  );
+  const checked = typecheckExamples(
+    bad.examples,
+    path.resolve(__dirname, '..'),
+  );
+  assert.notEqual(checked.status, 0);
+  assert.ok(
+    checked.diagnostics.some((diagnostic) => diagnostic.code === 'TS2305'),
+  );
+});
 test('link validator includes both native generated indexes and all six bundle inputs', () => {
   const valid = buildValidPaths(path.join(__dirname, '..'));
   assert.ok(valid.has(`${versions.v1.routeBase}/category/-graphql-api`));

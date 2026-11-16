@@ -126,4 +126,4 @@ The protocol's building blocks include:
 
 ## Looking for V1?
 
-The [V1 documentation](https://docs.intuition.systems/docs/v1) covers the `intuition-ts` packages and `intuition-rs` services. Agents can start with the V1 documentation index.
+The [V1 documentation](https://docs.intuition.systems/docs/v1) covers the `intuition-ts` packages and `intuition-rs` services. Agents can start with the [V1 documentation index](https://docs.intuition.systems/docs/v1/llms.txt).

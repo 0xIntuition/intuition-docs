@@ -6,6 +6,10 @@ const path = require('node:path');
 const { execFileSync, spawnSync } = require('node:child_process');
 const { versions } = require('../docs-versions.config');
 const { readDocs, docMetadata } = require('./lib/docs-tree');
+const {
+  readCodeFences,
+  INTUITION_IMPORT_PATTERN,
+} = require('./lib/markdown-fences');
 const ROOT = path.resolve(__dirname, '..');
 const TOP_LEVEL = new Set([
   'get-started',
@@ -67,7 +71,10 @@ function loadLaunchRoutes(text) {
 }
 
 function withoutFences(body) {
-  return body.replace(/^\s*(`{3,}|~{3,})[^\n]*\n[\s\S]*?^\s*\1\s*$/gm, '');
+  for (const fence of readCodeFences(body).reverse()) {
+    body = body.slice(0, fence.start) + body.slice(fence.end);
+  }
+  return body;
 }
 
 function validateDocs(docs, { launchRows, manifest = null, phase } = {}) {
@@ -232,10 +239,13 @@ function validateDocs(docs, { launchRows, manifest = null, phase } = {}) {
       )
         fail('skip markers must immediately precede a code fence');
     }
-    for (const skipped of body.matchAll(
-      /<!-- docs-typecheck: skip -->\s*\n\s*(`{3,})[^\n]*\n([\s\S]*?)\n\s*\1/g,
-    )) {
-      if (/(?:import|require)\b[\s\S]*?@0xintuition\//.test(skipped[2]))
+    for (const fence of readCodeFences(body)) {
+      if (/^(?:typescript|tsx|ts)\b/i.test(fence.info) && !fence.closed)
+        fail(`Unclosed TypeScript fence at line ${fence.fenceLine}`);
+      if (
+        fence.previousLine === '<!-- docs-typecheck: skip -->' &&
+        INTUITION_IMPORT_PATTERN.test(fence.code)
+      )
         fail('an Intuition import fence may not skip typechecking');
     }
     if (

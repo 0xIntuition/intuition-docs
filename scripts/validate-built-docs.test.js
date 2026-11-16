@@ -1,13 +1,19 @@
 'use strict';
 const test = require('node:test');
 const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const os = require('node:os');
+const path = require('node:path');
 const { versions } = require('../docs-versions.config');
+const { readDocs } = require('./lib/docs-tree');
 const {
   BANNER_TEXT,
   assertDocHtml,
   validateNoscript,
   validateSitemap,
   validateCollisions,
+  routeFile,
+  run,
 } = require('./validate-built-docs');
 const v1 = versions.v1.routeBase;
 const v2 = versions.current.routeBase;
@@ -133,5 +139,137 @@ test('redirect sources may not collide with a live page or each other', () => {
       ],
       () => undefined,
     ).length,
+  );
+});
+
+test('native trailing-slash metadata resolves canonical HTML, sitemap, banners and redirects', (t) => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'built-docs-native-'));
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  const write = (relative, content) => {
+    const file = path.join(root, relative);
+    fs.mkdirSync(path.dirname(file), { recursive: true });
+    fs.writeFileSync(file, content);
+  };
+  const source = readDocs(path.resolve(__dirname, '..'), versions.current);
+  for (const page of source)
+    write(`${versions.current.docsDir}/${page.relativePath}`, page.content);
+  write(
+    'scripts/v2-launch-routes.txt',
+    fs.readFileSync(path.join(__dirname, 'v2-launch-routes.txt')),
+  );
+  const pairs = require('../src/data/version-equivalents.json');
+  write('src/data/version-equivalents.json', JSON.stringify(pairs));
+  // These are native Docusaurus metadata paths, before trailingSlash:false is
+  // applied to emitted HTML filenames and hrefs.
+  const currentDocs = [
+    { id: 'index', path: '/docs/' },
+    { id: 'agents/skills', path: '/docs/agents/skills' },
+    { id: 'community/index', path: '/docs/community/' },
+  ];
+  const oldDocs = [
+    { id: 'index', path: '/docs/v1/' },
+    {
+      id: 'getting-started/ai-skills',
+      path: '/docs/v1/getting-started/ai-skills',
+    },
+    {
+      id: 'resources/community-and-support',
+      path: '/docs/v1/resources/community-and-support',
+    },
+    { id: 'resources/index', path: '/docs/v1/resources/' },
+  ];
+  write(
+    '.docusaurus/globalData.json',
+    JSON.stringify({
+      'docusaurus-plugin-content-docs': {
+        _data: {
+          versions: [
+            { name: 'current', docs: currentDocs },
+            { name: 'v1', docs: oldDocs },
+          ],
+        },
+      },
+    }),
+  );
+  for (const page of source) {
+    write(
+      `build${page.route}.html`,
+      `${htmlV2}<a href="https://github.com/0xIntuition/intuition-docs/tree/main/${versions.current.docsDir}/${page.relativePath}">Edit this page</a>`,
+    );
+  }
+  for (const page of oldDocs) {
+    const paired = pairs.pairs.find((pair) => pair.v1 === page.id);
+    const target = source.find((item) => item.id === paired?.v2)?.route || v2;
+    write(
+      `build${page.path.replace(/\/$/, '')}.html`,
+      htmlV1.replace(`${v2}/community`, target),
+    );
+  }
+  const discovery = [
+    v1,
+    '/llms.txt',
+    '/llms-full.txt',
+    `${v1}/llms.txt`,
+    `${v2}/community`,
+  ];
+  write(
+    'build/index.html',
+    `<noscript>${discovery.map((route) => `<a href="${route}">Docs</a>`).join('')}</noscript>`,
+  );
+  for (const route of discovery.filter((route) => route.endsWith('.txt')))
+    write(`build${route}`, 'Agent bundle');
+  write(
+    'build/sitemap.xml',
+    `<urlset>${source.map((page) => `<url><loc>https://docs.intuition.systems${page.route}</loc></url>`).join('')}</urlset>`,
+  );
+  assert.equal(
+    routeFile(path.join(root, 'build'), '/docs/'),
+    path.join(root, 'build/docs.html'),
+  );
+  assert.deepEqual(run({ root, phase: 1 }).errors, []);
+  assert.deepEqual(
+    validateSitemap(
+      '<urlset><loc>https://docs.intuition.systems/docs/</loc></urlset>',
+      ['/docs/'],
+    ),
+    [],
+  );
+  assert.deepEqual(
+    assertDocHtml(htmlV1, {
+      version: versions.v1,
+      doc,
+      target: `${v2}/community/`,
+    }),
+    [],
+  );
+  assert.match(
+    validateCollisions(
+      currentDocs,
+      [{ from: '/docs/community/', to: '/elsewhere' }],
+      () => undefined,
+    ).join('\n'),
+    /collides/,
+  );
+  assert.match(
+    validateCollisions(
+      [],
+      [
+        { from: '/old', to: v2 },
+        { from: '/old/', to: v1 },
+      ],
+      () => undefined,
+    ).join('\n'),
+    /Duplicate/,
+  );
+  const communityFile = path.join(root, 'build/docs/community.html');
+  fs.writeFileSync(
+    communityFile,
+    fs
+      .readFileSync(communityFile, 'utf8')
+      .replace('docs/_data/community/index.md', ''),
+  );
+  assert.match(
+    run({ root, phase: 1 }).errors.join('\n'),
+    /edit link must point to this page source/,
   );
 });

@@ -4,7 +4,7 @@ module.exports = {
     'index',
     {
       type: 'category',
-      label: 'Agents',
+      label: 'AI agents',
       items: ['agents/skills'],
     },
     {

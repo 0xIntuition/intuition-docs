@@ -4,7 +4,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { versions } = require('../docs-versions.config');
 const { redirects, createRedirects } = require('../redirects.config');
-const { readDocs } = require('./lib/docs-tree');
+const { readDocs, normalizeRoute } = require('./lib/docs-tree');
 const {
   readGlobalVersions,
   validateEquivalents,
@@ -107,6 +107,7 @@ function within(node, ancestor) {
   return false;
 }
 function routeFile(build, route) {
+  route = normalizeRoute(route);
   const relative = route.replace(/^\//, '');
   const candidates =
     route === '/'
@@ -122,7 +123,7 @@ function routeFile(build, route) {
 }
 function assertDocHtml(
   html,
-  { version, doc, target = versions.current.routeBase },
+  { version, doc, target = versions.current.routeBase, expectedEditUrl },
 ) {
   const errors = [];
   const tree = parseHtml(html);
@@ -171,15 +172,17 @@ function assertDocHtml(
         visibleText(banner) !== BANNER_TEXT
       )
         errors.push('V1 warning banner copy/classes changed');
-      const links = nodes(banner, (node) => node.tag === 'a').map(
-        (node) => node.attrs.href,
+      const links = nodes(banner, (node) => node.tag === 'a').map((node) =>
+        node.attrs.href?.startsWith('/')
+          ? normalizeRoute(node.attrs.href)
+          : node.attrs.href,
       );
       if (
         JSON.stringify(links) !==
         JSON.stringify([
           'https://github.com/0xIntuition/intuition-ts',
           'https://github.com/0xIntuition/intuition-rs',
-          target,
+          normalizeRoute(target),
         ])
       )
         errors.push('V1 banner repositories or mapped V2 target changed');
@@ -188,6 +191,13 @@ function assertDocHtml(
     }
   } else {
     if (banners.length) errors.push('V2 must not have a version banner');
+    if (expectedEditUrl) {
+      const editLinks = nodes(tree, (node) => node.tag === 'a').filter((node) =>
+        /Edit this page/i.test(visibleText(node)),
+      );
+      if (editLinks.length !== 1 || editLinks[0].attrs.href !== expectedEditUrl)
+        errors.push('V2 edit link must point to this page source');
+    }
     const bodies = nodes(tree, (node) => hasClass(node, 'theme-doc-markdown'));
     if (bodies.length !== 1) errors.push('expected one V2 markdown body');
     else {
@@ -225,8 +235,8 @@ function assertDocHtml(
   return errors;
 }
 function validateSitemap(xml, routes) {
-  const paths = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map(
-    (match) => new URL(decode(match[1])).pathname.replace(/\/$/, '') || '/',
+  const paths = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) =>
+    normalizeRoute(new URL(decode(match[1])).pathname),
   );
   const errors = [];
   if (
@@ -238,7 +248,8 @@ function validateSitemap(xml, routes) {
   )
     errors.push('V1 appears in sitemap');
   for (const route of routes)
-    if (!paths.includes(route)) errors.push(`Missing sitemap route: ${route}`);
+    if (!paths.includes(normalizeRoute(route)))
+      errors.push(`Missing sitemap route: ${route}`);
   return errors;
 }
 function validateNoscript(html, shippedLandings, exists) {
@@ -246,7 +257,7 @@ function validateNoscript(html, shippedLandings, exists) {
   const blocks = nodes(tree, (node) => node.tag === 'noscript');
   const links = blocks
     .flatMap((block) => nodes(block, (node) => node.tag === 'a'))
-    .map((node) => node.attrs.href);
+    .map((node) => normalizeRoute(node.attrs.href));
   const required = [
     versions.v1.routeBase,
     '/llms.txt',
@@ -256,7 +267,7 @@ function validateNoscript(html, shippedLandings, exists) {
   ];
   const errors = [];
   for (const route of required)
-    if (!links.includes(route))
+    if (!links.includes(normalizeRoute(route)))
       errors.push(`Missing noscript discovery link: ${route}`);
   for (const route of links)
     if (!exists(route))
@@ -268,18 +279,25 @@ function validateCollisions(
   staticRedirects = redirects,
   generated = createRedirects,
 ) {
-  const live = new Set(docs.map((doc) => doc.path));
+  const canonicalDocs = docs.map((doc) => ({
+    ...doc,
+    path: normalizeRoute(doc.path),
+  }));
+  const live = new Set(canonicalDocs.map((doc) => doc.path));
   const seen = new Map();
   const errors = [];
   const all = [
     ...staticRedirects.flatMap(({ from, to }) =>
       (Array.isArray(from) ? from : [from]).map((source) => ({
-        from: source,
-        to,
+        from: normalizeRoute(source),
+        to: normalizeRoute(to),
       })),
     ),
-    ...docs.flatMap((doc) =>
-      (generated(doc.path) || []).map((from) => ({ from, to: doc.path })),
+    ...canonicalDocs.flatMap((doc) =>
+      (generated(doc.path) || []).map((from) => ({
+        from: normalizeRoute(from),
+        to: doc.path,
+      })),
     ),
   ];
   for (const { from, to } of all) {
@@ -299,7 +317,13 @@ function run({ root = ROOT, phase, buildLog } = {}) {
     JSON.parse(
       fs.readFileSync(path.join(root, '.docusaurus/globalData.json'), 'utf8'),
     ),
-  );
+  ).map((version) => ({
+    ...version,
+    docs: version.docs.map((doc) => ({
+      ...doc,
+      path: normalizeRoute(doc.path),
+    })),
+  }));
   const map = JSON.parse(
     fs.readFileSync(
       path.join(root, 'src/data/version-equivalents.json'),
@@ -349,6 +373,10 @@ function run({ root = ROOT, phase, buildLog } = {}) {
           version,
           doc,
           target,
+          expectedEditUrl:
+            version.name === versions.current.name
+              ? `https://github.com/0xIntuition/intuition-docs/tree/main/${version.docsDir}/${source.find((page) => page.id === doc.id)?.relativePath}`
+              : undefined,
         }).map((error) => `${doc.path}: ${error}`),
       );
     }

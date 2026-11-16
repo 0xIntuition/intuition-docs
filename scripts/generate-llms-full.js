@@ -27,6 +27,13 @@ const { readDocs, normalizeRoute } = require('./lib/docs-tree');
 const ROOT = path.resolve(__dirname, '..');
 const V1_TIMESTAMPS_PATH = path.join(__dirname, 'llms-v1-last-updated.json');
 const BASE_URL = 'https://docs.intuition.systems';
+const LLMS_ARTIFACT_PATHS = new Set(
+  Object.values(versions).flatMap((version) =>
+    ['llms.txt', 'llms-medium.txt', 'llms-full.txt'].map(
+      (name) => new URL(llmsUrl(version, name)).pathname,
+    ),
+  ),
+);
 // The curated source already ends with an `## Optional` section, so the
 // directory is emitted inside it rather than under a second heading.
 const INDEX_DIRECTORY_INTRO =
@@ -141,6 +148,11 @@ function resolveContentUrl(
 
   if (trimmed.startsWith('#')) {
     return `${pageUrl}${trimmed}`;
+  }
+
+  // Static agent bundles are not authored document routes.
+  if (LLMS_ARTIFACT_PATHS.has(pathPart)) {
+    return `${BASE_URL}${pathPart}${suffix}`;
   }
 
   if (

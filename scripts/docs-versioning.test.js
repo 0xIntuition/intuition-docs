@@ -31,7 +31,7 @@ test('version table includes every required native and tooling value', () => {
 
 test('Docusaurus uses native version options and development-only filtering', () => {
   function config(env) {
-    const stdout = execFileSync(process.execPath, ['-e', `const c=require('./docusaurus.config');const p=c.presets[0][1];console.log(JSON.stringify({docs:p.docs,markdown:c.markdown,broken:c.onBrokenLinks,sitemap:p.sitemap,navbar:c.themeConfig.navbar.items,editV1:p.docs.editUrl({version:'v1'}),editCurrent:p.docs.editUrl({version:'current'})}));`], { cwd: ROOT, env: { ...process.env, ...env }, encoding: 'utf8' });
+    const stdout = execFileSync(process.execPath, ['-e', `const c=require('./docusaurus.config');const p=c.presets[0][1];console.log(JSON.stringify({docs:p.docs,markdown:c.markdown,broken:c.onBrokenLinks,sitemap:p.sitemap,navbar:c.themeConfig.navbar.items,editV1:p.docs.editUrl({version:'v1'}),editCurrent:p.docs.editUrl({version:'current',versionDocsDirPath:'docs/_data',docPath:'community/index.md'})}));`], { cwd: ROOT, env: { ...process.env, ...env }, encoding: 'utf8' });
     return JSON.parse(stdout);
   }
   const production = config({ NODE_ENV: 'production', DOCS_VERSIONS: 'current' });
@@ -43,7 +43,7 @@ test('Docusaurus uses native version options and development-only filtering', ()
   });
   assert.equal(production.docs.onlyIncludeVersions, undefined);
   assert.equal(production.editV1, undefined);
-  assert.equal(production.editCurrent, 'https://github.com/0xIntuition/intuition-docs/tree/main/');
+  assert.equal(production.editCurrent, 'https://github.com/0xIntuition/intuition-docs/tree/main/docs/_data/community/index.md');
   assert.equal(production.broken, 'throw');
   assert.equal(production.markdown.hooks.onBrokenMarkdownLinks, 'throw');
   assert.deepEqual(production.sitemap.ignorePatterns, ['**/tags/**', '/api/*', '/docs/v1/**']);

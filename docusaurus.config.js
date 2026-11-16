@@ -25,9 +25,9 @@ const meta = {
 /** @type {import('@docusaurus/plugin-content-docs').Options} */
 const defaultSettings = {
   breadcrumbs: true,
-  editUrl: ({ version }) => version === versions.v1.name
+  editUrl: ({ version, versionDocsDirPath, docPath }) => version === versions.v1.name
     ? undefined
-    : 'https://github.com/0xIntuition/intuition-docs/tree/main/',
+    : `https://github.com/0xIntuition/intuition-docs/tree/main/${versionDocsDirPath}/${docPath}`,
   showLastUpdateTime: false,
   sidebarCollapsible: true,
   remarkPlugins: [
