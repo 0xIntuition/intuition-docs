@@ -1,0 +1,117 @@
+---
+title: Integrations
+sidebar_label: Integrations
+sidebar_position: 10
+description: Integrate Intuition with various platforms and tools
+---
+
+# Integrations
+
+Intuition integrates with various platforms and tools to extend its capabilities beyond the core knowledge graph protocol.
+
+## AI Integration
+
+Use Intuition's knowledge graph with AI systems and agents to create persistent, verifiable memory and context.
+
+- **[AI Skills](/docs/v1/getting-started/ai-skills)** - Agent-facing protocol context for Claude Code, Codex, and compatible AI coding agents.
+- **[ERC-8004 Agent Layer](/docs/v1/erc-8004-agent-layer)** - Publish and query provider-owned trust assessments for ERC-8004 agents.
+- **[MCP Server](/docs/v1/experimental-applications/mcp-server)** - Model Context Protocol tools for querying atoms, accounts, lists, and graph data.
+- **[Templates](/docs/v1/getting-started/templates)** - Agent-ready starter apps with file maps, protocol paths, and `.agents/INSTRUCTIONS.md` guidance.
+
+**Use cases:**
+
+- **AI agents with persistent memory** - Store and retrieve agent knowledge on-chain
+- **LLM context enhancement** - Provide verified context to language models
+- **Knowledge graph reasoning** - Enable semantic reasoning over structured data
+- **AI-assisted app development** - Give coding agents canonical protocol context before they modify Intuition reads or writes
+
+## Coming Soon
+
+We're working on integrations with leading platforms across multiple categories:
+
+### Social Platforms
+
+Build social experiences with verifiable attestations:
+
+- **Farcaster Frames** - Embed Intuition attestations in Farcaster
+- **Lens Protocol** - Integrate with decentralized social graphs
+- **Twitter/X** - Share and verify claims on traditional social media
+
+### Identity & Naming
+
+Connect identity systems to atoms:
+
+- **ENS Integration** - Link ENS names to Intuition atoms
+- **DID Standards** - Decentralized identifier support (W3C)
+- **Sismo Connect** - Privacy-preserving credential verification
+
+### Storage & Data
+
+Extend atom data with decentralized storage:
+
+- **IPFS/Filecoin** - Store atom metadata and large files
+- **Arweave** - Permanent storage for important attestations
+- **Ceramic Network** - Composable data streams
+
+### DeFi & Governance
+
+Bring attestations to DeFi and DAOs:
+
+- **Snapshot** - On-chain voting with attestation-based eligibility
+- **Tally** - DAO governance integration
+- **Safe (Gnosis)** - Multi-sig attestations and approvals
+
+### Developer Tools
+
+Enhanced developer experience:
+
+- **[Learn Intuition](/docs/v1/getting-started/learn-intuition)** - Interactive course for protocol onboarding inside Claude Code
+- **[AI Skills](/docs/v1/getting-started/ai-skills)** - Canonical agent skills for protocol operations
+- **[Templates](/docs/v1/getting-started/templates)** - Official starter apps for direct protocol exploration and production-style builds
+- **Hardhat Plugin** - Deploy and test Intuition contracts
+- **Foundry Integration** - Testing framework support
+- **Ethers.js Plugin** - Simplified SDK integration
+
+### Oracles & Data
+
+Connect off-chain data to the knowledge graph:
+
+- **Chainlink** - Oracle integration for external data
+- **The Graph** - Subgraph integration
+- **API3** - First-party oracle data
+
+## Request an Integration
+
+Have an integration idea? We'd love to hear from you!
+
+**Ways to get involved:**
+
+- **[Community Forum](https://atlas.discourse.group)** - Propose and discuss integrations
+- **[Discord](https://discord.gg/RgBenkX4mx)** - Chat with the team and community
+- **[GitHub](https://github.com/0xIntuition)** - Submit integration proposals
+
+## Building Your Own Integration
+
+Intuition's open architecture makes it easy to build custom integrations:
+
+1. **[SDK Overview](/docs/v1/intuition-sdk/quick-start)** - Start with the TypeScript SDK
+2. **[Protocol Overview](/docs/v1/protocol/getting-started/overview)** - Direct smart contract integration
+3. **[GraphQL API](/docs/v1/graphql-api/overview)** - Query the knowledge graph
+4. **[Templates](/docs/v1/getting-started/templates)** - Fork a working Intuition app
+5. **[AI Skills](/docs/v1/getting-started/ai-skills)** - Equip your coding agent with canonical protocol context
+
+## Examples
+
+See these integration patterns:
+
+- **[Atoms Guide](/docs/v1/intuition-sdk/atoms-guide)** - Working with atoms
+- **[Triples Guide](/docs/v1/intuition-sdk/triples-guide)** - Creating attestations
+- **[Vaults Guide](/docs/v1/intuition-sdk/vaults-guide)** - Vault operations
+
+## Stay Updated
+
+Follow our progress on upcoming integrations:
+
+- **[Twitter](https://twitter.com/0xIntuition)** - Integration announcements
+- **[Blog](https://intuition.systems/blog)** - Deep dives and tutorials
+- **[Newsletter](https://intuition.systems/newsletter)** - Monthly updates

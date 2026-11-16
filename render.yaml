@@ -19,6 +19,9 @@ services:
       - key: DOCUSAURUS_IGNORE_SSG_WARNINGS
         value: 'true'
     headers:
+      - path: /docs/v1/*
+        name: X-Robots-Tag
+        value: noindex
       - path: /*
         name: X-Frame-Options
         value: DENY

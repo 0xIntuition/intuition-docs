@@ -9,7 +9,8 @@ module.exports = {
   darkMode: ['class', '[data-theme="dark"]'],
   content: [
     './src/**/*.{jsx,tsx,html}',
-    './docs/**/*.{md,mdx}', 
+    './docs/**/*.{md,mdx}',
+    './_data_versioned_docs/**/*.{md,mdx}',
   ],
   theme: {
     extend: {
