@@ -1,0 +1,34 @@
+---
+title: Container fence regression
+---
+
+> ~~~ts title="quote.ts"
+> import { nonexistentQuoteExport } from '@0xintuition/sdk';
+> ~~~
+
+1. Outer item
+   - Inner item
+
+     ````typescript title="list.ts" {1}
+     import { nonexistentListExport } from '@0xintuition/sdk';
+     `````
+
+<Tabs>
+<TabItem value="jsx">
+```tsx title="tab.tsx"
+import { nonexistentJsxExport } from '@0xintuition/sdk';
+```
+</TabItem>
+</Tabs>
+
+> - Quoted item
+>
+>   > ~~~~TS
+>   > import { nonexistentNestedExport } from '@0xintuition/sdk';
+>   > ~~~~~
+
+`````markdown
+~~~ts
+import { ignoredIllustration } from '@0xintuition/sdk';
+~~~
+`````

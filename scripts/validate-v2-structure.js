@@ -3,11 +3,12 @@
 
 const fs = require('node:fs');
 const path = require('node:path');
+const matter = require('gray-matter');
 const { execFileSync, spawnSync } = require('node:child_process');
 const { versions } = require('../docs-versions.config');
 const { readDocs, docMetadata } = require('./lib/docs-tree');
 const {
-  readCodeFences,
+  parseMarkdownCode,
   INTUITION_IMPORT_PATTERN,
 } = require('./lib/markdown-fences');
 const ROOT = path.resolve(__dirname, '..');
@@ -70,11 +71,11 @@ function loadLaunchRoutes(text) {
   return rows;
 }
 
-function withoutFences(body) {
-  for (const fence of readCodeFences(body).reverse()) {
+function withoutFences({ source: body, fences }) {
+  for (const fence of [...fences].reverse()) {
     body = body.slice(0, fence.start) + body.slice(fence.end);
   }
-  return body;
+  return matter(body).content;
 }
 
 function validateDocs(docs, { launchRows, manifest = null, phase } = {}) {
@@ -176,7 +177,14 @@ function validateDocs(docs, { launchRows, manifest = null, phase } = {}) {
         )
           fail(`depends_on must name a planned concept slug: ${slug}`);
       }
-    if (/^\s{0,3}#(?:\s|$)/m.test(withoutFences(body)) || /<h1\b/i.test(body))
+    let parsed;
+    try {
+      parsed = parseMarkdownCode(doc.content, { filePath: relativePath });
+    } catch (error) {
+      fail(error.message);
+      continue;
+    }
+    if (/^\s{0,3}#(?:\s|$)/m.test(withoutFences(parsed)) || /<h1\b/i.test(body))
       fail('body H1 headings are forbidden');
     if (/graphql/i.test(route)) fail('GraphQL routes are forbidden');
     if (
@@ -228,28 +236,26 @@ function validateDocs(docs, { launchRows, manifest = null, phase } = {}) {
       fail('MCP body links are forbidden');
     if (
       fm.kind === 'tutorial' &&
-      body.includes('<!-- docs-typecheck: skip -->')
+      parsed.markers.some((marker) => marker.kind === 'skip')
     )
       fail('tutorial pages may not skip typechecking');
-    for (const marker of body.matchAll(/<!-- docs-typecheck: skip -->/g)) {
-      if (
-        !/^<!-- docs-typecheck: skip -->\r?\n\s*(?:`{3,}|~{3,})/.test(
-          body.slice(marker.index),
-        )
-      )
-        fail('skip markers must immediately precede a code fence');
+    for (const marker of parsed.markers) {
+      if (!marker.associated)
+        fail(
+          `typecheck markers must immediately precede a code fence in the same container (line ${marker.line})`,
+        );
     }
-    for (const fence of readCodeFences(body)) {
+    for (const fence of parsed.fences) {
       if (/^(?:typescript|tsx|ts)\b/i.test(fence.info) && !fence.closed)
         fail(`Unclosed TypeScript fence at line ${fence.fenceLine}`);
       if (
-        fence.previousLine === '<!-- docs-typecheck: skip -->' &&
+        fence.annotation === '<!-- docs-typecheck: skip -->' &&
         INTUITION_IMPORT_PATTERN.test(fence.code)
       )
         fail('an Intuition import fence may not skip typechecking');
     }
     if (
-      body.includes('<!-- docs-typecheck: v1 -->') &&
+      parsed.markers.some((marker) => marker.kind === 'v1') &&
       id !== 'get-started/migrate-from-v1'
     )
       fail('V1 typecheck markers are allowed only on the migration guide');

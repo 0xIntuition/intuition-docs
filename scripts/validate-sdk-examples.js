@@ -335,7 +335,7 @@ function extractExamplesFromSource(
   const useCurrentFences = version === 'v2' || currentSource;
 
   if (useCurrentFences) {
-    for (const fence of readCodeFences(source)) {
+    for (const fence of readCodeFences(source, { filePath: relativeFile })) {
       if (!/^(?:typescript|tsx|ts)\b/i.test(fence.info)) continue;
       coverage.found++;
       if (!fence.closed)
@@ -347,8 +347,9 @@ function extractExamplesFromSource(
         fenceLine: fence.fenceLine,
         code: fence.code,
         contentHash: hashFenceContent(fence.rawCode),
-        skipped: fence.previousLine === skipComment,
-        markedV1: fence.previousLine === '<!-- docs-typecheck: v1 -->',
+        skipped: fence.annotation === skipComment,
+        markedV1: fence.annotation === '<!-- docs-typecheck: v1 -->',
+        sourceLines: fence.sourceLines,
       });
     }
   } else
@@ -437,6 +438,7 @@ function extractExamplesFromSource(
       contentHash: candidate.contentHash,
       contentOrdinal: ordinal,
       duplicateCount: contentCounts.get(candidate.contentHash),
+      ...(candidate.sourceLines ? { sourceLines: candidate.sourceLines } : {}),
     });
     coverage.extracted++;
   }
@@ -491,7 +493,9 @@ function parseDiagnostics(output, virtualFiles) {
     const virtualLine = Number(match[2]);
     diagnostics.push({
       example,
-      sourceLine: example.fenceLine + virtualLine,
+      sourceLine:
+        example.sourceLines?.[virtualLine - 1] ??
+        example.fenceLine + virtualLine,
       column: Number(match[3]),
       code: match[4],
       message: match[5],
