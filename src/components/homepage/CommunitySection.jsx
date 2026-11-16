@@ -66,19 +66,19 @@ const quickLinks = [
     title: 'Getting Started',
     description: 'Kits and repos to get started building',
     icon: Zap,
-    link: '/docs/getting-started/developer-resources'
+    link: '/docs/v1/getting-started/developer-resources'
   },
   {
     title: 'SDK',
     description: 'Getting started with our SDK',
     icon: CodeRegular,
-    link: '/docs/intuition-sdk/installation-and-setup'
+    link: '/docs/v1/intuition-sdk/installation-and-setup'
   },
   {
     title: 'GraphQL API Reference',
     description: 'GraphQL API documentation',
     icon: DatabaseRegular,
-    link: '/docs/graphql-api/overview'
+    link: '/docs/v1/graphql-api/overview'
   },
   {
     title: 'Video Tutorials',
@@ -174,7 +174,7 @@ export default function CommunitySection() {
               Quick Resources
             </h3>
             <Link
-              to="/docs/getting-started/overview"
+              to="/docs/v1/getting-started/overview"
               className="group flex items-center gap-2 text-sm font-medium text-primary transition-colors hover:text-primary-600"
             >
               View all docs

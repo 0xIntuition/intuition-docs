@@ -1,0 +1,10 @@
+{
+  "input": [
+    ["language:en"],
+    ["docusaurus_tag:default", "docusaurus_tag:docs-_data-v1"]
+  ],
+  "expected": [
+    ["language:en"],
+    ["docusaurus_tag:default", "docusaurus_tag:docs-_data-current"]
+  ]
+}

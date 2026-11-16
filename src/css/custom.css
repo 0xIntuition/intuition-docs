@@ -1473,7 +1473,7 @@ div[style*="backgroundColor: var(--ifm-color-emphasis-50)"]:hover {
 }
 
 
-a[href*="/docs/quickstart/"]:hover > div[style*="border: 2px solid"] {
+a[href*="/docs/v1/quickstart/"]:hover > div[style*="border: 2px solid"] {
   transform: translateY(-8px) !important;
   box-shadow: 
     0 25px 70px rgba(16, 185, 129, 0.3) !important, 
@@ -1482,7 +1482,7 @@ a[href*="/docs/quickstart/"]:hover > div[style*="border: 2px solid"] {
   border-color: rgba(16, 185, 129, 0.8) !important;
 }
 
-a[href*="/docs/quickstart/"]:hover > div[style*="border: 2px solid"] div[style*="background: linear-gradient"] {
+a[href*="/docs/v1/quickstart/"]:hover > div[style*="border: 2px solid"] div[style*="background: linear-gradient"] {
   transform: scale(1.1) !important;
   box-shadow: 0 8px 30px rgba(16, 185, 129, 0.5) !important;
 }

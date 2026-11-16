@@ -24,25 +24,25 @@ const guides: Guide[] = [
     title: 'Creating an Application',
     icon: RecordRegular,
     text: 'Explore our repos and resource to get started building on Intuition.',
-    link: '/docs/getting-started/overview',
+    link: '/docs/v1/getting-started/overview',
   },
   {
     title: 'Integrate Your Existing Application with Intuition',
     icon: DocumentRegular,
     text: 'Learn how to integrate your existing application with Intuition using GraphQL.',
-    link: '/docs/graphql-api/overview',
+    link: '/docs/v1/graphql-api/overview',
   },
   {
     title: 'Smart Contract Interactions',
     icon: AppsAddInRegular,
     text: 'Learn how to directly interact with Intuition smart contracts.',
-    link: '/docs/intuition-smart-contracts',
+    link: '/docs/v1/intuition-smart-contracts',
   },
   {
     title: 'Primitives Overview',
     icon: CurrencyDollarEuroFilled,
     text: 'Learn about the core building blocks of Intuition: atoms, triples, and signals.',
-    link: '/docs/intuition-concepts/primitives',
+    link: '/docs/v1/intuition-concepts/primitives',
   },
 ];
 
@@ -184,7 +184,7 @@ export default function GuidesAndSamples() {
               </h3>
 
               {/*<Link
-                to="/docs/introduction/overview"
+                to="/docs/v1"
                 className="group flex items-center gap-1 font-jakarta text-sm font-semibold text-primary transition-colors hover:text-primary-600"
               >
                 View more guides
