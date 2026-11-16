@@ -10,8 +10,14 @@ on:
     paths:
       - 'docs/_data/**/*.md'
       - 'docs/_data/**/*.mdx'
+      - '_data_versioned_docs/**/*.md'
+      - '_data_versioned_docs/**/*.mdx'
       - 'scripts/generate-llms-full.js'
-      - 'scripts/llms-index-source.md'
+      - 'scripts/llms-index-source.v1.md'
+      - 'scripts/llms-index-source.v2.md'
+      - 'scripts/llms-v1-last-updated.json'
+      - 'docs-versions.config.js'
+      - 'scripts/lib/docs-tree.js'
       - '.github/workflows/generate-llms-txt.yml'
   workflow_dispatch: # Allow manual trigger
 
@@ -34,7 +40,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: '22'
+          node-version: '22.21.0'
           cache: 'npm'
 
       - name: Install dependencies
@@ -50,7 +56,7 @@ jobs:
         run: node --test scripts/generate-llms-full.test.js
 
       - name: Validate llms links
-        run: node scripts/validate-internal-links.js static/llms*.txt
+        run: node scripts/validate-internal-links.js static/llms*.txt static/docs/v1/llms*.txt
 
       - name: Validate llms coverage
         run: npm run validate-llms-coverage
@@ -58,7 +64,7 @@ jobs:
       - name: Check for changes
         id: check-changes
         run: |
-          git add static/llms*.txt
+          git add static/llms*.txt static/docs/v1/llms*.txt
           if git diff --staged --quiet; then
             echo "changes=false" >> $GITHUB_OUTPUT
           else

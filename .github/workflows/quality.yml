@@ -1,0 +1,37 @@
+name: Documentation Quality
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened, labeled, unlabeled, edited]
+
+permissions:
+  contents: read
+  actions: read # Verify a linked failed nightly run for the narrow V1 exception.
+
+jobs:
+  quality:
+    name: Quality and version freeze
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '22.21.0'
+          cache: npm
+      - run: npm ci
+      - name: Enforce V1 freeze and initial snapshot byte proof
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/validate-config-coverage.js --freeze
+      - run: node scripts/validate-config-coverage.js
+      - run: node scripts/codemods/v1-prefix-links.js --check
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run spell-check
+      - run: npm run validate-v2-structure
+      - run: node scripts/validate-v2-structure.js --phase 1
+      - run: npm run validate-sdk-examples
+      # Manifest, generated-block and example gates are introduced by later phases.

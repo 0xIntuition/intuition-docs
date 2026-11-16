@@ -5,11 +5,13 @@ on:
   pull_request:
     branches: [main]
     paths:
-      - 'docs/_data/graphql-api/**'
-      - 'docs/_data/tutorials/queries/**'
+      - '_data_versioned_docs/version-v1/graphql-api/**'
+      - '_data_versioned_docs/version-v1/tutorials/queries/**'
       - 'src/components/GraphQLPlayground.tsx'
       - 'scripts/validate-graphql-queries.js'
       - 'scripts/graphql-schema-*.json'
+      - 'docs-versions.config.js'
+      - '.github/workflows/validate-graphql.yml'
 
   # Nightly drift detection — fetch fresh schemas, open PR if changed
   schedule:
@@ -83,6 +85,7 @@ jobs:
       - name: Validate queries against fresh schemas
         if: steps.check-schema.outputs.changed == 'true'
         id: validate
+        shell: bash
         continue-on-error: true
         run: node scripts/validate-graphql-queries.js 2>&1 | tee validation-output.txt
 
@@ -169,3 +172,13 @@ jobs:
               --head "$BRANCH" \
               --draft
           fi
+
+      - name: Label the narrow GraphQL exception
+        if: steps.validate.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh pr edit auto/schema-update --add-label v1-exception
+
+      - name: Report failed query drift after preserving the draft PR
+        if: steps.validate.outcome == 'failure'
+        run: exit 1

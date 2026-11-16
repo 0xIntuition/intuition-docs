@@ -4,11 +4,12 @@ on:
   pull_request:
     branches: [main]
     paths:
-      - 'docs/_data/intuition-sdk/**'
-      - 'docs/_data/quick-start/using-the-sdk.md'
-      - 'scripts/validate-sdk-examples.js'
-      - 'scripts/sdk-examples.config.json'
-      - 'scripts/__fixtures__/sdk-examples/**'
+      - 'docs/_data/**'
+      - '_data_versioned_docs/**'
+      - 'examples/v2/**'
+      - 'static/intuition-release.json'
+      - 'scripts/**'
+      - 'docs-versions.config.js'
       - 'package.json'
       - 'package-lock.json'
       - '.github/workflows/validate-sdk-examples.yml'
@@ -25,7 +26,7 @@ jobs:
 
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: 22
+          node-version: '22.21.0'
           cache: npm
 
       - name: Install dependencies

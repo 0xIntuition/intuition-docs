@@ -1,0 +1,88 @@
+[
+  {
+    "id": "M-1",
+    "repo": "https://github.com/0xIntuition/intuition-identifier; https://github.com/0xIntuition/packages",
+    "path": "spec/*; packages/iid-spec/spec/*",
+    "finding": "The copies diverge. The package copy lacks \u00a77.8 and adds the typed wd scheme, the acct weak form and apple-podcasts, letterboxd and podcast-index. Chapters 00, 01, 04, 05 and 09 differ.",
+    "docsPages": [
+      "/docs/concepts/iid-schemes",
+      "/docs/concepts/representation-profiles",
+      "/docs/reference/iid-schemes",
+      "/docs/reference/packages/iid-spec"
+    ],
+    "status": "open"
+  },
+  {
+    "id": "M-2",
+    "repo": "https://github.com/0xIntuition/packages",
+    "path": "README.md:27-29; docs/getting-started.md:17-20 at dde4fdf",
+    "finding": "Said the IID packages were not on npm alpha, though they were published 2026-10-28. Resolved: at 6dea404 neither file says so.",
+    "docsPages": [
+      "/docs/get-started/quickstart"
+    ],
+    "status": "resolved"
+  },
+  {
+    "id": "M-3",
+    "repo": "https://github.com/0xIntuition/packages",
+    "path": "README.md:133 at dde4fdf",
+    "finding": "Said protocol uses the 4.x line while release-plan.json had 3.0.0-alpha.0. Resolved: at 6dea404 the release plan has protocol 4.0.0, and the README says protocol and sdk use 4.x.",
+    "docsPages": [
+      "/docs/reference/packages/protocol"
+    ],
+    "status": "resolved"
+  },
+  {
+    "id": "M-4",
+    "repo": "https://www.npmjs.com",
+    "path": "@0xintuition/protocol",
+    "finding": "3.0.0 (2026-06-15) outranks 3.0.0-alpha.0, so ^3.0.0-alpha.0 and @3 resolve to the June build. Resolved for the release pins: protocol 4.0.0 no longer collides. The npm behavior remains and must be documented as a hazard while true.",
+    "docsPages": [
+      "/docs/get-started/versions"
+    ],
+    "status": "resolved"
+  },
+  {
+    "id": "M-5",
+    "repo": "https://www.npmjs.com",
+    "path": "dist-tags",
+    "finding": "latest pointed at June 0.1.0-alpha.0 builds for 9 packages. Resolved: since 2026-11-12, latest is the stable release for all 21 packages; primitives 0.1.0 has ./anchor.",
+    "docsPages": [
+      "/docs/get-started/versions",
+      "/docs/build/install"
+    ],
+    "status": "resolved"
+  },
+  {
+    "id": "M-6",
+    "repo": "https://github.com/0xIntuition/packages",
+    "path": "packages/sdk/src/api/index.ts:78-90",
+    "finding": "The V2 SDK read client calls the hosted V1 GraphQL endpoints. There is no V2 GraphQL endpoint; V2 reads use a self-hosted Core node, so this client is not a V2 read path.",
+    "docsPages": [
+      "/docs/build/read-with-sdk",
+      "/docs/reference/packages/sdk"
+    ],
+    "status": "open"
+  },
+  {
+    "id": "M-7",
+    "repo": "https://github.com/0xIntuition/intuition-core",
+    "path": "services/api/src/app.ts:321; docs/openapi.yaml",
+    "finding": "GET /api/iids/:iid/atoms is in Core code on main but missing from docs/openapi.yaml and docs/api-reference.md. Seeded open; verify at the new Core tag, then resolve only if its OpenAPI lists /api/iids/{iid}/atoms.",
+    "docsPages": [
+      "/docs/reference/core-query-api",
+      "/docs/concepts/iid"
+    ],
+    "status": "open"
+  },
+  {
+    "id": "M-8",
+    "repo": "https://github.com/0xIntuition/packages",
+    "path": "packages/sdk/README.md:9-28",
+    "finding": "Calls SDK 4.x integration design v1, which collides with the docs label V1.",
+    "docsPages": [
+      "/docs/reference/packages/sdk"
+    ],
+    "status": "open"
+  }
+]

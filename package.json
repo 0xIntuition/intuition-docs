@@ -19,7 +19,7 @@
     "format": "prettier -w src docs",
     "format:docs": "prettier -w docs",
     "typecheck": "tsc",
-    "spell-check": "npx cspell docs/**/*.mdx",
+    "spell-check": "cspell --no-progress \"docs/_data/**/*.{md,mdx}\"",
     "validate-links": "node scripts/validate-internal-links.js",
     "validate-llms-coverage": "node scripts/validate-llms-coverage.js",
     "validate-queries": "node scripts/validate-graphql-queries.js",
@@ -29,7 +29,12 @@
     "validate-sdk-examples": "node scripts/validate-sdk-examples.js",
     "test": "node --test scripts/*.test.js",
     "generate-llms-index": "node scripts/generate-llms-full.js --index-only",
-    "prepare": "husky"
+    "prepare": "husky",
+    "validate-v2-structure": "node scripts/validate-v2-structure.js",
+    "validate-url-baseline": "node scripts/validate-url-baseline.js",
+    "validate-version-equivalents": "node scripts/validate-version-equivalents.js",
+    "validate-built-docs": "node scripts/validate-built-docs.js",
+    "validate-config-coverage": "node scripts/validate-config-coverage.js"
   },
   "dependencies": {
     "@apollo/explorer": "^3.7.2",
@@ -77,6 +82,7 @@
     "@typescript-eslint/parser": "5.62.0",
     "autoprefixer": "^10.4.20",
     "buffer": "^6.0.3",
+    "cspell": "10.5.1",
     "docusaurus-plugin-typedoc": "^0.18.0",
     "eslint": "8.57.1",
     "eslint-config-prettier": "8.10.2",
@@ -150,6 +156,17 @@
       "node scripts/validate-internal-links.js"
     ],
     "src/snippets/**/*.html": [
+      "node scripts/validate-internal-links.js"
+    ],
+    "_data_versioned_docs/version-v1/graphql-api/**/*.{md,mdx}": [
+      "node scripts/validate-internal-links.js",
+      "node scripts/validate-graphql-queries.js"
+    ],
+    "_data_versioned_docs/version-v1/tutorials/queries/**/*.{md,mdx}": [
+      "node scripts/validate-internal-links.js",
+      "node scripts/validate-graphql-queries.js"
+    ],
+    "_data_versioned_docs/**/*.{md,mdx}": [
       "node scripts/validate-internal-links.js"
     ]
   },

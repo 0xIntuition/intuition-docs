@@ -21,6 +21,7 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const { spawnSync } = require('child_process');
+const { versions } = require('../docs-versions.config');
 
 const ROOT = path.resolve(__dirname, '..');
 const CONFIG_PATH = path.join(__dirname, 'sdk-examples.config.json');
@@ -47,7 +48,13 @@ function displayFence(example) {
 }
 
 function parseArgs(argv) {
-  const flags = new Set(argv.slice(2));
+  const values = argv.slice(2);
+  const versionIndex = values.indexOf('--version');
+  const version = versionIndex === -1 ? 'all' : values[versionIndex + 1];
+  if (!['all', 'v1', 'v2'].includes(version))
+    throw new Error('--version must be v1, v2 or all');
+  if (versionIndex !== -1) values.splice(versionIndex, 2);
+  const flags = new Set(values);
   const knownFlags = new Set([
     '--self-test',
     '--real-only',
@@ -81,7 +88,12 @@ function parseArgs(argv) {
     );
   }
 
+  if (flags.has('--update-ratchet') && version === 'v2') {
+    throw new Error('V2 has no ratchet to update');
+  }
+
   return {
+    version,
     runSelfTest:
       !flags.has('--real-only') && !flags.has('--demo-ratchet-regression'),
     runRealDocs:
@@ -91,8 +103,25 @@ function parseArgs(argv) {
   };
 }
 
-function readConfig({ allowMissingFingerprints = false } = {}) {
-  const sourceConfig = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8'));
+function readConfig({
+  allowMissingFingerprints = false,
+  version = 'v1',
+  configPath = CONFIG_PATH,
+} = {}) {
+  const allConfig = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+  const selected = allConfig.versions?.[version];
+  if (!selected) throw new Error(`Missing SDK version config: ${version}`);
+  if (
+    version === 'v2' &&
+    (!Array.isArray(selected.knownFailing) || selected.knownFailing.length)
+  )
+    throw new Error('V2 knownFailing must be empty');
+  if (typeof selected.dependencyRoot !== 'string' || !selected.dependencyRoot)
+    throw new Error('Missing dependencyRoot');
+  const dependencyRoot = path.resolve(ROOT, selected.dependencyRoot);
+  assertInsideRoot(dependencyRoot);
+  const sourceConfig = { ...allConfig, ...selected, version, dependencyRoot };
+  delete sourceConfig.versions;
 
   if (
     !Array.isArray(sourceConfig.include) ||
@@ -198,7 +227,7 @@ function readConfig({ allowMissingFingerprints = false } = {}) {
     ...sourceConfig,
     knownFailing: normalizedKnownFailing,
     knownFailingGroups,
-    sourceConfig,
+    sourceConfig: allConfig,
   };
 }
 
@@ -288,7 +317,12 @@ function splitSourceLines(source) {
   return lines;
 }
 
-function extractExamplesFromSource(relativeFile, source, skipComment) {
+function extractExamplesFromSource(
+  relativeFile,
+  source,
+  skipComment,
+  { version } = {},
+) {
   const examples = [];
   const coverage = emptyCoverage();
   const candidates = [];
@@ -327,13 +361,24 @@ function extractExamplesFromSource(relativeFile, source, skipComment) {
       code,
       contentHash: hashFenceContent(rawCode),
       skipped: index > 0 && lines[index - 1].text.trim() === skipComment,
+      markedV1:
+        index > 0 &&
+        lines[index - 1].text.trim() === '<!-- docs-typecheck: v1 -->',
     });
     index = closingIndex;
   }
 
   const extractedCandidates = [];
   for (const candidate of candidates) {
-    if (candidate.skipped) {
+    const currentSource = relativeFile.startsWith(
+      `${versions.current.docsDir}/`,
+    );
+    if (
+      (version === 'v2' && candidate.markedV1) ||
+      (version === 'v1' && currentSource && !candidate.markedV1)
+    ) {
+      coverage.excludedByCriterion++;
+    } else if (candidate.skipped) {
       coverage.skippedByAnnotation++;
     } else if (IMPORT_PATTERN.test(candidate.code)) {
       extractedCandidates.push(candidate);
@@ -371,7 +416,7 @@ function extractExamplesFromSource(relativeFile, source, skipComment) {
   return { examples, coverage };
 }
 
-function extractExamples(files, skipComment) {
+function extractExamples(files, skipComment, options = {}) {
   const examples = [];
   const coverage = emptyCoverage();
 
@@ -381,6 +426,7 @@ function extractExamples(files, skipComment) {
       relativeFile,
       fs.readFileSync(file, 'utf8'),
       skipComment,
+      options,
     );
     examples.push(...extracted.examples);
     addCoverage(coverage, extracted.coverage);
@@ -427,15 +473,17 @@ function parseDiagnostics(output, virtualFiles) {
   return { diagnostics, unparsed };
 }
 
-function typecheckExamples(examples) {
+function typecheckExamples(examples, dependencyRoot = ROOT) {
+  if (!examples.length)
+    return { status: 0, output: '', diagnostics: [], unparsed: [] };
   const typescriptPath = path.join(
-    ROOT,
+    dependencyRoot,
     'node_modules',
     'typescript',
     'bin',
     'tsc',
   );
-  const nodeModulesPath = path.join(ROOT, 'node_modules');
+  const nodeModulesPath = path.join(dependencyRoot, 'node_modules');
 
   if (!fs.existsSync(typescriptPath)) {
     throw new Error(
@@ -474,6 +522,7 @@ function typecheckExamples(examples) {
         moduleResolution: 'Bundler',
         lib: ['ES2022', 'DOM', 'DOM.Iterable'],
         types: ['node'],
+        typeRoots: [path.join(nodeModulesPath, '@types')],
         jsx: 'react-jsx',
         strict: true,
         noEmit: true,
@@ -677,7 +726,7 @@ function runSelfTest(config) {
     fixtureFiles,
     config.skipComment,
   );
-  const result = typecheckExamples(examples);
+  const result = typecheckExamples(examples, config.dependencyRoot);
   const good = examples.find((example) =>
     example.sourceFile.endsWith('/good.md'),
   );
@@ -1001,10 +1050,12 @@ function runRatchetedRegressionDemo(config) {
 }
 
 function runRealDocs(config) {
-  console.log('SDK documentation examples');
+  console.log(`SDK documentation examples (${config.version})`);
   const files = expandIncludes(config.include);
-  const { examples, coverage } = extractExamples(files, config.skipComment);
-  const result = typecheckExamples(examples);
+  const { examples, coverage } = extractExamples(files, config.skipComment, {
+    version: config.version,
+  });
+  const result = typecheckExamples(examples, config.dependencyRoot);
   const resolved = resolveKnownFailing(config, examples);
   const ratchet = new Map(
     resolved.knownFailing.map((entry) => [entry.id, entry]),
@@ -1072,10 +1123,13 @@ function runRealDocs(config) {
 }
 
 function updateRatchet(config) {
+  if (config.version !== 'v1') throw new Error('V2 has no ratchet to update');
   console.log('SDK documentation examples — update ratchet');
   const files = expandIncludes(config.include);
-  const { examples, coverage } = extractExamples(files, config.skipComment);
-  const result = typecheckExamples(examples);
+  const { examples, coverage } = extractExamples(files, config.skipComment, {
+    version: config.version,
+  });
+  const result = typecheckExamples(examples, config.dependencyRoot);
   const resolved = resolveKnownFailing(config, examples);
   const ratchetIds = new Set(resolved.knownFailing.map((entry) => entry.id));
   const diagnosticsByFence = groupDiagnosticsByFence(result.diagnostics);
@@ -1144,7 +1198,13 @@ function updateRatchet(config) {
     ...config.sourceConfig,
     ratchetPolicy:
       'knownFailing groups exact source fence content by file and records the expected diagnostic fingerprint set for each fence. Fence identity uses a truncated SHA-256 content hash plus a document-order ordinal only for identical-content fences in the same file; source line numbers are display-only. Every listed fence is still typechecked. Any added or missing fingerprint fails CI; use --update-ratchet locally for a deliberate baseline refresh, and shrink the fence list when documentation fixes or docs-typecheck skip annotations merge.',
-    knownFailing: updatedKnownFailing,
+    versions: {
+      ...config.sourceConfig.versions,
+      v1: {
+        ...config.sourceConfig.versions.v1,
+        knownFailing: updatedKnownFailing,
+      },
+    },
   };
 
   fs.writeFileSync(CONFIG_PATH, `${JSON.stringify(updatedConfig, null, 2)}\n`);
@@ -1155,21 +1215,37 @@ function updateRatchet(config) {
 
 function main() {
   const args = parseArgs(process.argv);
-  const config = readConfig({
+  const v1 = readConfig({
     allowMissingFingerprints: args.updateRatchet,
+    version: 'v1',
   });
-
-  if (args.demoRatchetRegression) runRatchetedRegressionDemo(config);
-  if (args.runSelfTest) runSelfTest(config);
+  if (args.demoRatchetRegression) runRatchetedRegressionDemo(v1);
+  if (args.runSelfTest) runSelfTest(v1);
   if (args.runRealDocs) {
-    if (args.updateRatchet) updateRatchet(config);
-    else runRealDocs(config);
+    for (const version of args.updateRatchet
+      ? ['v1']
+      : args.version === 'all'
+        ? ['v1', 'v2']
+        : [args.version]) {
+      const config = version === 'v1' ? v1 : readConfig({ version });
+      if (args.updateRatchet) updateRatchet(config);
+      else runRealDocs(config);
+    }
   }
 }
 
-try {
-  main();
-} catch (error) {
-  console.error(`\nERROR: ${error.message}`);
-  process.exitCode = 1;
+if (require.main === module) {
+  try {
+    main();
+  } catch (error) {
+    console.error(`\nERROR: ${error.message}`);
+    process.exitCode = 1;
+  }
 }
+module.exports = {
+  parseArgs,
+  readConfig,
+  extractExamplesFromSource,
+  typecheckExamples,
+  runRealDocs,
+};
