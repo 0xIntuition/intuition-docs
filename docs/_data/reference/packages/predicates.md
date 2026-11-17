@@ -72,7 +72,10 @@ The explicit triple above means **recording → by artist → artist**. Reversin
 
 ## Related concepts
 
-See the [concept map](/docs/concepts) and [music catalog](/docs/examples/music-catalog) for explicit relationship construction.
+- [Predicates](/docs/concepts/predicates)
+- [sameAs and identity linking](/docs/concepts/same-as)
+
+See also [music catalog](/docs/examples/music-catalog).
 
 ## Source
 

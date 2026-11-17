@@ -13,7 +13,7 @@ Interpret input, plan provider work, and preserve evidence without silently rewr
 
 ## Before you start
 
-Use [installation](/docs/build/install) and these direct dependencies:
+Start with [atom parsing](/docs/concepts/atom-parsing) and [atom classification](/docs/concepts/atom-classification). Use [installation](/docs/build/install) and these direct dependencies:
 
 ```sh
 npm install --save-exact @0xintuition/atom-parser@0.1.0 @0xintuition/atom-classification@0.1.0 @0xintuition/atom-enrichment@0.1.0 @0xintuition/iid-registry@0.1.0 viem@2.31.4

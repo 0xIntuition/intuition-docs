@@ -65,7 +65,10 @@ Fee helpers include exact-net gross-up for atom/triple creation and deposits. Th
 
 ## Related concepts
 
-[Protocol writes](/docs/concepts/protocol-writes) explains where a quote becomes a reviewed transaction. [How the pieces fit](/docs/get-started/how-it-fits) distinguishes pure helpers from live contract operations.
+- [Bonding curves](/docs/concepts/bonding-curves)
+- [Fees, epochs and rewards](/docs/concepts/fees-and-rewards)
+
+See also [How the pieces fit](/docs/get-started/how-it-fits).
 
 ## Source
 

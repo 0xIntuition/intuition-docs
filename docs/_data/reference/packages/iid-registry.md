@@ -64,7 +64,9 @@ An empty provider plan does not make an IID invalid. Bare polymorphic values can
 
 ## Related concepts
 
-See the [concept map](/docs/concepts) and [Classify and enrich atoms](/docs/build/classify-enrich).
+- [The IID registry](/docs/concepts/iid-registry)
+
+See also [Classify and enrich atoms](/docs/build/classify-enrich).
 
 ## Source
 

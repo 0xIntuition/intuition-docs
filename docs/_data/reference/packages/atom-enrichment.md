@@ -135,7 +135,9 @@ Preserve each artifact's `meta.pluginId`, `provider`, `fetchedAt`, and optional 
 
 ## Related concepts
 
-[Representation profiles](/docs/concepts/representation-profiles) distinguishes companion metadata from identity bytes. [Classify and enrich atoms](/docs/build/classify-enrich) shows provider planning, execution, and extraction together.
+- [Enrichment](/docs/concepts/enrichment)
+
+See also [Classify and enrich atoms](/docs/build/classify-enrich).
 
 ## Source
 

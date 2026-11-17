@@ -81,7 +81,12 @@ Distinguish pure `*Envelope` builders from RPC-backed quote/preparation helpers 
 
 ## Related concepts
 
-[Protocol writes](/docs/concepts/protocol-writes) explains planning, signing, and submission. The [migration guide](/docs/get-started/migrate-from-v1) maps previous imports to the new package boundaries.
+- [Vaults, shares and positions](/docs/concepts/vaults)
+- [Signals](/docs/concepts/signals)
+- [Fees, epochs and rewards](/docs/concepts/fees-and-rewards)
+- [Protocol writes](/docs/concepts/protocol-writes)
+
+See also [migration guide](/docs/get-started/migrate-from-v1).
 
 ## Source
 

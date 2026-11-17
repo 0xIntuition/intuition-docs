@@ -77,7 +77,9 @@ The pinned Node transport resolves and vets destinations, pins the approved addr
 
 ## Related concepts
 
-[Representation profiles](/docs/concepts/representation-profiles) explains how identity becomes atom bytes. [Classify and enrich atoms](/docs/build/classify-enrich) continues from detection to meaning and provider artifacts.
+- [Atom parsing](/docs/concepts/atom-parsing)
+
+See also [Classify and enrich atoms](/docs/build/classify-enrich).
 
 ## Source
 

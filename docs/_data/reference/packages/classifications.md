@@ -78,7 +78,9 @@ These are synthetic descriptive values. `recordingData` contains a `byArtist` st
 
 ## Related concepts
 
-See the [concept map](/docs/concepts), [Build creation forms](/docs/build/creation-profiles), and [music catalog](/docs/examples/music-catalog).
+- [Classifications and Creation Profiles](/docs/concepts/classifications)
+
+See also [Build creation forms](/docs/build/creation-profiles), [music catalog](/docs/examples/music-catalog).
 
 ## Source
 

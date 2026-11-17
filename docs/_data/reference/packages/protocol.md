@@ -69,7 +69,12 @@ Receipt parsers fetch and filter logs. Supply the expected emitter where support
 
 ## Related concepts
 
-[Protocol writes](/docs/concepts/protocol-writes) covers the transaction lifecycle. [Representation profiles](/docs/concepts/representation-profiles) explains the atom data and companion context that a creation call can carry.
+- [Atoms](/docs/concepts/atoms)
+- [Triples, counter-triples and nested triples](/docs/concepts/triples)
+- [Vaults, shares and positions](/docs/concepts/vaults)
+- [Bonding curves](/docs/concepts/bonding-curves)
+- [Fees, epochs and rewards](/docs/concepts/fees-and-rewards)
+- [Protocol writes](/docs/concepts/protocol-writes)
 
 ## Source
 

@@ -71,7 +71,14 @@
     "atomDatas",
     "normalised",
     "mispriced",
-    "unmeetable"
+    "unmeetable",
+    "Keccak",
+    "NFKC",
+    "USSM",
+    "timelock",
+    "WTRUST",
+    "MINTIME",
+    "MAXTIME"
   ],
   "ignorePaths": ["_data_versioned_docs/**"]
 }

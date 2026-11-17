@@ -61,7 +61,9 @@ console.log({
 
 ## Related concepts
 
-Start with the [concept map](/docs/concepts) and [Build creation forms](/docs/build/creation-profiles).
+- [schema.org vocabulary](/docs/concepts/schema-org)
+
+See also [Build creation forms](/docs/build/creation-profiles).
 
 ## Source
 

@@ -73,7 +73,9 @@ Triple hashing uses **subject, predicate, object** in that order. A reversed tri
 
 ## Related concepts
 
-See the [concept map](/docs/concepts) and [Representation profiles](/docs/concepts/representation-profiles) for the difference between entity identity and payload identity.
+- [Atoms](/docs/concepts/atoms)
+- [Triples, counter-triples and nested triples](/docs/concepts/triples)
+- [Deterministic IDs](/docs/concepts/deterministic-ids)
 
 ## Source
 

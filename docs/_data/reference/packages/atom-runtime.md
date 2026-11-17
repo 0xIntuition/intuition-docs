@@ -86,7 +86,9 @@ After `dispose()`, new engine lookups throw. Disposal does not cancel requests a
 
 ## Related concepts
 
-[How the pieces fit](/docs/get-started/how-it-fits) locates this composition layer. [Classify and enrich atoms](/docs/build/classify-enrich) explains stage inputs and outputs; [Write a classification plugin](/docs/core/classification-plugin) explains the separate Core wiring required in a fork.
+- [Atom runtime and pipelines](/docs/concepts/atom-runtime)
+
+See also [How the pieces fit](/docs/get-started/how-it-fits), [Classify and enrich atoms](/docs/build/classify-enrich), [Write a classification plugin](/docs/core/classification-plugin).
 
 ## Source
 

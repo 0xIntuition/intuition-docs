@@ -139,7 +139,9 @@ External plugins implement `AtomClassificationPlugin` with a validated manifest,
 
 ## Related concepts
 
-[Representation profiles](/docs/concepts/representation-profiles) separates entity identity from its serialized payload. [Classify and enrich atoms](/docs/build/classify-enrich) explains the handoff to enrichment.
+- [Atom classification](/docs/concepts/atom-classification)
+
+See also [Classify and enrich atoms](/docs/build/classify-enrich).
 
 ## Source
 

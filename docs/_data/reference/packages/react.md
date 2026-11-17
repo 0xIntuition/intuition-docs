@@ -100,7 +100,7 @@ For writes, supply your application's connected wallet and handle promise reject
 
 ## Related concepts
 
-[Protocol writes](/docs/concepts/protocol-writes) explains the action and signing boundary. [Representation profiles](/docs/concepts/representation-profiles) explains why URI context and atom bytes are separate choices.
+- [Signals](/docs/concepts/signals)
 
 ## Source
 
