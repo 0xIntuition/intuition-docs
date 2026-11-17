@@ -620,7 +620,7 @@ A protocol write changes on-chain state through a signed transaction. Building a
 ---
 title: "Representation profiles"
 description: "Choose the bytes that carry an IID, and separate stable identity from companion metadata and display enrichment."
-last_updated: "2026-11-17T11:42:29-08:00"
+last_updated: "2026-11-17T12:34:45-08:00"
 source: "https://docs.intuition.systems/docs/concepts/representation-profiles"
 ---
 
