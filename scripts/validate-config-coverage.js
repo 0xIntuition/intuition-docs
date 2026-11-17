@@ -2,6 +2,7 @@
 'use strict';
 const fs = require('node:fs');
 const path = require('node:path');
+const yaml = require('js-yaml');
 const { execFileSync, spawnSync } = require('node:child_process');
 const { versions } = require('../docs-versions.config');
 const { walkFiles } = require('./lib/docs-tree');
@@ -223,12 +224,19 @@ function validateCoverage({
     errors.push('V1 SDK includes must use version-table snapshot paths');
   const llms = workflows['generate-llms-txt.yml'] || '';
   if (hasReleaseManifest) {
+    const runLines = Object.fromEntries(
+      Object.entries(workflows).map(([name, source]) => {
+        const jobs = Object.values(yaml.load(source)?.jobs || {});
+        const lines = jobs.flatMap((job) =>
+          (job.steps || []).flatMap((step) =>
+            (step.run || '').split('\n').map((line) => line.trim()),
+          ),
+        );
+        return [name, new Set(lines)];
+      }),
+    );
     for (const name of ['quality.yml', 'validate-sdk-examples.yml'])
-      if (
-        !workflows[name]?.includes(
-          'npm ci --ignore-scripts --prefix examples/v2',
-        )
-      )
+      if (!runLines[name]?.has('npm ci --ignore-scripts --prefix examples/v2'))
         errors.push(
           `${name} must install isolated V2 dependencies without lifecycle scripts`,
         );
@@ -238,16 +246,16 @@ function validateCoverage({
       'node scripts/sync-example-snippets.js --check',
       'node scripts/validate-core-api-examples.js',
     ])
-      if (!quality.includes(command))
+      if (!runLines['quality.yml']?.has(command))
         errors.push(`quality must run ${command}`);
     for (const [name, command] of [
       [
         'quality.yml',
-        'node scripts/validate-v2-structure.js --phase 3 --templates',
+        'node scripts/validate-v2-structure.js --phase 4 --templates',
       ],
       [
         'check-links.yml',
-        'node scripts/validate-built-docs.js --phase 3 --build-log build.log',
+        'node scripts/validate-built-docs.js --phase 4 --build-log build.log',
       ],
       [
         'validate-sdk-examples.yml',
@@ -257,17 +265,25 @@ function validateCoverage({
         'validate-sdk-examples.yml',
         'node --test examples/v2/first-write/first-write.test.ts',
       ],
+      [
+        'validate-sdk-examples.yml',
+        'node --test examples/v2/core-query-api/src/query-client.test.ts',
+      ],
+      [
+        'validate-sdk-examples.yml',
+        'node --test examples/v2/react-app/src/receipt.test.ts',
+      ],
       ['generate-llms-txt.yml', 'npm run generate-llms'],
       [
         'validate-sdk-examples.yml',
-        'node --experimental-strip-types examples/v2/quickstart/quickstart.ts',
+        'node --experimental-strip-types examples/v2/quickstart/quickstart.ts > "$RUNNER_TEMP/quickstart-output.txt"',
       ],
       [
         'validate-sdk-examples.yml',
-        'diff -u examples/v2/quickstart/expected-output.txt',
+        'diff -u examples/v2/quickstart/expected-output.txt "$RUNNER_TEMP/quickstart-output.txt"',
       ],
     ])
-      if (!workflows[name]?.includes(command))
+      if (!runLines[name]?.has(command))
         errors.push(`${name} must run ${command}`);
     if (!llms.includes('static/intuition-release.json'))
       errors.push('llms generation must watch the release manifest');

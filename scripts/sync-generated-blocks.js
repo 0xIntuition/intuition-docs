@@ -2,6 +2,7 @@
 'use strict';
 const fs = require('node:fs');
 const path = require('node:path');
+const { parseMarkdownContentTitle } = require('@docusaurus/utils');
 const { versions } = require('../docs-versions.config');
 const { readDocs } = require('./lib/docs-tree');
 const cell = (value) =>
@@ -98,6 +99,13 @@ function deploymentTable(exports) {
     ),
   ].join('\n');
 }
+function docTitle(doc) {
+  return (
+    doc.frontMatter.title?.trim() ||
+    parseMarkdownContentTitle(doc.body).contentTitle ||
+    path.posix.basename(doc.id)
+  );
+}
 function versionEquivalents(pairs, current, legacy) {
   const currentById = new Map(current.map((doc) => [doc.id, doc]));
   const legacyById = new Map(legacy.map((doc) => [doc.id, doc]));
@@ -115,7 +123,7 @@ function versionEquivalents(pairs, current, legacy) {
         `Version equivalence points to an unshipped page: ${pair.v1} ↔ ${pair.v2}`,
       );
     rows.push(
-      `| [${cell(v1.frontMatter.title)}](${v1.route}) | [${cell(v2.frontMatter.title)}](${v2.route}) |`,
+      `| [${cell(docTitle(v1))}](${v1.route}) | [${cell(docTitle(v2))}](${v2.route}) |`,
     );
   }
   return '| V1 page | V2 page |\n| --- | --- |\n' + rows.join('\n');

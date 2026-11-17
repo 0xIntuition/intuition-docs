@@ -22,6 +22,7 @@
     "DevRel",
     "calldata",
     "testnet",
+    "devnet",
     "mainnet",
     "multivault",
     "wagmi",

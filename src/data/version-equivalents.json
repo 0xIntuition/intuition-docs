@@ -116,6 +116,34 @@
     {
       "v1": "quick-start/testnet-faucet",
       "v2": "reference/networks/faucet"
+    },
+    {
+      "v1": "intuition-network/rpc",
+      "v2": "build/connect"
+    },
+    {
+      "v1": "interaction-guide/create-atom",
+      "v2": "build/create-atoms"
+    },
+    {
+      "v1": "interaction-guide/create-triple",
+      "v2": "build/create-triples"
+    },
+    {
+      "v1": "interaction-guide/deposit-return",
+      "v2": "build/deposit-redeem"
+    },
+    {
+      "v1": "protocol/examples/batch-operations",
+      "v2": "build/batch-writes"
+    },
+    {
+      "v1": "interaction-guide/fee-proxy-integration",
+      "v2": "build/fee-proxy"
+    },
+    {
+      "v1": "intuition-sdk/integrations/react",
+      "v2": "build/react"
     }
   ]
 }

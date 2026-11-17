@@ -276,6 +276,13 @@ The following mapping comes from the version switcher's equivalence data. Other 
 | [Audit Reports](/docs/v1/intuition-smart-contracts/audit-reports) | [Audits](/docs/reference/contracts/audits) |
 | [Intuition Network](/docs/v1/intuition-network) | [Networks](/docs/reference/networks) |
 | [Intuition Testnet Faucet](/docs/v1/quick-start/testnet-faucet) | [Testnet faucet](/docs/reference/networks/faucet) |
+| [Remote Procedure Call (RPC)](/docs/v1/intuition-network/rpc) | [Connect to a network](/docs/build/connect) |
+| [Create Atom](/docs/v1/interaction-guide/create-atom) | [Create atoms](/docs/build/create-atoms) |
+| [Create Triple](/docs/v1/interaction-guide/create-triple) | [Create triples](/docs/build/create-triples) |
+| [Deposit & Return](/docs/v1/interaction-guide/deposit-return) | [Deposit and redeem](/docs/build/deposit-redeem) |
+| [Batch Operations](/docs/v1/protocol/examples/batch-operations) | [Batch writes](/docs/build/batch-writes) |
+| [Integrate FeeProxy](/docs/v1/interaction-guide/fee-proxy-integration) | [Route writes through the FeeProxy](/docs/build/fee-proxy) |
+| [React Integration](/docs/v1/intuition-sdk/integrations/react) | [Use React hooks](/docs/build/react) |
 
 {/* generated:end */}
 

@@ -270,7 +270,7 @@ test('coverage rejects unpaired globs, floating actions and cspell scope changes
   }
 });
 
-test('Phase 3 workflow coverage requires isolated installs and all source synchronization gates', () => {
+test('Phase 4 workflow coverage requires isolated installs and all source synchronization gates', () => {
   const root = path.join(__dirname, '..');
   const read = (file) => fs.readFileSync(path.join(root, file), 'utf8');
   const input = {
@@ -302,11 +302,11 @@ test('Phase 3 workflow coverage requires isolated installs and all source synchr
     ['quality.yml', 'node scripts/validate-core-api-examples.js'],
     [
       'quality.yml',
-      'node scripts/validate-v2-structure.js --phase 3 --templates',
+      'node scripts/validate-v2-structure.js --phase 4 --templates',
     ],
     [
       'check-links.yml',
-      'node scripts/validate-built-docs.js --phase 3 --build-log build.log',
+      'node scripts/validate-built-docs.js --phase 4 --build-log build.log',
     ],
     [
       'validate-sdk-examples.yml',
@@ -315,6 +315,14 @@ test('Phase 3 workflow coverage requires isolated installs and all source synchr
     [
       'validate-sdk-examples.yml',
       'node --test examples/v2/first-write/first-write.test.ts',
+    ],
+    [
+      'validate-sdk-examples.yml',
+      'node --test examples/v2/core-query-api/src/query-client.test.ts',
+    ],
+    [
+      'validate-sdk-examples.yml',
+      'node --test examples/v2/react-app/src/receipt.test.ts',
     ],
     ['generate-llms-txt.yml', 'npm run generate-llms'],
     [
@@ -328,7 +336,12 @@ test('Phase 3 workflow coverage requires isolated installs and all source synchr
     ['generate-llms-txt.yml', 'static/intuition-release.json'],
   ]) {
     const copy = structuredClone(input);
-    copy.workflows[name] = copy.workflows[name].replace(command, '');
+    copy.workflows[name] = copy.workflows[name].replace(
+      command,
+      command === 'static/intuition-release.json'
+        ? 'removed'
+        : `echo skipped # ${command}`,
+    );
     assert.ok(validateCoverage(copy).length, `${name}: ${command}`);
   }
 });
