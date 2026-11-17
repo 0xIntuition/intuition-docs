@@ -1869,7 +1869,7 @@ An IID scheme tells you what a value identifies and which spellings count as the
 ---
 title: "Reference"
 description: "Find a package, API, contract, network, or catalog entry by the question you need to answer."
-last_updated: "2026-11-17T15:14:53-08:00"
+last_updated: "2026-11-17T15:27:22-08:00"
 source: "https://docs.intuition.systems/docs/reference"
 ---
 
@@ -1886,7 +1886,7 @@ The [package index](https://docs.intuition.systems/docs/reference/packages) show
 | Describe types and relationships | [@0xintuition/schema-org](https://docs.intuition.systems/docs/reference/packages/schema-org), [@0xintuition/classifications](https://docs.intuition.systems/docs/reference/packages/classifications), [@0xintuition/predicates](https://docs.intuition.systems/docs/reference/packages/predicates) |
 | Normalize an identifier or derive an ID | [@0xintuition/iid-spec](https://docs.intuition.systems/docs/reference/packages/iid-spec), [@0xintuition/iid](https://docs.intuition.systems/docs/reference/packages/iid), [@0xintuition/iid-registry](https://docs.intuition.systems/docs/reference/packages/iid-registry), [@0xintuition/iid-ladder](https://docs.intuition.systems/docs/reference/packages/iid-ladder), [@0xintuition/ids](https://docs.intuition.systems/docs/reference/packages/ids) |
 | Build an atom or triple | [@0xintuition/primitives](https://docs.intuition.systems/docs/reference/packages/primitives) |
-| Compose processing stages | ['@0xintuition/pipeline-runtime'](https://docs.intuition.systems/docs/reference/packages/pipeline-runtime) |
+| Compose processing stages | [@0xintuition/pipeline-runtime](https://docs.intuition.systems/docs/reference/packages/pipeline-runtime) |
 
 [... see full docs for complete content]
 
