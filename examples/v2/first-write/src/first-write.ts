@@ -135,10 +135,10 @@ async function main() {
       multiVaultGetGeneralConfig(config),
       multiVaultGetBondingCurveConfig(config),
     ]);
-    const deposit = parseEther(process.env.DEPOSIT_TTRUST ?? '0.001');
+    const deposit = parseEther(process.env.DEPOSIT_AMOUNT ?? '0.001');
     if (deposit <= 0n || deposit < minDeposit) {
       throw new Error(
-        'Set DEPOSIT_TTRUST to a positive amount of at least ' +
+        'Set DEPOSIT_AMOUNT to a positive amount of at least ' +
           formatEther(minDeposit),
       );
     }
@@ -155,7 +155,7 @@ async function main() {
       maxUriLength,
       calldata: atom.calldata,
       valueWei: cost,
-      valueTtrust: formatEther(cost),
+      valueTokens: formatEther(cost),
     });
     const createHash = await afterReview('CREATE', createAnswer, () =>
       multiVaultCreateAtomsWithUris(config, atom.inputs),
@@ -176,7 +176,7 @@ async function main() {
       minShares,
       calldata: multiVaultDepositEncode(...args),
       valueWei: deposit,
-      valueTtrust: formatEther(deposit),
+      valueTokens: formatEther(deposit),
     });
     const depositHash = await afterReview('DEPOSIT', depositAnswer, () =>
       multiVaultDeposit(config, { args, value: deposit }),
