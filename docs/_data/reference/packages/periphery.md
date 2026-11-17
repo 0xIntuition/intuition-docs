@@ -65,7 +65,10 @@ The pinned router address lookup throws because the older Base router does not m
 
 ## Related concepts
 
-[Protocol writes](/docs/concepts/protocol-writes) covers routed actions and the signing boundary. [Build action plans and envelopes](/docs/build/action-plans) shows how to preserve reviewable steps.
+- [Fees, epochs and rewards](/docs/concepts/fees-and-rewards)
+- [Protocol writes](/docs/concepts/protocol-writes)
+
+See also [Build action plans and envelopes](/docs/build/action-plans).
 
 ## Source
 

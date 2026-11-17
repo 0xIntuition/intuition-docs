@@ -13,7 +13,7 @@ Recognize a deliberate input pattern and emit a canonical classification through
 
 ## Before you start
 
-Use Node 22.18 or newer and install the public package:
+Read [atom classification](/docs/concepts/atom-classification) for the data a classifier receives and returns. Use Node 22.18 or newer and install the public package:
 
 ```sh
 npm install --save-exact @0xintuition/atom-classification@0.1.0 viem@2.31.4

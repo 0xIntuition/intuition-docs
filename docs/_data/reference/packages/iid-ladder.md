@@ -65,7 +65,9 @@ The supplied strong ISRC wins over the URL. Empty input returns `iid: null`; ins
 
 ## Related concepts
 
-Read [Representation profiles](/docs/concepts/representation-profiles), then [Primitives](/docs/reference/packages/primitives) to turn a selected identity into bytes.
+- [The identity ladder](/docs/concepts/identity-ladder)
+
+See also [Primitives](/docs/reference/packages/primitives).
 
 ## Source
 

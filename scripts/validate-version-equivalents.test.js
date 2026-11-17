@@ -77,11 +77,17 @@ test('community seed matches the frozen source ID and authored map', () => {
   }
 });
 
-test('all 12 Phase 2 seeds resolve in the authored trees and each shipped seed is required', () => {
-  assert.equal(SEEDS.length, 12);
-  assert.deepEqual(map.pairs, SEEDS);
+test('every shipped seed resolves in the authored trees and removing any one fails', () => {
+  const shippedIds = new Set(
+    sourceLoaded
+      .find((version) => version.name === versions.current.name)
+      .docs.map((doc) => doc.id),
+  );
+  const shippedSeeds = SEEDS.filter((seed) => shippedIds.has(seed.v2));
+  assert.equal(shippedSeeds.length, 29);
+  assert.deepEqual(map.pairs, shippedSeeds);
   assert.deepEqual(validateEquivalents(map, sourceLoaded), []);
-  for (const seed of SEEDS) {
+  for (const seed of shippedSeeds) {
     const pairs = map.pairs.filter((pair) => pair.v2 !== seed.v2);
     assert.ok(
       validateEquivalents({ schemaVersion: 1, pairs }, sourceLoaded).includes(

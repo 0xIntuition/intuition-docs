@@ -13,7 +13,7 @@ Prepare a serializable action envelope that an application or agent can review b
 
 ## Before you start
 
-Install the packages used by the example:
+Review the [protocol write lifecycle](/docs/concepts/protocol-writes) to distinguish a plan from a signed transaction. Install the packages used by the example:
 
 ```sh
 npm install --save-exact @0xintuition/sdk@4.0.0 @0xintuition/protocol@4.0.0 @0xintuition/ids@0.1.0 viem@2.31.4

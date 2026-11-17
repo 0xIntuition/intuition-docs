@@ -11,7 +11,7 @@ Run your own Core node from source and read its indexed graph through the Query 
 
 ## Before you start
 
-Core is an application you fork and build from its repository. Install Git, Docker with Compose v2, Bun 1.3.11, Node 20 or newer, and `curl`; keep at least 5 GiB free. The initial setup downloads dependencies and supporting images. No wallet or API key is required for default public reads.
+Read [indexing and querying](/docs/concepts/indexing-and-querying) to see how chain events reach the API. Core is an application you fork and build from its repository. Install Git, Docker with Compose v2, Bun 1.3.11, Node 20 or newer, and `curl`; keep at least 5 GiB free. The initial setup downloads dependencies and supporting images. No wallet or API key is required for default public reads.
 
 Core source: [a402f880600f92969dc8fb013ca0f69fc9a02420](https://github.com/0xIntuition/intuition-core/tree/a402f880600f92969dc8fb013ca0f69fc9a02420). Supporting image tags can move; the source pin is not a promise of identical container artifacts.
 

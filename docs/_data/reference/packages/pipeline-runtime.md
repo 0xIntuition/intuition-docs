@@ -94,7 +94,9 @@ Successful outcomes carry `value`. The full outcome union also includes `failure
 
 ## Related concepts
 
-[How the pieces fit](/docs/get-started/how-it-fits) places execution helpers beneath the processing stage. [Classify and enrich atoms](/docs/build/classify-enrich) shows the data passed between stages.
+- [Atom runtime and pipelines](/docs/concepts/atom-runtime)
+
+See also [How the pieces fit](/docs/get-started/how-it-fits), [Classify and enrich atoms](/docs/build/classify-enrich).
 
 ## Source
 

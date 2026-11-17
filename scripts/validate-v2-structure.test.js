@@ -997,6 +997,29 @@ test('agent entry asserts single visible MCP notice, bundle URLs and concrete sk
     check('docs-for-agents', urls.replace('/llms.txt', '') + ' .md'),
     /llms/,
   );
+  const markdown = (origin) =>
+    urls
+      .split(' ')
+      .map((url) => `[${url}](${origin}${url})`)
+      .join(' ') + ' .md';
+  assert.equal(
+    check('docs-for-agents', markdown('https://docs.intuition.systems')),
+    '',
+  );
+  assert.match(
+    check('docs-for-agents', markdown('https://example.org')),
+    /llms/,
+  );
+  assert.match(
+    check(
+      'docs-for-agents',
+      markdown('https://docs.intuition.systems').replace(
+        'systems/docs/v1/llms.txt)',
+        'systems/llms.txt)',
+      ),
+    ),
+    /llms/,
+  );
   assert.match(check('docs-for-agents', urls), /per-page/);
   assert.equal(
     check('skills', '~~~sh\nnpx skills add 0xintuition/agent-skills\n~~~'),

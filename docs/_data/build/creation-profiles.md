@@ -13,7 +13,7 @@ Use a Creation Profile to collect typed fields, validate values, and preview the
 
 ## Before you start
 
-Follow [installation](/docs/build/install), then install the two direct dependencies and their peer:
+Read [classifications and Creation Profiles](/docs/concepts/classifications) to see where the form fields come from. Follow [installation](/docs/build/install), then install the two direct dependencies and their peer:
 
 ```sh
 npm install --save-exact @0xintuition/classifications@0.1.0 @0xintuition/primitives@0.1.0 viem@2.31.4

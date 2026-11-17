@@ -9,9 +9,57 @@ Other versions: V1 — https://docs.intuition.systems/docs/v1/llms.txt
 Condensed reference with metadata and prose, without code examples. For full content with code, see https://docs.intuition.systems/llms-full.txt. For curated navigation, see https://docs.intuition.systems/llms.txt.
 
 ---
+title: "Prepare transactions with the CLI"
+description: "Encode a MultiVault deposit, build its unsigned SDK envelope, and hand the exact transaction details to a human for review."
+last_updated: "2026-11-17T11:59:12-08:00"
+source: "https://docs.intuition.systems/docs/agents/cli"
+---
+
+# Prepare transactions with the CLI
+
+Applies to V2 · `@0xintuition/cli` 0.1.0 · `@0xintuition/sdk` 4.0.0
+
+Turn a proposed testnet deposit into calldata and a serializable `AgentActionEnvelope`. The CLI executable encodes the call. The SDK builds the plan that an application can present to a human.
+
+## Before you start
+
+Use a Node 22.18+ ESM project. Install the executable and the packages imported by the example. It runs with synthetic read context and requires no wallet or RPC.
+
+## Steps
+
+### 1. Find the encoder
+
+List the core write encoders for MultiVault. Look for `multiVaultDepositEncode`, which accepts a receiver, term ID, curve ID, and minimum shares.
+
+[... see full docs for complete content]
+
+---
+title: "Docs for agents"
+description: "Find the right versioned text bundle, fetch individual Markdown pages, and resolve their package pins and prerequisites."
+last_updated: "2026-11-17T11:59:12-08:00"
+source: "https://docs.intuition.systems/docs/agents/docs-for-agents"
+---
+
+# Docs for agents
+
+Start with the index for the documentation generation your project uses. V2 covers the current packages and Intuition Core. V1 covers the earlier TypeScript packages and Rust services.
+
+## Choose a bundle
+
+| What you need | V2 | V1 |
+| --- | --- | --- |
+| A directory of pages with Markdown links | [`/llms.txt`](https://docs.intuition.systems/llms.txt) | [`/docs/v1/llms.txt`](https://docs.intuition.systems/docs/v1/llms.txt) |
+| Short page descriptions without code examples | [`/llms-medium.txt`](https://docs.intuition.systems/llms-medium.txt) | [`/docs/v1/llms-medium.txt`](https://docs.intuition.systems/docs/v1/llms-medium.txt) |
+| Complete page text with code examples | [`/llms-full.txt`](https://docs.intuition.systems/llms-full.txt) | [`/docs/v1/llms-full.txt`](https://docs.intuition.systems/docs/v1/llms-full.txt) |
+
+## Fetch one page
+
+[... see full docs for complete content]
+
+---
 title: "Build with AI agents"
 description: "Give agents pinned sources, a clear reading order, identity invariants, and a human review boundary for protocol execution."
-last_updated: "2026-11-17T08:42:30-08:00"
+last_updated: "2026-11-17T11:59:12-08:00"
 source: "https://docs.intuition.systems/docs/agents"
 ---
 
@@ -34,7 +82,7 @@ Start an agent with a concrete outcome, the release manifest, and the relevant r
 ---
 title: "Install the agent skills"
 description: "Install Intuition's protocol and ERC-8004 agent skills, choose the right skill, and understand each planning boundary."
-last_updated: "2026-11-16T14:58:28-08:00"
+last_updated: "2026-11-17T11:59:12-08:00"
 source: "https://docs.intuition.systems/docs/agents/skills"
 ---
 
@@ -56,7 +104,7 @@ Both skills work at the contract level and apply to the V1 and V2 documentation 
 ---
 title: "Build action plans and envelopes"
 description: "Prepare JSON-serializable action envelopes with explicit context, review their intent, and keep execution separate."
-last_updated: "2026-11-17T07:49:12-08:00"
+last_updated: "2026-11-17T11:59:06-08:00"
 source: "https://docs.intuition.systems/docs/build/action-plans"
 ---
 
@@ -68,7 +116,7 @@ Prepare a serializable action envelope that an application or agent can review b
 
 ## Before you start
 
-Install the packages used by the example:
+Review the [protocol write lifecycle](https://docs.intuition.systems/docs/concepts/protocol-writes) to distinguish a plan from a signed transaction. Install the packages used by the example:
 
 Envelope builders in `@0xintuition/sdk/actions` are client-free: they accept caller-supplied context and do not obtain quotes, sign, or send transactions. Read-backed action helpers and executors are separate APIs.
 
@@ -81,7 +129,7 @@ Envelope builders in `@0xintuition/sdk/actions` are client-free: they accept cal
 ---
 title: "Classify and enrich atoms"
 description: "Separate parsing, classification, provider planning, execution, and field provenance with an offline fixture."
-last_updated: "2026-11-17T08:01:14-08:00"
+last_updated: "2026-11-17T11:59:06-08:00"
 source: "https://docs.intuition.systems/docs/build/classify-enrich"
 ---
 
@@ -93,7 +141,7 @@ Interpret input, plan provider work, and preserve evidence without silently rewr
 
 ## Before you start
 
-Use [installation](https://docs.intuition.systems/docs/build/install) and these direct dependencies:
+Start with [atom parsing](https://docs.intuition.systems/docs/concepts/atom-parsing) and [atom classification](https://docs.intuition.systems/docs/concepts/atom-classification). Use [installation](https://docs.intuition.systems/docs/build/install) and these direct dependencies:
 
 The complete [processing source](https://github.com/0xIntuition/intuition-docs/blob/d137b0adacbfb9fda3b0d07d94e695ca4e7abc03/examples/v2/music-catalog/src/processing.ts) uses fixed synthetic input and an injected local provider fixture. It performs no provider request. Installing a provider, returning a plan, fetching an artifact, and accepting a field are separate decisions.
 
@@ -106,7 +154,7 @@ The complete [processing source](https://github.com/0xIntuition/intuition-docs/b
 ---
 title: "Build creation forms"
 description: "Read typed creation fields, validate values, and preview an atom without confusing fields with graph relationships."
-last_updated: "2026-11-17T07:49:12-08:00"
+last_updated: "2026-11-17T11:59:06-08:00"
 source: "https://docs.intuition.systems/docs/build/creation-profiles"
 ---
 
@@ -118,7 +166,7 @@ Use a Creation Profile to collect typed fields, validate values, and preview the
 
 ## Before you start
 
-Follow [installation](https://docs.intuition.systems/docs/build/install), then install the two direct dependencies and their peer:
+Read [classifications and Creation Profiles](https://docs.intuition.systems/docs/concepts/classifications) to see where the form fields come from. Follow [installation](https://docs.intuition.systems/docs/build/install), then install the two direct dependencies and their peer:
 
 A field value describes an atom. A relationship connects a subject atom, a predicate atom, and an object atom. Collecting `byArtist: 'Daft Punk'` in form state does not create a `byArtist` triple.
 
@@ -131,7 +179,7 @@ A field value describes an atom. A relationship connects a subject atom, a predi
 ---
 title: "Install and pin the packages"
 description: "Install the packages for your task with exact versions, ESM, TypeScript, and compatible peers."
-last_updated: "2026-11-17T07:49:12-08:00"
+last_updated: "2026-11-17T12:05:41-08:00"
 source: "https://docs.intuition.systems/docs/build/install"
 ---
 
@@ -148,7 +196,7 @@ Install the smallest package set that supports your task and keep its exact vers
 ---
 title: "Query a Core node"
 description: "Build the pinned Core source and read its graph through contract-backed HTTP operations."
-last_updated: "2026-11-17T07:49:12-08:00"
+last_updated: "2026-11-17T11:59:06-08:00"
 source: "https://docs.intuition.systems/docs/build/query-core"
 ---
 
@@ -158,13 +206,7 @@ Run your own Core node from source and read its indexed graph through the Query 
 
 ## Before you start
 
-Core is an application you fork and build from its repository. Install Git, Docker with Compose v2, Bun 1.3.11, Node 20 or newer, and `curl`; keep at least 5 GiB free. The initial setup downloads dependencies and supporting images. No wallet or API key is required for default public reads.
-
-Core source: [a402f880600f92969dc8fb013ca0f69fc9a02420](https://github.com/0xIntuition/intuition-core/tree/a402f880600f92969dc8fb013ca0f69fc9a02420). Supporting image tags can move; the source pin is not a promise of identical container artifacts.
-
-## Steps
-
-### 1. Fork and pin the source
+Read [indexing and querying](https://docs.intuition.systems/docs/concepts/indexing-and-querying) to see how chain events reach the API. Core is an application you fork and build from its repository. Install Git, Docker with Compose v2, Bun 1.3.11, Node 20 or newer, and `curl`; keep at least 5 GiB free. The initial setup downloads dependencies and supporting images. No wallet or API key is required for default public reads.
 
 [... see full docs for complete content]
 
@@ -223,28 +265,341 @@ Use these channels to get support, connect with the Intuition community, and sha
 [... see full docs for complete content]
 
 ---
+title: "Atom classification"
+description: "Follow a plugin match through resolution and the canonical classification envelope. Decide which fields belong in a publishable representation."
+last_updated: "2026-11-17T11:40:10-08:00"
+source: "https://docs.intuition.systems/docs/concepts/atom-classification"
+---
+
+# Atom classification
+
+Applies to V2 · `@0xintuition/atom-classification` 0.1.0
+
+Atom classification interprets an input using plugins. A classifier recognizes a pattern, such as a tagged term or a service URL. An eligible resolver can then describe the entity and the evidence for its type. A type match may tell you how to display an input while leaving the identity of a particular recording or artist unresolved.
+
+**Builds on:** [Atom parsing](https://docs.intuition.systems/docs/concepts/atom-parsing), [Classifications and Creation Profiles](https://docs.intuition.systems/docs/concepts/classifications).
+
+**Implemented by:** [@0xintuition/atom-classification](https://docs.intuition.systems/docs/reference/packages/atom-classification).
+
+## How it works
+
+[... see full docs for complete content]
+
+---
+title: "Atom parsing"
+description: "Recognize URLs, IIDs and free text locally. Learn which parse results require validation and when the parser makes a network request."
+last_updated: "2026-11-17T11:40:10-08:00"
+source: "https://docs.intuition.systems/docs/concepts/atom-parsing"
+---
+
+# Atom parsing
+
+Applies to V2 · `@0xintuition/atom-parser` 0.1.0
+
+Atom parsing turns a raw input string into a candidate that an application can inspect. The parser keeps the original input, trims outer ASCII whitespace for detection, and returns a kind with fields specific to that kind. A catalog can use those fields to decide whether to validate an identifier, inspect a URL, or ask the user what a title refers to.
+
+**Builds on:** [Atoms](https://docs.intuition.systems/docs/concepts/atoms), [The Intuition Identifier (IID)](https://docs.intuition.systems/docs/concepts/iid).
+
+**Implemented by:** [@0xintuition/atom-parser](https://docs.intuition.systems/docs/reference/packages/atom-parser).
+
+## How it works
+
+[... see full docs for complete content]
+
+---
+title: "Atom runtime and pipelines"
+description: "Compose parsing, classification and enrichment with reusable engines, bounded concurrency, circuit breakers and explicit cleanup."
+last_updated: "2026-11-17T11:40:10-08:00"
+source: "https://docs.intuition.systems/docs/concepts/atom-runtime"
+---
+
+# Atom runtime and pipelines
+
+Applies to V2 · `@0xintuition/atom-runtime` 0.1.0 · `@0xintuition/pipeline-runtime` 0.1.0
+
+An atom runtime supplies configured classification and enrichment engines for a host application. The host can parse inputs, pass the results through those engines, and choose when to cache, cancel, or retry work. Pipeline helpers bound concurrent requests and isolate repeated provider failures. Core adds the workers and durable records a self-hosted node needs.
+
+**Builds on:** [Atom classification](https://docs.intuition.systems/docs/concepts/atom-classification), [Enrichment](https://docs.intuition.systems/docs/concepts/enrichment).
+
+**Implemented by:** [@0xintuition/atom-runtime](https://docs.intuition.systems/docs/reference/packages/atom-runtime), [@0xintuition/pipeline-runtime](https://docs.intuition.systems/docs/reference/packages/pipeline-runtime).
+
+## How it works
+
+[... see full docs for complete content]
+
+---
+title: "Atoms"
+description: "Learn how an atom represents an entity, which bytes determine its ID, and how to preserve text that looks like hexadecimal data."
+last_updated: "2026-11-17T11:31:00-08:00"
+source: "https://docs.intuition.systems/docs/concepts/atoms"
+---
+
+# Atoms
+
+Applies to V2 · `@0xintuition/ids` 0.1.0 · `@0xintuition/primitives` 0.1.0 · `@0xintuition/protocol` 4.0.0
+
+An atom gives an app something to refer to. A catalog might need to refer to a recording, its artist, or its liner notes. For each one, the app chooses data, encodes it as bytes, and derives a 32-byte atom ID. Other apps can refer to those same bytes by ID. The real-world recording, the chosen bytes, and the resulting ID play different roles.
+
+**Builds on:** Nothing; this is the base of the ladder.
+
+**Implemented by:** [ids](https://docs.intuition.systems/docs/reference/packages/ids), [primitives](https://docs.intuition.systems/docs/reference/packages/primitives), [protocol](https://docs.intuition.systems/docs/reference/packages/protocol).
+
+## How it works
+
+[... see full docs for complete content]
+
+---
+title: "Bonding curves"
+description: "Work through share conversion and rounding on a linear curve, then see how a flat-price curve can charge different fees across tiers."
+last_updated: "2026-11-17T11:31:00-08:00"
+source: "https://docs.intuition.systems/docs/concepts/bonding-curves"
+---
+
+# Bonding curves
+
+Applies to V2 · `@0xintuition/curves` 0.1.0 · `@0xintuition/protocol` 4.0.0
+
+A bonding curve answers two questions for a vault at a particular moment. How many shares will a deposit buy? How many assets will a redemption return? The curve defines the conversion rule. Some curves also charge fees that depend on how much is already in the vault or when a holder acquired shares.
+
+**Builds on:** [Vaults, shares and positions](https://docs.intuition.systems/docs/concepts/vaults).
+
+**Implemented by:** [curves](https://docs.intuition.systems/docs/reference/packages/curves), [protocol](https://docs.intuition.systems/docs/reference/packages/protocol).
+
+## How it works
+
+[... see full docs for complete content]
+
+---
+title: "Classifications and Creation Profiles"
+description: "Use a classification to model a recording and its Creation Profile to choose fields, validation and suggested relationships."
+last_updated: "2026-11-17T11:42:29-08:00"
+source: "https://docs.intuition.systems/docs/concepts/classifications"
+---
+
+# Classifications and Creation Profiles
+
+Applies to V2 · `@0xintuition/classifications` 0.1.0
+
+A classification describes a kind of entity in Intuition. It gives that kind a stable slug, a type and a set of fields, and can declare an identity ladder. A Creation Profile brings together the fields an app should show and the relationships it can suggest when someone enters an entity of that kind.
+
+**Builds on:** [Atoms](https://docs.intuition.systems/docs/concepts/atoms), [The Intuition Identifier](https://docs.intuition.systems/docs/concepts/iid), [The identity ladder](https://docs.intuition.systems/docs/concepts/identity-ladder).
+
+**Implemented by:** [classifications](https://docs.intuition.systems/docs/reference/packages/classifications).
+
+## How it works
+
+[... see full docs for complete content]
+
+---
+title: "Deterministic IDs"
+description: "Derive atom, predicate, triple and counter-triple IDs offline from the exact bytes and term order used by MultiVault."
+last_updated: "2026-11-17T11:31:00-08:00"
+source: "https://docs.intuition.systems/docs/concepts/deterministic-ids"
+---
+
+# Deterministic IDs
+
+Applies to V2 · `@0xintuition/ids` 0.1.0 · `@0xintuition/primitives` 0.1.0
+
+An ID is deterministic when anyone following the same rule with the same inputs gets the same result. Two catalogs can derive the ID of a recording independently and agree on which claim to reference before either opens a connection to a chain.
+
+**Builds on:** [Atoms](https://docs.intuition.systems/docs/concepts/atoms), [Triples, counter-triples and nested triples](https://docs.intuition.systems/docs/concepts/triples).
+
+**Implemented by:** [ids](https://docs.intuition.systems/docs/reference/packages/ids), [primitives](https://docs.intuition.systems/docs/reference/packages/primitives).
+
+## How it works
+
+[... see full docs for complete content]
+
+---
+title: "Enrichment"
+description: "Turn a classified atom and identifier hints into provider artifacts, then extract supported fields while retaining provenance and missing values."
+last_updated: "2026-11-17T11:40:10-08:00"
+source: "https://docs.intuition.systems/docs/concepts/enrichment"
+---
+
+# Enrichment
+
+Applies to V2 · `@0xintuition/atom-enrichment` 0.1.0
+
+Enrichment adds evidence to a classified atom. A provider adapter can return an artifact, such as a catalog record with a title and artist credit. A separate extraction step selects fields for the classification and records their sources. An application can refresh these descriptions while retaining the IID and exact atom bytes it already uses.
+
+**Builds on:** [Atom classification](https://docs.intuition.systems/docs/concepts/atom-classification), [The IID registry](https://docs.intuition.systems/docs/concepts/iid-registry).
+
+**Implemented by:** [@0xintuition/atom-enrichment](https://docs.intuition.systems/docs/reference/packages/atom-enrichment).
+
+## How it works
+
+1. **Plan.** Use the IID registry to find candidate providers for the identifier. A plan describes capabilities. No provider has run at this point.
+
+[... see full docs for complete content]
+
+---
+title: "Fees, epochs and rewards"
+description: "Trace creation costs and affiliate fees, then learn how bonded balances and utilization determine rewards for a completed epoch."
+last_updated: "2026-11-17T11:31:00-08:00"
+source: "https://docs.intuition.systems/docs/concepts/fees-and-rewards"
+---
+
+# Fees, epochs and rewards
+
+Applies to V2 · `@0xintuition/protocol` 4.0.0 · `@0xintuition/sdk` 4.0.0 · `@0xintuition/curves` 0.1.0 · `@0xintuition/periphery` 0.1.0
+
+Creating a term, depositing assets and redeeming shares have different costs. Routing a transaction through FeeProxy can add an affiliate fee. Epoch rewards come from a separate contract, TrustBonding, which uses locked balances and protocol utilization to allocate emissions over time.
+
+**Builds on:** [Vaults, shares and positions](https://docs.intuition.systems/docs/concepts/vaults), [Bonding curves](https://docs.intuition.systems/docs/concepts/bonding-curves).
+
+**Implemented by:** [protocol](https://docs.intuition.systems/docs/reference/packages/protocol), [sdk](https://docs.intuition.systems/docs/reference/packages/sdk), [curves](https://docs.intuition.systems/docs/reference/packages/curves), [periphery](https://docs.intuition.systems/docs/reference/packages/periphery).
+
+## How it works
+
+[... see full docs for complete content]
+
+---
+title: "The identity ladder"
+description: "Choose the strongest usable recording identifier, see when a name-only gen1 recipe fires, and preserve missing identity evidence."
+last_updated: "2026-11-17T11:42:29-08:00"
+source: "https://docs.intuition.systems/docs/concepts/identity-ladder"
+---
+
+# The identity ladder
+
+Applies to V2 · `@0xintuition/iid-ladder` 0.1.0 · `@0xintuition/iid` 0.1.0
+
+An identity ladder is an entity type’s ordered list of ways to identify one of its members. Start at the strongest rung for which all required facts are valid. A registered identifier can distinguish recordings with the same title. A fallback recipe based only on that title gives the same result for both.
+
+**Builds on:** [Schemes and canonical form](https://docs.intuition.systems/docs/concepts/iid-schemes).
+
+**Implemented by:** [iid-ladder](https://docs.intuition.systems/docs/reference/packages/iid-ladder), [iid](https://docs.intuition.systems/docs/reference/packages/iid).
+
+## How it works
+
+[... see full docs for complete content]
+
+---
+title: "The IID registry"
+description: "Interpret an IID offline using its classification, ordered provider capabilities and identifier hints, including an unmapped result."
+last_updated: "2026-11-17T11:42:29-08:00"
+source: "https://docs.intuition.systems/docs/concepts/iid-registry"
+---
+
+# The IID registry
+
+Applies to V2 · `@0xintuition/iid-registry` 0.1.0
+
+The IID registry package interprets an identifier for an application. Given an IID, it can return a classification, an ordered list of provider capabilities and hints extracted from the value. Each answers a different question about what an application could do next.
+
+**Builds on:** [Schemes and canonical form](https://docs.intuition.systems/docs/concepts/iid-schemes), [Classifications](https://docs.intuition.systems/docs/concepts/classifications).
+
+**Implemented by:** [iid-registry](https://docs.intuition.systems/docs/reference/packages/iid-registry).
+
+## How it works
+
+[... see full docs for complete content]
+
+---
+title: "Schemes and canonical form"
+description: "Parse an IID, compare canonical values byte for byte, and distinguish registry-assigned, intrinsic and derived identifiers."
+last_updated: "2026-11-17T11:42:29-08:00"
+source: "https://docs.intuition.systems/docs/concepts/iid-schemes"
+---
+
+# Schemes and canonical form
+
+Applies to V2 · `@0xintuition/iid-spec` 0.1.0 · `@0xintuition/iid` 0.1.0
+
+A scheme owns the rules for one kind of identifier. It defines which raw values are acceptable, how to spell them canonically and what they identify. Once the scheme has produced a canonical IID, equality is a byte-for-byte comparison.
+
+**Builds on:** [The Intuition Identifier](https://docs.intuition.systems/docs/concepts/iid).
+
+**Implemented by:** [iid-spec](https://docs.intuition.systems/docs/reference/packages/iid-spec), [iid](https://docs.intuition.systems/docs/reference/packages/iid).
+
+## How it works
+
+[... see full docs for complete content]
+
+---
+title: "The Intuition Identifier (IID)"
+description: "Read an Intuition Identifier and tell which value names a recording and which value identifies its exact atom bytes."
+last_updated: "2026-11-17T11:42:29-08:00"
+source: "https://docs.intuition.systems/docs/concepts/iid"
+---
+
+# The Intuition Identifier (IID)
+
+Applies to V2 · `@0xintuition/iid-spec` 0.1.0 · `@0xintuition/iid` 0.1.0
+
+An Intuition Identifier (IID) is a string of the form `int:<scheme>:<value>` that names an entity. An atom can carry that string in its data. The protocol derives a separate 32-byte atom ID from the entire payload. You can compare IIDs to check whether two records carry the same name, and compare atom IDs to check whether they address the same atom.
+
+**Builds on:** [Atoms](https://docs.intuition.systems/docs/concepts/atoms), [Deterministic IDs](https://docs.intuition.systems/docs/concepts/deterministic-ids).
+
+**Implemented by:** [iid-spec](https://docs.intuition.systems/docs/reference/packages/iid-spec), [iid](https://docs.intuition.systems/docs/reference/packages/iid).
+
+## How it works
+
+[... see full docs for complete content]
+
+---
 title: "Concept map"
-description: "Understand entities, exact atom bytes, IIDs, predicates, triples, and the boundary between local modeling and writes."
-last_updated: "2026-11-17T07:51:29-08:00"
+description: "Follow the concept ladder from atoms and triples to identity, meaning, processing, protocol writes, and indexed reads on your own Core node."
+last_updated: "2026-11-17T11:47:49-08:00"
 source: "https://docs.intuition.systems/docs/concepts"
 ---
 
 # Concept map
 
-A knowledge graph describes entities and the relationships between them. In Intuition, an **atom** represents an entity with exact data bytes, a **triple** expresses a directed relationship, and a **signal** is an economic position associated with an atom or triple.
+Choose a question to start with. To represent a recording and its artist, begin with atoms and triples. To decide whether a provider supplied enough evidence to display a title, follow the reading path to enrichment.
 
-## Identify the thing and its representation
+## How to read the map
 
-A recording and an artist are different entities. Each can have a canonical Intuition Identifier (IID), but the protocol's atom ID identifies a particular byte representation. Equal atom data produces the same atom ID; different descriptive payloads can refer to the same IID while producing different atom IDs.
+Read each arrow from the prerequisite toward the concept that uses it. For example, start with atoms to understand term IDs, then learn how a triple connects existing terms. A subject, predicate, or object can itself be a triple. The branches show where you can pursue a different question without finishing every page.
 
-| Value | Purpose |
+[... see full docs for complete content]
+
+---
+title: "Indexing and querying"
+description: "Trace a protocol write from receipt to projection on a self-hosted Core node, and distinguish chain indexing from off-chain inserts and worker processing."
+last_updated: "2026-11-17T11:40:10-08:00"
+source: "https://docs.intuition.systems/docs/concepts/indexing-and-querying"
+---
+
+# Indexing and querying
+
+Indexing makes chain events available to readers of a Core node you run. Its indexer records events, projections turn them into graph records, and workers can parse, classify, and enrich the atoms. V2 applications read the resulting graph through that node’s Query API. A receipt can arrive before the node has ingested and projected the corresponding atom event.
+
+**Builds on:** [Protocol writes](https://docs.intuition.systems/docs/concepts/protocol-writes), [Atom runtime and pipelines](https://docs.intuition.systems/docs/concepts/atom-runtime).
+
+**Implemented by:** [Intuition Core](https://docs.intuition.systems/docs/build/query-core).
+
+## How it works
+
+[... see full docs for complete content]
+
+---
+title: "Predicates"
+description: "Distinguish a relationship’s registry key, label, serialized predicate data and deterministic atom ID before building a triple."
+last_updated: "2026-11-17T11:42:29-08:00"
+source: "https://docs.intuition.systems/docs/concepts/predicates"
+---
+
+# Predicates
+
+Applies to V2 · `@0xintuition/predicates` 0.1.0
+
+A predicate names the relationship between a triple’s subject and object. In Intuition it is itself an atom. The predicate registry connects a stable lookup key and a human-readable label to the canonical atom data and its deterministic ID. A triple uses that ID in the middle position.
+
+**Builds on:** [Triples](https://docs.intuition.systems/docs/concepts/triples), [Classifications](https://docs.intuition.systems/docs/concepts/classifications).
+
+**Implemented by:** [predicates](https://docs.intuition.systems/docs/reference/packages/predicates).
+
+## How it works
 
 [... see full docs for complete content]
 
 ---
 title: "Protocol writes"
 description: "Understand local plans, RPC reads, signing, submission, receipts, and indexing as separate steps."
-last_updated: "2026-11-17T07:51:29-08:00"
+last_updated: "2026-11-17T11:31:00-08:00"
 source: "https://docs.intuition.systems/docs/concepts/protocol-writes"
 ---
 
@@ -254,7 +609,7 @@ Applies to V2 · `@0xintuition/sdk` 4.0.0 · `@0xintuition/protocol` 4.0.0 · `@
 
 A protocol write changes on-chain state through a signed transaction. Building atom bytes or an action envelope can happen locally; reading a quote needs contract state; submission requires an authorized signer. A prepared request is not a transaction, a transaction hash is not a successful receipt, and a receipt does not prove a Core node has indexed the change.
 
-**Builds on:** [Representation profiles](https://docs.intuition.systems/docs/concepts/representation-profiles), deterministic IDs, vaults, and classifications.
+**Builds on:** [Deterministic IDs](https://docs.intuition.systems/docs/concepts/deterministic-ids), [Vaults](https://docs.intuition.systems/docs/concepts/vaults), [Representation profiles](https://docs.intuition.systems/docs/concepts/representation-profiles), [Classifications](https://docs.intuition.systems/docs/concepts/classifications).
 
 **Implemented by:** [sdk](https://docs.intuition.systems/docs/reference/packages/sdk), [protocol](https://docs.intuition.systems/docs/reference/packages/protocol), [periphery](https://docs.intuition.systems/docs/reference/packages/periphery), [deployments](https://docs.intuition.systems/docs/reference/packages/deployments), [cli](https://docs.intuition.systems/docs/reference/packages/cli).
 
@@ -265,7 +620,7 @@ A protocol write changes on-chain state through a signed transaction. Building a
 ---
 title: "Representation profiles"
 description: "Choose the bytes that carry an IID, and separate stable identity from companion metadata and display enrichment."
-last_updated: "2026-11-17T07:51:29-08:00"
+last_updated: "2026-11-17T11:42:29-08:00"
 source: "https://docs.intuition.systems/docs/concepts/representation-profiles"
 ---
 
@@ -275,7 +630,7 @@ Applies to V2 · `@0xintuition/iid` 0.1.0 · `@0xintuition/primitives` 0.1.0
 
 A representation profile describes the atom data that carries an IID. P0 stores the bare canonical identifier, P1 adds the evidence needed to interpret or re-derive it, and P2 adds descriptive fields. The IID names the entity; the atom ID identifies the exact stored bytes, so different representations of one IID can have different atom IDs.
 
-**Builds on:** IIDs and atoms.
+**Builds on:** [The Intuition Identifier](https://docs.intuition.systems/docs/concepts/iid), [Atoms](https://docs.intuition.systems/docs/concepts/atoms).
 
 **Implemented by:** [iid](https://docs.intuition.systems/docs/reference/packages/iid), [primitives](https://docs.intuition.systems/docs/reference/packages/primitives).
 
@@ -286,9 +641,114 @@ The canonical rules are [IID spec §7.2](https://github.com/0xIntuition/intuitio
 [... see full docs for complete content]
 
 ---
+title: "sameAs and identity linking"
+description: "Create and inspect an offline sameAs claim between two recording atoms while preserving both original terms and their provenance."
+last_updated: "2026-11-17T11:42:29-08:00"
+source: "https://docs.intuition.systems/docs/concepts/same-as"
+---
+
+# sameAs and identity linking
+
+Applies to V2 · `@0xintuition/primitives` 0.1.0 · `@0xintuition/predicates` 0.1.0
+
+A `sameAs` triple asserts that two atoms refer to the same real-world entity. Each endpoint keeps its own atom ID, payload and history. The edge records a claim that others can evaluate. It takes evidence about the entity to decide whether to accept that claim.
+
+**Builds on:** [The Intuition Identifier](https://docs.intuition.systems/docs/concepts/iid), [Triples](https://docs.intuition.systems/docs/concepts/triples), [Predicates](https://docs.intuition.systems/docs/concepts/predicates).
+
+**Implemented by:** [primitives](https://docs.intuition.systems/docs/reference/packages/primitives), [predicates](https://docs.intuition.systems/docs/reference/packages/predicates).
+
+## How it works
+
+[... see full docs for complete content]
+
+---
+title: "schema.org vocabulary"
+description: "Trace a Creation Profile field to its schema.org property, including inherited properties and the types they describe."
+last_updated: "2026-11-17T11:42:29-08:00"
+source: "https://docs.intuition.systems/docs/concepts/schema-org"
+---
+
+# schema.org vocabulary
+
+Applies to V2 · `@0xintuition/schema-org` 0.1.0
+
+The schema.org vocabulary gives applications a shared meaning for names such as `MusicRecording`, `byArtist` and `name`. Intuition packages use a pinned copy so two applications using the same release can look up the same definitions offline. A classification chooses which of those properties its Creation Profile exposes.
+
+**Builds on:** [Classifications](https://docs.intuition.systems/docs/concepts/classifications).
+
+**Implemented by:** [schema-org](https://docs.intuition.systems/docs/reference/packages/schema-org).
+
+## How it works
+
+[... see full docs for complete content]
+
+---
+title: "Signals"
+description: "Interpret deposits on atoms, triples and counter-triples using the side, curve, account and observation time."
+last_updated: "2026-11-17T11:31:00-08:00"
+source: "https://docs.intuition.systems/docs/concepts/signals"
+---
+
+# Signals
+
+Applies to V2 · `@0xintuition/sdk` 4.0.0 · `@0xintuition/react` 0.1.0
+
+A deposit makes a signal observable by putting assets behind a particular term. A position on an atom can draw attention to an entity. A position on a triple or its counter-triple can back one side of a specific claim. Its economic weight depends on the amount and the vault. Establishing the claim itself takes evidence.
+
+**Builds on:** [Vaults, shares and positions](https://docs.intuition.systems/docs/concepts/vaults), [Bonding curves](https://docs.intuition.systems/docs/concepts/bonding-curves).
+
+**Implemented by:** [sdk](https://docs.intuition.systems/docs/reference/packages/sdk), [react](https://docs.intuition.systems/docs/reference/packages/react).
+
+## How it works
+
+[... see full docs for complete content]
+
+---
+title: "Triples, counter-triples and nested triples"
+description: "Read an ordered subject, predicate and object as a claim, distinguish its counter-triple, and cite the claim inside a second triple."
+last_updated: "2026-11-17T11:31:00-08:00"
+source: "https://docs.intuition.systems/docs/concepts/triples"
+---
+
+# Triples, counter-triples and nested triples
+
+Applies to V2 · `@0xintuition/ids` 0.1.0 · `@0xintuition/primitives` 0.1.0 · `@0xintuition/protocol` 4.0.0
+
+A triple expresses a claim in three ordered parts. The **subject** is what the claim concerns, the **predicate** names the relationship, and the **object** is what stands on the other side of that relationship. Each part is a term ID. The triple gets an ID of its own, so a second claim can cite the first one.
+
+**Builds on:** [Atoms](https://docs.intuition.systems/docs/concepts/atoms).
+
+**Implemented by:** [ids](https://docs.intuition.systems/docs/reference/packages/ids), [primitives](https://docs.intuition.systems/docs/reference/packages/primitives), [protocol](https://docs.intuition.systems/docs/reference/packages/protocol).
+
+## How it works
+
+[... see full docs for complete content]
+
+---
+title: "Vaults, shares and positions"
+description: "Identify a vault by its term and curve, read a holder’s shares, and distinguish deposited assets from a redemption estimate."
+last_updated: "2026-11-17T11:31:00-08:00"
+source: "https://docs.intuition.systems/docs/concepts/vaults"
+---
+
+# Vaults, shares and positions
+
+Applies to V2 · `@0xintuition/protocol` 4.0.0 · `@0xintuition/sdk` 4.0.0
+
+A vault holds assets against a particular term under a particular bonding curve. Depositing assets gives the receiver shares in that vault. A position is the number of those shares an account holds. To locate one, identify the deployment, term, curve and account.
+
+**Builds on:** [Atoms](https://docs.intuition.systems/docs/concepts/atoms), [Triples, counter-triples and nested triples](https://docs.intuition.systems/docs/concepts/triples).
+
+**Implemented by:** [protocol](https://docs.intuition.systems/docs/reference/packages/protocol), [sdk](https://docs.intuition.systems/docs/reference/packages/sdk).
+
+## How it works
+
+[... see full docs for complete content]
+
+---
 title: "Write a classification plugin"
 description: "Implement and fixture-test a deterministic classifier, then register it at the actual engine composition boundary."
-last_updated: "2026-11-17T08:01:14-08:00"
+last_updated: "2026-11-17T11:59:06-08:00"
 source: "https://docs.intuition.systems/docs/core/classification-plugin"
 ---
 
@@ -300,7 +760,7 @@ Recognize a deliberate input pattern and emit a canonical classification through
 
 ## Before you start
 
-Use Node 22.18 or newer and install the public package:
+Read [atom classification](https://docs.intuition.systems/docs/concepts/atom-classification) for the data a classifier receives and returns. Use Node 22.18 or newer and install the public package:
 
 A classifier decides whether it recognizes input; a resolver produces canonical candidates. This example recognizes an explicit `idea:` prefix offline. It does not infer that arbitrary prose names a unique entity, mint an IID, derive an atom ID, or persist a graph record.
 
@@ -349,19 +809,55 @@ Build three local entity anchors and two directed claims: a recording **byArtist
 [... see full docs for complete content]
 
 ---
+title: "Choose your packages"
+description: "Match a development task to a pinned Intuition package and its public entry points."
+last_updated: "2026-11-17T11:59:12-08:00"
+source: "https://docs.intuition.systems/docs/get-started/choose-packages"
+---
+
+# Choose your packages
+
+Applies to V2 · `@0xintuition/atom-classification` 0.1.0 · `@0xintuition/atom-enrichment` 0.1.0 · `@0xintuition/atom-parser` 0.1.0 · `@0xintuition/atom-runtime` 0.1.0 · `@0xintuition/classifications` 0.1.0 · `@0xintuition/cli` 0.1.0 · `@0xintuition/curves` 0.1.0 · `@0xintuition/deployments` 0.1.0 · `@0xintuition/ids` 0.1.0 · `@0xintuition/iid` 0.1.0 · `@0xintuition/iid-ladder` 0.1.0 · `@0xintuition/iid-registry` 0.1.0 · `@0xintuition/iid-spec` 0.1.0 · `@0xintuition/periphery` 0.1.0 · `@0xintuition/pipeline-runtime` 0.1.0 · `@0xintuition/predicates` 0.1.0 · `@0xintuition/primitives` 0.1.0 · `@0xintuition/protocol` 4.0.0 · `@0xintuition/react` 0.1.0 · `@0xintuition/schema-org` 0.1.0 · `@0xintuition/sdk` 4.0.0
+
+Start with the operation your application needs. Install each package you import directly, even when another package includes it as a dependency. The linked references include exact install commands and supported entry points.
+
+[... see full docs for complete content]
+
+---
+title: "Quickstart: your first on-chain write"
+description: "Create a unique atom on Intuition Testnet, deposit test TRUST into its vault, and read back your shares."
+last_updated: "2026-11-17T11:59:12-08:00"
+source: "https://docs.intuition.systems/docs/get-started/first-write"
+---
+
+# Quickstart: your first on-chain write
+
+Applies to V2 · `@0xintuition/deployments` 0.1.0 · `@0xintuition/protocol` 4.0.0 · `@0xintuition/primitives` 0.1.0
+
+**Time:** 10 minutes · **Steps:** 8
+
+## What you'll build
+
+Create a named atom and attach a context URI on Intuition Testnet. After its creation receipt arrives, deposit test TRUST into the new vault and read the number of shares your account owns. You review and authorize the two transactions separately.
+
+## Before you start
+
+[... see full docs for complete content]
+
+---
 title: "How the pieces fit"
 description: "Follow an entity from local bytes and identity through processing, protocol writes, and a self-hosted Core Query API."
-last_updated: "2026-11-17T07:51:29-08:00"
+last_updated: "2026-11-17T11:40:10-08:00"
 source: "https://docs.intuition.systems/docs/get-started/how-it-fits"
 ---
 
 # How the pieces fit
 
-An Intuition application starts with the entity it wants to represent and the relationships it wants to assert. Public packages construct and interpret data; your application chooses storage, provider policy, authorization, and presentation.
+A music catalog can identify a recording, describe its artist, register their relationship, and read it back from a node. Different parts of Intuition handle each step. The packages handle local modeling and protocol operations. Intuition Core builds and serves the indexed graph.
 
 ## How it works
 
-Protocol primitives is ladder Tier 1, Intuition Identifier is Tier 2 (Identity), Classification and enrichment spans Tiers 3 and 4 (Meaning, Processing), and Protocol writes and Indexing and querying are Tier 5 (Data flow).
+On the concept ladder, Protocol primitives form Tier 1, Intuition Identifier belongs to Tier 2 (Identity), Classification and enrichment span Tiers 3 and 4 (Meaning and Processing), and Protocol writes and Indexing and querying form Tier 5 (Data flow).
 
 ### Start with exact data
 
@@ -370,7 +866,7 @@ Protocol primitives is ladder Tier 1, Intuition Identifier is Tier 2 (Identity),
 ---
 title: "Migrate from V1"
 description: "Move an intuition-ts integration to V2 packages while preserving stored identity and separating planning, writes, and Core reads."
-last_updated: "2026-11-17T08:42:30-08:00"
+last_updated: "2026-11-17T12:05:41-08:00"
 source: "https://docs.intuition.systems/docs/get-started/migrate-from-v1"
 ---
 
@@ -391,7 +887,7 @@ Keep your existing lockfile and a fixture set of stored atom data, atom IDs, and
 ---
 title: "Quickstart: an atom ID and IID offline"
 description: "Derive canonical recording bytes and a deterministic atom ID locally, with no wallet, RPC, account, or API key."
-last_updated: "2026-11-17T07:51:29-08:00"
+last_updated: "2026-11-17T11:59:12-08:00"
 source: "https://docs.intuition.systems/docs/get-started/quickstart"
 ---
 
@@ -462,9 +958,208 @@ Use exact package versions and public entry points listed in the [manifest](http
 [... see full docs for complete content]
 
 ---
+title: "Audits"
+description: "Find the audit reports, scope and reviewed revisions for the Intuition contracts."
+last_updated: "2026-11-17T11:48:21-08:00"
+source: "https://docs.intuition.systems/docs/reference/contracts/audits"
+---
+
+# Audits
+
+Use the report that covers the component and revision you are evaluating. Each report below is linked from the same pinned contract source tree as this reference. The revisions examined by the auditors are listed separately.
+
+| Review | Scope and reviewed revision |
+| --- | --- |
+| [Diligence — TRUST Token, Bonding and Emissions (PDF)](https://github.com/0xIntuition/intuition-contracts-v2/blob/82cfcdb832c100fd2e53ee3f474289ae14cc6020/audits/Diligence-Audit-Report-1.pdf) | September 2025. The TRUST token, TrustBonding and the Base, Core and Satellite emissions controllers in the core contracts repository at `8b1a8f5a3dc6ad8365c73f4cec46fcd08c38bcca`. Section 2 lists files reviewed and files consulted for context. |
+
+[... see full docs for complete content]
+
+---
+title: "Configuration and URI limits"
+description: "Read the active MultiVault creation costs, fee rates, minimums and byte limits for an atom and its context URIs."
+last_updated: "2026-11-17T11:48:21-08:00"
+source: "https://docs.intuition.systems/docs/reference/contracts/configuration"
+---
+
+# Configuration and URI limits
+
+Applies to V2 · `@0xintuition/protocol` 4.0.0
+
+Read configuration from the intended MultiVault on the intended chain. A quote based on an earlier block can change before creation.
+
+| Getter | What to read |
+| --- | --- |
+| `getGeneralConfig()` | `atomDataMaxLength` limits the atom payload in bytes. `minDeposit` is a native asset amount and `minShare` is the share seed for vault creation. `feeDenominator` is the denominator for configured fee rates. |
+| `getAtomConfig()` | `atomCreationProtocolFee` is the flat creation fee in native wei. `atomWalletDepositFee` is a rate applied to deposits. |
+
+[... see full docs for complete content]
+
+---
+title: "Deployments"
+description: "Look up the pinned core, periphery, bridge asset and multicall addresses by chain ID."
+last_updated: "2026-11-17T11:48:21-08:00"
+source: "https://docs.intuition.systems/docs/reference/contracts/deployments"
+---
+
+# Deployments
+
+Applies to V2 · `@0xintuition/deployments` 0.1.0
+
+Use the chain ID and contract name together when selecting an address. For an asset-specific hub or spoke, also match the asset. The table contains the address maps exported by the pinned deployments package.
+
+| Chain ID | Network |
+| --- | --- |
+| 1155 | Intuition mainnet |
+| 13579 | Intuition testnet |
+| 8453 | Base mainnet, for Base-side contracts and bridge assets |
+| 84532 | Base Sepolia, for associated testnet contracts |
+
+## Contract addresses
+
+| Chain ID | Contract | Asset | Address |
+
+[... see full docs for complete content]
+
+---
+title: "Events and errors"
+description: "Identify term and vault events in receipts and choose the ABI that can decode a contract error."
+last_updated: "2026-11-17T11:48:21-08:00"
+source: "https://docs.intuition.systems/docs/reference/contracts/events-and-errors"
+---
+
+# Events and errors
+
+Applies to V2 · `@0xintuition/protocol` 4.0.0
+
+Filter receipt logs by the emitting contract address before decoding them. Indexed fields can be filtered as topics. The remaining fields come from the log data. For example, a FeeProxy deposit can produce both a MultiVault deposit event and a FeeProxy routing event in one receipt.
+
+## Decode events
+
+The fields in each row are in ABI order. For these events the indexed fields come first.
+
+| Contract and event | Indexed fields, in order | Data fields, in order |
+| --- | --- | --- |
+
+[... see full docs for complete content]
+
+---
+title: "FeeProxy"
+description: "Trace the affiliate fee, forwarded amount, permissions and refund for a routed MultiVault call."
+last_updated: "2026-11-17T11:48:21-08:00"
+source: "https://docs.intuition.systems/docs/reference/contracts/fee-proxy"
+---
+
+# FeeProxy
+
+Applies to V2 · `@0xintuition/periphery` 0.1.0 · `@0xintuition/sdk` 4.0.0
+
+FeeProxy lets an affiliate charge a disclosed fee on a MultiVault deposit or creation. The Solidity contract ships in the core contracts artifact. The V2 periphery library provides FeeProxy helpers, and the SDK builds higher-level plans.
+
+## Quote a route
+
+`affiliateConfig(affiliate)` exposes the fee recipient and separate deposit and creation rates. `previewDepositFee(affiliate, grossAssets)` and `previewCreationFee(affiliate, grossAssets)` each return the affiliate fee and the assets available to forward. The fee equals `floor(grossAssets × bps / 10,000) + fixedFee`, in native wei.
+
+[... see full docs for complete content]
+
+---
+title: "Contracts"
+description: "Choose the contract for term creation, vault positions, affiliate fees, bonding, or wrapping native TRUST."
+last_updated: "2026-11-17T11:48:21-08:00"
+source: "https://docs.intuition.systems/docs/reference/contracts"
+---
+
+# Contracts
+
+Applies to V2 · `@0xintuition/protocol` 4.0.0 · `@0xintuition/periphery` 0.1.0
+
+MultiVault records terms and manages vault positions. Applications can call it directly or route supported operations through FeeProxy. Bonding TRUST for epoch rewards uses a separate contract.
+
+| Contract | When to use it |
+| --- | --- |
+| [MultiVault](https://docs.intuition.systems/docs/reference/contracts/multivault) | Create atoms from bytes and triples from existing term IDs. Deposit native assets or redeem shares in the vault identified by a term and a curve. |
+
+[... see full docs for complete content]
+
+---
+title: "MultiVault"
+description: "Look up term creation, deposit and redemption methods, then encode a deposit with the V2 protocol package."
+last_updated: "2026-11-17T11:48:21-08:00"
+source: "https://docs.intuition.systems/docs/reference/contracts/multivault"
+---
+
+# MultiVault
+
+Applies to V2 · `@0xintuition/protocol` 4.0.0
+
+An atom's input is a byte string. Its `termId` is the 32-byte ID derived from those bytes. A triple combines three existing term IDs in subject, predicate, object order. Vault operations take both a term ID and a curve ID, so keep both when displaying a balance.
+
+## Create and look up terms
+
+| Function | Inputs and result |
+| --- | --- |
+| `calculateAtomId(data)`, `isTermCreated(termId)` | Derive an ID, then check whether that term already exists. Calculating an ID requires no registration. |
+
+[... see full docs for complete content]
+
+---
+title: "TrustBonding"
+description: "Distinguish locked principal, time-weighted voting power and the rewards claimable for the previous epoch."
+last_updated: "2026-11-17T11:48:21-08:00"
+source: "https://docs.intuition.systems/docs/reference/contracts/trust-bonding"
+---
+
+# TrustBonding
+
+Applies to V2 · `@0xintuition/protocol` 4.0.0 · `@0xintuition/sdk` 4.0.0
+
+TrustBonding locks a token balance for a chosen duration. The principal stays locked while its voting power declines toward zero as the unlock time approaches. Rewards use epoch-end voting power and protocol activity.
+
+## Lock and withdraw
+
+[... see full docs for complete content]
+
+---
+title: "Testnet faucet"
+description: "Request tTRUST for Intuition testnet and check the balance on chain 13579."
+last_updated: "2026-11-17T11:48:21-08:00"
+source: "https://docs.intuition.systems/docs/reference/networks/faucet"
+---
+
+# Testnet faucet
+
+The Intuition testnet uses **tTRUST** for gas and native call value. Select chain ID `13579` and copy the public receiving address you want to fund. [Testnet network settings](https://docs.intuition.systems/docs/reference/networks)
+
+Open the [Intuition testnet hub](https://testnet.hub.intuition.systems/) and follow its current faucet instructions. Use the amount and eligibility requirements shown there.
+
+After a transfer is confirmed, look up the receiving address in the [testnet explorer](https://testnet.explorer.intuition.systems). If you see a zero balance, check the network and receiving address against the faucet request. Mainnet TRUST balances are tracked separately.
+
+---
+title: "Networks"
+description: "Find the chain ID, native currency, RPC transports and explorer for each Intuition network."
+last_updated: "2026-11-17T11:48:21-08:00"
+source: "https://docs.intuition.systems/docs/reference/networks"
+---
+
+# Networks
+
+Applies to V2 · `@0xintuition/deployments` 0.1.0
+
+Select the Intuition chain that holds the state you want to read. The deployments package exports `intuitionMainnet` and `intuitionTestnet` as viem chain definitions. These are the defaults recorded in that package.
+
+| Setting | Intuition mainnet | Intuition testnet |
+| --- | --- | --- |
+| Chain ID | `1155` | `13579` |
+| Native currency | TRUST, 18 decimals | tTRUST, 18 decimals |
+| HTTP RPC | `https://rpc.intuition.systems/http` | `https://testnet.rpc.intuition.systems/http` |
+| WebSocket RPC | `wss://rpc.intuition.systems/ws` | `wss://testnet.rpc.intuition.systems/ws` |
+| Block explorer | [Mainnet explorer](https://explorer.intuition.systems) | [Testnet explorer](https://testnet.explorer.intuition.systems) |
+
+[... see full docs for complete content]
+
+---
 title: "@0xintuition/atom-classification"
 description: "Run an explicit plugin set and inspect canonical classifications, publishable fields, and resolver failures."
-last_updated: "2026-11-17T08:07:47-08:00"
+last_updated: "2026-11-17T11:59:06-08:00"
 source: "https://docs.intuition.systems/docs/reference/packages/atom-classification"
 ---
 
@@ -487,7 +1182,7 @@ Use it to turn an input into typed identity data before enrichment or a creation
 ---
 title: "@0xintuition/atom-enrichment"
 description: "Execute selected providers, preserve partial artifacts and provenance, and extract classification fields."
-last_updated: "2026-11-17T08:07:47-08:00"
+last_updated: "2026-11-17T11:59:06-08:00"
 source: "https://docs.intuition.systems/docs/reference/packages/atom-enrichment"
 ---
 
@@ -510,7 +1205,7 @@ Use it when you need provider metadata, a selected provider plan, or normalized 
 ---
 title: "@0xintuition/atom-parser"
 description: "Detect and normalize atom inputs locally, or explicitly inspect remote content under a bounded transport policy."
-last_updated: "2026-11-17T08:07:47-08:00"
+last_updated: "2026-11-17T11:59:06-08:00"
 source: "https://docs.intuition.systems/docs/reference/packages/atom-parser"
 ---
 
@@ -533,7 +1228,7 @@ Use local detection before choosing a classification plugin or asking a reader t
 ---
 title: "@0xintuition/atom-runtime"
 description: "Compose and reuse classification and enrichment engines with explicit plugins, caches, and runtime configuration."
-last_updated: "2026-11-17T08:07:47-08:00"
+last_updated: "2026-11-17T11:59:06-08:00"
 source: "https://docs.intuition.systems/docs/reference/packages/atom-runtime"
 ---
 
@@ -560,7 +1255,7 @@ Use ESM and Promises on Node 20 or newer.
 ---
 title: "@0xintuition/classifications"
 description: "Use entity specifications, Creation Profiles, identity ladders, and validated descriptive atom data."
-last_updated: "2026-11-17T07:51:09-08:00"
+last_updated: "2026-11-17T11:59:06-08:00"
 source: "https://docs.intuition.systems/docs/reference/packages/classifications"
 ---
 
@@ -604,7 +1299,7 @@ Use it when a script or agent needs to discover an encoder or prepare a specific
 ---
 title: "@0xintuition/curves"
 description: "Calculate local curve previews and fee quotes using explicit integer units, state, and configuration."
-last_updated: "2026-11-17T08:07:47-08:00"
+last_updated: "2026-11-17T11:59:06-08:00"
 source: "https://docs.intuition.systems/docs/reference/packages/curves"
 ---
 
@@ -658,7 +1353,7 @@ Use ESM on Node 20+ or a compatible browser.
 ---
 title: "@0xintuition/ids"
 description: "Hash exact atom bytes and ordered triple components into protocol IDs without creating on-chain terms."
-last_updated: "2026-11-17T07:51:09-08:00"
+last_updated: "2026-11-17T11:59:06-08:00"
 source: "https://docs.intuition.systems/docs/reference/packages/ids"
 ---
 
@@ -687,7 +1382,7 @@ Use ESM imports. See [installation and peer setup](https://docs.intuition.system
 ---
 title: "@0xintuition/iid-ladder"
 description: "Project supplied identifiers through strong-ID, provider-handle, and URL choices with an explicit fallback."
-last_updated: "2026-11-17T07:51:09-08:00"
+last_updated: "2026-11-17T11:59:06-08:00"
 source: "https://docs.intuition.systems/docs/reference/packages/iid-ladder"
 ---
 
@@ -710,7 +1405,7 @@ Use it before atom construction when imports contain several candidate identifie
 ---
 title: "@0xintuition/iid-registry"
 description: "Map IIDs to classifications, ordered provider capabilities, and identifier hints offline."
-last_updated: "2026-11-17T07:51:09-08:00"
+last_updated: "2026-11-17T11:59:06-08:00"
 source: "https://docs.intuition.systems/docs/reference/packages/iid-registry"
 ---
 
@@ -737,7 +1432,7 @@ Use ESM imports. See [installation and peer setup](https://docs.intuition.system
 ---
 title: "@0xintuition/iid-spec"
 description: "Read the packaged IID specification and conformance data alongside the canonical identifier specification."
-last_updated: "2026-11-17T07:51:09-08:00"
+last_updated: "2026-11-17T11:59:06-08:00"
 source: "https://docs.intuition.systems/docs/reference/packages/iid-spec"
 ---
 
@@ -760,7 +1455,7 @@ Use the documents and fixtures to implement or compare identifier producers. Use
 ---
 title: "@0xintuition/iid"
 description: "Parse, canonicalize, validate, and derive identifier strings without network calls."
-last_updated: "2026-11-17T07:51:09-08:00"
+last_updated: "2026-11-17T11:59:06-08:00"
 source: "https://docs.intuition.systems/docs/reference/packages/iid"
 ---
 
@@ -785,7 +1480,7 @@ Use ESM imports. See [installation and peer setup](https://docs.intuition.system
 ---
 title: "Packages"
 description: "Explore all 21 V2 packages by layer and see their direct runtime dependencies."
-last_updated: "2026-11-17T07:51:09-08:00"
+last_updated: "2026-11-17T12:06:58-08:00"
 source: "https://docs.intuition.systems/docs/reference/packages"
 ---
 
@@ -793,14 +1488,12 @@ source: "https://docs.intuition.systems/docs/reference/packages"
 
 Applies to V2 · `@0xintuition/atom-classification` 0.1.0 · `@0xintuition/atom-enrichment` 0.1.0 · `@0xintuition/atom-parser` 0.1.0 · `@0xintuition/atom-runtime` 0.1.0 · `@0xintuition/classifications` 0.1.0 · `@0xintuition/cli` 0.1.0 · `@0xintuition/curves` 0.1.0 · `@0xintuition/deployments` 0.1.0 · `@0xintuition/ids` 0.1.0 · `@0xintuition/iid` 0.1.0 · `@0xintuition/iid-ladder` 0.1.0 · `@0xintuition/iid-registry` 0.1.0 · `@0xintuition/iid-spec` 0.1.0 · `@0xintuition/periphery` 0.1.0 · `@0xintuition/pipeline-runtime` 0.1.0 · `@0xintuition/predicates` 0.1.0 · `@0xintuition/primitives` 0.1.0 · `@0xintuition/protocol` 4.0.0 · `@0xintuition/react` 0.1.0 · `@0xintuition/schema-org` 0.1.0 · `@0xintuition/sdk` 4.0.0
 
-These stable packages separate vocabulary, identity, local construction, processing, and protocol operations. Each reference lists its exact install pin, public entry points, runtime dependencies, and peers. Start with [installation](https://docs.intuition.systems/docs/build/install) or the [offline quickstart](https://docs.intuition.systems/docs/get-started/quickstart).
-
 [... see full docs for complete content]
 
 ---
 title: "@0xintuition/periphery"
 description: "Use direct FeeProxy, router, and bridge wrappers with explicit deployment and execution boundaries."
-last_updated: "2026-11-17T08:07:47-08:00"
+last_updated: "2026-11-17T11:59:06-08:00"
 source: "https://docs.intuition.systems/docs/reference/packages/periphery"
 ---
 
@@ -831,7 +1524,7 @@ Use ESM on Node 20+ or a compatible browser.
 ---
 title: "@0xintuition/pipeline-runtime"
 description: "Bound Promise work, share cache contracts, handle cancellation, and observe provider requests."
-last_updated: "2026-11-17T08:07:47-08:00"
+last_updated: "2026-11-17T11:59:06-08:00"
 source: "https://docs.intuition.systems/docs/reference/packages/pipeline-runtime"
 ---
 
@@ -856,7 +1549,7 @@ Use ESM on Node 20 or newer. The documentation examples run on Node 22.21.0.
 ---
 title: "@0xintuition/predicates"
 description: "Select canonical relationship keys, labels, serialized atom data, and deterministic predicate IDs."
-last_updated: "2026-11-17T07:51:09-08:00"
+last_updated: "2026-11-17T11:59:06-08:00"
 source: "https://docs.intuition.systems/docs/reference/packages/predicates"
 ---
 
@@ -883,7 +1576,7 @@ Use ESM imports. See [installation and peer setup](https://docs.intuition.system
 ---
 title: "@0xintuition/primitives"
 description: "Build validated atom and triple blueprints, select IID representations, and compute their exact bytes and IDs offline."
-last_updated: "2026-11-17T07:51:09-08:00"
+last_updated: "2026-11-17T11:59:06-08:00"
 source: "https://docs.intuition.systems/docs/reference/packages/primitives"
 ---
 
@@ -908,7 +1601,7 @@ Use ESM imports. See [installation and peer setup](https://docs.intuition.system
 ---
 title: "@0xintuition/protocol"
 description: "Choose explicit read, encode, or write behavior for core Intuition contracts using typed viem wrappers."
-last_updated: "2026-11-17T08:07:47-08:00"
+last_updated: "2026-11-17T11:59:06-08:00"
 source: "https://docs.intuition.systems/docs/reference/packages/protocol"
 ---
 
@@ -931,7 +1624,7 @@ Use a read wrapper for RPC state, an `Encode` helper for calldata, or a write wr
 ---
 title: "@0xintuition/react"
 description: "Configure providers and use chain read, write, and transaction-flow hooks in a React application."
-last_updated: "2026-11-17T08:09:52-08:00"
+last_updated: "2026-11-17T11:59:06-08:00"
 source: "https://docs.intuition.systems/docs/reference/packages/react"
 ---
 
@@ -954,7 +1647,7 @@ Use it inside an existing React application that needs atom, triple, vault, or p
 ---
 title: "@0xintuition/schema-org"
 description: "Look up pinned schema.org types, declared properties, and inherited property provenance offline."
-last_updated: "2026-11-17T07:51:09-08:00"
+last_updated: "2026-11-17T11:59:06-08:00"
 source: "https://docs.intuition.systems/docs/reference/packages/schema-org"
 ---
 
@@ -975,7 +1668,7 @@ Use a direct type import when the type is known, or root lookup helpers for dyna
 ---
 title: "@0xintuition/sdk"
 description: "Prepare protocol actions and JSON-serializable envelopes with explicit inputs, effects, and execution boundaries."
-last_updated: "2026-11-17T08:07:47-08:00"
+last_updated: "2026-11-17T11:59:06-08:00"
 source: "https://docs.intuition.systems/docs/reference/packages/sdk"
 ---
 

@@ -10,6 +10,8 @@ Start with the system overview and offline quickstart, then follow the guides fo
 - [Intuition V2](https://docs.intuition.systems/docs): Choose an application, agent, Core, or plugin development path
 - [How the pieces fit](https://docs.intuition.systems/docs/get-started/how-it-fits): Understand the concept ladder, package layers, and Core services
 - [Offline quickstart](https://docs.intuition.systems/docs/get-started/quickstart): Derive an IID, representation profile, and atom ID without a network connection
+- [First on-chain write](https://docs.intuition.systems/docs/get-started/first-write): Create a testnet atom, deposit, and read the resulting position
+- [Choose your packages](https://docs.intuition.systems/docs/get-started/choose-packages): Map your task to published packages and their references
 - [Versions and release status](https://docs.intuition.systems/docs/get-started/versions): Check exact package pins, source revisions, and installation hazards
 - [Migrate from V1](https://docs.intuition.systems/docs/get-started/migrate-from-v1): Compare APIs and locate replacement pages
 
@@ -33,6 +35,8 @@ Start with the system overview and offline quickstart, then follow the guides fo
 ## Build with agents or extend processing
 
 - [Build with AI agents](https://docs.intuition.systems/docs/agents): Follow the reading and verification contract before preparing actions
+- [Docs for agents](https://docs.intuition.systems/docs/agents/docs-for-agents): Fetch individual Markdown pages or a version-specific bundle
+- [Prepare transactions with the CLI](https://docs.intuition.systems/docs/agents/cli): Encode calldata for a human to review
 - [Agent skills](https://docs.intuition.systems/docs/agents/skills): Install the intuition and erc8004-agent-layer contract-level skills for V1 and V2
 - [Write a classification plugin](https://docs.intuition.systems/docs/core/classification-plugin): Implement and test a classifier and wire it into a Core source fork
 
@@ -40,6 +44,8 @@ Start with the system overview and offline quickstart, then follow the guides fo
 
 - [Packages by layer](https://docs.intuition.systems/docs/reference/packages): Inspect all 21 packages, their runtime graph, and public entry points
 - [SDK API reference](https://docs.intuition.systems/docs/reference/sdk): Read declarations generated from the pinned package source
+- [Contracts](https://docs.intuition.systems/docs/reference/contracts): Find contract responsibilities, deployment addresses, events, errors and audits
+- [Networks](https://docs.intuition.systems/docs/reference/networks): Look up chain IDs, RPC endpoints, explorers and the testnet faucet
 - [Compatibility](https://docs.intuition.systems/docs/reference/compatibility): Check the package, peer, contract, and Core compatibility boundaries
 - [Community](https://docs.intuition.systems/docs/community): Get help and connect with the Intuition community
 

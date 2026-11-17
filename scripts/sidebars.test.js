@@ -19,12 +19,12 @@ const rows = loadLaunchRoutes(
 
 // Adapted from #112's complete-document navigation check. The authored sidebar
 // now has a normative phase order and may not generate category index pages.
-test('authored navigation covers the exact 61 Phase 2 routes once in launch order', () => {
+test('authored navigation covers the exact 95 Phase 3 routes once in launch order', () => {
   assert.deepEqual(Object.keys(sidebars), ['docs']);
-  assert.equal(docs.length, 61);
+  assert.equal(docs.length, 95);
   assert.deepEqual(
     new Set(docs.map((doc) => doc.route)),
-    new Set(rows.filter((row) => row.phase <= 2).map((row) => row.route)),
+    new Set(rows.filter((row) => row.phase <= 3).map((row) => row.route)),
   );
   assert.deepEqual(validateSidebar(sidebars, docs, rows), []);
 });
@@ -57,6 +57,13 @@ test('only shipped section landings become category links', () => {
       'community/index',
     ],
   );
+  const references = categories.find((item) => item.label === 'Reference');
+  for (const id of ['contracts', 'networks']) {
+    const category = references.items.find(
+      (item) => item.link?.id === `reference/${id}/index`,
+    );
+    assert.ok(category, `missing ${id} category landing`);
+  }
   const collect = (items) =>
     items.flatMap((item) => {
       if (typeof item === 'string') return [item];

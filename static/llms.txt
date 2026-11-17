@@ -13,104 +13,144 @@ Start with the system overview and offline quickstart, then follow the guides fo
 
 ## Start here
 
-- [Intuition V2](https://docs.intuition.systems/docs): Choose an application, agent, Core, or plugin development path
-- [How the pieces fit](https://docs.intuition.systems/docs/get-started/how-it-fits): Understand the concept ladder, package layers, and Core services
-- [Offline quickstart](https://docs.intuition.systems/docs/get-started/quickstart): Derive an IID, representation profile, and atom ID without a network connection
-- [Versions and release status](https://docs.intuition.systems/docs/get-started/versions): Check exact package pins, source revisions, and installation hazards
-- [Migrate from V1](https://docs.intuition.systems/docs/get-started/migrate-from-v1): Compare APIs and locate replacement pages
+- [Intuition V2](https://docs.intuition.systems/docs.md): Choose an application, agent, Core, or plugin development path
+- [How the pieces fit](https://docs.intuition.systems/docs/get-started/how-it-fits.md): Understand the concept ladder, package layers, and Core services
+- [Offline quickstart](https://docs.intuition.systems/docs/get-started/quickstart.md): Derive an IID, representation profile, and atom ID without a network connection
+- [First on-chain write](https://docs.intuition.systems/docs/get-started/first-write.md): Create a testnet atom, deposit, and read the resulting position
+- [Choose your packages](https://docs.intuition.systems/docs/get-started/choose-packages.md): Map your task to published packages and their references
+- [Versions and release status](https://docs.intuition.systems/docs/get-started/versions.md): Check exact package pins, source revisions, and installation hazards
+- [Migrate from V1](https://docs.intuition.systems/docs/get-started/migrate-from-v1.md): Compare APIs and locate replacement pages
 
 ## Learn the model
 
-- [Concept map](https://docs.intuition.systems/docs/concepts): Follow the reading order and distinguish identity, meaning, processing, and writes
-- [Representation profiles](https://docs.intuition.systems/docs/concepts/representation-profiles): Separate canonical profile rules, current builder behavior, and companion metadata
-- [Protocol writes](https://docs.intuition.systems/docs/concepts/protocol-writes): Understand plans, signing, submission, receipts, and indexing
+- [Concept map](https://docs.intuition.systems/docs/concepts.md): Follow the reading order and distinguish identity, meaning, processing, and writes
+- [Representation profiles](https://docs.intuition.systems/docs/concepts/representation-profiles.md): Separate canonical profile rules, current builder behavior, and companion metadata
+- [Protocol writes](https://docs.intuition.systems/docs/concepts/protocol-writes.md): Understand plans, signing, submission, receipts, and indexing
 
 ## Build an integration
 
-- [Install packages](https://docs.intuition.systems/docs/build/install): Select exact package versions and their required peers
-- [Creation Profiles](https://docs.intuition.systems/docs/build/creation-profiles): Inspect classification fields and build typed atom payloads
-- [Classify and enrich](https://docs.intuition.systems/docs/build/classify-enrich): Compose bounded processing and handle partial results
-- [Action plans](https://docs.intuition.systems/docs/build/action-plans): Prepare transaction envelopes before execution
-- [Query Core](https://docs.intuition.systems/docs/build/query-core): Read indexed data through the source-built Core Query API
-- [The SDK read client](https://docs.intuition.systems/docs/build/read-with-sdk): Understand why the hosted V1 client is not a V2 read path
-- [Worked examples](https://docs.intuition.systems/docs/examples): Find the complete music catalog example
-- [Music catalog](https://docs.intuition.systems/docs/examples/music-catalog): Build synthetic identities, predicates, triples, and processing results offline
+- [Install packages](https://docs.intuition.systems/docs/build/install.md): Select exact package versions and their required peers
+- [Creation Profiles](https://docs.intuition.systems/docs/build/creation-profiles.md): Inspect classification fields and build typed atom payloads
+- [Classify and enrich](https://docs.intuition.systems/docs/build/classify-enrich.md): Compose bounded processing and handle partial results
+- [Action plans](https://docs.intuition.systems/docs/build/action-plans.md): Prepare transaction envelopes before execution
+- [Query Core](https://docs.intuition.systems/docs/build/query-core.md): Read indexed data through the source-built Core Query API
+- [The SDK read client](https://docs.intuition.systems/docs/build/read-with-sdk.md): Understand why the hosted V1 client is not a V2 read path
+- [Worked examples](https://docs.intuition.systems/docs/examples.md): Find the complete music catalog example
+- [Music catalog](https://docs.intuition.systems/docs/examples/music-catalog.md): Build synthetic identities, predicates, triples, and processing results offline
 
 ## Build with agents or extend processing
 
-- [Build with AI agents](https://docs.intuition.systems/docs/agents): Follow the reading and verification contract before preparing actions
-- [Agent skills](https://docs.intuition.systems/docs/agents/skills): Install the intuition and erc8004-agent-layer contract-level skills for V1 and V2
-- [Write a classification plugin](https://docs.intuition.systems/docs/core/classification-plugin): Implement and test a classifier and wire it into a Core source fork
+- [Build with AI agents](https://docs.intuition.systems/docs/agents.md): Follow the reading and verification contract before preparing actions
+- [Docs for agents](https://docs.intuition.systems/docs/agents/docs-for-agents.md): Fetch individual Markdown pages or a version-specific bundle
+- [Prepare transactions with the CLI](https://docs.intuition.systems/docs/agents/cli.md): Encode calldata for a human to review
+- [Agent skills](https://docs.intuition.systems/docs/agents/skills.md): Install the intuition and erc8004-agent-layer contract-level skills for V1 and V2
+- [Write a classification plugin](https://docs.intuition.systems/docs/core/classification-plugin.md): Implement and test a classifier and wire it into a Core source fork
 
 ## Look up an API or get help
 
-- [Packages by layer](https://docs.intuition.systems/docs/reference/packages): Inspect all 21 packages, their runtime graph, and public entry points
-- [SDK API reference](https://docs.intuition.systems/docs/reference/sdk): Read declarations generated from the pinned package source
-- [Compatibility](https://docs.intuition.systems/docs/reference/compatibility): Check the package, peer, contract, and Core compatibility boundaries
-- [Community](https://docs.intuition.systems/docs/community): Get help and connect with the Intuition community
+- [Packages by layer](https://docs.intuition.systems/docs/reference/packages.md): Inspect all 21 packages, their runtime graph, and public entry points
+- [SDK API reference](https://docs.intuition.systems/docs/reference/sdk.md): Read declarations generated from the pinned package source
+- [Contracts](https://docs.intuition.systems/docs/reference/contracts.md): Find contract responsibilities, deployment addresses, events, errors and audits
+- [Networks](https://docs.intuition.systems/docs/reference/networks.md): Look up chain IDs, RPC endpoints, explorers and the testnet faucet
+- [Compatibility](https://docs.intuition.systems/docs/reference/compatibility.md): Check the package, peer, contract, and Core compatibility boundaries
+- [Community](https://docs.intuition.systems/docs/community.md): Get help and connect with the Intuition community
 
 ## Optional
 
 Complete directory: every authored documentation page, one line each.
 
-- [Intuition developer docs](https://docs.intuition.systems/docs)
-- [Build with AI agents](https://docs.intuition.systems/docs/agents)
-- [Install the agent skills](https://docs.intuition.systems/docs/agents/skills)
-- [Build action plans and envelopes](https://docs.intuition.systems/docs/build/action-plans)
-- [Classify and enrich atoms](https://docs.intuition.systems/docs/build/classify-enrich)
-- [Build creation forms](https://docs.intuition.systems/docs/build/creation-profiles)
-- [Install and pin the packages](https://docs.intuition.systems/docs/build/install)
-- [Query a Core node](https://docs.intuition.systems/docs/build/query-core)
-- [The SDK read client](https://docs.intuition.systems/docs/build/read-with-sdk)
-- [Get help](https://docs.intuition.systems/docs/community)
-- [Concept map](https://docs.intuition.systems/docs/concepts)
-- [Protocol writes](https://docs.intuition.systems/docs/concepts/protocol-writes)
-- [Representation profiles](https://docs.intuition.systems/docs/concepts/representation-profiles)
-- [Write a classification plugin](https://docs.intuition.systems/docs/core/classification-plugin)
-- [What you can build](https://docs.intuition.systems/docs/examples)
-- [Build a music catalog](https://docs.intuition.systems/docs/examples/music-catalog)
-- [How the pieces fit](https://docs.intuition.systems/docs/get-started/how-it-fits)
-- [Migrate from V1](https://docs.intuition.systems/docs/get-started/migrate-from-v1)
-- [Quickstart: an atom ID and IID offline](https://docs.intuition.systems/docs/get-started/quickstart)
-- [Versions and release status](https://docs.intuition.systems/docs/get-started/versions)
-- [Compatibility](https://docs.intuition.systems/docs/reference/compatibility)
-- [Packages](https://docs.intuition.systems/docs/reference/packages)
-- [@0xintuition/atom-classification](https://docs.intuition.systems/docs/reference/packages/atom-classification)
-- [@0xintuition/atom-enrichment](https://docs.intuition.systems/docs/reference/packages/atom-enrichment)
-- [@0xintuition/atom-parser](https://docs.intuition.systems/docs/reference/packages/atom-parser)
-- [@0xintuition/atom-runtime](https://docs.intuition.systems/docs/reference/packages/atom-runtime)
-- [@0xintuition/classifications](https://docs.intuition.systems/docs/reference/packages/classifications)
-- [@0xintuition/cli](https://docs.intuition.systems/docs/reference/packages/cli)
-- [@0xintuition/curves](https://docs.intuition.systems/docs/reference/packages/curves)
-- [@0xintuition/deployments](https://docs.intuition.systems/docs/reference/packages/deployments)
-- [@0xintuition/ids](https://docs.intuition.systems/docs/reference/packages/ids)
-- [@0xintuition/iid](https://docs.intuition.systems/docs/reference/packages/iid)
-- [@0xintuition/iid-ladder](https://docs.intuition.systems/docs/reference/packages/iid-ladder)
-- [@0xintuition/iid-registry](https://docs.intuition.systems/docs/reference/packages/iid-registry)
-- [@0xintuition/iid-spec](https://docs.intuition.systems/docs/reference/packages/iid-spec)
-- [@0xintuition/periphery](https://docs.intuition.systems/docs/reference/packages/periphery)
-- [@0xintuition/pipeline-runtime](https://docs.intuition.systems/docs/reference/packages/pipeline-runtime)
-- [@0xintuition/predicates](https://docs.intuition.systems/docs/reference/packages/predicates)
-- [@0xintuition/primitives](https://docs.intuition.systems/docs/reference/packages/primitives)
-- [@0xintuition/protocol](https://docs.intuition.systems/docs/reference/packages/protocol)
-- [@0xintuition/react](https://docs.intuition.systems/docs/reference/packages/react)
-- [@0xintuition/schema-org](https://docs.intuition.systems/docs/reference/packages/schema-org)
-- [@0xintuition/sdk](https://docs.intuition.systems/docs/reference/packages/sdk)
-- [SDK function reference](https://docs.intuition.systems/docs/reference/sdk)
-- [API client](https://docs.intuition.systems/docs/reference/sdk/api)
-- [Dynamic-fee curve actions](https://docs.intuition.systems/docs/reference/sdk/dynamic-fee-curve)
-- [FeeProxy URI creation](https://docs.intuition.systems/docs/reference/sdk/fee-proxy)
-- [FeeProxy affiliate profile](https://docs.intuition.systems/docs/reference/sdk/fee-proxy-affiliate-profile)
-- [FeeProxy plans and execution](https://docs.intuition.systems/docs/reference/sdk/fee-proxy-builders)
-- [FeeProxy refund preparation](https://docs.intuition.systems/docs/reference/sdk/fee-proxy-claim-refund-if-any)
-- [MultiVault actions](https://docs.intuition.systems/docs/reference/sdk/multivault)
-- [Bridge action envelopes](https://docs.intuition.systems/docs/reference/sdk/plans-base)
-- [Dynamic-fee action envelopes](https://docs.intuition.systems/docs/reference/sdk/plans-dynamic-fee-curve)
-- [FeeProxy action envelopes](https://docs.intuition.systems/docs/reference/sdk/plans-fee-proxy)
-- [MultiVault action envelopes](https://docs.intuition.systems/docs/reference/sdk/plans-multivault)
-- [TrustBonding action envelopes](https://docs.intuition.systems/docs/reference/sdk/plans-trust-bonding)
-- [Portfolio reads](https://docs.intuition.systems/docs/reference/sdk/portfolio)
-- [Create and validate action envelopes](https://docs.intuition.systems/docs/reference/sdk/schema-create-agent-action-envelope)
-- [Resolve action targets](https://docs.intuition.systems/docs/reference/sdk/schema-resolve-agent-action-target)
-- [Action envelope types](https://docs.intuition.systems/docs/reference/sdk/schema-types)
-- [TrustBonding actions](https://docs.intuition.systems/docs/reference/sdk/trust-bonding)
+- [Intuition developer docs](https://docs.intuition.systems/docs.md)
+- [Build with AI agents](https://docs.intuition.systems/docs/agents.md)
+- [Prepare transactions with the CLI](https://docs.intuition.systems/docs/agents/cli.md)
+- [Docs for agents](https://docs.intuition.systems/docs/agents/docs-for-agents.md)
+- [Install the agent skills](https://docs.intuition.systems/docs/agents/skills.md)
+- [Build action plans and envelopes](https://docs.intuition.systems/docs/build/action-plans.md)
+- [Classify and enrich atoms](https://docs.intuition.systems/docs/build/classify-enrich.md)
+- [Build creation forms](https://docs.intuition.systems/docs/build/creation-profiles.md)
+- [Install and pin the packages](https://docs.intuition.systems/docs/build/install.md)
+- [Query a Core node](https://docs.intuition.systems/docs/build/query-core.md)
+- [The SDK read client](https://docs.intuition.systems/docs/build/read-with-sdk.md)
+- [Get help](https://docs.intuition.systems/docs/community.md)
+- [Concept map](https://docs.intuition.systems/docs/concepts.md)
+- [Atom classification](https://docs.intuition.systems/docs/concepts/atom-classification.md)
+- [Atom parsing](https://docs.intuition.systems/docs/concepts/atom-parsing.md)
+- [Atom runtime and pipelines](https://docs.intuition.systems/docs/concepts/atom-runtime.md)
+- [Atoms](https://docs.intuition.systems/docs/concepts/atoms.md)
+- [Bonding curves](https://docs.intuition.systems/docs/concepts/bonding-curves.md)
+- [Classifications and Creation Profiles](https://docs.intuition.systems/docs/concepts/classifications.md)
+- [Deterministic IDs](https://docs.intuition.systems/docs/concepts/deterministic-ids.md)
+- [Enrichment](https://docs.intuition.systems/docs/concepts/enrichment.md)
+- [Fees, epochs and rewards](https://docs.intuition.systems/docs/concepts/fees-and-rewards.md)
+- [The identity ladder](https://docs.intuition.systems/docs/concepts/identity-ladder.md)
+- [The Intuition Identifier (IID)](https://docs.intuition.systems/docs/concepts/iid.md)
+- [The IID registry](https://docs.intuition.systems/docs/concepts/iid-registry.md)
+- [Schemes and canonical form](https://docs.intuition.systems/docs/concepts/iid-schemes.md)
+- [Indexing and querying](https://docs.intuition.systems/docs/concepts/indexing-and-querying.md)
+- [Predicates](https://docs.intuition.systems/docs/concepts/predicates.md)
+- [Protocol writes](https://docs.intuition.systems/docs/concepts/protocol-writes.md)
+- [Representation profiles](https://docs.intuition.systems/docs/concepts/representation-profiles.md)
+- [sameAs and identity linking](https://docs.intuition.systems/docs/concepts/same-as.md)
+- [schema.org vocabulary](https://docs.intuition.systems/docs/concepts/schema-org.md)
+- [Signals](https://docs.intuition.systems/docs/concepts/signals.md)
+- [Triples, counter-triples and nested triples](https://docs.intuition.systems/docs/concepts/triples.md)
+- [Vaults, shares and positions](https://docs.intuition.systems/docs/concepts/vaults.md)
+- [Write a classification plugin](https://docs.intuition.systems/docs/core/classification-plugin.md)
+- [What you can build](https://docs.intuition.systems/docs/examples.md)
+- [Build a music catalog](https://docs.intuition.systems/docs/examples/music-catalog.md)
+- [Choose your packages](https://docs.intuition.systems/docs/get-started/choose-packages.md)
+- [Quickstart: your first on-chain write](https://docs.intuition.systems/docs/get-started/first-write.md)
+- [How the pieces fit](https://docs.intuition.systems/docs/get-started/how-it-fits.md)
+- [Migrate from V1](https://docs.intuition.systems/docs/get-started/migrate-from-v1.md)
+- [Quickstart: an atom ID and IID offline](https://docs.intuition.systems/docs/get-started/quickstart.md)
+- [Versions and release status](https://docs.intuition.systems/docs/get-started/versions.md)
+- [Compatibility](https://docs.intuition.systems/docs/reference/compatibility.md)
+- [Contracts](https://docs.intuition.systems/docs/reference/contracts.md)
+- [Audits](https://docs.intuition.systems/docs/reference/contracts/audits.md)
+- [Configuration and URI limits](https://docs.intuition.systems/docs/reference/contracts/configuration.md)
+- [Deployments](https://docs.intuition.systems/docs/reference/contracts/deployments.md)
+- [Events and errors](https://docs.intuition.systems/docs/reference/contracts/events-and-errors.md)
+- [FeeProxy](https://docs.intuition.systems/docs/reference/contracts/fee-proxy.md)
+- [MultiVault](https://docs.intuition.systems/docs/reference/contracts/multivault.md)
+- [TrustBonding](https://docs.intuition.systems/docs/reference/contracts/trust-bonding.md)
+- [Networks](https://docs.intuition.systems/docs/reference/networks.md)
+- [Testnet faucet](https://docs.intuition.systems/docs/reference/networks/faucet.md)
+- [Packages](https://docs.intuition.systems/docs/reference/packages.md)
+- [@0xintuition/atom-classification](https://docs.intuition.systems/docs/reference/packages/atom-classification.md)
+- [@0xintuition/atom-enrichment](https://docs.intuition.systems/docs/reference/packages/atom-enrichment.md)
+- [@0xintuition/atom-parser](https://docs.intuition.systems/docs/reference/packages/atom-parser.md)
+- [@0xintuition/atom-runtime](https://docs.intuition.systems/docs/reference/packages/atom-runtime.md)
+- [@0xintuition/classifications](https://docs.intuition.systems/docs/reference/packages/classifications.md)
+- [@0xintuition/cli](https://docs.intuition.systems/docs/reference/packages/cli.md)
+- [@0xintuition/curves](https://docs.intuition.systems/docs/reference/packages/curves.md)
+- [@0xintuition/deployments](https://docs.intuition.systems/docs/reference/packages/deployments.md)
+- [@0xintuition/ids](https://docs.intuition.systems/docs/reference/packages/ids.md)
+- [@0xintuition/iid](https://docs.intuition.systems/docs/reference/packages/iid.md)
+- [@0xintuition/iid-ladder](https://docs.intuition.systems/docs/reference/packages/iid-ladder.md)
+- [@0xintuition/iid-registry](https://docs.intuition.systems/docs/reference/packages/iid-registry.md)
+- [@0xintuition/iid-spec](https://docs.intuition.systems/docs/reference/packages/iid-spec.md)
+- [@0xintuition/periphery](https://docs.intuition.systems/docs/reference/packages/periphery.md)
+- [@0xintuition/pipeline-runtime](https://docs.intuition.systems/docs/reference/packages/pipeline-runtime.md)
+- [@0xintuition/predicates](https://docs.intuition.systems/docs/reference/packages/predicates.md)
+- [@0xintuition/primitives](https://docs.intuition.systems/docs/reference/packages/primitives.md)
+- [@0xintuition/protocol](https://docs.intuition.systems/docs/reference/packages/protocol.md)
+- [@0xintuition/react](https://docs.intuition.systems/docs/reference/packages/react.md)
+- [@0xintuition/schema-org](https://docs.intuition.systems/docs/reference/packages/schema-org.md)
+- [@0xintuition/sdk](https://docs.intuition.systems/docs/reference/packages/sdk.md)
+- [SDK function reference](https://docs.intuition.systems/docs/reference/sdk.md)
+- [API client](https://docs.intuition.systems/docs/reference/sdk/api.md)
+- [Dynamic-fee curve actions](https://docs.intuition.systems/docs/reference/sdk/dynamic-fee-curve.md)
+- [FeeProxy URI creation](https://docs.intuition.systems/docs/reference/sdk/fee-proxy.md)
+- [FeeProxy affiliate profile](https://docs.intuition.systems/docs/reference/sdk/fee-proxy-affiliate-profile.md)
+- [FeeProxy plans and execution](https://docs.intuition.systems/docs/reference/sdk/fee-proxy-builders.md)
+- [FeeProxy refund preparation](https://docs.intuition.systems/docs/reference/sdk/fee-proxy-claim-refund-if-any.md)
+- [MultiVault actions](https://docs.intuition.systems/docs/reference/sdk/multivault.md)
+- [Bridge action envelopes](https://docs.intuition.systems/docs/reference/sdk/plans-base.md)
+- [Dynamic-fee action envelopes](https://docs.intuition.systems/docs/reference/sdk/plans-dynamic-fee-curve.md)
+- [FeeProxy action envelopes](https://docs.intuition.systems/docs/reference/sdk/plans-fee-proxy.md)
+- [MultiVault action envelopes](https://docs.intuition.systems/docs/reference/sdk/plans-multivault.md)
+- [TrustBonding action envelopes](https://docs.intuition.systems/docs/reference/sdk/plans-trust-bonding.md)
+- [Portfolio reads](https://docs.intuition.systems/docs/reference/sdk/portfolio.md)
+- [Create and validate action envelopes](https://docs.intuition.systems/docs/reference/sdk/schema-create-agent-action-envelope.md)
+- [Resolve action targets](https://docs.intuition.systems/docs/reference/sdk/schema-resolve-agent-action-target.md)
+- [Action envelope types](https://docs.intuition.systems/docs/reference/sdk/schema-types.md)
+- [TrustBonding actions](https://docs.intuition.systems/docs/reference/sdk/trust-bonding.md)

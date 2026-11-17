@@ -193,9 +193,14 @@ function validateCoverage({
     errors.push('cspell must be an exact devDependency');
   if (!cspell.ignorePaths?.includes(`${versioned}/**`))
     errors.push('cspell must ignore the frozen snapshot');
+  // Match complete path components. Docusaurus stores native metadata under
+  // docusaurus-plugin-content-docs/<plugin id>, outside the authored tree.
+  const authoredDirectory = new RegExp(
+    `(?:^|[^A-Za-z0-9_.-])${current.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![A-Za-z0-9_.-])`,
+  );
   for (const [name, source] of Object.entries(scripts)) {
     if (name.endsWith('.test.js')) continue;
-    if (source.includes(current))
+    if (authoredDirectory.test(source))
       errors.push(`${name} hard-codes the current docs directory`);
     if (
       /docusaurus\.config\.js/.test(source) &&
@@ -236,11 +241,23 @@ function validateCoverage({
       if (!quality.includes(command))
         errors.push(`quality must run ${command}`);
     for (const [name, command] of [
-      ['quality.yml', 'node scripts/validate-v2-structure.js --phase 2'],
+      [
+        'quality.yml',
+        'node scripts/validate-v2-structure.js --phase 3 --templates',
+      ],
       [
         'check-links.yml',
-        'node scripts/validate-built-docs.js --phase 2 --build-log build.log',
+        'node scripts/validate-built-docs.js --phase 3 --build-log build.log',
       ],
+      [
+        'validate-sdk-examples.yml',
+        'node --test examples/v2/first-write/migration.test.ts',
+      ],
+      [
+        'validate-sdk-examples.yml',
+        'node --test examples/v2/first-write/first-write.test.ts',
+      ],
+      ['generate-llms-txt.yml', 'npm run generate-llms'],
       [
         'validate-sdk-examples.yml',
         'node --experimental-strip-types examples/v2/quickstart/quickstart.ts',

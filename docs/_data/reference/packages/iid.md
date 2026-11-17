@@ -60,7 +60,12 @@ Validity and bare P0 eligibility are separate. Class C recipe-derived identifier
 
 ## Related concepts
 
-Read [Representation profiles](/docs/concepts/representation-profiles) and the [offline quickstart](/docs/get-started/quickstart).
+- [The Intuition Identifier (IID)](/docs/concepts/iid)
+- [Schemes and canonical form](/docs/concepts/iid-schemes)
+- [Representation profiles](/docs/concepts/representation-profiles)
+- [The identity ladder](/docs/concepts/identity-ladder)
+
+See also [offline quickstart](/docs/get-started/quickstart).
 
 ## Source
 

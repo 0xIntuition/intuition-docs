@@ -67,7 +67,8 @@ The canonical specification is version 0.1.0. Its §7.8 distinguishes identity d
 
 ## Related concepts
 
-Read [Representation profiles](/docs/concepts/representation-profiles) for identity payloads versus companion context, then the [concept map](/docs/concepts).
+- [The Intuition Identifier (IID)](/docs/concepts/iid)
+- [Schemes and canonical form](/docs/concepts/iid-schemes)
 
 ## Source
 

@@ -248,7 +248,10 @@ test('coverage rejects unpaired globs, floating actions and cspell scope changes
         (name) => [name, read(`.github/workflows/${name}`)],
       ),
     ),
-    scripts: {},
+    scripts: {
+      'native.js':
+        "const directory = '.docusaurus/docusaurus-plugin-content-docs/_data';",
+    },
     sdkConfig: JSON.parse(read('scripts/sdk-examples.config.json')),
   };
   assert.deepEqual(validateCoverage(input), []);
@@ -259,6 +262,7 @@ test('coverage rejects unpaired globs, floating actions and cspell scope changes
     (copy) => (copy.packageJson.devDependencies.cspell = '^10.5.1'),
     (copy) => (copy.cspell.ignorePaths = []),
     (copy) => (copy.scripts['wrong.js'] = `const p = '${current}';`),
+    (copy) => (copy.scripts['wrong.js'] = `const p = '../${current}/build';`),
   ]) {
     const copy = structuredClone(input);
     mutate(copy);
@@ -266,7 +270,7 @@ test('coverage rejects unpaired globs, floating actions and cspell scope changes
   }
 });
 
-test('Phase 2 workflow coverage requires isolated installs and all source synchronization gates', () => {
+test('Phase 3 workflow coverage requires isolated installs and all source synchronization gates', () => {
   const root = path.join(__dirname, '..');
   const read = (file) => fs.readFileSync(path.join(root, file), 'utf8');
   const input = {
@@ -296,11 +300,23 @@ test('Phase 2 workflow coverage requires isolated installs and all source synchr
     ['quality.yml', 'node scripts/sync-generated-blocks.js --check'],
     ['quality.yml', 'node scripts/sync-example-snippets.js --check'],
     ['quality.yml', 'node scripts/validate-core-api-examples.js'],
-    ['quality.yml', 'node scripts/validate-v2-structure.js --phase 2'],
+    [
+      'quality.yml',
+      'node scripts/validate-v2-structure.js --phase 3 --templates',
+    ],
     [
       'check-links.yml',
-      'node scripts/validate-built-docs.js --phase 2 --build-log build.log',
+      'node scripts/validate-built-docs.js --phase 3 --build-log build.log',
     ],
+    [
+      'validate-sdk-examples.yml',
+      'node --test examples/v2/first-write/migration.test.ts',
+    ],
+    [
+      'validate-sdk-examples.yml',
+      'node --test examples/v2/first-write/first-write.test.ts',
+    ],
+    ['generate-llms-txt.yml', 'npm run generate-llms'],
     [
       'validate-sdk-examples.yml',
       'node --experimental-strip-types examples/v2/quickstart/quickstart.ts',

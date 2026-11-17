@@ -105,7 +105,13 @@ URI limits are checked locally. Supply `uriLimits` from the intended protocol co
 
 ## Related concepts
 
-Read [Representation profiles](/docs/concepts/representation-profiles), [Build creation forms](/docs/build/creation-profiles), and the [offline quickstart](/docs/get-started/quickstart).
+- [Atoms](/docs/concepts/atoms)
+- [Triples, counter-triples and nested triples](/docs/concepts/triples)
+- [Deterministic IDs](/docs/concepts/deterministic-ids)
+- [Representation profiles](/docs/concepts/representation-profiles)
+- [sameAs and identity linking](/docs/concepts/same-as)
+
+See also [Build creation forms](/docs/build/creation-profiles), [offline quickstart](/docs/get-started/quickstart).
 
 ## Source
 

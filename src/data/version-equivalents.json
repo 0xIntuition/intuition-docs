@@ -48,6 +48,74 @@
     {
       "v1": "protocol/getting-started/overview",
       "v2": "reference/packages/protocol"
+    },
+    {
+      "v1": "getting-started/choose-your-path",
+      "v2": "get-started/choose-packages"
+    },
+    {
+      "v1": "intuition-concepts/primitives/Atoms/fundamentals",
+      "v2": "concepts/atoms"
+    },
+    {
+      "v1": "intuition-concepts/primitives/Triples/fundamentals",
+      "v2": "concepts/triples"
+    },
+    {
+      "v1": "protocol/core-concepts/vaults",
+      "v2": "concepts/vaults"
+    },
+    {
+      "v1": "intuition-concepts/economics/bonding-curves",
+      "v2": "concepts/bonding-curves"
+    },
+    {
+      "v1": "intuition-concepts/primitives/Signals/fundamentals",
+      "v2": "concepts/signals"
+    },
+    {
+      "v1": "intuition-concepts/economics/fees-and-rewards",
+      "v2": "concepts/fees-and-rewards"
+    },
+    {
+      "v1": "intuition-smart-contracts/overview",
+      "v2": "reference/contracts/index"
+    },
+    {
+      "v1": "intuition-smart-contracts/multivault",
+      "v2": "reference/contracts/multivault"
+    },
+    {
+      "v1": "intuition-smart-contracts/fee-proxy",
+      "v2": "reference/contracts/fee-proxy"
+    },
+    {
+      "v1": "intuition-smart-contracts/trust-bonding",
+      "v2": "reference/contracts/trust-bonding"
+    },
+    {
+      "v1": "intuition-smart-contracts/configuration",
+      "v2": "reference/contracts/configuration"
+    },
+    {
+      "v1": "intuition-smart-contracts/deployments",
+      "v2": "reference/contracts/deployments"
+    },
+    {
+      "v1": "protocol/events/atom-events",
+      "v2": "reference/contracts/events-and-errors"
+    },
+    {
+      "v1": "intuition-smart-contracts/audit-reports",
+      "v2": "reference/contracts/audits"
+    },
+    {
+      "v1": "intuition-network/network",
+      "v2": "reference/networks/index"
+    },
+    {
+      "v1": "quick-start/testnet-faucet",
+      "v2": "reference/networks/faucet"
     }
   ]
 }

@@ -9,9 +9,9 @@ packages: ["@0xintuition/atom-classification", "@0xintuition/atom-enrichment", "
 
 <AppliesTo />
 
-These stable packages separate vocabulary, identity, local construction, processing, and protocol operations. Each reference lists its exact install pin, public entry points, runtime dependencies, and peers. Start with [installation](/docs/build/install) or the [offline quickstart](/docs/get-started/quickstart).
+These stable packages separate vocabulary, identity, local construction, processing, and protocol operations. Each reference lists its exact install pin, public entry points, runtime dependencies, and peers. [Choose packages for your task](/docs/get-started/choose-packages), or start with [installation](/docs/build/install) or the [offline quickstart](/docs/get-started/quickstart).
 
-An atom ID identifies exact bytes; an IID names an entity; a triple explicitly relates three atom IDs. Local construction does not create on-chain terms. Indexed V2 graph reads use the [Query API of a Core node you run](/docs/build/query-core).
+An atom ID identifies exact bytes. An IID names an entity. A [triple](/docs/concepts/triples) records the subject, predicate, and object term IDs in that order. Each position can refer to an atom or an existing triple, including a counter-triple. Local construction does not create on-chain terms. Indexed V2 graph reads use the [Query API of a Core node you run](/docs/build/query-core).
 
 ## Semantic / data modeling
 
