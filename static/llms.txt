@@ -47,7 +47,20 @@ Start with the system overview and offline quickstart, then follow the guides fo
 - [Agent skills](https://docs.intuition.systems/docs/agents/skills.md): Install the intuition and erc8004-agent-layer contract-level skills for V1 and V2
 - [Write a classification plugin](https://docs.intuition.systems/docs/core/classification-plugin.md): Implement and test a classifier and wire it into a Core source fork
 
+## Operate Intuition Core
+
+- [Intuition Core](https://docs.intuition.systems/docs/core.md): Trace chain events into the node’s graph and Query API
+- [Run a node](https://docs.intuition.systems/docs/core/run-a-node.md): Build the pinned source and verify its indexing scope
+- [Enrichment providers](https://docs.intuition.systems/docs/core/enrichment-providers.md): Choose a provider and interpret partial results
+- [Write an enrichment plugin](https://docs.intuition.systems/docs/core/enrichment-plugin.md): Attach artifacts with an injected transport and test failure paths
+
 ## Look up an API or get help
+
+- [Reference](https://docs.intuition.systems/docs/reference.md): Find packages, contracts, networks and definitions
+- [Core Query API](https://docs.intuition.systems/docs/reference/core-query-api.md): Look up graph operations, access requirements and responses
+- [Atom services API](https://docs.intuition.systems/docs/reference/atom-services-api.md): Process an input without persisting its output
+- [IID schemes](https://docs.intuition.systems/docs/reference/iid-schemes.md): Look up identifier namespaces and normalization examples
+- [Predicates](https://docs.intuition.systems/docs/reference/predicates.md): Find a relationship by name and atom ID
 
 - [Packages by layer](https://docs.intuition.systems/docs/reference/packages.md): Inspect all 21 packages, their runtime graph, and public entry points
 - [SDK API reference](https://docs.intuition.systems/docs/reference/sdk.md): Read declarations generated from the pinned package source
@@ -55,6 +68,8 @@ Start with the system overview and offline quickstart, then follow the guides fo
 - [Networks](https://docs.intuition.systems/docs/reference/networks.md): Look up chain IDs, RPC endpoints, explorers and the testnet faucet
 - [Compatibility](https://docs.intuition.systems/docs/reference/compatibility.md): Check the package, peer, contract, and Core compatibility boundaries
 - [Community](https://docs.intuition.systems/docs/community.md): Get help and connect with the Intuition community
+- [Release notes](https://docs.intuition.systems/docs/community/release-notes.md): Trace a change to its package release or Core revision
+- [Contribute to the docs](https://docs.intuition.systems/docs/community/contributing.md): Update a source region, sync the example and verify the page
 
 ## Optional
 
@@ -86,6 +101,9 @@ Complete directory: every authored documentation page, one line each.
 - [Suggest relationships and pick predicates](https://docs.intuition.systems/docs/build/suggest-relationships.md)
 - [Test locally](https://docs.intuition.systems/docs/build/test-locally.md)
 - [Get help](https://docs.intuition.systems/docs/community.md)
+- [Contribute to the docs](https://docs.intuition.systems/docs/community/contributing.md)
+- [Ecosystem](https://docs.intuition.systems/docs/community/ecosystem.md)
+- [Release notes](https://docs.intuition.systems/docs/community/release-notes.md)
 - [Concept map](https://docs.intuition.systems/docs/concepts.md)
 - [Atom classification](https://docs.intuition.systems/docs/concepts/atom-classification.md)
 - [Atom parsing](https://docs.intuition.systems/docs/concepts/atom-parsing.md)
@@ -109,7 +127,18 @@ Complete directory: every authored documentation page, one line each.
 - [Signals](https://docs.intuition.systems/docs/concepts/signals.md)
 - [Triples, counter-triples and nested triples](https://docs.intuition.systems/docs/concepts/triples.md)
 - [Vaults, shares and positions](https://docs.intuition.systems/docs/concepts/vaults.md)
+- [Intuition Core](https://docs.intuition.systems/docs/core.md)
+- [Architecture](https://docs.intuition.systems/docs/core/architecture.md)
 - [Write a classification plugin](https://docs.intuition.systems/docs/core/classification-plugin.md)
+- [Configuration](https://docs.intuition.systems/docs/core/configuration.md)
+- [Write an enrichment plugin](https://docs.intuition.systems/docs/core/enrichment-plugin.md)
+- [Enrichment providers](https://docs.intuition.systems/docs/core/enrichment-providers.md)
+- [Scope what you index](https://docs.intuition.systems/docs/core/indexing-scope.md)
+- [Run a local devnet](https://docs.intuition.systems/docs/core/local-devnet.md)
+- [How Core uses the packages](https://docs.intuition.systems/docs/core/packages.md)
+- [Releases](https://docs.intuition.systems/docs/core/releases.md)
+- [Run your own node](https://docs.intuition.systems/docs/core/run-a-node.md)
+- [Troubleshooting](https://docs.intuition.systems/docs/core/troubleshooting.md)
 - [What you can build](https://docs.intuition.systems/docs/examples.md)
 - [Schema-backed atom creation form](https://docs.intuition.systems/docs/examples/atom-creation-form.md)
 - [Read the graph from Core's Query API](https://docs.intuition.systems/docs/examples/core-query-api.md)
@@ -123,6 +152,8 @@ Complete directory: every authored documentation page, one line each.
 - [Migrate from V1](https://docs.intuition.systems/docs/get-started/migrate-from-v1.md)
 - [Quickstart: an atom ID and IID offline](https://docs.intuition.systems/docs/get-started/quickstart.md)
 - [Versions and release status](https://docs.intuition.systems/docs/get-started/versions.md)
+- [Reference](https://docs.intuition.systems/docs/reference.md)
+- [Atom services API](https://docs.intuition.systems/docs/reference/atom-services-api.md)
 - [Compatibility](https://docs.intuition.systems/docs/reference/compatibility.md)
 - [Contracts](https://docs.intuition.systems/docs/reference/contracts.md)
 - [Audits](https://docs.intuition.systems/docs/reference/contracts/audits.md)
@@ -132,6 +163,9 @@ Complete directory: every authored documentation page, one line each.
 - [FeeProxy](https://docs.intuition.systems/docs/reference/contracts/fee-proxy.md)
 - [MultiVault](https://docs.intuition.systems/docs/reference/contracts/multivault.md)
 - [TrustBonding](https://docs.intuition.systems/docs/reference/contracts/trust-bonding.md)
+- [Core Query API](https://docs.intuition.systems/docs/reference/core-query-api.md)
+- [Glossary](https://docs.intuition.systems/docs/reference/glossary.md)
+- [IID scheme catalog](https://docs.intuition.systems/docs/reference/iid-schemes.md)
 - [Networks](https://docs.intuition.systems/docs/reference/networks.md)
 - [Testnet faucet](https://docs.intuition.systems/docs/reference/networks/faucet.md)
 - [Packages](https://docs.intuition.systems/docs/reference/packages.md)
@@ -156,6 +190,7 @@ Complete directory: every authored documentation page, one line each.
 - [@0xintuition/react](https://docs.intuition.systems/docs/reference/packages/react.md)
 - [@0xintuition/schema-org](https://docs.intuition.systems/docs/reference/packages/schema-org.md)
 - [@0xintuition/sdk](https://docs.intuition.systems/docs/reference/packages/sdk.md)
+- [Predicate catalog](https://docs.intuition.systems/docs/reference/predicates.md)
 - [SDK function reference](https://docs.intuition.systems/docs/reference/sdk.md)
 - [API client](https://docs.intuition.systems/docs/reference/sdk/api.md)
 - [Dynamic-fee curve actions](https://docs.intuition.systems/docs/reference/sdk/dynamic-fee-curve.md)

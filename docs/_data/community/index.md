@@ -16,6 +16,8 @@ Use these channels to get support, connect with the Intuition community, and sha
 | [Discord](https://discord.com/invite/0xintuition) | Community discussions, support, and real-time collaboration. |
 | [General support](mailto:support@intuition.systems) | Questions about Intuition and general assistance. |
 
+Find the right project in the [ecosystem directory](/docs/community/ecosystem).
+
 ## Follow project updates
 
 | Channel | What you'll find |
@@ -25,7 +27,11 @@ Use these channels to get support, connect with the Intuition community, and sha
 | [Medium](https://medium.com/0xintuition) | Articles, insights, and technical explanations. |
 | [Intuition website](https://www.intuition.systems) | Project information, updates, and resources. |
 
+Check [release notes](/docs/community/release-notes) to match a package change to its published version.
+
 ## Contribute and share feedback
+
+[Contribute to the docs](/docs/community/contributing) to report a reproducible issue or propose an edit.
 
 | Channel | What it's for |
 | --- | --- |

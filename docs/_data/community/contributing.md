@@ -36,9 +36,9 @@ Set `title`, `sidebar_label`, a description of up to 160 characters, `kind`, `re
 
 ### 3. Update the source and its navigation
 
-Edit the Markdown source. When adding a page, add its document ID to the appropriate category in `sidebars.js` and link the page from its section landing. The ID for the ecosystem example is `community/ecosystem`. A correction on an existing route can keep its current navigation.
+Edit the Markdown source. The launch inventory in `scripts/v2-launch-routes.txt` defines the 134 routes and their sidebar order. For a planned page, put its document ID in that position in `sidebars.js` and link it from the section landing. If you propose a route outside the inventory, discuss the scope change with maintainers so the inventory, expected counts and navigation can be updated together. The ID for the ecosystem example is `community/ecosystem`. A correction on an existing route can keep its current navigation.
 
-For a runnable TypeScript snippet, edit its named region in the strict project under `examples/v2/`. For example, the Create atoms guide uses the `create` region in `examples/v2/first-write/src/create-atoms-guide.ts`. After changing that region, copy its contents into the guide’s marked fence and check the match with these commands. [Create atoms](/docs/build/create-atoms)
+For a runnable TypeScript snippet, edit its named region in the strict project under `examples/v2/`. For example, the Create atoms guide uses the `create` region in `examples/v2/first-write/src/create-atoms-guide.ts`. Run the first command to copy the source region into the guide’s marked fence. The second command checks that the two match. [Create atoms](/docs/build/create-atoms)
 
 ```bash
 node scripts/sync-example-snippets.js --write --file docs/_data/build/create-atoms.md

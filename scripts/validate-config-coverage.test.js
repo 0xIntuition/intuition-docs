@@ -270,7 +270,7 @@ test('coverage rejects unpaired globs, floating actions and cspell scope changes
   }
 });
 
-test('Phase 4 workflow coverage requires isolated installs and all source synchronization gates', () => {
+test('Launch workflow coverage requires isolated installs and all source synchronization gates', () => {
   const root = path.join(__dirname, '..');
   const read = (file) => fs.readFileSync(path.join(root, file), 'utf8');
   const input = {
@@ -302,11 +302,11 @@ test('Phase 4 workflow coverage requires isolated installs and all source synchr
     ['quality.yml', 'node scripts/validate-core-api-examples.js'],
     [
       'quality.yml',
-      'node scripts/validate-v2-structure.js --phase 4 --templates',
+      'node scripts/validate-v2-structure.js --launch --templates',
     ],
     [
       'check-links.yml',
-      'node scripts/validate-built-docs.js --phase 4 --build-log build.log',
+      'node scripts/validate-built-docs.js --phase 5 --build-log build.log',
     ],
     [
       'validate-sdk-examples.yml',
@@ -323,6 +323,10 @@ test('Phase 4 workflow coverage requires isolated installs and all source synchr
     [
       'validate-sdk-examples.yml',
       'node --test examples/v2/react-app/src/receipt.test.ts',
+    ],
+    [
+      'validate-sdk-examples.yml',
+      'node examples/v2/music-catalog/src/enrichment-plugin.ts',
     ],
     ['generate-llms-txt.yml', 'npm run generate-llms'],
     [

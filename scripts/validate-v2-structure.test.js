@@ -6,6 +6,7 @@ const { versions } = require('../docs-versions.config');
 const { docMetadata } = require('./lib/docs-tree');
 const {
   loadLaunchRoutes,
+  validateLaunchMigration,
   validateDocs,
   validateSidebar,
   validateMismatches,
@@ -645,10 +646,54 @@ test('tutorial check compares the declared count, position, limits and consecuti
 test('migration topics require the right H2 parents as well as the literal topics', () => {
   const migration = checkedSource('get-started/migrate-from-v1');
   assert.equal(template(migration.id, 'how-to', migration.body), '');
+  assert.match(
+    template(
+      migration.id,
+      'how-to',
+      migration.body.replace(
+        '### Where did my page go',
+        '## Where did my page go',
+      ),
+    ),
+    /expected H2 headings/,
+  );
   const swapped = migration.body
     .replace('### What changed', '')
     .replace('## Steps', '## Steps\n\n### What changed');
   assert.match(template(migration.id, 'how-to', swapped), /migration topics/);
+});
+
+test('launch rejects a missing, misplaced or relabeled generated migration row', () => {
+  const { readDocs } = require('./lib/docs-tree');
+  const root = require('node:path').resolve(__dirname, '..');
+  const current = readDocs(root, versions.current);
+  const legacy = readDocs(root, versions.v1);
+  const { pairs } = require('../src/data/version-equivalents.json');
+  const guide = current.find(
+    (page) => page.id === 'get-started/migrate-from-v1',
+  );
+  const row = guide.body
+    .split('\n')
+    .find((line) => line.includes('](/docs/v1/resources/glossary)'));
+  assert.ok(row);
+  assert.deepEqual(validateLaunchMigration(current, legacy, pairs), []);
+  for (const [before, after] of [
+    [row, ''],
+    [row, row.replace('Glossary', 'Old terms')],
+    ['### Where did my page go', '### Missing'],
+    ['{/* generated:start version-equivalents */}', ''],
+  ]) {
+    const pages = current.map((page) =>
+      page === guide
+        ? {
+            ...guide,
+            body: guide.body.replace(before, after),
+            content: guide.content.replace(before, after),
+          }
+        : page,
+    );
+    assert.ok(validateLaunchMigration(pages, legacy, pairs).length);
+  }
 });
 
 const conceptDocs = ladder.concepts.map((row) =>

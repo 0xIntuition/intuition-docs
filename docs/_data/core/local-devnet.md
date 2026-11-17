@@ -37,6 +37,8 @@ Once the output matches the pinned commit and branch `local-devnet`, run `script
 
 ### 2. Start the chain and deploy
 
+Run the default devnet on an isolated development machine. Anvil uses a built-in development account and listens on all interfaces inside its container. Compose also publishes its RPC port on all host interfaces. Before startup on a shared or reachable host, bind published ports to loopback in your fork, including Anvil (`127.0.0.1:8545:8545`), the databases and Redis. Keep Anvil’s internal listener reachable from the deployer and indexer containers. [Anvil service](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/docker-compose.yml#L187-L192) · [Datastore ports and development credentials](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/docker-compose.datastores.yml)
+
 ```sh
 docker compose -f docker-compose.yml --profile devnet up -d --build anvil devnet-deploy
 ```

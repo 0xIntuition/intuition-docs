@@ -28,35 +28,19 @@ npm run clear        # Clear Docusaurus cache (useful for build issues)
 
 ## Architecture
 
-### Documentation Structure
+### Versioned documentation
 
-- **`docs/_data/`** - Main documentation content (MDX files), organized by topic:
-  - `getting-started/`, `quick-start/` - Onboarding guides
-  - `intuition-concepts/` - Core primitives (Atoms, Triples, Signals)
-  - `intuition-sdk/`, `graphql-api/`, `protocol/` - Developer tools
-  - `intuition-smart-contracts/`, `interaction-guide/` - Contract docs
-  - `intuition-network/`, `intuition-node/` - Infrastructure
-  - `tutorials/` - Step-by-step guides
-- **`docs/guides/`** - Additional guide content
-- **`sidebars.js`** - Uses auto-generated sidebars from directory structure
+- Read `docs-versions.config.js` for native version names, route bases, source directories and bundle locations. Docusaurus serves the current tree (`docs/_data/`) at `/docs` and the frozen snapshot (`_data_versioned_docs/version-v1/`) at `/docs/v1`.
+- Edit V2 pages at their file-derived routes. `sidebars.js` explicitly orders the document IDs. Its launch inventory is `scripts/v2-launch-routes.txt`. The V1 sidebar is frozen in `_data_versioned_sidebars/version-v1-sidebars.json`. Native V1/V2 page pairs live in `src/data/version-equivalents.json`.
+- Use `static/intuition-release.json` for exact package versions and source commits. Readers fork Core and build from its pinned commit. Check a source claim in the corresponding repository at that revision.
+- See `docs/_data/community/contributing.md` for page templates and source updates. Runnable V2 snippets come from strict projects in `examples/v2/` via `scripts/sync-example-snippets.js`. Regenerate data blocks with `scripts/sync-generated-blocks.js`. Install example dependencies with `npm ci --ignore-scripts --prefix examples/v2`.
+- Run `node scripts/validate-v2-structure.js --launch --templates` to check the complete launch tree. After a production build, `node scripts/validate-built-docs.js --phase 5` checks native routes, version navigation and Markdown exports.
 
-### Source Code Structure
+### Site and text exports
 
-- **`src/components/`** - React components (interactive demos, GraphQL playground, FAQ)
-- **`src/pages/`** - Custom Docusaurus pages
-- **`src/theme/`** - Docusaurus theme overrides (MDXComponents, SearchBar, Footer)
-- **`src/css/`** - Global styles including Tailwind (`custom.css`)
-- **`src/snippets/`** - Reusable HTML snippets for navbar dropdowns
-
-### Configuration
-
-- **`docusaurus.config.js`** - Main config including:
-  - Client redirects for URL migrations
-  - Algolia search integration
-  - Google Tag Manager
-  - Mermaid diagram support
-  - Live code blocks
-- **`plugins/`** - Custom webpack and Tailwind plugins for Node.js polyfills
+- `docusaurus.config.js` configures the versioned docs plugin, search and redirects. `src/components/`, `src/theme/` and `src/pages/` hold site components and overrides. Shared styles live in `src/css/`.
+- `plugins/markdown-export-plugin.cjs` uses native metadata to emit a Markdown file for each content page. The two version roots export to `/docs.md` and `/docs/v1.md`.
+- Edit the current curated index in `scripts/llms-index-source.v2.md`. The frozen V1 index source is `scripts/llms-index-source.v1.md`. Run `npm run generate-llms` on committed sources to reproduce the three V2 bundles in `static/` and the three frozen V1 bundles in `static/docs/v1/`. See the README’s “For AI Agents” section for their public URLs.
 
 ## Key Patterns
 

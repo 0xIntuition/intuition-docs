@@ -41,7 +41,20 @@ Start with the system overview and offline quickstart, then follow the guides fo
 - [Agent skills](https://docs.intuition.systems/docs/agents/skills): Install the intuition and erc8004-agent-layer contract-level skills for V1 and V2
 - [Write a classification plugin](https://docs.intuition.systems/docs/core/classification-plugin): Implement and test a classifier and wire it into a Core source fork
 
+## Operate Intuition Core
+
+- [Intuition Core](https://docs.intuition.systems/docs/core): Trace chain events into the node’s graph and Query API
+- [Run a node](https://docs.intuition.systems/docs/core/run-a-node): Build the pinned source and verify its indexing scope
+- [Enrichment providers](https://docs.intuition.systems/docs/core/enrichment-providers): Choose a provider and interpret partial results
+- [Write an enrichment plugin](https://docs.intuition.systems/docs/core/enrichment-plugin): Attach artifacts with an injected transport and test failure paths
+
 ## Look up an API or get help
+
+- [Reference](https://docs.intuition.systems/docs/reference): Find packages, contracts, networks and definitions
+- [Core Query API](https://docs.intuition.systems/docs/reference/core-query-api): Look up graph operations, access requirements and responses
+- [Atom services API](https://docs.intuition.systems/docs/reference/atom-services-api): Process an input without persisting its output
+- [IID schemes](https://docs.intuition.systems/docs/reference/iid-schemes): Look up identifier namespaces and normalization examples
+- [Predicates](https://docs.intuition.systems/docs/reference/predicates): Find a relationship by name and atom ID
 
 - [Packages by layer](https://docs.intuition.systems/docs/reference/packages): Inspect all 21 packages, their runtime graph, and public entry points
 - [SDK API reference](https://docs.intuition.systems/docs/reference/sdk): Read declarations generated from the pinned package source
@@ -49,5 +62,7 @@ Start with the system overview and offline quickstart, then follow the guides fo
 - [Networks](https://docs.intuition.systems/docs/reference/networks): Look up chain IDs, RPC endpoints, explorers and the testnet faucet
 - [Compatibility](https://docs.intuition.systems/docs/reference/compatibility): Check the package, peer, contract, and Core compatibility boundaries
 - [Community](https://docs.intuition.systems/docs/community): Get help and connect with the Intuition community
+- [Release notes](https://docs.intuition.systems/docs/community/release-notes): Trace a change to its package release or Core revision
+- [Contribute to the docs](https://docs.intuition.systems/docs/community/contributing): Update a source region, sync the example and verify the page
 
 ## Optional

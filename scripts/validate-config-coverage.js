@@ -251,11 +251,11 @@ function validateCoverage({
     for (const [name, command] of [
       [
         'quality.yml',
-        'node scripts/validate-v2-structure.js --phase 4 --templates',
+        'node scripts/validate-v2-structure.js --launch --templates',
       ],
       [
         'check-links.yml',
-        'node scripts/validate-built-docs.js --phase 4 --build-log build.log',
+        'node scripts/validate-built-docs.js --phase 5 --build-log build.log',
       ],
       [
         'validate-sdk-examples.yml',
@@ -272,6 +272,10 @@ function validateCoverage({
       [
         'validate-sdk-examples.yml',
         'node --test examples/v2/react-app/src/receipt.test.ts',
+      ],
+      [
+        'validate-sdk-examples.yml',
+        'node examples/v2/music-catalog/src/enrichment-plugin.ts',
       ],
       ['generate-llms-txt.yml', 'npm run generate-llms'],
       [

@@ -93,7 +93,7 @@ test('footer recognizes native trailing-slash landings and preserves fallback pr
   assert.deepEqual(getDeveloperLinks(routes.slice(0, 3)), initialLinks);
 });
 
-test('noscript links the five shipped section landings and required version/agent files', () => {
+test('noscript links the eight launch section landings and required version/agent files', () => {
   const source = fs.readFileSync(
     path.join(ROOT, 'src/pages/index.jsx'),
     'utf8',
@@ -103,10 +103,13 @@ test('noscript links the five shipped section landings and required version/agen
   assert.deepEqual(
     [...noscript.matchAll(/href="([^"]+)"/g)].map((match) => match[1]),
     [
+      '/docs/get-started/how-it-fits',
       '/docs/agents',
       '/docs/concepts',
       '/docs/build',
       '/docs/examples',
+      '/docs/reference',
+      '/docs/core',
       '/docs/community',
       '/docs/v1',
       '/llms.txt',

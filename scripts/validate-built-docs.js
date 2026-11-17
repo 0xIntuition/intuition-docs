@@ -354,6 +354,28 @@ function assertExportedCards(markdown, source, baseUrl) {
       ];
 }
 
+function assertExportedTableRows(markdown, source, blockName, baseUrl) {
+  const start = '{/* generated:start ' + blockName + ' */}';
+  const blocks = (source?.body || '').split(start);
+  const end = '{/* generated:end */}';
+  if (blocks.length !== 2 || !blocks[1].includes(end))
+    return ['missing generated ' + blockName + ' table in source'];
+  const rows = blocks[1]
+    .split(end)[0]
+    .split('\n')
+    .filter((line) => line.startsWith('|'))
+    .map((line) => line.replaceAll('](/', '](' + baseUrl + '/'));
+  // Earlier stages validate the source data. Require every exported table row
+  // in sequence, including its labels, values and absolute link targets.
+  const exported = markdown.split('\n').filter((line) => line.startsWith('|'));
+  if (
+    !rows.length ||
+    !('\n' + exported.join('\n') + '\n').includes('\n' + rows.join('\n') + '\n')
+  )
+    return ['export must preserve generated ' + blockName + ' table rows'];
+  return [];
+}
+
 function assertMarkdown(
   markdown,
   { native, doc, version, manifest, source, phase },
@@ -398,6 +420,17 @@ function assertMarkdown(
       errors.push('incorrect Markdown front matter');
   } catch (error) {
     errors.push(`invalid Markdown front matter: ${error.message}`);
+  }
+  if (version.isDefault && phase >= 5) {
+    const block = {
+      'reference/iid-schemes': 'iid-schemes',
+      'reference/predicates': 'predicates',
+      'get-started/migrate-from-v1': 'version-equivalents',
+    }[doc.id];
+    if (block)
+      errors.push(
+        ...assertExportedTableRows(markdown, source, block, BASE_URL),
+      );
   }
   if (version.isDefault && phase >= 4 && doc.id === 'examples/index') {
     errors.push(...assertExportedCards(markdown, source, BASE_URL));
@@ -879,7 +912,11 @@ function run({ root = ROOT, phase, buildLog } = {}) {
     ),
   );
   const landings = source
-    .filter((doc) => /^[^/]+\/index\.mdx?$/.test(doc.relativePath))
+    .filter(
+      (doc) =>
+        /^[^/]+\/index\.mdx?$/.test(doc.relativePath) ||
+        (phase >= 5 && doc.id === 'get-started/how-it-fits'),
+    )
     .map((doc) => doc.route);
   errors.push(
     ...validateNoscript(
@@ -929,6 +966,7 @@ if (require.main === module) {
   }
 }
 module.exports = {
+  assertExportedTableRows,
   BANNER_TEXT,
   parseHtml,
   nodes,

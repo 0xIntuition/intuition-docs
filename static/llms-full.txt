@@ -2131,6 +2131,93 @@ atom_id=$(printf '%s\n' "$page" | jq -er '.data[0].id | strings | select(test("^
 
 [Query a Core node](https://docs.intuition.systems/docs/build/query-core) covers host ports, read policies and graph operations. The pinned [local devnet guide](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/docs/local-devnet.md) describes Anvil state persistence.
 
+# Contribute to the docs
+
+Source: https://docs.intuition.systems/docs/community/contributing
+
+Propose a documentation change that a reviewer can reproduce and verify against the same source you used.
+
+## Before you start
+
+Check existing issues and pull requests for the problem. Fork the documentation repository and create a feature branch from its current `main`. From your checkout’s root, install the site and example dependencies with Node.js 22.21.0 and npm. [Documentation repository](https://github.com/0xIntuition/intuition-docs)
+
+```bash
+npm ci
+npm ci --ignore-scripts --prefix examples/v2
+```
+
+## Steps
+
+### 1. Identify the page and the evidence
+
+Record the page URL, what you tried and what you expected to happen. For example, if a snippet differs from its linked TypeScript example, name the page, source file and command that reports the difference. For a package or Core behavior change, cite the file at the full commit that the docs cover. [Versions and release status](https://docs.intuition.systems/docs/get-started/versions)
+
+New behavior belongs in V2. Its source is under `docs/_data/` and its public routes start at `/docs`. For example, `docs/_data/community/ecosystem.md` supplies `/docs/community/ecosystem`. The archive at `_data_versioned_docs/version-v1/` supplies `/docs/v1` and is frozen. If you find an archive error, report it with the V1 URL so maintainers can determine whether an approved exception applies.
+
+### 2. Use the page template
+
+Choose a kind that fits the reader’s task. For a how-to, state the goal in one sentence, then use the headings **Before you start**, **Steps**, **Check the result** and **Related**, in that order. An optional **Troubleshooting** section follows **Check the result**. Give each step an action and describe something the reader can observe when it succeeds.
+
+For a tutorial, show the estimated time and step count, then explain what the reader will build and how to run it. For a concept, follow a neighboring concept page’s structure and link its prerequisites. For a reference, organize the facts around what a reader needs to look up. Use a page of the same kind and section as your starting point.
+
+Set `title`, `sidebar_label`, a description of up to 160 characters, `kind`, `reader` and `packages` in front matter. Write lists as single-line JSON arrays. For example, `reader: ["app"]` addresses application developers. Use `packages: []` when no specific package applies. Otherwise list the relevant manifest package names and place `` immediately after the front matter. Pages under `concepts/` also declare `depends_on`. The file path determines the route, and the title supplies the page heading.
+
+### 3. Update the source and its navigation
+
+Edit the Markdown source. The launch inventory in `scripts/v2-launch-routes.txt` defines the 134 routes and their sidebar order. For a planned page, put its document ID in that position in `sidebars.js` and link it from the section landing. If you propose a route outside the inventory, discuss the scope change with maintainers so the inventory, expected counts and navigation can be updated together. The ID for the ecosystem example is `community/ecosystem`. A correction on an existing route can keep its current navigation.
+
+For a runnable TypeScript snippet, edit its named region in the strict project under `examples/v2/`. For example, the Create atoms guide uses the `create` region in `examples/v2/first-write/src/create-atoms-guide.ts`. Run the first command to copy the source region into the guide’s marked fence. The second command checks that the two match. [Create atoms](https://docs.intuition.systems/docs/build/create-atoms)
+
+```bash
+node scripts/sync-example-snippets.js --write --file docs/_data/build/create-atoms.md
+node scripts/sync-example-snippets.js --check --file docs/_data/build/create-atoms.md
+```
+
+### 4. Verify the change and submit it for review
+
+Run the template, link and release checks from the repository root. If your change includes a runnable example, also run `npm run validate-sdk-examples -- --version v2`. Build the site from the edited source and run the type check.
+
+```bash
+npm run validate-v2-structure -- --templates
+npm run validate-links
+npm run check-release-pins
+npm run build
+npm run typecheck
+```
+
+Review your diff, commit the change with a descriptive `docs:` message, and push the branch to your fork. Open a pull request against `main`. Include the affected route, the original symptom, the expected result, your source evidence, and the commands you ran. That gives reviewers a way to repeat the check and discuss corrections.
+
+## Check the result
+
+The validators should exit successfully and the build should emit the edited page under `build/docs/`. For a snippet correction, the scoped sync check should report the verified region and the V2 example check should pass. A drift error gives the page and region to compare. Correct the source region, sync it again and rerun the failed check.
+
+## Related
+
+- [Ecosystem](https://docs.intuition.systems/docs/community/ecosystem) illustrates a reference page with a file-derived route.
+- [Core releases](https://docs.intuition.systems/docs/core/releases) shows how to identify the Core source behind a change.
+
+# Ecosystem
+
+Source: https://docs.intuition.systems/docs/community/ecosystem
+
+## Explore identities and claims
+
+The Portal is a reader-facing explorer for the Intuition graph. The V1 guide shows how someone can create an identity as an atom, link identities in a claim, and use tags to organize them into lists. [Portal guide (V1)](https://docs.intuition.systems/docs/v1/portal)
+
+If you operate your own Core node, its built-in Explorer shows the health of your services and the progress of your workers. An application can read indexed graph data through that node’s Query API. [Run a node](https://docs.intuition.systems/docs/core/run-a-node) · [Query a Core node](https://docs.intuition.systems/docs/build/query-core)
+
+## Connect an agent to a trust provider
+
+ERC-8004 defines a contract-level agent layer with registries for identity, reputation and validation. The V1 partner guide shows how a provider links an Intuition atom to an agent’s registered identity and publishes an assessment. Stable graph links identify the agent and provider, while a provider-owned document holds the score and evidence that may change. [ERC-8004 agent layer (V1)](https://docs.intuition.systems/docs/v1/erc-8004-agent-layer)
+
+## Experimental applications
+
+These archived guides describe three ways people used the graph from other interfaces. Each is optional for V2 development.
+
+- **Data Populator (deprecated).** Import a CSV of atom data, review the entries together, and batch their submission. [Data Populator (V1)](https://docs.intuition.systems/docs/v1/experimental-applications/data-populator)
+- **Farcaster Frames.** A frame embedded in a Farcaster post lets readers create identities and make claims within the post. [Farcaster Frames (V1)](https://docs.intuition.systems/docs/v1/experimental-applications/farcaster-frames)
+- **MetaMask Snap.** The wallet integration exposes atoms, triples and staking actions through MetaMask. [MetaMask Snap (V1)](https://docs.intuition.systems/docs/v1/experimental-applications/metamask-snap)
+
 # Get help
 
 Source: https://docs.intuition.systems/docs/community
@@ -2144,6 +2231,8 @@ Use these channels to get support, connect with the Intuition community, and sha
 | [Discord](https://discord.com/invite/0xintuition) | Community discussions, support, and real-time collaboration. |
 | [General support](mailto:support@intuition.systems) | Questions about Intuition and general assistance. |
 
+Find the right project in the [ecosystem directory](https://docs.intuition.systems/docs/community/ecosystem).
+
 ## Follow project updates
 
 | Channel | What you'll find |
@@ -2153,12 +2242,34 @@ Use these channels to get support, connect with the Intuition community, and sha
 | [Medium](https://medium.com/0xintuition) | Articles, insights, and technical explanations. |
 | [Intuition website](https://www.intuition.systems) | Project information, updates, and resources. |
 
+Check [release notes](https://docs.intuition.systems/docs/community/release-notes) to match a package change to its published version.
+
 ## Contribute and share feedback
+
+[Contribute to the docs](https://docs.intuition.systems/docs/community/contributing) to report a reproducible issue or propose an edit.
 
 | Channel | What it's for |
 | --- | --- |
 | [GitHub](https://github.com/0xintuition) | Contribute to open-source projects, report issues, and suggest improvements. |
 | [Feedback](mailto:feedback@intuition.systems) | Share suggestions and ideas for improving Intuition. |
+
+# Release notes
+
+Source: https://docs.intuition.systems/docs/community/release-notes
+
+## Find a library release
+
+V2 names a documentation generation. Each of the 21 libraries it covers has its own npm version. To check which version a guide uses, look up the package by name in the version table. The pinned release plan lists these libraries in dependency order. [Versions and release status](https://docs.intuition.systems/docs/get-started/versions) · [Package release plan](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/release-plan.json)
+
+For the record behind a pin, find the package in the release manifest. Its `version` and `source` identify the documented code. Under `registry`, `npm` links to that specific published version, `gitHead` identifies its source commit and `publishedAt` dates the npm publication. The 21 package records are dated November 12, 2026. Documentation changes have their own publication timeline. [Release manifest](https://docs.intuition.systems/intuition-release.json)
+
+## Trace a change in Core
+
+Core users fork the repository and build its services from source. Compare your checkout with the commit listed in the Core releases guide. The changelog at that commit separates unreleased changes from the earlier release candidate. A dated entry describes what shipped at that time. [Core releases](https://docs.intuition.systems/docs/core/releases) · [Pinned Core changelog](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/CHANGELOG.md)
+
+## Project release notes
+
+The standalone project release-notes page currently contains an introduction. For a specific library version or Core change, use the package record or Core history above. [Project release notes](https://docs.intuition.systems/release-notes)
 
 # Atom classification
 
@@ -3316,6 +3427,43 @@ On curve A, 10 shares represent `10 × 120 / 100 = 12` asset units before fees. 
 - [Bonding curves](https://docs.intuition.systems/docs/concepts/bonding-curves) explains conversion and rounding. [Signals](https://docs.intuition.systems/docs/concepts/signals) explains what the position says about a claim.
 - [Fees, epochs and rewards](https://docs.intuition.systems/docs/concepts/fees-and-rewards) follows the economic flows. [Protocol writes](https://docs.intuition.systems/docs/concepts/protocol-writes) traces the steps from a quote to a receipt.
 
+# Architecture
+
+Source: https://docs.intuition.systems/docs/core/architecture
+
+A successful receipt containing MultiVault’s `AtomCreated` log records the creation of an atom on that chain. To read that atom from your own Core node, the node must first index the event and project it into its knowledge graph. You can also create an atom directly in that local graph.
+
+## How it works
+
+### Follow one atom from the chain
+
+Suppose MultiVault emits `AtomCreated` for the UTF-8 bytes of `hello`. Those bytes are also written as `0x68656c6c6f`. Both representations produce the atom ID `0xa0e157e5fa1b17d3b54ec73622ce3317296920a06502661617613d59f58e947e`. A triple has its own ID derived from three term IDs in subject, predicate, object order. This lets a reader start with the same data and find the same term across stores. [ID derivation](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/packages/database-kg/src/actions/ids.ts) · [Known-answer tests](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/packages/database-kg/src/actions/ids.test.ts)
+
+1. **Ingest the log.** With the indexing profile enabled for that chain and MultiVault, the Rust indexer decodes the log. It writes the event to TimescaleDB’s `event_store` and its typed `atom_created_events` table in one transaction. The two rows share a sequence number. The transaction hash and log index let you trace the specific emission. [Ingestion storage](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/crates/rindexer-ingestion/src/storage.rs) · [Event store migration](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/migrations/timescale/001_create_event_store.sql)
+2. **Project it into the graph.** The `core_entities` projection reads from its saved checkpoint. It writes the term to TimescaleDB, then writes the atom to `kg.nodes` in a separate Postgres database. An indexed triple goes into `kg.triples`. Other projections maintain market read models such as vaults and positions in TimescaleDB, with their own checkpoints. Each checkpoint records progress for a projection and its destination, so a restart can replay a batch. [Projection writes](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/crates/projections/src/projection/dual/core_entities.rs) · [Checkpoint handling](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/crates/projections/src/worker/core_entities.rs)
+3. **Process and read the node.** A newly indexed public atom starts with pending worker stages. Parsing interprets its input, classification assigns a type, and enrichment can attach provider artifacts. The Query API serves the public graph from Postgres. You can use `GET /api/atoms/{id}` while enrichment is still pending. For triples, Postgres keeps six indexes, one for every ordering of subject, predicate and object. A predicate-first lookup can use its own index even though the triple ID always uses subject first. The adjacency table also indexes relationships by source and neighbor. [Data model](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/docs/data-model.md) · [Graph schema and indexes](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/packages/database-kg/drizzle/0000_kg_core_init.sql)
+
+### Start with the local graph
+
+Send `{"input":"hello"}` to `POST /api/atoms` with write access. A new local atom returns HTTP 201 and the same ID as above. Sending the same input again returns HTTP 200 with `created: false`. This path writes to the KG and queues the same processing stages without submitting a chain transaction. If an on-chain creation arrives later, the projection skips the existing node on ID conflict. Its `isOnchain` field can remain false even after the event was indexed. Use the receipt and corresponding event-store row to trace the chain creation. [Creation handler](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/services/api/src/app.ts) · [Node persistence](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/packages/database-kg/src/actions/nodes.ts) · [Projection conflict handling](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/crates/projections/src/projection/dual/core_entities.rs)
+
+### Locate a delay
+
+The default stack serves the local graph. Chain ingestion and projections require the `indexing` profile, and Explorer runs separately as an API client. Run one ingester for the configured scope. Compose supplies `REDIS_URL`. The shared Rust configuration defines `REDIS_LEADER_KEY` and `REDIS_LEADER_TTL_SEC`. Stock Compose does not forward these two settings, and the ingester starts without acquiring a Redis leader lock. [Redis configuration](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/crates/shared/src/config.rs) [Compose profiles](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/docker-compose.yml) · [Ingestion entrypoint](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/crates/rindexer-ingestion/src/main.rs) · [Indexer startup](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/crates/rindexer-ingestion/src/handlers.rs)
+
+| What you can see | What to check next |
+| --- | --- |
+| A successful receipt, but no matching event | Check that the indexer follows the receipt’s chain and MultiVault address, and that its block range includes the receipt block. Compare the block hash with the canonical chain if a reorganization is possible. |
+| A matching event, but no public atom | Compare the event sequence with the core entities projection’s checkpoint. Read the KG on the same node by term ID. Market projection progress is independent. |
+| A public atom with incomplete processing | Inspect the stage, attempts and lease expiry. An expired lease allows another worker to claim unfinished work while attempts remain. After the cap, an expired claim can become a terminal failure. Use the recorded stage error to diagnose it. |
+
+[Architecture overview](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/docs/architecture.md) · [Checkpoint schema](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/migrations/timescale/003_create_projection_checkpoints.sql) · [Worker lease recovery](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/services/workers/src/kg/atom-parsing/index.ts)
+
+## Related
+
+- [Query a Core node](https://docs.intuition.systems/docs/build/query-core) to read the atom, its relationships and artifacts through your own Query API.
+- [How Core uses the packages](https://docs.intuition.systems/docs/core/packages) identifies the libraries behind identity and processing.
+
 # Write a classification plugin
 
 Source: https://docs.intuition.systems/docs/core/classification-plugin
@@ -3443,6 +3591,769 @@ The offline helper validates the manifest and prints a publishable `DefinedTerm`
 [Classify and enrich atoms](https://docs.intuition.systems/docs/build/classify-enrich) and [atom classification](https://docs.intuition.systems/docs/reference/packages/atom-classification).
 
 Sources: [plugin authoring contract](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/atom-classification/docs/plugin-authoring.md), [external plugin example](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/examples/atom-classification-plugin/src/index.ts), [runtime override contract](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/atom-runtime/src/consumers.ts), and [Core classification guide](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/docs/writing-a-classification-plugin.md).
+
+# Configuration
+
+Source: https://docs.intuition.systems/docs/core/configuration
+
+This reference covers the settings listed in the [configuration reference for this Core revision](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/docs/configuration.md). Each table identifies where a value takes effect. A native process reads its environment. Compose uses the repository’s `.env` for substitution only where a service explicitly references that variable. For a process setting absent from the stock service mapping, add it to that service’s environment in your fork and recreate the service. Keep credentials out of source control. [Compose service definitions](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/docker-compose.yml) · [Example environment](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/example.env)
+
+## Datastores
+
+| Setting | Consumer and default |
+| --- | --- |
+| `DATABASE_KG_URL` | The Query API, KG migration and workers need the KG connection. Projections use it to write graph entities and context evidence. Optional for the standalone projections binary. Compose supplies the container DSN to all four. |
+| `DATABASE_TIMESCALE_URL` | Host-side Timescale client, tests and migration helper. The example environment points to host port 5433. Tests requiring the database can skip when unset. |
+| `DATABASE_URL` | Required event-store DSN for ingestion, projections and the Timescale migration job. Compose sets the container DSN. |
+| `REDIS_URL` | The local example uses `redis://localhost:6379`; Compose supplies `redis://redis:6379` to the indexer. |
+| `REDIS_LEADER_KEY`, `REDIS_LEADER_TTL_SEC` | Shared Rust configuration defaults to `ingestion_leader_lock` and 15 seconds. Stock Compose does not forward either. The current Rust ingester acquires no Redis leader lock. Run one ingester per store and scope. |
+
+Use the actual service credentials in place of `USER` and `PASSWORD`. The host maps Timescale to a different port so both servers can run:
+
+| Connection | Host process | Process on Compose network |
+| --- | --- | --- |
+| KG | `postgresql://USER:PASSWORD@localhost:5432/intuition_kg` | `postgresql://USER:PASSWORD@postgres-kg:5432/intuition_kg` |
+| Event store | `postgresql://USER:PASSWORD@localhost:5433/intuition_timescale` | `postgresql://USER:PASSWORD@timescale:5432/intuition_timescale` |
+
+[Datastore port mappings](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/docker-compose.datastores.yml) · [Shared configuration parser](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/crates/shared/src/config.rs) · [Ingestion startup](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/crates/rindexer-ingestion/src/main.rs) · [Timescale migration helper](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/scripts/timescale-migrate.sh)
+
+## Ingestion
+
+Stock Compose forwards the four deployment settings and optional last block to the indexing profile. The four required settings in the example environment start empty.
+
+| Setting | Consumer and default |
+| --- | --- |
+| `INTUITION_RPC_URL` | Required chain RPC, reachable from the indexer. |
+| `CHAIN_ID` | Required numeric chain ID. Both the manifest and the running generated network client need it. |
+| `MULTIVAULT_CONTRACT_ADDRESS` | Required address of the MultiVault proxy to index. |
+| `MULTIVAULT_START_BLOCK` | Required inclusive start block. Use the deployment block for full history. |
+| `MULTIVAULT_END_BLOCK` | Optional inclusive last block. Empty follows the head. |
+| `RINDEXER_MANIFEST_PATH` | Native binary defaults to `./rindexer.yaml`. The image sets `/rindexer/rindexer.yaml`; its entrypoint renders the template before launch. |
+| `METRICS_PORT` | Indexer metrics and health listener defaults to 9091. Compose fixes and publishes 9091. |
+| `RINDEXER_HEALTH_PORT` | The entrypoint substitutes this into the manifest. Compose supplies 8080 inside the container. Only the separate metrics listener is published by default. |
+
+[Manifest template](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/crates/rindexer-ingestion/rindexer.yaml) · [Container entrypoint](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/crates/rindexer-ingestion/entrypoint.sh) · [Network client](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/crates/rindexer-ingestion/src/rindexer_lib/typings/networks.rs) · [Indexer image](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/docker/Dockerfile.ingestion)
+
+## Projections
+
+| Setting | Consumer and default |
+| --- | --- |
+| `SURREAL_DB_URL` | Compose explicitly sets an empty value to select the no-op graph sink. Keep it empty for Postgres-only Core. The standalone parser falls back to `ws://localhost:8000` when the variable is absent. |
+| `USE_TYPED_READER` | Compose forwards it with default `true`, selecting the typed event tables including URI context. The standalone binary defaults to `false`. |
+| `ENABLED_PROJECTIONS` | Optional comma-separated allowlist. A nonempty list takes precedence over the denylist. Set on the projections process or add a Compose environment mapping. |
+| `DISABLED_PROJECTIONS` | Optional comma-separated denylist. Both lists start empty in the binary. When this setting is missing or empty, Compose supplies `funnel_tracker,user_activity_batch,vault_state:dual,vault_holders_index:dual`. |
+| `PROJECTIONS_BATCH_SIZE`, `PROJECTIONS_POLL_INTERVAL_MS` | Process defaults of 500 rows and 1000 milliseconds. Neither variable is forwarded by stock Compose. |
+| `PROJECTIONS_METRICS_PORT` | Process default 9092. Compose fixes and publishes 9092. Check liveness at `/health/live`. |
+
+[Projection parser and selection rules](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/crates/projections/src/config.rs) · [Reader selection](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/crates/projections/src/main.rs) · [Compose projection settings](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/docker-compose.yml#L254-L279)
+
+## Query API and Explorer
+
+| Setting | Consumer and default |
+| --- | --- |
+| `API_PORT` | Query API process defaults to 3000. Stock Compose sets the container listener to 3000. |
+| `API_AUTH` | Compose forwards `public-read` by default. Graph reads are public and writes need a writable key. In `gated` mode graph reads also require a key; `/health` and `/api/schema` remain public. Reserve `open` for a local disposable node where unattributed writes are intentional. |
+| `API_ALLOWED_ORIGINS` | Forwarded comma-separated CORS origin allowlist. Empty allows all origins. Include your Explorer origin when restricting access. |
+| `API_ATOM_SEMANTIC_READS_ENABLED` | Forwarded, default `false`. Adds raw input, identity, classification, context, resolution and display fields to atom reads. |
+| `VITE_API_URL` | Explorer API base. The client defaults to `http://localhost:3000` when unset. Supply the intended base when building for another host. |
+| `VITE_ATOM_SEMANTIC_READS_ENABLED` | Explorer build/start flag, default `false`. Enables the presentation of semantic fields. Enable the API response fields first and rebuild or restart the Explorer with its own setting. |
+
+[Query API parser](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/services/api/src/config.ts) · [API path and write permissions](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/services/api/src/app.ts) · [Explorer client](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/apps/explorer/src/lib/api.ts) · [Presentation flag](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/apps/explorer/src/lib/atom-presentation.ts) · [Explorer build arguments](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/docker/Dockerfile.explorer)
+
+## Workers
+
+The following are worker process defaults. Of these settings, stock Compose forwards the processing scope and the two IID flags. The remaining entries need explicit process configuration to override.
+
+| Setting | Default and effect |
+| --- | --- |
+| `WORKERS_PORT` | Base health port 4110. Default parse, classification and enrichment listeners use 4110, 4112 and 4111 respectively. Each serves `/healthz`. |
+| `WORKERS_CONCURRENCY` | 4 concurrent items per worker. |
+| `WORKERS_LEASE_MS`, `WORKERS_MAX_ATTEMPTS` | 60000 ms per stage lease and 5 attempts per stage. Expired claims can be recovered. |
+| `WORKERS_PARSE_REMOTE_FETCH` | `true` enables fetching remote input during parsing. Set false for isolated operation. |
+| `WORKERS_PARSE_ALLOW_HTTP`, `WORKERS_PARSE_ALLOW_PRIVATE_NETWORKS` | Both `false`. Plain HTTP and requests to private network targets are blocked by default. |
+| `WORKERS_PARSE_IPFS_GATEWAY_BASE_URL` | Optional IPFS gateway override, unset by default. |
+| `WORKERS_PROCESSING_SCOPE` | `full` by default. `music`, `podcasts` and `music-and-podcasts` restrict enrichment after classification. |
+| `WORKERS_IID_READ_ENABLED` | `false`. Enables IID inspection and supplies registry and ladder bindings to the workers. The entrypoint checks the installed package versions when enabled. |
+| `WORKERS_IID_RESOLUTION_ENABLED` | `false`. Independently permits provider resolution for IID enrichment plans. Enable worker reads and verify the bindings before enabling resolution. |
+
+Worker IID reads, worker resolution and API semantic reads are **three independent settings**. Turning one on leaves the others at their configured values. Explorer presentation is a fourth, client-side choice. [Worker settings](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/services/workers/src/shared/config.ts) · [Worker entrypoint](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/services/workers/src/index.ts) · [Enrichment decisions](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/services/workers/src/kg/atom-enrichment/index.ts)
+
+## Atom services and provider credentials
+
+| Setting | Consumer and default |
+| --- | --- |
+| `ATOM_SERVICES_PORT` | Stateless processing service, default 4010. Stock Compose fixes the container listener to 4010. |
+| `ATOM_SERVICES_AUTH_TOKEN` | Optional service bearer token, unset by default. To require it, explicitly pass it into the atom-services process or add a service environment mapping. Adding it only to the host `.env` does not require a bearer token in the stock container. The service exempts `/health`, `/ready` and `/metrics`. Query API keys govern a different service. |
+| `SPOTIFY_CLIENT_ID`, `SPOTIFY_CLIENT_SECRET` | Optional Spotify credential pair. Configure both to use authenticated Spotify enrichment. |
+| `GITHUB_TOKEN`, `ETHERSCAN_API_KEY`, `BRANDFETCH_API_KEY` | Optional credentials for their respective providers. Public GitHub data can be fetched without a token. |
+| `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `GOOGLE_GENERATIVE_AI_API_KEY` | Reserved search or embedding credentials, blank in the example environment. The stock processing services have no active enrichment wiring for these keys. |
+
+Compose forwards the Spotify pair, GitHub, Etherscan and Brandfetch credentials to the workers and atom services. They start empty. A provider can skip an item or return less data when a credential is absent. [Service parser](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/services/atom-services/src/config.ts) · [Service bearer middleware](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/services/atom-services/src/middleware/auth.ts) · [Provider mappings](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/docker-compose.yml#L80-L136) · [Example credentials](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/example.env#L85-L105)
+
+# Write an enrichment plugin
+
+Source: https://docs.intuition.systems/docs/core/enrichment-plugin
+
+Applies to V2 · `@0xintuition/atom-enrichment` 0.1.0
+
+Turn a classified album URL into a title with a traceable source, test the plugin offline, and add it to the enrichment preset in your Core fork.
+
+## Before you start
+
+Use Node.js 22.21.0 and a checkout of the documentation repository containing the example. From its root, install the example dependencies with `npm ci --ignore-scripts --prefix examples/v2`. The fixture supplies a local read function for one synthetic catalog page. You can finish the offline steps before setting up a node. [Complete plugin and fixture source](https://github.com/0xIntuition/intuition-docs/blob/feeb3f12520ad96a61aff43d1c1d9420d799a8a6/examples/v2/music-catalog/src/enrichment-plugin.ts)
+
+An enrichment request already has a classified atom. Here the input includes a `MusicAlbum` JSON-LD object, classification source and timestamp, and the album URL in `input.hints.url`. The expected output is an `opengraph` artifact containing the title **Night Train**, the catalog provider, the page URL and a fetch timestamp. [Classified input and artifact schemas](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/atom-enrichment/src/types.ts)
+
+## Steps
+
+### 1. Match the source and validate its response
+
+Give the plugin a unique ID, version, runtime and at least one artifact type. Let `supports` match the catalog page without fetching it. In `enrich`, check the target again, pass the cancellation signal to the read function and validate the unknown response. Copy the validated title into the output. This keeps other response fields, such as private catalog notes, out of the artifact.
+
+```ts
+import {
+  defineEnrichmentPlugin,
+  type EnrichmentPlugin,
+} from '@0xintuition/atom-enrichment';
+import { opengraphDataSchema } from '@0xintuition/atom-enrichment/provider-data';
+
+type ReadPage = (url: string, signal: AbortSignal) => Promise<unknown>;
+const albumPage = 'https://catalog.example/albums/night-train';
+
+export function createCatalogPlugin(readPage: ReadPage): EnrichmentPlugin {
+  return defineEnrichmentPlugin({
+    id: 'catalog-page',
+    version: '1.0.0',
+    runtime: 'server',
+    artifactTypes: ['opengraph'],
+    priority: 40,
+    TTL: 3_600,
+    supports: (request) => request.input.hints?.url === albumPage,
+    async enrich(request, ctx) {
+      const url = request.input.hints?.url;
+      if (url !== albumPage) return [];
+      const payload = await readPage(url, ctx.signal);
+      const parsed = opengraphDataSchema.safeParse(payload);
+      if (!parsed.success || !parsed.data.title?.trim()) {
+        throw new Error('Catalog page has no valid title.');
+      }
+      return [
+        {
+          artifact_type: 'opengraph',
+          data: { title: parsed.data.title.trim() },
+          meta: {
+            pluginId: 'catalog-page',
+            provider: 'music-catalog',
+            sourceUrl: url,
+            fetchedAt: ctx.now(),
+          },
+        },
+      ];
+    },
+  });
+}
+```
+
+The engine already knows the `opengraph` data schema. To introduce an artifact type, register its schema with the engine's classification registry as well as declaring it on the plugin. Lower priority numbers run earlier. A positive `TTL` gives the cache lifetime in seconds when the engine has a cache. [Plugin contract](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/atom-enrichment/src/plugins.ts) · [Engine validation and caching](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/atom-enrichment/src/engine.ts)
+
+The URL in the artifact records the page the caller supplied. For a direct URL or an external-ID lookup, preserve the provider, input and resulting source URL and omit `identityStrength`. For a title search, set `meta.identityStrength` to `title` and return descriptive fields. A title hit can supply artwork or a description without establishing that two recordings are the same. The strict metadata schema accepts only the optional `title` marker. [Artifact metadata](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/atom-enrichment/src/types.ts) · [Field extraction](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/atom-enrichment/src/extraction/extract.ts)
+
+### 2. Test the plugin on its own
+
+Pass the plugin to `createEnrichmentEngine({ plugins: [plugin] })`. The fixture supplies a clock and a read function that returns a title plus an extra private field. It checks the complete resulting artifact, then runs separate cases for an unrelated URL, malformed data, an upstream outage and an interrupted read.
+
+```sh
+node examples/v2/music-catalog/src/enrichment-plugin.ts
+```
+
+For an optional credential, decide explicitly whether a missing key makes the provider inapplicable or permits a smaller result. Return an empty array for an expected lookup with no record. Report unexpected upstream failures through the engine so other providers can finish. Keep raw payloads and credentials out of diagnostic text. The built-in npm provider shows how to inject a transport, parse a provider response and retain the primary metadata when an optional secondary lookup fails. [npm provider implementation](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/atom-enrichment/src/plugins/providers/npm/index.ts)
+
+### 3. Add the plugin to a preset
+
+The standalone runtime accepts `pluginOverrides.enrichment` keyed by preset name. An array or factory replaces the entire selected preset. Start with its configured built-ins, then add the catalog plugin. In this example, the default preset keeps the providers configured from the host's environment.
+
+```ts
+import {
+  createAtomServicesProcessingRuntime,
+  createEnrichmentPresetFactories,
+  type AtomServicesProcessingRuntimeOptions,
+} from '@0xintuition/atom-runtime';
+
+export function createCatalogRuntime(
+  options: AtomServicesProcessingRuntimeOptions,
+  plugin: EnrichmentPlugin,
+) {
+  const presets = createEnrichmentPresetFactories(options.env);
+  return createAtomServicesProcessingRuntime({
+    ...options,
+    pluginOverrides: {
+      ...options.pluginOverrides,
+      enrichment: {
+        ...options.pluginOverrides?.enrichment,
+        default: () => [...presets.default(), plugin],
+      },
+    },
+  });
+}
+```
+
+The helper checks the full plugin list and runs a request filtered to `catalog-page` so the fixture exercises only that source. Configure the override during construction. The shared runtime locks the registry on its first `resolvePlugins` or `enrich` call. [Runtime override and registry implementation](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/atom-runtime/src/runtime.ts)
+
+### 4. Wire the preset into your Core fork
+
+Start from the pinned source checkout described in [Query a Core node](https://docs.intuition.systems/docs/build/query-core). In your fork, put the plugin and composition functions in a module accessible to `services/atom-services/src/service/runtime.ts`. For an initial deployment check, use the same fixed catalog reader. A production reader should return the provider payload and honor the supplied signal.
+
+In `createCoreProcessingRuntime`, replace the call to `createAtomServicesProcessingRuntime(options)` with `createCatalogRuntime(options, createCatalogPlugin(readPage))`, using your reader. Preserve the wrapper's existing warning handling. Core's `ProcessingRuntimeOptions` exposes cache, preset and environment settings. The fork supplies the plugin by changing this constructor call. Adding a file or passing a plugin ID in an HTTP request alone cannot install a provider. The HTTP service and enrichment worker both reach this shared wrapper. [Core runtime wrapper](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/services/atom-services/src/service/runtime.ts) · [HTTP service construction](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/services/atom-services/src/service/dependencies.ts) · [Enrichment worker construction](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/services/workers/src/kg/atom-enrichment/index.ts)
+
+Rebuild the consuming services from your fork. From the Core repository root, run:
+
+```sh
+docker compose -f docker-compose.yml up -d --build atom-services workers-enrichment
+```
+
+## Check the result
+
+The offline fixture exits successfully after printing six observations:
+
+```text
+match: success, Night Train
+unrelated: not_applicable, no extra read
+invalid payload: failed, no artifact
+upstream: failed, retryable HTTP 503
+cancellation: transport observed abort, no artifact
+preset: built-ins retained, catalog-page produced the requested artifact
+```
+
+To check the rebuilt service with the fixed reader, keep the service's configured default preset set to `default` for this example. Send this JSON to `POST /v1/enrich` on your atom service (local default port 4010). Set `Content-Type: application/json` and include the service bearer token if configured.
+
+```json
+{
+  "input": {
+    "atomType": "thing",
+    "jsonLd": { "@type": "MusicAlbum" },
+    "source": { "classificationEngine": "catalog-fixture", "classifiedAt": "2026-01-01T00:00:00Z" },
+    "hints": { "url": "https://catalog.example/albums/night-train" }
+  },
+  "enrichment": { "preset": "default", "plugins": ["catalog-page"] }
+}
+```
+
+Look for `status: "success"`, `artifacts[0].data.title` equal to `Night Train`, and `artifacts[0].meta.pluginId` equal to `catalog-page`. The service clock supplies its own timestamp. The fixture tests package composition locally. This request tests the rebuilt HTTP service. For indexed worker results, inspect the atom's artifacts on your own node. [Atom services API](https://docs.intuition.systems/docs/reference/atom-services-api) · [Query Core](https://docs.intuition.systems/docs/build/query-core)
+
+## Troubleshooting
+
+- **No artifact for the catalog URL.** Check the running service's preset list at `GET /ready`, then check the request's preset, plugin filter and exact `input.hints.url`. A registered plugin whose predicate returns false appears in `skipped` with `not_applicable`.
+- **HTTP 400 on enrich.** Supply a classified object in `input`. Use `POST /v1/process` with `rawInput` when the service should classify first.
+- **The worker omits an artifact the HTTP service returned.** The worker also applies processing scope, allowed artifact types and, for eligible identifiers, its provider plan. Verify those settings and the worker image built from your fork. [Worker execution and completion](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/services/workers/src/kg/atom-enrichment/index.ts)
+
+## Related
+
+- [Enrichment providers](https://docs.intuition.systems/docs/core/enrichment-providers)
+- [Write a classification plugin](https://docs.intuition.systems/docs/core/classification-plugin)
+- [Classify and enrich input](https://docs.intuition.systems/docs/build/classify-enrich)
+
+# Enrichment providers
+
+Source: https://docs.intuition.systems/docs/core/enrichment-providers
+
+Applies to V2 · `@0xintuition/atom-enrichment` 0.1.0
+
+Core can enrich a book identified by ISBN, a public repository or a web page without a provider account. For other inputs, a credential can unlock additional fields or access to a specific service. Coverage depends on the plugins in the selected preset, the classified input each plugin accepts, and the transport it can use.
+
+## Sources available without credentials
+
+The following lookups are included in the stock `default` preset. External lookups still need outbound network access and are subject to timeouts, rate limits and missing records.
+
+| Source | What a matching input can return |
+| --- | --- |
+| OpenGraph, microdata and favicon | A public page's title, description, preview image, structured JSON-LD and site icon, when available. |
+| oEmbed | Embed data from supported YouTube, Vimeo and X URLs. |
+| Wikipedia and Wikidata | Article extracts, entity labels and structured claims. A name search can return descriptive evidence with lower identity confidence. |
+| GitHub and npm | Public GitHub repository or user details. Registry metadata and optional weekly downloads for an npm package. |
+| Crossref | Publication and citation metadata for a recognized DOI. |
+| Open Library | Book, edition and work metadata by a recognized identifier, including ISBN. |
+| MusicBrainz, Apple Music and Spotify | Artist, release or recording information for supported targets. Spotify can use public oEmbed or URL-derived data for a direct resource without client credentials. |
+| Letterboxd and Steam | Film-page metadata or Steam app details for matching URLs. |
+
+The provider catalog also contains **payload schemas** for arXiv, PubMed, dictionary entries, color palettes, dedicated ISBN records, ENS and NFT metadata. The pinned release has no dedicated lookup implementations for those schemas. Open Library handles ISBN input. To populate the ENS or NFT schema in a fork, supply a plugin and suitable chain/RPC transport. Other schema-only entries include AI summaries and entities, company profiles, Crunchbase, geocoding, Reddit posts, screenshots and Vimeo records. Vimeo oEmbed works independently. The package exports a TVmaze provider that a fork can add to a preset. [Provider implementations](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/atom-enrichment/src/plugins/providers/index.ts) · [Payload schema catalog](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/atom-enrichment/docs/README.md) · [Stock bundles](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/atom-enrichment/src/presets/bundles.ts)
+
+## Optional provider credentials
+
+All eleven integrations below ship in the stock default preset. Use the named operator account to issue credentials. The last column describes what a missing credential means **for an eligible input**. A provider can also skip an unrelated input even when correctly configured.
+
+| Provider and credential issuer | Core environment | What it enables and how keyless behavior differs |
+| --- | --- | --- |
+| [GitHub personal access tokens](https://github.com/settings/personal-access-tokens) | `GITHUB_TOKEN` | A higher allowance for public repository and user lookups. Anonymous access works, and the provider can retry anonymously after a rejected token. |
+| [Spotify Developer Dashboard](https://developer.spotify.com/dashboard) | `SPOTIFY_CLIENT_ID` and `SPOTIFY_CLIENT_SECRET`, optional `SPOTIFY_MARKET` | Create an app for Web API metadata on tracks, albums, artists, playlists, shows and episodes. Without the pair, a direct resource can still yield a basic Spotify artifact. An ISRC search returns no record. |
+| [Etherscan API keys](https://etherscan.io/apis) | `ETHERSCAN_API_KEY` | Authenticates requests for address balances, transaction counts and available contract/token metadata. The plugin can attempt an address lookup without a key. The upstream response determines coverage. |
+| [TMDB account API settings](https://www.themoviedb.org/settings/api) | `TMDB_API_KEY` | Film or TV details and credits. The plugin skips when the key or a supported target is missing. |
+| [CoinGecko API dashboard](https://www.coingecko.com/en/api) | `COINGECKO_API_KEY` | A Demo API key authenticates token market-data requests. The plugin can make anonymous requests when the key is absent. Check market fields and lookup status in the returned data. |
+| [Google Cloud Console](https://console.cloud.google.com/) · YouTube Data API v3 | `YOUTUBE_API_KEY` | Enable the API in your project and issue an API key for video details. Without it, the YouTube Data plugin skips. A separate oEmbed artifact can still supply a title or thumbnail. |
+| [Google Cloud Console](https://console.cloud.google.com/) · Places API | `GOOGLE_PLACES_API_KEY` | Enable Places and issue an API key for business details, ratings and photos on confirmed matches. Without a key the plugin can still derive a name and coordinates from a Maps URL. |
+| [X Developer Portal](https://developer.x.com/) | `X_BEARER_TOKEN` | Issue a bearer token for profile data. A recognized profile without the token yields `auth_failed`. |
+| [Brandfetch developer account](https://brandfetch.com/developers) | `BRANDFETCH_API_KEY` | Authenticates domain lookups for logos, colors and other brand assets. When full data is unavailable the plugin can return a fallback icon. |
+| [Podcast Index API account](https://api.podcastindex.org/) | `PODCAST_INDEX_API_KEY` and `PODCAST_INDEX_API_SECRET` | Authenticates feed lookups for podcast metadata. Both values must be present for the plugin to match. An unrecognized feed can return no record. |
+| [Canopy API account](https://www.canopyapi.co/) | `CANOPY_API_KEY` | Authenticates Amazon product lookups. A supported product URL or short link without a key yields `auth_failed`. |
+
+The runtime maps environment variables to constructor options. Each provider then decides which inputs it can handle and whether a fallback is available. [Credential mapping](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/atom-enrichment/src/presets/bundles.ts) · [Spotify fallbacks](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/atom-enrichment/src/plugins/providers/spotify/index.ts) · [X authentication](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/atom-enrichment/src/plugins/providers/x-profile/index.ts) · [Canopy authentication](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/atom-enrichment/src/plugins/providers/product-listing/index.ts)
+
+## Presets and worker scope
+
+| Package preset | Providers |
+| --- | --- |
+| `default`, `custom` | The full server bundle unless the host supplies an override. |
+| `company` | OpenGraph, Brandfetch and favicon. |
+| `music` | OpenGraph, Spotify, MusicBrainz and Apple Music. |
+| `crypto` | Etherscan and CoinGecko. |
+| `academic` | Crossref and Wikipedia. |
+
+The HTTP service maps a request's `default` or `custom` selection to its configured default preset. The worker selects its own `WORKERS_DEFAULT_PRESET` and then applies `WORKERS_PROCESSING_SCOPE` and any applicable identifier provider plan. A music scope can restrict the artifact types accepted by a worker even when more providers are installed. Preset selection and scope filtering happen separately. [Package preset factories](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/atom-runtime/src/presets.ts) · [HTTP preset selection](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/services/atom-services/src/service/processing.ts) · [Worker execution](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/services/workers/src/kg/atom-enrichment/index.ts)
+
+## Configure your Core services
+
+Set credentials in the local environment used by your Core source checkout. Replace both placeholders below with values from the same Spotify app. Edit the local `.env` file and keep it outside version control.
+
+```dotenv
+SPOTIFY_CLIENT_ID=YOUR_SPOTIFY_CLIENT_ID
+SPOTIFY_CLIENT_SECRET=YOUR_SPOTIFY_CLIENT_SECRET
+SPOTIFY_MARKET=US
+```
+
+Stock Compose forwards the listed provider variables into `atom-services` and the worker containers. Recreate the consumers that should use the changed values from your Core repository root:
+
+```sh
+docker compose -f docker-compose.yml up -d --force-recreate atom-services workers-classification workers-enrichment
+```
+
+The stock file forwards `WORKERS_PROCESSING_SCOPE`. To change `WORKERS_DEFAULT_PRESET` or `ATOM_SERVICES_DEFAULT_PRESET` in Compose, explicitly pass the selector in the corresponding service's environment. The package can also accept a `MUSICBRAINZ_USER_AGENT`. Using that setting in a worker fork requires forwarding it through Compose and the worker's environment allowlist. [Core Compose environment](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/docker-compose.yml) · [Worker settings and allowlist](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/services/workers/src/shared/config.ts)
+
+**Shared cache.** For an Upstash Redis database, obtain its REST URL and token from the database console. Supply `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN`, then pass `ATOM_SERVICES_CACHE_PROVIDER=upstash` or `WORKERS_CACHE_PROVIDER=upstash` into each service that should share the cache. Both default to memory. The stock Compose file forwards the credentials and requires an explicit environment entry for either selector. Missing REST credentials with Upstash selected produce an in-memory fallback and a warning. [Upstash console](https://console.upstash.com/) · [Core cache selection](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/atom-runtime/src/consumers.ts)
+
+**Search credentials.** Core reserves `OPENAI_API_KEY`, `ANTHROPIC_API_KEY` and `GOOGLE_GENERATIVE_AI_API_KEY` for its search tier. Setting one does not register an enrichment provider or turn on a search service. [Core credential inventory](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/docs/enrichment-providers.md)
+
+## Diagnose a missing result
+
+First check `GET /ready` on the atom service for the preset's plugin IDs and cache warnings. Send a classified input to `POST /v1/enrich`, optionally narrowing `enrichment.plugins` to the provider under test. For a raw URL, send `rawInput` to `POST /v1/process` and inspect its `enrichment` field. [Atom services API](https://docs.intuition.systems/docs/reference/atom-services-api)
+
+| Observation | What to check |
+| --- | --- |
+| Provider absent from preset | Check the service's selected preset and rebuild the fork after changing its composition. An allowlist can only select registered plugins. |
+| `skipped[].reason` is `not_applicable`, `filtered` or `runtime_mismatch` | Check the classified identifiers/URL and any required keys, plugin/artifact filters, and server or client runtime respectively. A skip alone cannot identify a bad key. |
+| `status: "success"` with no artifact from the target plugin | A matching provider can return an empty array when no record exists. Look for a skip separately. For a fallback artifact, inspect `meta.provider` and its actual fields. |
+| `errors[].code` is `auth_failed`, `rate_limited`, `upstream_error` or `timeout` | Verify credentials in the service environment, the provider's allowance or service availability as applicable. Use the returned `retriable` flag and any structured HTTP status or retry delay. |
+| Some records succeeded | The engine reports `partial` when artifacts and errors coexist, and `failed` when errors leave no artifacts. Inspect the successful artifacts before deciding what to retry. |
+
+Use the plugin ID, error code, retry flag and redacted message for diagnostics. Keep tokens, raw URLs carrying credentials and full provider responses out of reports. For a worker job, compare its scope and completion state with the atom's stored artifacts on your self-hosted node. [Response redaction](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/services/atom-services/src/service/redaction.ts) · [Engine error mapping](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/atom-enrichment/src/engine.ts) · [Query Core](https://docs.intuition.systems/docs/build/query-core)
+
+## Related
+
+- [Write an enrichment plugin](https://docs.intuition.systems/docs/core/enrichment-plugin)
+- [Classify and enrich input](https://docs.intuition.systems/docs/build/classify-enrich)
+
+# Intuition Core
+
+Source: https://docs.intuition.systems/docs/core
+
+Intuition Core is a backend you run to build and query your own copy of the knowledge graph. Fork the Core repository, check out the documented commit in your fork and build the services from that source. The [release guide](https://docs.intuition.systems/docs/core/releases) explains how to identify the revision and evaluate an update. [Core repository guide](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/README.md)
+
+## How a chain event reaches an application
+
+When you enable the optional indexing profile, the ingester watches the configured chain and MultiVault contract. It records events in TimescaleDB. Projections read those events and update market data in TimescaleDB and graph records in a separate Postgres database. Workers parse, classify and enrich atoms in that graph. Follow a single atom from its receipt to its indexed record in [Architecture](https://docs.intuition.systems/docs/core/architecture).
+
+Your application can [query its Core node](https://docs.intuition.systems/docs/build/query-core) through the [Query API](https://docs.intuition.systems/docs/reference/core-query-api). The default stack also supports local graph operations without chain ingestion. The [atom services API](https://docs.intuition.systems/docs/reference/atom-services-api) processes individual requests without storing their results. Explorer is a separate client that you can run to inspect the node. [Core documentation](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/docs/README.md)
+
+## Run and operate a node
+
+- Start with a [local devnet](https://docs.intuition.systems/docs/core/local-devnet) to follow a local deployment and inspect its records.
+- [Run a node](https://docs.intuition.systems/docs/core/run-a-node) to build the stack and connect it to the chain you intend to index.
+- Check [configuration](https://docs.intuition.systems/docs/core/configuration) for a setting’s owner and default. Use [indexing scope](https://docs.intuition.systems/docs/core/indexing-scope) to choose the contract and block range.
+- Use [troubleshooting](https://docs.intuition.systems/docs/core/troubleshooting) to distinguish a datastore problem from a stalled projection or processing stage.
+
+## Extend atom processing
+
+Find the service or worker you need to change in [Core packages](https://docs.intuition.systems/docs/core/packages). Add a [classification plugin](https://docs.intuition.systems/docs/core/classification-plugin) to recognize a new input type. Add an [enrichment plugin](https://docs.intuition.systems/docs/core/enrichment-plugin) to attach an artifact. Check the [provider catalog](https://docs.intuition.systems/docs/core/enrichment-providers) for the inputs, credentials and partial results to expect.
+
+# Scope what you index
+
+Source: https://docs.intuition.systems/docs/core/indexing-scope
+
+Choose which chain events Core captures and which graph or market outputs your readers can rely on.
+
+## Before you start
+
+Use the pinned fork and installed dependencies from [Run your own node](https://docs.intuition.systems/docs/core/run-a-node). You can preview a scope without starting an indexer or contacting a chain. Before deploying it, identify your MultiVault proxy, chain, block range, and the outputs your application actually needs.
+
+## Steps
+
+### 1. Preview a scope
+
+From the Core root, run:
+
+```sh
+bun run scope:dry-run docs/indexing-scope.example.json
+```
+
+`make scope-dry-run` reads the same file. To try a change, copy it to your own JSON file, edit the copy, and pass its path to the command. Expect `status: "ok"`, a `dryRun` object and a `rindexerManifestPreview` string. The validator redacts RPC user information and token-like query parameters. A validation error prints the reason and exits unsuccessfully. The preview reads a file and prints a plan; it neither starts services nor changes the active manifest. [Bundled example](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/docs/indexing-scope.example.json) · [Preview command](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/scripts/scope-dry-run.ts)
+
+### 2. Choose the events and the outputs they support
+
+The example uses a historical chain window. It includes two events, `AtomCreated` and `TripleCreated`, and selects three projections in its KG bundle:
+
+| Projection | Output from those events |
+| --- | --- |
+| `event_log` | Event history limited to the captured event types. |
+| `account_registry` | Accounts participating in the graph events. |
+| `core_entities` | Atom and triple records used to serve the graph. |
+
+The preview requires `Deposited`, `Redeemed` and `SharePriceChanged` for the `market-only` bundle and the `vault_state` projection. Individually, `position_tracking` and `vault_holders_index` need only `Deposited` and `Redeemed`. If you omit a projection, report its output as unavailable. A missing projection cannot establish a zero balance. [Bundle and projection requirements](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/packages/types/src/indexing-scope.ts#L271-L297)
+
+The dry-run schema cannot select the URI event `AtomContextRegistered` or the projection `atom_context:dual`. The live ingester manifest includes the event. To retain on-chain URI evidence, keep it in the manifest and enable the context projection with its KG connection in the running service. [Preview schema](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/packages/types/src/indexing-scope.ts#L3-L39) · [Ingestion manifest](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/crates/rindexer-ingestion/rindexer.yaml) · [Context projection startup](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/crates/projections/src/main.rs#L342-L352)
+
+### 3. Apply each choice where it takes effect
+
+| Layer | Where to apply it |
+| --- | --- |
+| Source capture | Set `INTUITION_RPC_URL`, `CHAIN_ID`, `MULTIVAULT_CONTRACT_ADDRESS`, `MULTIVAULT_START_BLOCK` and optionally `MULTIVAULT_END_BLOCK` for the ingester. Use your deployment evidence. The source manifest's MultiVault `include_events` lists seven supported event types; its entrypoint substitutes the deployment and range values. For a different event set, review the manifest and matching Rust handler registrations in your fork and rebuild. Stock Compose has no event-list environment switch. Keep one ingester per store and scope. |
+| Derived outputs | Set the projection process's comma-separated `ENABLED_PROJECTIONS` or `DISABLED_PROJECTIONS`. A nonempty allowlist takes precedence. Stock Compose forwards the denylist; add an environment mapping to the projections service for a custom allowlist. Verify selected outputs have all required input events before starting the indexing profile. |
+| Processing | Set `WORKERS_PROCESSING_SCOPE` to `full`, `music`, `podcasts` or `music-and-podcasts`. Parse and classification still run. The scoped enrichment worker uses the classification to select eligible rows and permitted provider or artifact work. Rows outside the selected scope are marked `skipped` with a reason. Switching presets leaves existing artifacts in storage and does not automatically requeue older rows or backfill missed events. |
+| Read filter | Use Query API parameters such as `classification_type` or `q` on an atom list, or filter in your application. This changes which stored, active, public records the caller sees. It does not delete records, change worker scope or rewind ingestion. |
+
+A provider list in the preview describes a processing choice. The shipped worker consumes its supported preset, so editing that JSON alone does not install an arbitrary provider allowlist. [Manifest template](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/crates/rindexer-ingestion/rindexer.yaml) · [Handler registrations](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/crates/rindexer-ingestion/src/handlers.rs#L55-L70) · [Projection selection](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/crates/projections/src/config.rs) · [Worker scope](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/services/workers/src/shared/processing-scope.ts) · [Query filters](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/services/api/src/app.ts#L279-L313)
+
+## Check the result
+
+For the bundled file, check that the preview includes the two requested event names, marks the three selected KG outputs available, and leaves the financial outputs unavailable. In your copy, try selecting a market projection while keeping only the two KG events. Expect an error naming the missing inputs. Restore the inputs or narrow the requested outputs before using the configuration.
+
+After deploying your own scope, compare the indexer's per-event progress against a known receipt in your range. Look up that event's exact term ID in the graph, then examine the worker stage and any read filters independently. [Query a Core node](https://docs.intuition.systems/docs/build/query-core)
+
+## Related
+
+[Run a local devnet](https://docs.intuition.systems/docs/core/local-devnet) · [Configuration](https://docs.intuition.systems/docs/core/configuration) · [Troubleshooting](https://docs.intuition.systems/docs/core/troubleshooting)
+
+# Run a local devnet
+
+Source: https://docs.intuition.systems/docs/core/local-devnet
+
+**Time:** 30 minutes · **Steps:** 4
+
+## What you'll build
+
+Run an Anvil chain on your machine, deploy the real protocol contracts, and find the deployer's acceptance atom in your own Core Query API. The time is a planning estimate. Initial downloads and compilation depend on your machine.
+
+## Before you start
+
+Use Git, a running Docker daemon with Compose v2, Bun 1.3.11, Node 20 or newer, `curl`, `jq` and at least 5 GiB of free space. Use a local environment you control. The deployer sends transactions on this disposable development chain using its built-in local account. [Core workspace](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/package.json) · [Local chain configuration](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/docker-compose.yml#L187-L220)
+
+## Steps
+
+### 1. Prepare the pinned fork
+
+Fork [Intuition Core](https://github.com/0xIntuition/intuition-core/tree/a402f880600f92969dc8fb013ca0f69fc9a02420), replace the username and run:
+
+```sh
+git clone https://github.com/YOUR_GITHUB_USERNAME/intuition-core.git
+cd intuition-core
+git remote add upstream https://github.com/0xIntuition/intuition-core.git
+git fetch upstream a402f880600f92969dc8fb013ca0f69fc9a02420
+git switch -c local-devnet a402f880600f92969dc8fb013ca0f69fc9a02420
+git rev-parse HEAD
+git branch --show-current
+```
+
+Once the output matches the pinned commit and branch `local-devnet`, run `scripts/bootstrap.sh --no-start`. This prepares `.env` and installs the frozen dependencies. If you already have a fork at that commit, use its working branch and check its name before continuing.
+
+### 2. Start the chain and deploy
+
+Run the default devnet on an isolated development machine. Anvil uses a built-in development account and listens on all interfaces inside its container. Compose also publishes its RPC port on all host interfaces. Before startup on a shared or reachable host, bind published ports to loopback in your fork, including Anvil (`127.0.0.1:8545:8545`), the databases and Redis. Keep Anvil’s internal listener reachable from the deployer and indexer containers. [Anvil service](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/docker-compose.yml#L187-L192) · [Datastore ports and development credentials](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/docker-compose.datastores.yml)
+
+```sh
+docker compose -f docker-compose.yml --profile devnet up -d --build anvil devnet-deploy
+```
+
+Anvil runs chain 31337 and persists its state in a Docker volume. The one-shot deployer waits for a healthy chain, deploys the contracts from pinned artifacts, then creates a unique atom with URI context. On subsequent runs it can reuse the recorded deployment if the chain, deployer and proxy code match. Each acceptance run still creates a new local atom. [Deploy CLI](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/packages/contracts/src/deploy/cli.ts) · [Deployment sequence](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/packages/contracts/src/deploy/system.ts)
+
+### 3. Verify the deployment before using its address
+
+Wait for the one-shot container and inspect its logs. A successful detached startup only means Docker started the job.
+
+```sh
+job_id=$(docker compose -f docker-compose.yml --profile devnet ps -a -q devnet-deploy)
+if [ -n "$job_id" ] && [ "$(docker wait "$job_id")" = 0 ]; then
+  docker logs "$job_id"
+  jq '{chainId, MultiVault, deployBlock}' devnet/deployments-devnet.json
+else
+  docker compose -f docker-compose.yml --profile devnet logs devnet-deploy
+  printf '%s\n' 'Deployment incomplete. Resolve the error before indexing.' >&2
+fi
+```
+
+Proceed only after exit code 0 and the log lines `ACCEPTANCE PASSED` and `DONE`. Save the printed transaction hash, block and `termId`. Acceptance checks the receipt for both `AtomCreated` and `AtomContextRegistered` with that term ID and checks the URI bytes. The CLI writes the state file **before** acceptance, so file existence alone is insufficient. [Acceptance checks](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/packages/contracts/src/deploy/acceptance.ts) · [State file ordering](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/packages/contracts/src/deploy/cli.ts#L152-L172)
+
+### 4. Point Core at the accepted deployment
+
+Edit the existing entries in `.env`. Set `MULTIVAULT_CONTRACT_ADDRESS` to the exact `MultiVault` from step 3 and `MULTIVAULT_START_BLOCK` to the numeric `deployBlock`. Confirm the recorded `chainId` is 31337. Set the remaining entries as follows:
+
+```text
+INTUITION_RPC_URL=http://anvil:8545
+CHAIN_ID=31337
+MULTIVAULT_END_BLOCK=
+USE_TYPED_READER=true
+```
+
+Containers reach Anvil by service name. Host tools reach it at `http://localhost:8545`. Leave the end block empty so the ingester follows the local chain. The typed reader consumes the event tables used by the graph and URI-context projections. [Local settings](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/example.env#L49-L70)
+
+## Run it
+
+```sh
+docker compose -f docker-compose.yml --profile devnet --profile indexing up -d --build
+docker compose -f docker-compose.yml --profile devnet --profile indexing ps -a
+curl -fsS http://localhost:3000/health
+printf 'Paste the acceptance term ID: '
+read -r TERM_ID
+curl -fsS "http://localhost:3000/api/atoms/${TERM_ID}"
+```
+
+Expect the ingester to record the receipt's event and the core entities projection to insert a public KG row. In the detail response, `data.id` should match your saved term ID and `data.isOnchain` should be `true`. If the API is healthy but returns 404 for this ID, check whether the indexer has reached the receipt's block, then check projection progress. Keep the original term ID if the deployer runs again. [Event handlers](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/crates/rindexer-ingestion/src/handlers.rs) · [Troubleshooting](https://docs.intuition.systems/docs/core/troubleshooting)
+
+## Next steps
+
+To try two repeatable IID fixtures, review the [fixture script](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/packages/contracts/scripts/devnet-create-iid-fixtures.ts) before running `bun run devnet:fixtures:iid` against your local Anvil instance. It requires a state file for chain 31337, defaults to the local RPC, checks whether each term exists, then simulates and submits a local transaction for each missing term. It reports `created` or `already-created` and prints term IDs you can use with the same atom detail request. [Query a Core node](https://docs.intuition.systems/docs/build/query-core)
+
+When finished, stop the stack while preserving the databases and Anvil state. [Core devnet guide](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/docs/local-devnet.md)
+
+```sh
+docker compose -f docker-compose.yml --profile devnet --profile indexing down
+```
+
+# How Core uses the packages
+
+Source: https://docs.intuition.systems/docs/core/packages
+
+Applies to V2 · `@0xintuition/atom-runtime` 0.1.0 · `@0xintuition/atom-classification` 0.1.0 · `@0xintuition/atom-enrichment` 0.1.0 · `@0xintuition/iid` 0.1.0
+
+## How it works
+
+Core uses published libraries to interpret an atom and decide which providers can enrich it. Its services own HTTP requests, worker leases and the database writes that persist the results. To trace a behavior in a fork, start with the service that handles the input.
+
+| Published library | Where Core uses it |
+| --- | --- |
+| `@0xintuition/atom-runtime` | The atom-services wrapper passes cache settings and the operator’s preset to `createAtomServicesProcessingRuntime`. The HTTP service and workers can reuse the same classification and enrichment engine composition. [Runtime wrapper](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/services/atom-services/src/service/runtime.ts) |
+| `@0xintuition/atom-classification` | Atom-services imports the default enhancement policy. Its processing handler runs the configured classifier and passes the classification into the enrichment stage. [Processing handler](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/services/atom-services/src/service/processing.ts) |
+| `@0xintuition/atom-enrichment` | The same handler calls `toClassifiedAtomInput` to prepare the provider input. A background enrichment worker uses Core’s shared runtime wrapper and persists results for the claimed atom. [Enrichment worker](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/services/workers/src/kg/atom-enrichment/index.ts) |
+| `@0xintuition/iid` | Workers call `inspectIntuitionId` to inspect an identifier. When IID reads are enabled, they also use the published IID registry for classifications and provider hints, and the IID ladder to evaluate identity candidates. [Inspection](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/services/workers/src/core/iid-inspection.ts) · [Registry adapter](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/services/workers/src/core/iid-registry.ts) · [Ladder adapter](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/services/workers/src/core/iid-ladder.ts) |
+
+### Find the Core-owned code
+
+Five private workspaces live under `packages/`. The `database-kg` workspace owns graph storage and delegates atom and triple ID derivation to the public IDs library. The `database-timescale` workspace supplies market read models and query helpers. The `contracts` workspace adapts published contract artifacts for deployment and indexer integration. The `types` workspace holds indexing scope configuration and shared type exports. The `atom-rules-engine` workspace contains standalone presentation rules with no active caller in Core’s runtime. [Workspace inventory](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/packages/README.md) · [Graph ID adapter](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/packages/database-kg/src/actions/ids.ts) · [Contract artifacts](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/docs/contracts.md)
+
+### Check what a build installs
+
+At this Core commit, 17 of the 21 libraries in the V2 package release appear in the root Bun lockfile. Each resolves to exactly one version matching the release. Sixteen use the version shown above for atom-runtime, and the remaining one resolves to `@0xintuition/protocol@4.0.0`. The four absent libraries are `@0xintuition/cli`, `@0xintuition/periphery`, `@0xintuition/react` and `@0xintuition/sdk`. Core also resolves the separately versioned contract artifact `@0xintuition/contracts-v2@1.1.0-alpha.1`. [Core lockfile](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/bun.lock) · [Public package release plan](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/release-plan.json)
+
+For a later checkout, compare **every** registry resolution for each release package in the lockfile’s `packages` map. Collect the full set of resolved versions per package so that a second version is visible. Count missing packages separately, and set aside local `workspace:` entries and separately published artifacts. The root and service manifests explain which workspace requested a dependency. The actual imports tell you which service calls it directly. [Root manifest](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/package.json) · [Atom-services manifest](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/services/atom-services/package.json) · [Workers manifest](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/services/workers/package.json)
+
+The Query API, worker and atom-services image builds copy the source tree and install from the root lockfile with `bun install --frozen-lockfile --production`. A frozen install requires the manifests and recorded dependency graph to agree. [API Dockerfile](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/docker/Dockerfile.api) · [Worker Dockerfile](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/docker/Dockerfile.workers) · [Atom-services Dockerfile](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/docker/Dockerfile.atom-services)
+
+To check package behavior in your fork, run these commands from the Core root with Bun and Node 22 or later available.
+
+```sh
+bun install --frozen-lockfile
+bun run test:conformance
+```
+
+The URI suite creates an isolated consumer from the installed dependencies. Node and Bun must produce identical output for nine creation vectors covering atom data and ordered URI contexts. Core checks those results against the committed fixture, including atom IDs and encoded contract calls. The IID tests use published conformance vectors and fixture providers. A pass covers those inputs. Running services, live providers and transaction submission require separate checks. [Conformance guide](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/docs/conformance.md) · [Consumer and fixtures](https://github.com/0xIntuition/intuition-core/tree/a402f880600f92969dc8fb013ca0f69fc9a02420/tests/conformance)
+
+## Related
+
+- [Core architecture](https://docs.intuition.systems/docs/core/architecture) follows one atom through storage and processing.
+- [Package reference](https://docs.intuition.systems/docs/reference/packages) lists the libraries available to applications and plugins.
+
+# Releases
+
+Source: https://docs.intuition.systems/docs/core/releases
+
+## Identify your Core source
+
+These guides cover the November 17, 2026 Core commit that moved the repository to the stable Intuition package versions. Fork or clone Core, select that commit and build its services from source. From your checkout, `git rev-parse HEAD` prints the full commit to compare with the one below. The checked-in bootstrap script installs the frozen dependency graph and starts the local stack. When reusing existing containers or images, follow the node guide’s explicit source-build steps. [Core README](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/README.md) · [Bootstrap script](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/scripts/bootstrap.sh) · [Run a node](https://docs.intuition.systems/docs/core/run-a-node)
+
+Core source: [`a402f880600f92969dc8fb013ca0f69fc9a02420`](https://github.com/0xIntuition/intuition-core/tree/a402f880600f92969dc8fb013ca0f69fc9a02420).
+
+## Read the release history
+
+| Source record | What it establishes |
+| --- | --- |
+| July 24, 2026 release candidate (rc.2) | The changelog records container verification and indexing smoke tests for that earlier release candidate. Its measurements and image identities apply to the July build. [Historical changelog](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/CHANGELOG.md) |
+| Unreleased section | This section records the October switch from local tarballs to published prerelease libraries, alongside later behavioral changes. To identify the versions selected on November 17, read the pinned lockfile. [Core lockfile](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/bun.lock) · [Workspace and npm dependency guide](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/packages/README.md) |
+| Solidity artifacts | The packages repository pins `@0xintuition/contracts-v2@1.1.0-alpha.1` and `@0xintuition/contracts-v2-periphery@1.1.0-alpha.0` for contract sources and compiled artifacts. Core’s service source has its own commit identity. [Contract artifact provenance](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/docs/contract-artifacts.md) |
+
+## Compare a later checkout
+
+1. Check ancestry in your fork with `git merge-base --is-ancestor a402f880600f92969dc8fb013ca0f69fc9a02420 HEAD`. Exit 0 means your checkout includes the documented commit. Use `git diff --stat a402f880600f92969dc8fb013ca0f69fc9a02420 HEAD` to see which files changed.
+2. Compare all npm resolutions in the new `bun.lock` against the package release you intend to use, including missing and duplicate versions. Inspect changes to migrations, service manifests and container build instructions. The lockfile fixes package inputs, while image builds also depend on their base images and system packages. Two builds from the same source can therefore produce different container bytes. [How Core uses the packages](https://docs.intuition.systems/docs/core/packages) · [API Dockerfile](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/docker/Dockerfile.api)
+3. Compare the selected revision’s `docs/openapi.yaml` with the document used by your clients. Refresh the saved API contract from that revision and check each method, path and response your client uses. Compare service configuration and Compose defaults at the same time. [Documented Query API contract](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/docs/openapi.yaml) · [Compose settings](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/docker-compose.yml)
+4. Check which capabilities your deployment uses. At the documented commit, chain indexing is optional, worker IID reads and resolution default to off, and the API’s semantic read fields require a separate opt-in. The conformance suite compares Node and Bun fixture outputs using installed packages. Live provider behavior and indexing a particular MultiVault deployment require checks against that environment. [Configuration guide](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/docs/configuration.md) · [Conformance coverage](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/docs/conformance.md)
+
+## Related
+
+- [Release notes](https://docs.intuition.systems/docs/community/release-notes) points to release records across Intuition.
+- [Query a Core node](https://docs.intuition.systems/docs/build/query-core) shows how to read the indexed graph from your own node.
+
+# Run your own node
+
+Source: https://docs.intuition.systems/docs/core/run-a-node
+
+Build a Core node from your fork and verify that it can serve an atom from the chain you choose.
+
+## Before you start
+
+Install Git, Docker with Compose v2, Bun 1.3.11, Node 20 or newer, and `curl`. Start the Docker daemon and leave at least 5 GiB free. The first build downloads packages and supporting images. The initial read checks use the default ports and public-read mode. [Core workspace](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/package.json) · [Bootstrap checks](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/scripts/bootstrap.sh)
+
+## Steps
+
+### 1. Fork and pin Core
+
+Fork [Intuition Core](https://github.com/0xIntuition/intuition-core/tree/a402f880600f92969dc8fb013ca0f69fc9a02420) into your account. Replace `YOUR_GITHUB_USERNAME` with the owner of your fork.
+
+```sh
+git clone https://github.com/YOUR_GITHUB_USERNAME/intuition-core.git
+cd intuition-core
+git remote add upstream https://github.com/0xIntuition/intuition-core.git
+git fetch upstream a402f880600f92969dc8fb013ca0f69fc9a02420
+git switch -c local-node a402f880600f92969dc8fb013ca0f69fc9a02420
+git rev-parse HEAD
+git branch --show-current
+```
+
+Before building, check that the last two commands print the full commit above and `local-node`. Run the remaining commands from the repository root.
+
+### 2. Build the services and check the data stores
+
+Use an isolated development machine for the default configuration. Compose publishes Postgres, TimescaleDB and Redis on host interfaces, and the database passwords are development defaults. Before startup on a shared or network-reachable host, bind the published ports to `127.0.0.1` in your fork and use credentials appropriate to that host. Services within Compose can still reach each other by service name. [Datastore port mappings](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/docker-compose.datastores.yml)
+
+```sh
+scripts/bootstrap.sh --no-start
+docker compose -f docker-compose.yml up -d --build
+COMPOSE_FILE=docker-compose.yml scripts/bootstrap.sh --skip-install
+docker compose -f docker-compose.yml ps -a
+curl -fsS http://localhost:3000/health
+curl -fsS http://localhost:3000/api/stats
+curl -fsS http://localhost:3000/api/predicates
+```
+
+Bootstrap creates `.env` if absent and installs the frozen Bun dependencies. Compose builds Core from the selected source. The final bootstrap call waits for the Query API. Expect the two database migration jobs to exit successfully, the health response to contain `"status":"ok"`, and the last requests to return JSON. A fresh graph can have zero atoms.
+
+The default stack runs a knowledge graph in Postgres, a Timescale event store, Redis, three workers for parsing, classification and enrichment, the Query API on 3000, and stateless atom services on 4010. The Explorer runs separately on 3100. Chain ingestion and projections start with the indexing profile. [Service definitions](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/docker-compose.yml) · [Datastore definitions](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/docker-compose.datastores.yml) · [Explorer startup](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/README.md#the-explorer)
+
+### 3. Select a deployment and enable indexing
+
+For a first atom on a chain you control, follow [Run a local devnet](https://docs.intuition.systems/docs/core/local-devnet). For an existing deployment, set these values in `.env` from its deployment record and RPC provider:
+
+| Setting | Value to supply |
+| --- | --- |
+| `INTUITION_RPC_URL` | RPC for that chain, reachable from the indexer container. |
+| `CHAIN_ID` | Numeric chain ID for that RPC and deployment. |
+| `MULTIVAULT_CONTRACT_ADDRESS` | MultiVault proxy that emitted the events you want. |
+| `MULTIVAULT_START_BLOCK` | Verified deployment block for that proxy to capture its full history, or a later start for a deliberately partial history. |
+| `MULTIVAULT_END_BLOCK` | Optional inclusive last block. Leave empty to follow the chain head. |
+
+Keep the RPC, chain ID, proxy and block range together. An example start block from another deployment on the same network can skip events. For a bounded check, choose a window containing a known `AtomCreated` receipt and keep its term ID.
+
+```sh
+docker compose -f docker-compose.yml --profile indexing up -d --build
+COMPOSE_FILE=docker-compose.yml scripts/bootstrap.sh --indexing --skip-install
+```
+
+For the default host ports, `make status` lists the services and `make logs SERVICE=indexer` follows ingestion logs. [Operator commands](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/Makefile)
+
+Use **one ingester** for a given store and scope. Compose provides Redis, but the pinned Rust indexer starts its event handlers without acquiring a Redis leader lock. [Ingestion startup](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/crates/rindexer-ingestion/src/main.rs) · [Event handlers](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/crates/rindexer-ingestion/src/handlers.rs)
+
+## Check the result
+
+Paste the term ID from the `AtomCreated` event into the prompt. The default public read requires no API key.
+
+```sh
+printf 'Term ID from the receipt: '
+read -r TERM_ID
+curl -fsS "http://localhost:3000/api/atoms/${TERM_ID}"
+```
+
+For a fresh on-chain atom, expect `data.id` to equal that term ID and `data.isOnchain` to be `true`. The indexer records the event in Timescale, then the core entities projection writes the public KG row. Parsing and enrichment can still be pending. A healthy API alone confirms access to the KG. Creating an off-chain atom through `POST /api/atoms` bypasses ingestion. [Core entities projection](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/crates/projections/src/projection/dual/core_entities.rs) · [Query a Core node](https://docs.intuition.systems/docs/build/query-core)
+
+## Troubleshooting
+
+On a 404, compare the receipt’s emitting contract and block with the configured window, then inspect indexer progress and projection checkpoints. An empty window produces no matching rows. A prior off-chain row at the same ID keeps its existing chain flag when the projection encounters the ID again. Check the receipt and stored event separately. [Troubleshooting](https://docs.intuition.systems/docs/core/troubleshooting)
+
+## Related
+
+[Configuration](https://docs.intuition.systems/docs/core/configuration) · [Scope what you index](https://docs.intuition.systems/docs/core/indexing-scope) · [Upstream node guide](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/docs/run-your-own-node.md)
+
+# Troubleshooting
+
+Source: https://docs.intuition.systems/docs/core/troubleshooting
+
+Locate the first failing stage between container startup, chain ingestion and the public graph response.
+
+## Before you start
+
+Work in your Core fork. Keep the Compose file, profiles, host ports and deployment record you used to start the node. For a missing atom, have its exact term ID, emitting proxy, transaction hash and receipt block ready. Keep credentials out of logs you share. [Run your own node](https://docs.intuition.systems/docs/core/run-a-node)
+
+## Steps
+
+### 1. Establish which processes are healthy
+
+```sh
+docker compose -f docker-compose.yml --profile indexing ps -a
+docker compose -f docker-compose.yml logs --tail=60 api migrate postgres-kg
+curl -fsS http://localhost:3000/health
+```
+
+Use your actual host port. The two migration jobs should finish with exit code 0. The API's `status: "ok"` proves it can query the KG. A 503 with `database: "unreachable"` directs you to the KG container, migration and API connection first. The default stack has no indexer or projections until you select the indexing profile. For a devnet, include `--profile devnet` when inspecting the chain and deployer. [Health handler](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/services/api/src/app.ts#L219-L227) · [Service dependencies](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/docker-compose.yml)
+
+| Symptom and observation | Smallest corrective action and expected result |
+| --- | --- |
+| Compose reports a host port is in use. | Identify the existing listener. If it should stay, change `API_HOST_PORT` or `ATOM_SERVICES_HOST_PORT` and recreate that service. Their container listeners stay 3000 and 4010. Worker ports have fixed Compose mappings; free the host port or edit its published side in your fork. Check the new host port. Bootstrap accepts `API_URL` for a remapped health check. |
+| Docker Desktop stopped and several services show exit 255 together. | Restart Docker, then repeat the source Compose startup with your original profiles and volumes. Check that migration jobs succeed and projections resume from their checkpoints. |
+| Rust services reject Postgres time zone UTC despite working application connections, especially after a disk filled. | Check free disk space and the affected database container's `/usr/share/zoneinfo/Etc/UTC`. Its first four bytes should be `TZif`. Zeroed bytes support an incomplete image extraction. Protect the database volumes, free space, stop the stack without deleting volumes, and re-pull the affected Timescale image after clearing the damaged image copy. Restart with the same profiles and verify the Rust connection. Both database services use that image. |
+
+Removing volumes deletes local database contents and, for a devnet, may delete chain state. Normal Compose shutdown preserves volumes. [Port mappings](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/docker-compose.yml) · [Database images](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/docker-compose.datastores.yml) · [Bootstrap health URL](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/scripts/bootstrap.sh) · [Startup failure symptoms](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/docs/troubleshooting.md)
+
+### 2. Follow a missing event from the chain to the KG
+
+```sh
+docker compose -f docker-compose.yml --profile indexing logs --tail=60 indexer projections
+curl -fsS http://localhost:9091/metrics
+curl -fsS http://localhost:9092/health/live
+```
+
+- **No ingester or no events.** Start one ingester with the indexing profile and source build. Check the RPC, chain ID, emitting proxy and block window against the receipt. A window containing no matching events yields no atom. One that reached its configured end can exit successfully. To follow the head, clear the end block and recreate the indexer. The pinned ingestion process has no Redis leader lock. [Ingestion startup](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/crates/rindexer-ingestion/src/main.rs) · [Bounded-range entrypoint](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/crates/rindexer-ingestion/entrypoint.sh)
+- **The client reports that the chain ID is missing.** Set `CHAIN_ID` in the running indexer’s environment as well as the rendered manifest. Recreate the container after correcting `.env`. The generated client reads that variable at startup and expects an integer. Verify that the indexer resumes recording progress. [Network client](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/crates/rindexer-ingestion/src/rindexer_lib/typings/networks.rs)
+- **The event exists but the API returns 404.** Verify the event's term ID, transaction and log coordinates in your event store. Check the `core_entities` projection is enabled and can reach the KG. In Timescale, inspect its `projection_checkpoints` record for the last block and sequence number. Once it catches up, a fresh on-chain atom should be active and public and appear at its exact ID. The API filters for both properties. [Projection checkpoints](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/crates/projections/src/resilience/checkpoint.rs) · [KG projection](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/crates/projections/src/projection/dual/core_entities.rs)
+- **The ID exists with `isOnchain: false` despite a receipt.** An off-chain row may have used the same bytes first. When an insert encounters an existing KG ID, it keeps that row, including its chain flag. Check the original receipt and indexed event separately. Use the [local devnet acceptance atom](https://docs.intuition.systems/docs/core/local-devnet) for a fresh end-to-end check. [KG insertion rule](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/crates/projections/src/projection/dual/core_entities.rs#L382-L400)
+
+### 3. Match permission errors to the right service
+
+For Query API requests, `401 api_key_required` means the operation needs a key, while `401 invalid_api_key` means the supplied credential failed validation. Supply a valid operator-issued bearer key for this node. For `403 api_key_not_writable`, use a key with write permission for the intended operation. Verify with an authorized request. Public-read allows anonymous graph reads; gated mode requires a key for those reads. Atom services on 4010 has a separately configured service bearer. [Query API access checks](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/services/api/src/app.ts#L134-L210) · [Service bearer configuration](https://docs.intuition.systems/docs/core/configuration#atom-services-and-provider-credentials)
+
+### 4. Check processing after the record appears
+
+Inspect `parseStatus`, `classificationStatus`, `enrichmentStatus` and the reason accompanying a skipped or failed enrichment. Use the following default host ports:
+
+```sh
+curl -fsS http://localhost:4110/healthz
+curl -fsS http://localhost:4112/healthz
+curl -fsS http://localhost:4111/healthz
+docker compose -f docker-compose.yml logs --tail=60 workers-enrichment
+```
+
+A skipped item can be correct for a plain string, an unmatched processing scope, an unavailable provider credential or disabled IID resolution. Check the input and recorded reason before changing configuration. A scope change leaves existing rows and artifacts in place. If a worker stopped during a stage, restore the worker and its KG connection. The stage claim can be recovered after its lease expires, subject to the attempt limit. Check for new stage progress and distinguish an exhausted attempt count from a missing process. [Worker settings](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/services/workers/src/shared/config.ts) · [Stage claims](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/packages/database-kg/src/actions/processing.ts) · [Enrichment decisions](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/services/workers/src/kg/atom-enrichment/index.ts)
+
+## Check the result
+
+Re-run the read or health check that first failed. For a newly indexed atom, compare the exact receipt term ID to the returned `data.id` and check `data.isOnchain`. Verify processing separately if your application needs classification or artifacts. [Query a Core node](https://docs.intuition.systems/docs/build/query-core)
+
+## Related
+
+[Configuration](https://docs.intuition.systems/docs/core/configuration) · [Scope what you index](https://docs.intuition.systems/docs/core/indexing-scope)
 
 # Schema-backed atom creation form
 
@@ -4893,6 +5804,12 @@ The following mapping comes from the version switcher's equivalence data. Other 
 | [Batch Operations](https://docs.intuition.systems/docs/v1/protocol/examples/batch-operations) | [Batch writes](https://docs.intuition.systems/docs/build/batch-writes) |
 | [Integrate FeeProxy](https://docs.intuition.systems/docs/v1/interaction-guide/fee-proxy-integration) | [Route writes through the FeeProxy](https://docs.intuition.systems/docs/build/fee-proxy) |
 | [React Integration](https://docs.intuition.systems/docs/v1/intuition-sdk/integrations/react) | [Use React hooks](https://docs.intuition.systems/docs/build/react) |
+| [Glossary](https://docs.intuition.systems/docs/v1/resources/glossary) | [Glossary](https://docs.intuition.systems/docs/reference/glossary) |
+| [Overview](https://docs.intuition.systems/docs/v1/intuition-node/overview) | [Intuition Core](https://docs.intuition.systems/docs/core) |
+| [Run an Intuition Node](https://docs.intuition.systems/docs/v1/intuition-node/run-an-intuition-node) | [Run your own node](https://docs.intuition.systems/docs/core/run-a-node) |
+| [Local Development Setup](https://docs.intuition.systems/docs/v1/intuition-node/local-setup) | [Run a local devnet](https://docs.intuition.systems/docs/core/local-devnet) |
+| [Portal (Explorer) Guide](https://docs.intuition.systems/docs/v1/portal) | [Ecosystem](https://docs.intuition.systems/docs/community/ecosystem) |
+| [Contribution Guidelines](https://docs.intuition.systems/docs/v1/contribution-guidelines) | [Contribute to the docs](https://docs.intuition.systems/docs/community/contributing) |
 
 Sources: [SDK migration](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/sdk/docs/migration.md), [protocol API](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/protocol/README.md).
 
@@ -5102,7 +6019,7 @@ An **atom** stores a chosen representation as bytes. Its **atom ID** identifies 
 | --- | --- | --- |
 | Build an application | [Derive an atom ID offline](https://docs.intuition.systems/docs/get-started/quickstart) | [A music catalog](https://docs.intuition.systems/docs/examples/music-catalog) with explicit recording, artist, and album relationships |
 | Build with agents | [Read the agent contract](https://docs.intuition.systems/docs/agents) | [Review action plans](https://docs.intuition.systems/docs/build/action-plans) before a human authorizes execution |
-| Run Core | [Query a Core node](https://docs.intuition.systems/docs/build/query-core) | Fork, pin, build, and run the source to own graph storage and reads |
+| Run Core | [Set up Intuition Core](https://docs.intuition.systems/docs/core) | [Query your node](https://docs.intuition.systems/docs/build/query-core) to read the graph your indexer maintains |
 | Extend processing | [Classify and enrich inputs](https://docs.intuition.systems/docs/build/classify-enrich) | [Write a classification plugin](https://docs.intuition.systems/docs/core/classification-plugin) for your domain |
 
 You can build identities and triples offline before choosing a wallet or backend. Processing, persistence, protocol submission, and indexing each have their own lifecycle; [How the pieces fit](https://docs.intuition.systems/docs/get-started/how-it-fits) explains the boundaries.
@@ -5112,7 +6029,7 @@ You can build identities and triples offline before choosing a wallet or backend
 - [Concepts](https://docs.intuition.systems/docs/concepts) introduces representations, directed relationships, and protocol writes.
 - [Build guides](https://docs.intuition.systems/docs/build) cover tasks from modeling an identity to verifying a write.
 - [Worked examples](https://docs.intuition.systems/docs/examples) walk through creation forms, identity links, React integration, and graph queries.
-- [Packages](https://docs.intuition.systems/docs/reference/packages) covers every published library; the [SDK reference](https://docs.intuition.systems/docs/reference/sdk) lists action signatures.
+- [Reference](https://docs.intuition.systems/docs/reference) lists package entry points, SDK signatures, service APIs, deployments and identifier catalogs.
 - [Install agent skills](https://docs.intuition.systems/docs/agents/skills) for contract-level guidance, or [get help](https://docs.intuition.systems/docs/community).
 
 ## Versions and source
@@ -5124,6 +6041,111 @@ Core is a source application you fork, build, and run. These docs describe [Core
 The [V1 documentation](https://docs.intuition.systems/docs/v1) covers the `intuition-ts` packages and `intuition-rs` services. For agents, use the [V1 documentation index](https://docs.intuition.systems/docs/v1/llms.txt). Start with [Migrate from V1](https://docs.intuition.systems/docs/get-started/migrate-from-v1) when moving an integration.
 
 Source: [Package concepts and application patterns](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/README.md#core-concepts).
+
+# Atom services API
+
+Source: https://docs.intuition.systems/docs/reference/atom-services-api
+
+Core’s atom service classifies input over HTTP and can run enrichment plugins against the result. It listens on `http://localhost:4010` in the default Core stack. Processing is stateless by default. To build and start the service from your fork, see [Run a Core node](https://docs.intuition.systems/docs/core/run-a-node). To retrieve records already indexed by your node, see [Query a Core node](https://docs.intuition.systems/docs/build/query-core).
+
+## Access and request errors
+
+Send POST bodies as `application/json`. The four processing routes and the batch status route allow anonymous access unless the service receives `ATOM_SERVICES_AUTH_TOKEN`. When configured, send the operator-supplied value as `Authorization: Bearer <token>`. The stock Compose file does not forward this variable automatically. Operators using Compose must pass it into the atom-services container to enable the gate. Health, readiness and metrics are public and exempt from request throttling. [Service authentication](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/services/atom-services/src/middleware/auth.ts) · [Compose configuration](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/docker-compose.yml)
+
+A request failure returns `ok: false` and an `error` object with `code`, `message` and optional `details` and `requestId`. For example, a gated request with a missing or incorrect token returns HTTP 401.
+
+```json
+{
+  "ok": false,
+  "error": {
+    "code": "UNAUTHORIZED",
+    "message": "Missing or invalid bearer token.",
+    "requestId": "example-request"
+  }
+}
+```
+
+HTTP 400 with `INVALID_JSON` means the body could not be decoded. With `VALIDATION_ERROR`, the JSON was readable but failed the request schema. Look in `error.details.issues` for the affected field. HTTP 429 with `RATE_LIMITED` includes a `retry-after` delay in seconds. HTTP 500 with `INTERNAL_ERROR` signals an unexpected service error.
+
+## Processing a single input
+
+### `POST /v1/classify`
+
+Use this when you have raw input and want its classification. Send the string in `input` (1–10,000 UTF-16 code units). Optional fields include `mode`, `inputIntent`, `classificationSessionId`, `pluginIds`, `policy` and `clientHints`. The defaults are `progressive` mode and `generic` intent.
+
+```json
+{"input":"Archive catalogue"}
+```
+
+HTTP 200 returns the classification result directly. It includes `ok: true`, a `classificationSessionId`, and a `status` of `placeholder`, `partial` or `complete`. Depending on the result, `classification`, `resolved` and `resolverErrors` can supply more detail. [Classification request and result schemas](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/atom-classification/src/types.ts)
+
+### `POST /v1/enrich`
+
+Use this when classification has already identified the atom. Supply `input.atomType`, the classification engine and timestamp under `input.source`, and either `input.jsonLd` or a canonical `input.identifier`. The following request body describes an already classified Thing.
+
+```json
+{
+  "input": {
+    "atomType": "thing",
+    "jsonLd": {"@context": "https://schema.org", "@type": "Thing", "name": "Archive catalogue"},
+    "source": {"classificationEngine": "local", "classifiedAt": "2026-01-01T00:00:00Z"}
+  }
+}
+```
+
+An optional `enrichment` object selects a `preset`, `plugins` or `artifactClasses` and can set `concurrency`, `timeoutMs` or `traceId`. HTTP 200 returns an enrichment result with `status` (`success`, `partial` or `failed`), `artifacts`, `errors`, `skipped`, `timings` and an optional `traceId`. A skipped plugin has a `pluginId` and a `reason`. For a partial result, inspect both the artifacts produced and the plugin errors before deciding whether to retry. [Classified input and enrichment result schemas](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/atom-enrichment/src/types.ts)
+
+### `POST /v1/process`
+
+Use this to classify raw input and enrich it in one request. Send `rawInput` (a string of 1–10,000 UTF-16 code units) with optional `classification`, `enrichment`, `traceId` and `persistence` fields.
+
+```json
+{"rawInput":"Archive catalogue","classification":{"mode":"progressive"}}
+```
+
+HTTP 200 returns `runId`, `mode: "process"`, overall `status`, the `classification` result, nullable `enrichment`, `timings`, `observability`, `persistence` and an optional `traceId`. Use the stage results to interpret the overall status.
+
+- If `enrichment` is null, classification produced no input suitable for the enrichment step. The overall run can still succeed if classification completed.
+- If classification is incomplete or an enrichment run finishes partially or fails, process reports `partial`. Inspect the classification and any enrichment diagnostics.
+- If classification completes and enrichment reports `success`, process reports `success`. Read the artifacts array to see what the plugins actually returned.
+
+By default, `persistence.status` is `not_requested`. To hand a result to storage, request `persistence.enabled: true` on a service that has persistence enabled and an adapter configured. Otherwise the request returns HTTP 400 with `PERSISTENCE_NOT_AVAILABLE`. Check the persistence status separately from the processing status. [Processing outcomes](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/services/atom-services/src/service/processing.ts) · [Persistence handoff](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/services/atom-services/src/service/persistence.ts)
+
+## Submitting and polling a batch
+
+### `POST /v1/process/batch`
+
+Send a `jobs` array of process request bodies. The schema accepts 1–200 jobs. The service also enforces `ATOM_SERVICES_BATCH_MAX_ITEMS`, which defaults to 25. A batch within the schema limit but above the configured cap returns HTTP 400 with `BATCH_LIMIT_EXCEEDED`. The persistence requirement applies to each job.
+
+```json
+{"jobs":[{"rawInput":"Archive catalogue"},{"rawInput":"Library index"}]}
+```
+
+HTTP 202 acknowledges submission. For example, a two-item batch returns an object like this.
+
+```json
+{"jobId":"batch-example","status":"accepted","submittedAt":"2026-01-01T00:00:00Z","total":2}
+```
+
+### `GET /v1/process/batch/:jobId`
+
+Replace `:jobId` with the ID from your own submission. HTTP 200 returns `jobId`, `status`, `submittedAt`, `total`, `completed` and `results`, with `startedAt` and `finishedAt` as available. Poll while the status is `queued` or `running`. The terminal states are `complete`, `partial` and `failed`. Each item identifies its original index and contains a status and a response, or a null response with an error if execution threw.
+
+The service keeps jobs in process memory. A restart loses them, and new submissions can clear completed jobs past the retention period (one hour by default). An unknown, expired or lost ID returns HTTP 404 with `BATCH_JOB_NOT_FOUND`. [Batch storage and status transitions](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/services/atom-services/src/service/batch-store.ts)
+
+## Checking service health
+
+### `GET /health`
+
+Takes no parameters. HTTP 200 returns JSON with `ok: true`, `service: "atom-services"`, `status: "healthy"`, `timestamp` and `uptimeMs`. Use this to check that the process responds.
+
+### `GET /ready`
+
+Takes no parameters. HTTP 200 with `status: "ready"` means the preset registry and persistence readiness checks passed. HTTP 503 with `status: "degraded"` means a readiness check failed. Both responses include `ok`, `service`, `timestamp`, `dependencies`, `presets` and `warnings` to help the operator identify the condition.
+
+### `GET /metrics`
+
+Takes no parameters. HTTP 200 returns plain text in Prometheus exposition format. Use it to collect service metrics, including HTTP request counts. [Service handlers](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/services/atom-services/src/app.ts) · [Request and response contracts](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/services/atom-services/src/contracts.ts)
 
 # Compatibility
 
@@ -5473,6 +6495,287 @@ System utilization determines the epoch emissions available for distribution. Th
 `claimRewards(recipient)` claims for the caller and sends the reward to the specified nonzero recipient. During epoch 8, for example, it can claim epoch 7 once. There is no claim during epoch 0 and no parameter to claim an older missed epoch. A successful claim emits `RewardsClaimed(user, recipient, amount)`. The SDK exposes `trustBondingGetClaimActionState` for applications deciding whether to show the claim action.
 
 [TrustBonding implementation](https://github.com/0xIntuition/intuition-contracts-v2/blob/82cfcdb832c100fd2e53ee3f474289ae14cc6020/src/protocol/emissions/TrustBonding.sol) · [Lock accounting](https://github.com/0xIntuition/intuition-contracts-v2/blob/82cfcdb832c100fd2e53ee3f474289ae14cc6020/src/external/curve/VotingEscrow.sol) · [Protocol wrappers](https://github.com/0xIntuition/packages/tree/4e9af1373b81a453d16bc650983138e35afb97d1/packages/protocol/src/core/trustbonding) · [SDK actions](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/sdk/src/actions/trust-bonding.ts)
+
+# Core Query API
+
+Source: https://docs.intuition.systems/docs/reference/core-query-api
+
+The Query API serves the knowledge graph on your own Core node. Its default address is `http://localhost:3000`. Two write operations also let you add off-chain atoms and triples. To build the service from the pinned source and make your first indexed read, see [Run a Core node](https://docs.intuition.systems/docs/core/run-a-node) and [Query a Core node](https://docs.intuition.systems/docs/build/query-core).
+
+## Access and errors
+
+The node operator sets `API_AUTH`. In the default `public-read` mode, reads are anonymous and writes require a writable key. In `gated` mode, ordinary reads also require a valid key. Health and schema discovery allow anonymous requests in every mode. In `open` mode, the operator permits anonymous reads and writes.
+
+Send a Query API key in `Authorization: Bearer <key>`. The service recognizes keys with the `ik_` prefix. A recognized key that is unknown or revoked returns HTTP 401 with `invalid_api_key`, even on a public path. The service treats other bearer formats as absent. For example, an anonymous request to list atoms on a gated node returns HTTP 401 with this body.
+
+```json
+{"error":"api_key_required"}
+```
+
+Supply a valid key for that node. If a write returns HTTP 403 with `api_key_not_writable`, the key is valid but lacks write permission. Query errors have an `error` string and may include a `message`. Outside the health probe, HTTP 429 with `rate_limited` supplies a `retry-after` delay in seconds. HTTP 500 with `internal_error` indicates a server failure. [Access control and handlers](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/services/api/src/app.ts) · [Bearer key format](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/services/api/src/auth.ts)
+
+## Health and schema discovery
+
+### `GET /health`
+
+Checks API access to its database. Takes no parameters. HTTP 200 returns `{"status":"ok"}`. HTTP 503 returns `{"status":"degraded","database":"unreachable"}`. A healthy service can still be catching up on chain data.
+
+### `GET /api/schema`
+
+Returns metadata for base tables in the local `kg` database schema. Takes no parameters. The HTTP 200 body contains `data.schema` (always `kg`), `data.generatedAt` and `data.tables`. Each table describes its columns, primary key, foreign keys, constraints and indexes.
+
+## Reading atoms, triples and graph activity
+
+These reads use the node's ordinary read permissions. A paginated response contains a `data` array and `pagination` with `limit`, `offset` and `count`. Use a page size from 1 to 100 (default 25) and a nonnegative offset (default 0). The count is the number of rows returned on this page. To request another full page, advance the offset by the page size.
+
+### `GET /api/atoms`
+
+Lists active public atoms, newest first. Use `classification_type` to filter by classification, `q` for a text search, and `limit` and `offset` to page. HTTP 200 returns atom summaries with the ID, creation time, raw type, resolved data, classification type and separate parse, classification and enrichment statuses. This search asks for up to two matching atoms.
+
+```sh
+curl -sS 'http://localhost:3000/api/atoms?q=archive&limit=2&offset=0'
+```
+
+If this node has no matching public atoms, HTTP 200 returns an empty page.
+
+```json
+{"data":[],"pagination":{"limit":2,"offset":0,"count":0}}
+```
+
+Here the zero count applies only to this search. Omit `q` to see whether the node has other public atoms.
+
+### `GET /api/atoms/{id}`
+
+Supply an atom's protocol ID in the path. HTTP 200 returns one atom under `data`, including processing details and graph-degree `stats`, which can be null. HTTP 404 with `not_found` means no matching atom is visible. The `isOnchain` flag describes the stored row. An atom first created off-chain can retain `false` when a later chain projection encounters that ID. Check the transaction receipt and event for chain creation, the projection checkpoint for indexing progress, and the atom's stage fields for processing. [Core projection](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/crates/projections/src/projection/dual/core_entities.rs)
+
+### `GET /api/atoms/{id}/triples`
+
+Supply an atom ID to find visible triples where it occupies any of the three positions. HTTP 200 returns a page of triples, including an empty page when none match. Accepts `limit`, `offset` and `expand=terms`. Expansion adds `subject`, `predicate` and `object` summaries with ID, data, classification type and raw type. A term whose atom is unavailable in the public view yields a null summary.
+
+### `GET /api/atoms/{id}/artifacts`
+
+Supply an atom ID and optional `limit` and `offset`. HTTP 200 returns a page of enrichment artifacts, including their kind, version, status, source URI, data, extracted fields and error where available. A visible atom can have an empty artifact page. HTTP 404 with `not_found` means the atom itself is unavailable.
+
+### `GET /api/triples`
+
+Lists active public triples. Combine `subject_id`, `predicate_id` and `object_id` to filter specific positions. Use `limit`, `offset` and optional `expand=terms`. HTTP 200 returns a page of triple records with their own ID and the ordered `subjectId`, `predicateId` and `objectId` fields.
+
+### `GET /api/triples/{id}`
+
+Supply a triple ID to fetch a single visible triple. HTTP 200 returns the record under `data`. Use `expand=terms` for the same three term summaries available on lists. HTTP 404 with `not_found` means no matching triple is visible.
+
+### `GET /api/events`
+
+Reads the public graph activity feed, newest first. Filter by `entity_kind` (`node`, `triple`, `predicate` or `artifact`), `event_type` or `entity_id`. Page with `limit` and `offset`. HTTP 200 returns a page of events with the time, kind, type, entity ID and payload. Both off-chain and on-chain activity can appear.
+
+### `GET /api/predicates`
+
+Lists the predicate registry in slug order. Takes no parameters. HTTP 200 returns only `data`, an array of predicate records. Each includes an ID, string `slug` and `label`, and a `description` field whose value can be null.
+
+### `GET /api/stats/pipeline`
+
+Counts public atoms by processing stage and status. Takes no parameters. HTTP 200 returns `data.parse`, `data.classification` and `data.enrichment`, each mapping observed statuses to counts.
+
+### `GET /api/stats`
+
+Takes no parameters. HTTP 200 returns integer counts under `data.atoms`, `data.triples`, `data.accounts` and `data.predicates`. The first two count active public records on this node.
+
+## Writing off-chain records
+
+Both operations accept JSON and use the node's write permissions. They create or find records in the local knowledge graph without signing a transaction or minting an on-chain term. HTTP 201 means newly created and HTTP 200 means already present. Both return `data.id`, `data.created` and `data.createdBy`. The last field identifies the submitting key's account, or is null for an anonymous write.
+
+### `POST /api/atoms`
+
+Send one `input` string containing text, a URL or serialized JSON. The string must contain a non-whitespace character and fit within 64,000 UTF-16 code units. This example request body represents a JSON document as a string.
+
+```json
+{"input":"{\"name\":\"Archive catalogue\"}"}
+```
+
+Submitting the same input bytes derives the same atom ID. Malformed JSON returns HTTP 400 with `invalid_json`. A missing, blank or non-string input returns HTTP 400 with `invalid_input`. An oversized input returns HTTP 413 with `input_too_large`.
+
+### `POST /api/triples`
+
+Supply an object with three string fields. Put the ID of the entity the claim describes in `subject_id`, the relationship's term ID in `predicate_id`, and the target's term ID in `object_id`. Use existing term IDs from your node, each `0x` followed by 64 hexadecimal digits. This same ordered triple of IDs derives the same triple ID each time. HTTP 400 indicates malformed JSON (`invalid_json`), a missing or empty field (`invalid_input`), or a malformed term ID (`invalid_term_id`).
+
+The complete request and response schemas are in the [pinned Query API specification](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/docs/openapi.yaml).
+
+# Glossary
+
+Source: https://docs.intuition.systems/docs/reference/glossary
+
+A recording can have an IID that names it, an atom ID that identifies its stored bytes, and a triple ID for a claim about its artist. Look up the term you have to see what it identifies and what you can infer from it.
+
+## A–D
+
+| Term | Meaning |
+| --- | --- |
+| [Atom](https://docs.intuition.systems/docs/concepts/atoms) | A unit of graph data with its own ID. A catalog can make the recording and the artist separate atoms so other entries can refer to each one. |
+| [Atom classification](https://docs.intuition.systems/docs/concepts/atom-classification) | A plugin recognizes a pattern in an input. An eligible resolver can then return a type, fields and evidence for that interpretation. Recognizing a music link can leave the particular recording unresolved. |
+| [Atom ID](https://docs.intuition.systems/docs/concepts/deterministic-ids) | A 32-byte identifier derived from the exact atom data. Two callers supplying the same bytes get the same ID, even before either writes to a chain. |
+| [Atom parsing](https://docs.intuition.systems/docs/concepts/atom-parsing) | The step that preserves the raw input and identifies what form it takes, such as text, a URL or an IID candidate. A candidate can still fail validation. |
+| [Atom runtime](https://docs.intuition.systems/docs/concepts/atom-runtime) | The host’s configured classification and enrichment engines. Applications use the runtime to process inputs with their chosen plugins and provider settings. |
+| [Bonding curve](https://docs.intuition.systems/docs/concepts/bonding-curves) | The rule that converts an asset deposit to shares or a share redemption to assets at a vault’s current state. |
+| [Canonical form](https://docs.intuition.systems/docs/concepts/iid-schemes) | The spelling a scheme produces for an accepted identifier. Different input spellings can produce the same canonical bytes. |
+| [Chain event](https://docs.intuition.systems/docs/concepts/indexing-and-querying) | A record emitted by a contract when it executes, such as an atom creation event. A Core indexer can store the event before a projection has added the atom to the graph. |
+| [Claim](https://docs.intuition.systems/docs/concepts/triples) | A statement expressed by an ordered subject, predicate and object. Evidence for the statement can refer to that particular triple ID. |
+| [Classification](https://docs.intuition.systems/docs/concepts/classifications) | A definition of an entity kind, such as a music recording. It supplies a stable slug, a type and fields, and can specify how to derive an identifier. |
+| [Counter-triple](https://docs.intuition.systems/docs/concepts/triples) | The term for opposition to a particular triple. It has its own ID and keeps the original subject, predicate and object in their original order. |
+| [Creation Profile](https://docs.intuition.systems/docs/concepts/classifications) | The fields and suggested relationships an application can offer when someone creates an entity of a particular kind. |
+| [Deposit](https://docs.intuition.systems/docs/concepts/vaults) | A payment of native assets into a vault that issues shares to a receiver. The receiver can be a different account from the sender. |
+| [Deterministic ID](https://docs.intuition.systems/docs/concepts/deterministic-ids) | An ID anyone can reproduce by applying the same rule to the same inputs. Triple IDs depend on the order of their three component IDs. |
+
+## E–P
+
+| Term | Meaning |
+| --- | --- |
+| [Enrichment](https://docs.intuition.systems/docs/concepts/enrichment) | Adding sourced information to a classified entity. A provider’s record can supply an artist credit, for example, and the application can keep the source alongside the extracted field. |
+| [Epoch](https://docs.intuition.systems/docs/concepts/fees-and-rewards) | A time interval defined by the emissions controller. TrustBonding uses bonded balances and utilization to determine rewards for a completed epoch. |
+| [Identity ladder](https://docs.intuition.systems/docs/concepts/identity-ladder) | An entity type’s ordered ways of identifying one of its members. Choose the strongest rung for which you have all required, valid inputs. |
+| [IID (Intuition Identifier)](https://docs.intuition.systems/docs/concepts/iid) | A name of the form `int:<scheme>:<value>` for an entity under a scheme’s rules. Several atom payloads can carry the same IID. |
+| [IID registry](https://docs.intuition.systems/docs/concepts/iid-registry) | The canonical list of admitted schemes and their rules. The registry package also maps supported IIDs to classification hints and potential enrichment providers. |
+| [Indexing](https://docs.intuition.systems/docs/concepts/indexing-and-querying) | Recording chain events for a Core node to process. A confirmed write can appear in the node’s graph after the transaction receipt arrives. |
+| [MultiVault](https://docs.intuition.systems/docs/concepts/protocol-writes) | The contract that accepts atom and triple creations and vault operations on a deployment. A signed transaction can change its state. |
+| [Nested triple](https://docs.intuition.systems/docs/concepts/triples) | A claim that uses an existing triple ID as one of its components. A source attribution can use the artist-credit triple as its subject. |
+| [Object](https://docs.intuition.systems/docs/concepts/triples) | The third term in a claim. In “recording, by artist, Mira,” Mira’s term ID occupies the object slot. |
+| [Position](https://docs.intuition.systems/docs/concepts/vaults) | An account’s share balance for one term and bonding curve on one deployment. |
+| [Predicate](https://docs.intuition.systems/docs/concepts/predicates) | The relation between the subject and object. A registry key such as `byArtist` selects a definition whose atom ID goes in the middle of the triple. |
+| [Projection](https://docs.intuition.systems/docs/concepts/indexing-and-querying) | The step that turns a Core node’s recorded chain events into graph records. Once a node has projected an atom creation event, a reader can look up the atom through that self-hosted node’s [Query API](https://docs.intuition.systems/docs/build/query-core). |
+| [Protocol fee](https://docs.intuition.systems/docs/concepts/fees-and-rewards) | A charge MultiVault applies under the deployment’s fee configuration. An operation can also have entry, exit or other fees. |
+| [Protocol write](https://docs.intuition.systems/docs/concepts/protocol-writes) | A transaction that changes on-chain state when it succeeds. A local action plan describes the intended write, and a receipt records its execution outcome. |
+
+## R–V
+
+| Term | Meaning |
+| --- | --- |
+| [Receipt](https://docs.intuition.systems/docs/concepts/protocol-writes) | The chain’s record of a transaction’s execution, including its status and emitted logs. A transaction hash lets you track the submission before you have that outcome. |
+| [Redemption](https://docs.intuition.systems/docs/concepts/vaults) | Burning shares in a particular vault to receive native assets after applicable fees. |
+| [Representation profile](https://docs.intuition.systems/docs/concepts/representation-profiles) | The choice of bytes an atom uses to carry an IID. P0 uses the bare identifier, P1 includes identity context, and P2 allows descriptive data. Different payloads for one IID can produce different atom IDs. |
+| [sameAs](https://docs.intuition.systems/docs/concepts/same-as) | A predicate asserting that two atoms refer to the same real-world entity. Each atom retains its own bytes, ID and history. |
+| [Schema.org vocabulary](https://docs.intuition.systems/docs/concepts/schema-org) | Shared definitions of types and properties. For a recording, an application can look up what `MusicRecording` means and which properties it inherits. |
+| [Scheme](https://docs.intuition.systems/docs/concepts/iid-schemes) | The part of an IID that determines what its value identifies, which inputs are valid and how to spell the result. |
+| [Share](https://docs.intuition.systems/docs/concepts/vaults) | A unit a vault issues on deposit and burns on redemption. To estimate its value in assets, use that specific vault and curve. |
+| [Signal (stake)](https://docs.intuition.systems/docs/concepts/signals) | Economic weight behind a term, visible through a vault position. A deposit can support a claim or its counter-side. Evaluating the claim’s truth requires evidence of its own. |
+| [Subject](https://docs.intuition.systems/docs/concepts/triples) | The first term in a claim. In “recording, by artist, Mira,” the recording’s term ID occupies the subject slot. |
+| [Term](https://docs.intuition.systems/docs/concepts/vaults) | An atom or a triple that the protocol can reference by ID. A term can have vaults on more than one curve. |
+| [Triple](https://docs.intuition.systems/docs/concepts/triples) | An ordered subject, predicate and object that together express one claim. The triple has its own ID, so another triple can refer to that claim. |
+| [Vault](https://docs.intuition.systems/docs/concepts/vaults) | The assets and shares MultiVault accounts for under one term ID and one curve ID. A different curve on the same term has separate balances. |
+
+# IID scheme catalog
+
+Source: https://docs.intuition.systems/docs/reference/iid-schemes
+
+Applies to V2 · `@0xintuition/iid-spec` 0.1.0 · `@0xintuition/iid` 0.1.0
+
+An IID scheme tells you what a value identifies and which spellings count as the same identifier. For example, the Wikidata scheme accepts `q42` and returns `int:wd:Q42`. It rejects `Q042` because leading zeros are invalid. A successful check gives you a name you can compare byte for byte. To establish that this Wikidata item describes the person in your catalog, you still need evidence connecting the two records. [Wikidata scheme and examples](https://github.com/0xIntuition/intuition-identifier/blob/3e593247c0e7cb168b37368937167ed146d3868a/schemes/wd.md#test-vectors)
+
+## Read a scheme row
+
+Use **Identifies** to choose the kind of thing you have. An ISRC names a recording, while an ISWC names a musical work. The arrow shows one accepted input and the complete canonical IID. The normalization column summarizes the rule. Follow the scheme name for the full algorithm and rejection cases. The canonical registry has 26 schemes, with 15 in Class A, 10 in Class B and one in Class C. [Canonical registry](https://github.com/0xIntuition/intuition-identifier/blob/3e593247c0e7cb168b37368937167ed146d3868a/registry.json) · [170 canonical test vectors](https://github.com/0xIntuition/intuition-identifier/blob/3e593247c0e7cb168b37368937167ed146d3868a/test-vectors.json)
+
+**Class** tells you where the identity comes from. In Class A, an authority assigns a value. In Class B, the entity has an intrinsic identifying key. In Class C, a recipe derives the value from available facts. **Typing** asks whether the scheme and value tell you the entity type. A bare P0 anchor stores just the IID text. The canonical specification requires both Class A or B and unambiguous typing for P0. A plain `int:wd:Q42` has Class A, but a QID alone leaves the type open, so its atom needs at least P1 identity context. [IID spec §3.2](https://github.com/0xIntuition/intuition-identifier/blob/3e593247c0e7cb168b37368937167ed146d3868a/spec/03-identity-classes.md#32-the-three-classes) · [IID spec §7.2](https://github.com/0xIntuition/intuition-identifier/blob/3e593247c0e7cb168b37368937167ed146d3868a/spec/07-representation-profiles.md#72-the-profiles) · [IID spec §7.3](https://github.com/0xIntuition/intuition-identifier/blob/3e593247c0e7cb168b37368937167ed146d3868a/spec/07-representation-profiles.md#73-scheme-typing)
+
+Both sources define strong and weak `acct` values. A strong value such as `int:acct:x:295218901` names a platform’s stable account ID and can anchor at P0. A weak value such as `int:acct:github:@torvalds` names whoever holds that handle. The package sets a P1 minimum for weak handles because a platform can reassign them. The canonical bytes stay the same. [Canonical account scheme](https://github.com/0xIntuition/intuition-identifier/blob/3e593247c0e7cb168b37368937167ed146d3868a/schemes/acct.md) · [Packaged eligibility amendment](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/iid-spec/spec/09-registry-governance.md#97-pre-publication-amendments)
+
+The package also accepts typed values within `wd`. A plain QID still needs P1. A value with an active type binding, such as `human:Q42`, can anchor at P0. Dormant bindings are for parsing only. The package adds three whole schemes in Class D, `apple-podcasts`, `letterboxd` and `podcast-index`. Every accepted value in those schemes identifies a typed item in a provider’s catalog and requires at least P1. [Packaged Wikidata scheme](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/iid-spec/schemes/wd.md) · [Packaged provider-local rules](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/iid-spec/spec/09-registry-governance.md#97-pre-publication-amendments)
+
+The packaged text omits canonical §7.8, which separates identity bytes from companion metadata. Chapters 00, 01, 04, 05 and 09 also differ. Use the canonical chapters when implementing the specification and the package documents when predicting what the published library accepts. [IID spec §7.8](https://github.com/0xIntuition/intuition-identifier/blob/3e593247c0e7cb168b37368937167ed146d3868a/spec/07-representation-profiles.md#78-the-atom-creation-model-data-and-companion-metadata) · [Packaged representation profiles](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/iid-spec/spec/07-representation-profiles.md)
+
+## Scheme lookup
+
+### Canonical schemes
+
+| Scheme | Class | Identifies | Input → canonical IID | Normalization |
+| --- | --- | --- | --- | --- |
+| [acct](https://github.com/0xIntuition/intuition-identifier/blob/3e593247c0e7cb168b37368937167ed146d3868a/schemes/acct.md#canonicalization) | B | a platform account: strong form platform:userId, weak form platform:@handle | `X:295218901` → `int:acct:x:295218901` | Lowercase the platform. Preserve strong user IDs byte-for-byte and apply NORM-1 to weak handles. |
+| [appid](https://github.com/0xIntuition/intuition-identifier/blob/3e593247c0e7cb168b37368937167ed146d3868a/schemes/appid.md#canonicalization) | B | a mobile app per store ecosystem | `IOS:com.Apple.Music` → `int:appid:ios:com.apple.music` | Lowercase the store and native app ID. Accept the ios and android stores. |
+| [caip10](https://github.com/0xIntuition/intuition-identifier/blob/3e593247c0e7cb168b37368937167ed146d3868a/schemes/caip10.md#canonicalization) | B | a blockchain account or contract (CAIP-10) | `eip155:1:0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045` → `int:caip10:eip155:1:0xd8da6bf26964af9d7eed9e03e53415d37aa96045` | Lowercase a 40-hex-digit EVM address for eip155. Preserve address case in other namespaces. |
+| [caip19](https://github.com/0xIntuition/intuition-identifier/blob/3e593247c0e7cb168b37368937167ed146d3868a/schemes/caip19.md#canonicalization) | B | an on-chain asset (CAIP-19) | `eip155:1/erc20:0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48` → `int:caip19:eip155:1/erc20:0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48` | Lowercase a 40-hex-digit EVM asset address on eip155. Preserve other asset references. |
+| [doi](https://github.com/0xIntuition/intuition-identifier/blob/3e593247c0e7cb168b37368937167ed146d3868a/schemes/doi.md#canonicalization) | A | a registered digital object: article, dataset, or film | `https://doi.org/10.48550/ARXIV.1706.03762` → `int:doi:10.48550/arxiv.1706.03762` | Remove the DOI resolver URL and any doi: prefix, then lowercase the DOI. |
+| [eidr](https://github.com/0xIntuition/intuition-identifier/blob/3e593247c0e7cb168b37368937167ed146d3868a/schemes/eidr.md#canonicalization) | A | a film or TV work | `https://doi.org/10.5240/1F2A-E1C5-680A-14C6-E76B-I` → `int:eidr:10.5240/1F2A-E1C5-680A-14C6-E76B-I` | Remove the DOI resolver URL, uppercase the EIDR and validate its grouped shape. |
+| [gen1](https://github.com/0xIntuition/intuition-identifier/blob/3e593247c0e7cb168b37368937167ed146d3868a/schemes/gen1.md#canonicalization) | C | the set of facts it was derived from, namespaced by entity type | `"  movie:r4:fb681afe7d438cad73ae90a70f1cc55a  "` → `int:gen1:movie:r4:fb681afe7d438cad73ae90a70f1cc55a` | Trim outer whitespace and validate the derived type, revision and lowercase 32-digit hex digest. |
+| [geo](https://github.com/0xIntuition/intuition-identifier/blob/3e593247c0e7cb168b37368937167ed146d3868a/schemes/geo.md#canonicalization) | B | a geohash cell of the Earth's surface | `9Q8YYK8Y` → `int:geo:9q8yyk8y` | Trim and lowercase the geohash. Check its alphabet and length of 1 to 12 characters. |
+| [gtin](https://github.com/0xIntuition/intuition-identifier/blob/3e593247c0e7cb168b37368937167ed146d3868a/schemes/gtin.md#canonicalization) | A | a trade item (product model) | `036000291452` → `int:gtin:00036000291452` | Remove spaces, hyphens and dots. Pad an 8-, 12-, 13- or 14-digit GTIN to 14 digits and check its GS1 check digit. |
+| [hash](https://github.com/0xIntuition/intuition-identifier/blob/3e593247c0e7cb168b37368937167ed146d3868a/schemes/hash.md#canonicalization) | B | content by cryptographic digest of its bytes | `sha256:9F86D081884C7D659A2FEAA0C55AD015A3BF4F1B2B0B822CD15D6C15B0F00A08` → `int:hash:sha256:9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08` | Lowercase the algorithm and 64-digit hex digest. Remove the optional 0x prefix and accept sha256 or keccak256. |
+| [imdb](https://github.com/0xIntuition/intuition-identifier/blob/3e593247c0e7cb168b37368937167ed146d3868a/schemes/imdb.md#canonicalization) | A | a film, series, or person | `https://www.imdb.com/title/tt1375666/` → `int:imdb:tt1375666` | Remove the title or name URL prefix and trailing path, lowercase the ID and validate its prefix and digits. |
+| [isbn](https://github.com/0xIntuition/intuition-identifier/blob/3e593247c0e7cb168b37368937167ed146d3868a/schemes/isbn.md#canonicalization) | A | a book edition | `0-684-83272-0` → `int:isbn:9780684832722` | Remove spaces, hyphens and dots and validate the check digit. Convert ISBN-10 to ISBN-13 with prefix 978 and a new GS1 check digit. |
+| [isni](https://github.com/0xIntuition/intuition-identifier/blob/3e593247c0e7cb168b37368937167ed146d3868a/schemes/isni.md#canonicalization) | A | a public identity: person, band, stage persona, or organization | `0000 0001 2103 2683` → `int:isni:0000000121032683` | Remove spaces, hyphens and dots. Uppercase the check character and verify the ISO 7064 mod 11-2 checksum. |
+| [isrc](https://github.com/0xIntuition/intuition-identifier/blob/3e593247c0e7cb168b37368937167ed146d3868a/schemes/isrc.md#canonicalization) | A | a sound/video recording | `us-sm1-00-07459` → `int:isrc:USSM10007459` | Remove spaces, hyphens and dots, uppercase the code and validate its 12-character shape. |
+| [iswc](https://github.com/0xIntuition/intuition-identifier/blob/3e593247c0e7cb168b37368937167ed146d3868a/schemes/iswc.md#canonicalization) | A | a musical composition (work) | `T-034.524.680-1` → `int:iswc:T0345246801` | Remove spaces, hyphens and dots, uppercase the code and verify its positional mod-10 check digit. |
+| [lei](https://github.com/0xIntuition/intuition-identifier/blob/3e593247c0e7cb168b37368937167ed146d3868a/schemes/lei.md#canonicalization) | A | a legal entity | `5493001kjtiigc8y1r12` → `int:lei:5493001KJTIIGC8Y1R12` | Remove spaces, hyphens and dots, uppercase the code and verify the ISO 7064 mod 97-10 checksum. |
+| [mbid](https://github.com/0xIntuition/intuition-identifier/blob/3e593247c0e7cb168b37368937167ed146d3868a/schemes/mbid.md#canonicalization) | A | a music entity, typed in-value | `https://musicbrainz.org/artist/056e4f3e-d505-4dad-8ec1-d04f521cbb56` → `int:mbid:artist:056e4f3e-d505-4dad-8ec1-d04f521cbb56` | Extract the supported entity type and UUID from a typed value or MusicBrainz URL. Lowercase both and join them with a colon. |
+| [olid](https://github.com/0xIntuition/intuition-identifier/blob/3e593247c0e7cb168b37368937167ed146d3868a/schemes/olid.md#canonicalization) | A | a book work/edition or author, typed by suffix | `https://openlibrary.org/works/OL45804W` → `int:olid:OL45804W` | Remove the Open Library URL prefix and trailing path. Uppercase the ID and validate the A, M or W suffix. |
+| [orcid](https://github.com/0xIntuition/intuition-identifier/blob/3e593247c0e7cb168b37368937167ed146d3868a/schemes/orcid.md#canonicalization) | A | a researcher | `0000-0002-1825-0097` → `int:orcid:0000000218250097` | Remove spaces, hyphens and dots. Uppercase the check character and verify the ISO 7064 mod 11-2 checksum. |
+| [podcastguid](https://github.com/0xIntuition/intuition-identifier/blob/3e593247c0e7cb168b37368937167ed146d3868a/schemes/podcastguid.md#canonicalization) | A | a podcast feed (show) | `917393E3-1B1E-5CEF-ACE4-EDAA54E1F810` → `int:podcastguid:917393e3-1b1e-5cef-ace4-edaa54e1f810` | Trim and lowercase the GUID and validate its UUID shape. |
+| [purl](https://github.com/0xIntuition/intuition-identifier/blob/3e593247c0e7cb168b37368937167ed146d3868a/schemes/purl.md#canonicalization) | B | a software package, version-free | `pkg:npm/react@18.2.0` → `int:purl:npm/react` | Remove the pkg: prefix and truncate at the first @, ? or #. Lowercase the ecosystem and package name. |
+| [rssitem](https://github.com/0xIntuition/intuition-identifier/blob/3e593247c0e7cb168b37368937167ed146d3868a/schemes/rssitem.md#canonicalization) | B | a podcast feed item (episode manifestation) | `917393E3-1B1E-5CEF-ACE4-EDAA54E1F810:5CC51299E189A14F9C1AEB9029EE9A4B` → `int:rssitem:917393e3-1b1e-5cef-ace4-edaa54e1f810:5cc51299e189a14f9c1aeb9029ee9a4b` | Trim and lowercase. Validate the feed UUID and 32-digit hex item hash. |
+| [termset](https://github.com/0xIntuition/intuition-identifier/blob/3e593247c0e7cb168b37368937167ed146d3868a/schemes/termset.md#canonicalization) | B | a defined term within a term set | `F3F11679D904850C042FAFEDBEE6D3EC:Merkle-Tree` → `int:termset:f3f11679d904850c042fafedbee6d3ec:merkle-tree` | Trim and lowercase. Validate the 32-digit hex set hash and term slug. |
+| [tmdb](https://github.com/0xIntuition/intuition-identifier/blob/3e593247c0e7cb168b37368937167ed146d3868a/schemes/tmdb.md#canonicalization) | A | a film, series, or person, typed in-value | `https://www.themoviedb.org/movie/27205-inception` → `int:tmdb:movie:27205` | Extract the movie, tv or person segment and decimal ID. Drop the URL title slug and join the segment and ID with a colon. |
+| [url](https://github.com/0xIntuition/intuition-identifier/blob/3e593247c0e7cb168b37368937167ed146d3868a/schemes/url.md#canonicalization) | B | a web resource by address | `http://www.Example.com/Articles/?b=2&a=1&utm_source=news#top` → `int:url:https://example.com/Articles?a=1&b=2` | Use HTTPS, lowercase the host and strip www., trailing slashes, the fragment, ports 80 and 443, and tracking parameters. Sort the remaining query pairs by key and value. |
+| [wd](https://github.com/0xIntuition/intuition-identifier/blob/3e593247c0e7cb168b37368937167ed146d3868a/schemes/wd.md#canonicalization) | A | anything Wikidata covers | `https://www.wikidata.org/wiki/Q42` → `int:wd:Q42` | Remove the Wikidata URL prefix and uppercase the QID. Require Q followed by a positive decimal ID without leading zeros. |
+
+### Package-only schemes
+
+| Scheme | Class | Identifies | Input → canonical IID | Normalization |
+| --- | --- | --- | --- | --- |
+| [apple-podcasts](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/iid-spec/schemes/apple-podcasts.md#canonicalization) | D | a podcast feed in Apple Podcasts | `1222114325` → `int:apple-podcasts:1222114325` | Accept a positive decimal ID without leading zeros. Keep the bytes unchanged. Reject other inputs. Never use as a bare P0 anchor. |
+| [letterboxd](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/iid-spec/schemes/letterboxd.md#canonicalization) | D | a film in Letterboxd | `film:moonlight` → `int:letterboxd:film:moonlight` | Accept film: followed by lowercase letters or digits with single internal hyphens. Keep the bytes unchanged. Reject other inputs. Never use as a bare P0 anchor. |
+| [podcast-index](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/iid-spec/schemes/podcast-index.md#canonicalization) | D | a podcast feed in Podcast Index | `3421639` → `int:podcast-index:3421639` | Accept a positive decimal ID without leading zeros. Keep the bytes unchanged. Reject other inputs. Never use as a bare P0 anchor. |
+
+If you have several candidate identifiers for one entity, its identity ladder orders them by the evidence available. For a social account, the strong platform ID comes before the handle. Once you have selected an IID, choose the representation profile that can carry the necessary evidence. [Social account ladder](https://github.com/0xIntuition/intuition-identifier/blob/3e593247c0e7cb168b37368937167ed146d3868a/entity-types/social-media-account.md) · [Identity ladders](https://docs.intuition.systems/docs/concepts/identity-ladder) · [Representation profiles](https://docs.intuition.systems/docs/concepts/representation-profiles)
+
+# Reference
+
+Source: https://docs.intuition.systems/docs/reference
+
+Use the package and SDK references when choosing an import. For a request to a running node, start with its service API. For an on-chain interaction, check the contract and network together.
+
+## Packages by layer
+
+The [package index](https://docs.intuition.systems/docs/reference/packages) shows public entry points, direct dependencies and example uses.
+
+| Task | Packages |
+| --- | --- |
+| Describe types and relationships | [@0xintuition/schema-org](https://docs.intuition.systems/docs/reference/packages/schema-org), [@0xintuition/classifications](https://docs.intuition.systems/docs/reference/packages/classifications), [@0xintuition/predicates](https://docs.intuition.systems/docs/reference/packages/predicates) |
+| Normalize an identifier or derive an ID | [@0xintuition/iid-spec](https://docs.intuition.systems/docs/reference/packages/iid-spec), [@0xintuition/iid](https://docs.intuition.systems/docs/reference/packages/iid), [@0xintuition/iid-registry](https://docs.intuition.systems/docs/reference/packages/iid-registry), [@0xintuition/iid-ladder](https://docs.intuition.systems/docs/reference/packages/iid-ladder), [@0xintuition/ids](https://docs.intuition.systems/docs/reference/packages/ids) |
+| Build an atom or triple | [@0xintuition/primitives](https://docs.intuition.systems/docs/reference/packages/primitives) |
+| Compose processing stages | ['@0xintuition/pipeline-runtime'](https://docs.intuition.systems/docs/reference/packages/pipeline-runtime) |
+| Parse, classify and enrich atom data | ['@0xintuition/atom-parser'](https://docs.intuition.systems/docs/reference/packages/atom-parser), ['@0xintuition/atom-classification'](https://docs.intuition.systems/docs/reference/packages/atom-classification), ['@0xintuition/atom-enrichment'](https://docs.intuition.systems/docs/reference/packages/atom-enrichment), ['@0xintuition/atom-runtime'](https://docs.intuition.systems/docs/reference/packages/atom-runtime) |
+| Integrate an application or command-line tool | ['@0xintuition/sdk'](https://docs.intuition.systems/docs/reference/packages/sdk), ['@0xintuition/cli'](https://docs.intuition.systems/docs/reference/packages/cli) |
+| Read contract interfaces, select an address or calculate a quote | ['@0xintuition/protocol'](https://docs.intuition.systems/docs/reference/packages/protocol), ['@0xintuition/deployments'](https://docs.intuition.systems/docs/reference/packages/deployments), ['@0xintuition/periphery'](https://docs.intuition.systems/docs/reference/packages/periphery), ['@0xintuition/curves'](https://docs.intuition.systems/docs/reference/packages/curves) |
+| Use wallet-aware hooks in React | ['@0xintuition/react'](https://docs.intuition.systems/docs/reference/packages/react) |
+
+## SDK functions and types
+
+Use the [SDK function reference](https://docs.intuition.systems/docs/reference/sdk) to check a signature, its inputs and its effects before calling it.
+
+| Task | Declarations |
+| --- | --- |
+| Inspect read interfaces | [API client](https://docs.intuition.systems/docs/reference/sdk/api), [Portfolio reads](https://docs.intuition.systems/docs/reference/sdk/portfolio) |
+| Work with vaults, curves or bonding | [MultiVault actions](https://docs.intuition.systems/docs/reference/sdk/multivault), [Dynamic-fee curve actions](https://docs.intuition.systems/docs/reference/sdk/dynamic-fee-curve), [TrustBonding actions](https://docs.intuition.systems/docs/reference/sdk/trust-bonding) |
+| Prepare FeeProxy calls | [FeeProxy URI creation](https://docs.intuition.systems/docs/reference/sdk/fee-proxy), [FeeProxy plans and execution](https://docs.intuition.systems/docs/reference/sdk/fee-proxy-builders), [FeeProxy affiliate profile](https://docs.intuition.systems/docs/reference/sdk/fee-proxy-affiliate-profile), [FeeProxy refund preparation](https://docs.intuition.systems/docs/reference/sdk/fee-proxy-claim-refund-if-any) |
+| Build an action envelope | [MultiVault action envelopes](https://docs.intuition.systems/docs/reference/sdk/plans-multivault), [Bridge action envelopes](https://docs.intuition.systems/docs/reference/sdk/plans-base), [Dynamic-fee action envelopes](https://docs.intuition.systems/docs/reference/sdk/plans-dynamic-fee-curve), [FeeProxy action envelopes](https://docs.intuition.systems/docs/reference/sdk/plans-fee-proxy), [TrustBonding action envelopes](https://docs.intuition.systems/docs/reference/sdk/plans-trust-bonding) |
+| Validate an envelope or resolve its destination | [Create and validate action envelopes](https://docs.intuition.systems/docs/reference/sdk/schema-create-agent-action-envelope), [Resolve action targets](https://docs.intuition.systems/docs/reference/sdk/schema-resolve-agent-action-target), [Action envelope types](https://docs.intuition.systems/docs/reference/sdk/schema-types) |
+
+## Service APIs
+
+- [Core Query API](https://docs.intuition.systems/docs/reference/core-query-api) lists operations, authentication requirements and response shapes for the graph on your node.
+- [Atom services API](https://docs.intuition.systems/docs/reference/atom-services-api) describes how to process an input without writing it to the graph.
+
+## Contracts and networks
+
+Choose a contract in the [contracts overview](https://docs.intuition.systems/docs/reference/contracts). Look up the responsibilities of [MultiVault](https://docs.intuition.systems/docs/reference/contracts/multivault), [FeeProxy](https://docs.intuition.systems/docs/reference/contracts/fee-proxy) and [TrustBonding](https://docs.intuition.systems/docs/reference/contracts/trust-bonding).
+
+Before a write, check [Configuration and URI limits](https://docs.intuition.systems/docs/reference/contracts/configuration), [Deployments](https://docs.intuition.systems/docs/reference/contracts/deployments) and [Audits](https://docs.intuition.systems/docs/reference/contracts/audits). To interpret a receipt or revert, use [Events and errors](https://docs.intuition.systems/docs/reference/contracts/events-and-errors).
+
+Find chain IDs, RPC URLs and explorers in [Networks](https://docs.intuition.systems/docs/reference/networks). The [testnet faucet guide](https://docs.intuition.systems/docs/reference/networks/faucet) explains how to request test tokens.
+
+## Catalogs, compatibility and glossary
+
+- [IID scheme catalog](https://docs.intuition.systems/docs/reference/iid-schemes) lists identifier schemes and examples of canonical input.
+- [Predicate catalog](https://docs.intuition.systems/docs/reference/predicates) lists relationship names and the atom IDs used as predicates.
+- [Compatibility](https://docs.intuition.systems/docs/reference/compatibility) matches packages and their required peers to the documented sources.
+- [Glossary](https://docs.intuition.systems/docs/reference/glossary) defines terms used in the protocol, packages and Core.
 
 # Testnet faucet
 
@@ -7362,6 +8665,160 @@ See also [migration guide](https://docs.intuition.systems/docs/get-started/migra
 ## Source
 
 [Package README](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/sdk/README.md), [action plans](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/sdk/docs/action-plans.md), [envelope implementation](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/sdk/src/actions/plans/multivault.ts), and [root export migration](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/sdk/docs/migration.md). The upstream README's “v1 design” terminology names its integration design, not this site's V1 documentation generation.
+
+# Predicate catalog
+
+Source: https://docs.intuition.systems/docs/reference/predicates
+
+Applies to V2 · `@0xintuition/predicates` 0.1.0
+
+A predicate names the relation a triple asserts between its subject and object. To say that two catalog entries refer to the same real-world entity, look up the key `sameAs`. Its label is “same as” and its predicate atom ID is `0x1908b7994ca437c84c67a4799ae710355591790a726bf5890277f3aa70828c0a`. That ID belongs in the middle of the triple. Looking it up is a local operation. Submitting the claim takes a separate transaction, and deciding whether to accept it takes evidence about both entries. [Registry definition of sameAs](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/predicates/src/generated/specs/sameAs.ts) · [Identity claims](https://docs.intuition.systems/docs/concepts/same-as)
+
+## Read a predicate row
+
+- **Key** selects the definition in application code. **Label** is the human-readable name. The record also contains a description that explains the relation. [Predicate record](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/predicates/src/record.ts)
+- **Status** is the registry’s designation. At this release 25 definitions are enshrined and 108 are proposed. The separate launch list selects the 25 enshrined keys. A node’s local database seeds are another, smaller vocabulary. Use the full registry for protocol IDs. [Launch list](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/predicates/src/launch.ts) · [Core database seeds](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/packages/database-kg/src/seeds/predicates.ts)
+- **Atom ID** identifies the exact serialized definition. The package writes a JSON-LD `DefinedTerm` with `@context`, `@type`, `name` and `description` in that order, then derives the atom ID from those bytes. Hashing the display label alone or rewording the description produces different bytes. Keep the ID from `PREDICATE_IDS` when translating a label for display. [Predicate payload format](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/ids/src/predicate-id.ts) · [Atom ID calculation](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/ids/src/atom-id.ts)
+
+## Predicate lookup
+
+The table pairs each entry in `PREDICATE_RECORDS` with the full ID from `PREDICATE_IDS` under the same key. To build a selection menu that keeps the chosen ID with its label, follow the predicate picker example. [Registry lookups](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/predicates/src/predicates.ts) · [Predicate picker](https://docs.intuition.systems/docs/examples/predicate-picker)
+
+| Key | Label | Status | Atom ID |
+| --- | --- | --- | --- |
+| `actor` | actor | proposed | `0x7c9a29122ab978cd91542fc76f6c7a1d99d65362d41a308863bd295462051196` |
+| `affiliatedWith` | affiliated with | proposed | `0x65711e57db67c836afd7bdfe80b5b0d1021a83c2623c9f2dab85af5cd7d8106f` |
+| `agreeWith` | agree with | enshrined | `0x55a44b059ca98ac95d5987ef62f285542715e87dc9cb337de5cd4699ec838d11` |
+| `alternativeTo` | alternative to | enshrined | `0x2497709bf8f757952d1ef4097943fbc676c3ec23207f8473a34e2757f771e9f3` |
+| `alumniOf` | alumni of | proposed | `0x45e98e5eef934cae066c53a0af0195e78b2c6e2c1c2077aad31466763782507c` |
+| `areaServed` | area served | proposed | `0x863fc50bcf99d925ebc537dab0b6b190e1f4b0c17aa610aafd1835df76156b68` |
+| `attestedBy` | attested by | proposed | `0x46edc69922cfe75fc3ad252c625e8a6b37f0223147320be40cbdc0cdd1970cd8` |
+| `auditedBy` | audited by | proposed | `0x0d6d3c4e6e6ee7b2b2c488d48d70ab3defd5d0844f8f84724616528cd59b03c4` |
+| `authoredBy` | authored by | proposed | `0x19e5da5af4adf03fb4d69e6910be4f17f9c612d98f150d2e9e0f3569cea304a9` |
+| `availableOn` | available on | proposed | `0xea46b891287568210d4614fdb31147cd009ad6d7731657c5341889b3789eceeb` |
+| `backedBy` | backed by | proposed | `0x6bea1623e6d3273aa6d31becdc29782e77ac141dbb87f51aa3994552e5e653bb` |
+| `bearishOn` | bearish on | enshrined | `0xeb91df72671d540bf0ab283b9b98fced6e5acbb5925a101b8351c47bc4119a08` |
+| `betterThan` | better than | enshrined | `0x9111f910eac0d5c239048754d4527870a40902bd662af706a0ec6f0dc8ad3bfe` |
+| `blocked` | blocked | proposed | `0x0e8d6778212b54be16f0f3cc893eb9519935cc1076257cc2343c591b56bc1821` |
+| `branchOf` | branch of | proposed | `0x5ec48ef77880acba5d340787e32107171df17fc9b354483fe13ec4b73aa2148c` |
+| `brand` | brand | proposed | `0xb4bff7194354fe3119bbf4c207a8128bd174242d728668f14e6d80fb05bff74d` |
+| `bullishOn` | bullish on | enshrined | `0x0ab87a5ba67b22c33e13a2424ba3dd372bef468e8958dd32e9e74fe93f621bc1` |
+| `byArtist` | by artist | proposed | `0x13d5d4ad6ae3a4e1b5043141b6ce4633c2df4646eaefc9e45eba899c45ce235b` |
+| `certifiedBy` | certified by | proposed | `0x9d30f5065f64ccad286b8bf5d506039022146e1bfaf6877bb774a8c8c29a27f8` |
+| `citedBy` | cited by | proposed | `0xb9c12eaf5fb5c952ec1a25d993f49e8dc5027708d02bcb47ab077c02930a6d35` |
+| `compatibleWith` | compatible with | proposed | `0x7cc0975a6e368c14bf4b64d33befd656b6091ba7a4686d4a8e250b39e43d475d` |
+| `competeWith` | compete with | proposed | `0x9ec407d56a32528625f3682bce413fc56d60659b7124aa75e12df30538e255a4` |
+| `compliantWith` | compliant with | proposed | `0xeefc74ba0ee80333e479971791542a1db8b90ccf72c0c2fcd51e73f50cb45d64` |
+| `confirmedBy` | confirmed by | proposed | `0x0f9fb9c6c471eab616ee164bd2d77e3a3913309a062e533cf3d5051b2678ef52` |
+| `contain` | contain | enshrined | `0xa64ca3a04b63c5f6b94ba65b11a1a197767e68cca1f41ac563b5f2d34fa36597` |
+| `containedInPlace` | contained in place | proposed | `0x5a26a9bd3ae73815e33de43ff44356bd60b19ed3fb243023d4318def9ce620fc` |
+| `containsPlace` | contains place | proposed | `0x39ec6c00d1c5bb25a68ea6e4d6baa5faebecd6314f1cb4c5b28069d696864395` |
+| `contributedTo` | contributed to | proposed | `0x88a77127ef88a3abe7130b47a11e90b1ddad8c66a36c6cc9456688143ee8977a` |
+| `createdBy` | created by | enshrined | `0x3df2eaf3b9bdaf2018bc5d45fa770c470ab5067b5afdc9e3097151f9c87d92a4` |
+| `curatedBy` | curated by | enshrined | `0x0eeaeab1a9342622fe04b414f1bbb75d9528f491cdd1568bb7b08d708087d7bf` |
+| `delegatedTo` | delegated to | proposed | `0x8c1b63581f8f3145e3909c2185bf58ee971256c856519f9bdcc812a95a8f64b9` |
+| `dependOn` | depend on | proposed | `0xc74aa2d983b42f73f0114e775b6b9442fde072c7f3448cc01ced338e61532ce6` |
+| `deprecatedBy` | deprecated by | proposed | `0xd52897e940e8b03a17259ded4810b96212522ad42f62ad477d26749343b0e969` |
+| `derivedFrom` | derived from | proposed | `0xdaf3c3887d1b2b1056ff27fb2f7f37dcdc2bc63f5f15cc2f7f5c111a4de0180c` |
+| `director` | director | proposed | `0xb5615fb82280ab71bcd06493b5028a5909b09288230a7eade6765b1095686c88` |
+| `disagreeWith` | disagree with | enshrined | `0x772b057c1fd361e76277b4295593a58da8a1546663400f719e7aa7e65ae222be` |
+| `disputedBy` | disputed by | proposed | `0xc612acf846c25ad4241856dc8ceceeb3fce64357dd566e0caa4295b9974172c0` |
+| `distrust` | distrust | enshrined | `0x5ff9d7c79cd3741fbc3f1edc73e2a5b8f91ea168b26947208cfc652fd674b248` |
+| `employedBy` | employed by | proposed | `0x89968d0be91dc584b7747967541df3947129cb107b5fb97e79a4c8305eb2356e` |
+| `enabledBy` | enabled by | proposed | `0x4e3a3e2022c34f648b2e458b4d3b8c81a0d9b93b5abaaed75d8604c4053c180f` |
+| `endorse` | endorse | enshrined | `0x96c6e6de8d0ba084aa0b4c09950ea583d30cd5e4a46fc396f2895f4c7add86e4` |
+| `equivalentTo` | equivalent to | proposed | `0x4c8820a3facf2bb8ed499a01dce9e5367363024166ff42bff0ebb19829d2f1e9` |
+| `evidencedBy` | evidenced by | proposed | `0xc21b0f944e2882cd9e0c1cf6a1622a9e2df2ee84b4e7d1c4ae9d9ac08fd94db2` |
+| `expertIn` | expert in | proposed | `0x4c286cc4064a358fed817e4f6b46ad43869eac7d6707587f9f66bab78ca5ece5` |
+| `featuredIn` | featured in | proposed | `0x04a664927399b5a46320379d93b7102bcc1c80e2cebbcca0df26e848e0883120` |
+| `follow` | follow | enshrined | `0x1d38401c1cd1d0b21215754554b3dae60fb626e760cf7b99162e25baf16464b6` |
+| `followedBy` | followed by | proposed | `0x35e89692464035516a04e156d1527898a04cd0db37684ac159af2525edc88864` |
+| `forkedFrom` | forked from | proposed | `0x641c5045928c2acb595c20421fa67b8a8d7ebba7e3d73d913e3ca5db9ee5fb7c` |
+| `founded` | founded | proposed | `0xcbcfeb175813f275b952eb9df762bef10fe90e16bc8bbc1b1b21a2565b7ad16b` |
+| `founder` | founder | proposed | `0x12798cbb0392c40e4e46c692ee94c7345032a9a4970e26c4821920cd12832591` |
+| `governedBy` | governed by | proposed | `0x3faa6781f4475e91fecce9a5aba7fbb9b31bbacdb1e3d6313ec353764d75a21f` |
+| `hasCategory` | has category | enshrined | `0xbf037cebba059cbb9547b784b0f667db03f08c177fc0f94c0f734cf16cdc0fa8` |
+| `hasDescription` | has description | enshrined | `0x7026ee74d00fc4bc448cf761b239defe0165b0c5b7be2532adb5b8acae612ab4` |
+| `hasSource` | has source | proposed | `0xbc4438d7673da79765cc523da63f715c42977c894211df31fedfbdd94bccef52` |
+| `hasTag` | has tag | enshrined | `0x137f29ea8a0422c9d1003ece2e1883e916d4a106da0a897279842ffbb793229a` |
+| `hasType` | has type | enshrined | `0x0cda9787096fd9b22a93a874bf6400b084b6db166c7125a9e367c195b82efc87` |
+| `hiringOrganization` | hiring organization | proposed | `0x4f4e416a2d225af561b4e119c1c6141700b2367ba4083ea6a4841a8e72273be3` |
+| `imgUrl` | imgUrl | enshrined | `0x9f2f3089c1f61cae97bc0a50bb199854489df1971641336f9247395131eaba2f` |
+| `implement` | implement | proposed | `0xfdcee9a5a6150ffa458518d0f1b50eeed5f42b6aee269aab71d00d869d6fbbd1` |
+| `inAlbum` | in album | proposed | `0xcd71dd2209ab6efb055c4545edcdbc8410f289a932a94410014b2021543b4168` |
+| `inPlaylist` | in playlist | proposed | `0x856778688c9df8fb8be4fd949a52269b3aecfeb980d948e6fe362f8adba789d6` |
+| `inspiredBy` | inspired by | proposed | `0x358bba81484329400267a570e59d4f18ff1f7b7be825cc58033b2907b6dd39ca` |
+| `investedIn` | invested in | proposed | `0xb4ce45225753661c85c34af84e1e4351bfffd954796cdf9171aa36b5cafe5d6b` |
+| `itemReviewed` | item reviewed | proposed | `0x483aae34762186dd047937e9571b79f01378d9ace06c5a79ce4a31708c9546c6` |
+| `jobLocation` | job location | proposed | `0x5ff8390f622a4bf6a22f3108f2879c53255ff874e6699d70b03a740ee10757f0` |
+| `learnedFrom` | learned from | proposed | `0x72e820cf62bac4cea99d2cc625f407587802749777a111f63561582dea43bc87` |
+| `like` | like | enshrined | `0x2a170ce8fff3808d661ae553f3e65be637391ca4f48e6208f01dae0f6c0a72e7` |
+| `linkedAccount` | linked account | enshrined | `0xd8a32acc6237ab21be285953b01508c7a22f523bf122aa3ab044b21d266c2c6c` |
+| `listedIn` | listed in | enshrined | `0x60669cfacc52e65837ecbd0ed02748075d00f6de64b0c9e3f2f97878fb5f6720` |
+| `listedOn` | listed on | proposed | `0x3733d2a7feec6156531fbd7390ac494d6764a8a8ea50abae0963806d19d34ce4` |
+| `locatedIn` | located in | proposed | `0x165f0f2f51314106e280a6e6a828dda617322e7ee861dfcdad42f3f1faf7c781` |
+| `manufacturer` | manufacturer | proposed | `0x33138cc38f644287fbf03a4d06dc4c83ff7b64d7679f9239d3c7a35cc73e4f2a` |
+| `memberOf` | member of | proposed | `0x4650825f3c0dfa4c4faef53e4ebb3de556ae356a4c1b1265de684766690a9c99` |
+| `mentorOf` | mentor of | proposed | `0xec25295b81a492462c66ae42b704acece2b74b0cd3266a2227b4feadb97ed800` |
+| `musicBy` | music by | proposed | `0xa4cc82010b7010b1e13216885213a43204b6cef007118aff8571cd5b574578c9` |
+| `musicGroupMember` | music group member | proposed | `0xdd76a1d3493af1c7025099650ae515cc1ad12a0e5d44be82d6a436dc790e61ef` |
+| `neutralOn` | neutral on | proposed | `0x0f9d3a6d741aa83df8f188fbfb1a94a2670658c77413f599985822362debbc26` |
+| `oppose` | oppose | proposed | `0xba04c796c6772430d4db6aa5266617549cedabdeb9d95307eb0a5872d64016ed` |
+| `organizer` | organizer | proposed | `0xfd41828cda1bfc93e82b9c99488e9a8de74496a195c67ae7419facae3c41c12f` |
+| `outperform` | outperform | proposed | `0xb8f02c433f9c95f1e481b69f931081cd00a216b4db8bd1249b5046ba16d4c1c9` |
+| `parentItem` | parent item | proposed | `0x26cb448e9daa4e54f247033c2b40741153f1b2b8ae2bd13033920c389314ee36` |
+| `parentOrganization` | parent organization | proposed | `0x5d93f5ba8db84190cc557cc9288caf032206e9c880c9a16e5333af2067fdc59c` |
+| `partOfSeries` | part of series | proposed | `0xe8cbe7b41fa96e8057cdbe5283041981ba4c9fd050e13d357723979d5ae9568d` |
+| `partnerOf` | partner of | proposed | `0xd78f22cc525f5b854030b12094282f808edfde68ada47cd6a4584fbcc7114172` |
+| `peggedTo` | pegged to | proposed | `0xc6024b302f5e90a1868c638b99406329f8703b3d939d8fddf09add01ef674caf` |
+| `performer` | performer | proposed | `0xfcf209b610d68918af7dac25c3d568eb769af4d71e9f750caec0e25679a6adb2` |
+| `photo` | photo | proposed | `0xc67ee43bb6473c136a9f1dd9738c4da52a1d6262850c2f02b68063a00f90050e` |
+| `pinnedIn` | pinned in | proposed | `0xe85518b66264af0f9619ed2b71cfb6bfd07aa94aa6998a0c31d0e8f1fa00eea1` |
+| `precededBy` | preceded by | proposed | `0x2bbefd639437c5066574656305d5876ce3c0954a511b203366095c6c9bb491f7` |
+| `predecessorOf` | predecessor of | proposed | `0x0e79b08fc40e4904a66487564dcdf6b55c03603e3dab1259d24c85b46a94b094` |
+| `pricedIn` | priced in | proposed | `0x625fe16917efdec30f6ffe606ffefe17a504204a1022b3e62911c547aa5da641` |
+| `primaryImageOfPage` | primary image of page | proposed | `0xe47ef05689a28a9948800c60596a69d7a7b52c177367d31d7f71ba33bc738f76` |
+| `productionCompany` | production company | proposed | `0xb2a18c47b1fd2be0471997279089c2c0b2b7bdda39ee01b9f511e16081712a78` |
+| `proposed` | proposed | proposed | `0xe6c566dbf26b130e64b46e975f7a8fea1d642265d16997e26e78d0e6a0f7019d` |
+| `provider` | provider | proposed | `0x43c466f69c3efcc05d623c8398de358b205c0de59e7785a143db51172f69c79a` |
+| `publishedAt` | published at | proposed | `0xff6aaa0a1dd670cfa32a03a5b0720c6d0fdee7919fa9aea22a40bcdbc80514be` |
+| `publisher` | publisher | proposed | `0x1b3ba08e8f437a820dce9077ed0f5b853bc7c4ddc46bb3961dc9a902180ac90b` |
+| `rankedAbove` | ranked above | proposed | `0xad2cf8c1b6a55e3a820cf993f6de90dd8aa03a77c850e62c2910f3e8e26bc838` |
+| `recommend` | recommend | enshrined | `0x18d0a4b84c6c454e800da8e120d320a953be5946d74f069b74d87b80105cb69c` |
+| `reference` | reference | proposed | `0x8cf728a7f310d0c370911dd8aed25392de51010342d688259fdf1e7193dd2ad3` |
+| `regulatedBy` | regulated by | proposed | `0xa699796fe030cd54bec84c17883cfdf9805721306e6e2408d3f8516ae6fd31f4` |
+| `replacedBy` | replaced by | proposed | `0x87cfb9ef0491c4823a57e9f61c1c705a0d2030b44bc0a08839c1a32510141ca7` |
+| `reported` | reported | proposed | `0x5fe378a93a7c49acb9e4e520a72622f55ce5973d73912a1c52457d5baddbd24a` |
+| `reviewed` | reviewed | proposed | `0x48007c0b9905a0ff8016431514d5b19b80eb7e0fa419fab38698e5aae5dc8d84` |
+| `reviewedBy` | reviewed by | proposed | `0x28e649797ca059be09c524658e3b48bb9e05826e4679b0d6c3b53b613ba617d0` |
+| `reward` | reward | proposed | `0x9676c7e45df5439028aaa4c806cc76b0d85b5323d06e1f7ef7541976d322950f` |
+| `sameAs` | same as | enshrined | `0x1908b7994ca437c84c67a4799ae710355591790a726bf5890277f3aa70828c0a` |
+| `skepticalOf` | skeptical of | proposed | `0x4a6b6a82c5d856ad0423caa6a6d666d8d4a538c6adbda5e4b0ba9a22c1affb4c` |
+| `softwareAddOn` | software add on | proposed | `0x5e264c12e3d97061d9c9562f296ae1f31b806fd90cddd5a7cddd8e0f17008bee` |
+| `speak` | speak | proposed | `0x3b88a7126919144737aa27e192e1b1e3ce120a301dbe37e36381df59f551f1cc` |
+| `sponsoredBy` | sponsored by | proposed | `0x80d43f1c53058ddeba0daea68c239900133bc08ff1dec845c424190ff36c5f9e` |
+| `stakedIn` | staked in | proposed | `0xda9df47c6c34d2006bfe6e2a7faf5bef5fe72dcab0c6e01b9be377fac5cd6dbf` |
+| `studentOf` | student of | proposed | `0xe6486e0a020bd559a4638e03dbd20806d61f197036a818d7ed002a10cb18c0a3` |
+| `studied` | studied | proposed | `0x0431f21d8563fcd3eec47c7cf6570ffe590e3e5c07903200c89e29303d78d5c9` |
+| `subEvent` | sub event | proposed | `0xcd49e0f14c378b8156a4b9cc583ae5bd539491c38e17be66285b08fd63be9c2f` |
+| `subOrganization` | sub organization | proposed | `0xa5ab1dbf1c7c40f0961d40edc215d3b0a2666301a57a4b72b2809e69e4954991` |
+| `successorOf` | successor of | proposed | `0x288c569a6e703ae9da00dddb2653bf1d2d14acd05ab798b05da8d0f62db5ba26` |
+| `superEvent` | super event | proposed | `0x7fdbe6f3dfdb1c26fb35f3fcd265d7962bc25f1a18b32fec1c2d65d5897495fe` |
+| `supersede` | supersede | proposed | `0x4ef2f2cb0d54a6ebdbdd7847c7b824ad0c2ef22f6b5db42f26c6f278fdc89131` |
+| `support` | support | proposed | `0x6b29ed6806c39be50b60b186c689cebfd280c27936d4e4c872e785bfa151c423` |
+| `targetProduct` | target product | proposed | `0x4358665d150cde6db0e40ffa4aa4715855028a775e1f67a78ef07033ee8a0cca` |
+| `teach` | teach | proposed | `0x1db96ef00877d01a8f4e237c9307cda72aa1ef76ab8886e4a3b57548a6935c84` |
+| `track` | track | proposed | `0x144c129178c900adc2624ed7f85313979c955266f3b4fa56bc54c55fb1855396` |
+| `trailer` | trailer | proposed | `0x498107ee5d558569166098517065b028b478ffe177d1d13bc50d8251814b0ab5` |
+| `triggered` | triggered | proposed | `0x2fef13ca888b1135a57a381aff5d78293402f51202f3a226a9f50ed9652af802` |
+| `trust` | trust | enshrined | `0x722c865044ce8d169832545c9a47701dd8ff71ce62fa0408b70bd53842e4d443` |
+| `url` | url | enshrined | `0x71dbe59780ccedf37166aa55781573d8aea463285cdfe94a5b08ed5f474613a3` |
+| `use` | use | proposed | `0x746e295c01785421b2f1a311ff3a5830676e141e09e45fde962f84b2533f7af6` |
+| `verifiedBy` | verified by | proposed | `0x97595b96f80f7406dc05fa0d146170c56562dbd442add8c5696361738af0b8ee` |
+| `votedAgainst` | voted against | proposed | `0xbcca85ea08325e3774be5a995123c26aa11a751fd88a459bc0fddaeb72c5543a` |
+| `votedFor` | voted for | proposed | `0xda78cf97d568942dae1563133b67264ca694d6f6f50e49a3a132c778cf7b1f3c` |
+| `vouchFor` | vouch for | enshrined | `0xb7d48411b3c5159f6de1210a62b63a45d238df7462b181afa2e7d64d7008911d` |
+| `worseThan` | worse than | proposed | `0xbd3a5761ee94d989d602dfc45ed6946d4b242746b8999aac2b67acce8a840736` |
 
 # API client
 
