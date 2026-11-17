@@ -51,7 +51,7 @@ export function prepareCreation(
     value: atomCost,
     uriLimits,
   };
-  return {
+  const creation = {
     uuid,
     data,
     dataHex,
@@ -61,6 +61,7 @@ export function prepareCreation(
     calldata: multiVaultCreateAtomsWithUrisEncode(inputs),
   };
   // #endregion
+  return creation;
 }
 
 export async function afterReview<T>(
@@ -186,9 +187,9 @@ async function main() {
     const shares = await multiVaultGetShares(config, {
       args: [signer, atom.id, defaultCurveId],
     });
+    // #endregion
     console.log('Atom ID:', atom.id);
     console.log('Position (shares):', shares.toString());
-    // #endregion
   } finally {
     terminal.close();
   }
