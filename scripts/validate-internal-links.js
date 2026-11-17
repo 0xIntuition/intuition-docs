@@ -11,10 +11,13 @@ const { createSlugger } = require('@docusaurus/utils');
 const ROOT = path.resolve(__dirname, '..');
 const LLMS_FILES = ['llms.txt', 'llms-medium.txt', 'llms-full.txt'];
 
-function buildValidPaths(root = ROOT) {
+function buildValidPaths(root = ROOT, markdownRoutes = new Set()) {
   const paths = new Set();
   for (const version of Object.values(versions)) {
-    for (const doc of readDocs(root, version)) paths.add(doc.route);
+    for (const doc of readDocs(root, version)) {
+      paths.add(doc.route);
+      markdownRoutes.add(doc.route);
+    }
     const categorySlugger = createSlugger();
     for (const file of walkFiles(path.join(root, version.docsDir)).filter(
       (entry) => path.basename(entry) === '_category_.json',
@@ -38,6 +41,9 @@ function buildValidPaths(root = ROOT) {
     for (const source of createRedirects(route) || []) paths.add(source);
   for (const { from } of redirects)
     for (const source of Array.isArray(from) ? from : [from]) paths.add(source);
+  const staticDir = path.join(root, 'static');
+  for (const file of walkFiles(path.join(staticDir, 'docs')))
+    paths.add('/' + path.relative(staticDir, file).split(path.sep).join('/'));
   return paths;
 }
 function stripCodeAndComments(content, file) {
@@ -64,10 +70,14 @@ function extractLinks(source, file) {
   for (const pattern of patterns)
     for (const match of content.matchAll(pattern)) {
       let target = match[1];
-      if (target.startsWith('https://docs.intuition.systems/'))
-        target = new URL(target).pathname;
+      if (/^(?:https?:)?\/\//i.test(target)) {
+        const url = new URL(target, 'https://docs.intuition.systems');
+        if (url.origin !== 'https://docs.intuition.systems') continue;
+        target = url.pathname;
+      }
       target = target.split(/[?#]/, 1)[0].replace(/\/$/, '');
       if (
+        target === versions.current.routeBase + '.md' ||
         target === versions.current.routeBase ||
         target.startsWith(`${versions.current.routeBase}/`)
       )
@@ -95,7 +105,8 @@ function getFilesToScan(specificFiles = [], root = ROOT) {
   return files;
 }
 function run({ root = ROOT, files = [] } = {}) {
-  const paths = buildValidPaths(root);
+  const markdownRoutes = new Set();
+  const paths = buildValidPaths(root, markdownRoutes);
   const targets = getFilesToScan(files, root);
   const errors = [];
   for (const file of targets) {
@@ -107,7 +118,12 @@ function run({ root = ROOT, files = [] } = {}) {
       fs.readFileSync(file, 'utf8'),
       file,
     ))
-      if (!paths.has(link))
+      if (
+        !(
+          paths.has(link) ||
+          (link.endsWith('.md') && markdownRoutes.has(link.slice(0, -3)))
+        )
+      )
         errors.push(`${path.relative(root, file)}:${line} → ${link}`);
   }
   return { errors, count: targets.length };

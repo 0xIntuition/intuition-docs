@@ -63,6 +63,7 @@ const tailwindPlugin = require('./plugins/tailwind-plugin.cjs');
 const docs_plugins = docs.map((doc) => create_doc_plugin(doc));
 
 const plugins = [
+  require.resolve('./plugins/markdown-export-plugin.cjs'),
   tailwindPlugin,
   ...docs_plugins,
   webpackPlugin,
@@ -167,8 +168,7 @@ const config = {
             position: 'left',
           },
           {
-            type: 'docsVersionDropdown',
-            docsPluginId: '_data',
+            type: 'custom-versionSwitcher',
             position: 'left',
           },
           {

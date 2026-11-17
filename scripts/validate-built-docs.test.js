@@ -475,3 +475,117 @@ test('native trailing-slash metadata resolves canonical HTML, sitemap, banners a
     /edit link must point to this page source/,
   );
 });
+
+test('export inventory rejects missing, extra, and generated index Markdown', (t) => {
+  const { compareExportInventory } = require('./validate-built-docs');
+  const build = fs.mkdtempSync(path.join(os.tmpdir(), 'markdown-inventory-'));
+  t.after(() => fs.rmSync(build, { recursive: true, force: true }));
+  fs.mkdirSync(path.join(build, 'docs', 'v1'), { recursive: true });
+  fs.writeFileSync(path.join(build, 'docs.md'), '');
+  fs.writeFileSync(path.join(build, 'docs/v1.md'), '');
+  const native = [
+    { docs: [{ id: 'index', path: '/docs/' }] },
+    {
+      docs: [
+        { id: 'index', path: '/docs/v1/' },
+        { id: '/category', path: '/docs/v1/category/' },
+      ],
+    },
+  ];
+  assert.deepEqual(compareExportInventory(build, native), []);
+  native[0].docs.push({ id: 'gone', path: '/docs/gone' });
+  fs.writeFileSync(path.join(build, 'docs/v1/category.md'), '');
+  assert.deepEqual(compareExportInventory(build, native), [
+    'Missing Markdown export: /docs/gone.md',
+    'Unexpected Markdown export: /docs/v1/category.md',
+  ]);
+});
+
+test('built checker validates exact Markdown metadata, all deployment addresses and alternate placement', () => {
+  const {
+    assertAlternate,
+    assertMarkdown,
+    parseHtml,
+  } = require('./validate-built-docs');
+  const { BASE_URL } = require('./generate-llms-full');
+  const yaml = require('js-yaml');
+  const pkg = '@0xintuition/deployments';
+  const doc = {
+    id: 'reference/contracts/deployments',
+    path: '/docs/reference/contracts/deployments',
+  };
+  const native = {
+    ...doc,
+    version: 'current',
+    title: 'Deployments',
+    description: 'Networks',
+    frontMatter: { kind: 'reference', reader: ['app'], packages: [pkg] },
+  };
+  const url = BASE_URL + doc.path;
+  const addresses = ['0x' + 'a'.repeat(40), '0x' + 'b'.repeat(40)];
+  const options = {
+    version: versions.current,
+    native,
+    doc,
+    manifest: { packages: [{ name: pkg, version: '0.1.0' }] },
+    source: {
+      body: `{/* generated:start deployments */}\n| MultiVault | ${addresses.join(' | ')} |\n{/* generated:end */}`,
+    },
+  };
+  const metadata = {
+    title: native.title,
+    description: native.description,
+    url,
+    markdown_url: url + '.md',
+    version: 'V2',
+    llms_index: BASE_URL + '/llms.txt',
+    kind: 'reference',
+    reader: ['app'],
+    packages: [pkg + '@0.1.0'],
+  };
+  const markdown =
+    '---\n' + yaml.dump(metadata) + '---\n\n' + addresses.join('\n');
+  assert.deepEqual(assertMarkdown(markdown, options), []);
+  assert.match(
+    assertMarkdown(markdown.replace('@0.1.0', '@latest'), options).join('\n'),
+    /front matter/,
+  );
+  assert.match(
+    assertMarkdown(markdown.replace(addresses[1], ''), options).join('\n'),
+    /missing exported deployment address/,
+  );
+  const link = `<link rel="alternate" type="text/markdown" href="${url}.md">`;
+  assert.deepEqual(
+    assertAlternate(parseHtml('<head>' + link + '</head>'), url + '.md'),
+    [],
+  );
+  for (const html of [
+    '<head></head><body>' + link + '</body>',
+    '<head>' + link + link + '</head>',
+  ])
+    assert.ok(assertAlternate(parseHtml(html), url + '.md').length);
+});
+
+test('switcher requires both mapped destinations and exactly one accessible current version', () => {
+  const { assertVersionSwitcher, parseHtml } = require('./validate-built-docs');
+  const targets = [
+    { label: 'V2', href: '/docs/agents' },
+    { label: 'V1', href: '/docs/v1/experimental-applications/mcp-server' },
+  ];
+  const html =
+    '<div data-docs-version-switcher="desktop"><button>V2</button><ul><li><a aria-current="page" href="/docs/agents/">V2</a></li><li><a href="' +
+    targets[1].href +
+    '">V1</a></li></ul></div>';
+  assert.deepEqual(
+    assertVersionSwitcher(parseHtml(html), versions.current, targets),
+    [],
+  );
+  for (const bad of [
+    html.replace(targets[1].href, '/docs/v1'),
+    html.replace('aria-current="page"', ''),
+  ]) {
+    assert.ok(
+      assertVersionSwitcher(parseHtml(bad), versions.current, targets).length,
+    );
+  }
+});

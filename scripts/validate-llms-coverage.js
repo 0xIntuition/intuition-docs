@@ -14,10 +14,12 @@ const {
   getLastUpdatedMap,
   INDEX_DIRECTORY_INTRO,
   readCuratedIndexSource,
+  markdownDocLinks,
   generateHeader,
   selectedVersions,
 } = require('./generate-llms-full');
 
+const { readDocs } = require('./lib/docs-tree');
 const ROOT = path.resolve(__dirname, '..');
 const STATIC_DIR = path.join(ROOT, versions.current.llmsDir);
 const LINK_VALIDATOR = path.join(__dirname, 'validate-internal-links.js');
@@ -89,7 +91,14 @@ function extractIndexRoutes(content) {
     ...extractIndexDirectory(content).matchAll(
       /^- \[[^\]\n]+\]\(([^)\s]+)\)\s*$/gm,
     ),
-  ].map((match) => sourceRoute(match[1]));
+  ].map((match) => {
+    const url = new URL(match[1]);
+    if (url.origin !== BASE_URL || !url.pathname.endsWith('.md'))
+      throw new Error(
+        `Expected a canonical Markdown directory URL: ${match[1]}`,
+      );
+    return url.pathname.slice(0, -3);
+  });
 }
 
 function findDuplicates(routes) {
@@ -135,7 +144,7 @@ function runOmissionFixture(version) {
   compareRouteSets(
     `${version.label} omission fixture`,
     expected,
-    extractIndexRoutes(fixture),
+    extractIndexRoutes(markdownDocLinks(fixture, new Set(expected))),
   );
 }
 
@@ -161,24 +170,13 @@ function proveOmissionFixtureFails(version) {
 }
 
 function extractCuratedTargets(curated) {
-  return [...curated.matchAll(/\]\((https?:\/\/[^)\s]+)\)/g)]
-    .map((match) => new URL(match[1]))
+  return [...curated.matchAll(/\]\(<?((?:https?:\/\/|\/)[^)>\s]+)>?\)/g)]
+    .map((match) => new URL(match[1], BASE_URL))
     .filter((url) => url.origin === BASE_URL)
     .map((url) => url.pathname);
 }
 
-function isDocRoute(target) {
-  return (
-    !target.endsWith('.txt') &&
-    Object.values(versions).some(
-      (version) =>
-        target === version.routeBase ||
-        target.startsWith(`${version.routeBase}/`),
-    )
-  );
-}
-
-function validateCuratedLinks(curated, curatedTargets, curatedRoutes) {
+function validateCuratedLinks(curated, curatedTargets) {
   // Use the canonical validator for authored routes and redirects.
   const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'llms-curated-links-'));
   try {
@@ -196,7 +194,14 @@ function validateCuratedLinks(curated, curatedTargets, curatedRoutes) {
   } finally {
     fs.rmSync(tempDir, { recursive: true, force: true });
   }
-  const staticTargets = curatedTargets.filter((target) => !isDocRoute(target));
+  // The link validator resolves /docs content, redirects, indexes and assets.
+  // Discovery files and static assets outside /docs need a filesystem check.
+  const staticTargets = curatedTargets.filter(
+    (target) =>
+      target !== versions.current.routeBase &&
+      target !== versions.current.routeBase + '.md' &&
+      !target.startsWith(versions.current.routeBase + '/'),
+  );
   const missing = staticTargets.filter((target) => {
     const file = path.resolve(STATIC_DIR, target.replace(/^\/+/, ''));
     return (
@@ -210,7 +215,7 @@ function validateCuratedLinks(curated, curatedTargets, curatedRoutes) {
       `curated index links to missing static artifacts: ${missing.join(', ')}`,
     );
   console.log(
-    `✅ Curated links: ${curatedTargets.length}/${curatedTargets.length} same-origin targets resolve (${curatedRoutes.length} docs routes, ${staticTargets.length} static artifacts)`,
+    `✅ Curated links: ${curatedTargets.length}/${curatedTargets.length} same-origin targets resolve`,
   );
 }
 
@@ -318,15 +323,24 @@ function validateRealArtifacts(version) {
       `✅ ${version.label} ${label}: ${totals.actual}/${totals.expected} routes (0 missing, 0 extra)`,
     );
   }
-  const curated = readCuratedIndexSource(version);
+  const docRoutes = new Set(
+    Object.values(versions).flatMap((entry) =>
+      readDocs(ROOT, entry).map((doc) => doc.route),
+    ),
+  );
+  const curated = markdownDocLinks(readCuratedIndexSource(version), docRoutes);
   if (!index.startsWith(`${curated}${INDEX_DIRECTORY_MARKER}`)) {
     throw new Error(
       `llms.txt curated prefix differs from ${version.llmsIndexSource}`,
     );
   }
   const targets = extractCuratedTargets(curated);
-  const routes = targets.filter(isDocRoute);
-  validateCuratedLinks(curated, targets, routes);
+  const isExport = (target) =>
+    target.endsWith('.md') && docRoutes.has(target.slice(0, -3));
+  const routes = targets.filter(isExport).map((target) => target.slice(0, -3));
+  if (targets.some((target) => docRoutes.has(target.replace(/\/$/, ''))))
+    throw new Error('Curated index contains an HTML document destination');
+  validateCuratedLinks(curated, targets);
   const areas = validateCuratedAreaCoverage(sections, routes);
   console.log(
     `✅ ${version.label} curated area coverage: ${areas.actual}/${areas.expected} top-level docs areas`,

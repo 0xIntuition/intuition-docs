@@ -238,3 +238,88 @@ test('V1 unpaired banner falls back to home; every other version delegates origi
     assert.doesNotMatch(html, /theme-doc-version-banner/);
   }
 });
+
+test('switcher uses native document state, saves the preference and exposes both links on mobile', () => {
+  const available = versions
+    .map((version) => ({
+      ...version,
+      label: config[version.name].label,
+      docs: version.docs.map((doc) => ({ ...doc, path: doc.path + '/' })),
+    }))
+    .reverse();
+  let context = {
+    activeVersion: available[0],
+    activeDoc: { id: 'getting-started/ai-skills' },
+  };
+  let preferredVersion = available[1];
+  let saved,
+    mobileSelections = 0;
+  const handlers = new Map();
+  const { default: Switcher } = loadSource(
+    'src/theme/NavbarItem/VersionSwitcher.tsx',
+    {
+      react: React,
+      clsx: require('clsx'),
+      '@docusaurus/Link': ({ to, children, onClick, ...props }) => {
+        handlers.set(children, onClick);
+        return React.createElement('a', { ...props, href: to }, children);
+      },
+      '@docusaurus/router': {
+        useLocation: () => ({
+          pathname: '/docs/v1/getting-started/ai-skills',
+          search: '?x=1',
+          hash: '#keep',
+        }),
+      },
+      '@docusaurus/plugin-content-docs/client': {
+        useVersions: (id) => {
+          assert.equal(id, '_data');
+          return available;
+        },
+        useActiveDocContext: (id) => {
+          assert.equal(id, '_data');
+          return context;
+        },
+        useDocsPreferredVersion: (id) => {
+          assert.equal(id, '_data');
+          return {
+            preferredVersion,
+            savePreferredVersionName: (name) => {
+              saved = name;
+            },
+          };
+        },
+      },
+      '@site/src/data/version-equivalents.json': equivalents,
+      '../versionEquivalents': { resolveVersionEquivalent },
+      './VersionSwitcher.module.css': {},
+    },
+  );
+  const render = (mobile = false) =>
+    renderToStaticMarkup(
+      React.createElement(Switcher, {
+        mobile,
+        onClick: () => mobileSelections++,
+      }),
+    );
+  let html = render(true);
+  assert.match(html, /^<li[^>]*data-docs-version-switcher="mobile"/);
+  assert.match(
+    html,
+    /<ul[^>]*><li[^>]*><a[^>]*href="\/docs\/agents\/skills\/\?x=1">V2<\/a><\/li><li[^>]*><a[^>]*aria-current="page"[^>]*href="\/docs\/v1\/getting-started\/ai-skills\/\?x=1#keep">V1<\/a>/,
+  );
+  handlers.get('V2')({});
+  assert.equal(saved, 'current');
+  assert.equal(mobileSelections, 1);
+  html = render();
+  assert.match(html, /<button[^>]*aria-expanded="false"[^>]*>V1<\/button>/);
+  assert.match(html, /<ul[^>]*hidden=""/);
+  context = {};
+  preferredVersion = available[0];
+  assert.match(render(), />V1<\/button>/);
+  preferredVersion = { name: 'missing' };
+  assert.match(render(), />V2<\/button>/);
+  preferredVersion = undefined;
+  assert.match(render(), /href="\/docs\/\?x=1">V2/);
+  assert.doesNotMatch(render(), /#keep/);
+});

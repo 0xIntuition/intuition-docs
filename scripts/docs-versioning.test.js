@@ -48,7 +48,7 @@ test('Docusaurus uses native version options and development-only filtering', ()
   assert.equal(production.markdown.hooks.onBrokenMarkdownLinks, 'throw');
   assert.deepEqual(production.sitemap.ignorePatterns, ['**/tags/**', '/api/*', '/docs/v1/**']);
   assert.equal(production.navbar[0].label, 'Documentation');
-  assert.deepEqual(production.navbar[1], { type: 'docsVersionDropdown', docsPluginId: '_data', position: 'left' });
+  assert.deepEqual(production.navbar[1], { type: 'custom-versionSwitcher', position: 'left' });
   assert.deepEqual(config({ NODE_ENV: 'development', DOCS_VERSIONS: ' current, v1 ' }).docs.onlyIncludeVersions, ['current', 'v1']);
   assert.equal(config({ NODE_ENV: 'development', DOCS_VERSIONS: '' }).docs.onlyIncludeVersions, undefined);
 });
