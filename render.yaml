@@ -19,6 +19,15 @@ services:
       - key: DOCUSAURUS_IGNORE_SSG_WARNINGS
         value: 'true'
     headers:
+      - path: /docs.md
+        name: Content-Type
+        value: text/markdown; charset=utf-8
+      - path: /docs/*.md
+        name: Content-Type
+        value: text/markdown; charset=utf-8
+      - path: /docs/**/*.md
+        name: Content-Type
+        value: text/markdown; charset=utf-8
       - path: /docs/v1/*
         name: X-Robots-Tag
         value: noindex

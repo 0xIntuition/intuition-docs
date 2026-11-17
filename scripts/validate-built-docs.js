@@ -4,7 +4,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { versions } = require('../docs-versions.config');
 const { redirects, createRedirects } = require('../redirects.config');
-const { readDocs, normalizeRoute } = require('./lib/docs-tree');
+const { walkFiles, readDocs, normalizeRoute } = require('./lib/docs-tree');
 const {
   readGlobalVersions,
   validateEquivalents,
@@ -188,6 +188,153 @@ function routeFile(build, route) {
     (file) => fs.existsSync(file) && fs.statSync(file).isFile(),
   );
 }
+function assertVersionSwitcher(tree, version, targets) {
+  const switches = nodes(
+    tree,
+    (node) => node.attrs?.['data-docs-version-switcher'] === 'desktop',
+  );
+  if (switches.length !== 1)
+    return ['expected one desktop docs version switcher'];
+  const links = nodes(switches[0], (node) => node.tag === 'a');
+  const toggles = nodes(switches[0], (node) => node.tag === 'button');
+  const current = links.filter((link) => link.attrs['aria-current'] === 'page');
+  if (
+    toggles.length !== 1 ||
+    visibleText(toggles[0]) !== version.label ||
+    current.length !== 1 ||
+    visibleText(current[0]) !== version.label ||
+    links.length !== targets.length ||
+    targets.some(
+      ({ label, href }, i) =>
+        visibleText(links[i]) !== label ||
+        normalizeRoute(links[i].attrs.href || '') !== href,
+    )
+  )
+    return [
+      'docs version switcher label, current version or equivalent destinations differ',
+    ];
+  return [];
+}
+
+function assertAlternate(tree, href) {
+  const links = nodes(
+    tree,
+    (node) =>
+      node.tag === 'link' &&
+      (node.attrs.rel || '').toLowerCase().split(/\s+/).includes('alternate') &&
+      node.attrs.type?.toLowerCase() === 'text/markdown',
+  );
+  if (href === null)
+    return links.length ? ['generated index advertises a Markdown export'] : [];
+  return links.length === 1 &&
+    links[0].parent?.tag === 'head' &&
+    links[0].attrs.href === href
+    ? []
+    : ['expected one canonical text/markdown alternate in the head'];
+}
+
+function compareExportInventory(build, loaded) {
+  const expected = new Set(
+    loaded.flatMap((version) =>
+      version.docs
+        .filter((doc) => !doc.id.startsWith('/'))
+        .map((doc) => normalizeRoute(doc.path) + '.md'),
+    ),
+  );
+  const files = walkFiles(path.join(build, 'docs')).filter((file) =>
+    file.endsWith('.md'),
+  );
+  if (fs.existsSync(path.join(build, 'docs.md')))
+    files.push(path.join(build, 'docs.md'));
+  const actual = new Set(
+    files.map(
+      (file) => '/' + path.relative(build, file).split(path.sep).join('/'),
+    ),
+  );
+  return [
+    ...[...expected]
+      .filter((file) => !actual.has(file))
+      .map((file) => `Missing Markdown export: ${file}`),
+    ...[...actual]
+      .filter((file) => !expected.has(file))
+      .map((file) => `Unexpected Markdown export: ${file}`),
+  ];
+}
+
+function readNativeMetadata(root) {
+  const docs = new Map();
+  const folder = path.join(
+    root,
+    '.docusaurus/docusaurus-plugin-content-docs/_data',
+  );
+  for (const file of walkFiles(folder).filter((file) =>
+    file.endsWith('.json'),
+  )) {
+    const item = JSON.parse(fs.readFileSync(file, 'utf8'));
+    if (item.source && item.permalink && item.id && item.version)
+      docs.set(normalizeRoute(item.permalink), item);
+  }
+  return docs;
+}
+
+function assertMarkdown(markdown, { native, doc, version, manifest, source }) {
+  if (!native || native.version !== version.name || native.id !== doc.id)
+    return ['missing native metadata for export'];
+  const { readFrontMatter } = require('./lib/markdown-fences');
+  const { BASE_URL, llmsUrl } = require('./generate-llms-full');
+  const url = BASE_URL + doc.path;
+  const expected = {
+    title: native.title,
+    description: native.description,
+    url,
+    markdown_url: url + '.md',
+    version: version.label,
+    llms_index: llmsUrl(version),
+  };
+  if (version.isDefault) {
+    const {
+      kind,
+      reader,
+      packages,
+      depends_on: dependencies,
+    } = native.frontMatter;
+    const pins = new Map(
+      manifest.packages.map((pkg) => [pkg.name, pkg.version]),
+    );
+    Object.assign(expected, {
+      kind,
+      reader,
+      packages: packages.map((name) => `${name}@${pins.get(name)}`),
+    });
+    if (doc.id.startsWith('concepts/'))
+      expected.depends_on = dependencies.map(
+        (slug) => `${BASE_URL}${version.routeBase}/concepts/${slug}.md`,
+      );
+  }
+  const errors = [];
+  try {
+    const actual = readFrontMatter(markdown);
+    if (!require('node:util').isDeepStrictEqual(actual, expected))
+      errors.push('incorrect Markdown front matter');
+  } catch (error) {
+    errors.push(`invalid Markdown front matter: ${error.message}`);
+  }
+  if (doc.id === 'reference/contracts/deployments' && version.isDefault) {
+    // The source validator checks this generated block against the isolated pinned package.
+    const block = source?.body.match(
+      /\{\/\* generated:start deployments \*\/\}([\s\S]*?)\{\/\* generated:end \*\/\}/,
+    )?.[1];
+    const addresses = new Set(block?.match(/0x[0-9a-fA-F]{40}\b/g));
+    const body = markdown.replace(/^---\n[\s\S]*?\n---\n/, '');
+    if (!addresses.size || !block.includes('MultiVault'))
+      errors.push('missing generated deployment address table');
+    for (const address of addresses)
+      if (!body.includes(address))
+        errors.push(`missing exported deployment address: ${address}`);
+  }
+  return errors;
+}
+
 function assertDocHtml(
   html,
   {
@@ -199,10 +346,15 @@ function assertDocHtml(
     openApi = null,
     phase,
     shippedRoutes,
+    switchTargets,
+    alternate,
   },
 ) {
   const errors = [];
   const tree = parseHtml(html);
+  if (switchTargets)
+    errors.push(...assertVersionSwitcher(tree, version, switchTargets));
+  if (alternate !== undefined) errors.push(...assertAlternate(tree, alternate));
   if (shippedRoutes)
     errors.push(...validateDeveloperFooter(tree, shippedRoutes));
   const badges = nodes(tree, (node) =>
@@ -531,6 +683,35 @@ function run({ root = ROOT, phase, buildLog } = {}) {
     )
       errors.push(`Built V2 routes do not equal Phase ${phase} plan`);
   }
+  const checkExports = phase === undefined || phase >= 3;
+  const nativeMetadata = checkExports ? readNativeMetadata(root) : null;
+  if (checkExports) {
+    errors.push(...compareExportInventory(build, loaded));
+    const legacy = loaded.find((entry) => entry.name === versions.v1.name);
+    const legacyRoutes = legacy.docs
+      .filter((doc) => !doc.id.startsWith('/'))
+      .map((doc) => doc.path)
+      .sort();
+    const frozen = readDocs(root, versions.v1)
+      .map((doc) => doc.route)
+      .sort();
+    if (JSON.stringify(legacyRoutes) !== JSON.stringify(frozen))
+      errors.push('Built V1 content routes differ from the frozen tree');
+    const indices = legacy.docs
+      .filter((doc) => doc.id.startsWith('/'))
+      .map((doc) => doc.id)
+      .sort();
+    if (
+      JSON.stringify(indices) !==
+      JSON.stringify([
+        '/category/-graphql-api',
+        '/category/-intuition-concepts',
+      ])
+    )
+      errors.push(
+        'Built V1 generated indexes differ from the frozen inventory',
+      );
+  }
   for (const version of Object.values(versions)) {
     const built = loaded.find((entry) => entry.name === version.name);
     for (const doc of built.docs) {
@@ -543,6 +724,44 @@ function run({ root = ROOT, phase, buildLog } = {}) {
       const target = pair
         ? currentDocs.find((entry) => entry.id === pair.v2)?.path
         : versions.current.routeBase;
+      let alternate, switchTargets;
+      if (checkExports) {
+        const { BASE_URL } = require('./generate-llms-full');
+        const content = !doc.id.startsWith('/');
+        alternate = content ? BASE_URL + doc.path + '.md' : null;
+        const mdFile = path.join(build, doc.path + '.md');
+        if (content && fs.existsSync(mdFile)) {
+          const markdownErrors = assertMarkdown(
+            fs.readFileSync(mdFile, 'utf8'),
+            {
+              native: nativeMetadata.get(doc.path),
+              doc,
+              version,
+              manifest,
+              source: source.find((page) => page.id === doc.id),
+            },
+          );
+          errors.push(
+            ...markdownErrors.map((error) => `${doc.path}: ${error}`),
+          );
+        }
+        switchTargets = Object.values(versions).map((candidate) => {
+          const entries = loaded.find((entry) => entry.name === candidate.name);
+          const side = version.isDefault ? 'v2' : 'v1';
+          const other = version.isDefault ? 'v1' : 'v2';
+          const paired =
+            candidate === version
+              ? undefined
+              : map.pairs.find((pair) => pair[side] === doc.id)?.[other];
+          const match =
+            entries.docs.find((item) => item.id === paired) ??
+            entries.docs.find((item) => item.id === doc.id);
+          return {
+            label: candidate.label,
+            href: match?.path ?? candidate.routeBase,
+          };
+        });
+      }
       errors.push(
         ...assertDocHtml(fs.readFileSync(file, 'utf8'), {
           version,
@@ -551,9 +770,11 @@ function run({ root = ROOT, phase, buildLog } = {}) {
             frontMatter: source.find((page) => page.id === doc.id)?.frontMatter,
           },
           target,
+          alternate,
+          switchTargets,
           manifest,
           openApi,
-          phase,
+          phase: phase ?? 3,
           shippedRoutes: source.map((page) => page.route),
           expectedEditUrl:
             version.name === versions.current.name
@@ -626,6 +847,10 @@ module.exports = {
   nodes,
   visibleText,
   validateDeveloperFooter,
+  assertAlternate,
+  assertMarkdown,
+  assertVersionSwitcher,
+  compareExportInventory,
   routeFile,
   assertDocHtml,
   validateSitemap,

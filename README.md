@@ -228,9 +228,9 @@ Each version has an index, a condensed bundle, and a full-text bundle. The root 
 | Condensed | [/llms-medium.txt](https://docs.intuition.systems/llms-medium.txt) | [/docs/v1/llms-medium.txt](https://docs.intuition.systems/docs/v1/llms-medium.txt) |
 | Full text | [/llms-full.txt](https://docs.intuition.systems/llms-full.txt) | [/docs/v1/llms-full.txt](https://docs.intuition.systems/docs/v1/llms-full.txt) |
 
-Each bundle identifies its version and links to the other version's index. The index follows the [llms.txt standard](https://llmstxt.org/) and currently links to HTML documentation pages.
+Each index links directly to Markdown for individual pages. Append `.md` to the canonical HTML route after removing any trailing slash. The home pages export to `/docs.md` and `/docs/v1.md`. On older URLs, follow the client redirect or its canonical link before appending the extension. Each documentation page also advertises the absolute export URL in its HTML head with `rel="alternate"` and `type="text/markdown"`.
 
-Per-page Markdown exports are scheduled for Phase 3 and are not available in this foundation checkpoint. That phase adds a `.md` suffix to each documentation route for its Markdown URL, including `/docs.md` for the V2 home, and updates the indexes to use those URLs.
+The export starts with YAML front matter containing `title`, `description`, `url`, `markdown_url`, `version`, and `llms_index`. V2 pages also identify their `kind`, intended `reader`, and `packages` with exact versions. A V2 concept links its prerequisites through the `depends_on` list of Markdown URLs.
 
 ## Technology Stack
 

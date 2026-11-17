@@ -520,3 +520,34 @@ test('V1 artifact metadata must keep the original frozen timestamp', () => {
     /differs from frozen source history/,
   );
 });
+
+test('curated Markdown conversion changes only known same-origin content destinations and preserves suffixes', () => {
+  const { markdownDocLinks } = require('./generate-llms-full');
+  const routes = new Set(['/docs', '/docs/v1/guide']);
+  const head = [
+    '[Home](/docs/?q=one%20two#part)',
+    '[Guide](https://docs.intuition.systems/docs/v1/guide)',
+    '[Index](/docs/v1/llms.txt)',
+    '[Source](https://github.com/0xIntuition/packages)',
+    '[External](https://outside.example/docs)',
+    '[Asset](/docs/icon.png)',
+    '[Missing](/docs/no-page)',
+    '[Export](/docs.md)',
+    'Other versions: https://docs.intuition.systems/docs/v1/llms.txt',
+  ];
+  const result = markdownDocLinks(head.join('\n'), routes);
+  assert.deepEqual(result.split('\n'), [
+    `[Home](${BASE_URL}/docs.md?q=one%20two#part)`,
+    `[Guide](${BASE_URL}/docs/v1/guide.md)`,
+    ...head.slice(2),
+  ]);
+  assert.equal(markdownDocLinks(result, routes), result);
+});
+
+test('V2 prose whitespace cleanup preserves blank lines inside source code', () => {
+  const fence = '```ts\nconst sample = 1;\n\n\nconsole.log(sample);\n```';
+  assert.equal(
+    cleanContent('Text.\n\n\n' + fence, 'Title', { version: 'current' }),
+    'Text.\n\n' + fence,
+  );
+});

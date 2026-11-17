@@ -671,6 +671,10 @@ function cleanContent(
 
   content = qualifyGenericReferenceHeadings(content, title);
 
+  // Normalize prose before restoring the exact V2 code (including blank lines).
+  if (version === 'current')
+    content = content.replace(/\n{3,}/g, '\n\n').trim();
+
   // Pass 19: Restore preserved code blocks
   if (!stripCodeBlocks) {
     content = content.replace(/__CODE_BLOCK_(\d+)__/g, (_, idx) => {
@@ -678,16 +682,16 @@ function cleanContent(
     });
   }
 
-  content = content.replace(/\n{3,}/g, '\n\n').trim();
-
-  return content;
+  return version === 'current'
+    ? content
+    : content.replace(/\n{3,}/g, '\n\n').trim();
 }
 
 // ---------------------------------------------------------------------------
 // Section parsing — shared across output formats
 // ---------------------------------------------------------------------------
 
-function buildDocRouteMaps(records, version, rootDir = ROOT) {
+function buildDocRouteMaps(records, version, rootDir = ROOT, allRecords) {
   const routeBySourcePath = new Map();
   const routeByLowerSourcePath = new Map();
   const routeByLowerCase = new Map();
@@ -695,11 +699,10 @@ function buildDocRouteMaps(records, version, rootDir = ROOT) {
 
   // Body cross-links can intentionally lead to either version. Source sections
   // themselves still come exclusively from the selected tree.
-  for (const entry of Object.values(versions)) {
-    for (const record of readDocs(rootDir, entry)) {
-      validRoutes.add(record.route);
-      routeByLowerCase.set(record.route.toLowerCase(), record.route);
-    }
+  for (const record of allRecords ??
+    Object.values(versions).flatMap((entry) => readDocs(rootDir, entry))) {
+    validRoutes.add(record.route);
+    routeByLowerCase.set(record.route.toLowerCase(), record.route);
   }
   for (const record of records) {
     const sourcePath = record.relativePath.replace(/\.(md|mdx)$/i, '');
@@ -791,6 +794,19 @@ function appliesToMarkdown(packages, manifest) {
   return `Applies to V2 · ${labels.join(' · ')}${manifest.status.includes('alpha') ? ' · pre-release' : ''}`;
 }
 
+// The curated head can also link to release sources, discovery files and assets.
+function markdownDocLinks(markdown, routes) {
+  return markdown.replace(
+    /(\]\(<?)((?:https?:\/\/|\/)[^\s<>)]+)/g,
+    (match, prefix, href) => {
+      const url = new URL(href, BASE_URL);
+      const route = url.pathname.replace(/\/$/, '');
+      if (url.origin !== BASE_URL || !routes.has(route)) return match;
+      return `${prefix}${BASE_URL}${route}.md${url.search}${url.hash}`;
+    },
+  );
+}
+
 function readCuratedIndexSource(version = versions.current, options = {}) {
   const source = fs.readFileSync(
     path.join(ROOT, version.llmsIndexSource),
@@ -806,11 +822,19 @@ function readCuratedIndexSource(version = versions.current, options = {}) {
 }
 
 function generateIndexTxt(sections, version = versions.current, options = {}) {
-  const curated = readCuratedIndexSource(version, options);
+  const routes = new Set(
+    Object.values(versions).flatMap((entry) =>
+      readDocs(options.rootDir ?? ROOT, entry).map((doc) => doc.route),
+    ),
+  );
+  const curated = markdownDocLinks(
+    readCuratedIndexSource(version, options),
+    routes,
+  );
   // Route sorting makes the generated directory deterministic across file-system walks.
   const directory = [...sections]
     .sort((a, b) => (a.route < b.route ? -1 : a.route > b.route ? 1 : 0))
-    .map((section) => `- [${section.title}](${section.url})`)
+    .map((section) => `- [${section.title}](${section.url}.md)`)
     .join('\n');
 
   return `${curated}\n${INDEX_DIRECTORY_INTRO}\n\n${directory}\n`;
@@ -1023,6 +1047,8 @@ module.exports = {
   getEligibleSections: parseSections,
   isEligibleDocFile,
   readCuratedIndexSource,
+  markdownDocLinks,
   readManifest,
   appliesToMarkdown,
+  buildDocRouteMaps,
 };
