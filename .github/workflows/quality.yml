@@ -22,6 +22,7 @@ jobs:
           node-version: '22.21.0'
           cache: npm
       - run: npm ci
+      - run: npm ci --ignore-scripts --prefix examples/v2
       - name: Enforce V1 freeze and initial snapshot byte proof
         env:
           GH_TOKEN: ${{ github.token }}
@@ -34,4 +35,7 @@ jobs:
       - run: npm run validate-v2-structure
       - run: node scripts/validate-v2-structure.js --phase 1
       - run: npm run validate-sdk-examples
-      # Manifest, generated-block and example gates are introduced by later phases.
+      - run: npm run check-release-pins
+      - run: node scripts/sync-generated-blocks.js --check
+      - run: node scripts/sync-example-snippets.js --check
+      - run: node scripts/validate-core-api-examples.js

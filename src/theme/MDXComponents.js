@@ -8,6 +8,7 @@ import ColorCode from '../components/ColorCode';
 import ColorPalette from '../components/ColorPalette';
 import PropsTable from '../components/PropsTable';
 import ComponentsGrid from '../components/ComponentsGrid';
+import AppliesTo from '../components/AppliesTo';
 import { CardSection, Card } from '../components/CardComponents';
 import * as icons from '../icons';
 
@@ -23,6 +24,7 @@ export default {
   ColorPalette,
   PropsTable,
   ComponentsGrid,
+  AppliesTo,
   CardSection,
   Card,
 };

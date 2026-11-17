@@ -18,6 +18,11 @@ on:
       - 'scripts/llms-v1-last-updated.json'
       - 'docs-versions.config.js'
       - 'scripts/lib/docs-tree.js'
+      - 'scripts/lib/markdown-fences.js'
+      - 'static/intuition-release.json'
+      - 'docusaurus.config.js'
+      - 'package.json'
+      - 'package-lock.json'
       - '.github/workflows/generate-llms-txt.yml'
   workflow_dispatch: # Allow manual trigger
 

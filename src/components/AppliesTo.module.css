@@ -1,0 +1,27 @@
+.appliesTo {
+  color: rgb(var(--docs-color-text-400));
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.6;
+  margin-block: 0 var(--ifm-paragraph-margin-bottom);
+  min-width: 0;
+  overflow-wrap: anywhere;
+  text-wrap: pretty;
+}
+
+.package {
+  min-width: 0;
+}
+
+.package code {
+  background: transparent;
+  border: 0;
+  color: inherit;
+  padding: 0;
+  white-space: normal;
+}
+
+.version {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}

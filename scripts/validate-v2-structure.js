@@ -3,12 +3,12 @@
 
 const fs = require('node:fs');
 const path = require('node:path');
-const matter = require('gray-matter');
 const { execFileSync, spawnSync } = require('node:child_process');
 const { versions } = require('../docs-versions.config');
 const { readDocs, docMetadata } = require('./lib/docs-tree');
 const {
   parseMarkdownCode,
+  readFrontMatter,
   INTUITION_IMPORT_PATTERN,
 } = require('./lib/markdown-fences');
 const ROOT = path.resolve(__dirname, '..');
@@ -38,6 +38,43 @@ const READ_CLIENT_PAGES = new Set([
   'get-started/migrate-from-v1',
 ]);
 const PHASE_COUNTS = [3, 61, 95, 114, 134];
+const SDK_API_WARNING = `This client calls the hosted V1 GraphQL API and is not a V2 read path; see [The SDK read client](${versions.current.routeBase}/build/read-with-sdk).`;
+const GRAPHQL_NOTE = `There is no V2 GraphQL endpoint yet; one is planned for Intuition Core. The V1 GraphQL API is documented in the [V1 docs](${versions.v1.routeBase}/graphql-api/overview).`;
+const IID_OPERATION = '/api/iids/{iid}/atoms';
+
+function validateCoreSource(manifest) {
+  if (!manifest) return [];
+  const core = manifest.core;
+  if (
+    !core ||
+    core.repository !== 'https://github.com/0xIntuition/intuition-core' ||
+    core.distribution !== 'source' ||
+    !/^[a-f0-9]{40}$/.test(core.commit || '') ||
+    Object.keys(core).sort().join(',') !== 'commit,distribution,repository'
+  )
+    return [
+      'Core must identify its source repository, distribution and immutable commit only',
+    ];
+  return [];
+}
+
+function readCoreOpenApi(root, manifest) {
+  const errors = validateCoreSource(manifest);
+  if (errors.length) throw new Error(errors.join('\n'));
+  if (!manifest) return null;
+  const file = path.join(
+    root,
+    `scripts/core-openapi-${manifest.core.commit}.json`,
+  );
+  if (!fs.existsSync(file))
+    throw new Error(
+      `Missing vendored OpenAPI for Core source revision: ${manifest.core.commit}`,
+    );
+  const api = JSON.parse(fs.readFileSync(file, 'utf8'));
+  if (!api.paths || typeof api.paths !== 'object' || Array.isArray(api.paths))
+    throw new Error('Core OpenAPI must define its paths');
+  return api;
+}
 
 function loadLaunchRoutes(text) {
   const rows = text
@@ -75,10 +112,17 @@ function withoutFences({ source: body, fences }) {
   for (const fence of [...fences].reverse()) {
     body = body.slice(0, fence.start) + body.slice(fence.end);
   }
-  return matter(body).content;
+  readFrontMatter(body);
+  return body.replace(
+    /^\uFEFF?---[^\r\n]*\r?\n[\s\S]*?\r?\n---(?:\r?\n|$)/,
+    '',
+  );
 }
 
-function validateDocs(docs, { launchRows, manifest = null, phase } = {}) {
+function validateDocs(
+  docs,
+  { launchRows, manifest = null, openApi = null, phase } = {},
+) {
   const errors = [];
   const planned = new Set(launchRows.map((row) => row.route));
   const packages = new Set(
@@ -261,6 +305,75 @@ function validateDocs(docs, { launchRows, manifest = null, phase } = {}) {
       fail('V1 typecheck markers are allowed only on the migration guide');
     if (/SDK [34]\.x|protocol [23]\.x/i.test(doc.content))
       fail('documentation generation labels must not be package semver ranges');
+    if (body.includes('/api/iids/') && !openApi?.paths?.[IID_OPERATION]?.get)
+      fail(
+        'IID lookup may not be documented without its pinned OpenAPI GET operation (M-7)',
+      );
+    if (
+      id === 'reference/sdk/api' &&
+      !body.trimStart().startsWith(`<AppliesTo />\n\n${SDK_API_WARNING}`)
+    )
+      fail('generated SDK API warning must immediately follow AppliesTo');
+    if (
+      ['build/read-with-sdk', 'concepts/indexing-and-querying'].includes(id) &&
+      !body.includes(GRAPHQL_NOTE)
+    )
+      fail('the required V1 GraphQL overview note is missing');
+    if (id === 'build/read-with-sdk') {
+      const firstParagraph = body
+        .replace(/^\s*<AppliesTo\s*\/>\s*/, '')
+        .split(/\n\s*\n/)[0];
+      if (
+        !firstParagraph.includes(
+          `${versions.current.routeBase}/build/query-core`,
+        )
+      )
+        fail('the first paragraph must direct V2 reads to the Core Query API');
+      if (
+        !body.includes('https://mainnet.intuition.sh/v1/graphql') ||
+        !body.includes('https://testnet.intuition.sh/v1/graphql') ||
+        !/not a V2 read path/i.test(body)
+      )
+        fail(
+          'the SDK read-client page must identify both V1 endpoints and disclaim a V2 read path',
+        );
+    }
+    for (const fence of parsed.fences) {
+      if (
+        id !== 'reference/sdk/api' &&
+        /\bcreateIntuitionApiClient\s*(?:<[^;\n]*>)?\s*\(/.test(fence.code)
+      )
+        fail('V2 code must not call the hosted SDK read client');
+      if (
+        ['build/read-with-sdk', 'reference/packages/sdk'].includes(id) &&
+        /sdk\/api|createIntuitionApiClient|getIntuitionApiUrl|intuition\.sh|\bapi\.atoms\b/.test(
+          fence.code,
+        )
+      )
+        fail('SDK read-client recipes are forbidden on this page');
+    }
+    if (id === 'reference/packages/sdk') {
+      const apiLines = withoutFences(parsed)
+        .split(/\r?\n/)
+        .filter((line) =>
+          /(?:sdk\/api|`\.\/api`|createIntuitionApiClient|getIntuitionApiUrl|intuition\.sh)/.test(
+            line,
+          ),
+        );
+      const rows = apiLines.filter((line) =>
+        /^\s*\|\s*`\.\/api`\s*\|/.test(line),
+      );
+      const notes = apiLines.filter((line) => !/^\s*\|/.test(line));
+      if (
+        rows.length !== 1 ||
+        notes.length !== 1 ||
+        !/V1 GraphQL API/.test(notes[0] || '') ||
+        !notes[0]?.includes(`${versions.current.routeBase}/build/read-with-sdk`)
+      )
+        fail(
+          'SDK ./api belongs only in its entry-point row and one linked V1 GraphQL sentence',
+        );
+    }
   }
   if (phase !== undefined) {
     const expected = launchRows
@@ -319,7 +432,11 @@ function validateSidebar(sidebar, docs, launchRows, phase) {
   return errors;
 }
 
-function validateMismatches(records, launchRows, { manifest = null } = {}) {
+function validateMismatches(
+  records,
+  launchRows,
+  { manifest = null, openApi = null } = {},
+) {
   const errors = [];
   if (!Array.isArray(records)) return ['source-mismatches must be an array'];
   const routes = new Set(launchRows.map((row) => row.route));
@@ -365,6 +482,17 @@ function validateMismatches(records, launchRows, { manifest = null } = {}) {
         errors.push(`Phase 1 M-${i + 1} status must be ${status}`);
     if (ids.has('M-9'))
       errors.push('M-9 is absent until a Core fallback actually applies');
+  } else {
+    if (!openApi) errors.push('M-7 requires the vendored Core source OpenAPI');
+    else {
+      const expected = openApi.paths?.[IID_OPERATION]?.get
+        ? 'resolved'
+        : 'open';
+      if (records.find((record) => record?.id === 'M-7')?.status !== expected)
+        errors.push(
+          `M-7 status must be ${expected} for the pinned Core OpenAPI`,
+        );
+    }
   }
   return errors;
 }
@@ -441,11 +569,12 @@ function run({ root = ROOT, phase, base = 'origin/main' } = {}) {
   const manifest = fs.existsSync(manifestFile)
     ? JSON.parse(fs.readFileSync(manifestFile, 'utf8'))
     : null;
+  const openApi = readCoreOpenApi(root, manifest);
   const sidebar = require(path.join(root, 'sidebars.js'));
   const { v2Renames } = require(path.join(root, 'redirects.config.js'));
   const previous = previousV2Routes(root, base);
   const errors = [
-    ...validateDocs(docs, { launchRows, manifest, phase }),
+    ...validateDocs(docs, { launchRows, manifest, openApi, phase }),
     ...validateSidebar(sidebar, docs, launchRows, phase),
     ...validateMismatches(
       JSON.parse(
@@ -455,7 +584,7 @@ function run({ root = ROOT, phase, base = 'origin/main' } = {}) {
         ),
       ),
       launchRows,
-      { manifest },
+      { manifest, openApi },
     ),
     ...checkRoutePermanence(
       previous.routes,
@@ -507,6 +636,10 @@ if (require.main === module) {
   }
 }
 module.exports = {
+  SDK_API_WARNING,
+  GRAPHQL_NOTE,
+  validateCoreSource,
+  readCoreOpenApi,
   GRAPHQL_PAGES,
   READ_CLIENT_PAGES,
   loadLaunchRoutes,

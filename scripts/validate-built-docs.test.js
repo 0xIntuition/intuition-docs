@@ -36,6 +36,78 @@ test('built assertions separate permitted V1 chrome from V2 body text', () => {
     [],
   );
 });
+test('built package metadata is exact and directly follows the native header', () => {
+  const manifest = require('../static/intuition-release.json');
+  const page = {
+    id: 'reference/packages/iid',
+    frontMatter: { packages: ['@0xintuition/iid'] },
+  };
+  const strip =
+    '<p data-applies-to="V2">Applies to V2 · <code>@0xintuition/iid</code> 0.1.0</p>';
+  const html = htmlV2.replace('</header>', `</header>${strip}`);
+  const options = { version: versions.current, doc: page, manifest };
+  assert.deepEqual(assertDocHtml(html, options), []);
+  assert.match(
+    assertDocHtml(html.replace(strip, `<p>Preface</p>${strip}`), options).join(
+      '\n',
+    ),
+    /first body element/,
+  );
+  assert.match(
+    assertDocHtml(html.replace('0.1.0', '0.0.1'), options).join('\n'),
+    /differ from the manifest/,
+  );
+  assert.match(
+    assertDocHtml(html, {
+      ...options,
+      manifest: { ...manifest, status: 'published-alpha' },
+    }).join('\n'),
+    /release status/,
+  );
+  assert.deepEqual(
+    assertDocHtml(html.replace('0.1.0</p>', '0.1.0 · pre-release</p>'), {
+      ...options,
+      manifest: { ...manifest, status: 'published-alpha' },
+    }),
+    [],
+  );
+  assert.match(
+    assertDocHtml(html, { ...options, doc }).join('\n'),
+    /without packages/,
+  );
+});
+
+test('built SDK API warning follows metadata before all generated declarations', () => {
+  const manifest = require('../static/intuition-release.json');
+  const strip =
+    '<p data-applies-to="V2">Applies to V2 · <code>@0xintuition/sdk</code> 4.0.0</p>';
+  const warning =
+    '<p>This client calls the hosted V1 GraphQL API and is not a V2 read path; see <a href="/docs/build/read-with-sdk">The SDK read client</a>.</p>';
+  const html = htmlV2.replace('</header>', `</header>${strip}${warning}`);
+  const options = {
+    version: versions.current,
+    doc: {
+      id: 'reference/sdk/api',
+      frontMatter: { packages: ['@0xintuition/sdk'] },
+    },
+    manifest,
+  };
+  assert.deepEqual(assertDocHtml(html, options), []);
+  assert.match(
+    assertDocHtml(
+      html.replace(warning, `<h2>API</h2>${warning}`),
+      options,
+    ).join('\n'),
+    /immediately follow/,
+  );
+  assert.match(
+    assertDocHtml(
+      html.replace('Useful body.', '/api/iids/example/atoms'),
+      options,
+    ).join('\n'),
+    /M-7/,
+  );
+});
 test('AC-3/4/17 rejects wrong badges, indexing, edit links, banner copy and target', () => {
   for (const html of [
     htmlV1.replace('Version: V1', 'Version: V2'),

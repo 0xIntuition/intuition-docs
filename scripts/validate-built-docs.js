@@ -9,7 +9,13 @@ const {
   readGlobalVersions,
   validateEquivalents,
 } = require('./validate-version-equivalents');
-const { GRAPHQL_PAGES, loadLaunchRoutes } = require('./validate-v2-structure');
+const {
+  GRAPHQL_PAGES,
+  READ_CLIENT_PAGES,
+  SDK_API_WARNING,
+  loadLaunchRoutes,
+  readCoreOpenApi,
+} = require('./validate-v2-structure');
 const ROOT = path.resolve(__dirname, '..');
 const BANNER_TEXT =
   "You're reading the V1 docs. They cover the first generation of Intuition: the intuition-ts packages and the intuition-rs services. New development happens in V2. Open the V2 docs";
@@ -123,7 +129,15 @@ function routeFile(build, route) {
 }
 function assertDocHtml(
   html,
-  { version, doc, target = versions.current.routeBase, expectedEditUrl },
+  {
+    version,
+    doc,
+    target = versions.current.routeBase,
+    expectedEditUrl,
+    manifest = null,
+    openApi = null,
+    phase,
+  },
 ) {
   const errors = [];
   const tree = parseHtml(html);
@@ -203,8 +217,100 @@ function assertDocHtml(
     else {
       const body = bodies[0];
       const bodyText = visibleText(body);
+      const packages = doc.frontMatter?.packages || [];
+      const applies = nodes(
+        body,
+        (node) => node.attrs?.['data-applies-to'] === 'V2',
+      );
+      const bodyElements = body.children.filter((node) => node.tag !== '#text');
+      const headerIndex = bodyElements.findIndex(
+        (node) => node.tag === 'header',
+      );
+      if (packages.length) {
+        const pins = new Map(
+          (manifest?.packages || []).map((pkg) => [pkg.name, pkg.version]),
+        );
+        const expected = `Applies to V2${packages.map((name) => ` · ${name} ${pins.get(name)}`).join('')}${manifest?.status?.includes('alpha') ? ' · pre-release' : ''}`;
+        if (packages.some((name) => !pins.has(name)))
+          errors.push('AppliesTo needs exact manifest package versions');
+        if (
+          applies.length !== 1 ||
+          headerIndex !== 0 ||
+          bodyElements[headerIndex + 1] !== applies[0]
+        )
+          errors.push(
+            'AppliesTo must be the first body element after the title header',
+          );
+        else if (visibleText(applies[0]) !== expected)
+          errors.push(
+            'AppliesTo package versions or release status differ from the manifest',
+          );
+      } else if (applies.length)
+        errors.push(
+          'Pages without packages must not render AppliesTo metadata',
+        );
+      if (doc.id === 'reference/sdk/api') {
+        const warning = bodyElements[headerIndex + 2];
+        const expected = SDK_API_WARNING.replace(
+          /\[([^\]]+)\]\([^)]+\)/g,
+          '$1',
+        );
+        if (
+          !warning ||
+          visibleText(warning) !== expected ||
+          !nodes(
+            warning,
+            (node) =>
+              node.tag === 'a' &&
+              node.attrs.href ===
+                `${versions.current.routeBase}/build/read-with-sdk`,
+          ).length
+        )
+          errors.push(
+            'SDK API warning must immediately follow AppliesTo in the built body',
+          );
+      }
       if (/graphql/i.test(bodyText) && !GRAPHQL_PAGES.has(doc.id))
         errors.push('GraphQL in a forbidden V2 body');
+      if (
+        /sdk\/api|createIntuitionApiClient|getIntuitionApiUrl|intuition\.sh/i.test(
+          bodyText,
+        ) &&
+        !READ_CLIENT_PAGES.has(doc.id)
+      )
+        errors.push('SDK hosted read-client references in a forbidden V2 body');
+      const mcp = bodyText.match(/\bMCP\b/gi) || [];
+      if (
+        mcp.length &&
+        !(
+          doc.id === 'agents/index' &&
+          phase >= 3 &&
+          mcp.length === 1 &&
+          bodyText.includes('An Intuition MCP server is not available yet.')
+        )
+      )
+        errors.push(
+          'MCP body notice is reserved for agents/index from Phase 3',
+        );
+      if (
+        bodyText.includes('/api/iids/') &&
+        !openApi?.paths?.['/api/iids/{iid}/atoms']?.get
+      )
+        errors.push('IID lookup is absent from the pinned Core OpenAPI (M-7)');
+      for (const code of nodes(body, (node) => node.tag === 'pre')) {
+        const content = textContent(code);
+        if (
+          /\b(?:query|mutation|subscription|fragment)\s+[A-Za-z_]\w*(?:\s*\([^)]*\))?\s*(?:on\s+\w+\s*)?\{/m.test(
+            content,
+          )
+        )
+          errors.push('GraphQL operation documents are forbidden in V2 code');
+        if (
+          doc.id !== 'reference/sdk/api' &&
+          /\bcreateIntuitionApiClient\s*(?:<[^;\n]*>)?\s*\(/.test(content)
+        )
+          errors.push('V2 code must not call the hosted SDK read client');
+      }
       for (const link of nodes(body, (node) => node.tag === 'a')) {
         const href = link.attrs.href || '';
         if (
@@ -335,6 +441,11 @@ function run({ root = ROOT, phase, buildLog } = {}) {
   ).docs;
   const currentDocs = current.filter((doc) => !doc.id.startsWith('/'));
   const source = readDocs(root, versions.current);
+  const manifestFile = path.join(root, 'static/intuition-release.json');
+  const manifest = fs.existsSync(manifestFile)
+    ? JSON.parse(fs.readFileSync(manifestFile, 'utf8'))
+    : null;
+  const openApi = readCoreOpenApi(root, manifest);
   const errors = validateEquivalents(map, loaded);
   if (current.length !== currentDocs.length)
     errors.push('V2 must not have generated-index entries');
@@ -371,8 +482,14 @@ function run({ root = ROOT, phase, buildLog } = {}) {
       errors.push(
         ...assertDocHtml(fs.readFileSync(file, 'utf8'), {
           version,
-          doc,
+          doc: {
+            ...doc,
+            frontMatter: source.find((page) => page.id === doc.id)?.frontMatter,
+          },
           target,
+          manifest,
+          openApi,
+          phase,
           expectedEditUrl:
             version.name === versions.current.name
               ? `https://github.com/0xIntuition/intuition-docs/tree/main/${version.docsDir}/${source.find((page) => page.id === doc.id)?.relativePath}`

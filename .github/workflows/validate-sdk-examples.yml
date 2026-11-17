@@ -32,5 +32,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Install isolated V2 dependencies without lifecycle scripts
+        run: npm ci --ignore-scripts --prefix examples/v2
+
       - name: Typecheck SDK documentation examples
         run: npm run validate-sdk-examples
+
+      - name: Check synchronized V2 source regions
+        run: node scripts/sync-example-snippets.js --check

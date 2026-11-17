@@ -265,3 +265,41 @@ test('coverage rejects unpaired globs, floating actions and cspell scope changes
     assert.ok(validateCoverage(copy).length);
   }
 });
+
+test('Phase 2 workflow coverage requires isolated installs and all source synchronization gates', () => {
+  const root = path.join(__dirname, '..');
+  const read = (file) => fs.readFileSync(path.join(root, file), 'utf8');
+  const input = {
+    packageJson: JSON.parse(read('package.json')),
+    cspell: JSON.parse(read('cspell.json')),
+    tailwind: read('tailwind.config.cjs'),
+    workflows: Object.fromEntries(
+      [
+        'check-links.yml',
+        'quality.yml',
+        'generate-llms-txt.yml',
+        'validate-sdk-examples.yml',
+      ].map((name) => [name, read(`.github/workflows/${name}`)]),
+    ),
+    scripts: {},
+    sdkConfig: JSON.parse(read('scripts/sdk-examples.config.json')),
+    hasReleaseManifest: true,
+  };
+  assert.deepEqual(validateCoverage(input), []);
+  for (const [name, command] of [
+    ['quality.yml', 'npm ci --ignore-scripts --prefix examples/v2'],
+    [
+      'validate-sdk-examples.yml',
+      'npm ci --ignore-scripts --prefix examples/v2',
+    ],
+    ['quality.yml', 'npm run check-release-pins'],
+    ['quality.yml', 'node scripts/sync-generated-blocks.js --check'],
+    ['quality.yml', 'node scripts/sync-example-snippets.js --check'],
+    ['quality.yml', 'node scripts/validate-core-api-examples.js'],
+    ['generate-llms-txt.yml', 'static/intuition-release.json'],
+  ]) {
+    const copy = structuredClone(input);
+    copy.workflows[name] = copy.workflows[name].replace(command, '');
+    assert.ok(validateCoverage(copy).length, `${name}: ${command}`);
+  }
+});

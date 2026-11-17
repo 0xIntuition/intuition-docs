@@ -15,7 +15,8 @@
  *   node scripts/generate-llms-full.js --index-only   # only llms.txt
  *   node scripts/generate-llms-full.js --version current --stdout # one full bundle
  *
- * Zero external dependencies — uses only Node.js built-ins.
+ * V2 code preservation follows the site's Markdown grammar; V1 serialization
+ * retains its frozen behavior.
  */
 
 const fs = require('fs');
@@ -495,6 +496,9 @@ function cleanContent(
     pageUrl = BASE_URL,
     sourceFile = '',
     routeMaps = null,
+    packages = [],
+    manifest = null,
+    version = 'v1',
   } = {},
 ) {
   let content = body;
@@ -502,14 +506,35 @@ function cleanContent(
 
   // Pass 0: Handle fenced code blocks
   const codeBlocks = [];
-  content = content.replace(/^([ \t]*```[\s\S]*?^[ \t]*```)/gm, (match) => {
+  const protectCode = (match) => {
     if (stripCodeBlocks) {
       return ''; // Remove entirely for medium output
     }
     const idx = codeBlocks.length;
     codeBlocks.push(match);
     return `__CODE_BLOCK_${idx}__`;
-  });
+  };
+  if (version === 'current') {
+    const { parseMarkdownCode } = require('./lib/markdown-fences');
+    const parsed = parseMarkdownCode(content, {
+      filePath: sourceFile || 'document.md',
+    });
+    content = parsed.source;
+    for (const fence of [...parsed.fences].reverse()) {
+      const replacement = protectCode(content.slice(fence.start, fence.end));
+      content =
+        content.slice(0, fence.start) + replacement + content.slice(fence.end);
+    }
+  } else {
+    content = content.replace(/^([ \t]*```[\s\S]*?^[ \t]*```)/gm, protectCode);
+  }
+
+  // Resolve package metadata before presentation-only components are removed.
+  // Fences are protected, so a literal JSX example is never rewritten.
+  if (version === 'current')
+    content = content.replace(/<AppliesTo\s*\/>/g, () =>
+      appliesToMarkdown(packages, manifest),
+    );
 
   // Pass 1: Remove import/export statements
   content = content.replace(/^(import|export)\s+.*$/gm, '');
@@ -700,6 +725,7 @@ function parseSections(versionName = 'current', { rootDir = ROOT } = {}) {
     isEligibleDocFile(record.absolutePath, version, rootDir),
   );
   const routeMaps = buildDocRouteMaps(records, version, rootDir);
+  const manifest = version.isDefault ? readManifest(rootDir) : null;
 
   return records.map((record) => {
     const {
@@ -717,7 +743,14 @@ function parseSections(versionName = 'current', { rootDir = ROOT } = {}) {
     if (version.name === 'v1' && !lastUpdated) {
       throw new Error(`Missing frozen V1 last_updated for ${relativePath}`);
     }
-    const context = { pageUrl: url, sourceFile, routeMaps };
+    const context = {
+      pageUrl: url,
+      sourceFile,
+      routeMaps,
+      version: version.name,
+      packages: frontMatter.packages || [],
+      manifest,
+    };
     return {
       id,
       title,
@@ -741,16 +774,39 @@ function parseSections(versionName = 'current', { rootDir = ROOT } = {}) {
 // Output formatters
 // ---------------------------------------------------------------------------
 
-function readCuratedIndexSource(version = versions.current) {
+function readManifest(rootDir = ROOT) {
+  const file = path.join(rootDir, 'static/intuition-release.json');
+  return fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, 'utf8')) : null;
+}
+
+function appliesToMarkdown(packages, manifest) {
+  if (!packages.length) return '';
+  const pins = new Map(
+    (manifest?.packages || []).map((pkg) => [pkg.name, pkg.version]),
+  );
+  const labels = packages.map((name) => {
+    if (!pins.has(name)) throw new Error(`Missing AppliesTo version: ${name}`);
+    return `\`${name}\` ${pins.get(name)}`;
+  });
+  return `Applies to V2 · ${labels.join(' · ')}${manifest.status.includes('alpha') ? ' · pre-release' : ''}`;
+}
+
+function readCuratedIndexSource(version = versions.current, options = {}) {
   const source = fs.readFileSync(
     path.join(ROOT, version.llmsIndexSource),
     'utf-8',
   );
-  return source.replace(/<!--[\s\S]*?-->\r?\n?/g, '');
+  const withHeader = version.isDefault
+    ? source.replace(
+        '<!-- version-header -->',
+        generateHeader(version, 'index', options).trimEnd(),
+      )
+    : source;
+  return withHeader.replace(/<!--[\s\S]*?-->\r?\n?/g, '');
 }
 
-function generateIndexTxt(sections, version = versions.current) {
-  const curated = readCuratedIndexSource(version);
+function generateIndexTxt(sections, version = versions.current, options = {}) {
+  const curated = readCuratedIndexSource(version, options);
   // Route sorting makes the generated directory deterministic across file-system walks.
   const directory = [...sections]
     .sort((a, b) => (a.route < b.route ? -1 : a.route > b.route ? 1 : 0))
@@ -788,7 +844,8 @@ function versionScope(version) {
     : 'V2 covers the packages in the release manifest and Intuition Core.';
 }
 
-function generateHeader(version, format = 'index') {
+function generateHeader(version, format = 'index', { manifest } = {}) {
+  if (version.isDefault && manifest === undefined) manifest = readManifest();
   const suffix =
     format === 'full'
       ? ' — full text'
@@ -805,16 +862,35 @@ function generateHeader(version, format = 'index') {
     `Scope: ${versionScope(version)}`,
   ];
   if (version.isDefault) {
-    lines.push(
-      'The V2 packages are published as stable npm releases and Intuition Core is a release candidate.',
-    );
+    if (manifest) {
+      if (
+        manifest.source?.repository !==
+          'https://github.com/0xIntuition/packages' ||
+        !/^[a-f0-9]{40}$/.test(manifest.source?.commit || '') ||
+        manifest.core?.repository !==
+          'https://github.com/0xIntuition/intuition-core' ||
+        manifest.core?.distribution !== 'source' ||
+        !/^[a-f0-9]{40}$/.test(manifest.core?.commit || '')
+      )
+        throw new Error(
+          'V2 llms metadata requires immutable package and Core source revisions',
+        );
+      lines.push(
+        `Package source: ${manifest.source.repository}/tree/${manifest.source.commit}`,
+        `Core source revision: ${manifest.core.repository}/tree/${manifest.core.commit}`,
+      );
+    } else {
+      lines.push(
+        'The V2 packages are published as stable npm releases and Intuition Core is a release candidate.',
+      );
+    }
   }
   lines.push(`Other versions: ${other.label} — ${llmsUrl(other)}`);
   return lines.join('\n') + '\n';
 }
 
-function generateFullTxt(sections, version = versions.current) {
-  const preamble = `${generateHeader(version, 'full')}
+function generateFullTxt(sections, version = versions.current, options = {}) {
+  const preamble = `${generateHeader(version, 'full', options)}
 Prefer the curated index at ${llmsUrl(version)}, then fetch specific pages or chunk this file by page sections. Each page section starts with a single H1 followed by a \`Source:\` line.
 `;
 
@@ -850,8 +926,8 @@ function truncatePreservingStructure(content, maxWords) {
   return output;
 }
 
-function generateMediumTxt(sections, version = versions.current) {
-  const preamble = `${generateHeader(version, 'medium')}
+function generateMediumTxt(sections, version = versions.current, options = {}) {
+  const preamble = `${generateHeader(version, 'medium', options)}
 Condensed reference with metadata and prose, without code examples. For full content with code, see ${llmsUrl(version, 'llms-full.txt')}. For curated navigation, see ${llmsUrl(version)}.
 `;
 
@@ -947,4 +1023,6 @@ module.exports = {
   getEligibleSections: parseSections,
   isEligibleDocFile,
   readCuratedIndexSource,
+  readManifest,
+  appliesToMarkdown,
 };

@@ -1,9 +1,4 @@
-# Intuition Docs (V2)
-
-Version: V2
-Scope: V2 covers the packages in the release manifest and Intuition Core.
-The V2 packages are published as stable npm releases and Intuition Core is a release candidate.
-Other versions: V1 — https://docs.intuition.systems/docs/v1/llms.txt
+<!-- version-header -->
 
 Start with the shipped V2 overview, install contract-level agent skills, or find community support. The complete V1 documentation remains available through the other-version index above.
 
