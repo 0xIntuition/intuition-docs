@@ -207,3 +207,28 @@ test('requires clean source checkout and exact HEAD, even when trees could match
   fs.writeFileSync(f.file, JSON.stringify(f.manifest));
   await assert.rejects(f.run(), /Source does not match manifest/);
 });
+
+test('preserves registry ordering of equal entrypoints, peer and engine mappings', async (t) => {
+  const f = fixture(t);
+  const file = path.join(f.root, 'packages/sdk/package.json');
+  const pkg = JSON.parse(fs.readFileSync(file));
+  pkg.peerDependencies = { alpha: '^1.0.0', beta: '^2.0.0' };
+  pkg.engines = { node: '>=20', npm: '>=10' };
+  fs.writeFileSync(file, JSON.stringify(pkg));
+  f.git('add', '.');
+  f.git('commit', '-qm', 'published metadata fixture');
+  const commit = f.git('rev-parse', 'HEAD');
+  f.manifest.source.commit = commit;
+  Object.assign(f.manifest.packages[0], {
+    entrypoints: ['./actions', './api'],
+    peers: { beta: '^2.0.0', alpha: '^1.0.0' },
+    engines: { npm: '>=10', node: '>=20' },
+    source: `https://github.com/0xIntuition/packages/tree/${commit}/packages/sdk`,
+  });
+  f.manifest.packages[0].registry.gitHead = commit;
+  const expected = JSON.stringify(f.manifest, null, 2) + '\n';
+  fs.writeFileSync(f.file, expected);
+  await f.run();
+  await f.run(true);
+  assert.equal(fs.readFileSync(f.file, 'utf8'), expected);
+});

@@ -3,6 +3,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { execFileSync } = require('node:child_process');
+const { isDeepStrictEqual } = require('node:util');
 const ts = require('typescript');
 const prettier = require('prettier');
 const { versions } = require('../docs-versions.config');
@@ -210,12 +211,23 @@ function deriveManifest(root, selected, git) {
         );
       }
     }
+    const entrypoints = Object.keys(pkg.exports || {});
+    const peers = pkg.peerDependencies || {};
+    const engines = pkg.engines || {};
+    // npm may serialize metadata keys in a different order from package.json.
+    // Preserve publication ordering when the source-derived values are equal.
     return {
       ...recorded,
       version: pkg.version,
-      entrypoints: Object.keys(pkg.exports || {}),
-      peers: pkg.peerDependencies || {},
-      engines: pkg.engines || {},
+      entrypoints:
+        recorded.entrypoints?.length === entrypoints.length &&
+        isDeepStrictEqual(new Set(recorded.entrypoints), new Set(entrypoints))
+          ? recorded.entrypoints
+          : entrypoints,
+      peers: isDeepStrictEqual(recorded.peers, peers) ? recorded.peers : peers,
+      engines: isDeepStrictEqual(recorded.engines, engines)
+        ? recorded.engines
+        : engines,
       source: `https://github.com/0xIntuition/packages/tree/${commit}/packages/${dir}`,
     };
   });
