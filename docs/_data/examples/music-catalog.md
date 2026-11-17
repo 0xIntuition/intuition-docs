@@ -175,7 +175,7 @@ Assertions check deduplication, profile selection, predicate identity, triple di
 
 ## Full source
 
-[Music catalog source project](https://github.com/0xIntuition/intuition-docs/tree/feature/docs-v2-overhaul/examples/v2/music-catalog), including processing and plugin helpers. The catalog fixture is grounded in [pinned anchor tests](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/primitives/src/__tests__/anchor-parity.test.ts) and the [package lifecycle example](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/examples/hackathon-quickstart/src/package-lifecycle.ts).
+[Music catalog source project](https://github.com/0xIntuition/intuition-docs/tree/d137b0adacbfb9fda3b0d07d94e695ca4e7abc03/examples/v2/music-catalog), including processing and plugin helpers. The catalog fixture is grounded in [pinned anchor tests](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/primitives/src/__tests__/anchor-parity.test.ts) and the [package lifecycle example](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/examples/hackathon-quickstart/src/package-lifecycle.ts).
 
 ## Next steps
 

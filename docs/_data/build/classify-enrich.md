@@ -19,7 +19,7 @@ Use [installation](/docs/build/install) and these direct dependencies:
 npm install --save-exact @0xintuition/atom-parser@0.1.0 @0xintuition/atom-classification@0.1.0 @0xintuition/atom-enrichment@0.1.0 @0xintuition/iid-registry@0.1.0 viem@2.31.4
 ```
 
-The complete [processing source](https://github.com/0xIntuition/intuition-docs/blob/feature/docs-v2-overhaul/examples/v2/music-catalog/src/processing.ts) uses fixed synthetic input and an injected local provider fixture. It performs no provider request. Installing a provider, returning a plan, fetching an artifact, and accepting a field are separate decisions.
+The complete [processing source](https://github.com/0xIntuition/intuition-docs/blob/d137b0adacbfb9fda3b0d07d94e695ca4e7abc03/examples/v2/music-catalog/src/processing.ts) uses fixed synthetic input and an injected local provider fixture. It performs no provider request. Installing a provider, returning a plan, fetching an artifact, and accepting a field are separate decisions.
 
 ## Steps
 

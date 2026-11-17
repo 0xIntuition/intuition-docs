@@ -111,7 +111,7 @@ The compatibility `atoms` projection still exists in the pinned implementation. 
 
 ### 3. Test with fixed inputs
 
-Run the complete [plugin helper](https://github.com/0xIntuition/intuition-docs/blob/feature/docs-v2-overhaul/examples/v2/music-catalog/src/classification-plugin.ts) with `node`. Verify that the recognized input produces a `DefinedTerm` with name `semantic grounding`, unrelated input makes the classifier return `null`, and empty `idea:` input is rejected by the classifier. Compare semantic output across repeated runs; default timestamp metadata is time-dependent, so it is not part of a deterministic equality assertion.
+Run the complete [plugin helper](https://github.com/0xIntuition/intuition-docs/blob/d137b0adacbfb9fda3b0d07d94e695ca4e7abc03/examples/v2/music-catalog/src/classification-plugin.ts) with `node`. Verify that the recognized input produces a `DefinedTerm` with name `semantic grounding`, unrelated input makes the classifier return `null`, and empty `idea:` input is rejected by the classifier. Compare semantic output across repeated runs; default timestamp metadata is time-dependent, so it is not part of a deterministic equality assertion.
 
 Validate the manifest, test missing dependencies, and verify runtime restrictions before registering in a service. Test canonical/legacy parity only if you intentionally emit both forms.
 
