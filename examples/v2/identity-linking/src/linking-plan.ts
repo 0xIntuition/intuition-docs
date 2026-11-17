@@ -1,22 +1,32 @@
 import { planLink } from './link-identities.ts';
 
 // #region archived-records
+import { stringToHex } from 'viem';
+
 const recordingIid = 'int:isrc:USRC12600001';
 export const archive = {
   level: 'recording' as const,
-  atomData:
+  atomData: stringToHex(
     '{"name":"Paper Moon Demo","sameAs":["https://example.org/recordings/17"]}',
+  ),
   recordingIid,
 };
 
 export const candidates = {
-  anchor: { level: 'recording', atomData: recordingIid, recordingIid },
-  review: {
-    level: 'article',
-    atomData: 'Review of Paper Moon Demo',
+  anchor: {
+    level: 'recording',
+    atomData: stringToHex(recordingIid),
     recordingIid,
   },
-  namesake: { level: 'recording', atomData: '{"name":"Paper Moon Demo"}' },
+  review: {
+    level: 'article',
+    atomData: stringToHex('Review of Paper Moon Demo'),
+    recordingIid,
+  },
+  namesake: {
+    level: 'recording',
+    atomData: stringToHex('{"name":"Paper Moon Demo"}'),
+  },
 } as const;
 // #endregion
 

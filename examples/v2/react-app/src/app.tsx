@@ -11,8 +11,13 @@ import {
   QueryClientProvider,
   useQueryClient,
 } from '@tanstack/react-query';
-import { useState, type FormEvent, type ReactNode } from 'react';
-import { createPublicClient, type Address, type Hex } from 'viem';
+import { useEffect, useState, type FormEvent, type ReactNode } from 'react';
+import {
+  createPublicClient,
+  type Address,
+  type Hex,
+  type TransactionReceipt,
+} from 'viem';
 import {
   createConfig,
   http,
@@ -24,6 +29,7 @@ import {
   WagmiProvider,
 } from 'wagmi';
 import { getAccount } from 'wagmi/actions';
+import { verifyCreationReceipt } from './receipt.ts';
 import { prepareReview, type Review } from './review.ts';
 
 export function App() {
@@ -277,7 +283,10 @@ function Workspace() {
   const [lookup, setLookup] = useState('');
   const [text, setText] = useState('');
   const cache = useQueryClient();
-  const [ids, setIds] = useState<Hex[]>([]);
+  const [completed, setCompleted] = useState<{
+    review: Review;
+    receipt: TransactionReceipt;
+  }>();
   const [message, setMessage] = useState('');
   const [attempt, setAttempt] = useState(0);
   const { address, chainId: walletChainId, isConnected } = useAccount();
@@ -289,6 +298,7 @@ function Workspace() {
 
   // #region submit
   async function submit(review: Review) {
+    setCompleted(undefined);
     const wallet = getAccount(config);
     if (
       !wallet.isConnected ||
@@ -305,18 +315,12 @@ function Workspace() {
       return;
     }
     setMessage('');
-    setIds([]);
     try {
-      const { receipt, termIds } = await flow.createAtom({
+      const { receipt } = await flow.createAtom({
         data: review.data,
         assets: review.assets,
       });
-      setIds(termIds);
-      setMessage(`Confirmed in block ${receipt.blockNumber}.`);
-      if (termIds[0]) {
-        setLookup(termIds[0]);
-        void cache.invalidateQueries({ type: 'active' });
-      }
+      setCompleted({ review, receipt });
     } catch (error) {
       setMessage(
         error instanceof Error
@@ -325,6 +329,20 @@ function Workspace() {
       );
     }
   }
+
+  const result =
+    completed &&
+    flow.status === 'confirmed' &&
+    flow.receipt === completed.receipt
+      ? verifyCreationReceipt(completed.review, flow.hash, completed.receipt)
+      : undefined;
+  const verifiedTermId = result?.termId;
+  useEffect(() => {
+    if (verifiedTermId) {
+      setLookup(verifiedTermId);
+      void cache.invalidateQueries({ type: 'active' });
+    }
+  }, [verifiedTermId, cache]);
   // #endregion
 
   return (
@@ -348,7 +366,18 @@ function Workspace() {
         <h2>Create an atom</h2>
         {flow.hash && (
           <p>
-            Transaction hash <code>{flow.hash}</code>
+            Submitted hash <code>{flow.hash}</code>
+          </p>
+        )}
+        {completed && (
+          <p>
+            Mined hash <code>{completed.receipt.transactionHash}</code>
+          </p>
+        )}
+        <p role="status">{result?.message}</p>
+        {verifiedTermId && (
+          <p>
+            Verified term ID <code>{verifiedTermId}</code>
           </p>
         )}
         {busy ? (
@@ -364,19 +393,6 @@ function Workspace() {
                 {message}
               </p>
             )}
-            {flow.status === 'confirmed' &&
-              (ids.length ? (
-                <p>
-                  Created term IDs{' '}
-                  {ids.map((id) => (
-                    <code key={id}>{id} </code>
-                  ))}
-                </p>
-              ) : (
-                <p>
-                  No AtomCreated term ID was found. Inspect the receipt logs.
-                </p>
-              ))}
             {flow.status === 'error' && (
               <p>
                 {flow.hash

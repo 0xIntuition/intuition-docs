@@ -1,13 +1,16 @@
 import assert from 'node:assert/strict';
 
+import { stringToHex } from 'viem';
+
 // #region reviewed-link
+import type { Hex } from 'viem';
 import { inspectIntuitionId } from '@0xintuition/iid';
 import { calculateAtomId } from '@0xintuition/ids';
 import { sameAsId } from '@0xintuition/predicates/sameAs';
 import { buildTriple } from '@0xintuition/primitives/triple';
 
 type CatalogRecord = {
-  atomData: string;
+  atomData: Hex;
   level: 'recording' | 'article';
   recordingIid?: string;
 };
@@ -47,13 +50,14 @@ if (import.meta.main) {
   // editor verified their recording-level ISRC in the fixture's source records.
   const iid = 'int:isrc:USRC17607839';
   const archive: CatalogRecord = {
-    atomData:
+    atomData: stringToHex(
       '{"name":"Local track","sameAs":["https://example.org/catalog/track"]}',
+    ),
     level: 'recording',
     recordingIid: iid,
   };
   const anchor: CatalogRecord = {
-    atomData: iid,
+    atomData: stringToHex(iid),
     level: 'recording',
     recordingIid: iid,
   };
@@ -62,16 +66,16 @@ if (import.meta.main) {
   assert.notEqual(claim.subjectId, claim.objectId);
   assert.equal(claim.predicateId, sameAsId);
   const article: CatalogRecord = {
-    atomData: 'Local track review',
+    atomData: stringToHex('Local track review'),
     level: 'article',
     recordingIid: iid,
   };
   const missing: CatalogRecord = {
-    atomData: 'Local track',
+    atomData: stringToHex('Local track'),
     level: 'recording',
   };
   const another: CatalogRecord = {
-    atomData: 'Second recording',
+    atomData: stringToHex('Second recording'),
     level: 'recording',
     recordingIid: 'int:isrc:GBUM71029604',
   };
@@ -84,5 +88,12 @@ if (import.meta.main) {
     'Recording identifiers do not match',
   ]);
   assert.equal(planLink(archive, anchor, false).reason, 'Awaiting review');
+  const literal = { ...archive, atomData: stringToHex('0x6162') };
+  const binary: CatalogRecord = { ...anchor, atomData: '0x6162' };
+  const distinct = planLink(literal, binary, true).claim;
+  assert.ok(distinct);
+  assert.equal(distinct.subjectId, calculateAtomId('0x307836313632'));
+  assert.equal(distinct.objectId, calculateAtomId('0x6162'));
+  assert.notEqual(distinct.subjectId, distinct.objectId);
   console.log(claim, skipped);
 }
