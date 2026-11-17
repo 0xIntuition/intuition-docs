@@ -2395,3 +2395,70 @@ table td, table th {
     overflow-wrap: anywhere;
   }
 }
+
+/* The worked examples landing uses the shared Card with six fixed destinations. */
+.examples-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--ifm-spacing-vertical);
+  margin-block: var(--ifm-leading);
+}
+
+@media (min-width: 600px) {
+  .examples-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 997px) {
+  .examples-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.examples-grid > .homepage-card {
+  min-width: 0;
+  height: auto;
+  border-color: rgb(var(--docs-color-secondary-700));
+  background-color: rgb(var(--docs-color-secondary-900));
+  box-shadow: none;
+  transition: none;
+}
+
+.examples-grid > .homepage-card .card-content {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.examples-grid > .homepage-card .title {
+  color: var(--ifm-heading-color);
+  text-wrap: balance;
+  transition: none;
+}
+
+.examples-grid > .homepage-card .description {
+  color: rgb(var(--docs-color-text-400));
+  text-wrap: pretty;
+}
+
+.examples-grid > .homepage-card:focus-visible {
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: 3px;
+}
+
+@media (hover: hover) {
+  .examples-grid > .homepage-card:hover {
+    border-color: rgb(var(--docs-color-text-400));
+    background-color: rgb(var(--docs-color-secondary-800));
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .examples-grid > .homepage-card {
+    transition: transform 150ms ease-out;
+  }
+
+  .examples-grid > .homepage-card:active {
+    transform: scale(0.97);
+  }
+}

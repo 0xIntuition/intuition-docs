@@ -1,7 +1,7 @@
 ---
 title: "What you can build"
 sidebar_label: "What you can build"
-description: "Use a worked music catalog to connect identity, explicit relationships, enrichment, storage, and protocol planning."
+description: "Choose a worked example for atom creation, predicates, identity, React wallet flows, indexed queries or catalog modeling."
 kind: reference
 reader: ["app", "agent", "operator", "plugin"]
 packages: []
@@ -9,11 +9,14 @@ packages: []
 
 The packages supply shared identities and graph modeling tools. Core supplies storage, processing workers, and queries. Protocol contracts add registration and economic positions. Your application combines these with its own rules for evidence, permissions, and ranking.
 
-## Build a music catalog
-
-[Build a music catalog](/docs/examples/music-catalog) connects recording, artist, and album atoms with explicit triples. It uses clearly labeled synthetic identities, keeps display metadata separate, and shows where persistence and protocol planning fit.
-
-Use the catalog to answer three questions: which entity is this, which bytes represent it, and which directed relationship am I asserting? Those answers transfer to other domains.
+<div className="examples-grid">
+<Card to="/docs/examples/atom-creation-form" title="Create an atom from a schema" description="Generate a form from a Creation Profile." />
+<Card to="/docs/examples/predicate-picker" title="Choose a predicate" description="Find a relationship that fits the claim you want to make." />
+<Card to="/docs/examples/identity-linking" title="Link two identities" description="Keep each identity distinct while recording a sameAs claim." />
+<Card to="/docs/examples/react-app" title="Read and create an atom in React" description="Review a wallet call and read back its confirmed atom." />
+<Card to="/docs/examples/core-query-api" title="Query your Core node" description="Retrieve indexed graph records from your own node." />
+<Card to="/docs/examples/music-catalog" title="Build a music catalog" description="Connect a recording, artist and album with explicit triples." />
+</div>
 
 ## Apply the pattern
 
@@ -26,7 +29,7 @@ Use the catalog to answer three questions: which entity is this, which bytes rep
 | Agent-assisted graph building | Offline builders and reviewed action plans | Scope, budget, provenance, authorization |
 | Enrichment services | Parser, classifier, provider runtime | Provider terms, credentials, retries, cache policy |
 
-These are application patterns; each still needs product-specific policy and implementation. A valid identifier does not prove a claim, and a position alone does not establish reputation.
+When adapting the music catalog, decide which entity each record identifies, which bytes represent it, and which directed relationship you are asserting. Your application supplies the evidence policy for claims and decides how a position contributes to reputation.
 
 For a smaller starting point, run the [offline quickstart](/docs/get-started/quickstart). For operational boundaries, read [How the pieces fit](/docs/get-started/how-it-fits).
 
