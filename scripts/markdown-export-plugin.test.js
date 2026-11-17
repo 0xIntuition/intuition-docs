@@ -273,3 +273,43 @@ test('Render header configuration targets only root, shallow and nested Markdown
   ])
     assert.equal(matches(file), 0);
 });
+
+test('native Markdown export retains all six linked Card outcomes on the V2 landing', (t) => {
+  const { args, write, current, globals } = fixture(t);
+  const body = fs.readFileSync(
+    path.join(__dirname, '__fixtures__/validate-v2-structure/example-cards.md'),
+    'utf8',
+  );
+  const { EXAMPLE_ROUTES, EXAMPLES_ROUTE } = require('./lib/example-cards');
+  for (const route of [EXAMPLES_ROUTE, ...EXAMPLE_ROUTES]) {
+    const id =
+      route === EXAMPLES_ROUTE
+        ? 'examples/index'
+        : route.slice('/docs/'.length);
+    const source = versions.current.docsDir + '/' + id + '.md';
+    write(
+      source,
+      '---\nkind: reference\nreader: ["app"]\npackages: []\n---\n\n' +
+        (route === EXAMPLES_ROUTE ? body : 'Example.'),
+    );
+    write('build' + route + '.html', '<head></head><body>Example</body>');
+    current.push({
+      id,
+      source: '@site/' + source,
+      version: 'current',
+      permalink: route,
+      title: 'Example',
+      description: 'An example.',
+    });
+    globals[1].docs.push({ id, path: route });
+  }
+  plugin.exportDocuments(args);
+  const result = fs.readFileSync(
+    path.join(args.outDir, 'docs/examples.md'),
+    'utf8',
+  );
+  for (const route of EXAMPLE_ROUTES)
+    assert.ok(result.includes('](' + BASE_URL + route + ')'));
+  assert.match(result, /Compare suggestions\./);
+  assert.doesNotMatch(result, /<Card|examples-grid/);
+});

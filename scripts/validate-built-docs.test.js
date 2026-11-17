@@ -589,3 +589,94 @@ test('switcher requires both mapped destinations and exactly one accessible curr
     );
   }
 });
+
+test('Phase 4 needs six actual example Card anchors in the body grid', () => {
+  const { EXAMPLE_ROUTES } = require('./lib/example-cards');
+  const anchors = EXAMPLE_ROUTES.map(
+    (route) =>
+      `<a class="homepage-card" href="${route}"><div class="card-content"><div class="title">Title</div><div class="description">Example outcome</div></div></a>`,
+  );
+  const grid = '<div class="examples-grid">' + anchors.join('') + '</div>';
+  const validate = (contents, phase = 4, extra = '') =>
+    assertDocHtml(htmlV2.replace('<p>Useful body.</p>', contents) + extra, {
+      doc: { id: 'examples/index' },
+      version: versions.current,
+      phase,
+    });
+  assert.deepEqual(validate(grid), []);
+  assert.deepEqual(validate('<p>Early content</p>', 3), []);
+  for (const invalid of [
+    grid.replace(anchors[0], ''),
+    grid.replace(anchors[0], anchors[1]),
+    grid.replace('class="homepage-card"', ''),
+    grid.replace(
+      'href="/docs/examples/atom-creation-form"',
+      'data-to="/docs/examples/atom-creation-form"',
+    ),
+    grid.replace('Example outcome', ''),
+    anchors.join(''),
+    grid + anchors[0],
+  ])
+    assert.ok(validate(invalid, 4, '<aside>' + grid + '</aside>').length);
+});
+
+test('Phase 4 checks actual links, titles and descriptions in the exported examples list', () => {
+  const { BASE_URL, cleanContent } = require('./generate-llms-full');
+  const { assertExportedCards } = require('./validate-built-docs');
+  const body = fs.readFileSync(
+    path.join(__dirname, '__fixtures__/validate-v2-structure/example-cards.md'),
+    'utf8',
+  );
+  const output = cleanContent(body, '', {
+    version: 'current',
+    pageUrl: BASE_URL + '/docs/examples',
+  });
+  const validate = (markdown) =>
+    assertExportedCards(markdown, { body }, BASE_URL);
+  assert.deepEqual(validate(output), []);
+  for (const invalid of [
+    output.replace('predicate-picker', 'react-app'),
+    output.replace('Connect recordings and artists.', 'Other description'),
+    output.replace('Link identities', 'Different title'),
+    '<!--\n' + output + '\n-->',
+    '~~~\n' + output + '\n~~~',
+  ])
+    assert.ok(validate(invalid).length);
+});
+
+test('Phase 4 discovers all eight named example projects with included source', (t) => {
+  const { validateExampleProjects } = require('./validate-built-docs');
+  const root = fs.mkdtempSync(
+    path.join(os.tmpdir(), 'worked-example-projects-'),
+  );
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  const base = path.join(root, 'examples/v2');
+  fs.mkdirSync(base, { recursive: true });
+  fs.copyFileSync(
+    path.resolve(__dirname, '../examples/v2/tsconfig.base.json'),
+    path.join(base, 'tsconfig.base.json'),
+  );
+  for (const project of [
+    'quickstart',
+    'first-write',
+    'atom-creation-form',
+    'predicate-picker',
+    'identity-linking',
+    'react-app',
+    'core-query-api',
+    'music-catalog',
+  ]) {
+    const dir = path.join(base, project);
+    fs.mkdirSync(dir);
+    fs.writeFileSync(
+      path.join(dir, 'tsconfig.json'),
+      '{"extends":"../tsconfig.base.json","include":["sample.ts"]}',
+    );
+    fs.writeFileSync(path.join(dir, 'sample.ts'), 'export {};');
+  }
+  assert.deepEqual(validateExampleProjects(root), []);
+  fs.unlinkSync(path.join(base, 'core-query-api/sample.ts'));
+  assert.deepEqual(validateExampleProjects(root), [
+    'Missing example project: core-query-api',
+  ]);
+});

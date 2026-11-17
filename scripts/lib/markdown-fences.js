@@ -232,7 +232,7 @@ function parseMarkdownCode(source, { filePath = 'document.mdx' } = {}) {
       );
   }
   visit(tree);
-  return { fences, markers, examples, source: parsedSource };
+  return { fences, markers, examples, source: parsedSource, tree };
 }
 
 function readCodeFences(source, options) {

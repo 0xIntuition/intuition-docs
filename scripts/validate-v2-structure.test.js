@@ -1047,3 +1047,39 @@ test('first-write source needs a real UUID call and rejects a fixed ID across sr
   fs.writeFileSync(main, '// crypto.randomUUID()');
   assert.match(diagnostics(validateFirstWrite, root), /must call/);
 });
+
+test('worked example routes are backed by real literal Cards in the landing grid', () => {
+  const grid = fs.readFileSync(
+    `${__dirname}/__fixtures__/validate-v2-structure/example-cards.md`,
+    'utf8',
+  );
+  const docs = rows
+    .filter(({ route }) => route.startsWith('/docs/examples/'))
+    .map(({ route }) => ({ route, id: route.slice('/docs/'.length) }));
+  function landing(body) {
+    const sample = doc('examples/index.md', {}, body);
+    return diagnostics(validateTemplate, sample, readPage(sample), docs);
+  }
+  assert.equal(landing(grid), '');
+  const first = grid.split('\n')[1];
+  for (const bad of [
+    grid.replace(first, ''),
+    grid.replace('atom-creation-form', 'predicate-picker'),
+    grid.replace('/docs/examples/react-app', 'https://example.org'),
+    grid.replace('title="Link identities"', 'title=""'),
+    grid.replace('title="Link identities"', 'title={dynamic}'),
+    grid.replace('title="Link identities"', 'to="Link identities"'),
+    grid.replace(first, `<Unknown data="Card" />`),
+  ])
+    assert.throws(() => landing(bad), /Card/);
+
+  for (const fake of [
+    '~~~jsx\n' + grid + '\n~~~',
+    '<!--' + grid + '-->',
+    '{/*\n' + grid + '\n*/}',
+    '<Unknown>\n' + grid + '\n</Unknown>',
+    '`' + first.trim() + '`',
+    docs.map(({ route }) => `[Example](${route})`).join('\n\n'),
+  ])
+    assert.match(landing(fake), /six-Card grid/);
+});

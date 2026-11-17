@@ -2,6 +2,7 @@
 'use strict';
 const fs = require('node:fs');
 const path = require('node:path');
+const { EXAMPLE_ROUTES, readExampleGrid } = require('./lib/example-cards');
 const { versions } = require('../docs-versions.config');
 const { redirects, createRedirects } = require('../redirects.config');
 const { walkFiles, readDocs, normalizeRoute } = require('./lib/docs-tree');
@@ -277,7 +278,86 @@ function readNativeMetadata(root) {
   return docs;
 }
 
-function assertMarkdown(markdown, { native, doc, version, manifest, source }) {
+function validateExampleProjects(root) {
+  const { discoverProjects } = require('./validate-sdk-examples');
+  const { projects } = discoverProjects(path.join(root, 'examples/v2'));
+  const expected = [
+    ...EXAMPLE_ROUTES.map((route) => path.basename(route)),
+    'quickstart',
+    'first-write',
+  ];
+  const actual = [...projects.keys()].map((project) => path.basename(project));
+  return [
+    ...expected
+      .filter((name) => !actual.includes(name))
+      .map((name) => 'Missing example project: ' + name),
+    ...actual
+      .filter((name) => !expected.includes(name))
+      .map((name) => 'Unexpected example project: ' + name),
+  ];
+}
+
+function assertExampleCards(body) {
+  const grids = nodes(body, (node) => hasClass(node, 'examples-grid'));
+  const cards = nodes(body, (node) => hasClass(node, 'homepage-card'));
+  if (grids.length !== 1 || cards.length !== EXAMPLE_ROUTES.length)
+    return [
+      'expected one examples grid with six linked Cards in the Markdown body',
+    ];
+  const errors = [];
+  for (const [i, card] of cards.entries()) {
+    if (
+      card.parent !== grids[0] ||
+      card.tag !== 'a' ||
+      card.attrs.href?.replace(/\/$/, '') !== EXAMPLE_ROUTES[i] ||
+      ['title', 'description'].some(
+        (field) =>
+          !nodes(card, (node) => hasClass(node, field) && visibleText(node))
+            .length,
+      )
+    )
+      errors.push(
+        'expected a linked Card with title and description for ' +
+          EXAMPLE_ROUTES[i],
+      );
+  }
+  return errors;
+}
+
+function assertExportedCards(markdown, source, baseUrl) {
+  const { parseMarkdownCode } = require('./lib/markdown-fences');
+  const authored = source && readExampleGrid(parseMarkdownCode(source.body));
+  if (!authored) return ['missing source examples grid'];
+  // Inspect Markdown links in list items. A URL in front matter, code or a
+  // comment cannot satisfy the export check.
+  const { tree } = parseMarkdownCode(markdown);
+  const lists = tree.children.filter((node) => node.type === 'list');
+  const matches = lists.some(
+    (list) =>
+      list.children.length === authored.cards.length &&
+      list.children.every((item, i) => {
+        const [link, text] = item.children[0]?.children || [];
+        const { to, title, description } = authored.cards[i];
+        return (
+          link?.type === 'link' &&
+          link.url === baseUrl + to &&
+          link.children.length === 1 &&
+          link.children[0].value === title &&
+          text?.value === ' — ' + description
+        );
+      }),
+  );
+  return matches
+    ? []
+    : [
+        'export must preserve the six example Card links, titles and descriptions',
+      ];
+}
+
+function assertMarkdown(
+  markdown,
+  { native, doc, version, manifest, source, phase },
+) {
   if (!native || native.version !== version.name || native.id !== doc.id)
     return ['missing native metadata for export'];
   const { readFrontMatter } = require('./lib/markdown-fences');
@@ -318,6 +398,9 @@ function assertMarkdown(markdown, { native, doc, version, manifest, source }) {
       errors.push('incorrect Markdown front matter');
   } catch (error) {
     errors.push(`invalid Markdown front matter: ${error.message}`);
+  }
+  if (version.isDefault && phase >= 4 && doc.id === 'examples/index') {
+    errors.push(...assertExportedCards(markdown, source, BASE_URL));
   }
   if (doc.id === 'reference/contracts/deployments' && version.isDefault) {
     // The source validator checks this generated block against the isolated pinned package.
@@ -432,6 +515,8 @@ function assertDocHtml(
     if (bodies.length !== 1) errors.push('expected one V2 markdown body');
     else {
       const body = bodies[0];
+      if (phase >= 4 && doc.id === 'examples/index')
+        errors.push(...assertExampleCards(body));
       const bodyText = visibleText(body);
       const packages = doc.frontMatter?.packages || [];
       const applies = nodes(
@@ -683,6 +768,7 @@ function run({ root = ROOT, phase, buildLog } = {}) {
     )
       errors.push(`Built V2 routes do not equal Phase ${phase} plan`);
   }
+  if (phase >= 4) errors.push(...validateExampleProjects(root));
   const checkExports = phase === undefined || phase >= 3;
   const nativeMetadata = checkExports ? readNativeMetadata(root) : null;
   if (checkExports) {
@@ -734,6 +820,7 @@ function run({ root = ROOT, phase, buildLog } = {}) {
           const markdownErrors = assertMarkdown(
             fs.readFileSync(mdFile, 'utf8'),
             {
+              phase,
               native: nativeMetadata.get(doc.path),
               doc,
               version,
@@ -849,6 +936,8 @@ module.exports = {
   validateDeveloperFooter,
   assertAlternate,
   assertMarkdown,
+  assertExportedCards,
+  validateExampleProjects,
   assertVersionSwitcher,
   compareExportInventory,
   routeFile,
