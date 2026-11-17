@@ -250,6 +250,14 @@ The following mapping comes from the version switcher's equivalence data. Other 
 | [Introduction](/docs/v1) | [Intuition developer docs](/docs) |
 | [AI Skills](/docs/v1/getting-started/ai-skills) | [Install the agent skills](/docs/agents/skills) |
 | [Community & Support](/docs/v1/resources/community-and-support) | [Get help](/docs/community) |
+| [Architecture](/docs/v1/getting-started/architecture) | [How the pieces fit](/docs/get-started/how-it-fits) |
+| [Using the SDK](/docs/v1/quick-start/using-the-sdk) | [Quickstart: an atom ID and IID offline](/docs/get-started/quickstart) |
+| [Primitives](/docs/v1/intuition-concepts/primitives) | [Concept map](/docs/concepts) |
+| [Installation & Setup](/docs/v1/intuition-sdk/installation-and-setup) | [Install and pin the packages](/docs/build/install) |
+| [Search and Discovery](/docs/v1/intuition-sdk/search-guide) | [The SDK read client](/docs/build/read-with-sdk) |
+| [Tutorials](/docs/v1/tutorials/overview) | [What you can build](/docs/examples) |
+| [Quick Start](/docs/v1/intuition-sdk/quick-start) | [@0xintuition/sdk](/docs/reference/packages/sdk) |
+| [Protocol Package Overview](/docs/v1/protocol/getting-started/overview) | [@0xintuition/protocol](/docs/reference/packages/protocol) |
 
 {/* generated:end */}
 

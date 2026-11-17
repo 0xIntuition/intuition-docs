@@ -40,3 +40,8 @@ jobs:
 
       - name: Check synchronized V2 source regions
         run: node scripts/sync-example-snippets.js --check
+
+      - name: Verify the offline quickstart output
+        run: |
+          node --experimental-strip-types examples/v2/quickstart/quickstart.ts > "$RUNNER_TEMP/quickstart-output.txt"
+          diff -u examples/v2/quickstart/expected-output.txt "$RUNNER_TEMP/quickstart-output.txt"

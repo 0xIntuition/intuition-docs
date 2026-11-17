@@ -235,6 +235,23 @@ function validateCoverage({
     ])
       if (!quality.includes(command))
         errors.push(`quality must run ${command}`);
+    for (const [name, command] of [
+      ['quality.yml', 'node scripts/validate-v2-structure.js --phase 2'],
+      [
+        'check-links.yml',
+        'node scripts/validate-built-docs.js --phase 2 --build-log build.log',
+      ],
+      [
+        'validate-sdk-examples.yml',
+        'node --experimental-strip-types examples/v2/quickstart/quickstart.ts',
+      ],
+      [
+        'validate-sdk-examples.yml',
+        'diff -u examples/v2/quickstart/expected-output.txt',
+      ],
+    ])
+      if (!workflows[name]?.includes(command))
+        errors.push(`${name} must run ${command}`);
     if (!llms.includes('static/intuition-release.json'))
       errors.push('llms generation must watch the release manifest');
   }

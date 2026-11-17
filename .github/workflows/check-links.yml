@@ -43,5 +43,5 @@ jobs:
           npm run build 2>&1 | tee build.log
       - run: npm run validate-url-baseline
       - run: npm run validate-version-equivalents
-      - run: node scripts/validate-built-docs.js --phase 1 --build-log build.log
+      - run: node scripts/validate-built-docs.js --phase 2 --build-log build.log
       # Per-page Markdown exports and their count checks begin in Phase 3.

@@ -1,8 +1,53 @@
 {
   "schemaVersion": 1,
   "pairs": [
-    { "v1": "index", "v2": "index" },
-    { "v1": "getting-started/ai-skills", "v2": "agents/skills" },
-    { "v1": "resources/community-and-support", "v2": "community/index" }
+    {
+      "v1": "index",
+      "v2": "index"
+    },
+    {
+      "v1": "getting-started/ai-skills",
+      "v2": "agents/skills"
+    },
+    {
+      "v1": "resources/community-and-support",
+      "v2": "community/index"
+    },
+    {
+      "v1": "getting-started/architecture",
+      "v2": "get-started/how-it-fits"
+    },
+    {
+      "v1": "quick-start/using-the-sdk",
+      "v2": "get-started/quickstart"
+    },
+    {
+      "v1": "experimental-applications/mcp-server",
+      "v2": "agents/index"
+    },
+    {
+      "v1": "intuition-concepts/primitives/index",
+      "v2": "concepts/index"
+    },
+    {
+      "v1": "intuition-sdk/installation-and-setup",
+      "v2": "build/install"
+    },
+    {
+      "v1": "intuition-sdk/search-guide",
+      "v2": "build/read-with-sdk"
+    },
+    {
+      "v1": "tutorials/overview",
+      "v2": "examples/index"
+    },
+    {
+      "v1": "intuition-sdk/quick-start",
+      "v2": "reference/packages/sdk"
+    },
+    {
+      "v1": "protocol/getting-started/overview",
+      "v2": "reference/packages/protocol"
+    }
   ]
 }

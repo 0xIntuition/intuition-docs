@@ -64,7 +64,7 @@ test('footer preferences follow actual shipped routes and survive route removal'
   assert.deepEqual(getDeveloperLinks(initialRoutes), initialLinks);
 });
 
-test('noscript links only the current section landing and required version/agent files', () => {
+test('noscript links the four Phase 2 section landings and required version/agent files', () => {
   const source = fs.readFileSync(
     path.join(ROOT, 'src/pages/index.jsx'),
     'utf8',
@@ -74,6 +74,9 @@ test('noscript links only the current section landing and required version/agent
   assert.deepEqual(
     [...noscript.matchAll(/href="([^"]+)"/g)].map((match) => match[1]),
     [
+      '/docs/agents',
+      '/docs/concepts',
+      '/docs/examples',
       '/docs/community',
       '/docs/v1',
       '/llms.txt',
@@ -83,12 +86,8 @@ test('noscript links only the current section landing and required version/agent
   );
 });
 
-test('actual current tree drives footer and noscript coverage once E pages are integrated', async (t) => {
+test('actual current tree drives five V2 footer links and top-level noscript coverage', async () => {
   const docs = readDocs(ROOT, versions.current);
-  if (!docs.length)
-    return t.skip(
-      'Dependency: real current pages are supplied by Lane E; no stubs created.',
-    );
   const { getDeveloperLinks } = await import(
     '../src/components/homepage/developerLinks.mjs'
   );
@@ -97,8 +96,14 @@ test('actual current tree drives footer and noscript coverage once E pages are i
     ...routes,
     ...readDocs(ROOT, versions.v1).map((doc) => doc.route),
   ]);
-  for (const { href } of getDeveloperLinks(routes))
-    assert.ok(allRoutes.has(href), href);
+  const links = getDeveloperLinks(routes);
+  assert.equal(links.filter(({ name }) => !name.endsWith(' (V1)')).length, 5);
+  assert.deepEqual(links[2], {
+    name: 'Smart Contracts',
+    href: '/docs/reference/packages/protocol',
+  });
+  assert.deepEqual(links[3], initialLinks[3]);
+  for (const { href } of links) assert.ok(allRoutes.has(href), href);
   const source = fs.readFileSync(
     path.join(ROOT, 'src/pages/index.jsx'),
     'utf8',

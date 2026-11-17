@@ -2,18 +2,51 @@
 
 Version: V2
 Scope: V2 covers the packages in the release manifest and Intuition Core.
-The V2 packages are published as stable npm releases and Intuition Core is a release candidate.
+Package source: https://github.com/0xIntuition/packages/tree/4e9af1373b81a453d16bc650983138e35afb97d1
+Core source revision: https://github.com/0xIntuition/intuition-core/tree/a402f880600f92969dc8fb013ca0f69fc9a02420
 Other versions: V1 — https://docs.intuition.systems/docs/v1/llms.txt
 
-Start with the shipped V2 overview, install contract-level agent skills, or find community support. The complete V1 documentation remains available through the other-version index above.
+Start with the system overview and offline quickstart, then follow the guides for your integration. V2 packages and Intuition Core have distinct read, processing, and transaction boundaries. The complete V1 documentation remains available through the other-version index above.
 
 - [llms-full.txt](https://docs.intuition.systems/llms-full.txt): Complete text of the shipped V2 pages
 - [llms-medium.txt](https://docs.intuition.systems/llms-medium.txt): Condensed V2 page summaries with metadata
 
 ## Start here
 
-- [Intuition V2](https://docs.intuition.systems/docs): Overview of the V2 documentation generation
+- [Intuition V2](https://docs.intuition.systems/docs): Choose an application, agent, Core, or plugin development path
+- [How the pieces fit](https://docs.intuition.systems/docs/get-started/how-it-fits): Understand the concept ladder, package layers, and Core services
+- [Offline quickstart](https://docs.intuition.systems/docs/get-started/quickstart): Derive an IID, representation profile, and atom ID without a network connection
+- [Versions and release status](https://docs.intuition.systems/docs/get-started/versions): Check exact package pins, source revisions, and installation hazards
+- [Migrate from V1](https://docs.intuition.systems/docs/get-started/migrate-from-v1): Compare APIs and locate replacement pages
+
+## Learn the model
+
+- [Concept map](https://docs.intuition.systems/docs/concepts): Follow the reading order and distinguish identity, meaning, processing, and writes
+- [Representation profiles](https://docs.intuition.systems/docs/concepts/representation-profiles): Separate canonical profile rules, current builder behavior, and companion metadata
+- [Protocol writes](https://docs.intuition.systems/docs/concepts/protocol-writes): Understand plans, signing, submission, receipts, and indexing
+
+## Build an integration
+
+- [Install packages](https://docs.intuition.systems/docs/build/install): Select exact package versions and their required peers
+- [Creation Profiles](https://docs.intuition.systems/docs/build/creation-profiles): Inspect classification fields and build typed atom payloads
+- [Classify and enrich](https://docs.intuition.systems/docs/build/classify-enrich): Compose bounded processing and handle partial results
+- [Action plans](https://docs.intuition.systems/docs/build/action-plans): Prepare transaction envelopes before execution
+- [Query Core](https://docs.intuition.systems/docs/build/query-core): Read indexed data through the source-built Core Query API
+- [The SDK read client](https://docs.intuition.systems/docs/build/read-with-sdk): Understand why the hosted V1 client is not a V2 read path
+- [Worked examples](https://docs.intuition.systems/docs/examples): Find the complete music catalog example
+- [Music catalog](https://docs.intuition.systems/docs/examples/music-catalog): Build synthetic identities, predicates, triples, and processing results offline
+
+## Build with agents or extend processing
+
+- [Build with AI agents](https://docs.intuition.systems/docs/agents): Follow the reading and verification contract before preparing actions
 - [Agent skills](https://docs.intuition.systems/docs/agents/skills): Install the intuition and erc8004-agent-layer contract-level skills for V1 and V2
+- [Write a classification plugin](https://docs.intuition.systems/docs/core/classification-plugin): Implement and test a classifier and wire it into a Core source fork
+
+## Look up an API or get help
+
+- [Packages by layer](https://docs.intuition.systems/docs/reference/packages): Inspect all 21 packages, their runtime graph, and public entry points
+- [SDK API reference](https://docs.intuition.systems/docs/reference/sdk): Read declarations generated from the pinned package source
+- [Compatibility](https://docs.intuition.systems/docs/reference/compatibility): Check the package, peer, contract, and Core compatibility boundaries
 - [Community](https://docs.intuition.systems/docs/community): Get help and connect with the Intuition community
 
 ## Optional
@@ -21,5 +54,63 @@ Start with the shipped V2 overview, install contract-level agent skills, or find
 Complete directory: every authored documentation page, one line each.
 
 - [Intuition developer docs](https://docs.intuition.systems/docs)
+- [Build with AI agents](https://docs.intuition.systems/docs/agents)
 - [Install the agent skills](https://docs.intuition.systems/docs/agents/skills)
+- [Build action plans and envelopes](https://docs.intuition.systems/docs/build/action-plans)
+- [Classify and enrich atoms](https://docs.intuition.systems/docs/build/classify-enrich)
+- [Build creation forms](https://docs.intuition.systems/docs/build/creation-profiles)
+- [Install and pin the packages](https://docs.intuition.systems/docs/build/install)
+- [Query a Core node](https://docs.intuition.systems/docs/build/query-core)
+- [The SDK read client](https://docs.intuition.systems/docs/build/read-with-sdk)
 - [Get help](https://docs.intuition.systems/docs/community)
+- [Concept map](https://docs.intuition.systems/docs/concepts)
+- [Protocol writes](https://docs.intuition.systems/docs/concepts/protocol-writes)
+- [Representation profiles](https://docs.intuition.systems/docs/concepts/representation-profiles)
+- [Write a classification plugin](https://docs.intuition.systems/docs/core/classification-plugin)
+- [What you can build](https://docs.intuition.systems/docs/examples)
+- [Build a music catalog](https://docs.intuition.systems/docs/examples/music-catalog)
+- [How the pieces fit](https://docs.intuition.systems/docs/get-started/how-it-fits)
+- [Migrate from V1](https://docs.intuition.systems/docs/get-started/migrate-from-v1)
+- [Quickstart: an atom ID and IID offline](https://docs.intuition.systems/docs/get-started/quickstart)
+- [Versions and release status](https://docs.intuition.systems/docs/get-started/versions)
+- [Compatibility](https://docs.intuition.systems/docs/reference/compatibility)
+- [Packages](https://docs.intuition.systems/docs/reference/packages)
+- [@0xintuition/atom-classification](https://docs.intuition.systems/docs/reference/packages/atom-classification)
+- [@0xintuition/atom-enrichment](https://docs.intuition.systems/docs/reference/packages/atom-enrichment)
+- [@0xintuition/atom-parser](https://docs.intuition.systems/docs/reference/packages/atom-parser)
+- [@0xintuition/atom-runtime](https://docs.intuition.systems/docs/reference/packages/atom-runtime)
+- [@0xintuition/classifications](https://docs.intuition.systems/docs/reference/packages/classifications)
+- [@0xintuition/cli](https://docs.intuition.systems/docs/reference/packages/cli)
+- [@0xintuition/curves](https://docs.intuition.systems/docs/reference/packages/curves)
+- [@0xintuition/deployments](https://docs.intuition.systems/docs/reference/packages/deployments)
+- [@0xintuition/ids](https://docs.intuition.systems/docs/reference/packages/ids)
+- [@0xintuition/iid](https://docs.intuition.systems/docs/reference/packages/iid)
+- [@0xintuition/iid-ladder](https://docs.intuition.systems/docs/reference/packages/iid-ladder)
+- [@0xintuition/iid-registry](https://docs.intuition.systems/docs/reference/packages/iid-registry)
+- [@0xintuition/iid-spec](https://docs.intuition.systems/docs/reference/packages/iid-spec)
+- [@0xintuition/periphery](https://docs.intuition.systems/docs/reference/packages/periphery)
+- [@0xintuition/pipeline-runtime](https://docs.intuition.systems/docs/reference/packages/pipeline-runtime)
+- [@0xintuition/predicates](https://docs.intuition.systems/docs/reference/packages/predicates)
+- [@0xintuition/primitives](https://docs.intuition.systems/docs/reference/packages/primitives)
+- [@0xintuition/protocol](https://docs.intuition.systems/docs/reference/packages/protocol)
+- [@0xintuition/react](https://docs.intuition.systems/docs/reference/packages/react)
+- [@0xintuition/schema-org](https://docs.intuition.systems/docs/reference/packages/schema-org)
+- [@0xintuition/sdk](https://docs.intuition.systems/docs/reference/packages/sdk)
+- [SDK function reference](https://docs.intuition.systems/docs/reference/sdk)
+- [API client](https://docs.intuition.systems/docs/reference/sdk/api)
+- [Dynamic-fee curve actions](https://docs.intuition.systems/docs/reference/sdk/dynamic-fee-curve)
+- [FeeProxy URI creation](https://docs.intuition.systems/docs/reference/sdk/fee-proxy)
+- [FeeProxy affiliate profile](https://docs.intuition.systems/docs/reference/sdk/fee-proxy-affiliate-profile)
+- [FeeProxy plans and execution](https://docs.intuition.systems/docs/reference/sdk/fee-proxy-builders)
+- [FeeProxy refund preparation](https://docs.intuition.systems/docs/reference/sdk/fee-proxy-claim-refund-if-any)
+- [MultiVault actions](https://docs.intuition.systems/docs/reference/sdk/multivault)
+- [Bridge action envelopes](https://docs.intuition.systems/docs/reference/sdk/plans-base)
+- [Dynamic-fee action envelopes](https://docs.intuition.systems/docs/reference/sdk/plans-dynamic-fee-curve)
+- [FeeProxy action envelopes](https://docs.intuition.systems/docs/reference/sdk/plans-fee-proxy)
+- [MultiVault action envelopes](https://docs.intuition.systems/docs/reference/sdk/plans-multivault)
+- [TrustBonding action envelopes](https://docs.intuition.systems/docs/reference/sdk/plans-trust-bonding)
+- [Portfolio reads](https://docs.intuition.systems/docs/reference/sdk/portfolio)
+- [Create and validate action envelopes](https://docs.intuition.systems/docs/reference/sdk/schema-create-agent-action-envelope)
+- [Resolve action targets](https://docs.intuition.systems/docs/reference/sdk/schema-resolve-agent-action-target)
+- [Action envelope types](https://docs.intuition.systems/docs/reference/sdk/schema-types)
+- [TrustBonding actions](https://docs.intuition.systems/docs/reference/sdk/trust-bonding)

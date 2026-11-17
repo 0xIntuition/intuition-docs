@@ -264,7 +264,12 @@ test('native trailing-slash metadata resolves canonical HTML, sitemap, banners a
     'scripts/v2-launch-routes.txt',
     fs.readFileSync(path.join(__dirname, 'v2-launch-routes.txt')),
   );
-  const pairs = require('../src/data/version-equivalents.json');
+  const pairs = {
+    schemaVersion: 1,
+    pairs: require('../src/data/version-equivalents.json').pairs.filter(
+      (pair) => fixtureIds.has(pair.v2),
+    ),
+  };
   write('src/data/version-equivalents.json', JSON.stringify(pairs));
   // These are native Docusaurus metadata paths, before trailingSlash:false is
   // applied to emitted HTML filenames and hrefs.

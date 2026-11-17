@@ -296,6 +296,19 @@ test('Phase 2 workflow coverage requires isolated installs and all source synchr
     ['quality.yml', 'node scripts/sync-generated-blocks.js --check'],
     ['quality.yml', 'node scripts/sync-example-snippets.js --check'],
     ['quality.yml', 'node scripts/validate-core-api-examples.js'],
+    ['quality.yml', 'node scripts/validate-v2-structure.js --phase 2'],
+    [
+      'check-links.yml',
+      'node scripts/validate-built-docs.js --phase 2 --build-log build.log',
+    ],
+    [
+      'validate-sdk-examples.yml',
+      'node --experimental-strip-types examples/v2/quickstart/quickstart.ts',
+    ],
+    [
+      'validate-sdk-examples.yml',
+      'diff -u examples/v2/quickstart/expected-output.txt',
+    ],
     ['generate-llms-txt.yml', 'static/intuition-release.json'],
   ]) {
     const copy = structuredClone(input);

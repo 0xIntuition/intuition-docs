@@ -25,9 +25,17 @@ const loaded = [
     docs: [{ id: 'index' }, { id: 'agents/skills' }, { id: 'community/index' }],
   },
 ];
+const phaseOneSeeds = SEEDS.filter((pair) =>
+  loaded[1].docs.some((doc) => doc.id === pair.v2),
+);
+const sourceLoaded = Object.values(versions).map((version) => ({
+  name: version.name,
+  docs: readDocs(path.resolve(__dirname, '..'), version),
+}));
 test('AC-18 accepts native IDs and all three Phase 1 seeds', () => {
+  assert.equal(phaseOneSeeds.length, 3);
   assert.deepEqual(
-    validateEquivalents({ schemaVersion: 1, pairs: SEEDS }, loaded),
+    validateEquivalents({ schemaVersion: 1, pairs: phaseOneSeeds }, loaded),
     [],
   );
   assert.equal(
@@ -39,10 +47,10 @@ test('AC-18 accepts native IDs and all three Phase 1 seeds', () => {
 });
 test('AC-18 rejects missing ids, duplicates, generated-index IDs and omitted shipped seeds', () => {
   for (const pairs of [
-    [...SEEDS, { v1: 'missing', v2: 'index' }],
-    [...SEEDS, SEEDS[0]],
-    [...SEEDS.slice(1)],
-    [...SEEDS, { v1: '/category/generated', v2: 'index' }],
+    [...phaseOneSeeds, { v1: 'missing', v2: 'index' }],
+    [...phaseOneSeeds, phaseOneSeeds[0]],
+    [...phaseOneSeeds.slice(1)],
+    [...phaseOneSeeds, { v1: '/category/generated', v2: 'index' }],
   ])
     assert.ok(validateEquivalents({ schemaVersion: 1, pairs }, loaded).length);
   assert.throws(() => readGlobalVersions({}), /run npm run build/);
@@ -53,7 +61,7 @@ test('community seed matches the frozen source ID and authored map', () => {
     (doc) => doc.relativePath === 'resources/community-and-support.md',
   );
   assert.equal(source.id, 'resources/community-and-support');
-  assert.deepEqual(validateEquivalents(map, loaded), []);
+  assert.deepEqual(validateEquivalents(map, sourceLoaded), []);
   for (const pairs of [
     map.pairs.filter((pair) => pair.v2 !== 'community/index'),
     map.pairs.map((pair) =>
@@ -63,8 +71,23 @@ test('community seed matches the frozen source ID and authored map', () => {
     ),
   ]) {
     assert.match(
-      validateEquivalents({ schemaVersion: 1, pairs }, loaded).join('\n'),
+      validateEquivalents({ schemaVersion: 1, pairs }, sourceLoaded).join('\n'),
       /Missing shipped seed pair: resources\/community-and-support ↔ community\/index/,
+    );
+  }
+});
+
+test('all 12 Phase 2 seeds resolve in the authored trees and each shipped seed is required', () => {
+  assert.equal(SEEDS.length, 12);
+  assert.deepEqual(map.pairs, SEEDS);
+  assert.deepEqual(validateEquivalents(map, sourceLoaded), []);
+  for (const seed of SEEDS) {
+    const pairs = map.pairs.filter((pair) => pair.v2 !== seed.v2);
+    assert.ok(
+      validateEquivalents({ schemaVersion: 1, pairs }, sourceLoaded).includes(
+        `Missing shipped seed pair: ${seed.v1} ↔ ${seed.v2}`,
+      ),
+      seed.v2,
     );
   }
 });
