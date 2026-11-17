@@ -144,6 +144,7 @@ The last line is an atom ID, not an IID string. The assertions run before any ou
 
 - [Representation profiles](/docs/concepts/representation-profiles) explains when an IID needs contextual atom data.
 - [Build a music catalog](/docs/examples/music-catalog) adds explicit artist and album triples using synthetic fixtures.
+- [Your first on-chain write](/docs/get-started/first-write) creates a separate, unique testnet atom and reads your position after a deposit.
 - [Protocol writes](/docs/concepts/protocol-writes) explains the separate transaction lifecycle.
 
 Sources: [Getting started](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/docs/getting-started.md), [golden anchor tests](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/primitives/src/__tests__/anchor.test.ts).
