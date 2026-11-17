@@ -3,7 +3,7 @@
     "id": "M-1",
     "repo": "https://github.com/0xIntuition/intuition-identifier; https://github.com/0xIntuition/packages",
     "path": "spec/*; packages/iid-spec/spec/*",
-    "finding": "The copies diverge. The package copy lacks §7.8 and adds the typed wd scheme, the acct weak form and apple-podcasts, letterboxd and podcast-index. Chapters 00, 01, 04, 05 and 09 differ.",
+    "finding": "The package copy omits §7.8, accepts typed wd values and adds apple-podcasts, letterboxd and podcast-index. Both sources define weak acct handles. The package makes these handles ineligible for P0 and requires a P1 floor, preserving their canonical bytes. Chapters 00, 01, 04, 05 and 09 differ.",
     "docsPages": [
       "/docs/concepts/iid-schemes",
       "/docs/concepts/representation-profiles",
