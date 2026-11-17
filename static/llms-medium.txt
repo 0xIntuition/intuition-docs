@@ -1480,7 +1480,7 @@ Use ESM imports. See [installation and peer setup](https://docs.intuition.system
 ---
 title: "Packages"
 description: "Explore all 21 V2 packages by layer and see their direct runtime dependencies."
-last_updated: "2026-11-17T12:05:41-08:00"
+last_updated: "2026-11-17T12:06:58-08:00"
 source: "https://docs.intuition.systems/docs/reference/packages"
 ---
 
