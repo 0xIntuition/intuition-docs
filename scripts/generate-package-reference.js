@@ -149,6 +149,18 @@ const R15_WARNING =
 function frontMatter(title, description) {
   return `---\ntitle: ${JSON.stringify(title)}\nsidebar_label: ${JSON.stringify(title)}\ndescription: ${JSON.stringify(description)}\nkind: reference\nreader: ["app", "agent"]\npackages: ["@0xintuition/sdk"]\ngenerated_by: ${SDK_REFERENCE_GENERATOR}\n---\n\n<AppliesTo />\n\n`;
 }
+async function formatPage(markdown) {
+  // Keep FR-32's single-line JSON arrays intact: Prettier's YAML formatter
+  // would otherwise turn them into single-quoted YAML arrays.
+  const header = markdown.match(/^---\n[\s\S]*?\n---\n\n/)[0];
+  return (
+    header +
+    (await prettier.format(markdown.slice(header.length), {
+      parser: 'mdx',
+      singleQuote: true,
+    }))
+  );
+}
 function managedFields(manifest) {
   return {
     source: manifest.source,
@@ -428,10 +440,7 @@ async function generateReference({
         md += `### ${node.name.text}\n\n${isExported(node) ? 'Public export.' : 'Module-local helper; not a public export.'}\n\n\`\`\`ts\n${node.getText(ast)}\n\`\`\`\n\n`;
       }
     }
-    write(
-      path.join(output, slug + '.md'),
-      await prettier.format(md, { parser: 'mdx', singleQuote: true }),
-    );
+    write(path.join(output, slug + '.md'), await formatPage(md));
   }
   const index =
     frontMatter(
@@ -449,10 +458,7 @@ async function generateReference({
       .join('\n') +
     '\n\n## Using the reference\n\nAmounts and shares use `bigint` base units. Term IDs are protocol IDs, not IID strings. Use each page’s public import paths; source directories do not add package entry points. Optional dependency parameters are customization and testing hooks. Quotes can become stale before execution.\n\n' +
     'Review [SDK packages](/docs/reference/packages/sdk), [Compatibility](/docs/reference/compatibility), [the SDK read client](/docs/build/read-with-sdk), and [action envelopes](/docs/build/action-plans) before integrating.\n';
-  write(
-    path.join(output, 'index.md'),
-    await prettier.format(index, { parser: 'mdx', singleQuote: true }),
-  );
+  write(path.join(output, 'index.md'), await formatPage(index));
   // Source-derived fields are the only authorized manifest mutations.
   if (!check)
     fs.writeFileSync(manifestFile, JSON.stringify(manifest, null, 2) + '\n');

@@ -11,6 +11,7 @@ const {
   R15_WARNING,
 } = require('./generate-package-reference');
 const actual = require('../static/intuition-release.json');
+const { parseFrontMatter } = require('./lib/docs-tree');
 function fixture(t) {
   const temp = fs.mkdtempSync(path.join(os.tmpdir(), 'package-reference-'));
   t.after(() => fs.rmSync(temp, { recursive: true, force: true }));
@@ -157,6 +158,8 @@ test('outputs source-faithful declarations, defaults, types, metadata, absolute 
   assert.match(api, /TESTNET_API_URL/);
   assert.doesNotMatch(api, /PRIVATE_QUERY|query NeverPublish/);
   assert.match(api, /generated_by: scripts\/generate-package-reference.js/);
+  assert.deepEqual(parseFrontMatter(api).reader, ['app', 'agent']);
+  assert.deepEqual(parseFrontMatter(api).packages, ['@0xintuition/sdk']);
   assert.doesNotMatch(api, /^slug:|^id:/m);
   assert.match(api, /\[Compatibility\]\(\/docs\/reference\/compatibility\)/);
   const before = api;
