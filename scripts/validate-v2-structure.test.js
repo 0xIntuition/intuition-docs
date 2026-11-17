@@ -184,6 +184,33 @@ test('SDK API source warning is adjacent and read-client recipes remain forbidde
   );
 });
 
+test('SDK landing navigation does not permit visible hosted read-client guidance', () => {
+  const manifest = require('../static/intuition-release.json');
+  const fields = { kind: 'reference', packages: '["@0xintuition/sdk"]' };
+  const target = `${versions.current.routeBase}/reference/sdk/api`;
+  const navigation = `| Reference |\n| --- |\n| [API client](${target}) |`;
+  const validate = (body) =>
+    validateDocs(
+      [doc('reference/sdk/index.md', fields, `<AppliesTo />\n\n${body}`)],
+      { launchRows: rows, manifest },
+    );
+  assert.deepEqual(validate(navigation), []);
+  for (const body of [
+    `[@0xintuition/sdk/api](${target})`,
+    `${navigation}\n\nUse \`@0xintuition/sdk/api\` to read the graph.`,
+    `${navigation}\n\n~~~ts\ncreateIntuitionApiClient({});\n~~~`,
+    `${navigation}\n\ngetIntuitionApiUrl('mainnet')`,
+    `${navigation}\n\n[Hosted reads](https://mainnet.intuition.sh/v1/graphql)`,
+    `[Other](${target}/other)`,
+    `[Other](https://example.com${target})`,
+    `\`[API client](${target})\``,
+    `\`\`[API client](${target}) with a \` delimiter\`\``,
+    `~~~text title="sdk/api"\nExample\n~~~`,
+    `~~~ts\nconst visibleExample = '[API client](${target})';\n~~~`,
+  ])
+    assert.match(validate(body).join('\n'), /hosted read-client/);
+});
+
 test('structure validation rejects executable front matter without evaluating it', () => {
   const source =
     '---js\n{ title: (globalThis.__structureFrontMatterExecuted = true) }\n---\n# Hidden title';

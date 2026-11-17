@@ -108,6 +108,36 @@ test('built SDK API warning follows metadata before all generated declarations',
     /M-7/,
   );
 });
+
+test('built SDK landing scans visible client text while allowing its API navigation href', () => {
+  const manifest = require('../static/intuition-release.json');
+  const strip =
+    '<p data-applies-to="V2">Applies to V2 · <code>@0xintuition/sdk</code> 4.0.0</p>';
+  const link = '<a href="/docs/reference/sdk/api">API client</a>';
+  const html = htmlV2
+    .replace('</header>', `</header>${strip}`)
+    .replace('Useful body.', link);
+  const options = {
+    version: versions.current,
+    doc: {
+      id: 'reference/sdk/index',
+      frontMatter: { packages: ['@0xintuition/sdk'] },
+    },
+    manifest,
+  };
+  assert.deepEqual(assertDocHtml(html, options), []);
+  for (const content of [
+    '<a href="/docs/reference/sdk/api">@0xintuition/sdk/api</a>',
+    `${link}<code>@0xintuition/sdk/api</code>`,
+    `${link}<pre><code>createIntuitionApiClient({});</code></pre>`,
+    `${link}<code>getIntuitionApiUrl('mainnet')</code>`,
+    `${link}<p>https://mainnet.intuition.sh/v1/graphql</p>`,
+  ])
+    assert.match(
+      assertDocHtml(html.replace(link, content), options).join('\n'),
+      /hosted read-client/,
+    );
+});
 test('AC-3/4/17 rejects wrong badges, indexing, edit links, banner copy and target', () => {
   for (const html of [
     htmlV1.replace('Version: V1', 'Version: V2'),
@@ -222,7 +252,12 @@ test('native trailing-slash metadata resolves canonical HTML, sitemap, banners a
     fs.mkdirSync(path.dirname(file), { recursive: true });
     fs.writeFileSync(file, content);
   };
-  const source = readDocs(path.resolve(__dirname, '..'), versions.current);
+  // This fixture exercises Phase 1 native metadata independently of later pages.
+  const fixtureIds = new Set(['index', 'agents/skills', 'community/index']);
+  const source = readDocs(
+    path.resolve(__dirname, '..'),
+    versions.current,
+  ).filter((page) => fixtureIds.has(page.id));
   for (const page of source)
     write(`${versions.current.docsDir}/${page.relativePath}`, page.content);
   write(
