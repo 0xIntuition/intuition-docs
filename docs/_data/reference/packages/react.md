@@ -48,7 +48,7 @@ Use `WagmiProvider`, then `QueryClientProvider`, then `IntuitionProvider`. In an
 
 ## Example
 
-Mounting this component performs a testnet RPC read over HTTP. It requires no wallet connector, signing key, or Core node. The snippet is typechecked here; no RPC request or rendered-app verification was performed.
+Mounting this component performs a testnet RPC read over HTTP. It requires no wallet connector, signing key, or Core node.
 
 {/* example:start examples/v2/react-app/src/package-example.tsx#provider-read */}
 ```tsx
