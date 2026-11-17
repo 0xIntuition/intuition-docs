@@ -1,0 +1,214 @@
+{
+  "name": "intuition-identifier-registry",
+  "description": "Machine-readable export of the Intuition Identifier scheme and entity-type registries. The markdown documents under schemes/ and entity-types/ are normative; where this file and a document disagree, that is a defect — report it.",
+  "specVersion": "0.1.0",
+  "license": "MIT (see LICENSE)",
+  "grammar": {
+    "shape": "^int:([a-z0-9-]{1,32}):([\\x21-\\x7E]{1,220})$",
+    "maxBytes": 256,
+    "note": "Shape match is step 1 of 3. Step 2: the scheme must be registered. Step 3: the value must be in the scheme's canonical form. See spec/02-grammar.md."
+  },
+  "schemes": {
+    "isbn": { "class": "A", "tier": "T1", "typing": "unambiguous", "identifies": "a book edition", "authority": "International ISBN Agency", "valueShape": "^\\d{13}$", "shapeIsSufficient": false, "shapeNote": "GS1 mod-10 check digit must also validate" },
+    "isrc": { "class": "A", "tier": "T1", "typing": "unambiguous", "identifies": "a sound/video recording", "authority": "IFPI", "valueShape": "^[A-Z]{2}[A-Z0-9]{3}\\d{7}$", "shapeIsSufficient": true },
+    "iswc": { "class": "A", "tier": "T1", "typing": "unambiguous", "identifies": "a musical composition (work)", "authority": "CISAC", "valueShape": "^T\\d{10}$", "shapeIsSufficient": false, "shapeNote": "mod-10 positional check digit must also validate" },
+    "isni": { "class": "A", "tier": "T1", "typing": "polymorphic", "identifies": "a public identity: person, band, stage persona, or organization", "authority": "ISNI International Agency", "valueShape": "^\\d{15}[\\dX]$", "shapeIsSufficient": false, "shapeNote": "ISO 7064 mod 11-2 check character must also validate" },
+    "orcid": { "class": "A", "tier": "T1", "typing": "polymorphic", "identifies": "a researcher", "authority": "ORCID, Inc.", "valueShape": "^\\d{15}[\\dX]$", "shapeIsSufficient": false, "shapeNote": "ISO 7064 mod 11-2 check character must also validate" },
+    "lei": { "class": "A", "tier": "T1", "typing": "unambiguous", "identifies": "a legal entity", "authority": "GLEIF (ISO 17442)", "valueShape": "^[A-Z0-9]{18}\\d{2}$", "shapeIsSufficient": false, "shapeNote": "ISO 7064 mod 97-10 must also validate" },
+    "gtin": { "class": "A", "tier": "T1", "typing": "unambiguous", "identifies": "a trade item (product model)", "authority": "GS1", "valueShape": "^\\d{14}$", "shapeIsSufficient": false, "shapeNote": "GS1 mod-10 check digit must also validate" },
+    "doi": { "class": "A", "tier": "T1", "typing": "polymorphic", "identifies": "a registered digital object: article, dataset, or film", "authority": "International DOI Foundation", "valueShape": "^10\\.\\d{4,9}/[\\x21-\\x7E]+$", "shapeIsSufficient": false, "shapeNote": "canonical form is lowercase" },
+    "eidr": { "class": "A", "tier": "T1", "typing": "unambiguous", "identifies": "a film or TV work", "authority": "EIDR Association", "valueShape": "^10\\.5240/[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-Z]$", "shapeIsSufficient": true },
+    "wd": { "class": "A", "tier": "T2", "typing": "polymorphic", "identifies": "anything Wikidata covers", "authority": "Wikidata", "valueShape": "^Q[1-9]\\d*$", "shapeIsSufficient": true },
+    "mbid": { "class": "A", "tier": "T2", "typing": "unambiguous", "identifies": "a music entity, typed in-value", "authority": "MusicBrainz", "valueShape": "^(artist|recording|release|release-group|work|label):[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", "shapeIsSufficient": true },
+    "olid": { "class": "A", "tier": "T2", "typing": "unambiguous", "identifies": "a book work/edition or author, typed by suffix", "authority": "OpenLibrary", "valueShape": "^OL\\d+[AMW]$", "shapeIsSufficient": true },
+    "imdb": { "class": "A", "tier": "T3", "typing": "polymorphic", "identifies": "a film, series, or person", "authority": "IMDb", "valueShape": "^(tt|nm|co|ev|ch|ni)\\d{6,}$", "shapeIsSufficient": true },
+    "tmdb": { "class": "A", "tier": "T2", "typing": "polymorphic", "identifies": "a film, series, or person, typed in-value", "authority": "The Movie Database", "valueShape": "^(movie|tv|person):\\d+$", "shapeIsSufficient": true },
+    "podcastguid": { "class": "A", "tier": "T2", "typing": "unambiguous", "identifies": "a podcast feed (show)", "authority": "Podcasting 2.0 (publisher-declared)", "valueShape": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", "shapeIsSufficient": true },
+    "url": { "class": "B", "tier": null, "typing": "polymorphic", "identifies": "a web resource by address", "authority": "the resource's address (natural key)", "valueShape": null, "shapeIsSufficient": false, "shapeNote": "canonical iff canonicalize(v) = v; no regex captures the url canonicalization" },
+    "caip10": { "class": "B", "tier": null, "typing": "polymorphic", "identifies": "a blockchain account or contract (CAIP-10)", "authority": "the keypair/deployment (natural key)", "valueShape": "^[-a-z0-9]{3,8}:[-_a-zA-Z0-9]{1,32}:[\\x21-\\x7E]+$", "shapeIsSufficient": false, "shapeNote": "eip155 addresses must be 0x + 40 lowercase hex" },
+    "caip19": { "class": "B", "tier": null, "typing": "unambiguous", "identifies": "an on-chain asset (CAIP-19)", "authority": "chain + contract (natural key)", "valueShape": "^[-a-z0-9]{3,8}:[-_a-zA-Z0-9]{1,32}/[-a-z0-9]{3,8}:[\\x21-\\x7E]+$", "shapeIsSufficient": false, "shapeNote": "eip155 asset references must be 0x + 40 lowercase hex" },
+    "hash": { "class": "B", "tier": null, "typing": "polymorphic", "identifies": "content by cryptographic digest of its bytes", "authority": "the content bytes (natural key)", "valueShape": "^(sha256|keccak256):[0-9a-f]{64}$", "shapeIsSufficient": true },
+    "appid": { "class": "B", "tier": null, "typing": "unambiguous", "identifies": "a mobile app per store ecosystem", "authority": "platform-enforced bundle ID / package name", "valueShape": "^(ios|android):[a-z0-9._-]+$", "shapeIsSufficient": true },
+    "purl": { "class": "B", "tier": null, "typing": "unambiguous", "identifies": "a software package, version-free", "authority": "Package URL spec: ecosystem + name", "valueShape": "^[a-z0-9.+-]+/[\\x21-\\x7E]+$", "shapeIsSufficient": false, "shapeNote": "canonical form is lowercase with no @version, ?qualifier, or #subpath" },
+    "geo": { "class": "B", "tier": null, "typing": "polymorphic", "identifies": "a geohash cell of the Earth's surface", "authority": "the coordinates, quantized (natural key)", "valueShape": "^[0-9bcdefghjkmnpqrstuvwxyz]{1,12}$", "shapeIsSufficient": true },
+    "acct": { "class": "B", "tier": null, "typing": "unambiguous", "identifies": "a platform account: strong form platform:userId, weak form platform:@handle", "authority": "the platform's immutable user ID (strong form)", "valueShape": "^[a-z0-9-]+:@?[\\x21-\\x7E]+$", "shapeIsSufficient": false, "shapeNote": "weak-form handles are NORM-1-folded" },
+    "rssitem": { "class": "B", "tier": null, "typing": "unambiguous", "identifies": "a podcast feed item (episode manifestation)", "authority": "feed GUID + hashed publisher item GUID", "valueShape": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}:[0-9a-f]{32}$", "shapeIsSufficient": true },
+    "termset": { "class": "B", "tier": null, "typing": "unambiguous", "identifies": "a defined term within a term set", "authority": "hashed term set + slugified term code", "valueShape": "^[0-9a-f]{32}:[a-z0-9][a-z0-9-]*$", "shapeIsSufficient": true },
+    "gen1": { "class": "C", "tier": null, "typing": "unambiguous", "identifies": "the set of facts it was derived from, namespaced by entity type", "authority": "none — derived; expected to be superseded", "valueShape": "^[a-z0-9-]+:r[1-9]\\d*:[0-9a-f]{32}$", "shapeIsSufficient": false, "shapeNote": "the slug must be a registered entity type; never P0-eligible" }
+  },
+  "entityTypes": {
+    "person": { "identifies": "an individual human", "status": "ratified", "rungs": [
+      { "kind": "scheme", "scheme": "isni", "source": "sameAs" },
+      { "kind": "scheme", "scheme": "wd", "source": "sameAs" },
+      { "kind": "scheme", "scheme": "olid", "source": "sameAs" },
+      { "kind": "gen1", "tag": 4, "fields": ["givenName", "familyName"] },
+      { "kind": "gen1", "tag": 5, "fields": ["givenName"] }
+    ] },
+    "company": { "identifies": "a legal entity", "status": "ratified", "rungs": [
+      { "kind": "scheme", "scheme": "wd", "source": "sameAs" },
+      { "kind": "scheme", "scheme": "url", "source": "url" },
+      { "kind": "gen1", "tag": 4, "fields": ["name"] }
+    ] },
+    "brand": { "identifies": "a brand as a concept (instance businesses are local-business atoms)", "status": "ratified", "rungs": [
+      { "kind": "scheme", "scheme": "wd", "source": "sameAs" },
+      { "kind": "gen1", "tag": 2, "fields": ["name"] }
+    ] },
+    "local-business": { "identifies": "one business at one place (instance level)", "status": "ratified", "rungs": [
+      { "kind": "scheme", "scheme": "wd", "source": "sameAs" },
+      { "kind": "gen1", "tag": 2, "fields": ["name", "geo7"], "fieldNotes": { "geo7": "geohash precision 7 of latitude/longitude" } },
+      { "kind": "gen1", "tag": 4, "fields": ["name"] }
+    ] },
+    "location": { "identifies": "a named place or coordinate point", "status": "ratified", "rungs": [
+      { "kind": "scheme", "scheme": "wd", "source": "sameAs" },
+      { "kind": "scheme", "scheme": "geo", "source": "latitude/longitude at geohash precision 8" },
+      { "kind": "gen1", "tag": 3, "fields": ["name"] }
+    ] },
+    "event": { "identifies": "an event occurrence", "status": "ratified", "rungs": [
+      { "kind": "scheme", "scheme": "wd", "source": "sameAs" },
+      { "kind": "scheme", "scheme": "url", "source": "sameAs" },
+      { "kind": "gen1", "tag": 3, "fields": ["name", "startDate"] },
+      { "kind": "gen1", "tag": 4, "fields": ["name"] }
+    ] },
+    "thing": { "identifies": "anything not covered by a specific entity type (weakest IDs by design)", "status": "ratified", "rungs": [
+      { "kind": "scheme", "scheme": "wd", "source": "sameAs" },
+      { "kind": "scheme", "scheme": "url", "source": "sameAs" },
+      { "kind": "gen1", "tag": 3, "fields": ["name"] }
+    ] },
+    "book": { "identifies": "the work; isbn identifies editions, bridged via equivalence", "status": "ratified", "rungs": [
+      { "kind": "scheme", "scheme": "isbn", "source": "isbn" },
+      { "kind": "scheme", "scheme": "olid", "source": "sameAs" },
+      { "kind": "scheme", "scheme": "wd", "source": "sameAs" },
+      { "kind": "gen1", "tag": 3, "fields": ["name"] }
+    ] },
+    "article": { "identifies": "an article", "status": "ratified", "rungs": [
+      { "kind": "scheme", "scheme": "doi", "source": "url" },
+      { "kind": "scheme", "scheme": "url", "source": "url" },
+      { "kind": "gen1", "tag": 3, "fields": ["headline"] }
+    ] },
+    "news-article": { "identifies": "a news story as published (URL-anchored)", "status": "ratified", "rungs": [
+      { "kind": "scheme", "scheme": "url", "source": "url" },
+      { "kind": "scheme", "scheme": "url", "source": "sameAs" },
+      { "kind": "gen1", "tag": 2, "fields": ["headline", "datePublished"] },
+      { "kind": "gen1", "tag": 3, "fields": ["headline"] }
+    ] },
+    "dataset": { "identifies": "a dataset (version lineage out of ID scope)", "status": "ratified", "rungs": [
+      { "kind": "scheme", "scheme": "doi", "source": "sameAs" },
+      { "kind": "scheme", "scheme": "url", "source": "url" },
+      { "kind": "gen1", "tag": 3, "fields": ["name"] }
+    ] },
+    "defined-term": { "identifies": "a term within a term set", "status": "ratified", "rungs": [
+      { "kind": "scheme", "scheme": "termset", "source": "inDefinedTermSet + termCode" },
+      { "kind": "gen1", "tag": 2, "fields": ["name"] }
+    ] },
+    "review": { "identifies": "one review of one subject (relational entity)", "status": "ratified", "rungs": [
+      { "kind": "scheme", "scheme": "url", "source": "sameAs" }
+    ] },
+    "comment": { "identifies": "one comment on one subject (relational entity)", "status": "ratified", "rungs": [
+      { "kind": "scheme", "scheme": "url", "source": "sameAs" }
+    ] },
+    "aggregate-rating": { "status": "withdrawn", "reason": "Remodeled as a claim: subject —hasAggregateRating→ provider atom, with values as claim metadata. The identity problem dissolves rather than being solved." },
+    "image": { "identifies": "an image — byte identity first; url is a mutable manifestation fallback", "status": "ratified", "rungs": [
+      { "kind": "scheme", "scheme": "hash", "source": "contentHash" },
+      { "kind": "scheme", "scheme": "url", "source": "url" },
+      { "kind": "gen1", "tag": 3, "fields": ["name"] }
+    ] },
+    "video-object": { "identifies": "a video — byte identity first; platform URLs are manifestation fallbacks", "status": "ratified", "rungs": [
+      { "kind": "scheme", "scheme": "hash", "source": "contentHash" },
+      { "kind": "scheme", "scheme": "url", "source": "contentUrl" },
+      { "kind": "scheme", "scheme": "url", "source": "sameAs" },
+      { "kind": "gen1", "tag": 3, "fields": ["name"] }
+    ] },
+    "movie": { "identifies": "a film (work level)", "status": "ratified", "rungs": [
+      { "kind": "scheme", "scheme": "wd", "source": "sameAs" },
+      { "kind": "scheme", "scheme": "tmdb", "source": "sameAs" },
+      { "kind": "scheme", "scheme": "imdb", "source": "sameAs" },
+      { "kind": "gen1", "tag": 4, "fields": ["name", "yearPublished"], "fieldNotes": { "yearPublished": "year component of datePublished" } },
+      { "kind": "gen1", "tag": 5, "fields": ["name"] }
+    ] },
+    "tv-series": { "identifies": "the series (seasons/episodes are unmodeled levels)", "status": "ratified", "rungs": [
+      { "kind": "scheme", "scheme": "wd", "source": "sameAs" },
+      { "kind": "scheme", "scheme": "tmdb", "source": "sameAs" },
+      { "kind": "scheme", "scheme": "imdb", "source": "sameAs" },
+      { "kind": "gen1", "tag": 4, "fields": ["name", "startYear"], "fieldNotes": { "startYear": "year component of startDate" } },
+      { "kind": "gen1", "tag": 5, "fields": ["name"] }
+    ] },
+    "music-group": { "identifies": "an artist/band public identity", "status": "ratified", "rungs": [
+      { "kind": "scheme", "scheme": "isni", "source": "sameAs" },
+      { "kind": "scheme", "scheme": "mbid", "source": "sameAs" },
+      { "kind": "scheme", "scheme": "wd", "source": "sameAs" },
+      { "kind": "gen1", "tag": 4, "fields": ["name"] }
+    ] },
+    "music-album": { "identifies": "the release-group (the album as a work)", "status": "ratified", "rungs": [
+      { "kind": "scheme", "scheme": "mbid", "source": "sameAs" },
+      { "kind": "scheme", "scheme": "wd", "source": "sameAs" },
+      { "kind": "gen1", "tag": 4, "fields": ["name"] }
+    ] },
+    "music-recording": { "identifies": "the recording (isrc level; compositions are iswc territory)", "status": "ratified", "rungs": [
+      { "kind": "scheme", "scheme": "isrc", "source": "isrc" },
+      { "kind": "scheme", "scheme": "mbid", "source": "sameAs" },
+      { "kind": "gen1", "tag": 3, "fields": ["name"] }
+    ] },
+    "podcast-series": { "identifies": "the show (feed level)", "status": "ratified", "rungs": [
+      { "kind": "scheme", "scheme": "podcastguid", "source": "declared podcastGuid tag" },
+      { "kind": "scheme", "scheme": "podcastguid", "source": "derived offline from feedUrl (fallback; forks on feed migration)" },
+      { "kind": "scheme", "scheme": "url", "source": "url" },
+      { "kind": "gen1", "tag": 3, "fields": ["name"] }
+    ] },
+    "podcast-episode": { "identifies": "one feed item (manifestation) — the episode-work is the equivalence cluster over feed items", "status": "ratified", "rungs": [
+      { "kind": "scheme", "scheme": "rssitem", "source": "feedGuid + keccak16(NORM-1(itemGuid))" },
+      { "kind": "scheme", "scheme": "url", "source": "url" },
+      { "kind": "gen1", "tag": 3, "fields": ["name", "datePublished"] },
+      { "kind": "gen1", "tag": 4, "fields": ["name"] }
+    ] },
+    "product": { "identifies": "the product model (not individual units)", "status": "ratified", "rungs": [
+      { "kind": "scheme", "scheme": "gtin", "source": "gtin" },
+      { "kind": "gen1", "tag": 2, "fields": ["name"] }
+    ] },
+    "service": { "identifies": "a service offering", "status": "ratified", "rungs": [
+      { "kind": "scheme", "scheme": "url", "source": "sameAs" },
+      { "kind": "gen1", "tag": 2, "fields": ["name"] }
+    ] },
+    "web-page": { "identifies": "a page at a canonical URL", "status": "ratified", "rungs": [
+      { "kind": "scheme", "scheme": "url", "source": "url" }
+    ] },
+    "web-site": { "identifies": "a site (origin level)", "status": "ratified", "rungs": [
+      { "kind": "scheme", "scheme": "url", "source": "origin of url (scheme + host only)" }
+    ] },
+    "job-posting": { "identifies": "one posting", "status": "ratified", "rungs": [
+      { "kind": "scheme", "scheme": "url", "source": "url" },
+      { "kind": "gen1", "tag": 2, "fields": ["title", "datePosted"] },
+      { "kind": "gen1", "tag": 3, "fields": ["title"] }
+    ] },
+    "social-media-account": { "identifies": "an account on a platform (the person behind it is a separate atom)", "status": "ratified", "rungs": [
+      { "kind": "scheme", "scheme": "acct", "source": "platform + platformUserId (strong form)" },
+      { "kind": "scheme", "scheme": "acct", "source": "platform + @username (weak form)" }
+    ] },
+    "social-media-posting": { "identifies": "one post", "status": "ratified", "rungs": [
+      { "kind": "scheme", "scheme": "url", "source": "url" },
+      { "kind": "gen1", "tag": 2, "fields": ["textHash"], "fieldNotes": { "textHash": "keccak16 of NORM-1(text)" } }
+    ] },
+    "ethereum-account": { "identifies": "an EOA/keypair (pinned to eip155:1 — one keypair across all EVM chains)", "status": "ratified", "rungs": [
+      { "kind": "scheme", "scheme": "caip10", "source": "eip155:1:<address>" }
+    ] },
+    "ethereum-erc20": { "identifies": "a token asset on a chain", "status": "ratified", "rungs": [
+      { "kind": "scheme", "scheme": "caip19", "source": "eip155:<chainId>/erc20:<address>" }
+    ] },
+    "ethereum-smart-contract": { "identifies": "a deployed contract", "status": "ratified", "rungs": [
+      { "kind": "scheme", "scheme": "caip10", "source": "eip155:<chainId>:<address>" }
+    ] },
+    "software": { "identifies": "the package/project, version-free", "status": "ratified", "rungs": [
+      { "kind": "scheme", "scheme": "purl", "source": "packageUrl" },
+      { "kind": "scheme", "scheme": "url", "source": "codeRepository" },
+      { "kind": "gen1", "tag": 3, "fields": ["name"] }
+    ] },
+    "software-application": { "identifies": "an end-user application", "status": "ratified", "rungs": [
+      { "kind": "scheme", "scheme": "url", "source": "url" },
+      { "kind": "gen1", "tag": 4, "fields": ["name"] }
+    ] },
+    "mobile-application": { "identifies": "a mobile app per store ecosystem", "status": "ratified", "rungs": [
+      { "kind": "scheme", "scheme": "appid", "source": "operatingSystem + bundleId" },
+      { "kind": "scheme", "scheme": "url", "source": "downloadUrl" },
+      { "kind": "gen1", "tag": 3, "fields": ["name", "operatingSystem"] }
+    ] }
+  }
+}

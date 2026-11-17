@@ -248,3 +248,480 @@ test('deployments use the exact examples install, preserve chain/contract/asset 
   };
   assert.ok(deploymentTable(escaped).includes('Pipe\\|and newline'));
 });
+
+const { createHash } = require('node:crypto');
+const { predicateTable } = require('./lib/catalog-blocks');
+const { cleanContent } = require('./generate-llms-full');
+
+const catalogFiles = [
+  'iid-registry-0.1.0.json',
+  'iid-normalization-vectors-0.1.0.json',
+];
+const exampleId = (n) => '0x' + n.toString(16).padStart(64, '0');
+function predicateFixture() {
+  return {
+    PREDICATE_RECORDS: [
+      { key: 'zKey', name: 'lowercase z', status: 'proposed' },
+      { key: 'AKey', name: 'A | <Tag> {text} & `name`', status: 'enshrined' },
+    ],
+    PREDICATE_IDS: { AKey: exampleId(1), zKey: exampleId(2) },
+    PREDICATE_ID_TO_KEY: { [exampleId(1)]: 'AKey', [exampleId(2)]: 'zKey' },
+    PREDICATE_STATUSES: { AKey: 'enshrined', zKey: 'proposed' },
+  };
+}
+
+function catalogFixture(t) {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'catalog-blocks-'));
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  function write(file, value) {
+    const dest = path.join(root, file);
+    fs.mkdirSync(path.dirname(dest), { recursive: true });
+    fs.writeFileSync(
+      dest,
+      typeof value === 'string' ? value : JSON.stringify(value),
+    );
+  }
+  const read = (file) => fs.readFileSync(path.join(root, file), 'utf8');
+  const sync = (write = false, ...files) =>
+    syncGeneratedBlocks({ root, write, files });
+  write('static/intuition-release.json', manifest);
+  write('src/data/version-equivalents.json', { pairs: [] });
+  for (const file of catalogFiles)
+    write(
+      'scripts/' + file,
+      fs.readFileSync(path.join(__dirname, file), 'utf8'),
+    );
+  const registry = JSON.parse(read('scripts/' + catalogFiles[0]));
+  const packages = 'examples/v2/node_modules/@0xintuition/';
+  for (const name of ['iid', 'iid-spec', 'predicates'])
+    write(packages + name + '/package.json', {
+      name: '@0xintuition/' + name,
+      version: '0.1.0',
+      exports: { '.': { import: './entry.cjs' } },
+    });
+  const examples = {
+    'apple-podcasts': '1222114325',
+    letterboxd: 'film:moonlight',
+    'podcast-index': '3421639',
+  };
+  const schemes = Object.fromEntries(
+    Object.entries(registry.schemes).map(([name, meta]) => [
+      name,
+      { class: meta.class },
+    ]),
+  );
+  for (const name of Object.keys(examples)) schemes[name] = { class: 'D' };
+  write(packages + 'iid/definitions.json', { schemes, examples });
+  write(
+    packages + 'iid/entry.cjs',
+    fs.readFileSync(
+      path.join(__dirname, '__fixtures__/catalog-blocks/iid-runtime.cjs'),
+      'utf8',
+    ),
+  );
+  const conformance = packages + 'iid-spec/conformance/';
+  function fixture(kind, data) {
+    write(conformance + kind + '.json', {
+      kind,
+      fixtureVersion: 1,
+      specVersion: '0.1.0',
+      ...data,
+    });
+  }
+  fixture('schemes', { schemes });
+  fixture('canonicalization', {
+    vectors: Object.entries(examples).flatMap(([scheme, raw]) => [
+      { scheme, raw, canonical: raw },
+      { scheme, raw: ' ' + raw, canonical: null },
+    ]),
+  });
+  fixture('validation', {
+    vectors: Object.entries(examples).map(([name, raw]) => ({
+      iid: `int:${name}:${raw}`,
+      valid: true,
+      anchorEligible: false,
+    })),
+  });
+  write(
+    packages + 'predicates/entry.cjs',
+    'module.exports = ' + JSON.stringify(predicateFixture()),
+  );
+  const page = (name) => 'docs/_data/reference/' + name + '.md';
+  const marker = (name) =>
+    `Before\n{/* generated:start ${name} */}\nold\n{/* generated:end */}\nAfter\n`;
+  write(page('iid-schemes'), marker('iid-schemes'));
+  write(page('predicates'), marker('predicates'));
+  return { root, read, write, sync, packages, conformance, page, marker };
+}
+
+test('canonical source snapshots keep their independently pinned bytes', () => {
+  const hashes = catalogFiles.map((file) =>
+    createHash('sha256')
+      .update(fs.readFileSync(path.join(__dirname, file)))
+      .digest('hex'),
+  );
+  assert.deepEqual(hashes, [
+    '6ec55d2a5aa2208aa33feff632f75631a592ceee3ee85b69b6762ee456c0ab77',
+    '78e524c28e27cdd7c5bd2bfb2267c8eee1abe9a7f03b4047f1466b2bd84d1a1a',
+  ]);
+});
+
+test('scoped catalog writes are idempotent and checks detect drift without writing', (t) => {
+  const { read, write, sync, page, marker } = catalogFixture(t);
+  const iid = page('iid-schemes'),
+    pred = page('predicates');
+  assert.equal(sync().errors.length, 2);
+  assert.equal(read(iid), marker('iid-schemes'));
+  assert.deepEqual(sync(true, iid), { blocks: 1, errors: [] });
+  assert.equal(read(pred), marker('predicates'));
+  assert.deepEqual(sync(true), { blocks: 2, errors: [] });
+  const output = read(iid);
+  assert.equal(
+    output.split('\n').filter((line) => line.startsWith('| [')).length,
+    29,
+  );
+  assert.equal(
+    output.split('\n').filter((line) => line.includes(' | D | ')).length,
+    3,
+  );
+  const registry = require('./iid-registry-0.1.0.json');
+  const vectors = require('./iid-normalization-vectors-0.1.0.json').vectors;
+  for (const [name, meta] of Object.entries(registry.schemes)) {
+    const sample = vectors.find(
+      (x) =>
+        x.scheme === name && x.canonical !== null && x.canonical !== x.input,
+    );
+    const line = output
+      .split('\n')
+      .find((s) => s.startsWith('| [' + name + ']'));
+    assert.ok(
+      line.includes(
+        '/blob/' +
+          manifest.specs[0].commit +
+          '/schemes/' +
+          name +
+          '.md#canonicalization) | ' +
+          meta.class +
+          ' | ' +
+          meta.identifies +
+          ' |',
+      ),
+    );
+    assert.ok(line.includes(sample.input));
+    assert.ok(line.includes('int:' + name + ':' + sample.canonical));
+  }
+  for (const iid of [
+    'int:apple-podcasts:1222114325',
+    'int:letterboxd:film:moonlight',
+    'int:podcast-index:3421639',
+  ])
+    assert.ok(output.includes(iid));
+  assert.ok(
+    output.includes(
+      '/blob/' + manifest.source.commit + '/packages/iid-spec/schemes/',
+    ),
+  );
+  assert.equal(output.match(/\[wd\]\(/g).length, 1);
+  assert.deepEqual(sync(true), { blocks: 2, errors: [] });
+  assert.equal(read(iid), output);
+  const predicates = read(pred);
+  assert.deepEqual(sync(), { blocks: 2, errors: [] });
+  for (const [file, mutated] of [
+    [iid, output.replace('int:wd:Q42', 'int:wd:Q43')],
+    [pred, predicates.replace(exampleId(1), exampleId(9))],
+  ]) {
+    write(file, mutated);
+    assert.match(sync(false, file).errors[0], /drift/);
+    assert.equal(read(file), mutated);
+    assert.deepEqual(sync(true, file).errors, []);
+  }
+  assert.equal(read(pred), predicates);
+  assert.equal(read(iid), output);
+  for (const source of [output, predicates]) {
+    const rows = source.split('\n').filter((line) => line.startsWith('| '));
+    assert.deepEqual(
+      cleanContent(source, 'Catalog', { version: 'current' })
+        .split('\n')
+        .filter((line) => line.startsWith('| ')),
+      rows,
+    );
+  }
+});
+
+test('catalogs enforce their exact owning pages, one pair per page, and nesting', (t) => {
+  const { write, sync, page, marker } = catalogFixture(t);
+  const target = page('iid-schemes');
+  for (const [content, reason] of [
+    ['No generated content', /needs one/],
+    [marker('predicates'), /Incorrect/],
+    [marker('release-pins'), /Incorrect/],
+    [marker('iid-schemes') + marker('iid-schemes'), /needs one/],
+    [
+      marker('iid-schemes').replace(
+        'old',
+        '{/* generated:start predicates */}',
+      ),
+      /nested/,
+    ],
+  ]) {
+    write(target, content);
+    assert.match(sync(false, target).errors[0], reason);
+  }
+  write(page('other'), marker('predicates'));
+  assert.match(sync(false, page('other')).errors[0], /Incorrect/);
+});
+
+test('pinned sources and conformance schemas fail closed', (t) => {
+  const { read, write, sync, page, packages, conformance } = catalogFixture(t);
+  const iid = page('iid-schemes');
+  function reject(file, mutate, message, target = iid) {
+    const old = read(file);
+    const data = JSON.parse(old);
+    mutate(data);
+    write(file, data);
+    assert.match(sync(false, target).errors[0], message);
+    write(file, old);
+  }
+  for (const name of ['iid', 'iid-spec', 'predicates']) {
+    const target = name === 'predicates' ? page('predicates') : iid;
+    reject(
+      packages + name + '/package.json',
+      (m) => {
+        m.name = 'wrong';
+      },
+      /does not match/,
+      target,
+    );
+    reject(
+      packages + name + '/package.json',
+      (m) => {
+        m.version = '0.0.1';
+      },
+      /does not match/,
+      target,
+    );
+  }
+  reject(
+    packages + 'iid/package.json',
+    (m) => {
+      m.exports['.'].import = '../escape.cjs';
+    },
+    /package-local/,
+  );
+  reject(
+    'scripts/' + catalogFiles[0],
+    (r) => {
+      r.specVersion = '9';
+    },
+    /schema/,
+  );
+  reject(
+    'scripts/' + catalogFiles[0],
+    (r) => {
+      delete r.schemes.wd;
+    },
+    /normalization keys/,
+  );
+  reject(
+    'scripts/' + catalogFiles[0],
+    (r) => {
+      r.schemes.wd.class = 'E';
+    },
+    /class/,
+  );
+  reject(
+    'scripts/' + catalogFiles[0],
+    (r) => {
+      r.schemes.wd.class = 'B';
+    },
+    /inconsistent canonical IID class/,
+  );
+  reject(
+    'scripts/' + catalogFiles[1],
+    (v) => {
+      v.vectors.forEach((x) => {
+        if (x.scheme === 'wd') x.canonical = null;
+      });
+    },
+    /positive example/,
+  );
+  reject(
+    'scripts/' + catalogFiles[1],
+    (v) => {
+      delete v.vectors;
+    },
+    /schema/,
+  );
+  reject(
+    conformance + 'schemes.json',
+    (s) => {
+      s.fixtureVersion = 2;
+    },
+    /schema/,
+  );
+  reject(
+    conformance + 'schemes.json',
+    (s) => {
+      delete s.schemes.letterboxd;
+    },
+    /runtime IID scheme names/,
+  );
+  reject(
+    conformance + 'schemes.json',
+    (s) => {
+      s.schemes.other = { class: 'D' };
+    },
+    /runtime IID scheme names/,
+  );
+  reject(
+    conformance + 'schemes.json',
+    (s) => {
+      s.schemes.letterboxd.class = 'B';
+    },
+    /Class D/,
+  );
+  reject(
+    conformance + 'canonicalization.json',
+    (s) => {
+      s.vectors[0].raw = ' ' + s.vectors[0].raw;
+    },
+    /without repair/,
+  );
+  reject(
+    conformance + 'validation.json',
+    (s) => {
+      s.vectors[0].anchorEligible = true;
+    },
+    /anchor-ineligible/,
+  );
+});
+
+test('predicates require complete and consistent key, ID and status maps', () => {
+  for (const [mutate, reason] of [
+    [
+      (p) => {
+        delete p.PREDICATE_RECORDS;
+      },
+      /schema/,
+    ],
+    [
+      (p) => {
+        delete p.PREDICATE_IDS.AKey;
+      },
+      /predicate ID keys/,
+    ],
+    [
+      (p) => {
+        p.PREDICATE_IDS.extra = exampleId(3);
+      },
+      /predicate ID keys/,
+    ],
+    [
+      (p) => {
+        p.PREDICATE_RECORDS[1].key = 'zKey';
+      },
+      /predicate ID keys/,
+    ],
+    [
+      (p) => {
+        p.PREDICATE_IDS.AKey = p.PREDICATE_IDS.zKey;
+      },
+      /reverse ID keys/,
+    ],
+    [
+      (p) => {
+        p.PREDICATE_ID_TO_KEY[exampleId(1)] = 'zKey';
+      },
+      /Invalid predicate/,
+    ],
+    [
+      (p) => {
+        p.PREDICATE_IDS.AKey = '0xabc';
+        delete p.PREDICATE_ID_TO_KEY[exampleId(1)];
+        p.PREDICATE_ID_TO_KEY['0xabc'] = 'AKey';
+      },
+      /Invalid predicate/,
+    ],
+    [
+      (p) => {
+        p.PREDICATE_STATUSES.AKey = 'proposed';
+      },
+      /Invalid predicate/,
+    ],
+    [
+      (p) => {
+        p.PREDICATE_RECORDS[0].status = 'draft';
+      },
+      /Invalid predicate/,
+    ],
+  ]) {
+    const p = predicateFixture();
+    mutate(p);
+    assert.throws(() => predicateTable(p), reason);
+  }
+});
+
+test('encoded predicate cells retain exact visible text without creating MDX or extra columns', async () => {
+  const { createProcessor } = await import('@mdx-js/mdx');
+  const gfm = (await import('remark-gfm')).default;
+  const p = predicateFixture();
+  const output = predicateTable(p);
+  const tree = createProcessor({ remarkPlugins: [gfm] }).parse(output);
+  const table = tree.children[0];
+  assert.equal(table.type, 'table');
+  assert.equal(table.children.length, 3);
+  const row = table.children[1];
+  assert.equal(row.children.length, 4);
+  assert.deepEqual(
+    row.children.map((c) => c.children.map((node) => node.value).join('')),
+    ['AKey', p.PREDICATE_RECORDS[1].name, 'enshrined', exampleId(1)],
+  );
+  assert.equal(row.children[1].children[0].type, 'text');
+});
+
+test('consistent upstream predicate ID and scheme example changes require a resync', (t) => {
+  const { read, write, sync, page, packages } = catalogFixture(t);
+  const pred = page('predicates'),
+    iid = page('iid-schemes');
+  assert.deepEqual(sync(true).errors, []);
+  const previous = read(pred);
+  const update = predicateFixture();
+  delete update.PREDICATE_ID_TO_KEY[update.PREDICATE_IDS.AKey];
+  update.PREDICATE_IDS.AKey = exampleId(7);
+  update.PREDICATE_ID_TO_KEY[exampleId(7)] = 'AKey';
+  // A new package entry simulates a fresh process loading a changed input.
+  write(
+    packages + 'predicates/next.cjs',
+    'module.exports = ' + JSON.stringify(update),
+  );
+  const file = packages + 'predicates/package.json';
+  const metadata = JSON.parse(read(file));
+  metadata.exports['.'].import = './next.cjs';
+  write(file, metadata);
+  const vendor = 'scripts/' + catalogFiles[1];
+  const data = JSON.parse(read(vendor));
+  data.vectors.find(
+    (v) => v.scheme === 'wd' && v.canonical && v.canonical !== v.input,
+  ).input = 'q42';
+  write(vendor, data);
+  assert.equal(
+    sync().errors.filter((error) => error.includes('drift')).length,
+    2,
+  );
+  assert.equal(read(pred), previous);
+  assert.deepEqual(sync(true).errors, []);
+  assert.ok(read(pred).includes(exampleId(7)));
+  assert.ok(read(iid).includes('`q42` → `int:wd:Q42`'));
+});
+
+test('predicate IDs compare bytes even when hex letters have different casing', () => {
+  const p = predicateFixture();
+  p.PREDICATE_IDS = {
+    AKey: exampleId(10),
+    zKey: exampleId(10).replace(/a$/, 'A'),
+  };
+  p.PREDICATE_ID_TO_KEY = Object.fromEntries(
+    Object.entries(p.PREDICATE_IDS).map(([key, id]) => [id, key]),
+  );
+  assert.throws(() => predicateTable(p), /Duplicate predicate atom ID/);
+});
