@@ -5,6 +5,7 @@ const path = require('node:path');
 const { execFileSync } = require('node:child_process');
 const ts = require('typescript');
 const prettier = require('prettier');
+const { versions } = require('../docs-versions.config');
 const {
   createTypeReference,
   isExported,
@@ -140,7 +141,7 @@ const slugFor = (relative) =>
 const SDK_REFERENCE_FILES = [
   'index',
   ...SDK_SECTIONS.map(([file]) => slugFor(file)),
-].map((slug) => `docs/_data/reference/sdk/${slug}.md`);
+].map((slug) => `${versions.current.docsDir}/reference/sdk/${slug}.md`);
 
 const R15_WARNING =
   'This client calls the hosted V1 GraphQL API and is not a V2 read path; see [The SDK read client](/docs/build/read-with-sdk).';
@@ -257,7 +258,7 @@ async function generateReference({
     throw new Error(
       'Source does not match manifest; update the release pin before regeneration',
     );
-  const output = path.join(repoRoot, 'docs/_data/reference/sdk');
+  const output = path.join(repoRoot, versions.current.docsDir, 'reference/sdk');
   const manifest = deriveManifest(root, selected, git);
   if (check) {
     if (
