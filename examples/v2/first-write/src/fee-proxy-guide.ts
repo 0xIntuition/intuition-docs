@@ -130,6 +130,6 @@ export async function routeNext(
     { walletClient: s.walletClient, publicClient },
     { steps: [step] },
   );
-  return { complete: !approval, executed };
   // #endregion
+  return { complete: !approval, executed };
 }

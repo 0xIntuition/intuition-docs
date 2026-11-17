@@ -35,8 +35,8 @@ export async function checkTriple(
   if (!subject || !predicate || !object)
     throw new Error('Create missing terms first.');
   if (exists) throw new Error('This ordered triple already exists.');
-  return { tripleId, counterId };
   // #endregion
+  return { tripleId, counterId };
 }
 
 export async function createTriple(

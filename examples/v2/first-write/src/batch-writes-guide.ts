@@ -76,8 +76,12 @@ async function prepareStage(s: Session, stage: Stage) {
   );
   if (!exists.every(Boolean))
     throw new Error('Wait for creation before quoting this deposit.');
-  return multivaultCreateAndSeedTerm(s, { receiver, seedDeposits: stage.rows });
+  const plan = await multivaultCreateAndSeedTerm(s, {
+    receiver,
+    seedDeposits: stage.rows,
+  });
   // #endregion
+  return plan;
 }
 
 export async function submitStage(s: Session, input: Stage) {
