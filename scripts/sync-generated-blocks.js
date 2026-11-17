@@ -5,6 +5,15 @@ const path = require('node:path');
 const { parseMarkdownContentTitle } = require('@docusaurus/utils');
 const { versions } = require('../docs-versions.config');
 const { readDocs } = require('./lib/docs-tree');
+const {
+  loadPackageEntry,
+  iidCatalog,
+  predicateTable,
+} = require('./lib/catalog-blocks');
+const catalogPages = new Map([
+  ['iid-schemes', 'reference/iid-schemes.md'],
+  ['predicates', 'reference/predicates.md'],
+]);
 const cell = (value) =>
   String(value).replace(/\|/g, '\\|').replace(/\r?\n/g, ' ');
 
@@ -17,26 +26,7 @@ function releasePins(manifest) {
   );
 }
 function loadDeployments(root, manifest) {
-  const name = '@0xintuition/deployments';
-  const directory = path.join(root, 'examples/v2/node_modules', name);
-  const metadata = JSON.parse(
-    fs.readFileSync(path.join(directory, 'package.json'), 'utf8'),
-  );
-  const pin = manifest.packages.find((pkg) => pkg.name === name);
-  if (!pin || metadata.name !== name || metadata.version !== pin.version)
-    throw new Error(
-      'Installed examples/v2 deployments package does not match the manifest',
-    );
-  // The package publishes an ESM import target. Node 22.21 can load it synchronously.
-  // Resolving that exact file prevents Node from walking up to the site's V1 install.
-  const entry = metadata.exports?.['.']?.import;
-  if (
-    typeof entry !== 'string' ||
-    !entry.startsWith('./') ||
-    !path.resolve(directory, entry).startsWith(directory + path.sep)
-  )
-    throw new Error('Missing package-local deployments entry point');
-  return require(path.resolve(directory, entry));
+  return loadPackageEntry(root, manifest, 'deployments');
 }
 
 function deploymentTable(exports) {
@@ -169,6 +159,9 @@ function syncGeneratedBlocks({
   const render = (name) => {
     if (name === 'deployments')
       return deploymentTable(loadDeployments(root, manifest));
+    if (name === 'iid-schemes') return iidCatalog(root, manifest);
+    if (name === 'predicates')
+      return predicateTable(loadPackageEntry(root, manifest, 'predicates'));
     if (name === 'release-pins') return releasePins(manifest);
     if (name === 'version-equivalents')
       return versionEquivalents(pairs, current, legacy);
@@ -192,7 +185,24 @@ function syncGeneratedBlocks({
         throw new Error(
           'The deployments page needs one generated deployments block',
         );
-      const result = replaceBlocks(doc.content, render);
+      const expectedCatalog = [...catalogPages].find(
+        ([, file]) => file === doc.relativePath,
+      )?.[0];
+      const result = replaceBlocks(doc.content, (name) => {
+        if (
+          (catalogPages.has(name) &&
+            catalogPages.get(name) !== doc.relativePath) ||
+          (expectedCatalog && name !== expectedCatalog)
+        )
+          throw new Error(
+            'Incorrect generated block for ' + doc.relativePath + ': ' + name,
+          );
+        return render(name);
+      });
+      if (expectedCatalog && result.blocks !== 1)
+        throw new Error(
+          'The catalog page needs one generated ' + expectedCatalog + ' block',
+        );
       blocks += result.blocks;
       if (result.text !== doc.content) {
         if (write) fs.writeFileSync(doc.absolutePath, result.text);
