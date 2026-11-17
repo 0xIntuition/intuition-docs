@@ -4,7 +4,7 @@ const { createRequire } = require('node:module');
 const { createProcessor } = require('@mdx-js/mdx');
 const comment = require('@slorber/remark-comment').default;
 const frontmatter = require('remark-frontmatter').default;
-const matter = require('gray-matter');
+const yaml = require('js-yaml');
 const { unwrapMdxCodeBlocks } = require('@docusaurus/utils');
 const {
   DEFAULT_MARKDOWN_CONFIG,
@@ -48,16 +48,36 @@ function processor(format) {
   return processors.get(format);
 }
 
+// Only YAML is metadata. In particular, never invoke gray-matter's JS engines.
+function readFrontMatter(source) {
+  const header = source.match(/^\uFEFF?---([^\r\n]*)\r?\n/);
+  if (!header) return {};
+  if (header[1].trim() && !/^(?:yaml|yml)$/.test(header[1].trim()))
+    throw new Error('Only YAML front matter is supported');
+  const end = source.slice(header[0].length).search(/^---\s*$/m);
+  if (end < 0) throw new Error('Unclosed YAML front matter');
+  const value = yaml.load(
+    source.slice(header[0].length, header[0].length + end),
+    { schema: yaml.JSON_SCHEMA },
+  );
+  return value && typeof value === 'object' && !Array.isArray(value)
+    ? value
+    : {};
+}
+
 function parseMarkdownCode(source, { filePath = 'document.mdx' } = {}) {
   const format = getFormat({
     filePath,
-    frontMatterFormat: matter(source).data.mdx?.format,
+    frontMatterFormat: readFrontMatter(source).mdx?.format,
     markdownConfigFormat: markdown.format,
   });
   // The native unwrap removes mdx-code-block wrapper lines. Map its remaining
   // lines back to the source before the other, line-preserving compatibility
   // transforms so compiler diagnostics still name the authored line.
   const originalLines = source.split(/\r?\n/);
+  const originalOffsets = [0];
+  for (const match of source.matchAll(/\n/g))
+    originalOffsets.push(match.index + 1);
   let cursor = 0;
   const sourceLines = unwrapMdxCodeBlocks(source)
     .split(/\r?\n/)
@@ -89,10 +109,46 @@ function parseMarkdownCode(source, { filePath = 'document.mdx' } = {}) {
   }
   const fences = [];
   const markers = [];
+  const examples = [];
   function visit(parent, quoteDepth = 0) {
     const children = parent.children || [];
     let previousMarker;
+    let activeExample;
     for (const node of children) {
+      if (node.type === 'mdxTextExpression' && /example:/.test(node.value))
+        throw new Error(
+          `Example markers must be standalone blocks in ${filePath}`,
+        );
+      const expression =
+        node.type === 'mdxFlowExpression' ? node.value.trim() : '';
+      if (/^\/\*\s*example:/.test(expression)) {
+        const start = expression.match(/^\/\* example:start ([^\s]+) \*\/$/);
+        const isEnd = expression === '/* example:end */';
+        const line = sourceLines[node.position.start.line - 1];
+        if (
+          (!start && !isEnd) ||
+          (start && activeExample) ||
+          (isEnd && !activeExample)
+        )
+          throw new Error(
+            `Invalid or nested example marker at ${filePath}:${line}`,
+          );
+        if (start) activeExample = { reference: start[1], line, fences: [] };
+        else {
+          if (activeExample.fences.length !== 1)
+            throw new Error(
+              `Example markers must surround exactly one fence at ${filePath}:${activeExample.line}`,
+            );
+          examples.push(activeExample);
+          activeExample = undefined;
+        }
+        previousMarker = undefined;
+        continue;
+      }
+      if (activeExample && node.type !== 'code')
+        throw new Error(
+          `Example markers must contain only one fence in the same container at ${filePath}:${activeExample.line}`,
+        );
       const markerKind =
         node.type === 'comment' &&
         node.commentValue.trim().match(/^docs-typecheck: (skip|v1)$/)?.[1];
@@ -126,9 +182,26 @@ function parseMarkdownCode(source, { filePath = 'document.mdx' } = {}) {
             ? previousMarker
             : undefined;
         if (marker) marker.associated = true;
-        fences.push({
+        const closingSourceLine = sourceLines[end.line - 1];
+        const bodyStart = originalOffsets[sourceLines[start.line - 1]];
+        const bodyEnd = originalOffsets[closingSourceLine - 1];
+        const prefix =
+          originalLines[closingSourceLine - 1].match(
+            /^(.*?)(?:`{3,}|~{3,})/,
+          )?.[1] || '';
+        const authoredCode = source
+          .slice(bodyStart, bodyEnd)
+          .split(/(?<=\n)/)
+          .map((line) =>
+            prefix && line.startsWith(prefix)
+              ? line.slice(prefix.length)
+              : line,
+          )
+          .join('');
+        const fence = {
           info: [node.lang, node.meta].filter(Boolean).join(' '),
           fenceLine: sourceLines[start.line - 1],
+          annotationMarker: marker,
           annotation: marker
             ? `<!-- docs-typecheck: ${marker.kind} -->`
             : undefined,
@@ -140,14 +213,26 @@ function parseMarkdownCode(source, { filePath = 'document.mdx' } = {}) {
           closed,
           start: start.offset,
           end: end.offset,
-        });
+          endLine: closingSourceLine,
+          bodyStart,
+          bodyEnd,
+          prefix,
+          authoredCode,
+          example: activeExample,
+        };
+        fences.push(fence);
+        if (activeExample) activeExample.fences.push(fence);
       }
       visit(node, quoteDepth + (node.type === 'blockquote' ? 1 : 0));
       previousMarker = undefined;
     }
+    if (activeExample)
+      throw new Error(
+        `Unclosed example marker at ${filePath}:${activeExample.line}`,
+      );
   }
   visit(tree);
-  return { fences, markers, source: parsedSource };
+  return { fences, markers, examples, source: parsedSource };
 }
 
 function readCodeFences(source, options) {
@@ -159,6 +244,7 @@ const INTUITION_IMPORT_PATTERN =
 
 module.exports = {
   readCodeFences,
+  readFrontMatter,
   parseMarkdownCode,
   INTUITION_IMPORT_PATTERN,
 };

@@ -153,7 +153,8 @@ test('container skip markers are associated with the adjacent fence and never by
       "import { x } from '@0xintuition/sdk';",
       'const value = 1;',
     );
-    assert.equal(extract(permitted).coverage.skippedByAnnotation, 1);
+    assert.equal(extract(permitted).coverage.skippedByAnnotation, 0);
+    assert.equal(extract(permitted).coverage.extracted, 1);
     assert.deepEqual(structure(permitted), []);
   }
   for (const body of [
@@ -161,11 +162,7 @@ test('container skip markers are associated with the adjacent fence and never by
     `${skip}\n> ~~~ts\n> import { x } from '@0xintuition/sdk';\n> ~~~`,
     `- ${skip}\n- ~~~ts\n  import { x } from '@0xintuition/sdk';\n  ~~~`,
   ]) {
-    assert.equal(
-      extract(body).examples.length,
-      1,
-      'unassociated marker must not skip a fence',
-    );
+    assert.throws(() => extract(body), /immediately precede.*same container/);
     assert.match(
       structure(body).join('\n'),
       /immediately precede.*same container/,
@@ -204,13 +201,21 @@ test('native admonition syntax and heading IDs preserve code and source lines', 
   assert.deepEqual(structure(source), []);
 });
 
-test('nested V1 migration annotations retain version partitioning and the import criterion', () => {
+test('nested V1 migration annotations retain version partitioning while V2 includes import-less code', () => {
   const source =
     '> <!-- docs-typecheck: v1 -->\n> ~~~ts\n> import { createAtomFromString } from "@0xintuition/sdk";\n> ~~~\n\n~~~ts\nconst partial = unknownValue;\n~~~';
-  const v2 = extract(source);
+  const migrationExtract = (value) =>
+    extractExamplesFromSource(
+      `${versions.current.docsDir}/get-started/migrate-from-v1.md`,
+      value,
+      skip,
+      { version: 'v2' },
+    );
+  const v2 = migrationExtract(source);
   assert.equal(v2.coverage.found, 2);
-  assert.equal(v2.coverage.excludedByCriterion, 2);
-  assert.equal(v2.coverage.extracted, 0);
+  assert.equal(v2.coverage.excludedByCriterion, 1);
+  assert.equal(v2.coverage.extracted, 1);
+  assert.throws(() => extract(source), /only in the migration guide/);
   const v1 = extractExamplesFromSource(
     `${versions.current.docsDir}/get-started/migrate-from-v1.md`,
     source,
@@ -226,7 +231,7 @@ test('nested V1 migration annotations retain version partitioning and the import
     '> <!-- docs-typecheck: v1 -->',
     '> <!--\n> docs-typecheck: v1\n> -->',
   );
-  assert.equal(extract(multiline).coverage.excludedByCriterion, 2);
+  assert.equal(migrationExtract(multiline).coverage.excludedByCriterion, 1);
   assert.match(structure(multiline).join('\n'), /migration guide/);
 });
 

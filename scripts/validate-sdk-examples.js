@@ -23,10 +23,18 @@ const path = require('path');
 const { spawnSync } = require('child_process');
 const { versions } = require('../docs-versions.config');
 const {
-  readCodeFences,
+  parseMarkdownCode,
   INTUITION_IMPORT_PATTERN,
 } = require('./lib/markdown-fences');
 
+const {
+  EXECUTABLE,
+  walk,
+  inside,
+  syncSource,
+  validateAnnotations,
+  isGeneratedDeclaration,
+} = require('./sync-example-snippets');
 const ROOT = path.resolve(__dirname, '..');
 const CONFIG_PATH = path.join(__dirname, 'sdk-examples.config.json');
 const FIXTURES_DIR = path.join(__dirname, '__fixtures__', 'sdk-examples');
@@ -122,6 +130,8 @@ function readConfig({
     throw new Error('V2 knownFailing must be empty');
   if (typeof selected.dependencyRoot !== 'string' || !selected.dependencyRoot)
     throw new Error('Missing dependencyRoot');
+  if (version === 'v2' && selected.dependencyRoot !== 'examples/v2')
+    throw new Error('V2 dependencyRoot must be examples/v2');
   const dependencyRoot = path.resolve(ROOT, selected.dependencyRoot);
   assertInsideRoot(dependencyRoot);
   const sourceConfig = { ...allConfig, ...selected, version, dependencyRoot };
@@ -335,8 +345,10 @@ function extractExamplesFromSource(
   const useCurrentFences = version === 'v2' || currentSource;
 
   if (useCurrentFences) {
-    for (const fence of readCodeFences(source, { filePath: relativeFile })) {
-      if (!/^(?:typescript|tsx|ts)\b/i.test(fence.info)) continue;
+    const parsed = parseMarkdownCode(source, { filePath: relativeFile });
+    validateAnnotations(relativeFile, parsed);
+    for (const fence of parsed.fences) {
+      if (!EXECUTABLE.test(fence.info)) continue;
       coverage.found++;
       if (!fence.closed)
         throw new Error(
@@ -350,6 +362,7 @@ function extractExamplesFromSource(
         skipped: fence.annotation === skipComment,
         markedV1: fence.annotation === '<!-- docs-typecheck: v1 -->',
         sourceLines: fence.sourceLines,
+        generated: isGeneratedDeclaration(relativeFile, source, fence),
       });
     }
   } else
@@ -407,9 +420,11 @@ function extractExamplesFromSource(
       (version === 'v1' && currentSource && !candidate.markedV1)
     ) {
       coverage.excludedByCriterion++;
-    } else if (candidate.skipped) {
+    } else if (candidate.skipped && !useCurrentFences) {
       coverage.skippedByAnnotation++;
-    } else if (hasImport) {
+    } else if (candidate.generated) {
+      coverage.excludedByCriterion++;
+    } else if (hasImport || useCurrentFences) {
       extractedCandidates.push(candidate);
     } else {
       coverage.excludedByCriterion++;
@@ -1081,9 +1096,283 @@ function runRatchetedRegressionDemo(config) {
   );
 }
 
+function moduleSpecifiers(code, filename = 'example.ts') {
+  const ts = require('typescript');
+  const source = ts.createSourceFile(
+    filename,
+    code,
+    ts.ScriptTarget.Latest,
+    true,
+    /x$/.test(filename) ? ts.ScriptKind.TSX : ts.ScriptKind.TS,
+  );
+  const imports = [];
+  function visit(node) {
+    let specifier;
+    if (ts.isImportDeclaration(node) || ts.isExportDeclaration(node))
+      specifier = node.moduleSpecifier;
+    else if (
+      ts.isImportEqualsDeclaration(node) &&
+      ts.isExternalModuleReference(node.moduleReference)
+    )
+      specifier = node.moduleReference.expression;
+    else if (ts.isImportTypeNode(node) && ts.isLiteralTypeNode(node.argument))
+      specifier = node.argument.literal;
+    else if (
+      ts.isCallExpression(node) &&
+      (node.expression.kind === ts.SyntaxKind.ImportKeyword ||
+        (ts.isIdentifier(node.expression) &&
+          node.expression.text === 'require'))
+    )
+      specifier = node.arguments[0];
+    if (specifier && ts.isStringLiteralLike(specifier))
+      imports.push(specifier.text);
+    ts.forEachChild(node, visit);
+  }
+  visit(source);
+  return [...new Set(imports)];
+}
+
+function intuitionImports(code, filename) {
+  return moduleSpecifiers(code, filename).filter((specifier) =>
+    specifier.startsWith('@0xintuition/'),
+  );
+}
+
+function validateImports(code, filename, manifest) {
+  for (const specifier of intuitionImports(code, filename)) {
+    const match = specifier.match(/^(@0xintuition\/[^/]+)(?:\/(.*))?$/);
+    const pkg = manifest.packages.find((entry) => entry.name === match?.[1]);
+    const subpath = match?.[2] === undefined ? '.' : `./${match[2]}`;
+    // Node export patterns perform string replacement, including '/' in '*'.
+    // Dot/parent/node_modules segments are never valid export targets.
+    const validSegments =
+      !/(?:^|\/)(?:\.{1,2}|node_modules)(?:\/|$)/i.test(match?.[2] || '') &&
+      !/%(?:2e|2f|5c)/i.test(specifier) &&
+      !specifier.includes('\\');
+    const allowed = pkg?.entrypoints.some((entry) => {
+      if (!entry.includes('*')) return entry === subpath;
+      const star = entry.indexOf('*');
+      return (
+        subpath.startsWith(entry.slice(0, star)) &&
+        subpath.endsWith(entry.slice(star + 1)) &&
+        subpath.length >= entry.length - 1
+      );
+    });
+    if (!validSegments || !allowed)
+      throw new Error(
+        `Unsupported Intuition import ${specifier} in ${filename}; not a manifest export`,
+      );
+  }
+}
+
+function discoverProjects(dependencyRoot) {
+  const ts = require('typescript');
+  const sourceFiles = walk(dependencyRoot, (file) =>
+    /\.(?:[cm]?ts|tsx|[cm]?js|jsx)$/.test(file),
+  );
+  const projects = new Map();
+  for (const file of sourceFiles) {
+    const relative = path.relative(dependencyRoot, file);
+    const directory = relative.split(path.sep)[0];
+    if (directory === relative)
+      throw new Error(`Example source needs a project tsconfig: ${relative}`);
+    const project = path.join(dependencyRoot, directory);
+    if (!projects.has(project)) projects.set(project, []);
+    projects.get(project).push(file);
+  }
+  const base = path.join(dependencyRoot, 'tsconfig.base.json');
+  const baseConfig = ts.readConfigFile(base, ts.sys.readFile);
+  if (baseConfig.error)
+    throw new Error(`Cannot read isolated examples configuration: ${base}`);
+  if (
+    JSON.stringify(baseConfig.config.compilerOptions?.types) !== '["node"]' ||
+    JSON.stringify(baseConfig.config.compilerOptions?.typeRoots) !==
+      '["./node_modules/@types"]'
+  )
+    throw new Error(
+      'V2 tsconfig.base.json must isolate types and typeRoots to examples/v2',
+    );
+  if (baseConfig.config.extends)
+    throw new Error('V2 base configuration must not extend an external config');
+  for (const [project, files] of projects) {
+    const configFile = path.join(project, 'tsconfig.json');
+    const input = ts.readConfigFile(configFile, ts.sys.readFile);
+    if (input.error)
+      throw new Error(`Missing or invalid project tsconfig: ${configFile}`);
+    if (
+      typeof input.config.extends !== 'string' ||
+      path.resolve(project, input.config.extends) !== base
+    )
+      throw new Error(
+        `Project tsconfig must extend examples/v2/tsconfig.base.json: ${configFile}`,
+      );
+    if (
+      input.config.compilerOptions?.types ||
+      input.config.compilerOptions?.typeRoots ||
+      input.config.references
+    )
+      throw new Error(
+        `Project may not override isolated types or add external references: ${configFile}`,
+      );
+    const parsed = ts.parseJsonConfigFileContent(input.config, ts.sys, project);
+    if (parsed.errors.length)
+      throw new Error(
+        `Invalid project configuration ${configFile}: ${ts.flattenDiagnosticMessageText(parsed.errors[0].messageText, '\n')}`,
+      );
+    if (parsed.options.noCheck)
+      throw new Error(
+        `Project may not disable TypeScript checking: ${configFile}`,
+      );
+    const included = new Set(
+      parsed.fileNames.map((file) => path.resolve(file)),
+    );
+    for (const file of files)
+      if (!included.has(file))
+        throw new Error(`Project tsconfig silently excludes source: ${file}`);
+    for (const file of included)
+      if (
+        !inside(dependencyRoot, file) ||
+        file.includes(`${path.sep}node_modules${path.sep}`)
+      )
+        throw new Error(`Project includes source outside examples/v2: ${file}`);
+    if (
+      parsed.options.paths ||
+      parsed.options.baseUrl ||
+      parsed.options.rootDirs
+    )
+      throw new Error(
+        `Project may not override isolated package resolution: ${configFile}`,
+      );
+  }
+  return { projects, sourceFiles };
+}
+
+function typecheckProjects(dependencyRoot, manifest) {
+  const { projects, sourceFiles } = discoverProjects(dependencyRoot);
+  const ts = require('typescript');
+  for (const file of sourceFiles) {
+    const source = fs.readFileSync(file, 'utf8');
+    validateImports(source, file, manifest);
+    const scanner = ts.createScanner(
+      ts.ScriptTarget.Latest,
+      false,
+      ts.LanguageVariant.Standard,
+      source,
+    );
+    for (
+      let kind = scanner.scan();
+      kind !== ts.SyntaxKind.EndOfFileToken;
+      kind = scanner.scan()
+    ) {
+      if (
+        [
+          ts.SyntaxKind.SingleLineCommentTrivia,
+          ts.SyntaxKind.MultiLineCommentTrivia,
+        ].includes(kind) &&
+        /@ts-(?:nocheck|ignore|expect-error)\b/.test(scanner.getTokenText())
+      )
+        throw new Error(
+          `V2 source must not suppress TypeScript checking: ${file}`,
+        );
+    }
+    const references = ts.preProcessFile(source);
+    for (const specifier of [
+      ...moduleSpecifiers(source, file),
+      ...references.referencedFiles.map((entry) => entry.fileName),
+      ...references.typeReferenceDirectives.map((entry) => entry.fileName),
+    ]) {
+      if (
+        path.isAbsolute(specifier) ||
+        /^[A-Za-z]:[\\/]/.test(specifier) ||
+        (specifier.startsWith('.') &&
+          !inside(dependencyRoot, path.resolve(path.dirname(file), specifier)))
+      )
+        throw new Error(
+          `V2 source references an external file ${specifier} in ${file}`,
+        );
+    }
+  }
+  const compiler = path.join(dependencyRoot, 'node_modules/typescript/bin/tsc');
+  if (!fs.existsSync(compiler))
+    throw new Error(
+      'V2 TypeScript is not installed; run npm ci --ignore-scripts --prefix examples/v2',
+    );
+  const temp = fs.mkdtempSync(path.join(os.tmpdir(), 'intuition-v2-projects-'));
+  try {
+    // The temp consumer has no repository ancestor: missing V2 packages/types
+    // cannot silently resolve from the site's V1 node_modules.
+    for (const file of walk(dependencyRoot, () => true)) {
+      const target = path.join(temp, path.relative(dependencyRoot, file));
+      fs.mkdirSync(path.dirname(target), { recursive: true });
+      fs.copyFileSync(file, target);
+    }
+    fs.symlinkSync(
+      path.join(dependencyRoot, 'node_modules'),
+      path.join(temp, 'node_modules'),
+      process.platform === 'win32' ? 'junction' : 'dir',
+    );
+    for (const project of projects.keys()) {
+      const relative = path.relative(dependencyRoot, project);
+      const result = spawnSync(
+        process.execPath,
+        [
+          compiler,
+          '--project',
+          path.join(temp, relative, 'tsconfig.json'),
+          '--noEmit',
+          '--pretty',
+          'false',
+        ],
+        { cwd: temp, encoding: 'utf8', maxBuffer: 50 * 1024 * 1024 },
+      );
+      if (result.error) throw result.error;
+      const output = [result.stdout, result.stderr]
+        .filter(Boolean)
+        .join('\n')
+        .split(temp)
+        .join(dependencyRoot);
+      if (result.status !== 0)
+        throw new Error(`V2 project ${relative} failed TypeScript:\n${output}`);
+      console.log(`  PASS isolated project: ${relative}`);
+    }
+  } finally {
+    fs.rmSync(temp, { recursive: true, force: true });
+  }
+  return { projects: projects.size, sources: sourceFiles.length };
+}
+
+function runV2Docs(config, files) {
+  const manifest = JSON.parse(
+    fs.readFileSync(path.join(ROOT, 'static/intuition-release.json'), 'utf8'),
+  );
+  let synced = 0;
+  let generated = 0;
+  let migrated = 0;
+  for (const file of files) {
+    const relative = path.relative(ROOT, file).split(path.sep).join('/');
+    const source = fs.readFileSync(file, 'utf8');
+    const result = syncSource(relative, source);
+    synced += result.count;
+    for (const fence of result.parsed.fences) {
+      if (!EXECUTABLE.test(fence.info)) continue;
+      if (fence.annotation === '<!-- docs-typecheck: v1 -->') {
+        migrated++;
+        continue;
+      }
+      validateImports(fence.code, `${relative}:${fence.fenceLine}`, manifest);
+      if (isGeneratedDeclaration(relative, source, fence)) generated++;
+    }
+  }
+  const result = typecheckProjects(config.dependencyRoot, manifest);
+  console.log(
+    `Validation PASS: ${synced} synced V2 fences; ${result.projects} isolated projects / ${result.sources} source files; ${generated} generated API declarations; ${migrated} migration fences delegated to V1; no ratchet or skipped V2 code.\n`,
+  );
+}
+
 function runRealDocs(config) {
   console.log(`SDK documentation examples (${config.version})`);
   const files = expandIncludes(config.include);
+  if (config.version === 'v2') return runV2Docs(config, files);
   const { examples, coverage } = extractExamples(files, config.skipComment, {
     version: config.version,
   });
@@ -1280,4 +1569,8 @@ module.exports = {
   extractExamplesFromSource,
   typecheckExamples,
   runRealDocs,
+  intuitionImports,
+  validateImports,
+  discoverProjects,
+  typecheckProjects,
 };

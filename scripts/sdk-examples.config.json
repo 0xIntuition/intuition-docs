@@ -8,7 +8,8 @@
     "v1": {
       "include": [
         "_data_versioned_docs/version-v1/intuition-sdk/**",
-        "_data_versioned_docs/version-v1/quick-start/using-the-sdk.md"
+        "_data_versioned_docs/version-v1/quick-start/using-the-sdk.md",
+        "docs/_data/get-started/migrate-from-v1.md"
       ],
       "dependencyRoot": ".",
       "knownFailing": [
