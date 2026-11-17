@@ -11,6 +11,7 @@ const {
   readFrontMatter,
   INTUITION_IMPORT_PATTERN,
 } = require('./lib/markdown-fences');
+const { validatePhase3 } = require('./lib/phase3-structure');
 const ROOT = path.resolve(__dirname, '..');
 const TOP_LEVEL = new Set([
   'get-started',
@@ -575,7 +576,40 @@ function previousV2Routes(root, base = 'origin/main') {
   return { initialized, routes };
 }
 
-function run({ root = ROOT, phase, base = 'origin/main' } = {}) {
+function parseArguments(args) {
+  const options = {};
+  for (let i = 0; i < args.length; i++) {
+    const flag = args[i];
+    if (flag === '--templates' && !options.templates) options.templates = true;
+    else if (flag === '--launch' && !options.phase) options.phase = 5;
+    else if (
+      flag === '--phase' &&
+      !options.phase &&
+      /^[1-5]$/.test(args[i + 1])
+    )
+      options.phase = Number(args[++i]);
+    else if (
+      ['--root', '--base'].includes(flag) &&
+      args[i + 1] &&
+      !args[i + 1].startsWith('--') &&
+      !options[flag.slice(2)]
+    )
+      options[flag.slice(2)] =
+        flag === '--root' ? path.resolve(args[++i]) : args[++i];
+    else
+      throw new Error(
+        'Usage: validate-v2-structure.js [--phase 1..5 | --launch] [--templates] [--root directory] [--base revision]',
+      );
+  }
+  return options;
+}
+
+function run({
+  root = ROOT,
+  phase,
+  templates = false,
+  base = 'origin/main',
+} = {}) {
   const launchRows = loadLaunchRoutes(
     fs.readFileSync(path.join(root, 'scripts/v2-launch-routes.txt'), 'utf8'),
   );
@@ -588,19 +622,21 @@ function run({ root = ROOT, phase, base = 'origin/main' } = {}) {
   const sidebar = require(path.join(root, 'sidebars.js'));
   const { v2Renames } = require(path.join(root, 'redirects.config.js'));
   const previous = previousV2Routes(root, base);
+  const mismatches = JSON.parse(
+    fs.readFileSync(path.join(root, 'scripts/source-mismatches.json'), 'utf8'),
+  );
+  const shipped = new Set(docs.map((doc) => doc.route));
+  const phase3 =
+    phase === undefined
+      ? launchRows.some((row) => row.phase >= 3 && shipped.has(row.route))
+      : phase >= 3;
   const errors = [
     ...validateDocs(docs, { launchRows, manifest, openApi, phase }),
     ...validateSidebar(sidebar, docs, launchRows, phase),
-    ...validateMismatches(
-      JSON.parse(
-        fs.readFileSync(
-          path.join(root, 'scripts/source-mismatches.json'),
-          'utf8',
-        ),
-      ),
-      launchRows,
-      { manifest, openApi },
-    ),
+    ...validateMismatches(mismatches, launchRows, { manifest, openApi }),
+    ...(templates || phase3
+      ? validatePhase3({ root, docs, manifest, mismatches, templates, phase3 })
+      : []),
     ...checkRoutePermanence(
       previous.routes,
       docs.map((doc) => doc.route),
@@ -631,16 +667,7 @@ function run({ root = ROOT, phase, base = 'origin/main' } = {}) {
 
 if (require.main === module) {
   try {
-    const args = process.argv.slice(2);
-    let phase;
-    if (args[0] === '--phase' && /^[1-5]$/.test(args[1]) && args.length === 2)
-      phase = Number(args[1]);
-    else if (args.length === 1 && args[0] === '--launch') phase = 5;
-    else if (args.length)
-      throw new Error(
-        'Usage: validate-v2-structure.js [--phase 1..5 | --launch]',
-      );
-    const result = run({ phase });
+    const result = run(parseArguments(process.argv.slice(2)));
     if (result.errors.length) throw new Error(result.errors.join('\n'));
     console.log(
       `V2 structure PASS: ${result.count} docs; 134 planned routes; ${result.initialized ? 'shipped route permanence checked' : 'pre-foundation main recognized'}.`,
@@ -663,5 +690,6 @@ module.exports = {
   validateMismatches,
   checkRoutePermanence,
   previousV2Routes,
+  parseArguments,
   run,
 };

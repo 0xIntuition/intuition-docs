@@ -467,3 +467,560 @@ test('AC-13 permits initial V1 replacement but rejects a later removed V2 route 
     [],
   );
 });
+
+const path = require('node:path');
+const os = require('node:os');
+const { readPage } = require('./lib/phase3-structure/markdown');
+const { validateTemplate } = require('./lib/phase3-structure/templates');
+const {
+  validateLadder,
+  validateConcept,
+  validateConceptMap,
+  validateHowItFits,
+  validateIdentifier,
+} = require('./lib/phase3-structure/concepts');
+const {
+  validateSnapshot,
+  validatePackage,
+  validateChooser,
+} = require('./lib/phase3-structure/packages');
+const { validateFirstWrite, validateAgent } = require('./lib/phase3-structure');
+const manifest = require('../static/intuition-release.json');
+const ladder = require('./concept-ladder.json');
+const runtime = require('./package-runtime-dependencies.json');
+
+function diagnostics(check, ...args) {
+  const errors = [];
+  check(...args, (message) => errors.push(message));
+  return errors.join('\n');
+}
+
+function checkedSource(id) {
+  const name = id + '.md';
+  return docMetadata(
+    name,
+    fs.readFileSync(path.join(__dirname, '../docs/_data', name), 'utf8'),
+    versions.current,
+  );
+}
+
+function template(file, kind, body) {
+  const sample = doc(file + '.md', { kind }, body);
+  return diagnostics(validateTemplate, sample, readPage(sample), [sample]);
+}
+
+test('template and phase switches compose in either order and keep basic/launch/root/base behavior', () => {
+  const { parseArguments } = require('./validate-v2-structure');
+  assert.deepEqual(parseArguments([]), {});
+  assert.deepEqual(
+    parseArguments(['--templates', '--phase', '3']),
+    parseArguments(['--phase', '3', '--templates']),
+  );
+  assert.deepEqual(
+    parseArguments([
+      '--launch',
+      '--templates',
+      '--base',
+      'HEAD',
+      '--root',
+      '.',
+    ]),
+    { phase: 5, templates: true, base: 'HEAD', root: process.cwd() },
+  );
+  assert.throws(() => parseArguments(['--phase', '2', '--launch']), /Usage/);
+});
+
+test('only real section headings count and Troubleshooting is optional at its specified position', () => {
+  const howto =
+    'Install the reader.\n\n## Before you start\n\n## Steps\n\n1. Read an item.\n\n## Check the result\n\n## Related';
+  assert.equal(template('build/install', 'how-to', howto), '');
+  assert.equal(
+    template(
+      'build/install',
+      'how-to',
+      howto.replace('## Related', '## Troubleshooting\n\n## Related'),
+    ),
+    '',
+  );
+  assert.match(
+    template('build/install', 'how-to', howto + '\n\n## Troubleshooting'),
+    /expected H2/,
+  );
+  assert.match(
+    template(
+      'build/install',
+      'how-to',
+      howto.replace(
+        '## Before you start',
+        '~~~~text\n## Before you start\n~~~~',
+      ),
+    ),
+    /expected H2/,
+  );
+  assert.equal(
+    template('core/architecture', 'concept', '## How it works\n\n## Related'),
+    '',
+  );
+  assert.match(
+    template('core/architecture', 'concept', '## Related\n\n## How it works'),
+    /expected H2/,
+  );
+  assert.match(
+    template(
+      'concepts/atoms',
+      'concept',
+      '## How it works\n\n## Example\n\n## Next',
+    ),
+    /Common mistakes/,
+  );
+  const reference = checkedSource('reference/sdk/api');
+  assert.equal(
+    diagnostics(validateTemplate, reference, readPage(reference), [reference]),
+    '',
+  );
+});
+
+test('landing coverage uses shipped descendants and root top-level landings, excluding fenced/inline fake links', () => {
+  const files = [
+    'index',
+    'reference/index',
+    'reference/packages/index',
+    'reference/packages/iid',
+  ];
+  const docs = files.map((id) => doc(id + '.md'));
+  function landing(id, body) {
+    const sample = doc(id + '.md', {}, body);
+    return diagnostics(validateTemplate, sample, readPage(sample), docs);
+  }
+  assert.equal(
+    landing(
+      'index',
+      '[Reference](/docs/reference) and [IID](/docs/reference/packages/iid).',
+    ),
+    '',
+  );
+  assert.match(
+    landing(
+      'reference/index',
+      '[Packages](/docs/reference/packages)\n\n~~~text\n[IID](/docs/reference/packages/iid)\n~~~',
+    ),
+    /must link \/docs\/reference\/packages\/iid/,
+  );
+  assert.match(
+    landing(
+      'reference/index',
+      '[Packages](/docs/reference/packages)\n\n`[IID](/docs/reference/packages/iid)`',
+    ),
+    /must link/,
+  );
+  assert.equal(
+    landing(
+      'reference/index',
+      '[Packages](/docs/reference/packages) and [`IID`](/docs/reference/packages/iid).',
+    ),
+    '',
+  );
+});
+
+test('tutorial check compares the declared count, position, limits and consecutive step numbers', () => {
+  const tutorial =
+    "**Time:** 10 minutes · **Steps:** 2\n\n## What you'll build\n\n## Before you start\n\n## Steps\n\n### 1. Prepare\n\n### 2. Run\n\n## Run it\n\n## Next steps";
+  const check = (body) => template('get-started/first-write', 'tutorial', body);
+  assert.equal(check(tutorial), '');
+  for (const corrupted of [
+    tutorial.replace('**Steps:** 2', '**Steps:** 3'),
+    tutorial.replace('### 2.', '### 1.'),
+    tutorial.replace('### 2. Run', '~~~text\n### 2. Run\n~~~'),
+    tutorial + '\n\n### 3. More',
+    tutorial.replace('10 minutes', '11 minutes'),
+    tutorial.replace('**Time:**', 'Time:'),
+  ])
+    assert.match(check(corrupted), /tutorial/);
+  assert.match(
+    check(tutorial.replace('**Steps:** 2', '**Steps:** 9')),
+    /8 steps/,
+  );
+});
+
+test('migration topics require the right H2 parents as well as the literal topics', () => {
+  const migration = checkedSource('get-started/migrate-from-v1');
+  assert.equal(template(migration.id, 'how-to', migration.body), '');
+  const swapped = migration.body
+    .replace('### What changed', '')
+    .replace('## Steps', '## Steps\n\n### What changed');
+  assert.match(template(migration.id, 'how-to', swapped), /migration topics/);
+});
+
+const conceptDocs = ladder.concepts.map((row) =>
+  doc('concepts/' + row.slug + '.md', {
+    title: row.title,
+    packages: JSON.stringify(row.packages),
+    reader: JSON.stringify(row.reader),
+    depends_on: JSON.stringify(row.depends_on),
+  }),
+);
+const pathToEnrichment = [
+  'atoms',
+  'triples',
+  'deterministic-ids',
+  'iid',
+  'iid-schemes',
+  'identity-ladder',
+  'classifications',
+  'iid-registry',
+  'atom-parsing',
+  'atom-classification',
+  'enrichment',
+];
+function conceptMapBody() {
+  const node = (slug) => slug.replaceAll('-', '_');
+  const diagram = ladder.concepts.flatMap((row) =>
+    row.depends_on.map((dep) => node(dep) + ' --> ' + node(row.slug)),
+  );
+  return [
+    '~~~mermaid',
+    'graph BT',
+    ...diagram,
+    '~~~',
+    '',
+    pathToEnrichment
+      .map((slug) => `[${slug}](/docs/concepts/${slug})`)
+      .join(' → '),
+  ].join('\n');
+}
+test('all 23 metadata declarations agree with the ladder, including cyclic/forward and unexpected package mutations', () => {
+  assert.equal(diagnostics(validateLadder, conceptDocs, ladder, manifest), '');
+  for (const [key, value] of [
+    ['packages', []],
+    ['depends_on', ['triples']],
+    ['reader', ['operator']],
+  ]) {
+    const changed = structuredClone(conceptDocs);
+    changed[1].frontMatter[key] = value;
+    const messages = diagnostics(validateLadder, changed, ladder, manifest);
+    assert.match(messages, /metadata/);
+    if (key === 'depends_on') assert.match(messages, /cyclic, forward/);
+  }
+  assert.match(
+    diagnostics(validateLadder, conceptDocs.slice(1), ladder, manifest),
+    /23 normative/,
+  );
+});
+
+test('the map has exactly 22 topic nodes and the declared edges and ordered enrichment closure below the diagram', () => {
+  const check = (body) => {
+    const sample = doc('concepts/index.md', {}, body);
+    return diagnostics(
+      validateConceptMap,
+      sample,
+      readPage(sample),
+      ladder.concepts,
+    );
+  };
+  const valid = conceptMapBody();
+  assert.equal(check(valid), '');
+  for (const body of [
+    valid.replace('graph BT', 'graph TD'),
+    valid.replace('graph BT', 'graph BT\nindex'),
+    valid.replace('atoms --> triples', ''),
+    valid.replace('atoms --> triples', 'atoms --> triples\ntriples --> atoms'),
+    valid.replace('atoms --> triples', 'atoms --> triples\natoms --> triples'),
+  ])
+    assert.match(check(body), /prerequisite edges/);
+  assert.match(
+    check(valid.replace('[iid](/docs/concepts/iid) → ', '')),
+    /enrichment prerequisite closure/,
+  );
+});
+
+test('concept intro and Next links agree with their own lines and sections', () => {
+  const all = new Set(conceptDocs.map((d) => d.route));
+  const row = ladder.concepts.find((c) => c.slug === 'atoms');
+  const body = [
+    'An atom represents exact bytes.',
+    '',
+    '**Builds on:** Nothing; this is the base of the ladder.',
+    '',
+    '**Implemented by:** ' +
+      row.packages
+        .map(
+          (name) => `[${name}](/docs/reference/packages/${name.split('/')[1]})`,
+        )
+        .join(', '),
+    '',
+    '## How it works',
+    '',
+    '## Example',
+    '',
+    '## Common mistakes',
+    '',
+    '## Next',
+    '',
+    ...ladder.concepts
+      .filter((c) => c.depends_on.includes('atoms'))
+      .map((c) => `[${c.slug}](/docs/concepts/${c.slug})`),
+  ].join('\n');
+  const check = (body, slug = 'atoms') => {
+    const sample = doc('concepts/' + slug + '.md', {}, body);
+    return diagnostics(
+      validateConcept,
+      sample,
+      readPage(sample),
+      ladder.concepts,
+      all,
+    );
+  };
+  assert.equal(check(body), '');
+  assert.match(
+    check(body.replace('An atom represents exact bytes.', 'word '.repeat(81))),
+    /80 words/,
+  );
+  assert.match(check(body.replace('Nothing;', 'Nothing,')), /Builds on/);
+  assert.match(
+    check(
+      body.replace(
+        '/docs/reference/packages/ids',
+        '/docs/reference/packages/sdk',
+      ),
+    ),
+    /Implemented by/,
+  );
+  assert.match(
+    check(body.replace('/docs/concepts/triples', '/docs/concepts/atoms')),
+    /Next must link to triples/,
+  );
+  const indexing =
+    'Reads indexed writes.\n\n**Builds on:** [Writes](/docs/concepts/protocol-writes) and [runtime](/docs/concepts/atom-runtime).\n\n**Implemented by:** [Intuition Core](/docs/build/query-core)\n\n## How it works';
+  assert.equal(check(indexing, 'indexing-and-querying'), '');
+  assert.match(
+    check(indexing.replace('Intuition Core', 'SDK'), 'indexing-and-querying'),
+    /Intuition Core/,
+  );
+});
+
+test('the five-tier explanation requires diagram edges, package layers and Core attachment', () => {
+  const base = doc(
+    'get-started/how-it-fits.md',
+    {},
+    fs.readFileSync(
+      path.join(__dirname, '__fixtures__/validate-v2-structure/five-tiers.md'),
+      'utf8',
+    ),
+  );
+  assert.equal(diagnostics(validateHowItFits, readPage(base)), '');
+  for (const [from, to] of [
+    [
+      'protocol["Protocol plumbing"] -.-> writes',
+      'protocol["Protocol plumbing"] -.-> querying',
+    ],
+    ['Protocol writes', 'Protocol deposits'],
+    ['Tier 2 (Identity)', 'Tier 3 (Identity)'],
+  ]) {
+    const changed = doc(base.relativePath, {}, base.body.replace(from, to));
+    assert.match(
+      diagnostics(validateHowItFits, readPage(changed)),
+      /five-tier|five tiers/,
+    );
+  }
+});
+
+test('identifier evidence needs a visible canonical link and an info block on affected pages', () => {
+  const mismatch = require('./source-mismatches.json').find(
+    (r) => r.id === 'M-1',
+  );
+  const url =
+    ladder.identifier.repository +
+    '/blob/' +
+    ladder.identifier.commit +
+    '/spec/07-representation-profiles.md';
+  const text =
+    '[IID spec §7.8](' + url + ')\n\n:::info\nThe package lacks §7.8.\n:::';
+  const check = (body) => {
+    const sample = doc('concepts/representation-profiles.md', {}, body);
+    return diagnostics(
+      validateIdentifier,
+      sample,
+      readPage(sample),
+      ladder.identifier,
+      mismatch,
+    );
+  };
+  assert.equal(check(text), '');
+  assert.match(
+    check(text.replace(ladder.identifier.commit, 'main')),
+    /pinned canonical/,
+  );
+  assert.match(check(text.replace(':::info', ':::note')), /M-1/);
+  assert.match(check(text.replace('lacks §7.8', 'differs')), /M-1/);
+});
+
+test('package assertions distinguish exports, runtime edges, peer ranges and inverse backlinks', () => {
+  const pkg = {
+    name: '@0xintuition/widget',
+    entrypoints: ['.', './features/*', './package.json'],
+    peers: { viem: '^2.0.0' },
+  };
+  const deps = { dependencies: { '@0xintuition/ids': '0.1.0' } };
+  const concepts = [{ slug: 'atoms', packages: [pkg.name] }];
+  const sample = [
+    '## Entry points',
+    '',
+    '| Subpath | Purpose |',
+    '| --- | --- |',
+    '| `.` | Root |',
+    '| `./features/*` | Feature modules |',
+    '',
+    '## Depends on and works with',
+    '',
+    'Runtime dependencies: [ids](/docs/reference/packages/ids). Published peers: `viem ^2.0.0`.',
+    '',
+    '## Example',
+    '',
+    'This links [ids](/docs/reference/packages/ids) and [atoms](/docs/concepts/atoms) outside their asserted sections.',
+    '',
+    '## Related concepts',
+    '',
+    '[Atoms](/docs/concepts/atoms)',
+  ].join('\n');
+  const check = (body) => {
+    const sampleDoc = doc(
+      'reference/packages/widget.md',
+      { kind: 'reference', packages: JSON.stringify([pkg.name]) },
+      body,
+    );
+    return diagnostics(
+      validatePackage,
+      sampleDoc,
+      readPage(sampleDoc),
+      pkg,
+      deps,
+      concepts,
+    );
+  };
+  assert.equal(check(sample), '');
+  for (const [before, after, message] of [
+    ['| `./features/*` | Feature modules |', '', /Entry points/],
+    [
+      '| `./features/*` | Feature modules |',
+      '| `./features/*` | Feature modules |\n| `./extra` | Extra |',
+      /Entry points/,
+    ],
+    [
+      'Runtime dependencies: [ids](/docs/reference/packages/ids)',
+      'Runtime dependencies: none',
+      /runtime dependency/,
+    ],
+    [
+      'Runtime dependencies: [ids](/docs/reference/packages/ids)',
+      'Runtime dependencies: [ids](/docs/reference/packages/ids), [react](/docs/reference/packages/react)',
+      /runtime dependency/,
+    ],
+    ['`viem ^2.0.0`', 'none', /peer list/],
+    ['`viem ^2.0.0`', '`viem ^2.0.0`, `wagmi ^2`', /peer list/],
+    ['`viem ^2.0.0`', '`viem ^3.0.0`', /peer list/],
+    ['[Atoms](/docs/concepts/atoms)', '', /inverse concept/],
+    [
+      '[Atoms](/docs/concepts/atoms)',
+      '[Atoms](/docs/concepts/atoms) [Triples](/docs/concepts/triples)',
+      /inverse concept/,
+    ],
+  ])
+    assert.match(check(sample.replace(before, after)), message);
+  assert.equal(diagnostics(validateSnapshot, runtime, manifest), '');
+  const stale = structuredClone(runtime);
+  stale.source.commit = 'main';
+  stale.packages[0].version = '0.0.0';
+  assert.match(
+    diagnostics(validateSnapshot, stale, manifest),
+    /source differs[\s\S]*stale runtime/,
+  );
+  assert.ok(
+    runtime.packages.find((p) => p.name.endsWith('/atom-classification'))
+      .dependencies['@0xintuition/atom-enrichment'],
+  );
+  assert.ok(
+    !runtime.packages.find((p) => p.name.endsWith('/atom-enrichment'))
+      .dependencies['@0xintuition/atom-classification'],
+  );
+});
+
+test('chooser coverage reads the Install column of its table only', () => {
+  const names = manifest.packages.map((pkg) => pkg.name);
+  const table = [
+    '| I want to… | Install | Then read |',
+    '| --- | --- | --- |',
+    ...names.map((name) => `| A task | \`${name}\` | ${name} | `),
+  ].join('\n');
+  const check = (body) =>
+    diagnostics(
+      validateChooser,
+      readPage(doc('get-started/choose-packages.md', {}, body)),
+      manifest,
+    );
+  assert.equal(check(table), '');
+  const lost = table.replace('`' + names[0] + '`', 'missing');
+  assert.match(
+    check(
+      lost +
+        '\n\nInstall ' +
+        names[0] +
+        '\n\n| Task | Install | Guide |\n|---|---|---|\n| extra | ' +
+        names[0] +
+        ' | Page |',
+    ),
+    /Install column/,
+  );
+});
+
+test('agent entry asserts single visible MCP notice, bundle URLs and concrete skill install command', () => {
+  const check = (id, text) => {
+    const sample = doc('agents/' + id + '.md', {}, text);
+    return diagnostics(validateAgent, sample, readPage(sample));
+  };
+  assert.match(
+    check(
+      'index',
+      '~~~text\nAn Intuition MCP server is not available yet.\n~~~',
+    ),
+    /MCP/,
+  );
+  const urls = ['', '/docs/v1']
+    .flatMap((base) =>
+      ['', '-medium', '-full'].map((size) => base + '/llms' + size + '.txt'),
+    )
+    .join(' ');
+  assert.equal(
+    check('docs-for-agents', urls + ' Append `.md` to a page URL.'),
+    '',
+  );
+  assert.match(
+    check('docs-for-agents', urls.replace('/llms.txt', '') + ' .md'),
+    /llms/,
+  );
+  assert.match(check('docs-for-agents', urls), /per-page/);
+  assert.equal(
+    check('skills', '~~~sh\nnpx skills add 0xintuition/agent-skills\n~~~'),
+    '',
+  );
+  assert.match(
+    check('skills', 'npx skills add 0xintuition/agent-skills-old'),
+    /install/,
+  );
+});
+
+test('first-write source needs a real UUID call and rejects a fixed ID across src without running the example', (t) => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'first-write-structure-'));
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  const src = path.join(root, 'examples/v2/first-write/src');
+  fs.mkdirSync(src, { recursive: true });
+  const main = path.join(src, 'first-write.ts');
+  fs.writeFileSync(main, 'const uuid = crypto.randomUUID();');
+  assert.equal(diagnostics(validateFirstWrite, root), '');
+  fs.writeFileSync(
+    path.join(src, 'helper.ts'),
+    "export const id = '0x" + 'a'.repeat(64) + "';",
+  );
+  assert.match(diagnostics(validateFirstWrite, root), /derive the atom ID/);
+  fs.writeFileSync(main, '// crypto.randomUUID()');
+  assert.match(diagnostics(validateFirstWrite, root), /must call/);
+});

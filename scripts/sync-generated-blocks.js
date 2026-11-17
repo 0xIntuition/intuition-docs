@@ -15,6 +15,89 @@ function releasePins(manifest) {
       .join('\n')
   );
 }
+function loadDeployments(root, manifest) {
+  const name = '@0xintuition/deployments';
+  const directory = path.join(root, 'examples/v2/node_modules', name);
+  const metadata = JSON.parse(
+    fs.readFileSync(path.join(directory, 'package.json'), 'utf8'),
+  );
+  const pin = manifest.packages.find((pkg) => pkg.name === name);
+  if (!pin || metadata.name !== name || metadata.version !== pin.version)
+    throw new Error(
+      'Installed examples/v2 deployments package does not match the manifest',
+    );
+  // The package publishes an ESM import target. Node 22.21 can load it synchronously.
+  // Resolving that exact file prevents Node from walking up to the site's V1 install.
+  const entry = metadata.exports?.['.']?.import;
+  if (
+    typeof entry !== 'string' ||
+    !entry.startsWith('./') ||
+    !path.resolve(directory, entry).startsWith(directory + path.sep)
+  )
+    throw new Error('Missing package-local deployments entry point');
+  return require(path.resolve(directory, entry));
+}
+
+function deploymentTable(exports) {
+  const deployments = new Map();
+  function add(chain, contract, asset, address) {
+    if (
+      !Number.isSafeInteger(Number(chain)) ||
+      Number(chain) <= 0 ||
+      !/^0x[\da-f]{40}$/i.test(address)
+    )
+      throw new Error(`Invalid deployment for ${contract} on chain ${chain}`);
+    const key = JSON.stringify([Number(chain), contract, asset]);
+    if (deployments.has(key) && deployments.get(key)[3] !== address)
+      throw new Error(
+        `Conflicting deployment for ${contract} on chain ${chain}`,
+      );
+    deployments.set(key, [Number(chain), contract, asset, address]);
+  }
+  for (const map of [
+    exports.intuitionDeployments,
+    exports.intuitionPeripheryDeployments,
+  ]) {
+    for (const [contract, chains] of Object.entries(map)) {
+      for (const [chain, address] of Object.entries(chains))
+        add(chain, contract, '', address);
+    }
+  }
+  for (const [contract, map] of [
+    ['MetaERC20Hub', exports.intuitionPeripheryMetaERC20HubDeployments],
+    ['MetaERC20Spoke', exports.intuitionPeripheryMetaERC20SpokeDeployments],
+  ]) {
+    for (const [asset, chains] of Object.entries(map)) {
+      for (const [chain, address] of Object.entries(chains))
+        add(chain, contract, asset, address);
+    }
+  }
+  for (const [asset, address] of Object.entries(
+    exports.intuitionPeripheryBaseBridgeAssetDeployments,
+  ))
+    add(exports.BASE_CHAIN_ID, 'Base bridge asset', asset, address);
+  for (const network of [exports.intuitionMainnet, exports.intuitionTestnet]) {
+    for (const [contract, deployment] of Object.entries(network.contracts))
+      add(network.id, contract, '', deployment.address);
+  }
+  const compare = (a, b) => (a < b ? -1 : a > b ? 1 : 0);
+  const rows = [...deployments.values()];
+  rows.sort(
+    (a, b) =>
+      a[0] - b[0] ||
+      compare(a[1], b[1]) ||
+      compare(a[2], b[2]) ||
+      compare(a[3], b[3]),
+  );
+  return [
+    '| Chain ID | Contract | Asset | Address |',
+    '| --- | --- | --- | --- |',
+    ...rows.map(
+      ([chain, contract, asset, address]) =>
+        `| ${chain} | ${cell(contract)} | ${cell(asset) || '—'} | \`${address}\` |`,
+    ),
+  ].join('\n');
+}
 function versionEquivalents(pairs, current, legacy) {
   const currentById = new Map(current.map((doc) => [doc.id, doc]));
   const legacyById = new Map(legacy.map((doc) => [doc.id, doc]));
@@ -76,6 +159,8 @@ function syncGeneratedBlocks({
     ),
   ).pairs;
   const render = (name) => {
+    if (name === 'deployments')
+      return deploymentTable(loadDeployments(root, manifest));
     if (name === 'release-pins') return releasePins(manifest);
     if (name === 'version-equivalents')
       return versionEquivalents(pairs, current, legacy);
@@ -91,6 +176,14 @@ function syncGeneratedBlocks({
     (doc) => !selected.size || selected.has(doc.absolutePath),
   )) {
     try {
+      if (
+        doc.id === 'reference/contracts/deployments' &&
+        (doc.content.match(/\{\/\* generated:start deployments \*\/\}/g) || [])
+          .length !== 1
+      )
+        throw new Error(
+          'The deployments page needs one generated deployments block',
+        );
       const result = replaceBlocks(doc.content, render);
       blocks += result.blocks;
       if (result.text !== doc.content) {
@@ -134,6 +227,8 @@ if (require.main === module) {
   }
 }
 module.exports = {
+  loadDeployments,
+  deploymentTable,
   releasePins,
   versionEquivalents,
   replaceBlocks,
