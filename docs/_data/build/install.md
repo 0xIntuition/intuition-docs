@@ -15,7 +15,7 @@ Install the smallest package set that supports your task and keep its exact vers
 
 Use Node 22.18 or newer for these examples, which run TypeScript directly; Node 22.21.0 and TypeScript 5.9.3 match these examples. The processing libraries declare Node 20 or newer. Use ESM (`"type": "module"`) and a TypeScript configuration with `module` and `moduleResolution` set to `NodeNext` and `strict` enabled.
 
-V2 names the documentation generation, not a package major version. The [package index](/docs/reference/packages) lists all 21 packages and their roles. The [compatibility reference](/docs/reference/compatibility) records peers and contract artifact boundaries.
+V2 names the documentation generation, not a package major version. Use the [package chooser](/docs/get-started/choose-packages) to match a task to its dependencies, or browse all 21 packages in the [package index](/docs/reference/packages). The [compatibility reference](/docs/reference/compatibility) records peers and contract artifact boundaries.
 
 ## Steps
 

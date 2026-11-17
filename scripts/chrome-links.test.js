@@ -93,7 +93,7 @@ test('footer recognizes native trailing-slash landings and preserves fallback pr
   assert.deepEqual(getDeveloperLinks(routes.slice(0, 3)), initialLinks);
 });
 
-test('noscript links the four Phase 2 section landings and required version/agent files', () => {
+test('noscript links the four shipped section landings and required version/agent files', () => {
   const source = fs.readFileSync(
     path.join(ROOT, 'src/pages/index.jsx'),
     'utf8',
@@ -129,7 +129,7 @@ test('actual current tree drives five V2 footer links and top-level noscript cov
   assert.equal(links.filter(({ name }) => !name.endsWith(' (V1)')).length, 5);
   assert.deepEqual(links[2], {
     name: 'Smart Contracts',
-    href: '/docs/reference/packages/protocol',
+    href: '/docs/reference/contracts',
   });
   assert.deepEqual(links[3], initialLinks[3]);
   for (const { href } of links) assert.ok(allRoutes.has(href), href);

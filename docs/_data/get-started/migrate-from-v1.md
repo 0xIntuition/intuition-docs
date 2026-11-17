@@ -259,6 +259,23 @@ The following mapping comes from the version switcher's equivalence data. Other 
 | [Tutorials](/docs/v1/tutorials/overview) | [What you can build](/docs/examples) |
 | [Quick Start](/docs/v1/intuition-sdk/quick-start) | [@0xintuition/sdk](/docs/reference/packages/sdk) |
 | [Protocol Package Overview](/docs/v1/protocol/getting-started/overview) | [@0xintuition/protocol](/docs/reference/packages/protocol) |
+| [Choose Your Path](/docs/v1/getting-started/choose-your-path) | [Choose your packages](/docs/get-started/choose-packages) |
+| [Atom Fundamentals](/docs/v1/intuition-concepts/primitives/Atoms/fundamentals) | [Atoms](/docs/concepts/atoms) |
+| [Triple Fundamentals](/docs/v1/intuition-concepts/primitives/Triples/fundamentals) | [Triples, counter-triples and nested triples](/docs/concepts/triples) |
+| [Vaults & Shares](/docs/v1/protocol/core-concepts/vaults) | [Vaults, shares and positions](/docs/concepts/vaults) |
+| [Bonding Curves](/docs/v1/intuition-concepts/economics/bonding-curves) | [Bonding curves](/docs/concepts/bonding-curves) |
+| [Signal Fundamentals](/docs/v1/intuition-concepts/primitives/Signals/fundamentals) | [Signals](/docs/concepts/signals) |
+| [Fees and Rewards](/docs/v1/intuition-concepts/economics/fees-and-rewards) | [Fees, epochs and rewards](/docs/concepts/fees-and-rewards) |
+| [Overview](/docs/v1/intuition-smart-contracts) | [Contracts](/docs/reference/contracts) |
+| [MultiVault.sol](/docs/v1/intuition-smart-contracts/multivault) | [MultiVault](/docs/reference/contracts/multivault) |
+| [FeeProxy.sol](/docs/v1/intuition-smart-contracts/fee-proxy) | [FeeProxy](/docs/reference/contracts/fee-proxy) |
+| [TrustBonding.sol](/docs/v1/intuition-smart-contracts/trust-bonding) | [TrustBonding](/docs/reference/contracts/trust-bonding) |
+| [Configurations & Fees](/docs/v1/intuition-smart-contracts/configuration) | [Configuration and URI limits](/docs/reference/contracts/configuration) |
+| [Deployments](/docs/v1/intuition-smart-contracts/deployments) | [Deployments](/docs/reference/contracts/deployments) |
+| [Atom Events](/docs/v1/protocol/events/atom-events) | [Events and errors](/docs/reference/contracts/events-and-errors) |
+| [Audit Reports](/docs/v1/intuition-smart-contracts/audit-reports) | [Audits](/docs/reference/contracts/audits) |
+| [Intuition Network](/docs/v1/intuition-network) | [Networks](/docs/reference/networks) |
+| [Intuition Testnet Faucet](/docs/v1/quick-start/testnet-faucet) | [Testnet faucet](/docs/reference/networks/faucet) |
 
 {/* generated:end */}
 
