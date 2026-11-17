@@ -29,13 +29,14 @@ Start with the system overview and offline quickstart, then follow the guides fo
 
 ## Build an integration
 
+- [Build guides](https://docs.intuition.systems/docs/build.md): Choose a task from setting up a network to querying your Core node
 - [Install packages](https://docs.intuition.systems/docs/build/install.md): Select exact package versions and their required peers
 - [Creation Profiles](https://docs.intuition.systems/docs/build/creation-profiles.md): Inspect classification fields and build typed atom payloads
 - [Classify and enrich](https://docs.intuition.systems/docs/build/classify-enrich.md): Compose bounded processing and handle partial results
 - [Action plans](https://docs.intuition.systems/docs/build/action-plans.md): Prepare transaction envelopes before execution
 - [Query Core](https://docs.intuition.systems/docs/build/query-core.md): Read indexed data through the source-built Core Query API
 - [The SDK read client](https://docs.intuition.systems/docs/build/read-with-sdk.md): Understand why the hosted V1 client is not a V2 read path
-- [Worked examples](https://docs.intuition.systems/docs/examples.md): Find the complete music catalog example
+- [Worked examples](https://docs.intuition.systems/docs/examples.md): Follow complete projects for creation forms, predicate selection, identity linking, React applications, Core queries, and a music catalog
 - [Music catalog](https://docs.intuition.systems/docs/examples/music-catalog.md): Build synthetic identities, predicates, triples, and processing results offline
 
 ## Build with agents or extend processing
@@ -64,12 +65,26 @@ Complete directory: every authored documentation page, one line each.
 - [Prepare transactions with the CLI](https://docs.intuition.systems/docs/agents/cli.md)
 - [Docs for agents](https://docs.intuition.systems/docs/agents/docs-for-agents.md)
 - [Install the agent skills](https://docs.intuition.systems/docs/agents/skills.md)
+- [Build guides](https://docs.intuition.systems/docs/build.md)
 - [Build action plans and envelopes](https://docs.intuition.systems/docs/build/action-plans.md)
+- [Compose an atom runtime](https://docs.intuition.systems/docs/build/atom-runtime.md)
+- [Batch writes](https://docs.intuition.systems/docs/build/batch-writes.md)
 - [Classify and enrich atoms](https://docs.intuition.systems/docs/build/classify-enrich.md)
+- [Connect to a network](https://docs.intuition.systems/docs/build/connect.md)
+- [Create atoms](https://docs.intuition.systems/docs/build/create-atoms.md)
+- [Create triples](https://docs.intuition.systems/docs/build/create-triples.md)
 - [Build creation forms](https://docs.intuition.systems/docs/build/creation-profiles.md)
+- [Deposit and redeem](https://docs.intuition.systems/docs/build/deposit-redeem.md)
+- [Derive IDs and IIDs](https://docs.intuition.systems/docs/build/derive-ids.md)
+- [Route writes through the FeeProxy](https://docs.intuition.systems/docs/build/fee-proxy.md)
 - [Install and pin the packages](https://docs.intuition.systems/docs/build/install.md)
+- [Link identities with sameAs](https://docs.intuition.systems/docs/build/link-identities.md)
+- [Parse user input](https://docs.intuition.systems/docs/build/parse-input.md)
 - [Query a Core node](https://docs.intuition.systems/docs/build/query-core.md)
+- [Use React hooks](https://docs.intuition.systems/docs/build/react.md)
 - [The SDK read client](https://docs.intuition.systems/docs/build/read-with-sdk.md)
+- [Suggest relationships and pick predicates](https://docs.intuition.systems/docs/build/suggest-relationships.md)
+- [Test locally](https://docs.intuition.systems/docs/build/test-locally.md)
 - [Get help](https://docs.intuition.systems/docs/community.md)
 - [Concept map](https://docs.intuition.systems/docs/concepts.md)
 - [Atom classification](https://docs.intuition.systems/docs/concepts/atom-classification.md)
@@ -96,7 +111,12 @@ Complete directory: every authored documentation page, one line each.
 - [Vaults, shares and positions](https://docs.intuition.systems/docs/concepts/vaults.md)
 - [Write a classification plugin](https://docs.intuition.systems/docs/core/classification-plugin.md)
 - [What you can build](https://docs.intuition.systems/docs/examples.md)
+- [Schema-backed atom creation form](https://docs.intuition.systems/docs/examples/atom-creation-form.md)
+- [Read the graph from Core's Query API](https://docs.intuition.systems/docs/examples/core-query-api.md)
+- [sameAs identity linking](https://docs.intuition.systems/docs/examples/identity-linking.md)
 - [Build a music catalog](https://docs.intuition.systems/docs/examples/music-catalog.md)
+- [Predicate picker with relationship suggestions](https://docs.intuition.systems/docs/examples/predicate-picker.md)
+- [React app with @0xintuition/react](https://docs.intuition.systems/docs/examples/react-app.md)
 - [Choose your packages](https://docs.intuition.systems/docs/get-started/choose-packages.md)
 - [Quickstart: your first on-chain write](https://docs.intuition.systems/docs/get-started/first-write.md)
 - [How the pieces fit](https://docs.intuition.systems/docs/get-started/how-it-fits.md)

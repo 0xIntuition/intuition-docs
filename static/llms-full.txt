@@ -331,6 +331,204 @@ Use SDK envelope exports for new code. For example, the old CLI `buildMultiVault
 
 [Protocol writes](https://docs.intuition.systems/docs/concepts/protocol-writes), [SDK](https://docs.intuition.systems/docs/reference/packages/sdk), [CLI](https://docs.intuition.systems/docs/reference/packages/cli), and [action schema](https://docs.intuition.systems/docs/reference/sdk/schema-types). Source: [action plan ownership and alias map](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/sdk/docs/action-plans.md).
 
+# Compose an atom runtime
+
+Source: https://docs.intuition.systems/docs/build/atom-runtime
+
+Applies to V2 · `@0xintuition/atom-runtime` 0.1.0 · `@0xintuition/pipeline-runtime` 0.1.0
+
+Process a batch of labels through one configured runtime and return an outcome for each input.
+
+## Before you start
+
+A classifier proposes a type for an input. Enrichment plugins collect additional evidence when their inputs and providers are available. Review [the atom runtime](https://docs.intuition.systems/docs/concepts/atom-runtime) and [enrichment](https://docs.intuition.systems/docs/concepts/enrichment).
+
+For your own project, follow [Install the packages](https://docs.intuition.systems/docs/build/install). To run the [offline example](https://github.com/0xIntuition/intuition-docs/blob/c3b1eaa91a822bb59b20cb6de2bc9b874a00b7b0/examples/v2/music-catalog/src/atom-runtime-guide.ts), install its locked dependencies from the documentation repository root with Node.js 22.21.0.
+
+```sh
+npm ci --prefix examples/v2 --ignore-scripts
+```
+
+## Steps
+
+### 1. Choose the plugins and the cache
+
+Supply an explicit environment and choose the memory cache. One runtime supplies its classification engine with a classification cache and its enrichment engines with a separate enrichment cache. The example replaces the classification preset with local plugins and the selected `custom` enrichment preset with an empty list. An empty environment alone would still leave the standard plugin factories available.
+
+### 2. Set the two concurrency limits
+
+Set `config.enrichment.concurrency` to limit concurrent provider work inside the enrichment engine. Separately, pass `concurrency: 2` to `forEachBounded` to limit the number of input labels being processed together. It returns outcomes in input order. An empty label rejects the example’s async callback and yields a failure for that item.
+
+```ts
+import {
+  createPlainTextPlugin,
+  createTypeProfilesPlugin,
+} from '@0xintuition/atom-classification';
+import { createProcessingRuntime } from '@0xintuition/atom-runtime';
+import { forEachBounded } from '@0xintuition/pipeline-runtime/concurrency';
+
+export async function classifyBatch(labels: string[]) {
+  const runtime = createProcessingRuntime({
+    config: {
+      env: {},
+      defaultPreset: 'custom',
+      cache: { provider: 'memory', memoryMaxEntries: 100 },
+      enrichment: { concurrency: 1, timeoutMs: 1_000 },
+    },
+    overrides: {
+      classification: [createTypeProfilesPlugin(), createPlainTextPlugin()],
+      enrichment: { custom: [] },
+    },
+  });
+  try {
+    const classifier = runtime.classification.engine();
+    const outcomes = await forEachBounded(
+      labels,
+      async (label, signal) => {
+        signal.throwIfAborted();
+        if (!label.trim()) throw new Error('Enter a label');
+        const result = await classifier.classify({
+          input: label,
+          mode: 'client-only',
+        });
+        return result.resolved?.publishable[0]?.type ?? 'unmatched';
+      },
+      { concurrency: 2 },
+    );
+    return {
+      cache: runtime.cacheProvider,
+      sameEngine: classifier === runtime.classification.engine(),
+      plugins: runtime.enrichment.engine().listPlugins().length,
+      outcomes: outcomes.map((item) =>
+        item.kind === 'success' ? item.value : item.kind,
+      ),
+    };
+  } finally {
+    runtime.dispose();
+  }
+}
+```
+
+### 3. Set the scope of reuse
+
+Within this batch, repeated classification engine lookups return the same engine. Enrichment engine lookups are shared for the same preset and identity configuration object. Place disposal in `finally` so the runtime releases those engine references on success and on error. Further engine lookups on a disposed runtime throw.
+
+For a server application that needs external metadata, select a preset and supply its provider configuration explicitly. For example, the music preset wires Spotify and MusicBrainz options. Spotify uses a client ID and secret for its API. External providers require network access, may have different credential requirements, and can return no match. Keep credentials in server configuration. [Preset factories](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/atom-runtime/src/presets.ts).
+
+## Check the result
+
+```sh
+node examples/v2/music-catalog/src/atom-runtime-guide.ts
+```
+
+The example prints `cache: 'memory'`, `sameEngine: true`, and `plugins: 0` for the selected enrichment preset. The three label outcomes are `Thing`, `failure`, and `Thing`, in that order. The empty batch returns an empty outcomes array. The local type is a classification proposal. No provider enrichment was requested.
+
+## Related
+
+[Classify and enrich](https://docs.intuition.systems/docs/build/classify-enrich), [runtime configuration](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/atom-runtime/src/config.ts), [engine and cache lifetimes](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/atom-runtime/src/runtime.ts), and [bounded concurrency](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/pipeline-runtime/src/concurrency.ts).
+
+# Batch writes
+
+Source: https://docs.intuition.systems/docs/build/batch-writes
+
+Applies to V2 · `@0xintuition/sdk` 4.0.0 · `@0xintuition/protocol` 4.0.0
+
+Create several terms and seed their vaults in dependency order, checking the result of each transaction before pricing the next one.
+
+## Before you start
+
+Follow [Install and pin the packages](https://docs.intuition.systems/docs/build/install), [Create atoms](https://docs.intuition.systems/docs/build/create-atoms) and [Create triples](https://docs.intuition.systems/docs/build/create-triples). Use a compatible MultiVault, a funded signer and the same interactive session for each stage. Set aside gas for **each** transaction. The example’s signer creates the terms and receives the seed shares. [Complete stage helper](https://github.com/0xIntuition/intuition-docs/blob/d928b7692bdee7f3c9e24f65bf0c38e8c26bc152/examples/v2/first-write/src/batch-writes-guide.ts)
+
+## Steps
+
+### 1. Split inputs at their dependencies
+
+For example, to create Alice, “follows” and Bob, then create “Alice follows Bob” and fund its vault, prepare three stages. Batch the missing atoms first. Use their primary bytes to derive the IDs. After their original successful receipt, prepare the triple with those IDs. After the triple’s receipt, preview and seed its vault. Create any nested triples in dependency order, waiting for each prerequisite transaction.
+
+The read-backed `multivaultCreateAndSeedTerm` action can return `create-atoms`, `create-triples` and `deposit-batch` steps in that order, with per-leg previews and a `totalValue`. Planning reads current state. A triple preview can run before its input terms exist and use fee assumptions that change once they do. Triple execution checks all three terms. A deposit preview for a term that has yet to be created reverts. Prepare each dependent stage against confirmed state. [SDK planner](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/sdk/src/actions/multivault.ts) · [MultiVault previews](https://github.com/0xIntuition/intuition-contracts-v2/blob/82cfcdb832c100fd2e53ee3f474289ae14cc6020/src/protocol/MultiVault.sol)
+
+### 2. Build one bounded stage
+
+The helper accepts a `kind` and its `rows`. For `atoms`, pass the primary byte strings. For `triples`, pass ordered subject, predicate and object IDs. For `seeds`, pass the target term, curve, gross native wei and slippage in basis points for each leg. Each nonempty stage must fit the deployment’s `MAX_BATCH_SIZE`. Align inputs by index and keep each term/curve pair unique in a seed batch. If one leg could materially change the next leg’s quote, submit them separately.
+
+```ts
+  if (stage.kind === 'atoms') {
+    unique(stage.rows);
+    const assetsIn = await multiVaultGetAtomCost(s);
+    const atomsToCreate = await Promise.all(
+      stage.rows.map(async (data) => ({
+        data,
+        assetsIn,
+        termId: await checkAtomData(s, data),
+      })),
+    );
+    return multivaultCreateAndSeedTerm(s, { receiver, atomsToCreate });
+  }
+  if (stage.kind === 'triples') {
+    const assetsIn = await multiVaultGetTripleCost(s);
+    const triplesToCreate = await Promise.all(
+      stage.rows.map(async (roles) => ({
+        ...roles,
+        assetsIn,
+        termId: (await checkTriple(s, roles)).tripleId,
+      })),
+    );
+    unique(triplesToCreate.map((triple) => triple.termId));
+    return multivaultCreateAndSeedTerm(s, { receiver, triplesToCreate });
+  }
+  unique(stage.rows.map((seed) => seed.termId + '/' + seed.curveId));
+  const exists = await Promise.all(
+    stage.rows.map(({ termId }) =>
+      multiVaultIsTermCreated(s, { args: [termId] }),
+    ),
+  );
+  if (!exists.every(Boolean))
+    throw new Error('Wait for creation before quoting this deposit.');
+  const plan = await multivaultCreateAndSeedTerm(s, {
+    receiver,
+    seedDeposits: stage.rows,
+  });
+```
+
+At creation the helper pays the current per-item creation cost. For seeds, choose the actual gross assets to deposit, check the encoded `minShares` on every leg and reserve the sum as payment. Output estimates are per leg. The contract decides whether the batch can execute at those minima.
+
+### 3. Review and send this stage
+
+Call `submitStage(session, stage)` once for the stage you intend to send. Read the chain, MultiVault, signer, receiver, term bytes or ordered IDs, decoded arguments, calldata and exact native value in the terminal. The helper accepts exactly one planned step, simulates its complete calldata, prompts for that operation and records its submitted hash.
+
+```ts
+  const tx = { to: s.address, data: step.calldata, value: plan.totalValue };
+  const call = decodeFunctionData({ abi: MultiVaultAbi, data: tx.data });
+  await s.publicClient.call({ ...tx, account: s.signer });
+  await review(s, step.type.toUpperCase(), {
+    receiver: plan.receiver,
+    stage,
+    call,
+    plan,
+    ...tx,
+  });
+  const hash = await s.walletClient.sendTransaction({
+    ...tx,
+    account: s.walletClient.account!,
+    chain: s.walletClient.chain,
+  });
+  const receipt = await waitForOriginal(s, hash);
+```
+
+The complete helper matches creation events to the expected IDs and seed events to the receiver, term, curve, payment and minimum shares. Use its returned receipt and plan as your record before preparing the next stage.
+
+## Check the result
+
+An individual batch call reverts as a unit. Earlier transactions persist if a later transaction fails. For the example above, you should have a successful atom receipt, a successful triple receipt, and then a separate successful deposit receipt. Verify each against the original hash and selected MultiVault address. Read the final receiver’s share balance for the seeded term and curve. [Deposit and redeem](https://docs.intuition.systems/docs/build/deposit-redeem)
+
+## Troubleshooting
+
+If confirmation times out or the wallet replaces a transaction, resolve its original hash and any replacement first. If the atom stage succeeded and triple creation reverted, keep the atom receipt. Check whether the triple now exists, derive only the outstanding work, read costs again and review a new transaction. For deposits, inspect the original receipt’s deposit events before retrying: a second successful submission would deposit a second time.
+
+## Related
+
+[Build action plans and envelopes](https://docs.intuition.systems/docs/build/action-plans) · [Route writes through the FeeProxy](https://docs.intuition.systems/docs/build/fee-proxy) · [Protocol write lifecycle](https://docs.intuition.systems/docs/concepts/protocol-writes)
+
 # Classify and enrich atoms
 
 Source: https://docs.intuition.systems/docs/build/classify-enrich
@@ -483,6 +681,289 @@ Fixture enrichment: 1 artifact; unmatched input: 0 artifacts
 
 Sources: [canonical classification output](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/atom-classification/docs/canonical-output-contract.md), [IID registry planning](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/iid-registry/README.md), [enrichment engine](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/atom-enrichment/src/engine.ts), and [field extraction](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/atom-enrichment/src/extraction/extract.ts).
 
+# Connect to a network
+
+Source: https://docs.intuition.systems/docs/build/connect
+
+Applies to V2 · `@0xintuition/deployments` 0.1.0 · `@0xintuition/protocol` 4.0.0
+
+Connect a read-only client to Intuition mainnet, testnet, or local Anvil and verify the MultiVault by reading its atom creation cost.
+
+## Before you start
+
+Use Node 22.21.0 and the dependencies in the [pinned install guide](https://docs.intuition.systems/docs/build/install). The commands below run from a checkout of the docs repository containing the example. Install its dependencies with `npm ci --prefix examples/v2 --ignore-scripts`. For Anvil, complete the deployment step in [Test locally](https://docs.intuition.systems/docs/build/test-locally) first. The helper needs only the public RPC and contract address. [Complete connection helper](https://github.com/0xIntuition/intuition-docs/blob/bb420395aff3432f1f5da08cb76ac75a99945bff/examples/v2/first-write/src/connect-guide.ts).
+
+## Steps
+
+### 1. Choose the chain and deployment together
+
+| Target | Chain ID | RPC seen by the caller | MultiVault source |
+| --- | --- | --- | --- |
+| Intuition mainnet | 1155 | `https://rpc.intuition.systems/http` | Mainnet package entry |
+| Intuition testnet | 13579 | `https://testnet.rpc.intuition.systems/http` | Testnet package entry |
+| Local Anvil | 31337 | `http://localhost:8545` on the host, `http://anvil:8545` inside Core's Compose network | `.MultiVault` from your completed deployment's `devnet/deployments-devnet.json` |
+
+The deployments package resolves an override for the named contract and chain first, then consults its built-in table. A missing entry throws. The package has no built-in MultiVault for 31337, so copy the proxy address generated for your running Anvil. [Network definitions](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/deployments/src/networks.ts) and [address lookup](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/deployments/src/helpers.ts).
+
+```ts
+import {
+  getMultiVaultAddressFromChainId,
+  intuitionMainnet,
+  intuitionTestnet,
+} from '@0xintuition/deployments';
+import { multiVaultGetAtomCost } from '@0xintuition/protocol';
+import {
+  createPublicClient,
+  getAddress,
+  http,
+  isAddress,
+  zeroAddress,
+} from 'viem';
+import { foundry } from 'viem/chains';
+
+export function networkSettings(args: string[]) {
+  const [name, deployedAddress] = args;
+  if (args.length === 1 && (name === 'mainnet' || name === 'testnet')) {
+    const chain = name === 'mainnet' ? intuitionMainnet : intuitionTestnet;
+    return {
+      chain,
+      rpc: chain.rpcUrls.default.http[0],
+      address: getMultiVaultAddressFromChainId(chain.id),
+    };
+  }
+
+  if (args.length !== 2 || (name !== 'local' && name !== 'local-container'))
+    throw new Error(
+      'Choose mainnet, testnet, local ADDRESS or local-container ADDRESS.',
+    );
+  if (
+    deployedAddress?.length !== 42 ||
+    !isAddress(deployedAddress) ||
+    deployedAddress === zeroAddress
+  )
+    throw new Error(
+      'Supply the MultiVault proxy address from your local deployment.',
+    );
+  return {
+    chain: foundry,
+    rpc: name === 'local' ? 'http://localhost:8545' : 'http://anvil:8545',
+    address: getMultiVaultAddressFromChainId(foundry.id, {
+      MultiVault: { [foundry.id]: getAddress(deployedAddress) },
+    }),
+  };
+}
+```
+
+### 2. Verify the chain before calling the contract
+
+The client asks the RPC for its actual chain ID. After a match, `multiVaultGetAtomCost` reads the selected MultiVault's base creation cost in wei. Run one command for your chosen network.
+
+```ts
+export async function connect(args: string[]) {
+  const { chain, rpc, address } = networkSettings(args);
+  const publicClient = createPublicClient({
+    chain,
+    transport: http(rpc, { timeout: 5000, retryCount: 0 }),
+  });
+  const actual = await publicClient.getChainId();
+  if (actual !== chain.id)
+    throw new Error(
+      `Expected chain ${chain.id}, but the RPC returned ${actual}.`,
+    );
+  const atomCost = await multiVaultGetAtomCost({ publicClient, address });
+  return {
+    chainId: actual,
+    multiVault: address,
+    atomCostWei: atomCost.toString(),
+  };
+}
+```
+
+```sh
+node examples/v2/first-write/src/connect-guide.ts testnet
+```
+
+Use `mainnet` for mainnet. For a local read on your host, set `CORE_DIR` to your Core checkout and use the file produced by the successful deployment job. With `jq` installed, run the following command from the docs checkout.
+
+```sh
+vault=$(jq -er 'select(.chainId == 31337) | .MultiVault' "$CORE_DIR/devnet/deployments-devnet.json") &&
+  node examples/v2/first-write/src/connect-guide.ts local "$vault"
+```
+
+An application running inside the same Compose network can use `local-container` with that address. Anvil's service name resolves there. A browser or Node process running on the host uses `localhost`.
+
+## Check the result
+
+The CLI prints `chainId`, `multiVault` and a decimal string named `atomCostWei`. Compare the chain ID to the table and, on Anvil, the proxy to the generated deployment file. The observed cost belongs to that contract at read time. Mainnet uses TRUST and testnet uses tTRUST, each with 18 decimal places. [Public deployment table](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/deployments/src/deployments.ts).
+
+## Troubleshooting
+
+| Result | What to check |
+| --- | --- |
+| Unexpected chain ID | Confirm which RPC the selected environment reaches. |
+| Connection refused on 31337 | Check Anvil is running and choose the hostname for your calling process. |
+| Missing address, empty return data, or reverted read | Verify the proxy belongs to this chain and still has the expected contract after any local redeployment. |
+
+## Related
+
+[Protocol writes](https://docs.intuition.systems/docs/concepts/protocol-writes) explains what changes when you introduce a signer. To read indexed atoms and triples, [query your own Core node](https://docs.intuition.systems/docs/build/query-core).
+
+# Create atoms
+
+Source: https://docs.intuition.systems/docs/build/create-atoms
+
+Applies to V2 · `@0xintuition/protocol` 4.0.0 · `@0xintuition/sdk` 4.0.0 · `@0xintuition/deployments` 0.1.0
+
+Create an atom on a selected MultiVault deployment and use its receipt to verify the bytes and any context URIs you registered.
+
+## Before you start
+
+Follow [Install and pin the packages](https://docs.intuition.systems/docs/build/install) and the [first on-chain write](https://docs.intuition.systems/docs/get-started/first-write) for an interactive testnet setup. Use a funded signing account, a public client and a wallet client configured for the same chain. Resolve MultiVault with `getMultiVaultAddressFromChainId` from `@0xintuition/deployments` or supply your compatible local deployment. Check the selected address and chain against your deployment record. [Contract deployments](https://docs.intuition.systems/docs/reference/contracts/deployments)
+
+The complete example exports `createAtom(session, data, contextUris?)`. Its session contains `address` (MultiVault), `publicClient`, `walletClient`, the expected `chainId` and the expected `signer`. Use it from an interactive Node terminal. The helper checks the client chains and wallet account and asks you to type the displayed operation before submitting it. [Example source](https://github.com/0xIntuition/intuition-docs/blob/d928b7692bdee7f3c9e24f65bf0c38e8c26bc152/examples/v2/first-write/src/create-atoms-guide.ts)
+
+## Steps
+
+### 1. Choose the identity bytes
+
+Encode the primary payload as nonempty bytes. For text, use viem’s `stringToHex` so the input and its encoding are explicit. Compute `calculateAtomId(data)` and check `multiVaultIsTermCreated` on the chosen MultiVault. If that ID exists, reuse it. If the atom represents a content URI, making the URI itself the primary payload makes its exact bytes part of the ID. An optional context URI is a separate pointer and leaves the ID unchanged. [Atom identity](https://docs.intuition.systems/docs/concepts/atoms)
+
+### 2. Size the payment and context
+
+Read `multiVaultGetAtomCost` in native wei. The example pays that exact cost for one atom on the default curve. Paying only the creation cost can leave the creator with zero shares. Keep gas separate. In a batch, each allocation must cover its own cost and the transaction value must equal their sum.
+
+For ordinary creation, use the data and asset arrays. To register context, supply one URI array per atom, including an empty array for any atom without pointers. Encode each URI as bytes. The live `maxUriCount` limits pointers per atom and `maxUriLength` limits **bytes per URI**. Check the independent `atomDataMaxLength` for the primary payload. The example uses the signer as creator. A different creator must have approved the caller for creation.
+
+### 3. Submit the reviewed call
+
+Review the chain, MultiVault address, signer, creator, identity bytes, term ID, URI arrays, calldata and native payment. Pick one branch for a given atom. Each protocol wrapper simulates that call and submits through the wallet after your confirmation.
+
+```ts
+  if (uris) {
+    const [maxUriCount, maxUriLength] = await multiVaultGetAtomUriConfig(s);
+    const input = {
+      args: [s.signer, [data], [cost], [uris]] as const,
+      value: cost,
+      uriLimits: { maxUriCount, maxUriLength },
+    };
+    const calldata = multiVaultCreateAtomsWithUrisEncode(input);
+    await review(s, 'CREATE WITH URIS', {
+      to: s.address,
+      termId,
+      ...input,
+      calldata,
+    });
+    hash = await multiVaultCreateAtomsWithUris(s, input);
+  } else {
+    const args = [[data], [cost]] as const;
+    const calldata = multiVaultCreateAtomsEncode([data], [cost]);
+    await review(s, 'CREATE ATOM', {
+      to: s.address,
+      creator: s.signer,
+      termId,
+      args,
+      value: cost,
+      calldata,
+    });
+    hash = await multiVaultCreateAtoms(s, { args, value: cost });
+  }
+```
+
+## Check the result
+
+Save the returned hash immediately and wait for a successful receipt whose transaction hash matches it. Filter its logs by the selected MultiVault address. Match `AtomCreated` on creator, term ID and exact data. A nonempty URI list also produces `AtomContextRegistered` with the same term ID, registrant and URI bytes. These pointers are emitted in logs. The receipt establishes their registration, while any content retrieval is a separate operation. [MultiVault creation implementation](https://github.com/0xIntuition/intuition-contracts-v2/blob/82cfcdb832c100fd2e53ee3f474289ae14cc6020/src/libraries/MultiVaultLib.sol)
+
+## Troubleshooting
+
+A duplicate atom, oversized payload, exceeded URI count or byte length, insufficient per-atom payment, missing creation approval or paused contract can prevent execution. Re-read the relevant state before changing the call. For a timeout or replacement, inspect the original hash, replacement and current term state before considering another submission.
+
+## Related
+
+[Create triples](https://docs.intuition.systems/docs/build/create-triples) · [Deposit and redeem](https://docs.intuition.systems/docs/build/deposit-redeem) · [URI creation wrapper](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/protocol/src/core/multivault/create-atoms-with-uris.ts)
+
+# Create triples
+
+Source: https://docs.intuition.systems/docs/build/create-triples
+
+Applies to V2 · `@0xintuition/protocol` 4.0.0 · `@0xintuition/sdk` 4.0.0 · `@0xintuition/ids` 0.1.0
+
+Create a relationship from three existing term IDs and verify the base triple and its counter on the default curve.
+
+## Before you start
+
+Follow [Install and pin the packages](https://docs.intuition.systems/docs/build/install) and [Create atoms](https://docs.intuition.systems/docs/build/create-atoms). Use the same chain, MultiVault and funded signer for your reads and write. Keep the three term IDs in subject, predicate, object order. The helper accepts a session plus an object with `subjectId`, `predicateId` and `objectId`. [Example source](https://github.com/0xIntuition/intuition-docs/blob/d928b7692bdee7f3c9e24f65bf0c38e8c26bc152/examples/v2/first-write/src/create-triples-guide.ts)
+
+## Steps
+
+### 1. Confirm each term and derive the pair
+
+For a simple claim such as “Alice follows Bob,” resolve Alice, the predicate and Bob to existing atom IDs on this MultiVault. You can also place an already-created triple or counter-triple in **any** slot. A deterministically computed ID still needs to exist on the selected chain. The contract checks all three slots with the same term-existence rule. [MultiVault term validation](https://github.com/0xIntuition/intuition-contracts-v2/blob/82cfcdb832c100fd2e53ee3f474289ae14cc6020/src/libraries/MultiVaultLib.sol)
+
+```ts
+  const tripleId = calculateTripleId(subjectId, predicateId, objectId);
+  const counterId = calculateCounterTripleId(tripleId);
+  const [subject, predicate, object, exists] = await Promise.all(
+    [subjectId, predicateId, objectId, tripleId].map((id) =>
+      multiVaultIsTermCreated(s, { args: [id] }),
+    ),
+  );
+  if (!subject || !predicate || !object)
+    throw new Error('Create missing terms first.');
+  if (exists) throw new Error('This ordered triple already exists.');
+```
+
+`calculateTripleId` hashes the ordered IDs with the triple salt. Reversing the subject and object describes a different claim. `calculateCounterTripleId` derives the opposing side from the base ID and a distinct salt. [ID derivation](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/ids/src/triple-id.ts)
+
+### 2. Review and fund the base creation
+
+Read `multiVaultGetTripleCost` and reserve gas. The live cost covers the creation fee and bootstrap for both vaults. The example allocates exactly that cost, with no extra user stake. Each input array has one item per triple. For an array of relationships, align each subject, predicate, object and payment by index and send the sum of the allocations.
+
+```ts
+  const { tripleId, counterId } = await checkTriple(s, {
+    subjectId,
+    predicateId,
+    objectId,
+  });
+  const cost = await multiVaultGetTripleCost(s);
+  const args = [[subjectId], [predicateId], [objectId], [cost]] as const;
+  const calldata = multiVaultCreateTriplesEncode(
+    [subjectId],
+    [predicateId],
+    [objectId],
+    [cost],
+  );
+  await review(s, 'CREATE TRIPLE', {
+    to: s.address,
+    creator: s.signer,
+    subjectId,
+    predicateId,
+    objectId,
+    tripleId,
+    counterId,
+    args,
+    calldata,
+    value: cost,
+  });
+  const hash = await multiVaultCreateTriples(s, { args, value: cost });
+  const receipt = await waitForOriginal(s, hash);
+```
+
+### 3. Inspect both vaults
+
+One base transaction records the same ordered tuple for both IDs, links the counter to the base, and initializes the default-curve vault on each side. The counter receives its minimum bootstrap shares at the burn address. The creator’s optional additional stake goes into the base vault. A separate counter creation is unnecessary.
+
+## Check the result
+
+Save the submitted hash. On its original successful receipt, filter by the MultiVault address and find `TripleCreated` with the signer as creator, the expected base ID and all three ordered term IDs. Expect one creation event for this relationship. Read `isTermCreated` for both IDs on the same contract. The helper returns both IDs and the verified receipt. [Triple and counter initialization](https://github.com/0xIntuition/intuition-contracts-v2/blob/82cfcdb832c100fd2e53ee3f474289ae14cc6020/src/libraries/MultiVaultLib.sol)
+
+## Troubleshooting
+
+If a slot is missing, finish that term’s creation and check its receipt first. If another writer created the same triple, verify its tuple and use the existing ID. On a cost or simulation failure, re-read the contract and review a new call. Resolve an unknown, replaced or reverted transaction from its hash before retrying.
+
+## Related
+
+[Triples](https://docs.intuition.systems/docs/concepts/triples) · [Batch writes](https://docs.intuition.systems/docs/build/batch-writes) · [SDK MultiVault actions](https://docs.intuition.systems/docs/reference/sdk/multivault)
+
 # Build creation forms
 
 Source: https://docs.intuition.systems/docs/build/creation-profiles
@@ -569,6 +1050,345 @@ Valid synthetic input returns `ok: true` with a preview; omitting required `name
 ## Related
 
 [Representation profiles](https://docs.intuition.systems/docs/concepts/representation-profiles), [classifications](https://docs.intuition.systems/docs/reference/packages/classifications), and [primitives](https://docs.intuition.systems/docs/reference/packages/primitives). Source: [Creation Profile types](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/classifications/src/creation-profile.ts), [generated form model](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/examples/hackathon-quickstart/src/generated-ui-model.ts), and [validation](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/classifications/src/atom-data.ts).
+
+# Deposit and redeem
+
+Source: https://docs.intuition.systems/docs/build/deposit-redeem
+
+Applies to V2 · `@0xintuition/sdk` 4.0.0 · `@0xintuition/protocol` 4.0.0 · `@0xintuition/curves` 0.1.0
+
+Deposit native assets into a term’s vault or redeem its shares for a payout, using a fresh quote for your selected curve and account.
+
+## Before you start
+
+Follow [Install and pin the packages](https://docs.intuition.systems/docs/build/install) and select an existing term on a compatible MultiVault. Identify the curve ID, signing account and share holder. The helper uses the signer as receiver, holder and payout address and uses the same interactive session as [Create atoms](https://docs.intuition.systems/docs/build/create-atoms). Keep enough native currency for gas on either operation. [Vaults](https://docs.intuition.systems/docs/concepts/vaults) · [Example source](https://github.com/0xIntuition/intuition-docs/blob/d928b7692bdee7f3c9e24f65bf0c38e8c26bc152/examples/v2/first-write/src/deposit-redeem-guide.ts)
+
+## Steps
+
+### 1. Choose the input and output units
+
+| Operation | Input | Minimum output encoded in the call |
+| --- | --- | --- |
+| Deposit | `assetsIn`, native wei sent as transaction value | `minSharesOut`, vault share units |
+| Redeem | `sharesIn`, units held by the receiver for this term and curve | `minAssetsOut`, native wei paid to the receiver |
+
+Use `bigint` quantities. For example, viem’s `parseEther("0.01")` converts 0.01 TRUST or tTRUST to native wei. To redeem, select a share quantity from `multiVaultGetShares`; an amount of native currency does not identify a share quantity. Determine the slippage you accept in basis points. At 50 basis points, the minimum is the quoted output multiplied by 9,950 and divided by 10,000, rounded down. The examples reject a floor that rounds to zero.
+
+### 2. Review the deposit for the chosen receiver
+
+For a read-only estimate, import `multivaultQuoteDepositPlan` from `@0xintuition/sdk/actions` and supply the read config plus `termId`, `curveId`, `assetsIn` and `slippageBps`. The prepared transaction uses a fresh quote. Review its actual output estimate, fee breakdown, share floor, receiver, chain, target and calldata. Leave the value override unset so the payment equals the quoted gross assets. The receiver must approve a different caller for deposits.
+
+```ts
+  const tx = await multivaultPrepareDepositTx(s, {
+    receiver,
+    termId,
+    curveId,
+    assetsIn,
+    slippageBps,
+  });
+  if (tx.quote.minSharesOut <= 0n)
+    throw new Error('The share floor rounds to zero.');
+  await review(s, 'DEPOSIT', { to: s.address, receiver, ...tx });
+  const hash = await multiVaultDeposit(s, { args: tx.args, value: tx.value });
+  const receipt = await waitForOriginal(s, hash);
+```
+
+### 3. Price a redemption for the actual holder
+
+For a read-only estimate, use `multivaultQuoteRedeemPlan` from the same entry point with `termId`, `curveId`, `account`, `sharesIn` and `slippageBps`. Set `account` to the **receiver whose shares will be burned and who receives the payout**. An approved operator can sign on behalf of that receiver. The raw contract `previewRedeem` does not price holder-specific curve fees for that account. The SDK’s account-aware quote includes them. The redeem call carries zero native value.
+
+```ts
+  const account = s.signer;
+  const position = await multiVaultGetShares(s, {
+    args: [account, termId, curveId],
+  });
+  if (sharesIn > position)
+    throw new Error('Insufficient shares in this vault.');
+  const tx = await multivaultPrepareRedeemTx(s, {
+    receiver: account,
+    account,
+    termId,
+    curveId,
+    sharesIn,
+    slippageBps,
+  });
+  if (tx.quote.minAssetsOut <= 0n)
+    throw new Error('The payout floor rounds to zero.');
+  await review(s, 'REDEEM', {
+    to: s.address,
+    receiver: account,
+    ...tx,
+    value: 0n,
+  });
+  const hash = await multiVaultRedeem(s, { args: tx.args });
+  const receipt = await waitForOriginal(s, hash);
+```
+
+## Check the result
+
+Save the original hash and wait for a matching successful receipt. Inspect the selected MultiVault’s `Deposited` or `Redeemed` event for the sender, receiver or account, term, curve, input quantity and actual output. The actual output must meet the reviewed floor. Read `getShares(account, termId, curveId)` again for the current position. Use the event’s post-operation balance for the balance at the instant of that operation. [Events and errors](https://docs.intuition.systems/docs/reference/contracts/events-and-errors)
+
+## Troubleshooting
+
+A paused contract, insufficient shares, missing approval, minimum deposit, prohibited opposing stake or market movement can stop the operation. Confirm the receipt state, refresh the live quote and inspect the new minimum before signing again. The standalone curve library can illustrate conversion and fees with assumed state. Use the selected deployment’s current state for execution amounts. [Bonding curves](https://docs.intuition.systems/docs/concepts/bonding-curves) · [SDK quote implementation](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/sdk/src/actions/multivault.ts)
+
+## Related
+
+[Create atoms](https://docs.intuition.systems/docs/build/create-atoms) · [Batch writes](https://docs.intuition.systems/docs/build/batch-writes) · [SDK MultiVault reference](https://docs.intuition.systems/docs/reference/sdk/multivault)
+
+# Derive IDs and IIDs
+
+Source: https://docs.intuition.systems/docs/build/derive-ids
+
+Applies to V2 · `@0xintuition/ids` 0.1.0 · `@0xintuition/iid` 0.1.0 · `@0xintuition/iid-ladder` 0.1.0 · `@0xintuition/primitives` 0.1.0
+
+Turn recording metadata into a canonical Intuition Identifier (IID), then calculate the atom and claim IDs an application can compare before a write.
+
+## Before you start
+
+A provider’s identifier describes an entity, while an atom ID names one exact sequence of bytes. A triple ID names an ordered claim connecting three terms. See [deterministic IDs](https://docs.intuition.systems/docs/concepts/deterministic-ids) and the [identity ladder](https://docs.intuition.systems/docs/concepts/identity-ladder).
+
+For your own project, follow [Install the packages](https://docs.intuition.systems/docs/build/install). To run the [offline example](https://github.com/0xIntuition/intuition-docs/blob/c3b1eaa91a822bb59b20cb6de2bc9b874a00b7b0/examples/v2/identity-linking/src/derive-ids.ts), install its locked dependencies from the documentation repository root with Node.js 22.21.0.
+
+```sh
+npm ci --prefix examples/v2 --ignore-scripts
+```
+
+## Steps
+
+### 1. Project the recording identifier
+
+Supply the identifiers for a known recording and its canonical URL. In the fixture, `US-RC1-76-07839` canonicalizes to `int:isrc:USRC17607839`. The ladder selects it on the strong rung. With empty input the ladder returns `iid: null`, `fallback: 'envelope'` and `reason: 'no-identifier'`. The helper returns that reason so the caller can request more evidence.
+
+### 2. Select the representation and hash its bytes
+
+Inspect the selected IID, then ask the anchor builder for the serialized bytes. A valid IID can still require a typed JSON envelope. For example, the canonical account scheme admits weak handles. The released package requires at least P1 for a weak handle, so hashing the bare handle would predict the wrong ID for that envelope. [Canonical account scheme](https://github.com/0xIntuition/intuition-identifier/blob/3e593247c0e7cb168b37368937167ed146d3868a/schemes/acct.md) and [packaged profile requirement](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/iid-spec/schemes/acct.md).
+
+```ts
+import {
+  calculateAtomId,
+  calculateCounterTripleId,
+  calculateTripleId,
+} from '@0xintuition/ids';
+import { inspectIntuitionId } from '@0xintuition/iid';
+import { projectIdentifierLadder } from '@0xintuition/iid-ladder';
+import { buildIidAnchor } from '@0xintuition/primitives/anchor';
+import { byArtistId } from '@0xintuition/predicates/byArtist';
+
+export function deriveRecording(
+  strongIdentifiers: Record<string, string>,
+  canonicalUrl?: string,
+) {
+  const selection = projectIdentifierLadder({
+    strongIdentifiers,
+    canonicalUrl,
+  });
+  if (selection.iid === null) return { reason: selection.reason };
+  const inspection = inspectIntuitionId(selection.iid);
+  if (!inspection.valid) return { reason: inspection.reason };
+
+  const anchor = buildIidAnchor(
+    'music-recording',
+    { name: 'Local catalog' },
+    {
+      candidateIid: selection.iid,
+      contextUris: ['https://example.org/context'],
+    },
+  );
+  if (!anchor.success) throw new Error(anchor.errors.join(', '));
+  const { iid, dataHex, profile, contextUris } = anchor.value;
+  const atomId = calculateAtomId(dataHex);
+  const artistId = calculateAtomId('example:artist');
+  const tripleId = calculateTripleId(atomId, byArtistId, artistId);
+  return {
+    iid,
+    profile,
+    contextUris,
+    dataHex,
+    atomId,
+    tripleId,
+    counterId: calculateCounterTripleId(tripleId),
+  };
+}
+```
+
+### 3. Keep the terms in order
+
+The example places the recording first, the registry’s `byArtist` predicate second, and the synthetic artist last. Swapping artist and recording calculates the ID for a different statement. The counter uses its own salt and the original triple ID. The `contextUris` travel alongside the anchor. Changing a companion URI preserves the hashed payload, whereas editing a character inside the payload changes its atom ID.
+
+## Check the result
+
+```sh
+node examples/v2/identity-linking/src/derive-ids.ts
+```
+
+The recording uses P0, so its complete payload is the UTF-8 text `int:isrc:USRC17607839`. Compare the printed values to these results.
+
+| Value | Expected |
+| --- | --- |
+| Payload bytes | `0x696e743a697372633a555352433137363037383339` |
+| Atom ID | `0xd3368a8190d3afd5fb05abd01db8141c09a77c3f290bb7a0ef2ffb2b5acab8d8` |
+| Triple ID | `0x3ff96ae3404297531e06d9c45cd6d1ae4f2dfcb93eb1647e11c3d7e34d4ddf91` |
+| Counter ID | `0x9c29beb2d9ecb87a18b4e3973a6f78dbcf06d9b8e6be99cbf0725e00f89fe462` |
+
+The empty fixture prints `no-identifier`. If two records yield different atom IDs, preserve both byte sequences and review evidence for an [identity link](https://docs.intuition.systems/docs/build/link-identities).
+
+## Related
+
+[Representation profiles](https://docs.intuition.systems/docs/concepts/representation-profiles), [ladder selection](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/iid-ladder/src/ladder.ts), [atom ID derivation](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/ids/src/atom-id.ts), and [triple and counter derivation](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/ids/src/triple-id.ts).
+
+# Route writes through the FeeProxy
+
+Source: https://docs.intuition.systems/docs/build/fee-proxy
+
+Applies to V2 · `@0xintuition/periphery` 0.1.0 · `@0xintuition/sdk` 4.0.0
+
+Route an atom creation or deposit through an affiliate’s FeeProxy and verify each approval and routed payment separately.
+
+## Before you start
+
+Follow [Install and pin the packages](https://docs.intuition.systems/docs/build/install) and [Create atoms](https://docs.intuition.systems/docs/build/create-atoms). Identify the **FeeProxy** and its **MultiVault** on the same chain. Resolve the canonical FeeProxy with `getFeeProxyAddressFromChainId` from `@0xintuition/periphery`, or supply the verified address of a compatible local deployment. The swap-and-bridge router has a separate address and interface. Use the same public client for both read configurations. The builders verify that the proxy’s `multiVault()` points at the supplied MultiVault. [Contract deployments](https://docs.intuition.systems/docs/reference/contracts/deployments) · [FeeProxy reference](https://docs.intuition.systems/docs/reference/contracts/fee-proxy)
+
+## Steps
+
+### 1. Inspect the affiliate’s current profile
+
+Read `feeProxyGetAffiliateProfile(feeProxyConfig, { affiliate })` from `@0xintuition/sdk/actions`. Check registration, row pause status, fee recipient and the rates and fixed fees for the intended operation. Compare those settings with the protocol caps. The registration fee applies when registering a new affiliate. A registered, active affiliate still needs an unpaused proxy and fee settings within the caps for this route.
+
+FeeProxy charges `floor(grossAssets × basisPoints / 10,000) + fixedFee` on the declared gross value of each routed call. All payment fields use **wei of native TRUST or tTRUST**. The result after the affiliate fee enters MultiVault, where its own fees and share pricing apply. A batch deposit charges the fixed fee once and allocates the forwarded amount across its legs, giving the rounding remainder to the last leg.
+
+### 2. Build the requested route
+
+For creation, give the builder exact atom bytes and the desired extra deposit **above** the live creation cost. It calculates the gross value needed after the affiliate fee. Its creation preview reports expected shares and pins the affiliate fee guard. It can also prepare URI-aware atoms and ordered triples. Atom and triple routes are separate calls, each with its own fee. For dependent terms, confirm the prerequisite terms, then prepare the next route.
+
+For deposits, specify the user, affiliate, share receiver, existing term, curve, gross assets and slippage. The builder quotes the forwarded amount and each leg’s share floor, then encodes the deposit with a fee guard. Compare the plan’s gross value, affiliate fee, forwarded value, fixed fee and rate cap with your intent. [Complete route helper](https://github.com/0xIntuition/intuition-docs/blob/d928b7692bdee7f3c9e24f65bf0c38e8c26bc152/examples/v2/first-write/src/fee-proxy-guide.ts)
+
+```ts
+  const configs = {
+    multiVault: { address: s.address, publicClient: s.publicClient },
+    feeProxy: { address: proxy, publicClient: s.publicClient },
+  };
+  const profile = await feeProxyGetAffiliateProfile(configs.feeProxy, {
+    affiliate,
+  });
+  if (
+    !profile.active ||
+    !profile.withinCaps[route.kind === 'create' ? 'creation' : 'deposit']
+  ) {
+    throw new Error('Check affiliate registration, pause status and fee caps.');
+  }
+  if (route.kind === 'create') await checkAtomData(s, route.data);
+  const plan =
+    route.kind === 'create'
+      ? await feeProxyBuildCreateViaPlan(configs, {
+          user,
+          affiliate,
+          atoms: [{ data: route.data, deposit: route.depositWei }],
+        })
+      : await feeProxyBuildDepositViaPlan(configs, {
+          user,
+          affiliate,
+          receiver: route.receiver,
+          slippageBps: route.slippageBps,
+          deposits: [
+            {
+              termId: route.termId,
+              curveId: route.curveId,
+              grossAssets: route.grossAssets,
+            },
+          ],
+        });
+```
+
+### 3. Verify who signs the next step
+
+Inspect the actual number and order of `plan.steps`, including each step’s `kind`, `from`, `to`, calldata and value. An approval targets MultiVault and costs zero native value plus gas. A routed write targets FeeProxy and sends the quoted gross amount plus a separate gas cost.
+
+For creation, the user must grant FeeProxy the creation permission. For deposits, the receiver grants FeeProxy the deposit permission. When the receiver differs from the user, the receiver also grants the user deposit permission. The builder keeps existing permission bits when encoding a missing approval. Use the signer named by each step. Review any approval’s spender and resulting permission mask before signing it.
+
+### 4. Submit one reviewed step
+
+Call `routeNext(session, proxy, intent, history)` from an interactive terminal with the appropriate signing account. Supply a history array you keep across calls. The helper simulates and displays the next step and the full plan before prompting. Its receipt client records the original hash as soon as the SDK starts waiting. Keep the hashes in your application’s transaction history so a restart preserves them.
+
+```ts
+  const publicClient: PublicClient = {
+    ...s.publicClient,
+    waitForTransactionReceipt: async (options) => {
+      const record: SubmittedStep = {
+        chainId: s.chainId,
+        step,
+        hash: options.hash,
+      };
+      history.push(record);
+      console.log('Submitted:', record.hash);
+      record.receipt = await s.publicClient.waitForTransactionReceipt(options);
+      return verifyReceipt(record.hash, record.receipt);
+    },
+  };
+  const executed = await feeProxyExecutePlan(
+    { walletClient: s.walletClient, publicClient },
+    { steps: [step] },
+  );
+```
+
+A returned `complete` value of `false` means the approval succeeded: inspect that receipt, rebuild the requested route and review its next step. Stop when `complete` is `true`. The SDK executor normally requires one wallet that matches every supplied step; this example supplies only the single step the current signer reviewed. [SDK builders and executor](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/sdk/src/actions/fee-proxy-builders.ts)
+
+## Check the result
+
+For each step, verify the receipt’s status and original hash. An approval receipt establishes a permission change. For the routed transaction, compare FeeProxy’s creation or deposit event with the intended user, affiliate, gross amount, affiliate fee and forwarded amount. Check the expected MultiVault creation or deposit logs and the resulting term or receiver position. [FeeProxy implementation](https://github.com/0xIntuition/intuition-contracts-v2/blob/82cfcdb832c100fd2e53ee3f474289ae14cc6020/src/periphery/FeeProxy.sol)
+
+Send the plan’s exact value. FeeProxy attempts to return any excess to the caller, crediting `pendingRefund(user)` only if the transfer fails. `feeProxyClaimRefundIfAny(feeProxyConfig, { user, recipient })` returns either `null` or a claim transaction for the ledger owner to review and send separately. Select a payable recipient distinct from the proxy and zero address. [Refund helper](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/sdk/src/actions/fee-proxy-claim-refund-if-any.ts)
+
+## Troubleshooting
+
+If a fee rises above the encoded guard, the proxy pauses, the recipient rejects a fee transfer, or a deposit misses its share minimum, the routed transaction can revert. A previous approval remains effective. If a receipt is missing or the transaction was replaced, look up the saved hash and replacement in the signing wallet. Reconcile events and current permissions before building and reviewing only what remains. Replaying a successful deposit would fund the vault twice.
+
+## Related
+
+[Deposit and redeem](https://docs.intuition.systems/docs/build/deposit-redeem) · [Batch writes](https://docs.intuition.systems/docs/build/batch-writes) · [Affiliate profile fields](https://docs.intuition.systems/docs/reference/sdk/fee-proxy-affiliate-profile)
+
+# Build guides
+
+Source: https://docs.intuition.systems/docs/build
+
+Choose a guide for the part of your application you are building. You can model identities and inspect candidate atoms offline before choosing a network.
+
+## Set up
+
+- [Install and pin the packages](https://docs.intuition.systems/docs/build/install) your project needs.
+- [Connect to a network](https://docs.intuition.systems/docs/build/connect) and verify the chain ID and deployed contract address.
+
+## Model data
+
+- [Derive IDs and IIDs](https://docs.intuition.systems/docs/build/derive-ids) from your input and its chosen representation.
+- [Build creation forms](https://docs.intuition.systems/docs/build/creation-profiles) from the fields in a Creation Profile.
+- [Suggest relationships and pick predicates](https://docs.intuition.systems/docs/build/suggest-relationships) for an ordered triple.
+- [Link identities with sameAs](https://docs.intuition.systems/docs/build/link-identities) after reviewing the evidence that two atoms represent the same entity.
+
+## Process atoms
+
+- [Parse user input](https://docs.intuition.systems/docs/build/parse-input) into candidates and inspect any warnings.
+- [Classify and enrich atoms](https://docs.intuition.systems/docs/build/classify-enrich) and trace where a field value came from.
+- [Compose an atom runtime](https://docs.intuition.systems/docs/build/atom-runtime) with local plugins, caches, and concurrency limits.
+
+## Write on-chain
+
+- [Create atoms](https://docs.intuition.systems/docs/build/create-atoms) from exact bytes and check the creation receipt.
+- [Create triples](https://docs.intuition.systems/docs/build/create-triples) from three existing term IDs.
+- [Deposit and redeem](https://docs.intuition.systems/docs/build/deposit-redeem) with a quote for the chosen vault and curve.
+- [Batch writes](https://docs.intuition.systems/docs/build/batch-writes) when later transactions depend on newly created terms.
+- [Route writes through the FeeProxy](https://docs.intuition.systems/docs/build/fee-proxy) and review the required approvals and payments.
+- [Build action plans and envelopes](https://docs.intuition.systems/docs/build/action-plans) for a human to inspect before execution.
+
+## Read the graph
+
+- [Check the scope of SDK reads](https://docs.intuition.systems/docs/build/read-with-sdk) when migrating an existing integration.
+- [Query a Core node](https://docs.intuition.systems/docs/build/query-core) you run to read indexed V2 atoms and relationships.
+
+## Apps
+
+- [Use React hooks](https://docs.intuition.systems/docs/build/react) to connect wallet state, contract reads, and transaction feedback.
+- [Test locally](https://docs.intuition.systems/docs/build/test-locally) using your own development chain or a funded testnet account.
 
 # Install and pin the packages
 
@@ -663,6 +1483,179 @@ Run `npm ls --depth=0` to inspect direct versions, then compile your project wit
 ## Related
 
 [Build a music catalog](https://docs.intuition.systems/docs/examples/music-catalog), [creation profiles](https://docs.intuition.systems/docs/build/creation-profiles), and [action envelopes](https://docs.intuition.systems/docs/build/action-plans) use these pins. Source: [release policy](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/docs/release.md).
+
+# Link identities with sameAs
+
+Source: https://docs.intuition.systems/docs/build/link-identities
+
+Applies to V2 · `@0xintuition/primitives` 0.1.0 · `@0xintuition/predicates` 0.1.0 · `@0xintuition/iid` 0.1.0
+
+Prepare a `sameAs` triple when two existing atoms refer to the same recording and a reviewer has checked the evidence.
+
+## Before you start
+
+Retain the exact original bytes for both atoms, their entity levels, and the source records used to identify them. Read [sameAs](https://docs.intuition.systems/docs/concepts/same-as) and [triples](https://docs.intuition.systems/docs/concepts/triples).
+
+For your own project, follow [Install the packages](https://docs.intuition.systems/docs/build/install). To run the [offline example](https://github.com/0xIntuition/intuition-docs/blob/84242e8f4399ac758c942e85b343e0512245a6cf/examples/v2/identity-linking/src/link-identities.ts), install its locked dependencies from the documentation repository root with Node.js 22.21.0.
+
+```sh
+npm ci --prefix examples/v2 --ignore-scripts
+```
+
+## Steps
+
+### 1. Compare the two source records
+
+In the synthetic catalog, the older atom stores a JSON payload with a title and a catalog URL in its `sameAs` field. The newer atom stores the bare IID `int:isrc:USRC17607839`. The catalog editor has verified that both source entries describe the recording with that ISRC. The URL in the older payload is a reference the editor can inspect. Adding another URL would change those serialized bytes and produce a different atom ID.
+
+### 2. Screen the candidates and record the review
+
+Check what each candidate identifies before comparing its identifiers. A review article can quote the exact ISRC while identifying a different entity. A second recording can share a title while carrying a different ISRC. Leave candidates with missing evidence for later review. This catalog requires a matching canonical ISRC and explicit approval for this particular workflow. Other domains need evidence appropriate to their entity level.
+
+```ts
+import type { Hex } from 'viem';
+import { inspectIntuitionId } from '@0xintuition/iid';
+import { calculateAtomId } from '@0xintuition/ids';
+import { sameAsId } from '@0xintuition/predicates/sameAs';
+import { buildTriple } from '@0xintuition/primitives/triple';
+
+type CatalogRecord = {
+  atomData: Hex;
+  level: 'recording' | 'article';
+  recordingIid?: string;
+};
+
+export function planLink(
+  left: CatalogRecord,
+  right: CatalogRecord,
+  reviewerApproved: boolean,
+) {
+  if (left.level !== 'recording' || right.level !== 'recording')
+    return { reason: 'Different entity level' };
+  if (!left.recordingIid || !right.recordingIid)
+    return { reason: 'Missing recording identifier' };
+  const a = inspectIntuitionId(left.recordingIid);
+  const b = inspectIntuitionId(right.recordingIid);
+  if (
+    !a.valid ||
+    !b.valid ||
+    a.scheme !== 'isrc' ||
+    b.scheme !== 'isrc' ||
+    a.iid !== b.iid
+  ) {
+    return { reason: 'Recording identifiers do not match' };
+  }
+  if (!reviewerApproved) return { reason: 'Awaiting review' };
+  const subjectId = calculateAtomId(left.atomData);
+  const objectId = calculateAtomId(right.atomData);
+  if (subjectId === objectId) return { reason: 'Already the same atom' };
+  const claim = buildTriple(subjectId, 'sameAs', objectId);
+  if (!claim.success) throw new Error(claim.errors.join(', '));
+  return { claim: claim.value };
+}
+```
+
+### 3. Review the edge before creating it
+
+Supply each original payload as hex-encoded bytes in `atomData`. For UTF-8 text, call `stringToHex` on the exact stored string, including any spaces. For example, the six literal characters `0x6162` encode as `0x307836313632`. If the archive already gives the two binary bytes as `0x6162`, pass that hex value directly. Compare the printed subject, predicate, and object IDs with the intended terms. The locally built triple is a proposal. To publish the reviewed edge, follow [Create triples](https://docs.intuition.systems/docs/build/create-triples). Both original atom IDs continue to identify their respective payloads.
+
+## Check the result
+
+```sh
+node examples/v2/identity-linking/src/link-identities.ts
+```
+
+The accepted fixture prints two distinct atom IDs and the claim ID `0x84c9260e71757e9c7d5e33fa8bd370a7794160910b8e59ced21cb4e27911402f`. The article produces “Different entity level,” the title alone produces “Missing recording identifier,” and the second recording produces “Recording identifiers do not match.” A matching pair without approval remains “Awaiting review.”
+
+## Related
+
+[Identity ladders](https://docs.intuition.systems/docs/concepts/identity-ladder), [equivalence and candidate review](https://github.com/0xIntuition/intuition-identifier/blob/3e593247c0e7cb168b37368937167ed146d3868a/spec/08-equivalence.md), [IID inspection](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/iid/src/parse.ts), and [triple blueprints](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/primitives/src/triple.ts).
+
+# Parse user input
+
+Source: https://docs.intuition.systems/docs/build/parse-input
+
+Applies to V2 · `@0xintuition/atom-parser` 0.1.0
+
+Turn a pasted URL, IID, or text label into a local candidate that your application can inspect before classification.
+
+## Before you start
+
+Choose how many input bytes your host can accept and apply that limit at the transport boundary. This example also sets a 64-byte parser limit to make the oversized case easy to try. See [atom parsing](https://docs.intuition.systems/docs/concepts/atom-parsing).
+
+For your own project, follow [Install the packages](https://docs.intuition.systems/docs/build/install). To run the [offline example](https://github.com/0xIntuition/intuition-docs/blob/c3b1eaa91a822bb59b20cb6de2bc9b874a00b7b0/examples/v2/music-catalog/src/parse-input.ts), install its locked dependencies from the documentation repository root with Node.js 22.21.0.
+
+```sh
+npm ci --prefix examples/v2 --ignore-scripts
+```
+
+## Steps
+
+### 1. Make local parsing explicit
+
+Pass `remoteFetch: false` for pasted input. The package default allows remote inspection for eligible URLs and IPFS inputs. With inspection disabled, URL detection only interprets the supplied text. The parser trims outer ASCII whitespace for detection and measures the original input in UTF-8 bytes for the size limit.
+
+### 2. Use the result kind and preserve warnings
+
+For a URL, take `canonicalUrl`. For an IID, check `valid` before using `canonicalIid` and keep the reason when validation fails. A `plain_string` is a label you can offer for classification or manual entry. The helper preserves the parser’s warnings for all returned candidates and handles `ParseError` codes separately.
+
+```ts
+import { parseAtom, ParseError } from '@0xintuition/atom-parser';
+
+export async function parseCandidate(input: string) {
+  try {
+    const result = await parseAtom(input, {
+      remoteFetch: false,
+      maxInputBytes: 64,
+    });
+    const { kind, warnings } = result;
+    if (result.kind === 'iid') {
+      return {
+        kind,
+        warnings,
+        valid: result.valid,
+        iid: result.canonicalIid,
+        anchorEligible: result.anchorEligible,
+        reason: result.reason,
+      };
+    }
+    return {
+      kind,
+      warnings,
+      value:
+        result.kind === 'url' ? result.canonicalUrl : result.normalizedInput,
+    };
+  } catch (error) {
+    if (!(error instanceof ParseError)) throw error;
+    return { error: error.code };
+  }
+}
+```
+
+### 3. Decide what to retain
+
+Present a canonical identifier to the caller for review. Keep free text available for correction or [classification](https://docs.intuition.systems/docs/build/classify-enrich). Even a syntactically valid identifier still requires evidence that it belongs to the intended entity.
+
+## Check the result
+
+```sh
+node examples/v2/music-catalog/src/parse-input.ts
+```
+
+| Input | Expected result |
+| --- | --- |
+| ` https://example.org/catalog ` | `url` with canonical URL `https://example.org/catalog` |
+| `INT:ISRC:US-RC1-76-07839` | `iid`, valid, with `int:isrc:USRC17607839` |
+| `int:unknown:example` | `iid`, invalid, with reason `unknown_or_malformed_iid` |
+| `A catalog label` | `plain_string` |
+| Spaces only | `EMPTY_INPUT` |
+| 65 ASCII characters | `INPUT_TOO_LARGE` |
+
+All four returned candidates in this run have an empty warnings list, including the invalid IID. Use the IID’s `valid` field for the decision.
+
+## Related
+
+[Atom parser package](https://docs.intuition.systems/docs/reference/packages/atom-parser), [detection order](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/atom-parser/src/detect.ts), [remote inspection and byte checks](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/atom-parser/src/parse.ts), and [IID result fields](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/atom-parser/src/iid.ts).
 
 # Query a Core node
 
@@ -832,6 +1825,109 @@ Auth modes are `open`, `public-read`, and `gated`; choose the policy for your de
 
 Pinned sources: [OpenAPI contract](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/docs/openapi.yaml), [API reference](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/docs/api-reference.md), [bootstrap script](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/scripts/bootstrap.sh), [Compose services](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/docker-compose.yml), and [configuration](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/docs/configuration.md).
 
+# Use React hooks
+
+Source: https://docs.intuition.systems/docs/build/react
+
+Applies to V2 · `@0xintuition/react` 0.1.0 · `@0xintuition/protocol` 4.0.0 · `@0xintuition/deployments` 0.1.0
+
+Use the same MultiVault deployment for a wallet-free atom lookup and a wallet-approved creation in your React application.
+
+## Before you start
+
+Install the pinned packages and peers in a React host. The [worked React app](https://docs.intuition.systems/docs/examples/react-app) includes the dependencies, connector, mount and browser bundle instructions. Have a testnet RPC URL and an existing 32-byte atom term ID for the read. Creation also requires an injected wallet on Intuition testnet and native funds for the creation cost and gas. [Install the packages](https://docs.intuition.systems/docs/build/install) · [Atoms](https://docs.intuition.systems/docs/concepts/atoms) · [Protocol writes](https://docs.intuition.systems/docs/concepts/protocol-writes)
+
+## Steps
+
+### 1. Match the providers to your deployment
+
+Give wagmi the chain and the reader's RPC endpoint. Keep one query client for the lifetime of the provider. The testnet preset resolves the MultiVault address from the deployments package. For a custom deployment, supply a verified chain, chain ID and MultiVault address through the provider’s `config` prop and configure the same chain in wagmi. [Provider implementation](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/react/src/provider.tsx)
+
+```tsx
+function Providers({
+  endpoint,
+  children,
+}: {
+  endpoint: string;
+  children: ReactNode;
+}) {
+  const [config] = useState(() =>
+    createConfig({
+      chains: [intuitionTestnet],
+      connectors: [injected()],
+      transports: { [intuitionTestnet.id]: http(endpoint) },
+    }),
+  );
+  const [client] = useState(() => new QueryClient());
+  return (
+    <WagmiProvider config={config} reconnectOnMount={false}>
+      <QueryClientProvider client={client}>
+        <IntuitionProvider network="testnet">{children}</IntuitionProvider>
+      </QueryClientProvider>
+    </WagmiProvider>
+  );
+}
+```
+
+### 2. Read the atom by term ID
+
+Mount the reader after validating the term ID. `useAtom(termId, { enabled, curveId, chainId })` reads the contract through wagmi. The provider supplies the chain and the contract supplies the default curve when you omit those overrides. The result includes the atom bytes and vault totals when all component reads succeed. Treat a missing result as an incomplete read. Only an explicit false `isAtom` establishes the negative result returned by this hook. [Read hook implementation](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/react/src/hooks/use-atom.ts)
+
+```tsx
+function AtomResult({ termId }: { termId: Hex }) {
+  const query = useAtom(termId, { enabled: true });
+  const cache = useQueryClient();
+  if (query.isLoading) return <p role="status">Reading the atom…</p>;
+  if (query.isError || !query.data)
+    return (
+      <>
+        <p role="status">
+          Could not read all atom fields. Check the term ID and RPC.
+        </p>
+        <button onClick={() => void cache.refetchQueries({ type: 'active' })}>
+          Retry reads
+        </button>
+      </>
+    );
+  if (!query.data.isAtom)
+    return <p role="status">No atom exists for this term ID.</p>;
+  return (
+    <dl>
+      <dt>Atom bytes</dt>
+      <dd>
+        <code>{query.data.atomData}</code>
+      </dd>
+      <dt>Curve ID</dt>
+      <dd>{String(query.data.curveId)}</dd>
+      <dt>Total assets (wei)</dt>
+      <dd>{String(query.data.totalAssets)}</dd>
+      <dt>Total shares</dt>
+      <dd>{String(query.data.totalShares)}</dd>
+    </dl>
+  );
+}
+```
+
+### 3. Review and submit one creation
+
+Call `useCreateAtomFlow()` inside the component. Enable review only after the wallet connects on the selected chain and the hook returns an atom cost. Prepare the UTF-8 data, one asset allocation in native wei and the encoded call. Display the sender, target, chain, arguments and value before enabling submission. An account, chain, payload or cost change requires a new review.
+
+Only the submit button calls `createAtom({ data, assets })`. It invokes ordinary MultiVault `createAtoms` with value equal to the sum of allocations. The example assigns the exact creation cost to its single atom. Additional deposits change the amount the user must review. URI context registration uses a separate protocol operation. [Creation flow](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/react/src/hooks/use-create-atom-flow.ts) · [Create atoms](https://docs.intuition.systems/docs/build/create-atoms)
+
+## Check the result
+
+While the wallet is open, show that approval is pending. After broadcast, display the submitted hash from the hook. Keep the wallet on the selected chain while the flow polls. Compare that attempt’s submitted hash with `receipt.transactionHash` once `createAtom` resolves. A wallet replacement can produce a successful receipt with a different hash. Show both hashes and ask the reader to inspect the replacement before retrying.
+
+For the original hash, check receipt success, sender and MultiVault target. This one-atom example also requires one `AtomCreated` event from that transaction and MultiVault. Check its creator, exact atom bytes and term ID derived from those bytes. Only then select the term for a contract read on the same chain. [Creation flow tests](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/react/src/__tests__/use-create-atom-flow.test.tsx)
+
+## Troubleshooting
+
+If the cost is unavailable, retry the contract read and keep submission disabled. If the user declines the wallet request, let them start a fresh review. A reverted receipt rejects the flow. If you already have a hash and receipt polling fails, inspect that hash on the selected chain before retrying. [Transaction flow implementation](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/react/src/hooks/use-transaction-flow.ts)
+
+## Related
+
+[Build the React app](https://docs.intuition.systems/docs/examples/react-app) · [React package reference](https://docs.intuition.systems/docs/reference/packages/react) · [Query indexed data on your Core node](https://docs.intuition.systems/docs/build/query-core)
+
 # The SDK read client
 
 Source: https://docs.intuition.systems/docs/build/read-with-sdk
@@ -858,6 +1954,182 @@ The `@0xintuition/sdk/api` client remains part of the pinned package's public ex
 The client exposes atom lookups by ID, label, or data and triple lookup by ID. It is not a general search, traversal, or write API. A label is not a unique identity. Missing rows return `null`; HTTP and GraphQL failures throw. See the [generated API reference](https://docs.intuition.systems/docs/reference/sdk/api) for the exported types and signatures.
 
 Source: [SDK endpoint constants and client interface](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/sdk/src/api/index.ts). This page describes that pinned implementation; it does not promise a future endpoint migration.
+
+# Suggest relationships and pick predicates
+
+Source: https://docs.intuition.systems/docs/build/suggest-relationships
+
+Applies to V2 · `@0xintuition/predicates` 0.1.0 · `@0xintuition/classifications` 0.1.0
+
+Build a relationship picker that proposes a recording’s artist using the Creation Profile and the predicate registry.
+
+## Before you start
+
+Start with a recording atom ID and a candidate target atom whose classification your application has checked. The example derives both IDs from synthetic payloads. Read [classifications](https://docs.intuition.systems/docs/concepts/classifications) and [predicates](https://docs.intuition.systems/docs/concepts/predicates).
+
+For your own project, follow [Install the packages](https://docs.intuition.systems/docs/build/install). To run the [offline example](https://github.com/0xIntuition/intuition-docs/blob/c3b1eaa91a822bb59b20cb6de2bc9b874a00b7b0/examples/v2/predicate-picker/src/suggest-relationships.ts), install its locked dependencies from the documentation repository root with Node.js 22.21.0.
+
+```sh
+npm ci --prefix examples/v2 --ignore-scripts
+```
+
+## Steps
+
+### 1. Read the recording’s recommendations
+
+Look up the selected key in `musicRecordingCreationProfile.relationships`. Each entry describes the subject classification, predicate and expected objects. For `byArtist`, the recording is the subject. An artist goes in the object slot. A picker can display the predicate label and suggest targets classified as a music group or a person.
+
+### 2. Check the target and resolve the predicate
+
+This picker handles classification hints. It omits a recommendation when the key is absent or the candidate’s classification falls outside those hints. After checking the target, resolve the profile’s predicate ID through the registry and keep the registered spelling, ID and status together.
+
+```ts
+import { musicRecordingCreationProfile } from '@0xintuition/classifications/creation/music-recording';
+import { getPredicateById, getPredicateId } from '@0xintuition/predicates';
+import type { Hex } from 'viem';
+
+export function suggestRelationship(
+  recordingId: Hex,
+  key: string,
+  target: { id: Hex; classification: string },
+) {
+  const relation = musicRecordingCreationProfile.relationships.find(
+    (entry) => entry.predicate.key === key,
+  );
+  if (!relation) return { reason: 'No profile recommendation' };
+  const allowed = relation.expectedObjects.some(
+    (hint) =>
+      hint.kind === 'classification' && hint.slug === target.classification,
+  );
+  if (!allowed)
+    return { reason: 'Target falls outside the recommended classifications' };
+  const predicate = getPredicateById(relation.predicate.id);
+  if (!predicate || predicate.key !== key)
+    return { reason: 'Unknown predicate' };
+  return {
+    subjectId: recordingId,
+    predicateId: getPredicateId(predicate.key),
+    objectId: target.id,
+    label: predicate.name,
+    status: predicate.status,
+  };
+}
+```
+
+### 3. Present the proposed relationship
+
+Display the recording, “by artist,” and the selected group for review. The registry’s `proposed` status describes the predicate vocabulary. The application still needs to verify that this particular group performed this recording and that the terms exist before it submits a claim.
+
+## Check the result
+
+```sh
+node examples/v2/predicate-picker/src/suggest-relationships.ts
+```
+
+For the group, the helper prints the recording ID as subject, the group ID as object, the label `by artist`, and status `proposed`. The predicate ID is `0x13d5d4ad6ae3a4e1b5043141b6ce4633c2df4646eaefc9e45eba899c45ce235b`. The album yields “Target falls outside the recommended classifications.” An empty key yields “No profile recommendation.”
+
+## Related
+
+[Build creation forms](https://docs.intuition.systems/docs/build/creation-profiles), [recording relationship definitions](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/classifications/src/metadata-predicate-matrix.ts), and [predicate registry lookups](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/predicates/src/predicates.ts).
+
+# Test locally
+
+Source: https://docs.intuition.systems/docs/build/test-locally
+
+Applies to V2 · `@0xintuition/deployments` 0.1.0
+
+Test a contract interaction on Intuition testnet, or deploy on your own Anvil chain and trace a new atom into Core.
+
+## Before you start
+
+Choose testnet to exercise a shared deployment or Anvil to control the chain, deployment and indexing start block. Review [package installation](https://docs.intuition.systems/docs/build/install) and [how indexing works](https://docs.intuition.systems/docs/concepts/indexing-and-querying). Testnet writes require a throwaway account you control. For Anvil, use a trusted development machine with Git, Docker Compose v2, Bun 1.3.11, Node 20 or newer, `curl`, `jq`, and at least 5 GiB free. The first build needs network access for dependencies and images.
+
+## Steps
+
+### 1. Choose your test route
+
+**Testnet.** Check that your client reports chain 13579 and resolves the published testnet MultiVault using [Connect to a network](https://docs.intuition.systems/docs/build/connect). For a write, request tTRUST for your test account's public address, then follow the first-write walkthrough to review the atom, payment and gas before confirming. Check for a successful receipt and record its term ID. If you also index testnet, use a start block verified for that exact contract. Core's upstream smoke-test window uses a historical deployment. [Testnet faucet](https://testnet.hub.intuition.systems/) · [First testnet write](https://docs.intuition.systems/docs/get-started/first-write) · [Deployment definitions](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/packages/contracts/src/addresses.ts).
+
+**Local Anvil.** Continue below for chain 31337. The deployer sends transactions only on your local chain when run with these Compose services. Keep this development chain accessible only to trusted callers.
+
+### 2. Fork Core and prepare the pinned source
+
+Fork the Core repository, replace `YOUR_GITHUB_USERNAME` with the owner of your fork, and run these commands in the directory where you want to keep the clone. Verify the printed commit before proceeding. Bootstrap creates `.env` from `example.env` if needed and installs the frozen Bun lockfile. [Pinned bootstrap script](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/scripts/bootstrap.sh).
+
+```sh
+git clone https://github.com/YOUR_GITHUB_USERNAME/intuition-core.git
+cd intuition-core
+git remote add upstream https://github.com/0xIntuition/intuition-core.git
+git fetch upstream a402f880600f92969dc8fb013ca0f69fc9a02420
+git switch -c local-devnet a402f880600f92969dc8fb013ca0f69fc9a02420
+git rev-parse HEAD
+scripts/bootstrap.sh --no-start
+```
+
+### 3. Deploy the local MultiVault and read its state file
+
+Start Anvil, then run the source-built deployment job in the foreground. Continue only after it prints `==> DONE` and exits successfully. It writes its state file before running the acceptance transaction, which creates a local atom and checks its events. Rerunning the job can create another acceptance atom even when it reuses the contracts. [Deployer](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/packages/contracts/src/deploy/cli.ts) · [Acceptance transaction](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/packages/contracts/src/deploy/acceptance.ts).
+
+```sh
+docker compose -f docker-compose.yml --profile devnet up -d anvil &&
+  docker compose -f docker-compose.yml --profile devnet run --build --rm devnet-deploy
+```
+
+Compose mounts `./devnet` from the host at `/state` in the deployer. Inspect the generated proxy and the block where it was deployed.
+
+```sh
+jq -e 'select(.chainId == 31337) | {chainId, MultiVault, deployBlock}' \
+  devnet/deployments-devnet.json
+```
+
+### 4. Index that deployment
+
+In the Core checkout's `.env`, edit the existing entries shown below. Replace the two placeholders with the exact `MultiVault` address and decimal `deployBlock` from step 3. Keep `MULTIVAULT_END_BLOCK` empty to follow the local head. The indexer runs inside Compose and reaches Anvil by service name. Host-side RPC clients reach the same chain at `http://localhost:8545`. [Environment settings](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/example.env).
+
+```dotenv
+INTUITION_RPC_URL=http://anvil:8545
+CHAIN_ID=31337
+MULTIVAULT_CONTRACT_ADDRESS=<your generated MultiVault>
+MULTIVAULT_START_BLOCK=<your generated deployBlock>
+MULTIVAULT_END_BLOCK=
+USE_TYPED_READER=true
+```
+
+Enable both profiles and build the graph services from the pinned Compose file. Naming the services starts their datastore and migration dependencies and leaves the completed deployment job out of this step. From the host, check the API once the database migrations finish. [Source Compose file](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/docker-compose.yml).
+
+```sh
+docker compose -f docker-compose.yml --profile devnet --profile indexing up -d --build \
+  anvil api indexer projections
+curl -fsS http://localhost:3000/health
+```
+
+## Check the result
+
+A healthy API can still be catching up to Anvil. Request one public atom. This command uses port 3000, the default host mapping. If the page is empty, expect `count: 0` and `firstId: null`.
+
+```sh
+page=$(curl -fsS 'http://localhost:3000/api/atoms?limit=1&offset=0') &&
+  printf '%s\n' "$page" | jq '{pagination, firstId: .data[0].id}'
+```
+
+Once the page contains a term ID, fetch that record. Compare its ID with the term ID in the deployer's acceptance output when inspecting the same atom. Look for `isOnchain: true` on the atom projected from Anvil. The parse status can remain pending with the processing workers stopped.
+
+```sh
+atom_id=$(printf '%s\n' "$page" | jq -er '.data[0].id | strings | select(test("^0x[0-9a-fA-F]{64}$"))') &&
+  curl -fsS "http://localhost:3000/api/atoms/$atom_id" | jq '.data | {id, isOnchain, parseStatus}'
+```
+
+## Troubleshooting
+
+| Symptom | Next check |
+| --- | --- |
+| Deployment job exits with an error | Read the error and verify the Anvil service is healthy. A state file may already exist even if acceptance failed. |
+| Empty page after the API becomes healthy | Inspect `docker compose -f docker-compose.yml logs indexer projections`. Check the configured chain, proxy address and start block against the active deployment. |
+| Testnet receipt succeeds but the local API has no record | Confirm that this Core instance is indexing the testnet contract and that its configured range covers the transaction's block. |
+
+## Related
+
+[Query a Core node](https://docs.intuition.systems/docs/build/query-core) covers host ports, read policies and graph operations. The pinned [local devnet guide](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/docs/local-devnet.md) describes Anvil state persistence.
 
 # Get help
 
@@ -2172,17 +3444,440 @@ The offline helper validates the manifest and prints a publishable `DefinedTerm`
 
 Sources: [plugin authoring contract](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/atom-classification/docs/plugin-authoring.md), [external plugin example](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/examples/atom-classification-plugin/src/index.ts), [runtime override contract](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/atom-runtime/src/consumers.ts), and [Core classification guide](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/docs/writing-a-classification-plugin.md).
 
+# Schema-backed atom creation form
+
+Source: https://docs.intuition.systems/docs/examples/atom-creation-form
+
+Applies to V2 · `@0xintuition/classifications` 0.1.0 · `@0xintuition/primitives` 0.1.0 · `@0xintuition/ids` 0.1.0
+
+**Time:** 15 minutes · **Steps:** 3
+
+## What you'll build
+
+Build a recording form with a title, artist, album, recording code, and reference URLs. Enter the synthetic title **Paper Moon Demo** and ISRC `US-RC1-26-00001` to preview the exact atom data. Then change the title and remove the recording code to see which edits change the atom ID.
+
+## Before you start
+
+Use Node.js 22.21.0. From the documentation repository root at the revision in **Full source**, install the example workspace once. npm needs registry access for installation. The runner uses only local data.
+
+```sh
+cd examples/v2
+npm ci --ignore-scripts
+```
+
+The React component is optional for the offline run. To integrate it, use a React 19 client application with a TSX build step. See [Install the packages](https://docs.intuition.systems/docs/build/install) and [representation profiles](https://docs.intuition.systems/docs/concepts/representation-profiles).
+
+## Steps
+
+### 1. Generate the controls from the recording profile
+
+In `form-model.ts`, the profile defines the field keys, labels, types, placeholders, and required flags. Track Name is required. Artist, Album, ISRC, and Canonical References are optional.
+
+```ts
+import {
+  validateClassificationValues,
+  type ClassificationValidationIssue,
+  type ClassificationValueMap,
+} from '@0xintuition/classifications';
+import { musicRecordingCreationProfile } from '@0xintuition/classifications/creation/music-recording';
+import { calculateAtomId } from '@0xintuition/ids';
+import { buildIidAnchor } from '@0xintuition/primitives/anchor';
+
+export const { fields, classification } = musicRecordingCreationProfile;
+type FieldKey = (typeof fields)[number]['key'];
+export type RecordingDraft = Partial<Record<FieldKey, string>>;
+export const maxFieldLength = 512;
+```
+
+Inside the field loop in `creation-form.tsx`, each label points to a unique control. References use a multiline input. Editing any field clears the previous preview so an old ID cannot appear beside a new draft.
+
+```tsx
+        const id = prefix + field.key;
+        const error = issues.find((issue) => issue.field === field.key);
+        const props = {
+          id,
+          value: draft[field.key] ?? '',
+          required: field.required,
+          placeholder: field.placeholder,
+          maxLength: maxFieldLength,
+          'aria-invalid': Boolean(error),
+          'aria-describedby': error ? id + '-error' : undefined,
+          style: {
+            width: '100%',
+            boxSizing: 'border-box' as const,
+            font: 'inherit',
+          },
+          onChange: (
+            event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+          ) => {
+            setDraft({ ...draft, [field.key]: event.currentTarget.value });
+            setResult(undefined);
+          },
+        };
+        const control = (
+          <div key={field.key} style={{ marginBlockEnd: '1rem' }}>
+            <label htmlFor={id}>
+              {field.label} ({field.required ? 'required' : 'optional'})
+              {field.fieldType === 'string[]' && ' — one web URL per line'}
+            </label>
+            {field.fieldType === 'string[]' ? (
+              <textarea {...props} />
+            ) : (
+              <input type="text" {...props} />
+            )}
+            {error && <div id={id + '-error'}>{error.message}</div>}
+          </div>
+        );
+```
+
+### 2. Validate the draft and check the resulting bytes
+
+The form caps each control at 512 characters and accepts up to four HTTP or HTTPS references. These limits belong to this example. Trim empty entries and split the reference list before calling the classification validator. For this form, a supplied ISRC must produce an ISRC anchor.
+
+```ts
+export function previewRecording(draft: RecordingDraft) {
+  const values: ClassificationValueMap = {};
+  const limits: ClassificationValidationIssue[] = [];
+  for (const field of fields) {
+    const raw = draft[field.key] ?? '';
+    if (raw.length > maxFieldLength) {
+      limits.push({
+        field: field.key,
+        message: 'Use 512 characters or fewer.',
+      });
+      continue;
+    }
+    if (!raw.trim()) continue;
+    if (field.fieldType === 'string[]') {
+      const lines = raw
+        .split('\n')
+        .map((line) => line.trim())
+        .filter(Boolean);
+      if (lines.length > 4 || !lines.every(isWebUrl)) {
+        limits.push({
+          field: field.key,
+          message: 'Enter up to four web URLs, one per line.',
+        });
+      }
+      values[field.key] = lines;
+    } else {
+      values[field.key] = raw.trim();
+    }
+  }
+  const issues = [
+    ...limits,
+    ...validateClassificationValues(classification.slug, values),
+  ];
+  if (issues.length) return { ok: false as const, issues };
+
+  const result = buildIidAnchor(classification.slug, values);
+  if (!result.success) return failure(result.errors.join(' '));
+  const anchor = result.value;
+  if (values.isrc && !anchor.iid?.startsWith('int:isrc:')) {
+    return failure('Check the recording code or leave it empty.', 'isrc');
+  }
+  if (calculateAtomId(anchor.dataHex) !== anchor.id) {
+    return failure('The anchor ID does not match its bytes.');
+  }
+  return { ok: true as const, anchor };
+}
+```
+
+The P0 preview hashes the bytes of the bare recording IID. Removing the ISRC selects a different representation for the title-only draft. A missing required title returns a field issue before the builder runs, so there is no preview ID.
+
+### 3. Mount the form in a client application
+
+Copy `creation-form.tsx` and `form-model.ts` together into your React app. Use the React, React DOM, and Intuition dependency versions from the example workspace. In the client entrypoint, import the named `mountCreationForm` export from `./creation-form.tsx` and call it with an empty DOM element after that element exists. Keep its returned cleanup function for when the host removes the form.
+
+```tsx
+export function mountCreationForm(container: HTMLElement) {
+  const root = createRoot(container);
+  root.render(<CreationForm />);
+  return () => root.unmount();
+}
+```
+
+Select **Preview recording** with an empty title to see the inline error. Enter the title and recording code above and preview again to see the identifier, profile, data, and atom ID. The Node runner below exercises the same model directly. The component itself uses the host’s TSX compiler.
+
+## Run it
+
+From `examples/v2`, run the TypeScript entrypoint.
+
+```sh
+node atom-creation-form/src/run-form.ts
+```
+
+```text
+p0 int:isrc:USRC12600001 0xfdbf117d9e9df5675c5b4f75747598424fc9beb2d2a50e20408f4cd4dfb3d4ed
+Title edit keeps ID: true
+Without ISRC: p1 0x3d892ed7c6b2aafc2dcd3400f013d0de97e4d773b4ba15ad402dd9b67205a211
+Missing required field "name".
+```
+
+## Full source
+
+[Recording form, preview model, and offline runner](https://github.com/0xIntuition/intuition-docs/tree/3f47445235983fa93bf22d1d06f0584c6bac84fa/examples/v2/atom-creation-form). The pinned package example shows how to map [Creation Profile fields](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/examples/hackathon-quickstart/src/generated-ui-model.ts) into [React controls](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/examples/hackathon-quickstart/src/GeneratedUiPage.tsx). The [classification validator](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/classifications/src/atom-data.ts), [anchor builder](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/primitives/src/anchor.ts), and [atom ID calculation](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/ids/src/atom-id.ts) define the preview behavior.
+
+## Next steps
+
+Use [Creation Profiles](https://docs.intuition.systems/docs/build/creation-profiles) to choose the fields for another type. To model an artist as a separate atom and connect it to the recording, build the [predicate picker](https://docs.intuition.systems/docs/examples/predicate-picker).
+
+# Read the graph from Core's Query API
+
+Source: https://docs.intuition.systems/docs/examples/core-query-api
+
+**Time:** 15 minutes · **Steps:** 3
+
+## What you'll build
+
+A Node CLI that reads one page of atoms, one page of triples and the predicate catalog from your own Core node. It prints the number of rows returned and the first record from each collection. Those records expose the atom's processing status, the three terms of a directed claim, and the predicate's human-readable label.
+
+## Before you start
+
+Use Node 22.21.0 and [the pinned example dependencies](https://docs.intuition.systems/docs/build/install). Fork and build Core at `a402f880600f92969dc8fb013ca0f69fc9a02420` using [Query a Core node](https://docs.intuition.systems/docs/build/query-core). Run the CLI on the host with the API at `http://localhost:3000` and the default `public-read` policy. An empty local database is enough to test the client. To read on-chain terms, enable indexing for your deployment and allow projections to catch up. [Pinned Core setup](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/docs/run-your-own-node.md).
+
+## Steps
+
+### 1. Get the complete client
+
+Run these commands in a new directory. The docs checkout contains the client, its CLI and offline tests. Keep the terminal at the docs repository root for the remaining commands.
+
+```sh
+git clone https://github.com/0xIntuition/intuition-docs.git
+cd intuition-docs
+git switch --detach bb420395aff3432f1f5da08cb76ac75a99945bff
+npm ci --prefix examples/v2 --ignore-scripts
+```
+
+### 2. Identify the fields your application needs
+
+Atom rows carry the on-chain flag and parse status. Triple rows name the subject, predicate and object in that order. A catalog row supplies a string slug and label plus a description that can be `null`. The two paginated endpoints report the number of rows in this response. The predicate endpoint returns a single `data` array. [Response schemas](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/docs/openapi.yaml).
+
+```ts
+type Atom = { id: string; isOnchain: boolean; parseStatus: string };
+type Triple = {
+  id: string;
+  subjectId: string;
+  predicateId: string;
+  objectId: string;
+};
+type Predicate = {
+  id: string;
+  slug: string;
+  label: string;
+  description: string | null;
+};
+type Page<T> = {
+  data: T[];
+  pagination: { limit: number; offset: number; count: number };
+};
+```
+
+### 3. Request the three collections
+
+`readGraph` uses a shared five-second deadline and requests ten atoms and ten triples at offset zero. Each response passes through an HTTP status check and a bounded JSON reader. The decoders check the fields in the types above, the requested pagination, and the number of rows returned. The client caps each body at 1 MiB and each predicate catalog at 2,048 rows. A schema mismatch or oversized response fails the CLI.
+
+```ts
+export async function readGraph() {
+  const options: RequestInit = {
+    method: 'GET',
+    redirect: 'error',
+    signal: AbortSignal.timeout(5000),
+  };
+  const atoms = page(
+    await readJson(
+      fetch('http://localhost:3000/api/atoms?limit=10&offset=0', options),
+    ),
+    atom,
+  );
+  const triples = page(
+    await readJson(
+      fetch('http://localhost:3000/api/triples?limit=10&offset=0', options),
+    ),
+    triple,
+  );
+  const catalog = record(
+    await readJson(fetch('http://localhost:3000/api/predicates', options)),
+  );
+  const predicates = rows(catalog.data, 2048, predicate);
+  return { atoms, triples, predicates };
+}
+```
+
+Atom and triple IDs can connect rows across requests. These reads happen separately, so concurrent indexing can update the graph between calls. When loading more rows, apply `offset` only to atoms and triples. Core also supports the triple filters `subject_id`, `predicate_id` and `object_id`. [Core API reference](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/docs/api-reference.md).
+
+## Run it
+
+With your node running, execute the CLI from the docs checkout.
+
+```sh
+node examples/v2/core-query-api/src/run-query.ts
+```
+
+The CLI prints `Atoms on this page`, `Triples on this page` and `Predicates returned`, followed by JSON with sample records. If the graph has no atoms or triples, their counts are zero and their first records are `null`. A seeded predicate catalog can still contain rows. An HTTP 401 indicates that this node requires authorization. A connection error or timeout calls for checking the Core host port, API health and logs.
+
+You can exercise the same decoders offline. These tests supply synthetic HTTP responses for successful, empty, malformed, oversized and unauthorized results, and simulate an expired deadline.
+
+```sh
+node --test examples/v2/core-query-api/src/query-client.test.ts
+```
+
+## Full source
+
+The [complete Core query project](https://github.com/0xIntuition/intuition-docs/tree/bb420395aff3432f1f5da08cb76ac75a99945bff/examples/v2/core-query-api) includes `query-client.ts`, `run-query.ts` and their response fixtures. The [pinned handler implementation](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/services/api/src/app.ts) shows how Core builds the list envelopes.
+
+## Next steps
+
+[Build a local indexed graph](https://docs.intuition.systems/docs/build/test-locally) and run the client again. [Triples](https://docs.intuition.systems/docs/concepts/triples) explains how to interpret the three term IDs in each claim.
+
+# sameAs identity linking
+
+Source: https://docs.intuition.systems/docs/examples/identity-linking
+
+Applies to V2 · `@0xintuition/primitives` 0.1.0 · `@0xintuition/predicates` 0.1.0 · `@0xintuition/iid` 0.1.0
+
+**Time:** 15 minutes · **Steps:** 3
+
+## What you'll build
+
+Review three candidates for an archived recording. One carries the same recording identifier, one is a review article, and one has only a matching title. The result is an offline plan containing a directed `sameAs` triple for the approved pair and a reason for each skipped candidate.
+
+## Before you start
+
+Use Node.js 22.21.0. From the documentation repository root at the revision in **Full source**, install the example workspace once. npm needs registry access for installation. The runner uses only local data.
+
+```sh
+cd examples/v2
+npm ci --ignore-scripts
+```
+
+Read [sameAs and identity linking](https://docs.intuition.systems/docs/concepts/same-as) for the meaning of the claim. See [Install the packages](https://docs.intuition.systems/docs/build/install) for the pinned packages. All catalog evidence below is synthetic.
+
+## Steps
+
+### 1. Preserve the historical atom bytes
+
+The archive contains an exact UTF-8 JSON string with a reference URL in its `sameAs` property. The newer recording anchor contains a bare IID. The fixtures call `stringToHex` on each original text string. Parsing and serializing the JSON again could change the bytes used to identify that atom. UTF-8 text such as `0x6162` encodes as `0x307836313632`. If your catalog already stores binary bytes in hex, supply them directly. The two bytes `0x6162` identify a different atom.
+
+```ts
+import { stringToHex } from 'viem';
+
+const recordingIid = 'int:isrc:USRC12600001';
+export const archive = {
+  level: 'recording' as const,
+  atomData: stringToHex(
+    '{"name":"Paper Moon Demo","sameAs":["https://example.org/recordings/17"]}',
+  ),
+  recordingIid,
+};
+
+export const candidates = {
+  anchor: {
+    level: 'recording',
+    atomData: stringToHex(recordingIid),
+    recordingIid,
+  },
+  review: {
+    level: 'article',
+    atomData: stringToHex('Review of Paper Moon Demo'),
+    recordingIid,
+  },
+  namesake: {
+    level: 'recording',
+    atomData: stringToHex('{"name":"Paper Moon Demo"}'),
+  },
+} as const;
+```
+
+The URL inside the JSON is part of the archived payload. A graph edge requires a separate predicate atom and two term IDs. Keep the recording-level evidence beside the original data while reviewing candidates.
+
+### 2. Record each decision and its evidence
+
+The fixture editor compared the two catalog records and confirmed the same take and recording code. The critic’s article cites the recording but describes a different entity. The namesake has no recording identifier to distinguish it from a different take.
+
+```ts
+  const recording = {
+    candidate: 'anchor' as const,
+    evidence:
+      'The two catalog records credit the same take and list the same recording code.',
+  };
+  const accepted = reviewLink({ ...recording, approved: true });
+  const waiting = reviewLink({ ...recording, approved: false });
+  const article = reviewLink({
+    candidate: 'review',
+    approved: false,
+    evidence: 'The critic cites the recording in a review.',
+  });
+  const namesake = reviewLink({
+    candidate: 'namesake',
+    approved: false,
+    evidence: 'Only the title matches.',
+  });
+```
+
+The second call for the same recording pair exercises the pending case. A matching identifier supplies evidence. The reviewer supplies approval. This example assigns no confidence score.
+
+### 3. Plan the ordered claim
+
+The review wrapper requires an evidence note and passes the archived bytes, candidate, and explicit decision to `planLink`.
+
+```ts
+type Decision = {
+  candidate: keyof typeof candidates;
+  approved: boolean;
+  evidence: string;
+};
+
+export function reviewLink({ candidate, approved, evidence }: Decision) {
+  if (!evidence.trim())
+    return { candidate, reason: 'Record the evidence for review.' };
+  const result = planLink(archive, candidates[candidate], approved);
+  return { candidate, evidence, ...result };
+}
+```
+
+The [link planner](https://docs.intuition.systems/docs/build/link-identities) checks the entity level, inspects both IIDs, and requires matching canonical ISRC identifiers for this fixture. After approval it derives each atom ID from the original payload, rejects identical term IDs, and builds the ordered `sameAs` triple. Both original atoms keep their IDs and bytes. This local plan makes no changes to either record and submits no transaction.
+
+## Run it
+
+From `examples/v2`, run the TypeScript entrypoint.
+
+```sh
+node identity-linking/src/run-linking.ts
+```
+
+```text
+Subject 0x70e43f5beab9b630229717d40da0874927cd3cf2a4d9f34979e4e88abb60b4ab
+sameAs 0x1908b7994ca437c84c67a4799ae710355591790a726bf5890277f3aa70828c0a
+Object 0xfdbf117d9e9df5675c5b4f75747598424fc9beb2d2a50e20408f4cd4dfb3d4ed
+Triple 0xc40d319e82c15a049aa3688e2a4cc0fbc51441f05311ad403beaba3382496ef1
+anchor Awaiting review
+review Different entity level
+namesake Missing recording identifier
+```
+
+The subject is the archived JSON atom. The object is the bare recording IID atom. The middle ID belongs to the registry’s `sameAs` predicate. The fourth ID identifies the proposed edge itself.
+
+## Full source
+
+[Review fixtures, link planner, and runner](https://github.com/0xIntuition/intuition-docs/tree/84242e8f4399ac758c942e85b343e0512245a6cf/examples/v2/identity-linking). The [canonical equivalence discussion](https://github.com/0xIntuition/intuition-identifier/blob/3e593247c0e7cb168b37368937167ed146d3868a/spec/08-equivalence.md) describes the role of reviewed claims. Compare the package’s [identity example](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/examples/hackathon-quickstart/src/identity-linking.ts), [review interface](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/examples/hackathon-quickstart/src/IdentityLinkingPage.tsx), [IID inspection](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/iid/src/parse.ts), and [triple builder](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/primitives/src/triple.ts).
+
+## Next steps
+
+Use [Derive IDs](https://docs.intuition.systems/docs/build/derive-ids) to trace a single recording from identifier to term ID, or follow the [music catalog tutorial](https://docs.intuition.systems/docs/examples/music-catalog) to model artist and album relationships.
+
 # What you can build
 
 Source: https://docs.intuition.systems/docs/examples
 
 The packages supply shared identities and graph modeling tools. Core supplies storage, processing workers, and queries. Protocol contracts add registration and economic positions. Your application combines these with its own rules for evidence, permissions, and ranking.
 
-## Build a music catalog
-
-[Build a music catalog](https://docs.intuition.systems/docs/examples/music-catalog) connects recording, artist, and album atoms with explicit triples. It uses clearly labeled synthetic identities, keeps display metadata separate, and shows where persistence and protocol planning fit.
-
-Use the catalog to answer three questions: which entity is this, which bytes represent it, and which directed relationship am I asserting? Those answers transfer to other domains.
+- [Create an atom from a schema](https://docs.intuition.systems/docs/examples/atom-creation-form) — Generate a form from a Creation Profile.
+- [Choose a predicate](https://docs.intuition.systems/docs/examples/predicate-picker) — Find a relationship that fits the claim you want to make.
+- [Link two identities](https://docs.intuition.systems/docs/examples/identity-linking) — Keep each identity distinct while recording a sameAs claim.
+- [Read and create an atom in React](https://docs.intuition.systems/docs/examples/react-app) — Review a wallet call and read back its confirmed atom.
+- [Query your Core node](https://docs.intuition.systems/docs/examples/core-query-api) — Retrieve indexed graph records from your own node.
+- [Build a music catalog](https://docs.intuition.systems/docs/examples/music-catalog) — Connect a recording, artist and album with explicit triples.
 
 ## Apply the pattern
 
@@ -2195,7 +3890,7 @@ Use the catalog to answer three questions: which entity is this, which bytes rep
 | Agent-assisted graph building | Offline builders and reviewed action plans | Scope, budget, provenance, authorization |
 | Enrichment services | Parser, classifier, provider runtime | Provider terms, credentials, retries, cache policy |
 
-These are application patterns; each still needs product-specific policy and implementation. A valid identifier does not prove a claim, and a position alone does not establish reputation.
+When adapting the music catalog, decide which entity each record identifies, which bytes represent it, and which directed relationship you are asserting. Your application supplies the evidence policy for claims and decides how a position contributes to reputation.
 
 For a smaller starting point, run the [offline quickstart](https://docs.intuition.systems/docs/get-started/quickstart). For operational boundaries, read [How the pieces fit](https://docs.intuition.systems/docs/get-started/how-it-fits).
 
@@ -2376,6 +4071,308 @@ Assertions check deduplication, profile selection, predicate identity, triple di
 ## Next steps
 
 Explore [representation profiles](https://docs.intuition.systems/docs/concepts/representation-profiles), [predicate helpers](https://docs.intuition.systems/docs/reference/packages/predicates), [action envelopes](https://docs.intuition.systems/docs/build/action-plans), and [Core reads](https://docs.intuition.systems/docs/build/query-core).
+
+# Predicate picker with relationship suggestions
+
+Source: https://docs.intuition.systems/docs/examples/predicate-picker
+
+Applies to V2 · `@0xintuition/predicates` 0.1.0 · `@0xintuition/classifications` 0.1.0 · `@0xintuition/ids` 0.1.0
+
+**Time:** 15 minutes · **Steps:** 3
+
+## What you'll build
+
+Give a catalog editor two choices for **Paper Moon Demo**. Choosing **by artist** offers the group **Night Shift Trio**. Choosing **in album** offers the album **After Hours**. The preview displays the selected subject, predicate, object, and calculated triple ID.
+
+## Before you start
+
+Use Node.js 22.21.0. From the documentation repository root at the revision in **Full source**, install the example workspace once. npm needs registry access for installation. The runner uses only local data.
+
+```sh
+cd examples/v2
+npm ci --ignore-scripts
+```
+
+For your own host, see [Install the packages](https://docs.intuition.systems/docs/build/install). Read [predicates](https://docs.intuition.systems/docs/concepts/predicates) and [triples](https://docs.intuition.systems/docs/concepts/triples) for the role of the middle atom.
+
+## Steps
+
+### 1. Build the menu from the recording profile
+
+The picker supports two profile relationships with classification hints. For `byArtist`, the hints are `music-group` and `person`. For `inAlbum`, the hint is `music-album`. Each entry below contains the exact synthetic text used to derive its atom ID.
+
+```ts
+import { musicRecordingCreationProfile } from '@0xintuition/classifications/creation/music-recording';
+import { calculateAtomId, calculateTripleId } from '@0xintuition/ids';
+import { getPredicateById, getPredicateId } from '@0xintuition/predicates';
+
+export const recording = {
+  name: 'Paper Moon Demo',
+  data: 'example:recording:paper-moon',
+};
+export const catalog = [
+  {
+    name: 'Night Shift Trio',
+    classification: 'music-group',
+    data: 'example:group:night-shift',
+  },
+  {
+    name: 'After Hours',
+    classification: 'music-album',
+    data: 'example:album:after-hours',
+  },
+];
+export const relationships = musicRecordingCreationProfile.relationships.filter(
+  ({ predicate }) =>
+    predicate.key === 'byArtist' || predicate.key === 'inAlbum',
+);
+
+export function objectHints(key: string): string[] {
+  const relation = relationships.find(({ predicate }) => predicate.key === key);
+  return (
+    relation?.expectedObjects.flatMap((hint) =>
+      hint.kind === 'classification' ? [hint.slug] : [],
+    ) ?? []
+  );
+}
+```
+
+### 2. Resolve the selected terms in order
+
+Look up the profile’s predicate atom ID in the registry and check the key. Apply the classification hints to the selected object. Using the registry’s predicate ID, calculate the triple ID in subject, predicate, object order.
+
+```ts
+export function previewTriple(key: string, objectData: string) {
+  const relation = relationships.find(({ predicate }) => predicate.key === key);
+  if (!relation)
+    return { ok: false as const, message: 'Choose a relationship.' };
+  const predicate = getPredicateById(relation.predicate.id);
+  if (!predicate || predicate.key !== key) {
+    return {
+      ok: false as const,
+      message: 'The predicate is missing from this registry.',
+    };
+  }
+  const target = catalog.find((item) => item.data === objectData);
+  if (!target)
+    return { ok: false as const, message: 'Choose a catalog entry.' };
+  if (!objectHints(key).includes(target.classification)) {
+    return {
+      ok: false as const,
+      message: 'Choose an entry with a suggested classification.',
+    };
+  }
+  const subjectId = calculateAtomId(recording.data);
+  const predicateId = getPredicateId(predicate.key);
+  const objectId = calculateAtomId(target.data);
+  return {
+    ok: true as const,
+    status: predicate.status,
+    subjectId,
+    predicateId,
+    objectId,
+    tripleId: calculateTripleId(subjectId, predicateId, objectId),
+  };
+}
+```
+
+The picker applies a local catalog policy. A matching classification makes a group eligible for selection. The editor still needs evidence that the group performed the recording. The registry status `proposed` describes the predicate definition. Calculating a triple ID neither registers the claim nor attests to it.
+
+### 3. Connect both selections to the preview
+
+In `picker.tsx`, the selected relationship determines the available catalog entries. Switching relationships clears the previous object and result. Selecting **Preview triple** with an incomplete selection displays the model’s feedback.
+
+```tsx
+  const [key, setKey] = useState('');
+  const [target, setTarget] = useState('');
+  const [review, setReview] = useState<ReturnType<typeof previewTriple>>();
+  const hints = objectHints(key);
+  const candidates = catalog.filter((entry) =>
+    hints.includes(entry.classification),
+  );
+```
+
+Copy `picker.tsx` and `picker-model.ts` together into a React 19 client application with a TSX compiler. Use the dependency versions in the example workspace. In the client entrypoint import `mountPredicatePicker` from `./picker.tsx`, pass it an empty DOM element after mounting that element, and call the returned cleanup when the host removes it.
+
+```tsx
+export function mountPredicatePicker(container: HTMLElement) {
+  const root = createRoot(container);
+  root.render(<PredicatePicker />);
+  return () => root.unmount();
+}
+```
+
+Choose **by artist**, then **Night Shift Trio**, then **Preview triple**. The Node entrypoint exercises the same calculation and also attempts an empty selection and an album in the artist slot.
+
+## Run it
+
+From `examples/v2`, run the TypeScript entrypoint.
+
+```sh
+node predicate-picker/src/run-picker.ts
+```
+
+```text
+byArtist proposed 0x021384b11c429411aaa3ec931394524e5f3e1429b4f903d8719032f71e942445
+Choose a relationship.
+Choose an entry with a suggested classification.
+```
+
+The runner also checks that swapping the group and recording produces a different ID.
+
+## Full source
+
+[Predicate picker component, catalog model, and runner](https://github.com/0xIntuition/intuition-docs/tree/3f47445235983fa93bf22d1d06f0584c6bac84fa/examples/v2/predicate-picker). Compare the [upstream playground](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/examples/hackathon-quickstart/src/Playground.tsx), [profile relationship types](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/classifications/src/creation-profile.ts), [registry lookup](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/predicates/src/predicates.ts), and [ordered triple ID calculation](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/ids/src/triple-id.ts).
+
+## Next steps
+
+Adapt the [relationship suggestion guide](https://docs.intuition.systems/docs/build/suggest-relationships) to your own catalog, or use [identity linking](https://docs.intuition.systems/docs/examples/identity-linking) to review two representations of the same recording.
+
+# React app with @0xintuition/react
+
+Source: https://docs.intuition.systems/docs/examples/react-app
+
+Applies to V2 · `@0xintuition/react` 0.1.0 · `@0xintuition/protocol` 4.0.0 · `@0xintuition/deployments` 0.1.0
+
+**Time:** 20 minutes · **Steps:** 4
+
+## What you'll build
+
+Build a page that reads an atom from its testnet term ID. Connect a wallet to create an atom from text, inspect the exact bytes and payment, then read the atom by term ID once the receipt matches the reviewed creation.
+
+## Before you start
+
+Use Node 22.21.0 with npm, Bun 1.3.11 for bundling and Python 3 for a local static server. To use the page, supply a browser-accessible Intuition testnet RPC URL. Have an existing atom term ID for a wallet-free lookup. To create an atom, use an injected browser wallet on chain 13579 funded for native payment and gas. The build and typecheck run offline after dependency installation. [Pinned installation](https://docs.intuition.systems/docs/build/install) · [Atom identity](https://docs.intuition.systems/docs/concepts/atoms)
+
+## Steps
+
+### 1. Install the isolated host
+
+From the documentation checkout containing the full source below, install the example lockfile. This resolves React and React DOM 19.1.0, wagmi 2.15.4, React Query 5.90.2 and viem 2.31.4. Keep the terminal in `examples/v2` for the remaining commands.
+
+```sh
+cd examples/v2
+npm ci --ignore-scripts
+./node_modules/.bin/tsc -p react-app/tsconfig.json --noEmit
+```
+
+A successful typecheck exits without output. The HTML host loads the compiled JavaScript module, whose entry point mounts the application.
+
+```tsx
+const host = document.getElementById('root');
+if (!host) throw new Error('Add an element with id="root" to the host page.');
+createRoot(host).render(<App />);
+```
+
+### 2. Connect the RPC and read a term
+
+The application checks the chain ID when you select **Use this RPC**. It then mounts `WagmiProvider`, `QueryClientProvider` and `IntuitionProvider` with the testnet deployment. Paste a 32-byte term ID into **Read an atom** to see its bytes, curve ID, total assets in wei and total shares. An incomplete contract response offers a retry. The wallet connection remains optional for this step. [Provider and read hook setup](https://docs.intuition.systems/docs/build/react)
+
+### 3. Review the wallet call
+
+Connect the intended testnet account. Enter new text whose exact bytes you want to use as the atom’s identity. Spaces and case affect the payload. Select **Review creation** once the contract returns the atom cost. The review encodes one allocation equal to the cost, with no additional stake. Gas is separate.
+
+```ts
+export function prepareReview(
+  chainId: number,
+  sender: Address,
+  target: Address,
+  text: string,
+  atomCost: bigint,
+) {
+  if (!text.trim()) throw new Error('Enter text for the atom.');
+  const data = [stringToHex(text)];
+  const assets = [atomCost];
+  return {
+    chainId,
+    sender,
+    target,
+    data,
+    assets,
+    value: atomCost,
+    calldata: multiVaultCreateAtomsEncode(data, assets),
+  };
+}
+```
+
+Compare the sender, chain ID, MultiVault address, data, assets, total value and calldata with the intended call. Editing the text clears the review. Disconnecting, switching accounts or chains, or observing a changed cost also requires another review. Submission checks the latest cached cost from the hook. The contract still enforces the cost at execution. [MultiVault deployments](https://docs.intuition.systems/docs/reference/contracts/deployments)
+
+### 4. Submit and read the receipt
+
+Select **Submit to wallet** only if the review matches your intent. In the wallet, verify the account, network, target, payment and gas before approving. The application passes the reviewed arrays to `createAtom` and displays the hash while waiting for the receipt. Stay on Intuition testnet during this wait because the receipt hook follows wagmi’s current chain. A rejected request or reverted transaction surfaces an error. If you received a hash, inspect it before making another attempt.
+
+```tsx
+  async function submit(review: Review) {
+    setCompleted(undefined);
+    const wallet = getAccount(config);
+    if (
+      !wallet.isConnected ||
+      wallet.chainId !== review.chainId ||
+      wallet.address !== review.sender ||
+      review.target !== multivaultAddress ||
+      review.value !== flow.atomCost ||
+      cost.isError
+    ) {
+      setAttempt((value) => value + 1);
+      setMessage(
+        'The wallet or cost changed. Review the current details again.',
+      );
+      return;
+    }
+    setMessage('');
+    try {
+      const { receipt } = await flow.createAtom({
+        data: review.data,
+        assets: review.assets,
+      });
+      setCompleted({ review, receipt });
+    } catch (error) {
+      setMessage(
+        error instanceof Error
+          ? error.message
+          : 'The wallet or transaction failed.',
+      );
+    }
+  }
+
+  const result =
+    completed &&
+    flow.status === 'confirmed' &&
+    flow.receipt === completed.receipt
+      ? verifyCreationReceipt(completed.review, flow.hash, completed.receipt)
+      : undefined;
+  const verifiedTermId = result?.termId;
+  useEffect(() => {
+    if (verifiedTermId) {
+      setLookup(verifiedTermId);
+      void cache.invalidateQueries({ type: 'active' });
+    }
+  }, [verifiedTermId, cache]);
+```
+
+Compare **Submitted hash** with **Mined hash**. If your wallet replaced the transaction, the page shows both hashes for inspection. This also applies to a replacement that only changes the gas price.
+
+For the original hash, the app checks that the receipt succeeded with the reviewed sender and target. It checks a single `AtomCreated` event from that transaction and MultiVault against the creator, reviewed bytes and derived term ID. A match displays the block and fills **Read an atom** with the verified term ID. If a check fails, inspect the receipt before considering another submission.
+
+## Run it
+
+From `examples/v2`, build the browser bundle, copy its HTML host and serve the generated directory on loopback.
+
+```sh
+bun build react-app/src/main.tsx --target browser --production --outdir react-app/dist
+cp react-app/index.html react-app/dist/index.html
+python3 -m http.server 4173 --bind 127.0.0.1 --directory react-app/dist
+```
+
+Open `http://127.0.0.1:4173`. You should see **Read and create an atom** and a field for your RPC URL. The first RPC request follows **Use this RPC**. To exercise creation, follow the wallet review and approval steps above. Stop the server with Ctrl+C when finished.
+
+## Full source
+
+[React app, HTML host and strict TypeScript project](https://github.com/0xIntuition/intuition-docs/tree/84242e8f4399ac758c942e85b343e0512245a6cf/examples/v2/react-app)
+
+## Next steps
+
+[Use React hooks in your own host](https://docs.intuition.systems/docs/build/react) · [Create atoms with URI context](https://docs.intuition.systems/docs/build/create-atoms) · [Interpret vault totals](https://docs.intuition.systems/docs/concepts/vaults)
 
 # Choose your packages
 
@@ -2889,6 +4886,13 @@ The following mapping comes from the version switcher's equivalence data. Other 
 | [Audit Reports](https://docs.intuition.systems/docs/v1/intuition-smart-contracts/audit-reports) | [Audits](https://docs.intuition.systems/docs/reference/contracts/audits) |
 | [Intuition Network](https://docs.intuition.systems/docs/v1/intuition-network) | [Networks](https://docs.intuition.systems/docs/reference/networks) |
 | [Intuition Testnet Faucet](https://docs.intuition.systems/docs/v1/quick-start/testnet-faucet) | [Testnet faucet](https://docs.intuition.systems/docs/reference/networks/faucet) |
+| [Remote Procedure Call (RPC)](https://docs.intuition.systems/docs/v1/intuition-network/rpc) | [Connect to a network](https://docs.intuition.systems/docs/build/connect) |
+| [Create Atom](https://docs.intuition.systems/docs/v1/interaction-guide/create-atom) | [Create atoms](https://docs.intuition.systems/docs/build/create-atoms) |
+| [Create Triple](https://docs.intuition.systems/docs/v1/interaction-guide/create-triple) | [Create triples](https://docs.intuition.systems/docs/build/create-triples) |
+| [Deposit & Return](https://docs.intuition.systems/docs/v1/interaction-guide/deposit-return) | [Deposit and redeem](https://docs.intuition.systems/docs/build/deposit-redeem) |
+| [Batch Operations](https://docs.intuition.systems/docs/v1/protocol/examples/batch-operations) | [Batch writes](https://docs.intuition.systems/docs/build/batch-writes) |
+| [Integrate FeeProxy](https://docs.intuition.systems/docs/v1/interaction-guide/fee-proxy-integration) | [Route writes through the FeeProxy](https://docs.intuition.systems/docs/build/fee-proxy) |
+| [React Integration](https://docs.intuition.systems/docs/v1/intuition-sdk/integrations/react) | [Use React hooks](https://docs.intuition.systems/docs/build/react) |
 
 Sources: [SDK migration](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/sdk/docs/migration.md), [protocol API](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/protocol/README.md).
 
@@ -3106,7 +5110,8 @@ You can build identities and triples offline before choosing a wallet or backend
 ## Explore the documentation
 
 - [Concepts](https://docs.intuition.systems/docs/concepts) introduces representations, directed relationships, and protocol writes.
-- [Examples](https://docs.intuition.systems/docs/examples) connects the building blocks in a worked catalog.
+- [Build guides](https://docs.intuition.systems/docs/build) cover tasks from modeling an identity to verifying a write.
+- [Worked examples](https://docs.intuition.systems/docs/examples) walk through creation forms, identity links, React integration, and graph queries.
 - [Packages](https://docs.intuition.systems/docs/reference/packages) covers every published library; the [SDK reference](https://docs.intuition.systems/docs/reference/sdk) lists action signatures.
 - [Install agent skills](https://docs.intuition.systems/docs/agents/skills) for contract-level guidance, or [get help](https://docs.intuition.systems/docs/community).
 
