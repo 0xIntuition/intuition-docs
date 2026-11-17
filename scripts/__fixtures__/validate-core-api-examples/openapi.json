@@ -1,0 +1,1 @@
+{"openapi":"3.0.3","paths":{"/health":{"get":{}},"/api/atoms":{"get":{},"post":{}},"/api/atoms/{id}":{"get":{}},"/api/triples":{"get":{}}}}

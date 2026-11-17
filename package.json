@@ -34,7 +34,11 @@
     "validate-url-baseline": "node scripts/validate-url-baseline.js",
     "validate-version-equivalents": "node scripts/validate-version-equivalents.js",
     "validate-built-docs": "node scripts/validate-built-docs.js",
-    "validate-config-coverage": "node scripts/validate-config-coverage.js"
+    "validate-config-coverage": "node scripts/validate-config-coverage.js",
+    "check-release-pins": "node scripts/check-release-pins.js",
+    "generate-package-reference": "node scripts/generate-package-reference.js",
+    "sync-generated-blocks": "node scripts/sync-generated-blocks.js",
+    "validate-core-api-examples": "node scripts/validate-core-api-examples.js"
   },
   "dependencies": {
     "@apollo/explorer": "^3.7.2",

@@ -3,7 +3,7 @@
     "id": "M-1",
     "repo": "https://github.com/0xIntuition/intuition-identifier; https://github.com/0xIntuition/packages",
     "path": "spec/*; packages/iid-spec/spec/*",
-    "finding": "The copies diverge. The package copy lacks \u00a77.8 and adds the typed wd scheme, the acct weak form and apple-podcasts, letterboxd and podcast-index. Chapters 00, 01, 04, 05 and 09 differ.",
+    "finding": "The copies diverge. The package copy lacks §7.8 and adds the typed wd scheme, the acct weak form and apple-podcasts, letterboxd and podcast-index. Chapters 00, 01, 04, 05 and 09 differ.",
     "docsPages": [
       "/docs/concepts/iid-schemes",
       "/docs/concepts/representation-profiles",
@@ -67,8 +67,8 @@
   {
     "id": "M-7",
     "repo": "https://github.com/0xIntuition/intuition-core",
-    "path": "services/api/src/app.ts:321; docs/openapi.yaml",
-    "finding": "GET /api/iids/:iid/atoms is in Core code on main but missing from docs/openapi.yaml and docs/api-reference.md. Seeded open; verify at the new Core tag, then resolve only if its OpenAPI lists /api/iids/{iid}/atoms.",
+    "path": "services/api/src/app.ts:321-333; docs/openapi.yaml at a402f880600f92969dc8fb013ca0f69fc9a02420",
+    "finding": "GET /api/iids/:iid/atoms exists in Core source at a402f880600f92969dc8fb013ca0f69fc9a02420 but is absent from its docs/openapi.yaml and docs/api-reference.md. Rechecked at the pinned source commit; public V2 examples must not call it. Resolve only when the selected source OpenAPI lists GET /api/iids/{iid}/atoms.",
     "docsPages": [
       "/docs/reference/core-query-api",
       "/docs/concepts/iid"
