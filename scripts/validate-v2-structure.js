@@ -119,6 +119,21 @@ function withoutFences({ source: body, fences }) {
   );
 }
 
+function hostedReadClientContent(parsed) {
+  // The SDK landing must link its generated API page. Exclude only that exact
+  // Markdown destination, retaining the visible label and all code examples.
+  const destination = `](${versions.current.routeBase}/reference/sdk/api)`;
+  const prose = withoutFences(parsed);
+  const inlineCode = prose.match(/(?<!`)(`+)(?!`)[\s\S]*?(?<!`)\1(?!`)/g) || [];
+  return [
+    prose.replaceAll(destination, ']()'),
+    ...inlineCode,
+    ...parsed.fences.map((fence) =>
+      parsed.source.slice(fence.start, fence.end),
+    ),
+  ].join('\n');
+}
+
 function validateDocs(
   docs,
   { launchRows, manifest = null, openApi = null, phase } = {},
@@ -242,7 +257,7 @@ function validateDocs(
       fail('GraphQL is not allowed in this page body');
     if (
       /sdk\/api|createIntuitionApiClient|getIntuitionApiUrl|intuition\.sh/i.test(
-        body,
+        hostedReadClientContent(parsed),
       ) &&
       !READ_CLIENT_PAGES.has(id)
     )
