@@ -63,6 +63,35 @@ test('equivalence rows omit forbidden pairs and refuse unshipped targets', () =>
     /unshipped/,
   );
 });
+test('migration labels use the native body H1 when a frozen page has no title', () => {
+  const legacy = {
+    id: 'intuition-network/rpc',
+    route: '/docs/v1/intuition-network/rpc',
+    frontMatter: {},
+    body: '\n# Remote Procedure Call (RPC)\n',
+  };
+  const current = {
+    id: 'build/connect',
+    route: '/docs/build/connect',
+    frontMatter: { title: 'Connect to a network' },
+  };
+  const pairs = [{ v1: legacy.id, v2: current.id }];
+  const expected =
+    '| [Remote Procedure Call (RPC)](/docs/v1/intuition-network/rpc) | [Connect to a network](/docs/build/connect) |';
+  for (const title of [undefined, '   ']) {
+    const table = versionEquivalents(
+      pairs,
+      [current],
+      [{ ...legacy, frontMatter: { title } }],
+    );
+    assert.equal(table.split('\n').at(-1), expected);
+  }
+  const titled = { ...legacy, frontMatter: { title: 'Existing title' } };
+  assert.match(
+    versionEquivalents(pairs, [current], [titled]),
+    /\[Existing title\]/,
+  );
+});
 test('check detects one-byte drift; scoped write leaves unrelated page untouched', (t) => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'generated-blocks-'));
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
