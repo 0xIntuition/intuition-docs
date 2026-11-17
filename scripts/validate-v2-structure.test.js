@@ -10,6 +10,10 @@ const {
   validateSidebar,
   validateMismatches,
   checkRoutePermanence,
+  SDK_API_WARNING,
+  GRAPHQL_NOTE,
+  validateCoreSource,
+  readCoreOpenApi,
 } = require('./validate-v2-structure');
 const rows = loadLaunchRoutes(
   fs.readFileSync(`${__dirname}/v2-launch-routes.txt`, 'utf8'),
@@ -54,6 +58,142 @@ test('normative launch tree contains 134 ordered routes and cumulative phase tot
   );
   assert.deepEqual(validateDocs(phaseOne, { launchRows: rows, phase: 1 }), []);
   assert.throws(() => loadLaunchRoutes('invalid 1'), /TAB/);
+});
+
+test('source-mode Core identity and M-7 follow the immutable vendored contract', () => {
+  const manifest = require('../static/intuition-release.json');
+  assert.deepEqual(validateCoreSource(manifest), []);
+  for (const change of [
+    (core) => {
+      core.version = 'v0.1.0';
+    },
+    (core) => {
+      core.releaseNotes = {};
+    },
+    (core) => {
+      core.distribution = 'npm';
+    },
+    (core) => {
+      core.commit = 'main';
+    },
+  ]) {
+    const copy = structuredClone(manifest);
+    change(copy.core);
+    assert.ok(validateCoreSource(copy).length);
+  }
+  const openApi = readCoreOpenApi(
+    require('node:path').resolve(__dirname, '..'),
+    manifest,
+  );
+  const records = require('./source-mismatches.json');
+  assert.deepEqual(
+    validateMismatches(records, rows, { manifest, openApi }),
+    [],
+  );
+  const copy = structuredClone(records);
+  copy.find((record) => record.id === 'M-7').status = 'resolved';
+  assert.match(
+    validateMismatches(copy, rows, { manifest, openApi }).join('\n'),
+    /M-7 status must be open/,
+  );
+  assert.match(
+    validateMismatches(records, rows, { manifest }).join('\n'),
+    /requires the vendored/,
+  );
+  assert.throws(
+    () => readCoreOpenApi('/missing', manifest),
+    /Missing vendored OpenAPI/,
+  );
+  const page = doc(
+    'build/query-core.md',
+    { kind: 'how-to' },
+    'GET /api/iids/example/atoms',
+  );
+  assert.match(
+    validateDocs([page], { launchRows: rows, manifest, openApi }).join('\n'),
+    /M-7/,
+  );
+  assert.deepEqual(
+    validateDocs([page], {
+      launchRows: rows,
+      manifest,
+      openApi: { paths: { '/api/iids/{iid}/atoms': { get: {} } } },
+    }),
+    [],
+  );
+});
+
+test('SDK API source warning is adjacent and read-client recipes remain forbidden', () => {
+  const manifest = require('../static/intuition-release.json');
+  const fields = { kind: 'reference', packages: '["@0xintuition/sdk"]' };
+  const validate = (page) =>
+    validateDocs([page], { launchRows: rows, manifest });
+  const api = doc(
+    'reference/sdk/api.md',
+    fields,
+    `<AppliesTo />\n\n${SDK_API_WARNING}\n\nAPI declarations.`,
+  );
+  assert.deepEqual(validate(api), []);
+  assert.match(
+    validate(
+      doc(
+        'reference/sdk/api.md',
+        fields,
+        `<AppliesTo />\n\nExtra paragraph.\n\n${SDK_API_WARNING}`,
+      ),
+    ).join('\n'),
+    /immediately follow/,
+  );
+  const body = `<AppliesTo />\n\nUse [Core](${versions.current.routeBase}/build/query-core) for V2 reads.\n\n${GRAPHQL_NOTE}\n\nThe client is not a V2 read path. The endpoints are https://mainnet.intuition.sh/v1/graphql and https://testnet.intuition.sh/v1/graphql.`;
+  assert.deepEqual(validate(doc('build/read-with-sdk.md', fields, body)), []);
+  assert.match(
+    validate(
+      doc(
+        'build/read-with-sdk.md',
+        fields,
+        body.replace('build/query-core', 'build/other'),
+      ),
+    ).join('\n'),
+    /first paragraph/,
+  );
+  assert.match(
+    validate(
+      doc(
+        'build/read-with-sdk.md',
+        fields,
+        `${body}\n\n~~~ts\ncreateIntuitionApiClient({});\n~~~`,
+      ),
+    ).join('\n'),
+    /must not call/,
+  );
+  const sdkBody =
+    '<AppliesTo />\n\n## Entry points\n\n| Subpath | Purpose |\n| --- | --- |\n| `./api` | Legacy read client |\n\nThe `@0xintuition/sdk/api` entry point calls the V1 GraphQL API; see [The SDK read client](/docs/build/read-with-sdk).\n\n## Example\n\n```ts\nconst action = 1;\n```';
+  assert.deepEqual(
+    validate(doc('reference/packages/sdk.md', fields, sdkBody)),
+    [],
+  );
+  assert.match(
+    validate(
+      doc(
+        'reference/packages/sdk.md',
+        fields,
+        sdkBody.replace('const action = 1;', 'getIntuitionApiUrl("mainnet");'),
+      ),
+    ).join('\n'),
+    /recipes are forbidden/,
+  );
+});
+
+test('structure validation rejects executable front matter without evaluating it', () => {
+  const source =
+    '---js\n{ title: (globalThis.__structureFrontMatterExecuted = true) }\n---\n# Hidden title';
+  delete globalThis.__structureFrontMatterExecuted;
+  assert.ok(
+    validateDocs([docMetadata('index.md', source, versions.current)], {
+      launchRows: rows,
+    }).length,
+  );
+  assert.equal(globalThis.__structureFrontMatterExecuted, undefined);
 });
 test('AC-6 rejects a Phase 2 extra page and wrong sidebar ordering', () => {
   assert.match(

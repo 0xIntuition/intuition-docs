@@ -152,6 +152,7 @@ function validateCoverage({
   workflows,
   scripts,
   sdkConfig,
+  hasReleaseManifest = false,
 }) {
   const errors = [];
   const current = versions.current.docsDir;
@@ -216,6 +217,27 @@ function validateCoverage({
   )
     errors.push('V1 SDK includes must use version-table snapshot paths');
   const llms = workflows['generate-llms-txt.yml'] || '';
+  if (hasReleaseManifest) {
+    for (const name of ['quality.yml', 'validate-sdk-examples.yml'])
+      if (
+        !workflows[name]?.includes(
+          'npm ci --ignore-scripts --prefix examples/v2',
+        )
+      )
+        errors.push(
+          `${name} must install isolated V2 dependencies without lifecycle scripts`,
+        );
+    for (const command of [
+      'npm run check-release-pins',
+      'node scripts/sync-generated-blocks.js --check',
+      'node scripts/sync-example-snippets.js --check',
+      'node scripts/validate-core-api-examples.js',
+    ])
+      if (!quality.includes(command))
+        errors.push(`quality must run ${command}`);
+    if (!llms.includes('static/intuition-release.json'))
+      errors.push('llms generation must watch the release manifest');
+  }
   for (const version of Object.values(versions))
     if (!llms.includes(`${version.llmsDir}/llms*.txt`))
       errors.push(
@@ -241,6 +263,9 @@ function run(root = ROOT) {
         .map((name) => [name, read(`scripts/${name}`)]),
     ),
     sdkConfig: JSON.parse(read('scripts/sdk-examples.config.json')),
+    hasReleaseManifest: fs.existsSync(
+      path.join(root, 'static/intuition-release.json'),
+    ),
   });
   const labelFiles = [
     ...walkFiles(path.join(root, 'src/theme')),

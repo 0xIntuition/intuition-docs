@@ -21,6 +21,7 @@ const {
   getLastUpdatedMap,
   BASE_URL,
   llmsUrl,
+  appliesToMarkdown,
 } = require('./generate-llms-full');
 
 test('serializes tab labels and preserves fenced code blocks', () => {
@@ -336,9 +337,18 @@ for (const version of Object.values(versions)) {
       assert.match(head, /Other versions:/);
       assert.doesNotMatch(head, /(?:SDK|protocol) [234]\.x/i);
       if (version.isDefault) {
-        assert.match(head, /stable npm releases/);
-        assert.match(head, /Intuition Core is a release candidate/);
-        assert.doesNotMatch(head, /\b\d+\.\d+\.\d+\b|\b[0-9a-f]{40}\b/);
+        const manifest = require('../static/intuition-release.json');
+        assert.ok(
+          head.includes(
+            `Package source: ${manifest.source.repository}/tree/${manifest.source.commit}`,
+          ),
+        );
+        assert.ok(
+          head.includes(
+            `Core source revision: ${manifest.core.repository}/tree/${manifest.core.commit}`,
+          ),
+        );
+        assert.doesNotMatch(head, /release candidate|core\.version/);
       }
     }
     assert.deepEqual(extractFullRoutes(generateFullTxt([section], version)), [
@@ -398,6 +408,74 @@ test('route parity rejects omissions, extras and duplicates independently', () =
     expected: 1,
     actual: 1,
   });
+});
+
+test('V2 headers derive both immutable source revisions from the supplied manifest', () => {
+  const manifest = structuredClone(require('../static/intuition-release.json'));
+  manifest.source.commit = 'a'.repeat(40);
+  manifest.core.commit = 'b'.repeat(40);
+  for (const generate of [
+    generateIndexTxt,
+    generateFullTxt,
+    generateMediumTxt,
+  ]) {
+    const output = generate([], versions.current, { manifest });
+    const head = output.split('\n').slice(0, 10).join('\n');
+    assert.ok(head.includes(manifest.source.commit));
+    assert.ok(head.includes(manifest.core.commit));
+    assert.match(head, /Version: V2/);
+    assert.match(head, /Other versions: V1/);
+    assert.doesNotMatch(head, /release candidate/);
+  }
+  assert.throws(
+    () =>
+      generateHeader(versions.current, 'full', {
+        manifest: { ...manifest, core: { ...manifest.core, commit: 'main' } },
+      }),
+    /immutable/,
+  );
+});
+
+test('V2 text exports exact AppliesTo versions, literal snippets and generated tables', (t) => {
+  const root = fixtureRoot(t);
+  const manifest = require('../static/intuition-release.json');
+  fs.mkdirSync(path.join(root, 'static'));
+  fs.writeFileSync(
+    path.join(root, 'static/intuition-release.json'),
+    JSON.stringify(manifest),
+  );
+  const snippet =
+    '~~~~ts\nconst tag = "<AppliesTo />";\nconst value: Array<string> = ["<!-- keep -->"];\n~~~~';
+  const table =
+    '| Package | Version |\n| --- | --- |\n| @0xintuition/iid | 0.1.0 |';
+  writeDoc(
+    root,
+    versions.current,
+    'index.md',
+    `---\ntitle: Current\npackages: ["@0xintuition/iid"]\n---\n<AppliesTo />\n\n{/* example:start quickstart/quickstart.ts#example */}\n${snippet}\n{/* example:end */}\n\n{/* generated:start release-pins */}\n${table}\n{/* generated:end */}\n`,
+  );
+  const [section] = parseSections('current', { rootDir: root });
+  assert.match(
+    section.contentFull,
+    /^Applies to V2 · `@0xintuition\/iid` 0\.1\.0/,
+  );
+  assert.ok(section.contentFull.includes(snippet));
+  assert.ok(section.contentFull.includes(table));
+  assert.ok(section.contentMedium.includes(table));
+  assert.doesNotMatch(section.contentMedium, /const tag/);
+  assert.doesNotMatch(section.contentFull, /example:start|generated:start/);
+  assert.equal(appliesToMarkdown([], manifest), '');
+  assert.match(
+    appliesToMarkdown(['@0xintuition/iid'], {
+      ...manifest,
+      status: 'published-alpha',
+    }),
+    / · pre-release$/,
+  );
+  assert.throws(
+    () => appliesToMarkdown(['@0xintuition/missing'], manifest),
+    /Missing AppliesTo/,
+  );
 });
 
 test('Source parsing rejects noncanonical external sources', () => {
