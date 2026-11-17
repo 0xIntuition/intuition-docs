@@ -64,14 +64,46 @@ module.exports = {
       ],
       'concepts/index',
     ),
-    category('Build', [
-      category('Set up', ['build/install']),
-      category('Model data', ['build/creation-profiles']),
-      category('Process atoms', ['build/classify-enrich']),
-      category('Write on-chain', ['build/action-plans']),
-      category('Read the graph', ['build/read-with-sdk', 'build/query-core']),
-    ]),
-    category('Examples', ['examples/music-catalog'], 'examples/index'),
+    category(
+      'Build',
+      [
+        category('Set up', ['build/install', 'build/connect']),
+        category('Model data', [
+          'build/derive-ids',
+          'build/creation-profiles',
+          'build/suggest-relationships',
+          'build/link-identities',
+        ]),
+        category('Process atoms', [
+          'build/parse-input',
+          'build/classify-enrich',
+          'build/atom-runtime',
+        ]),
+        category('Write on-chain', [
+          'build/create-atoms',
+          'build/create-triples',
+          'build/deposit-redeem',
+          'build/batch-writes',
+          'build/fee-proxy',
+          'build/action-plans',
+        ]),
+        category('Read the graph', ['build/read-with-sdk', 'build/query-core']),
+        category('Apps', ['build/react', 'build/test-locally']),
+      ],
+      'build/index',
+    ),
+    category(
+      'Examples',
+      [
+        'examples/atom-creation-form',
+        'examples/predicate-picker',
+        'examples/identity-linking',
+        'examples/react-app',
+        'examples/core-query-api',
+        'examples/music-catalog',
+      ],
+      'examples/index',
+    ),
     category('Reference', [
       category(
         'Packages by layer',

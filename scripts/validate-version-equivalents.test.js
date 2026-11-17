@@ -84,7 +84,7 @@ test('every shipped seed resolves in the authored trees and removing any one fai
       .docs.map((doc) => doc.id),
   );
   const shippedSeeds = SEEDS.filter((seed) => shippedIds.has(seed.v2));
-  assert.equal(shippedSeeds.length, 29);
+  assert.equal(shippedSeeds.length, 36);
   assert.deepEqual(map.pairs, shippedSeeds);
   assert.deepEqual(validateEquivalents(map, sourceLoaded), []);
   for (const seed of shippedSeeds) {
@@ -96,4 +96,39 @@ test('every shipped seed resolves in the authored trees and removing any one fai
       seed.v2,
     );
   }
+});
+
+test('rejects swapped Phase 4 destinations, duplicate pairs and non-native IDs', () => {
+  const pairs = map.pairs.filter(({ v2 }) =>
+    ['build/create-atoms', 'build/create-triples'].includes(v2),
+  );
+  const [atom, triple] = pairs;
+  const native = Object.values(versions).map((version) => ({
+    name: version.name,
+    docs: pairs.map((pair) => ({
+      id: pair[version.name === versions.v1.name ? 'v1' : 'v2'],
+    })),
+  }));
+  const check = (entries) =>
+    validateEquivalents({ schemaVersion: 1, pairs: entries }, native);
+  assert.deepEqual(check(pairs), []);
+  const swapped = check([
+    { ...atom, v2: triple.v2 },
+    { ...triple, v2: atom.v2 },
+  ]);
+  for (const { v1, v2 } of pairs)
+    assert.ok(swapped.includes(`Missing shipped seed pair: ${v1} ↔ ${v2}`));
+  assert.deepEqual(check([...pairs, atom]), [
+    'Repeated v1 doc id: interaction-guide/create-atom',
+    'Repeated v2 doc id: build/create-atoms',
+  ]);
+  for (const [side, id] of [
+    ['v1', '/docs/v1/interaction-guide/create-atom'],
+    ['v2', '/docs/build/create-atoms'],
+  ])
+    assert.ok(
+      check([{ ...atom, [side]: id }, triple]).includes(
+        `Unknown ${side} doc id: ${id}`,
+      ),
+    );
 });

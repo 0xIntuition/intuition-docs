@@ -22,6 +22,9 @@ export default function Home() {
                 <a href="/docs/concepts">Explore the concepts</a>
               </li>
               <li>
+                <a href="/docs/build">Browse build guides</a>
+              </li>
+              <li>
                 <a href="/docs/examples">Browse worked examples</a>
               </li>
               <li>

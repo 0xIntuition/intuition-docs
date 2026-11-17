@@ -23,13 +23,14 @@ Start with the system overview and offline quickstart, then follow the guides fo
 
 ## Build an integration
 
+- [Build guides](https://docs.intuition.systems/docs/build): Choose a task from setting up a network to querying your Core node
 - [Install packages](https://docs.intuition.systems/docs/build/install): Select exact package versions and their required peers
 - [Creation Profiles](https://docs.intuition.systems/docs/build/creation-profiles): Inspect classification fields and build typed atom payloads
 - [Classify and enrich](https://docs.intuition.systems/docs/build/classify-enrich): Compose bounded processing and handle partial results
 - [Action plans](https://docs.intuition.systems/docs/build/action-plans): Prepare transaction envelopes before execution
 - [Query Core](https://docs.intuition.systems/docs/build/query-core): Read indexed data through the source-built Core Query API
 - [The SDK read client](https://docs.intuition.systems/docs/build/read-with-sdk): Understand why the hosted V1 client is not a V2 read path
-- [Worked examples](https://docs.intuition.systems/docs/examples): Find the complete music catalog example
+- [Worked examples](https://docs.intuition.systems/docs/examples): Follow complete projects for creation forms, predicate selection, identity linking, React applications, Core queries, and a music catalog
 - [Music catalog](https://docs.intuition.systems/docs/examples/music-catalog): Build synthetic identities, predicates, triples, and processing results offline
 
 ## Build with agents or extend processing

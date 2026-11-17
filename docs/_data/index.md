@@ -25,7 +25,8 @@ You can build identities and triples offline before choosing a wallet or backend
 ## Explore the documentation
 
 - [Concepts](/docs/concepts) introduces representations, directed relationships, and protocol writes.
-- [Examples](/docs/examples) connects the building blocks in a worked catalog.
+- [Build guides](/docs/build) cover tasks from modeling an identity to verifying a write.
+- [Worked examples](/docs/examples) walk through creation forms, identity links, React integration, and graph queries.
 - [Packages](/docs/reference/packages) covers every published library; the [SDK reference](/docs/reference/sdk) lists action signatures.
 - [Install agent skills](/docs/agents/skills) for contract-level guidance, or [get help](/docs/community).
 
