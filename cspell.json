@@ -80,7 +80,21 @@
     "WTRUST",
     "MINTIME",
     "MAXTIME",
-    "llms"
+    "llms",
+    "EIDR",
+    "geohash",
+    "GTIN",
+    "ISNI",
+    "KJTIIGC",
+    "ORCID",
+    "podcastguid",
+    "rssitem",
+    "termset",
+    "microdata",
+    "Crossref",
+    "Crunchbase",
+    "Brandfetch",
+    "retriable"
   ],
   "ignorePaths": ["_data_versioned_docs/**"]
 }

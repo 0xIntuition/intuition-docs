@@ -17,7 +17,7 @@ An **atom** stores a chosen representation as bytes. Its **atom ID** identifies 
 | --- | --- | --- |
 | Build an application | [Derive an atom ID offline](/docs/get-started/quickstart) | [A music catalog](/docs/examples/music-catalog) with explicit recording, artist, and album relationships |
 | Build with agents | [Read the agent contract](/docs/agents) | [Review action plans](/docs/build/action-plans) before a human authorizes execution |
-| Run Core | [Query a Core node](/docs/build/query-core) | Fork, pin, build, and run the source to own graph storage and reads |
+| Run Core | [Set up Intuition Core](/docs/core) | [Query your node](/docs/build/query-core) to read the graph your indexer maintains |
 | Extend processing | [Classify and enrich inputs](/docs/build/classify-enrich) | [Write a classification plugin](/docs/core/classification-plugin) for your domain |
 
 You can build identities and triples offline before choosing a wallet or backend. Processing, persistence, protocol submission, and indexing each have their own lifecycle; [How the pieces fit](/docs/get-started/how-it-fits) explains the boundaries.
@@ -27,7 +27,7 @@ You can build identities and triples offline before choosing a wallet or backend
 - [Concepts](/docs/concepts) introduces representations, directed relationships, and protocol writes.
 - [Build guides](/docs/build) cover tasks from modeling an identity to verifying a write.
 - [Worked examples](/docs/examples) walk through creation forms, identity links, React integration, and graph queries.
-- [Packages](/docs/reference/packages) covers every published library; the [SDK reference](/docs/reference/sdk) lists action signatures.
+- [Reference](/docs/reference) lists package entry points, SDK signatures, service APIs, deployments and identifier catalogs.
 - [Install agent skills](/docs/agents/skills) for contract-level guidance, or [get help](/docs/community).
 
 ## Versions and source

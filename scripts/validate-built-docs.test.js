@@ -7,6 +7,7 @@ const path = require('node:path');
 const { versions } = require('../docs-versions.config');
 const { readDocs } = require('./lib/docs-tree');
 const {
+  assertExportedTableRows,
   BANNER_TEXT,
   assertDocHtml,
   validateNoscript,
@@ -679,4 +680,21 @@ test('Phase 4 discovers all eight named example projects with included source', 
   assert.deepEqual(validateExampleProjects(root), [
     'Missing example project: core-query-api',
   ]);
+});
+
+test('exported tables retain every source row, value and absolute link', () => {
+  const source = {
+    body: '{/* generated:start sample */}\n| Name | Value |\n| --- | --- |\n| [One](/docs/one) | 1 |\n| Two | 2 |\n{/* generated:end */}',
+  };
+  const expected =
+    '| Name | Value |\n| --- | --- |\n| [One](https://docs.example/docs/one) | 1 |\n| Two | 2 |';
+  const check = (text) =>
+    assertExportedTableRows(text, source, 'sample', 'https://docs.example');
+  assert.deepEqual(check(expected), []);
+  for (const damaged of [
+    expected.replace('| Two | 2 |', ''),
+    expected.replace('/docs/one', '/docs/two'),
+    expected.replace('| 1 |', '| 2 |'),
+  ])
+    assert.ok(check(damaged).length);
 });

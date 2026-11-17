@@ -84,7 +84,7 @@ test('every shipped seed resolves in the authored trees and removing any one fai
       .docs.map((doc) => doc.id),
   );
   const shippedSeeds = SEEDS.filter((seed) => shippedIds.has(seed.v2));
-  assert.equal(shippedSeeds.length, 36);
+  assert.equal(shippedSeeds.length, 42);
   assert.deepEqual(map.pairs, shippedSeeds);
   assert.deepEqual(validateEquivalents(map, sourceLoaded), []);
   for (const seed of shippedSeeds) {
@@ -130,5 +130,22 @@ test('rejects swapped Phase 4 destinations, duplicate pairs and non-native IDs',
       check([{ ...atom, [side]: id }, triple]).includes(
         `Unknown ${side} doc id: ${id}`,
       ),
+    );
+});
+
+test('launch maps operator, catalog and community routes and retains the V1 MCP switch target', () => {
+  const expected = [
+    ['resources/glossary', 'reference/glossary'],
+    ['intuition-node/overview', 'core/index'],
+    ['intuition-node/run-an-intuition-node', 'core/run-a-node'],
+    ['intuition-node/local-setup', 'core/local-devnet'],
+    ['portal', 'community/ecosystem'],
+    ['contribution-guidelines', 'community/contributing'],
+    ['experimental-applications/mcp-server', 'agents/index'],
+  ];
+  for (const [v1, v2] of expected)
+    assert.deepEqual(
+      map.pairs.filter((pair) => pair.v1 === v1 || pair.v2 === v2),
+      [{ v1, v2 }],
     );
 });

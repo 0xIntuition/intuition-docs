@@ -33,7 +33,7 @@ jobs:
       - run: npm run typecheck
       - run: npm run spell-check
       - run: npm run validate-v2-structure
-      - run: node scripts/validate-v2-structure.js --phase 4 --templates
+      - run: node scripts/validate-v2-structure.js --launch --templates
       - run: npm run validate-sdk-examples
       - run: npm run check-release-pins
       - run: node scripts/sync-generated-blocks.js --check

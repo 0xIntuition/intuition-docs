@@ -43,4 +43,4 @@ jobs:
           npm run build 2>&1 | tee build.log
       - run: npm run validate-url-baseline
       - run: npm run validate-version-equivalents
-      - run: node scripts/validate-built-docs.js --phase 4 --build-log build.log
+      - run: node scripts/validate-built-docs.js --phase 5 --build-log build.log

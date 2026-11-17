@@ -19,12 +19,12 @@ const rows = loadLaunchRoutes(
 
 // Adapted from #112's complete-document navigation check. The authored sidebar
 // now has a normative phase order and may not generate category index pages.
-test('authored navigation covers the exact 114 Phase 4 routes once in launch order', () => {
+test('authored navigation covers the exact 134 launch routes once in launch order', () => {
   assert.deepEqual(Object.keys(sidebars), ['docs']);
-  assert.equal(docs.length, 114);
+  assert.equal(docs.length, 134);
   assert.deepEqual(
     new Set(docs.map((doc) => doc.route)),
-    new Set(rows.filter((row) => row.phase <= 4).map((row) => row.route)),
+    new Set(rows.map((row) => row.route)),
   );
   assert.deepEqual(validateSidebar(sidebars, docs, rows), []);
 });
@@ -52,8 +52,8 @@ test('only shipped section landings become category links', () => {
       'concepts/index',
       'build/index',
       'examples/index',
-      null,
-      null,
+      'reference/index',
+      'core/index',
       'community/index',
     ],
   );

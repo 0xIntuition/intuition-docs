@@ -16,6 +16,11 @@ export default function Home() {
             <h2>Explore the documentation</h2>
             <ul>
               <li>
+                <a href="/docs/get-started/how-it-fits">
+                  See how Intuition fits together
+                </a>
+              </li>
+              <li>
                 <a href="/docs/agents">Build with AI agents</a>
               </li>
               <li>
@@ -26,6 +31,12 @@ export default function Home() {
               </li>
               <li>
                 <a href="/docs/examples">Browse worked examples</a>
+              </li>
+              <li>
+                <a href="/docs/reference">Look up a reference</a>
+              </li>
+              <li>
+                <a href="/docs/core">Run Intuition Core</a>
               </li>
               <li>
                 <a href="/docs/community">Community and support</a>

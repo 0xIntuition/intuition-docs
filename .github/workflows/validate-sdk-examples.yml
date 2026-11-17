@@ -50,6 +50,9 @@ jobs:
       - name: Verify React transaction receipt handling offline
         run: node --test examples/v2/react-app/src/receipt.test.ts
 
+      - name: Verify enrichment outcomes with an injected offline transport
+        run: node examples/v2/music-catalog/src/enrichment-plugin.ts
+
       - name: Check synchronized V2 source regions
         run: node scripts/sync-example-snippets.js --check
 

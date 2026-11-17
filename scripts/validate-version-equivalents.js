@@ -80,6 +80,12 @@ const SEEDS = [
   { v1: 'protocol/examples/batch-operations', v2: 'build/batch-writes' },
   { v1: 'interaction-guide/fee-proxy-integration', v2: 'build/fee-proxy' },
   { v1: 'intuition-sdk/integrations/react', v2: 'build/react' },
+  { v1: 'resources/glossary', v2: 'reference/glossary' },
+  { v1: 'intuition-node/overview', v2: 'core/index' },
+  { v1: 'intuition-node/run-an-intuition-node', v2: 'core/run-a-node' },
+  { v1: 'intuition-node/local-setup', v2: 'core/local-devnet' },
+  { v1: 'portal', v2: 'community/ecosystem' },
+  { v1: 'contribution-guidelines', v2: 'community/contributing' },
 ];
 function readGlobalVersions(globalData) {
   const loaded =

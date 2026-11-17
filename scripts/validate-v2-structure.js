@@ -604,6 +604,30 @@ function parseArguments(args) {
   return options;
 }
 
+function validateLaunchMigration(current, legacy, pairs) {
+  const { versionEquivalents } = require('./sync-generated-blocks');
+  const { readPage } = require('./lib/phase3-structure/markdown');
+  const migration = current.find(
+    (doc) => doc.id === 'get-started/migrate-from-v1',
+  );
+  if (!migration) return ['Missing launch migration guide'];
+  const table = versionEquivalents(pairs, current, legacy);
+  const rows = readPage(migration)
+    .section('Where did my page go', 3)
+    .split('\n')
+    .filter((line) => line.startsWith('|'))
+    .join('\n');
+  const block =
+    '{/* generated:start version-equivalents */}\n\n' +
+    table +
+    '\n\n{/* generated:end */}';
+  if (rows !== table || !migration.body.includes(block))
+    return [
+      'Where did my page go must contain the generated native page titles and routes for every public version pair',
+    ];
+  return [];
+}
+
 function run({
   root = ROOT,
   phase,
@@ -632,6 +656,18 @@ function run({
       : phase >= 3;
   const errors = [
     ...validateDocs(docs, { launchRows, manifest, openApi, phase }),
+    ...(phase === 5
+      ? validateLaunchMigration(
+          docs,
+          readDocs(root, versions.v1),
+          JSON.parse(
+            fs.readFileSync(
+              path.join(root, 'src/data/version-equivalents.json'),
+              'utf8',
+            ),
+          ).pairs,
+        )
+      : []),
     ...validateSidebar(sidebar, docs, launchRows, phase),
     ...validateMismatches(mismatches, launchRows, { manifest, openApi }),
     ...(templates || phase3
@@ -685,6 +721,7 @@ module.exports = {
   GRAPHQL_PAGES,
   READ_CLIENT_PAGES,
   loadLaunchRoutes,
+  validateLaunchMigration,
   validateDocs,
   validateSidebar,
   validateMismatches,

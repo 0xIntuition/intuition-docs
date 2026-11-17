@@ -283,6 +283,12 @@ The following mapping comes from the version switcher's equivalence data. Other 
 | [Batch Operations](/docs/v1/protocol/examples/batch-operations) | [Batch writes](/docs/build/batch-writes) |
 | [Integrate FeeProxy](/docs/v1/interaction-guide/fee-proxy-integration) | [Route writes through the FeeProxy](/docs/build/fee-proxy) |
 | [React Integration](/docs/v1/intuition-sdk/integrations/react) | [Use React hooks](/docs/build/react) |
+| [Glossary](/docs/v1/resources/glossary) | [Glossary](/docs/reference/glossary) |
+| [Overview](/docs/v1/intuition-node/overview) | [Intuition Core](/docs/core) |
+| [Run an Intuition Node](/docs/v1/intuition-node/run-an-intuition-node) | [Run your own node](/docs/core/run-a-node) |
+| [Local Development Setup](/docs/v1/intuition-node/local-setup) | [Run a local devnet](/docs/core/local-devnet) |
+| [Portal (Explorer) Guide](/docs/v1/portal) | [Ecosystem](/docs/community/ecosystem) |
+| [Contribution Guidelines](/docs/v1/contribution-guidelines) | [Contribute to the docs](/docs/community/contributing) |
 
 {/* generated:end */}
 

@@ -33,6 +33,8 @@ Before building, check that the last two commands print the full commit above an
 
 ### 2. Build the services and check the data stores
 
+Use an isolated development machine for the default configuration. Compose publishes Postgres, TimescaleDB and Redis on host interfaces, and the database passwords are development defaults. Before startup on a shared or network-reachable host, bind the published ports to `127.0.0.1` in your fork and use credentials appropriate to that host. Services within Compose can still reach each other by service name. [Datastore port mappings](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/docker-compose.datastores.yml)
+
 ```sh
 scripts/bootstrap.sh --no-start
 docker compose -f docker-compose.yml up -d --build
