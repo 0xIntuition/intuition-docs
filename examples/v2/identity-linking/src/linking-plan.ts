@@ -1,7 +1,7 @@
 import { planLink } from './link-identities.ts';
 
 // #region archived-records
-const recordingIid = 'int:isrc:USXY12600001';
+const recordingIid = 'int:isrc:USRC12600001';
 export const archive = {
   level: 'recording' as const,
   atomData:

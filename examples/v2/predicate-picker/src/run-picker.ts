@@ -7,6 +7,8 @@ if (import.meta.main) {
   const [group, album] = catalog;
   const suggestion = previewTriple('byArtist', group.data);
   assert.ok(suggestion.ok);
+  assert.equal(previewTriple('byArtist', '').ok, false);
+  assert.equal(previewTriple('inAlbum', album.data).ok, true);
   const { subjectId, predicateId, objectId, tripleId } = suggestion;
   assert.notEqual(
     calculateTripleId(objectId, predicateId, subjectId),
