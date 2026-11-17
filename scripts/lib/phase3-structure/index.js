@@ -65,11 +65,13 @@ function validateAgent(doc, page, fail) {
   )
     fail('agents/index must contain the single MCP notice');
   if (doc.id === AGENTS[1]) {
-    const urls = new Set(
-      page.prose.match(
-        /(?<![\w./-])(?:\/docs\/v1)?\/llms(?:-medium|-full)?\.txt\b/g,
-      ),
+    // A link's label may show a valid filename even when its target is wrong.
+    // Keep bare URL examples as well as actual Markdown link destinations.
+    const targets = page.prose.replace(/\[[^\]\n]*\]\(/g, '(');
+    const bundles = targets.matchAll(
+      /(?:^|[\s(`<"'])(?:https:\/\/docs\.intuition\.systems)?((?:\/docs\/v1)?\/llms(?:-medium|-full)?\.txt)(?=$|[\s)>`"']|[.,;:!?](?:\s|$))/g,
     );
+    const urls = new Set(Array.from(bundles, (match) => match[1]));
     if (urls.size !== 6 || !/\.md\b/.test(page.prose))
       fail('document all six literal llms URLs and the per-page .md rule');
   }
