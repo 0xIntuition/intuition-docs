@@ -12,7 +12,7 @@ Choose a question to start with. To represent a recording and its artist, begin 
 
 ## How to read the map
 
-Read each arrow from the prerequisite toward the concept that uses it. For example, a triple needs atoms for its subject, predicate, and object. The branches show where you can pursue a different question without finishing every page.
+Read each arrow from the prerequisite toward the concept that uses it. For example, start with atoms to understand term IDs, then learn how a triple connects existing terms. A subject, predicate, or object can itself be a triple. The branches show where you can pursue a different question without finishing every page.
 
 ```mermaid
 graph BT
