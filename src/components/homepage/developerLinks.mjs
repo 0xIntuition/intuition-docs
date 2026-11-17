@@ -32,7 +32,11 @@ const positions = [
 ];
 
 export function getDeveloperLinks(shippedRoutes) {
-  const routes = new Set(shippedRoutes);
+  // Native Docusaurus paths retain section-index slashes even when emitted
+  // links use trailingSlash:false. Compare their canonical route forms.
+  const routes = new Set(
+    shippedRoutes.map((route) => route.replace(/\/+$/, '') || '/'),
+  );
   return positions.map(({ name, targets, fallback }) => {
     const currentTarget = targets.find((route) => routes.has(route));
     // The skills page is required in the initial current tree. Let the build's

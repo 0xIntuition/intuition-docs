@@ -112,6 +112,67 @@ function within(node, ancestor) {
     if (current === ancestor) return true;
   return false;
 }
+function validateDeveloperFooter(tree, shippedRoutes) {
+  const current = versions.current.routeBase;
+  const old = versions.v1.routeBase;
+  const routes = new Set(shippedRoutes.map(normalizeRoute));
+  // Independent FR-15 expectations are derived from the shipped source tree,
+  // not from the footer resolver whose rendered output this check validates.
+  const positions = [
+    [
+      'Architecture',
+      [`${current}/get-started/how-it-fits`],
+      `${old}/intuition-concepts/architecture`,
+    ],
+    [
+      'Primitives',
+      [`${current}/concepts`],
+      `${old}/intuition-concepts/primitives`,
+    ],
+    [
+      'Smart Contracts',
+      [
+        `${current}/reference/contracts`,
+        `${current}/reference/packages/protocol`,
+      ],
+      `${old}/intuition-smart-contracts`,
+    ],
+    ['GraphQL API', [], `${old}/graphql-api/overview`],
+    [
+      'SDK',
+      [`${current}/reference/packages/sdk`],
+      `${old}/intuition-sdk/installation-and-setup`,
+    ],
+    ['AI Integration', [`${current}/agents`, `${current}/agents/skills`]],
+  ];
+  const expected = positions.map(([name, targets, fallback]) => {
+    const target = targets.find((route) => routes.has(route));
+    return {
+      name: target ? name : `${name} (V1)`,
+      href: target || fallback,
+    };
+  });
+  const headings = nodes(tree, (node) => node.tag === 'footer').flatMap(
+    (footer) =>
+      nodes(
+        footer,
+        (node) =>
+          /^h[1-6]$/.test(node.tag) && visibleText(node) === 'Developers',
+      ),
+  );
+  if (headings.length !== 1) return ['expected one Developers footer column'];
+  const actual = nodes(headings[0].parent, (node) => node.tag === 'a').map(
+    (node) => ({
+      name: visibleText(node),
+      href: normalizeRoute(node.attrs.href || ''),
+    }),
+  );
+  return JSON.stringify(actual) === JSON.stringify(expected)
+    ? []
+    : [
+        `Developers footer must use shipped FR-15 destinations: expected ${JSON.stringify(expected)}, received ${JSON.stringify(actual)}`,
+      ];
+}
 function routeFile(build, route) {
   route = normalizeRoute(route);
   const relative = route.replace(/^\//, '');
@@ -137,10 +198,13 @@ function assertDocHtml(
     manifest = null,
     openApi = null,
     phase,
+    shippedRoutes,
   },
 ) {
   const errors = [];
   const tree = parseHtml(html);
+  if (shippedRoutes)
+    errors.push(...validateDeveloperFooter(tree, shippedRoutes));
   const badges = nodes(tree, (node) =>
     hasClass(node, 'theme-doc-version-badge'),
   );
@@ -490,6 +554,7 @@ function run({ root = ROOT, phase, buildLog } = {}) {
           manifest,
           openApi,
           phase,
+          shippedRoutes: source.map((page) => page.route),
           expectedEditUrl:
             version.name === versions.current.name
               ? `https://github.com/0xIntuition/intuition-docs/tree/main/${version.docsDir}/${source.find((page) => page.id === doc.id)?.relativePath}`
@@ -560,6 +625,7 @@ module.exports = {
   parseHtml,
   nodes,
   visibleText,
+  validateDeveloperFooter,
   routeFile,
   assertDocHtml,
   validateSitemap,

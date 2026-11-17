@@ -11,6 +11,11 @@ const equivalents = require('../src/data/version-equivalents.json');
 const { versions: config } = require('../docs-versions.config');
 const { readDocs } = require('./lib/docs-tree');
 const ROOT = path.resolve(__dirname, '..');
+const initialPairs = [
+  { v1: 'index', v2: 'index' },
+  { v1: 'getting-started/ai-skills', v2: 'agents/skills' },
+  { v1: 'resources/community-and-support', v2: 'community/index' },
+];
 
 function loadSource(file, mocks = {}) {
   const { outputText } = ts.transpileModule(
@@ -67,7 +72,7 @@ const versions = [
 function resolve(overrides) {
   return resolveVersionEquivalent({
     versions,
-    pairs: equivalents.pairs,
+    pairs: initialPairs,
     sourceVersion: 'v1',
     targetVersion: 'current',
     search: '?q=atom%20id&lang=en',
@@ -76,14 +81,13 @@ function resolve(overrides) {
   });
 }
 
-test('all three seeds resolve in both directions using native doc paths', () => {
+test('initial three seeds resolve in both directions using native doc paths', () => {
   assert.equal(equivalents.schemaVersion, 1);
-  assert.deepEqual(equivalents.pairs, [
-    { v1: 'index', v2: 'index' },
-    { v1: 'getting-started/ai-skills', v2: 'agents/skills' },
-    { v1: 'resources/community-and-support', v2: 'community/index' },
-  ]);
-  for (const pair of equivalents.pairs) {
+  for (const pair of initialPairs) {
+    assert.deepEqual(
+      equivalents.pairs.find((entry) => entry.v1 === pair.v1),
+      pair,
+    );
     const forward = versions[0].docs.find((doc) => doc.id === pair.v2).path;
     const reverse = versions[1].docs.find((doc) => doc.id === pair.v1).path;
     const suffix =

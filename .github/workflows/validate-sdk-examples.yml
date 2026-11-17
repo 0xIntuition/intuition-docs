@@ -38,6 +38,9 @@ jobs:
       - name: Typecheck SDK documentation examples
         run: npm run validate-sdk-examples
 
+      - name: Verify historical atom identity preservation offline
+        run: node --test examples/v2/first-write/migration.test.ts
+
       - name: Check synchronized V2 source regions
         run: node scripts/sync-example-snippets.js --check
 

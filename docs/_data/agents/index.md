@@ -35,10 +35,12 @@ Start an agent with a concrete outcome, the release manifest, and the relevant r
 
 ```text
 Build an offline recording-anchor preview.
-Read /docs/get-started/quickstart and /docs/concepts/representation-profiles.
+Read /docs/get-started/quickstart, /docs/concepts/representation-profiles, and /docs/reference/packages/primitives.
 Use exact versions and public exports from /intuition-release.json.
 Input: an ISRC and optional companion context URIs.
 Output: IID, profile, exact data, dataHex, atom ID, or structured errors.
+Preserve nullable builder fields; narrow success and guard a null IID before requiring a string.
+A profile label alone does not establish different bytes or IDs.
 Assert equivalent ISRC spellings produce the same P0 bytes and ID.
 Assert changing companion context URIs preserves those bytes and ID.
 Keep the golden ISRC fixture separate from synthetic music-catalog records.
@@ -54,7 +56,7 @@ Compile against exact isolated dependencies. For offline code, assert canonical 
 
 ```text
 Outcome:
-Package versions and source revision:
+Every used package → exact manifest version and public entry point; package source revision; installed versions only if checked:
 API contract / chain / deployment:
 Stored identity and representation decisions:
 Checks actually performed:

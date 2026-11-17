@@ -18,9 +18,20 @@ const {
 const v1 = versions.v1.routeBase;
 const v2 = versions.current.routeBase;
 const doc = { id: 'community/index' };
+const initialFooterLinks = [
+  ['Architecture (V1)', `${v1}/intuition-concepts/architecture`],
+  ['Primitives (V1)', `${v1}/intuition-concepts/primitives`],
+  ['Smart Contracts (V1)', `${v1}/intuition-smart-contracts`],
+  ['GraphQL API (V1)', `${v1}/graphql-api/overview`],
+  ['SDK (V1)', `${v1}/intuition-sdk/installation-and-setup`],
+  ['AI Integration', `${v2}/agents/skills`],
+];
+function footer(links) {
+  return `<footer><div><h3>Developers</h3><div>${links.map(([name, href]) => `<a href="${href}">${name}</a>`).join('')}</div></div></footer>`;
+}
 const banner = `<div class="theme-doc-version-banner alert alert--warning">You're reading the V1 docs. They cover the first generation of Intuition: the <a href="https://github.com/0xIntuition/intuition-ts">intuition-ts</a> packages and the <a href="https://github.com/0xIntuition/intuition-rs">intuition-rs</a> services. New development happens in V2. <a href="${v2}/community">Open the V2 docs</a></div>`;
-const htmlV1 = `<meta name="robots" content="noindex, nofollow"><span class="theme-doc-version-badge">Version: V1</span>${banner}<article>Frozen docs</article>`;
-const htmlV2 = `<span class="theme-doc-version-badge">Version: V2</span><div class="theme-doc-markdown"><header><h1>Get help</h1></header><div><p>Useful body.</p></div></div><footer><a href="${v1}/graphql-api/overview">GraphQL API (V1)</a></footer>`;
+const htmlV1 = `<meta name="robots" content="noindex, nofollow"><span class="theme-doc-version-badge">Version: V1</span>${banner}<article>Frozen docs</article>${footer(initialFooterLinks)}`;
+const htmlV2 = `<span class="theme-doc-version-badge">Version: V2</span><div class="theme-doc-markdown"><header><h1>Get help</h1></header><div><p>Useful body.</p></div></div>${footer(initialFooterLinks)}`;
 test('built assertions separate permitted V1 chrome from V2 body text', () => {
   assert.equal(BANNER_TEXT.includes('not supported'), false);
   assert.deepEqual(
@@ -193,6 +204,85 @@ test('AC-10/26/27 rejects unlabelled V1 chrome and forbidden page-body links', (
     ).join('\n'),
     /GraphQL body/,
   );
+});
+test('AC-10 validates actual footer links against shipped routes in both versions', () => {
+  const initialRoutes = [`${v2}/`, `${v2}/agents/skills`, `${v2}/community/`];
+  const phase2Routes = [
+    ...initialRoutes,
+    `${v2}/get-started/how-it-fits`,
+    `${v2}/concepts/`,
+    `${v2}/reference/packages/protocol`,
+    `${v2}/reference/packages/sdk`,
+    `${v2}/agents/`,
+  ];
+  const phase2Links = [
+    ['Architecture', `${v2}/get-started/how-it-fits`],
+    ['Primitives', `${v2}/concepts`],
+    ['Smart Contracts', `${v2}/reference/packages/protocol`],
+    initialFooterLinks[3],
+    ['SDK', `${v2}/reference/packages/sdk`],
+    ['AI Integration', `${v2}/agents`],
+  ];
+  for (const [version, original] of [
+    [versions.current, htmlV2],
+    [versions.v1, htmlV1],
+  ]) {
+    const options = {
+      version,
+      doc,
+      target: `${v2}/community`,
+      shippedRoutes: initialRoutes,
+    };
+    assert.deepEqual(assertDocHtml(original, options), []);
+    const html = original.replace(
+      footer(initialFooterLinks),
+      footer(phase2Links),
+    );
+    assert.deepEqual(
+      assertDocHtml(html, { ...options, shippedRoutes: phase2Routes }),
+      [],
+    );
+    const staleLinks = phase2Links.map((link, index) =>
+      [1, 5].includes(index) ? initialFooterLinks[index] : link,
+    );
+    assert.match(
+      assertDocHtml(
+        original.replace(footer(initialFooterLinks), footer(staleLinks)),
+        {
+          ...options,
+          shippedRoutes: phase2Routes,
+        },
+      ).join('\n'),
+      /Developers footer must use shipped/,
+    );
+    const contractsRoutes = [...phase2Routes, `${v2}/reference/contracts/`];
+    assert.match(
+      assertDocHtml(html, { ...options, shippedRoutes: contractsRoutes }).join(
+        '\n',
+      ),
+      /Developers footer must use shipped/,
+    );
+    const contractsLinks = phase2Links.map((link, index) =>
+      index === 2 ? ['Smart Contracts', `${v2}/reference/contracts`] : link,
+    );
+    assert.deepEqual(
+      assertDocHtml(
+        original.replace(footer(initialFooterLinks), footer(contractsLinks)),
+        {
+          ...options,
+          shippedRoutes: contractsRoutes,
+        },
+      ),
+      [],
+    );
+    assert.match(
+      assertDocHtml(html.replace(footer(phase2Links), ''), {
+        ...options,
+        shippedRoutes: phase2Routes,
+      }).join('\n'),
+      /expected one Developers footer column/,
+    );
+  }
 });
 test('sitemap excludes every V1 route and includes every shipped V2 doc', () => {
   const xml = `<urlset><url><loc>https://docs.intuition.systems${v2}</loc></url></urlset>`;

@@ -11,7 +11,7 @@ Condensed reference with metadata and prose, without code examples. For full con
 ---
 title: "Build with AI agents"
 description: "Give agents pinned sources, a clear reading order, identity invariants, and a human review boundary for protocol execution."
-last_updated: "2026-11-17T07:51:29-08:00"
+last_updated: "2026-11-17T08:42:30-08:00"
 source: "https://docs.intuition.systems/docs/agents"
 ---
 
@@ -370,7 +370,7 @@ Protocol primitives is ladder Tier 1, Intuition Identifier is Tier 2 (Identity),
 ---
 title: "Migrate from V1"
 description: "Move an intuition-ts integration to V2 packages while preserving stored identity and separating planning, writes, and Core reads."
-last_updated: "2026-11-17T08:18:28-08:00"
+last_updated: "2026-11-17T08:42:30-08:00"
 source: "https://docs.intuition.systems/docs/get-started/migrate-from-v1"
 ---
 

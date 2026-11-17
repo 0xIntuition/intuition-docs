@@ -73,6 +73,7 @@ import { calculateAtomId as atomIdFromData } from '@0xintuition/ids';
 import { stringToHex as encodeData } from 'viem';
 
 export function preserveAtom(data: string) {
-  return { data, dataHex: encodeData(data), id: atomIdFromData(data) };
+  const dataHex = encodeData(data);
+  return { data, dataHex, id: atomIdFromData(dataHex) };
 }
 // #endregion

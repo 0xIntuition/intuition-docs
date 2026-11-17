@@ -64,6 +64,35 @@ test('footer preferences follow actual shipped routes and survive route removal'
   assert.deepEqual(getDeveloperLinks(initialRoutes), initialLinks);
 });
 
+test('footer recognizes native trailing-slash landings and preserves fallback preferences', async () => {
+  const { getDeveloperLinks } = await import(
+    '../src/components/homepage/developerLinks.mjs'
+  );
+  const routes = [
+    '/docs/',
+    '/docs/agents/skills',
+    '/docs/community/',
+    '/docs/get-started/how-it-fits',
+    '/docs/concepts/',
+    '/docs/reference/packages/protocol',
+    '/docs/reference/packages/sdk',
+    '/docs/agents/',
+  ];
+  assert.deepEqual(getDeveloperLinks(routes), [
+    { name: 'Architecture', href: '/docs/get-started/how-it-fits' },
+    { name: 'Primitives', href: '/docs/concepts' },
+    { name: 'Smart Contracts', href: '/docs/reference/packages/protocol' },
+    initialLinks[3],
+    { name: 'SDK', href: '/docs/reference/packages/sdk' },
+    { name: 'AI Integration', href: '/docs/agents' },
+  ]);
+  assert.deepEqual(
+    getDeveloperLinks([...routes, '/docs/reference/contracts/'])[2],
+    { name: 'Smart Contracts', href: '/docs/reference/contracts' },
+  );
+  assert.deepEqual(getDeveloperLinks(routes.slice(0, 3)), initialLinks);
+});
+
 test('noscript links the four Phase 2 section landings and required version/agent files', () => {
   const source = fs.readFileSync(
     path.join(ROOT, 'src/pages/index.jsx'),
