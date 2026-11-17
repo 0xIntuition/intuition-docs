@@ -12,7 +12,7 @@ depends_on: ["deterministic-ids", "vaults", "representation-profiles", "classifi
 
 A protocol write changes on-chain state through a signed transaction. Building atom bytes or an action envelope can happen locally; reading a quote needs contract state; submission requires an authorized signer. A prepared request is not a transaction, a transaction hash is not a successful receipt, and a receipt does not prove a Core node has indexed the change.
 
-**Builds on:** [Representation profiles](/docs/concepts/representation-profiles), deterministic IDs, vaults, and classifications.
+**Builds on:** [Deterministic IDs](/docs/concepts/deterministic-ids), [Vaults](/docs/concepts/vaults), [Representation profiles](/docs/concepts/representation-profiles), [Classifications](/docs/concepts/classifications).
 
 **Implemented by:** [sdk](/docs/reference/packages/sdk), [protocol](/docs/reference/packages/protocol), [periphery](/docs/reference/packages/periphery), [deployments](/docs/reference/packages/deployments), [cli](/docs/reference/packages/cli).
 
@@ -96,6 +96,6 @@ The caller must handle an existing atom and current creation costs. The same nam
 
 ## Next
 
-[Build action plans and envelopes](/docs/build/action-plans) for review, then [query a Core node](/docs/build/query-core) to understand the separate read path. Its default source stack requires explicit indexing configuration before it ingests chain events.
+[Build action plans and envelopes](/docs/build/action-plans) for review. After confirmation, [Indexing and querying](/docs/concepts/indexing-and-querying) explains how the write becomes visible to readers who [query a Core node](/docs/build/query-core). Its default source stack requires explicit indexing configuration before it ingests chain events.
 
 Sources: [Action-plan ownership](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/sdk/docs/action-plans.md), [MultiVault actions](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/sdk/src/actions/multivault.ts), [FeeProxy execution](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/sdk/src/actions/fee-proxy.ts).
