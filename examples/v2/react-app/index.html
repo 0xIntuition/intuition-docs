@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Read and create an atom</title>
+    <style>
+      :root { color-scheme: light dark; font: 100%/1.55 system-ui, sans-serif; }
+      main { max-inline-size: 65ch; padding: 1rem; margin-inline: auto; overflow-wrap: anywhere; }
+      section, form { margin-block: 2rem; }
+      h1, h2 { line-height: 1.2; text-wrap: balance; }
+      label, dt { font-weight: 600; }
+      input { display: block; inline-size: 100%; box-sizing: border-box; margin-block: .35rem .75rem; }
+      input, button { padding: .45rem .7rem; font: inherit; }
+      dt { margin-block-start: .55rem; }
+      dd { margin: 0; font-variant-numeric: tabular-nums; }
+      :focus-visible { outline: 2px solid Highlight; outline-offset: 3px; }
+      @media (prefers-reduced-motion: no-preference) {
+        button:active:enabled { transform: scale(.97); }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>
