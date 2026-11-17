@@ -551,3 +551,38 @@ test('V2 prose whitespace cleanup preserves blank lines inside source code', () 
     'Text.\n\n' + fence,
   );
 });
+
+test('shared Markdown preserves literal Card destinations, labels and descriptions on the V2 examples landing', () => {
+  const grid = fs.readFileSync(
+    path.join(__dirname, '__fixtures__/validate-v2-structure/example-cards.md'),
+    'utf8',
+  );
+  const options = { version: 'current', pageUrl: BASE_URL + '/docs/examples' };
+  const code = '~~~mdx\n' + grid + '~~~';
+  const input = [
+    code,
+    '{/* ' + grid + ' */}',
+    grid,
+    '<Unknown title="ignore" />',
+    code,
+  ].join('\n\n');
+  for (const stripCodeBlocks of [false, true]) {
+    const output = cleanContent(input, '', { ...options, stripCodeBlocks });
+    assert.equal(output.match(/^- \[/gm).length, 6);
+    assert.ok(
+      output.includes(
+        `[Create an atom \\[draft\\]](${BASE_URL}/docs/examples/atom-creation-form) — Use a Creation Profile &amp; display its "name".`,
+      ),
+    );
+    assert.equal(output.split(code).length - 1, stripCodeBlocks ? 0 : 2);
+    assert.doesNotMatch(
+      output.replaceAll(code, ''),
+      /<Card|examples-grid|<Unknown/,
+    );
+  }
+  for (const context of [
+    { ...options, pageUrl: BASE_URL + '/docs/concepts' },
+    { version: 'v1', pageUrl: BASE_URL + '/docs/v1/examples' },
+  ])
+    assert.equal(cleanContent(grid, '', context), '');
+});

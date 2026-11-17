@@ -1,5 +1,6 @@
 'use strict';
 
+const { EXAMPLE_ROUTES } = require('../example-cards');
 const { routeLinks } = require('./markdown');
 
 const PACKAGE_HEADINGS = [
@@ -38,6 +39,17 @@ function validateTemplate(doc, page, docs, fail) {
     .map((heading) => heading.text);
   if (id === 'index' || id.endsWith('/index')) {
     const linked = new Set(routeLinks(prose));
+    if (id === 'examples/index') {
+      if (page.exampleGrid) {
+        for (const card of page.exampleGrid.cards) linked.add(card.to);
+      } else if (
+        EXAMPLE_ROUTES.every((route) =>
+          docs.some((child) => child.route === route),
+        )
+      ) {
+        fail('the worked examples landing must include its six-Card grid');
+      }
+    }
     for (const child of docs) {
       const required =
         id === 'index'

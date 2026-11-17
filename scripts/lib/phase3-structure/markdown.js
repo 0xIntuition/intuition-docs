@@ -2,6 +2,8 @@
 
 const { parseMarkdownCode, readFrontMatter } = require('../markdown-fences');
 
+const { readExampleGrid } = require('../example-cards');
+
 function readPage(doc) {
   const parsed = parseMarkdownCode(doc.content, { filePath: doc.relativePath });
   let prose = parsed.source;
@@ -29,7 +31,9 @@ function readPage(doc) {
     );
     return prose.slice(heading.end, next?.start ?? prose.length);
   }
-  return { prose, headings, section, fences: parsed.fences };
+  const exampleGrid =
+    doc.id === 'examples/index' ? readExampleGrid(parsed) : null;
+  return { prose, headings, section, fences: parsed.fences, exampleGrid };
 }
 
 function links(text) {

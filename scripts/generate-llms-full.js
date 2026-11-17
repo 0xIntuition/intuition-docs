@@ -505,26 +505,48 @@ function cleanContent(
   const linkContext = { pageUrl, sourceFile, routeMaps };
 
   // Pass 0: Handle fenced code blocks
-  const codeBlocks = [];
-  const protectCode = (match) => {
-    if (stripCodeBlocks) {
-      return ''; // Remove entirely for medium output
-    }
-    const idx = codeBlocks.length;
-    codeBlocks.push(match);
+  const preservedBlocks = [];
+  const preserve = (text) => {
+    const idx = preservedBlocks.length;
+    preservedBlocks.push(text);
     return `__CODE_BLOCK_${idx}__`;
   };
+  const protectCode = (text) => (stripCodeBlocks ? '' : preserve(text));
   if (version === 'current') {
     const { parseMarkdownCode } = require('./lib/markdown-fences');
     const parsed = parseMarkdownCode(content, {
       filePath: sourceFile || 'document.md',
     });
     content = parsed.source;
-    for (const fence of [...parsed.fences].reverse()) {
-      const replacement = protectCode(content.slice(fence.start, fence.end));
-      content =
-        content.slice(0, fence.start) + replacement + content.slice(fence.end);
+    const replacements = parsed.fences.map(({ start, end }) => ({
+      start,
+      end,
+      text: protectCode(content.slice(start, end)),
+    }));
+    const {
+      EXAMPLES_ROUTE,
+      readExampleGrid,
+      renderExampleGrid,
+    } = require('./lib/example-cards');
+    if (
+      new URL(pageUrl, BASE_URL).pathname.replace(/\/$/, '') === EXAMPLES_ROUTE
+    ) {
+      const grid = readExampleGrid(parsed);
+      if (grid)
+        replacements.push({
+          start: grid.start,
+          end: grid.end,
+          text: preserve(
+            renderExampleGrid(grid.cards, (to) =>
+              resolveContentUrl(to, linkContext),
+            ),
+          ),
+        });
     }
+    for (const { start, end, text } of replacements.sort(
+      (a, b) => b.start - a.start,
+    ))
+      content = content.slice(0, start) + text + content.slice(end);
   } else {
     content = content.replace(/^([ \t]*```[\s\S]*?^[ \t]*```)/gm, protectCode);
   }
@@ -675,10 +697,10 @@ function cleanContent(
   if (version === 'current')
     content = content.replace(/\n{3,}/g, '\n\n').trim();
 
-  // Pass 19: Restore preserved code blocks
-  if (!stripCodeBlocks) {
+  // Restore code and serialized Card text after the presentation cleanup.
+  if (!stripCodeBlocks || preservedBlocks.length) {
     content = content.replace(/__CODE_BLOCK_(\d+)__/g, (_, idx) => {
-      return codeBlocks[parseInt(idx, 10)];
+      return preservedBlocks[parseInt(idx, 10)];
     });
   }
 
