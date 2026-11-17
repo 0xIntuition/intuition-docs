@@ -251,6 +251,7 @@ test('switcher uses native document state, saves the preference and exposes both
     activeVersion: available[0],
     activeDoc: { id: 'getting-started/ai-skills' },
   };
+  let pathname = '/docs/v1/getting-started/ai-skills';
   let preferredVersion = available[1];
   let saved,
     mobileSelections = 0;
@@ -266,7 +267,7 @@ test('switcher uses native document state, saves the preference and exposes both
       },
       '@docusaurus/router': {
         useLocation: () => ({
-          pathname: '/docs/v1/getting-started/ai-skills',
+          pathname,
           search: '?x=1',
           hash: '#keep',
         }),
@@ -302,7 +303,13 @@ test('switcher uses native document state, saves the preference and exposes both
         onClick: () => mobileSelections++,
       }),
     );
+  const currentLinks = (html) =>
+    Array.from(
+      html.matchAll(/<a\b[^>]*\baria-current="([^"]+)"[^>]*>(V[12])<\/a>/g),
+      ([, state, label]) => [label, state],
+    );
   let html = render(true);
+  assert.deepEqual(currentLinks(html), [['V1', 'page']]);
   assert.match(html, /^<li[^>]*data-docs-version-switcher="mobile"/);
   assert.match(
     html,
@@ -314,12 +321,21 @@ test('switcher uses native document state, saves the preference and exposes both
   html = render();
   assert.match(html, /<button[^>]*aria-expanded="false"[^>]*>V1<\/button>/);
   assert.match(html, /<ul[^>]*hidden=""/);
-  context = {};
   preferredVersion = available[0];
-  assert.match(render(), />V1<\/button>/);
+  context = { activeVersion: available[1], activeDoc: { id: 'agents/skills' } };
+  pathname = '/docs/agents/skills';
+  assert.deepEqual(currentLinks(render()), [['V2', 'page']]);
+
+  context = {};
+  pathname = '/faq';
+  html = render();
+  assert.match(html, />V1<\/button>/);
+  assert.deepEqual(currentLinks(html), [['V1', 'true']]);
   preferredVersion = { name: 'missing' };
   assert.match(render(), />V2<\/button>/);
   preferredVersion = undefined;
-  assert.match(render(), /href="\/docs\/\?x=1">V2/);
-  assert.doesNotMatch(render(), /#keep/);
+  html = render();
+  assert.deepEqual(currentLinks(html), [['V2', 'true']]);
+  assert.match(html, /href="\/docs\/\?x=1">V2/);
+  assert.doesNotMatch(html, /#keep/);
 });

@@ -42,7 +42,8 @@
   min-height: 2.5rem;
 }
 
-.link[aria-current='page'] {
+.link[aria-current='page'],
+.link[aria-current='true'] {
   font-weight: 700;
   text-decoration: underline;
   text-underline-offset: 0.2em;

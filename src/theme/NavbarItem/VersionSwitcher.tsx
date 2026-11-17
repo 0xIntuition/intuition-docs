@@ -59,6 +59,8 @@ export default function VersionSwitcher({
   }, [mobile, open]);
 
   if (!displayed) return null;
+  const currentState =
+    activeDoc && activeVersion?.name === displayed.name ? 'page' : true;
   const links = items.map((version) => (
     <li key={version.name} className={mobile ? 'menu__list-item' : undefined}>
       <Link
@@ -72,7 +74,7 @@ export default function VersionSwitcher({
           hash,
         })}
         className={clsx(styles.link, mobile ? 'menu__link' : 'dropdown__link')}
-        aria-current={version.name === displayed.name ? 'page' : undefined}
+        aria-current={version.name === displayed.name ? currentState : undefined}
         onClick={(event) => {
           savePreferredVersionName(version.name);
           setOpen(false);
