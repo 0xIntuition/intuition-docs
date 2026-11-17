@@ -1,4 +1,4 @@
 {
   "extends": "../tsconfig.base.json",
-  "include": ["src/**/*.ts", "src/**/*.tsx", "migration.test.ts"]
+  "include": ["src/**/*.ts", "src/**/*.tsx", "migration.test.ts", "first-write.test.ts"]
 }

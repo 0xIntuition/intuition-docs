@@ -66,4 +66,5 @@ Both `intuition` and `erc8004-agent-layer` should be available in your agent ses
 - [Intuition Agent Skills repository](https://github.com/0xIntuition/agent-skills)
 - [Protocol skill reference](https://github.com/0xIntuition/agent-skills/blob/8d390bdc9dd59315122e7ad83013dc55d1472338/skills/intuition/SKILL.md)
 - [ERC-8004 skill reference](https://github.com/0xIntuition/agent-skills/blob/8d390bdc9dd59315122e7ad83013dc55d1472338/skills/erc8004-agent-layer/SKILL.md)
+- [Prepare unsigned calldata and action envelopes](/docs/agents/cli)
 - [Get help](/docs/community)
