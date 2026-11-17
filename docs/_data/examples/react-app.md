@@ -13,7 +13,7 @@ packages: ["@0xintuition/react", "@0xintuition/protocol", "@0xintuition/deployme
 
 ## What you'll build
 
-Build a page that reads an atom from its testnet term ID. Connect a wallet to create an atom from text, inspect the exact bytes and payment, then read back the term ID returned by the confirmed transaction.
+Build a page that reads an atom from its testnet term ID. Connect a wallet to create an atom from text, inspect the exact bytes and payment, then read the atom by term ID once the receipt matches the reviewed creation.
 
 ## Before you start
 
@@ -83,6 +83,7 @@ Select **Submit to wallet** only if the review matches your intent. In the walle
 {/* example:start examples/v2/react-app/src/app.tsx#submit */}
 ```tsx
   async function submit(review: Review) {
+    setCompleted(undefined);
     const wallet = getAccount(config);
     if (
       !wallet.isConnected ||
@@ -99,18 +100,12 @@ Select **Submit to wallet** only if the review matches your intent. In the walle
       return;
     }
     setMessage('');
-    setIds([]);
     try {
-      const { receipt, termIds } = await flow.createAtom({
+      const { receipt } = await flow.createAtom({
         data: review.data,
         assets: review.assets,
       });
-      setIds(termIds);
-      setMessage(`Confirmed in block ${receipt.blockNumber}.`);
-      if (termIds[0]) {
-        setLookup(termIds[0]);
-        void cache.invalidateQueries({ type: 'active' });
-      }
+      setCompleted({ review, receipt });
     } catch (error) {
       setMessage(
         error instanceof Error
@@ -119,10 +114,26 @@ Select **Submit to wallet** only if the review matches your intent. In the walle
       );
     }
   }
+
+  const result =
+    completed &&
+    flow.status === 'confirmed' &&
+    flow.receipt === completed.receipt
+      ? verifyCreationReceipt(completed.review, flow.hash, completed.receipt)
+      : undefined;
+  const verifiedTermId = result?.termId;
+  useEffect(() => {
+    if (verifiedTermId) {
+      setLookup(verifiedTermId);
+      void cache.invalidateQueries({ type: 'active' });
+    }
+  }, [verifiedTermId, cache]);
 ```
 {/* example:end */}
 
-On success, the page shows the receipt block and returned term IDs. The first ID fills the lookup field so you can compare the contract’s atom bytes with the review. If the receipt contains no matching event, the page reports that separately.
+Compare **Submitted hash** with **Mined hash**. If your wallet replaced the transaction, the page shows both hashes for inspection. This also applies to a replacement that only changes the gas price.
+
+For the original hash, the app checks that the receipt succeeded with the reviewed sender and target. It checks a single `AtomCreated` event from that transaction and MultiVault against the creator, reviewed bytes and derived term ID. A match displays the block and fills **Read an atom** with the verified term ID. If a check fails, inspect the receipt before considering another submission.
 
 ## Run it
 
@@ -138,7 +149,7 @@ Open `http://127.0.0.1:4173`. You should see **Read and create an atom** and a f
 
 ## Full source
 
-[React app, HTML host and strict TypeScript project](https://github.com/0xIntuition/intuition-docs/tree/3ecbc129ab353220b8bf71f4a80c97677dddd944/examples/v2/react-app)
+[React app, HTML host and strict TypeScript project](https://github.com/0xIntuition/intuition-docs/tree/84242e8f4399ac758c942e85b343e0512245a6cf/examples/v2/react-app)
 
 ## Next steps
 

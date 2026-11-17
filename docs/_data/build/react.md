@@ -98,7 +98,9 @@ Only the submit button calls `createAtom({ data, assets })`. It invokes ordinary
 
 ## Check the result
 
-While the wallet is open, show that approval is pending. After broadcast, display the hash while waiting for confirmation. Keep the wallet on the selected chain while the flow polls for the receipt. A successful call returns `{ receipt, termIds }`. Read the emitted term ID on the same chain and compare its atom bytes with the reviewed payload. The hook extracts IDs from `AtomCreated` logs emitted by the configured MultiVault. [Creation flow tests](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/react/src/__tests__/use-create-atom-flow.test.tsx)
+While the wallet is open, show that approval is pending. After broadcast, display the submitted hash from the hook. Keep the wallet on the selected chain while the flow polls. Compare that attempt’s submitted hash with `receipt.transactionHash` once `createAtom` resolves. A wallet replacement can produce a successful receipt with a different hash. Show both hashes and ask the reader to inspect the replacement before retrying.
+
+For the original hash, check receipt success, sender and MultiVault target. This one-atom example also requires one `AtomCreated` event from that transaction and MultiVault. Check its creator, exact atom bytes and term ID derived from those bytes. Only then select the term for a contract read on the same chain. [Creation flow tests](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/react/src/__tests__/use-create-atom-flow.test.tsx)
 
 ## Troubleshooting
 

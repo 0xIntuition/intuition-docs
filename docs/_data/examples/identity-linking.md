@@ -30,27 +30,37 @@ Read [sameAs and identity linking](/docs/concepts/same-as) for the meaning of th
 
 ### 1. Preserve the historical atom bytes
 
-The archive contains an exact UTF-8 JSON string with a reference URL in its `sameAs` property. The newer recording anchor contains a bare IID. Keep the historical string exactly as it was recorded. Parsing and serializing it again could change the bytes used to identify that atom.
+The archive contains an exact UTF-8 JSON string with a reference URL in its `sameAs` property. The newer recording anchor contains a bare IID. The fixtures call `stringToHex` on each original text string. Parsing and serializing the JSON again could change the bytes used to identify that atom. UTF-8 text such as `0x6162` encodes as `0x307836313632`. If your catalog already stores binary bytes in hex, supply them directly. The two bytes `0x6162` identify a different atom.
 
 {/* example:start examples/v2/identity-linking/src/linking-plan.ts#archived-records */}
 
 ```ts
+import { stringToHex } from 'viem';
+
 const recordingIid = 'int:isrc:USRC12600001';
 export const archive = {
   level: 'recording' as const,
-  atomData:
+  atomData: stringToHex(
     '{"name":"Paper Moon Demo","sameAs":["https://example.org/recordings/17"]}',
+  ),
   recordingIid,
 };
 
 export const candidates = {
-  anchor: { level: 'recording', atomData: recordingIid, recordingIid },
-  review: {
-    level: 'article',
-    atomData: 'Review of Paper Moon Demo',
+  anchor: {
+    level: 'recording',
+    atomData: stringToHex(recordingIid),
     recordingIid,
   },
-  namesake: { level: 'recording', atomData: '{"name":"Paper Moon Demo"}' },
+  review: {
+    level: 'article',
+    atomData: stringToHex('Review of Paper Moon Demo'),
+    recordingIid,
+  },
+  namesake: {
+    level: 'recording',
+    atomData: stringToHex('{"name":"Paper Moon Demo"}'),
+  },
 } as const;
 ```
 
@@ -135,7 +145,7 @@ The subject is the archived JSON atom. The object is the bare recording IID atom
 
 ## Full source
 
-[Review fixtures, link planner, and runner](https://github.com/0xIntuition/intuition-docs/tree/3f47445235983fa93bf22d1d06f0584c6bac84fa/examples/v2/identity-linking). The [canonical equivalence discussion](https://github.com/0xIntuition/intuition-identifier/blob/3e593247c0e7cb168b37368937167ed146d3868a/spec/08-equivalence.md) describes the role of reviewed claims. Compare the package’s [identity example](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/examples/hackathon-quickstart/src/identity-linking.ts), [review interface](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/examples/hackathon-quickstart/src/IdentityLinkingPage.tsx), [IID inspection](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/iid/src/parse.ts), and [triple builder](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/primitives/src/triple.ts).
+[Review fixtures, link planner, and runner](https://github.com/0xIntuition/intuition-docs/tree/84242e8f4399ac758c942e85b343e0512245a6cf/examples/v2/identity-linking). The [canonical equivalence discussion](https://github.com/0xIntuition/intuition-identifier/blob/3e593247c0e7cb168b37368937167ed146d3868a/spec/08-equivalence.md) describes the role of reviewed claims. Compare the package’s [identity example](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/examples/hackathon-quickstart/src/identity-linking.ts), [review interface](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/examples/hackathon-quickstart/src/IdentityLinkingPage.tsx), [IID inspection](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/iid/src/parse.ts), and [triple builder](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/primitives/src/triple.ts).
 
 ## Next steps
 
