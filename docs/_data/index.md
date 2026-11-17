@@ -1,31 +1,42 @@
 ---
-title: Intuition developer docs
-sidebar_label: Intuition developer docs
-description: Understand the Intuition documentation generations, install agent skills, and find community support.
+title: "Intuition developer docs"
+sidebar_label: "Intuition developer docs"
+description: "Build shared identities and relationships, prepare protocol actions, and query a Core node with the V2 packages."
 kind: concept
 reader: ["app", "agent", "operator", "plugin"]
 packages: []
 ---
 
-Intuition is an identity and knowledge graph protocol. Its TypeScript packages provide shared vocabulary, deterministic identifiers, and tools for modeling entities and their relationships.
+Intuition is an identity and knowledge graph protocol. Its packages help applications identify entities consistently, connect them with explicit relationships, and prepare actions through which people signal what they trust.
 
-## About V2
+An **atom** stores a chosen representation as bytes. Its **atom ID** identifies those exact bytes. An **Intuition Identifier (IID)** names the represented entity; the same IID can appear in different representations. A **triple** connects a subject, predicate, and object in that order.
 
-V2 names the new generation of Intuition tools: the packages published from [0xIntuition/packages](https://github.com/0xIntuition/packages/tree/6dea404ee1b4f57902604d7435e7331ac232cb3e) and Intuition Core. V2 is the default documentation version; it does not name a package version range.
+## Choose your path
 
-The packages are published as stable npm releases. Intuition Core is a release candidate.
+| I want to… | Start here | Then build |
+| --- | --- | --- |
+| Build an application | [Derive an atom ID offline](/docs/get-started/quickstart) | [A music catalog](/docs/examples/music-catalog) with explicit recording, artist, and album relationships |
+| Build with agents | [Read the agent contract](/docs/agents) | [Review action plans](/docs/build/action-plans) before a human authorizes execution |
+| Run Core | [Query a Core node](/docs/build/query-core) | Fork, pin, build, and run the source to own graph storage and reads |
+| Extend processing | [Classify and enrich inputs](/docs/build/classify-enrich) | [Write a classification plugin](/docs/core/classification-plugin) for your domain |
 
-The protocol's building blocks include:
+You can build identities and triples offline before choosing a wallet or backend. Processing, persistence, protocol submission, and indexing each have their own lifecycle; [How the pieces fit](/docs/get-started/how-it-fits) explains the boundaries.
 
-- **Atoms:** entities represented by data bytes, with deterministic identifiers.
-- **Triples:** relationships between a subject atom, a predicate atom, and an object atom.
-- **Vaults:** on-chain shares and assets associated with an atom or triple on a particular bonding curve.
+## Explore the documentation
 
-## Start here
+- [Concepts](/docs/concepts) introduces representations, directed relationships, and protocol writes.
+- [Examples](/docs/examples) connects the building blocks in a worked catalog.
+- [Packages](/docs/reference/packages) covers every published library; the [SDK reference](/docs/reference/sdk) lists action signatures.
+- [Install agent skills](/docs/agents/skills) for contract-level guidance, or [get help](/docs/community).
 
-- [Install the agent skills](/docs/agents/skills) to give your coding agent canonical context for protocol operations and ERC-8004 planning.
-- [Get help](/docs/community) through Intuition's support and community channels.
+## Versions and source
 
-## Looking for V1?
+**V2 names a generation**, covering the packages in the [release manifest](/intuition-release.json) and Intuition Core. The packages are published as stable npm releases; each example uses exact pins. See [versions and release status](/docs/get-started/versions).
 
-The [V1 documentation](/docs/v1) covers the `intuition-ts` packages and `intuition-rs` services. Agents can start with the [V1 documentation index](/docs/v1/llms.txt).
+Core is a source application you fork, build, and run. These docs describe [Core source at the pinned revision](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/README.md). The source pin identifies code, rather than an npm distribution or a released container image. The default source stack requires its indexing profile and chain configuration to start chain ingestion.
+
+:::note Looking for V1?
+The [V1 documentation](/docs/v1) covers the `intuition-ts` packages and `intuition-rs` services. For agents, use the [V1 documentation index](/docs/v1/llms.txt). Start with [Migrate from V1](/docs/get-started/migrate-from-v1) when moving an integration.
+:::
+
+Source: [Package concepts and application patterns](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/README.md#core-concepts).
