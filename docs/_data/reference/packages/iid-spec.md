@@ -61,7 +61,7 @@ For an independent implementation, compare against the canonical [registry](http
 
 :::info Canonical and packaged specifications differ
 
-The canonical specification is version 0.1.0. Its [representation profiles, including §7.8](https://github.com/0xIntuition/intuition-identifier/blob/3e593247c0e7cb168b37368937167ed146d3868a/spec/07-representation-profiles.md), define identity data separately from companion metadata. The package copy lacks §7.8 and adds typed `wd` values, the weak `acct` form, and the `apple-podcasts`, `letterboxd`, and `podcast-index` schemes. Chapters 00, 01, 04, 05, and 09 also differ. These are package extensions or discrepancies, not silently adopted canonical rules; this is the open M-1 source mismatch.
+The canonical specification is version 0.1.0. Its §7.8 distinguishes identity data from companion metadata. The package copy omits §7.8, accepts typed `wd` values and adds the `apple-podcasts`, `letterboxd` and `podcast-index` schemes. Both sources define weak `acct` handles. The package makes that form ineligible for P0 and sets P1 as its minimum profile. The identifier bytes stay the same. Chapters 00, 01, 04, 05 and 09 also differ. [Canonical representation profiles](https://github.com/0xIntuition/intuition-identifier/blob/3e593247c0e7cb168b37368937167ed146d3868a/spec/07-representation-profiles.md#78-the-atom-creation-model-data-and-companion-metadata) · [Canonical account scheme](https://github.com/0xIntuition/intuition-identifier/blob/3e593247c0e7cb168b37368937167ed146d3868a/schemes/acct.md) · [Packaged amendments](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/packages/iid-spec/spec/09-registry-governance.md#97-pre-publication-amendments)
 
 :::
 
