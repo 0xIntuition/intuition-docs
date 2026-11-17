@@ -18,11 +18,11 @@ The [package index](/docs/reference/packages) shows public entry points, direct 
 | Describe types and relationships | [@0xintuition/schema-org](/docs/reference/packages/schema-org), [@0xintuition/classifications](/docs/reference/packages/classifications), [@0xintuition/predicates](/docs/reference/packages/predicates) |
 | Normalize an identifier or derive an ID | [@0xintuition/iid-spec](/docs/reference/packages/iid-spec), [@0xintuition/iid](/docs/reference/packages/iid), [@0xintuition/iid-registry](/docs/reference/packages/iid-registry), [@0xintuition/iid-ladder](/docs/reference/packages/iid-ladder), [@0xintuition/ids](/docs/reference/packages/ids) |
 | Build an atom or triple | [@0xintuition/primitives](/docs/reference/packages/primitives) |
-| Compose processing stages | ['@0xintuition/pipeline-runtime'](/docs/reference/packages/pipeline-runtime) |
-| Parse, classify and enrich atom data | ['@0xintuition/atom-parser'](/docs/reference/packages/atom-parser), ['@0xintuition/atom-classification'](/docs/reference/packages/atom-classification), ['@0xintuition/atom-enrichment'](/docs/reference/packages/atom-enrichment), ['@0xintuition/atom-runtime'](/docs/reference/packages/atom-runtime) |
-| Integrate an application or command-line tool | ['@0xintuition/sdk'](/docs/reference/packages/sdk), ['@0xintuition/cli'](/docs/reference/packages/cli) |
-| Read contract interfaces, select an address or calculate a quote | ['@0xintuition/protocol'](/docs/reference/packages/protocol), ['@0xintuition/deployments'](/docs/reference/packages/deployments), ['@0xintuition/periphery'](/docs/reference/packages/periphery), ['@0xintuition/curves'](/docs/reference/packages/curves) |
-| Use wallet-aware hooks in React | ['@0xintuition/react'](/docs/reference/packages/react) |
+| Compose processing stages | [@0xintuition/pipeline-runtime](/docs/reference/packages/pipeline-runtime) |
+| Parse, classify and enrich atom data | [@0xintuition/atom-parser](/docs/reference/packages/atom-parser), [@0xintuition/atom-classification](/docs/reference/packages/atom-classification), [@0xintuition/atom-enrichment](/docs/reference/packages/atom-enrichment), [@0xintuition/atom-runtime](/docs/reference/packages/atom-runtime) |
+| Integrate an application or command-line tool | [@0xintuition/sdk](/docs/reference/packages/sdk), [@0xintuition/cli](/docs/reference/packages/cli) |
+| Read contract interfaces, select an address or calculate a quote | [@0xintuition/protocol](/docs/reference/packages/protocol), [@0xintuition/deployments](/docs/reference/packages/deployments), [@0xintuition/periphery](/docs/reference/packages/periphery), [@0xintuition/curves](/docs/reference/packages/curves) |
+| Use wallet-aware hooks in React | [@0xintuition/react](/docs/reference/packages/react) |
 
 ## SDK functions and types
 
