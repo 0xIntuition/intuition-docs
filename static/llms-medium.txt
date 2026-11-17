@@ -5075,7 +5075,7 @@ The smart contract configurations and parameters can be adjusted onchain by the 
 ---
 title: "Contract Deployments"
 description: "The Intuition protocol contracts are deployed on both the Base Mainnet and the Intuition Layer 3 network, as well as their respective testnets. Below are the details of the deployed contracts,..."
-last_updated: "2026-11-11T17:44:06+01:00"
+last_updated: "2026-11-12T19:44:27+01:00"
 source: "https://docs.intuition.systems/docs/intuition-smart-contracts/deployments"
 ---
 
@@ -5088,7 +5088,7 @@ The Intuition protocol contracts are deployed on both the Base Mainnet and the I
 ---
 title: "FeeProxy.sol"
 description: "Documentation for the FeeProxy smart contract, which lets apps route deposits and atom/triple creation to MultiVault while charging their own fee"
-last_updated: "2026-11-06T22:04:45+01:00"
+last_updated: "2026-11-12T19:44:27+01:00"
 source: "https://docs.intuition.systems/docs/intuition-smart-contracts/fee-proxy"
 ---
 
@@ -5106,7 +5106,7 @@ The user stays the owner of record:
 ---
 title: "Governance"
 description: "How veTRUST holders can veto protocol upgrades and parameter changes on Intuition Mainnet, and how to cast a veto"
-last_updated: "2026-11-11T17:44:06+01:00"
+last_updated: "2026-11-12T19:44:27+01:00"
 source: "https://docs.intuition.systems/docs/intuition-smart-contracts/governance"
 ---
 
@@ -5126,7 +5126,7 @@ The model is optimistic. The admin multisig proposes a change, and the change ca
 ---
 title: "Contract Architecture Overview"
 description: "Overview of Intuition's smart contract architecture and design patterns"
-last_updated: "2026-11-11T17:44:06+01:00"
+last_updated: "2026-11-12T19:44:27+01:00"
 source: "https://docs.intuition.systems/docs/intuition-smart-contracts"
 ---
 
@@ -6241,7 +6241,7 @@ Every atom and triple has an associated vault for staking:
 ---
 title: "Contract Deployments"
 description: "The Intuition protocol contracts are deployed on both the Base Mainnet and the Intuition Layer 3 network, as well as their respective testnets. Below are the details of the deployed contracts,..."
-last_updated: "2026-11-11T17:44:06+01:00"
+last_updated: "2026-11-12T19:44:27+01:00"
 source: "https://docs.intuition.systems/docs/quick-start/deployments"
 ---
 

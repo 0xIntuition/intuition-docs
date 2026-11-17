@@ -24,7 +24,7 @@ Function selectors, argument types and event signatures of the v1.0 functions ar
 
 ## SDK setup
 
-The examples on this page use the `alpha` release of `@0xintuition/sdk` (`npm install @0xintuition/sdk@alpha viem`), which exports most of these helpers from `@0xintuition/sdk/protocol`. The SDK resolves the MultiVault address from the chain ID:
+The examples on this page use the `latest` release of `@0xintuition/sdk` (`npm install @0xintuition/sdk@latest viem`), which exports most of these helpers from `@0xintuition/sdk/protocol`. The SDK resolves the MultiVault address from the chain ID:
 
 ```typescript title="multiVault.ts"
 import {
