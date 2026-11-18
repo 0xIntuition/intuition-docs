@@ -6338,7 +6338,7 @@ If you have any questions visit the [Intuition Discord](https://discord.gg/RgBen
 ---
 title: "Using the SDK"
 description: "Get started building with Intuition in minutes."
-last_updated: "2026-08-04T11:57:57-04:00"
+last_updated: "2026-11-16T14:26:47-08:00"
 source: "https://docs.intuition.systems/docs/quick-start/using-the-sdk"
 ---
 
