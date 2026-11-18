@@ -150,7 +150,7 @@ import { getMultiVaultAddressFromChainId, intuitionTestnet, intuitionMainnet } f
 
 // Testnet
 const testnetAddress = getMultiVaultAddressFromChainId(intuitionTestnet.id)
-// Returns: '0xF76d6976DeBFbB012ebc53e925BC4AEFCaA7C6c6' (alpha release)
+// Returns: '0xF76d6976DeBFbB012ebc53e925BC4AEFCaA7C6c6' (latest release)
 
 // Mainnet
 const mainnetAddress = getMultiVaultAddressFromChainId(intuitionMainnet.id)

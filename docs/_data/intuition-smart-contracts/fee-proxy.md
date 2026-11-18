@@ -250,7 +250,7 @@ The stats count each successful routed call once, so a batch is one transaction.
 | `DEFAULT_ADMIN_ROLE` | `setMaxFeeBps`, `setMaxFixedFee`, `setRegistrationFee`, `unpause`, `unpauseAffiliate`, and grant or revoke roles. |
 | `PAUSER_ROLE`        | `pause`, `pauseAffiliate`.                                                                                        |
 
-At deployment, the admin receives both roles. Unpausing needs the admin role on purpose: a pauser can stop the contract or an affiliate, but cannot restart either on its own.
+At deployment, the admin receives both roles. On Intuition Mainnet, a separate pauser multisig also holds `PAUSER_ROLE`. Unpausing needs the admin role on purpose: a pauser can stop the contract or an affiliate, but cannot restart either on its own.
 
 Affiliates need no role. They manage only their own row.
 

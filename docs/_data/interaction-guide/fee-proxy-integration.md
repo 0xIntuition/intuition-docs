@@ -56,12 +56,12 @@ FeeProxy has no redeem path, so affiliates earn no fee on withdrawals. Users red
 
 ## Prerequisites
 
-- `@0xintuition/sdk`, `@0xintuition/periphery` and `viem`. The FeeProxy helpers are in alpha releases for now, published under the `alpha` tag until the stable release, so install with the command below.
+- `@0xintuition/sdk`, `@0xintuition/periphery` and `viem`, from the `latest` release. Install them with the command below.
 - A viem `publicClient` and `walletClient` for Intuition Testnet or Mainnet. See the [Overview](/docs/interaction-guide/overview) for network setup.
 - A FeeProxy deployment on your network. It is live on Intuition Mainnet and Testnet; see the [contract page](/docs/intuition-smart-contracts/fee-proxy#deployments). The SDK resolves both addresses from the chain ID, so you never paste one by hand.
 
 ```bash
-npm install @0xintuition/sdk@alpha @0xintuition/periphery@alpha viem
+npm install @0xintuition/sdk@latest @0xintuition/periphery@latest viem
 ```
 
 ```typescript title="feeProxy.ts"

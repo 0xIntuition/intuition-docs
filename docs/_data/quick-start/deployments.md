@@ -11,9 +11,12 @@ The Intuition protocol contracts are deployed on both the Base Mainnet and the I
 
 ### Base Mainnet
 
-| Contract      | Address                                    |
-|---------------|--------------------------------------------|
-| Trust (ERC20) | 0x6cd905dF2Ed214b22e0d48FF17CD4200C1C6d8A3 |
+| Contract Name               | Address                                    |
+|-----------------------------|--------------------------------------------|
+| Trust (ERC20)               | 0x6cd905dF2Ed214b22e0d48FF17CD4200C1C6d8A3 |
+| BaseEmissionsController     | 0x7745bDEe668501E5eeF7e9605C746f9cDfb60667 |
+| Upgrades TimelockController | 0x1E442BbB08c98100b18fa830a88E8A57b5dF9157 |
+| Admin multisig (4 of 8)     | 0xCa66d181c76eAE6439B90Fb5f73bF6252107AE4E |
 
 ### Intuition Mainnet (L3)
 
@@ -22,6 +25,11 @@ The Intuition protocol contracts are deployed on both the Base Mainnet and the I
 | WrappedTrust                  | 0x81cFb09cb44f7184Ad934C09F82000701A4bF672 |
 | Upgrades TimelockController   | 0x321e5d4b20158648dFd1f360A79CAFc97190bAd1 |
 | Parameters TimelockController | 0x71b0F1ABebC2DaA0b7B5C3f9b72FAa1cd9F35FEA |
+| DAO (governance)              | 0x9c965C3D39beb6293ca92cd35e552963e913F4Fd |
+| OptimisticTokenVotingPlugin   | 0x013d36E344ce912440Bc615f774fAD73F7d62c3D |
+| VeTrustVotesAdapter           | 0x83d2c9D0fc344598166533dd306034ae8E75bD0f |
+| Admin multisig (4 of 8)       | 0xbeA18ab4c83a12be25f8AA8A10D8747A07Cdc6eb |
+| Pauser multisig (2 of 8)      | 0x38F6bb834D1e6fd92D3E9C849d4E62faAfd6E577 |
 | MultiVault                    | 0x6E35cF57A41fA15eA0EaE9C33e751b01A784Fe7e |
 | AtomWalletFactory             | 0x33827373a7D1c7C78a01094071C2f6CE74253B9B |
 | AtomWalletBeacon              | 0xC23cD55CF924b3FE4b97deAA0EAF222a5082A1FF |
@@ -45,7 +53,7 @@ The Intuition protocol contracts are deployed on both the Base Mainnet and the I
 | Upgrades TimelockController | 0xE16E8e10664d399D36D2220fFA763e9367980507 |
 | BaseEmissionsController     | 0x6B96fB3867b666A7957fa589866627ea902ec2C6 |
 
-### Intuition Testnet (L3)
+### Intuition Sepolia Testnet (L3)
 
 | Contract Name                 | Address                                    |
 |-------------------------------|--------------------------------------------|
@@ -74,23 +82,23 @@ The Intuition protocol contracts are deployed on both the Base Mainnet and the I
 - **Explorer**: `https://explorer.intuition.systems/`
 - **Native Token**: $TRUST
 
-### Intuition Testnet Configuration
+### Intuition Sepolia Testnet Configuration
 - **Chain ID**: 13579
 - **RPC URL**: `https://testnet.rpc.intuition.systems`
 - **WebSocket**: `wss://testnet.rpc.intuition.systems/ws`
 - **Explorer**: `https://testnet.explorer.intuition.systems/`
 - **Native Token**: $tTRUST
 
+### Base Mainnet Configuration
+- **Chain ID**: 8453
+- **RPC URL**: `https://mainnet.base.org`
+- **Explorer**: `https://basescan.org`
+- **Native Token**: ETH
+
 ### Base Sepolia Configuration
 - **Chain ID**: 84532
 - **RPC URL**: `https://sepolia.base.org`
 - **Explorer**: `https://sepolia.basescan.org`
-- **Native Token**: ETH
-
-### Base Sepolia Configuration
-- **Chain ID**: 8453
-- **RPC URL**: `https://mainnet.base.org`
-- **Explorer**: `https://basescan.org`
 - **Native Token**: ETH
 
 ## Verified Contracts
@@ -100,6 +108,6 @@ All deployed contracts are verified on their respective block explorers. You can
 ## Contract ABIs
 
 Contract ABIs can be found in the following locations:
-- **npm package**: `@0xintuition/protocol`
-- **GitHub**: [0xIntuition/intuition-contracts-v2](https://github.com/0xIntuition/intuition-contracts-v2/tree/main/abis)
+- **npm packages**: `@0xintuition/protocol` for the core contracts, `@0xintuition/periphery` for the periphery contracts, and `@0xintuition/deployments` for the addresses and ABIs of both
+- **GitHub**: [0xIntuition/intuition-contracts-v2](https://github.com/0xIntuition/intuition-contracts-v2/tree/main/abis) and [0xIntuition/intuition-contracts-v2-periphery](https://github.com/0xIntuition/intuition-contracts-v2-periphery/tree/main/abis)
 - **Block Explorer**: Available on verified contract pages
