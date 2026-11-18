@@ -524,7 +524,7 @@ function cleanContent(
       text: protectCode(content.slice(start, end)),
     }));
     // Preserve literal Markdown code spans through component and HTML cleanup.
-    function preserveInlineCode(node) {
+    const preserveInlineCode = (node) => {
       if (node.type === 'inlineCode') {
         const start = node.position.start.offset;
         const end = node.position.end.offset;
@@ -536,7 +536,7 @@ function cleanContent(
       } else {
         node.children?.forEach(preserveInlineCode);
       }
-    }
+    };
     preserveInlineCode(parsed.tree);
 
     const first = parsed.tree.children[0];
