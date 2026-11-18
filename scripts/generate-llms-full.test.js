@@ -444,6 +444,8 @@ test('V2 text exports exact AppliesTo versions, literal snippets and generated t
     path.join(root, 'static/intuition-release.json'),
     JSON.stringify(manifest),
   );
+  const literal =
+    'In your page, place `<AppliesTo />` immediately after the front matter.';
   const snippet =
     '~~~~ts\nconst tag = "<AppliesTo />";\nconst value: Array<string> = ["<!-- keep -->"];\n~~~~';
   const table =
@@ -452,12 +454,23 @@ test('V2 text exports exact AppliesTo versions, literal snippets and generated t
     root,
     versions.current,
     'index.md',
-    `---\ntitle: Current\npackages: ["@0xintuition/iid"]\n---\n<AppliesTo />\n\n{/* example:start quickstart/quickstart.ts#example */}\n${snippet}\n{/* example:end */}\n\n{/* generated:start release-pins */}\n${table}\n{/* generated:end */}\n`,
+    `---\ntitle: Current\npackages: ["@0xintuition/iid"]\n---\n<AppliesTo />\n\n${literal}\n\n{/* example:start quickstart/quickstart.ts#example */}\n${snippet}\n{/* example:end */}\n\n{/* generated:start release-pins */}\n${table}\n{/* generated:end */}\n`,
   );
   const [section] = parseSections('current', { rootDir: root });
   assert.match(
     section.contentFull,
     /^Applies to V2 · `@0xintuition\/iid` 0\.1\.0/,
+  );
+  for (const content of [section.contentFull, section.contentMedium])
+    assert.ok(content.includes(literal));
+  assert.equal(
+    cleanContent(literal, 'Contributing', { version: 'current' }),
+    literal,
+  );
+  assert.ok(
+    generateFullTxt([section], versions.current, { manifest }).includes(
+      literal,
+    ),
   );
   assert.ok(section.contentFull.includes(snippet));
   assert.ok(section.contentFull.includes(table));

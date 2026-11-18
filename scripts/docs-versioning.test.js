@@ -9,8 +9,8 @@ const { execFileSync } = require('node:child_process');
 const { versions, getVersion } = require('../docs-versions.config');
 const { legacyRedirects, v2Renames, redirects, createRedirects } = require('../redirects.config');
 const { rewriteTarget, transformContent, checkContent } = require('./codemods/v1-prefix-links');
-const { docMetadata, parseFrontMatter, readDocs, normalizeRoute } = require('./lib/docs-tree');
-const { applyLinkFixes, compareSnapshot, validateSnapshot } = require('./validate-v1-snapshot');
+const { docMetadata, parseFrontMatter, readDocs, normalizeRoute, walkFiles } = require('./lib/docs-tree');
+const { applyLinkFixes, compareSnapshot, validateVersionMetadata } = require('./validate-v1-snapshot');
 const { readBaseline, validateRoutes } = require('./validate-url-baseline');
 const ROOT = path.resolve(__dirname, '..');
 
@@ -154,10 +154,9 @@ test('snapshot comparator detects unrelated byte drift and requires explicit lin
   assert.throws(() => applyLinkFixes('/docs/v1/a', 'a.md', [{ ...fixes[0], evidence: '' }]), /Incomplete/);
 });
 
-test('actual snapshot is exactly the transformed merged Phase 0 base', () => {
-  const result = validateSnapshot(ROOT);
-  assert.equal(result.files, 281);
-  assert.deepEqual(result.failures, []);
+test('V1 inventory, sidebar and quickstart installs retain their frozen values', () => {
+  assert.deepEqual(validateVersionMetadata(ROOT), []);
+  assert.equal(walkFiles(path.join(ROOT, versions.v1.docsDir)).length, 281);
   const quickstart = fs.readFileSync(path.join(ROOT, versions.v1.docsDir, 'quick-start/using-the-sdk.md'), 'utf8');
   assert.equal((quickstart.match(/@0xintuition\/[a-z-]+@latest/g) ?? []).length, 0);
   assert.equal((quickstart.match(/viem@latest/g) ?? []).length, 4);

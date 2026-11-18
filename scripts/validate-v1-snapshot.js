@@ -52,6 +52,13 @@ function validateSnapshot(root = ROOT) {
   const snapshotDir = path.join(root, versions.v1.docsDir);
   const snapshotFiles = new Map(walkFiles(snapshotDir).map((file) => [path.relative(snapshotDir, file).replace(/\\/g, '/'), fs.readFileSync(file, 'utf8')]));
   const failures = compareSnapshot(baseFiles, snapshotFiles);
+  failures.push(...validateVersionMetadata(root));
+  return { failures, files: files.length, base, linkFixes: LINK_FIXES };
+}
+
+function validateVersionMetadata(root = ROOT) {
+  const failures = [];
+  const base = versions.v1.sourceCommit;
   const versionNames = JSON.parse(fs.readFileSync(path.join(root, '_data_versions.json'), 'utf8'));
   if (JSON.stringify(versionNames) !== JSON.stringify(['v1'])) failures.push('Version inventory must contain only v1.');
   // Native docs:version serializes the original sidebar without resolving its
@@ -62,7 +69,7 @@ function validateSnapshot(root = ROOT) {
   vm.runInNewContext(baseSidebarSource, context, { timeout: 1000 });
   const expectedSidebar = `${JSON.stringify(context.module.exports, null, 2)}\n`;
   if (fs.readFileSync(path.join(root, '_data_versioned_sidebars/version-v1-sidebars.json'), 'utf8') !== expectedSidebar) failures.push('Unexpected snapshot sidebar change.');
-  return { failures, files: files.length, base, linkFixes: LINK_FIXES };
+  return failures;
 }
 
 if (require.main === module) {
@@ -73,4 +80,4 @@ if (require.main === module) {
   } catch (error) { console.error(error.message); process.exitCode = 1; }
 }
 
-module.exports = { LINK_FIXES, applyLinkFixes, compareSnapshot, validateSnapshot };
+module.exports = { LINK_FIXES, applyLinkFixes, compareSnapshot, validateSnapshot, validateVersionMetadata };

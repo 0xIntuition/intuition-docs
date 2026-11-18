@@ -48,6 +48,10 @@ jobs:
   schema-drift:
     name: Detect schema drift
     if: github.event_name != 'pull_request'
+    # All refreshes share one branch, PR description and exception label.
+    concurrency:
+      group: graphql-schema-refresh
+      cancel-in-progress: false
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -132,6 +136,7 @@ jobs:
         if: steps.check-schema.outputs.changed == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NIGHTLY_EXCEPTION: ${{ github.event_name == 'schedule' && steps.validate.outcome == 'failure' }}
         run: |
           BRANCH="auto/schema-update"
           git config --local user.email "action@github.com"
@@ -151,7 +156,12 @@ jobs:
 
           Co-authored-by: GitHub Actions <action@github.com>"
             git push origin "$BRANCH" --force
-            gh pr edit "$EXISTING_PR" --body-file pr-body.md
+            HAS_EXCEPTION=$(gh pr view "$EXISTING_PR" --json labels --jq 'any(.labels[]; .name == "v1-exception")')
+            if [ "$NIGHTLY_EXCEPTION" = "true" ] || [ "$HAS_EXCEPTION" = "false" ]; then
+              gh pr edit "$EXISTING_PR" --body-file pr-body.md
+            else
+              echo "Keeping the failed nightly run linked from exception PR #$EXISTING_PR."
+            fi
             echo "Updated existing PR #$EXISTING_PR"
           else
             # Create new branch and PR
@@ -174,7 +184,7 @@ jobs:
           fi
 
       - name: Label the narrow GraphQL exception
-        if: steps.validate.outcome == 'failure'
+        if: github.event_name == 'schedule' && steps.validate.outcome == 'failure'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: gh pr edit auto/schema-update --add-label v1-exception

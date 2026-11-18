@@ -47,8 +47,8 @@ jobs:
       - name: Verify Core query responses with offline HTTP fixtures
         run: node --test examples/v2/core-query-api/src/query-client.test.ts
 
-      - name: Verify React transaction receipt handling offline
-        run: node --test examples/v2/react-app/src/receipt.test.ts
+      - name: Verify wallet submission and transaction receipts offline
+        run: node --test examples/v2/react-app/src/receipt.test.ts examples/v2/react-app/src/wallet-write.test.ts
 
       - name: Verify enrichment outcomes with an injected offline transport
         run: node examples/v2/music-catalog/src/enrichment-plugin.ts

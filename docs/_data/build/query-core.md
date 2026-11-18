@@ -34,6 +34,8 @@ Verify that the final command prints the selected commit. A fork lets you mainta
 
 ### 2. Build locally and wait for health
 
+Run the stock stack on an isolated development machine. On a shared or network-reachable host, bind the published ports to `127.0.0.1` and replace the development database credentials before startup. The health request below connects to localhost regardless of which interfaces Compose publishes. [Run a Core node](/docs/core/run-a-node) · [Datastore ports and credentials](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/docker-compose.datastores.yml)
+
 ```sh
 scripts/bootstrap.sh --no-start
 docker compose -f docker-compose.yml up -d --build

@@ -70,7 +70,9 @@ SPOTIFY_CLIENT_SECRET=YOUR_SPOTIFY_CLIENT_SECRET
 SPOTIFY_MARKET=US
 ```
 
-Stock Compose forwards the listed provider variables into `atom-services` and the worker containers. Recreate the consumers that should use the changed values from your Core repository root:
+Stock Compose forwards the listed provider variables into `atom-services` and the worker containers. Use the stock port mappings and database credentials only on an isolated development machine. Before starting services on a shared or reachable host, bind published ports to loopback and replace the development database credentials as described in [Run a Core node](/docs/core/run-a-node).
+
+Recreate the consumers that should use the changed values from your Core repository root:
 
 ```sh
 docker compose -f docker-compose.yml up -d --force-recreate atom-services workers-classification workers-enrichment

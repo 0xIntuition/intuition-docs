@@ -122,6 +122,8 @@ Start from the pinned source checkout described in [Query a Core node](/docs/bui
 
 In `createCoreProcessingRuntime`, replace the call to `createAtomServicesProcessingRuntime(options)` with `createCatalogRuntime(options, createCatalogPlugin(readPage))`, using your reader. Preserve the wrapper's existing warning handling. Core's `ProcessingRuntimeOptions` exposes cache, preset and environment settings. The fork supplies the plugin by changing this constructor call. Adding a file or passing a plugin ID in an HTTP request alone cannot install a provider. The HTTP service and enrichment worker both reach this shared wrapper. [Core runtime wrapper](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/services/atom-services/src/service/runtime.ts) · [HTTP service construction](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/services/atom-services/src/service/dependencies.ts) · [Enrichment worker construction](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/services/workers/src/kg/atom-enrichment/index.ts)
 
+Use the stock port mappings and database credentials only on an isolated development machine. Before starting services on a shared or reachable host, bind published ports to loopback and replace the development database credentials as described in [Run a Core node](/docs/core/run-a-node).
+
 Rebuild the consuming services from your fork. From the Core repository root, run:
 
 ```sh

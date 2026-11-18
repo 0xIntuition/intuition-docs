@@ -523,6 +523,38 @@ function cleanContent(
       end,
       text: protectCode(content.slice(start, end)),
     }));
+    // Preserve literal Markdown code spans through component and HTML cleanup.
+    function preserveInlineCode(node) {
+      if (node.type === 'inlineCode') {
+        const start = node.position.start.offset;
+        const end = node.position.end.offset;
+        replacements.push({
+          start,
+          end,
+          text: preserve(content.slice(start, end)),
+        });
+      } else {
+        node.children?.forEach(preserveInlineCode);
+      }
+    }
+    preserveInlineCode(parsed.tree);
+
+    const first = parsed.tree.children[0];
+    if (
+      packages.length &&
+      first?.type === 'mdxJsxFlowElement' &&
+      first.name === 'AppliesTo' &&
+      !first.attributes.length &&
+      /^<AppliesTo\s*\/>$/.test(
+        content.slice(first.position.start.offset, first.position.end.offset),
+      )
+    ) {
+      replacements.push({
+        start: first.position.start.offset,
+        end: first.position.end.offset,
+        text: appliesToMarkdown(packages, manifest),
+      });
+    }
     const {
       EXAMPLES_ROUTE,
       readExampleGrid,
@@ -550,13 +582,6 @@ function cleanContent(
   } else {
     content = content.replace(/^([ \t]*```[\s\S]*?^[ \t]*```)/gm, protectCode);
   }
-
-  // Resolve package metadata before presentation-only components are removed.
-  // Fences are protected, so a literal JSX example is never rewritten.
-  if (version === 'current')
-    content = content.replace(/<AppliesTo\s*\/>/g, () =>
-      appliesToMarkdown(packages, manifest),
-    );
 
   // Pass 1: Remove import/export statements
   content = content.replace(/^(import|export)\s+.*$/gm, '');
