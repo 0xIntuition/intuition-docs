@@ -1,5 +1,6 @@
 module.exports = {
   root: true,
+  ignorePatterns: ['examples/'],
   parserOptions: { ecmaVersion: 'latest', sourceType: 'module' },
   overrides: [
     {

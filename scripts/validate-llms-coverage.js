@@ -1,62 +1,79 @@
 #!/usr/bin/env node
 'use strict';
 
-/**
- * Validate route parity across llms.txt, llms-full.txt, and llms-medium.txt.
- *
- * The generator owns route eligibility. This validator imports its shared
- * section walk so category shells and internal files cannot drift here.
- *
- * Zero external dependencies — uses only Node.js built-ins.
- */
-
-const fs = require('fs');
-const os = require('os');
-const path = require('path');
-const { spawnSync } = require('child_process');
+// Validate each configured bundle independently, including its curated index,
+// authored-page directory, metadata headers, and page Source boundaries.
+const fs = require('node:fs');
+const os = require('node:os');
+const path = require('node:path');
+const { spawnSync } = require('node:child_process');
+const { versions } = require('../docs-versions.config');
 const {
   BASE_URL,
-  DOCS_DIR,
   getEligibleSections,
+  getLastUpdatedMap,
   INDEX_DIRECTORY_INTRO,
   readCuratedIndexSource,
+  markdownDocLinks,
+  generateHeader,
+  selectedVersions,
 } = require('./generate-llms-full');
 
+const { readDocs } = require('./lib/docs-tree');
 const ROOT = path.resolve(__dirname, '..');
-const STATIC_DIR = path.join(ROOT, 'static');
+const STATIC_DIR = path.join(ROOT, versions.current.llmsDir);
 const LINK_VALIDATOR = path.join(__dirname, 'validate-internal-links.js');
-const OMISSION_FIXTURE = path.join(
-  __dirname,
-  '__fixtures__',
-  'llms-coverage',
-  'directory-with-omission.md',
-);
 const INDEX_DIRECTORY_MARKER = `\n${INDEX_DIRECTORY_INTRO}\n\n`;
 
 function sorted(values) {
   return [...values].sort();
 }
 
+function sourceRoute(url) {
+  const parsed = new URL(url);
+  if (parsed.origin !== BASE_URL || parsed.search || parsed.hash) {
+    throw new Error(`Invalid page Source URL: ${url}`);
+  }
+  return parsed.pathname;
+}
+
+function stripFencedCode(content) {
+  let fence = null;
+  return content
+    .split('\n')
+    .map((line) => {
+      const marker = line.match(/^ {0,3}(`{3,}|~{3,})/);
+      if (fence) {
+        if (
+          marker &&
+          marker[1][0] === fence[0] &&
+          marker[1].length >= fence.length &&
+          !line.slice(marker[0].length).trim()
+        )
+          fence = null;
+        return '';
+      }
+      if (marker) {
+        fence = marker[1];
+        return '';
+      }
+      return line;
+    })
+    .join('\n');
+}
+
 function extractFullRoutes(content) {
+  // Only the generator-owned page header counts: a Source line inside body
+  // content or a code fence is not a section source.
   return [
-    ...content.matchAll(
-      new RegExp(
-        `^Source: ${BASE_URL.replace(/\./g, '\\.')}(\\/docs(?:\\/[^\\s#?]*)?)\\s*$`,
-        'gm',
-      ),
-    ),
-  ].map((match) => match[1]);
+    ...stripFencedCode(content).matchAll(/^# [^\n]+\n\nSource: (\S+)\s*$/gm),
+  ].map((match) => sourceRoute(match[1]));
 }
 
 function extractMediumRoutes(content) {
-  return [
-    ...content.matchAll(
-      new RegExp(
-        `^source: "${BASE_URL.replace(/\./g, '\\.')}(\\/docs(?:\\/[^"#?]*)?)"\\s*$`,
-        'gm',
-      ),
-    ),
-  ].map((match) => match[1]);
+  return [...content.matchAll(/^source: "([^"\n]+)"\s*$/gm)].map((match) =>
+    sourceRoute(match[1]),
+  );
 }
 
 function extractIndexDirectory(content) {
@@ -70,12 +87,18 @@ function extractIndexDirectory(content) {
 }
 
 function extractIndexRoutes(content) {
-  const directory = extractIndexDirectory(content);
-  const linkPattern = new RegExp(
-    `^- \\[[^\\]\\n]+\\]\\(${BASE_URL.replace(/\./g, '\\.')}(\\/docs(?:\\/[^)\\s#?]*)?)\\)\\s*$`,
-    'gm',
-  );
-  return [...directory.matchAll(linkPattern)].map((match) => match[1]);
+  return [
+    ...extractIndexDirectory(content).matchAll(
+      /^- \[[^\]\n]+\]\(([^)\s]+)\)\s*$/gm,
+    ),
+  ].map((match) => {
+    const url = new URL(match[1]);
+    if (url.origin !== BASE_URL || !url.pathname.endsWith('.md'))
+      throw new Error(
+        `Expected a canonical Markdown directory URL: ${match[1]}`,
+      );
+    return url.pathname.slice(0, -3);
+  });
 }
 
 function findDuplicates(routes) {
@@ -94,7 +117,6 @@ function compareRouteSets(label, expectedRoutes, actualRoutes) {
   const missing = sorted([...expected].filter((route) => !actual.has(route)));
   const extra = sorted([...actual].filter((route) => !expected.has(route)));
   const duplicates = findDuplicates(actualRoutes);
-
   if (missing.length || extra.length || duplicates.length) {
     const details = [
       `${label}: ${missing.length} missing, ${extra.length} extra, ${duplicates.length} duplicate`,
@@ -104,194 +126,259 @@ function compareRouteSets(label, expectedRoutes, actualRoutes) {
     if (duplicates.length) details.push(`duplicate: ${duplicates.join(', ')}`);
     throw new Error(details.join('\n'));
   }
-
-  return { expected: expected.size, actual: actual.size, missing: 0, extra: 0 };
+  return { expected: expected.size, actual: actual.size };
 }
 
-function runOmissionFixture() {
-  const fixture = fs.readFileSync(OMISSION_FIXTURE, 'utf-8');
+function runOmissionFixture(version) {
+  const fixturePath = path.join(
+    __dirname,
+    '__fixtures__',
+    'llms-coverage',
+    `directory-with-omission.${version.name}.md`,
+  );
+  const fixture = fs.readFileSync(fixturePath, 'utf8');
   const expected = [
-    '/docs/fixture/included',
-    '/docs/fixture/intentionally-omitted',
+    `${version.routeBase}/fixture/included`,
+    `${version.routeBase}/fixture/intentionally-omitted`,
   ];
-  compareRouteSets('omission fixture', expected, extractIndexRoutes(fixture));
+  compareRouteSets(
+    `${version.label} omission fixture`,
+    expected,
+    extractIndexRoutes(markdownDocLinks(fixture, new Set(expected))),
+  );
 }
 
-function proveOmissionFixtureFails() {
+function proveOmissionFixtureFails(version) {
   const result = spawnSync(
     process.execPath,
-    [__filename, '--self-test-omission'],
+    [__filename, '--self-test-omission', '--version', version.name],
     {
       cwd: ROOT,
-      encoding: 'utf-8',
+      encoding: 'utf8',
     },
   );
   const output = `${result.stdout || ''}${result.stderr || ''}`.trim();
-
-  if (result.status === 0) {
-    throw new Error('omission self-test unexpectedly passed');
-  }
-  if (!output.includes('/docs/fixture/intentionally-omitted')) {
+  const missing = `${version.routeBase}/fixture/intentionally-omitted`;
+  if (result.status !== 1 || !output.includes(`missing: ${missing}`)) {
     throw new Error(
-      `omission self-test failed for the wrong reason:\n${output}`,
+      `${version.label} omission self-test failed for the wrong reason (exit ${result.status}):\n${output}`,
     );
   }
-
-  const failureSummary = output
-    .split('\n')
-    .find((line) => line.includes('missing:'));
   console.log(
-    `✅ Omission self-test captured expected failure (exit ${result.status})`,
-  );
-  console.log(`   ${failureSummary.trim()}`);
-}
-
-function validateCuratedLinks(curated, curatedTargets, curatedRoutes) {
-  // Invoke the canonical validator rather than copying its route and redirect rules.
-  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'llms-curated-links-'));
-  const tempFile = path.join(tempDir, 'llms-curated.txt');
-
-  try {
-    fs.writeFileSync(tempFile, curated, 'utf-8');
-    const result = spawnSync(process.execPath, [LINK_VALIDATOR, tempFile], {
-      cwd: ROOT,
-      encoding: 'utf-8',
-    });
-    if (result.status !== 0) {
-      const output = `${result.stdout || ''}${result.stderr || ''}`.trim();
-      throw new Error(`curated link validation failed:\n${output}`);
-    }
-  } finally {
-    fs.rmSync(tempDir, { recursive: true, force: true });
-  }
-
-  const staticTargets = curatedTargets.filter(
-    (target) => !target.startsWith('/docs'),
-  );
-  const unresolvedStaticTargets = staticTargets.filter((target) => {
-    const artifactPath = path.resolve(STATIC_DIR, target.replace(/^\/+/, ''));
-    return (
-      !artifactPath.startsWith(`${STATIC_DIR}${path.sep}`) ||
-      !fs.existsSync(artifactPath) ||
-      !fs.statSync(artifactPath).isFile()
-    );
-  });
-
-  if (unresolvedStaticTargets.length) {
-    throw new Error(
-      `curated index links to missing static artifacts: ${unresolvedStaticTargets.join(', ')}`,
-    );
-  }
-
-  console.log(
-    `✅ Curated links: ${curatedTargets.length}/${curatedTargets.length} same-origin targets resolve (${curatedRoutes.length} docs routes, ${staticTargets.length} static artifacts)`,
+    `✅ ${version.label} omission self-test captured expected failure (exit 1): ${missing}`,
   );
 }
 
 function extractCuratedTargets(curated) {
-  const linkPattern = new RegExp(
-    `\\]\\(${BASE_URL.replace(/\./g, '\\.')}(\\/[^)#?]*)(?:[?#][^)]*)?\\)`,
-    'g',
-  );
-  return [...curated.matchAll(linkPattern)].map((match) => match[1]);
+  return [...curated.matchAll(/\]\(<?((?:https?:\/\/|\/)[^)>\s]+)>?\)/g)]
+    .map((match) => new URL(match[1], BASE_URL))
+    .filter((url) => url.origin === BASE_URL)
+    .map((url) => url.pathname);
 }
 
-function extractCuratedRoutes(curated) {
-  const linkPattern = new RegExp(
-    `\\]\\(${BASE_URL.replace(/\./g, '\\.')}(\\/docs(?:\\/[^)#?]*)?)(?:[?#][^)]*)?\\)`,
-    'g',
+function validateCuratedLinks(curated, curatedTargets) {
+  // Use the canonical validator for authored routes and redirects.
+  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'llms-curated-links-'));
+  try {
+    const tempFile = path.join(tempDir, 'llms-curated.txt');
+    fs.writeFileSync(tempFile, curated, 'utf8');
+    const result = spawnSync(process.execPath, [LINK_VALIDATOR, tempFile], {
+      cwd: ROOT,
+      encoding: 'utf8',
+    });
+    if (result.status !== 0) {
+      throw new Error(
+        `curated link validation failed:\n${result.stdout || ''}${result.stderr || ''}`.trim(),
+      );
+    }
+  } finally {
+    fs.rmSync(tempDir, { recursive: true, force: true });
+  }
+  // The link validator resolves /docs content, redirects, indexes and assets.
+  // Discovery files and static assets outside /docs need a filesystem check.
+  const staticTargets = curatedTargets.filter(
+    (target) =>
+      target !== versions.current.routeBase &&
+      target !== versions.current.routeBase + '.md' &&
+      !target.startsWith(versions.current.routeBase + '/'),
   );
-  return [...curated.matchAll(linkPattern)].map((match) => match[1]);
-}
-
-function topLevelArea(sourceFile) {
-  const relative = path.relative(DOCS_DIR, sourceFile);
-  const parts = relative.split(path.sep);
-  return parts.length > 1 ? parts[0] : null;
+  const missing = staticTargets.filter((target) => {
+    const file = path.resolve(STATIC_DIR, target.replace(/^\/+/, ''));
+    return (
+      !file.startsWith(`${STATIC_DIR}${path.sep}`) ||
+      !fs.existsSync(file) ||
+      !fs.statSync(file).isFile()
+    );
+  });
+  if (missing.length)
+    throw new Error(
+      `curated index links to missing static artifacts: ${missing.join(', ')}`,
+    );
+  console.log(
+    `✅ Curated links: ${curatedTargets.length}/${curatedTargets.length} same-origin targets resolve`,
+  );
 }
 
 function validateCuratedAreaCoverage(sections, curatedRoutes) {
   const areaByRoute = new Map(
-    sections.map((section) => [
-      section.route,
-      topLevelArea(section.sourceFile),
-    ]),
+    sections.map((section) => {
+      const parts = section.relativePath.split('/');
+      return [section.route, parts.length > 1 ? parts[0] : null];
+    }),
   );
-  const expectedAreas = new Set([...areaByRoute.values()].filter(Boolean));
-  const curatedAreas = new Set(
+  const expected = new Set([...areaByRoute.values()].filter(Boolean));
+  const actual = new Set(
     curatedRoutes.map((route) => areaByRoute.get(route)).filter(Boolean),
   );
-  const missingAreas = sorted(
-    [...expectedAreas].filter((area) => !curatedAreas.has(area)),
-  );
-
-  if (missingAreas.length) {
+  const missing = sorted([...expected].filter((area) => !actual.has(area)));
+  if (missing.length)
     throw new Error(
-      `curated index misses top-level docs areas: ${missingAreas.join(', ')}`,
+      `curated index misses top-level docs areas: ${missing.join(', ')}`,
+    );
+  return { expected: expected.size, actual: actual.size };
+}
+
+function validateHeader(content, version, format) {
+  const expected = generateHeader(version, format).trimEnd();
+  if (!content.startsWith(`${expected}\n`)) {
+    throw new Error(
+      `${version.label} ${format} header differs from the required version, scope, and Other versions lines`,
     );
   }
+  if (expected.split('\n').length > 10)
+    throw new Error('Version header exceeds ten lines');
+}
 
-  console.log(
-    `✅ Curated area coverage: ${curatedAreas.size}/${expectedAreas.size} top-level docs areas`,
+function validateSourceIsolation(routes, version) {
+  const v1Base = versions.v1.routeBase;
+  const isV1 = (route) => route === v1Base || route.startsWith(`${v1Base}/`);
+  const invalid = routes.filter((route) =>
+    version.name === 'v1' ? !isV1(route) : isV1(route),
   );
+  if (invalid.length)
+    throw new Error(
+      `${version.label} page Source URLs cross version boundaries: ${invalid.join(', ')}`,
+    );
 }
 
-function readArtifact(name) {
-  return fs.readFileSync(path.join(STATIC_DIR, name), 'utf-8');
+function validateFrozenTimestamps(content, sections) {
+  const datesByRoute = new Map();
+  for (const block of content.matchAll(/^---\n([\s\S]*?)\n---$/gm)) {
+    const source = block[1].match(/^source: "([^"\n]+)"$/m);
+    const date = block[1].match(/^last_updated: "([^"\n]+)"$/m);
+    if (source) datesByRoute.set(sourceRoute(source[1]), date?.[1]);
+  }
+  for (const section of sections) {
+    if (datesByRoute.get(section.route) !== section.lastUpdated) {
+      throw new Error(
+        `V1 last_updated differs from frozen source history: ${section.route}`,
+      );
+    }
+  }
 }
 
-function validateRealArtifacts() {
-  const sections = getEligibleSections();
+function validateRealArtifacts(version) {
+  const sections = getEligibleSections(version);
+  if (!sections.length)
+    throw new Error(`No authored pages found for ${version.label}`);
+  if (version.name === 'v1') {
+    console.log(
+      `✅ V1 provenance: ${getLastUpdatedMap(version).size} source-file timestamps, ${sections.length} served pages (hidden sources excluded)`,
+    );
+  }
   const expectedRoutes = sections.map((section) => section.route);
-  const duplicateEligibleRoutes = findDuplicates(expectedRoutes);
-  if (duplicateEligibleRoutes.length) {
+  const duplicates = findDuplicates(expectedRoutes);
+  if (duplicates.length)
     throw new Error(
-      `generator emitted duplicate eligible routes: ${duplicateEligibleRoutes.join(', ')}`,
+      `generator emitted duplicate eligible routes: ${duplicates.join(', ')}`,
     );
+  const read = (name) =>
+    fs.readFileSync(path.join(ROOT, version.llmsDir, name), 'utf8');
+  const full = read('llms-full.txt');
+  const medium = read('llms-medium.txt');
+  const index = read('llms.txt');
+  for (const [format, content] of [
+    ['full', full],
+    ['medium', medium],
+    ['index', index],
+  ]) {
+    validateHeader(content, version, format);
   }
-
-  const fullRoutes = extractFullRoutes(readArtifact('llms-full.txt'));
-  const mediumRoutes = extractMediumRoutes(readArtifact('llms-medium.txt'));
-  const index = readArtifact('llms.txt');
-  const indexRoutes = extractIndexRoutes(index);
-
+  const fullRoutes = extractFullRoutes(full);
+  const mediumRoutes = extractMediumRoutes(medium);
+  validateSourceIsolation(fullRoutes, version);
+  validateSourceIsolation(mediumRoutes, version);
+  if (version.name === 'v1') validateFrozenTimestamps(medium, sections);
   for (const [label, routes] of [
     ['llms-full.txt', fullRoutes],
     ['llms-medium.txt', mediumRoutes],
-    ['llms.txt Optional directory', indexRoutes],
+    ['llms.txt Optional directory', extractIndexRoutes(index)],
   ]) {
-    const totals = compareRouteSets(label, expectedRoutes, routes);
+    const totals = compareRouteSets(
+      `${version.label} ${label}`,
+      expectedRoutes,
+      routes,
+    );
     console.log(
-      `✅ ${label}: ${totals.actual}/${totals.expected} routes (0 missing, 0 extra)`,
+      `✅ ${version.label} ${label}: ${totals.actual}/${totals.expected} routes (0 missing, 0 extra)`,
     );
   }
-
-  const curated = readCuratedIndexSource();
+  const docRoutes = new Set(
+    Object.values(versions).flatMap((entry) =>
+      readDocs(ROOT, entry).map((doc) => doc.route),
+    ),
+  );
+  const curated = markdownDocLinks(readCuratedIndexSource(version), docRoutes);
   if (!index.startsWith(`${curated}${INDEX_DIRECTORY_MARKER}`)) {
     throw new Error(
-      'llms.txt curated prefix or generated directory boundary differs from scripts/llms-index-source.md',
+      `llms.txt curated prefix differs from ${version.llmsIndexSource}`,
     );
   }
-  const curatedTargets = extractCuratedTargets(curated);
-  const curatedRoutes = extractCuratedRoutes(curated);
-  validateCuratedLinks(curated, curatedTargets, curatedRoutes);
-  validateCuratedAreaCoverage(sections, curatedRoutes);
+  const targets = extractCuratedTargets(curated);
+  const isExport = (target) =>
+    target.endsWith('.md') && docRoutes.has(target.slice(0, -3));
+  const routes = targets.filter(isExport).map((target) => target.slice(0, -3));
+  if (targets.some((target) => docRoutes.has(target.replace(/\/$/, ''))))
+    throw new Error('Curated index contains an HTML document destination');
+  validateCuratedLinks(curated, targets);
+  const areas = validateCuratedAreaCoverage(sections, routes);
+  console.log(
+    `✅ ${version.label} curated area coverage: ${areas.actual}/${areas.expected} top-level docs areas`,
+  );
 }
 
 function main() {
-  if (process.argv.includes('--self-test-omission')) {
-    runOmissionFixture();
-    throw new Error('omission self-test unexpectedly passed');
+  const selected = selectedVersions(process.argv.slice(2));
+  for (const version of selected) {
+    if (process.argv.includes('--self-test-omission')) {
+      runOmissionFixture(version);
+      throw new Error('omission self-test unexpectedly passed');
+    }
+    proveOmissionFixtureFails(version);
+    validateRealArtifacts(version);
   }
-
-  proveOmissionFixtureFails();
-  validateRealArtifacts();
   console.log('✅ llms coverage validation passed');
 }
 
-try {
-  main();
-} catch (error) {
-  console.error(`❌ ${error.message}`);
-  process.exitCode = 1;
+if (require.main === module) {
+  try {
+    main();
+  } catch (error) {
+    console.error(`❌ ${error.message}`);
+    process.exitCode = 1;
+  }
 }
+
+module.exports = {
+  compareRouteSets,
+  extractFullRoutes,
+  extractMediumRoutes,
+  extractIndexRoutes,
+  extractCuratedTargets,
+  validateCuratedAreaCoverage,
+  validateHeader,
+  validateSourceIsolation,
+  validateFrozenTimestamps,
+  runOmissionFixture,
+  proveOmissionFixtureFails,
+};

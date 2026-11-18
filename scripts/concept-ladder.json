@@ -1,0 +1,401 @@
+{
+  "schemaVersion": 1,
+  "generation": "V2",
+  "specRevision": 5,
+  "source": {
+    "repository": "https://github.com/0xIntuition/packages",
+    "commit": "4e9af1373b81a453d16bc650983138e35afb97d1"
+  },
+  "identifier": {
+    "name": "intuition-identifier",
+    "repository": "https://github.com/0xIntuition/intuition-identifier",
+    "version": "0.1.0",
+    "commit": "3e593247c0e7cb168b37368937167ed146d3868a"
+  },
+  "concepts": [
+    {
+      "slug": "index",
+      "tier": 0,
+      "title": "Concept map",
+      "reader": [
+        "app",
+        "agent",
+        "operator",
+        "plugin"
+      ],
+      "packages": [],
+      "depends_on": []
+    },
+    {
+      "slug": "atoms",
+      "tier": 1,
+      "title": "Atoms",
+      "reader": [
+        "app",
+        "agent",
+        "operator",
+        "plugin"
+      ],
+      "packages": [
+        "@0xintuition/ids",
+        "@0xintuition/primitives",
+        "@0xintuition/protocol"
+      ],
+      "depends_on": []
+    },
+    {
+      "slug": "triples",
+      "tier": 1,
+      "title": "Triples, counter-triples and nested triples",
+      "reader": [
+        "app",
+        "agent",
+        "operator",
+        "plugin"
+      ],
+      "packages": [
+        "@0xintuition/ids",
+        "@0xintuition/primitives",
+        "@0xintuition/protocol"
+      ],
+      "depends_on": [
+        "atoms"
+      ]
+    },
+    {
+      "slug": "deterministic-ids",
+      "tier": 1,
+      "title": "Deterministic IDs",
+      "reader": [
+        "app",
+        "agent"
+      ],
+      "packages": [
+        "@0xintuition/ids",
+        "@0xintuition/primitives"
+      ],
+      "depends_on": [
+        "atoms",
+        "triples"
+      ]
+    },
+    {
+      "slug": "vaults",
+      "tier": 1,
+      "title": "Vaults, shares and positions",
+      "reader": [
+        "app"
+      ],
+      "packages": [
+        "@0xintuition/protocol",
+        "@0xintuition/sdk"
+      ],
+      "depends_on": [
+        "atoms",
+        "triples"
+      ]
+    },
+    {
+      "slug": "bonding-curves",
+      "tier": 1,
+      "title": "Bonding curves",
+      "reader": [
+        "app"
+      ],
+      "packages": [
+        "@0xintuition/curves",
+        "@0xintuition/protocol"
+      ],
+      "depends_on": [
+        "vaults"
+      ]
+    },
+    {
+      "slug": "signals",
+      "tier": 1,
+      "title": "Signals",
+      "reader": [
+        "app",
+        "agent",
+        "operator",
+        "plugin"
+      ],
+      "packages": [
+        "@0xintuition/sdk",
+        "@0xintuition/react"
+      ],
+      "depends_on": [
+        "vaults",
+        "bonding-curves"
+      ]
+    },
+    {
+      "slug": "fees-and-rewards",
+      "tier": 1,
+      "title": "Fees, epochs and rewards",
+      "reader": [
+        "app"
+      ],
+      "packages": [
+        "@0xintuition/protocol",
+        "@0xintuition/sdk",
+        "@0xintuition/curves",
+        "@0xintuition/periphery"
+      ],
+      "depends_on": [
+        "vaults",
+        "bonding-curves"
+      ]
+    },
+    {
+      "slug": "iid",
+      "tier": 2,
+      "title": "The Intuition Identifier (IID)",
+      "reader": [
+        "app",
+        "agent",
+        "operator",
+        "plugin"
+      ],
+      "packages": [
+        "@0xintuition/iid-spec",
+        "@0xintuition/iid"
+      ],
+      "depends_on": [
+        "atoms",
+        "deterministic-ids"
+      ]
+    },
+    {
+      "slug": "iid-schemes",
+      "tier": 2,
+      "title": "Schemes and canonical form",
+      "reader": [
+        "app",
+        "agent"
+      ],
+      "packages": [
+        "@0xintuition/iid-spec",
+        "@0xintuition/iid"
+      ],
+      "depends_on": [
+        "iid"
+      ]
+    },
+    {
+      "slug": "representation-profiles",
+      "tier": 2,
+      "title": "Representation profiles",
+      "reader": [
+        "app",
+        "agent"
+      ],
+      "packages": [
+        "@0xintuition/iid",
+        "@0xintuition/primitives"
+      ],
+      "depends_on": [
+        "iid",
+        "atoms"
+      ]
+    },
+    {
+      "slug": "identity-ladder",
+      "tier": 2,
+      "title": "The identity ladder",
+      "reader": [
+        "app",
+        "agent"
+      ],
+      "packages": [
+        "@0xintuition/iid-ladder",
+        "@0xintuition/iid"
+      ],
+      "depends_on": [
+        "iid-schemes"
+      ]
+    },
+    {
+      "slug": "classifications",
+      "tier": 3,
+      "title": "Classifications and Creation Profiles",
+      "reader": [
+        "app",
+        "agent"
+      ],
+      "packages": [
+        "@0xintuition/classifications"
+      ],
+      "depends_on": [
+        "atoms",
+        "iid",
+        "identity-ladder"
+      ]
+    },
+    {
+      "slug": "schema-org",
+      "tier": 3,
+      "title": "schema.org vocabulary",
+      "reader": [
+        "app"
+      ],
+      "packages": [
+        "@0xintuition/schema-org"
+      ],
+      "depends_on": [
+        "classifications"
+      ]
+    },
+    {
+      "slug": "predicates",
+      "tier": 3,
+      "title": "Predicates",
+      "reader": [
+        "app",
+        "agent"
+      ],
+      "packages": [
+        "@0xintuition/predicates"
+      ],
+      "depends_on": [
+        "triples",
+        "classifications"
+      ]
+    },
+    {
+      "slug": "iid-registry",
+      "tier": 3,
+      "title": "The IID registry",
+      "reader": [
+        "app",
+        "agent"
+      ],
+      "packages": [
+        "@0xintuition/iid-registry"
+      ],
+      "depends_on": [
+        "iid-schemes",
+        "classifications"
+      ]
+    },
+    {
+      "slug": "same-as",
+      "tier": 3,
+      "title": "sameAs and identity linking",
+      "reader": [
+        "app"
+      ],
+      "packages": [
+        "@0xintuition/primitives",
+        "@0xintuition/predicates"
+      ],
+      "depends_on": [
+        "iid",
+        "triples",
+        "predicates"
+      ]
+    },
+    {
+      "slug": "atom-parsing",
+      "tier": 4,
+      "title": "Atom parsing",
+      "reader": [
+        "app",
+        "plugin"
+      ],
+      "packages": [
+        "@0xintuition/atom-parser"
+      ],
+      "depends_on": [
+        "atoms",
+        "iid"
+      ]
+    },
+    {
+      "slug": "atom-classification",
+      "tier": 4,
+      "title": "Atom classification",
+      "reader": [
+        "app",
+        "plugin"
+      ],
+      "packages": [
+        "@0xintuition/atom-classification"
+      ],
+      "depends_on": [
+        "atom-parsing",
+        "classifications"
+      ]
+    },
+    {
+      "slug": "enrichment",
+      "tier": 4,
+      "title": "Enrichment",
+      "reader": [
+        "app",
+        "plugin"
+      ],
+      "packages": [
+        "@0xintuition/atom-enrichment"
+      ],
+      "depends_on": [
+        "atom-classification",
+        "iid-registry"
+      ]
+    },
+    {
+      "slug": "atom-runtime",
+      "tier": 4,
+      "title": "Atom runtime and pipelines",
+      "reader": [
+        "app",
+        "plugin",
+        "operator"
+      ],
+      "packages": [
+        "@0xintuition/atom-runtime",
+        "@0xintuition/pipeline-runtime"
+      ],
+      "depends_on": [
+        "atom-classification",
+        "enrichment"
+      ]
+    },
+    {
+      "slug": "protocol-writes",
+      "tier": 5,
+      "title": "Protocol writes",
+      "reader": [
+        "app",
+        "agent"
+      ],
+      "packages": [
+        "@0xintuition/sdk",
+        "@0xintuition/protocol",
+        "@0xintuition/periphery",
+        "@0xintuition/deployments",
+        "@0xintuition/cli"
+      ],
+      "depends_on": [
+        "deterministic-ids",
+        "vaults",
+        "representation-profiles",
+        "classifications"
+      ]
+    },
+    {
+      "slug": "indexing-and-querying",
+      "tier": 5,
+      "title": "Indexing and querying",
+      "reader": [
+        "app",
+        "operator"
+      ],
+      "packages": [],
+      "depends_on": [
+        "protocol-writes",
+        "atom-runtime"
+      ]
+    }
+  ]
+}

@@ -1,408 +1,421 @@
 {
-  "include": [
-    "docs/_data/intuition-sdk/**",
-    "docs/_data/quick-start/using-the-sdk.md"
-  ],
   "skipComment": "<!-- docs-typecheck: skip -->",
   "skipConvention": "Place the skip comment on the line immediately before an intentional partial or pseudocode TypeScript fence.",
   "coverageLimitation": "Import-less partial fences are outside the type-check gate and rely on manual content review.",
   "ratchetPolicy": "knownFailing groups exact source fence content by file and records the expected diagnostic fingerprint set for each fence. Fence identity uses a truncated SHA-256 content hash plus a document-order ordinal only for identical-content fences in the same file; source line numbers are display-only. Every listed fence is still typechecked. Any added or missing fingerprint fails CI; use --update-ratchet locally for a deliberate baseline refresh, and shrink the fence list when documentation fixes or docs-typecheck skip annotations merge.",
   "fingerprintFormat": "Each fingerprint is the TypeScript error code plus a SHA-256 hash of its position-independent diagnostic message and a same-message occurrence ordinal.",
-  "knownFailing": [
-    {
-      "file": "docs/_data/intuition-sdk/examples/deposit-into-vault.md",
-      "fences": [
-        {
-          "contentHash": "b51057b8e7f8d3ee",
-          "fingerprints": [
-            "TS2322#1",
-            "TS2322#2",
-            "TS2345#1",
-            "TS2345#2"
-          ]
-        }
+  "versions": {
+    "v1": {
+      "include": [
+        "_data_versioned_docs/version-v1/intuition-sdk/**",
+        "_data_versioned_docs/version-v1/quick-start/using-the-sdk.md",
+        "docs/_data/get-started/migrate-from-v1.md"
       ],
-      "reason": "The example uses stale WriteConfig and deposit ABI tuple shapes against SDK 3.0.1."
+      "dependencyRoot": ".",
+      "knownFailing": [
+        {
+          "file": "_data_versioned_docs/version-v1/intuition-sdk/examples/deposit-into-vault.md",
+          "fences": [
+            {
+              "contentHash": "b51057b8e7f8d3ee",
+              "fingerprints": [
+                "TS2322#1",
+                "TS2322#2",
+                "TS2345#1",
+                "TS2345#2"
+              ]
+            }
+          ],
+          "reason": "The example uses stale WriteConfig and deposit ABI tuple shapes against SDK 3.0.1."
+        },
+        {
+          "file": "_data_versioned_docs/version-v1/intuition-sdk/vaults-guide.md",
+          "fences": [
+            {
+              "contentHash": "bf705c482878a343",
+              "fingerprints": [
+                "TS18004#1",
+                "TS18004#2",
+                "TS18004#3",
+                "TS2304#1",
+                "TS2304#2",
+                "TS2345#1"
+              ]
+            },
+            {
+              "contentHash": "b029b876f1bbf414",
+              "fingerprints": [
+                "TS18004#1",
+                "TS18004#2",
+                "TS18004#3",
+                "TS18004#4",
+                "TS18004#5",
+                "TS18004#6",
+                "TS18004#7",
+                "TS2304#1",
+                "TS2304#2",
+                "TS2304#3",
+                "TS2322#1",
+                "TS2345#1",
+                "TS2345#2",
+                "TS2362#1",
+                "TS2365#1"
+              ]
+            },
+            {
+              "contentHash": "b26d63cadaa234db",
+              "fingerprints": [
+                "TS18004#1",
+                "TS18004#2",
+                "TS18004#3",
+                "TS2304#1",
+                "TS2304#2",
+                "TS2304#3",
+                "TS2304#4"
+              ]
+            },
+            {
+              "contentHash": "69d898dad6f063d1",
+              "fingerprints": [
+                "TS2304#1",
+                "TS2304#2",
+                "TS2304#3",
+                "TS2345#1"
+              ]
+            },
+            {
+              "contentHash": "fa9222208fde68df",
+              "fingerprints": [
+                "TS18048#1",
+                "TS2345#1"
+              ]
+            },
+            {
+              "contentHash": "c911314fcffbfa27",
+              "fingerprints": [
+                "TS2304#1",
+                "TS2304#2",
+                "TS2304#3",
+                "TS2345#1"
+              ]
+            },
+            {
+              "contentHash": "b09378c647f34342",
+              "ordinal": 1,
+              "fingerprints": [
+                "TS18004#1",
+                "TS18004#2",
+                "TS2304#1",
+                "TS2304#2",
+                "TS2322#1"
+              ]
+            },
+            {
+              "contentHash": "6fe88b71c10c901f",
+              "fingerprints": [
+                "TS18004#1",
+                "TS18004#2",
+                "TS18004#3",
+                "TS18004#4",
+                "TS18004#5",
+                "TS2304#1",
+                "TS2304#2",
+                "TS2304#3",
+                "TS2304#4",
+                "TS2322#1"
+              ]
+            },
+            {
+              "contentHash": "991092b7eff1bf45",
+              "fingerprints": [
+                "TS18004#1",
+                "TS18004#2",
+                "TS18004#3",
+                "TS18004#4",
+                "TS18004#5",
+                "TS2304#1",
+                "TS2304#2",
+                "TS2345#1",
+                "TS2345#2",
+                "TS2362#1",
+                "TS2365#1"
+              ]
+            },
+            {
+              "contentHash": "1ee3c055d698cdd1",
+              "fingerprints": [
+                "TS18004#1",
+                "TS18004#2",
+                "TS18004#3",
+                "TS2304#1",
+                "TS2304#2",
+                "TS2304#3",
+                "TS2304#4",
+                "TS2304#5",
+                "TS2304#6",
+                "TS2304#7"
+              ]
+            },
+            {
+              "contentHash": "3e2b94f2ce8fdff2",
+              "fingerprints": [
+                "TS18004#1",
+                "TS18004#2",
+                "TS2304#1",
+                "TS2304#2",
+                "TS2304#3",
+                "TS2304#4",
+                "TS2304#5",
+                "TS2322#1"
+              ]
+            },
+            {
+              "contentHash": "e39b975a03949b1c",
+              "fingerprints": [
+                "TS18004#1",
+                "TS18004#2",
+                "TS2304#1",
+                "TS2304#2",
+                "TS2304#3",
+                "TS2322#1"
+              ]
+            },
+            {
+              "contentHash": "b09378c647f34342",
+              "ordinal": 2,
+              "fingerprints": [
+                "TS18004#1",
+                "TS18004#2",
+                "TS2304#1",
+                "TS2304#2",
+                "TS2322#1"
+              ]
+            },
+            {
+              "contentHash": "497db7c06f2b14fd",
+              "fingerprints": [
+                "TS18004#1",
+                "TS18004#2",
+                "TS2304#1",
+                "TS2322#1",
+                "TS2339#1",
+                "TS2339#2"
+              ]
+            },
+            {
+              "contentHash": "746c96f8a3fdba24",
+              "fingerprints": [
+                "TS18004#1",
+                "TS18004#2",
+                "TS2304#1"
+              ]
+            },
+            {
+              "contentHash": "62e34bdf30d48090",
+              "fingerprints": [
+                "TS18004#1",
+                "TS18004#2",
+                "TS2304#1",
+                "TS2345#1"
+              ]
+            },
+            {
+              "contentHash": "fc2d9a7b6289eabe",
+              "fingerprints": [
+                "TS18004#1",
+                "TS18004#2",
+                "TS2304#1",
+                "TS2345#1",
+                "TS2345#2"
+              ]
+            },
+            {
+              "contentHash": "d3bb62593104bbed",
+              "fingerprints": [
+                "TS18004#1",
+                "TS18004#2",
+                "TS2304#1",
+                "TS2304#2",
+                "TS2304#3",
+                "TS2304#4",
+                "TS2345#1",
+                "TS2345#2",
+                "TS2362#1",
+                "TS2365#1"
+              ]
+            },
+            {
+              "contentHash": "1684dfb78949ae15",
+              "fingerprints": [
+                "TS18004#1",
+                "TS18004#2",
+                "TS2304#1",
+                "TS2304#2",
+                "TS2304#3",
+                "TS2345#1",
+                "TS2345#2"
+              ]
+            }
+          ],
+          "reason": "These partial examples omit clients and use stale TripleCreated tripleId, vault identifiers, WriteConfig, ABI tuple, and preview/share return shapes."
+        },
+        {
+          "file": "_data_versioned_docs/version-v1/quick-start/using-the-sdk.md",
+          "fences": [
+            {
+              "contentHash": "09e07972b7b57288",
+              "fingerprints": [
+                "TS2322#1",
+                "TS2719#1"
+              ]
+            },
+            {
+              "contentHash": "56699f6fab1a6941",
+              "fingerprints": [
+                "TS18004#1",
+                "TS18004#2",
+                "TS18004#3"
+              ]
+            },
+            {
+              "contentHash": "40b7f915ecb66ee3",
+              "fingerprints": [
+                "TS18004#1",
+                "TS18004#2",
+                "TS18004#3",
+                "TS2345#1"
+              ]
+            },
+            {
+              "contentHash": "f9594a45554e2f38",
+              "fingerprints": [
+                "TS18004#1",
+                "TS18004#2",
+                "TS2304#1",
+                "TS2305#1"
+              ]
+            },
+            {
+              "contentHash": "c73a9d0b58811e44",
+              "fingerprints": [
+                "TS18004#1",
+                "TS18004#10",
+                "TS18004#11",
+                "TS18004#12",
+                "TS18004#2",
+                "TS18004#3",
+                "TS18004#4",
+                "TS18004#5",
+                "TS18004#6",
+                "TS18004#7",
+                "TS18004#8",
+                "TS18004#9",
+                "TS2322#1",
+                "TS2322#2",
+                "TS2322#3"
+              ]
+            },
+            {
+              "contentHash": "6b7be7eb48141d7b",
+              "fingerprints": [
+                "TS18004#1",
+                "TS18004#2",
+                "TS18004#3",
+                "TS2304#1",
+                "TS2304#2",
+                "TS2304#3",
+                "TS2304#4",
+                "TS2305#1"
+              ]
+            },
+            {
+              "contentHash": "731a755f43e5a087",
+              "fingerprints": [
+                "TS18004#1",
+                "TS18004#2",
+                "TS18004#3",
+                "TS2304#1",
+                "TS2304#2",
+                "TS2304#3",
+                "TS2304#4",
+                "TS2305#1"
+              ]
+            },
+            {
+              "contentHash": "a9439be8f00a11cc",
+              "fingerprints": [
+                "TS18004#1",
+                "TS18004#2",
+                "TS18004#3",
+                "TS2304#1",
+                "TS2304#2",
+                "TS2305#1"
+              ]
+            },
+            {
+              "contentHash": "0d173fd46b676a9c",
+              "fingerprints": [
+                "TS18048#1",
+                "TS2305#1",
+                "TS2322#1",
+                "TS2719#1"
+              ]
+            },
+            {
+              "contentHash": "0c99344998cd8982",
+              "fingerprints": [
+                "TS18004#1",
+                "TS18004#2",
+                "TS18004#3"
+              ]
+            },
+            {
+              "contentHash": "e7cd37ec2563f9cf",
+              "fingerprints": [
+                "TS18004#1",
+                "TS18004#2",
+                "TS18004#3",
+                "TS2304#1",
+                "TS2304#2",
+                "TS2304#3",
+                "TS2304#4",
+                "TS2304#5",
+                "TS2304#6",
+                "TS2304#7",
+                "TS2304#8",
+                "TS2304#9",
+                "TS2345#1"
+              ]
+            },
+            {
+              "contentHash": "b6d29de1501eec70",
+              "fingerprints": [
+                "TS18004#1",
+                "TS18004#2",
+                "TS18004#3",
+                "TS2304#1",
+                "TS2304#2",
+                "TS2304#3",
+                "TS2304#4",
+                "TS2304#5",
+                "TS2304#6",
+                "TS2304#7",
+                "TS2304#8",
+                "TS2304#9",
+                "TS2305#1"
+              ]
+            }
+          ],
+          "reason": "These snippets omit browser/client context and reference stale protocol exports, SDK batch exports, input tuples, and pre-v3 result shapes."
+        }
+      ]
     },
-    {
-      "file": "docs/_data/intuition-sdk/vaults-guide.md",
-      "fences": [
-        {
-          "contentHash": "bf705c482878a343",
-          "fingerprints": [
-            "TS18004#1",
-            "TS18004#2",
-            "TS18004#3",
-            "TS2304#1",
-            "TS2304#2",
-            "TS2345#1"
-          ]
-        },
-        {
-          "contentHash": "b029b876f1bbf414",
-          "fingerprints": [
-            "TS18004#1",
-            "TS18004#2",
-            "TS18004#3",
-            "TS18004#4",
-            "TS18004#5",
-            "TS18004#6",
-            "TS18004#7",
-            "TS2304#1",
-            "TS2304#2",
-            "TS2304#3",
-            "TS2322#1",
-            "TS2345#1",
-            "TS2345#2",
-            "TS2362#1",
-            "TS2365#1"
-          ]
-        },
-        {
-          "contentHash": "b26d63cadaa234db",
-          "fingerprints": [
-            "TS18004#1",
-            "TS18004#2",
-            "TS18004#3",
-            "TS2304#1",
-            "TS2304#2",
-            "TS2304#3",
-            "TS2304#4"
-          ]
-        },
-        {
-          "contentHash": "69d898dad6f063d1",
-          "fingerprints": [
-            "TS2304#1",
-            "TS2304#2",
-            "TS2304#3",
-            "TS2345#1"
-          ]
-        },
-        {
-          "contentHash": "fa9222208fde68df",
-          "fingerprints": [
-            "TS18048#1",
-            "TS2345#1"
-          ]
-        },
-        {
-          "contentHash": "c911314fcffbfa27",
-          "fingerprints": [
-            "TS2304#1",
-            "TS2304#2",
-            "TS2304#3",
-            "TS2345#1"
-          ]
-        },
-        {
-          "contentHash": "b09378c647f34342",
-          "ordinal": 1,
-          "fingerprints": [
-            "TS18004#1",
-            "TS18004#2",
-            "TS2304#1",
-            "TS2304#2",
-            "TS2322#1"
-          ]
-        },
-        {
-          "contentHash": "6fe88b71c10c901f",
-          "fingerprints": [
-            "TS18004#1",
-            "TS18004#2",
-            "TS18004#3",
-            "TS18004#4",
-            "TS18004#5",
-            "TS2304#1",
-            "TS2304#2",
-            "TS2304#3",
-            "TS2304#4",
-            "TS2322#1"
-          ]
-        },
-        {
-          "contentHash": "991092b7eff1bf45",
-          "fingerprints": [
-            "TS18004#1",
-            "TS18004#2",
-            "TS18004#3",
-            "TS18004#4",
-            "TS18004#5",
-            "TS2304#1",
-            "TS2304#2",
-            "TS2345#1",
-            "TS2345#2",
-            "TS2362#1",
-            "TS2365#1"
-          ]
-        },
-        {
-          "contentHash": "1ee3c055d698cdd1",
-          "fingerprints": [
-            "TS18004#1",
-            "TS18004#2",
-            "TS18004#3",
-            "TS2304#1",
-            "TS2304#2",
-            "TS2304#3",
-            "TS2304#4",
-            "TS2304#5",
-            "TS2304#6",
-            "TS2304#7"
-          ]
-        },
-        {
-          "contentHash": "3e2b94f2ce8fdff2",
-          "fingerprints": [
-            "TS18004#1",
-            "TS18004#2",
-            "TS2304#1",
-            "TS2304#2",
-            "TS2304#3",
-            "TS2304#4",
-            "TS2304#5",
-            "TS2322#1"
-          ]
-        },
-        {
-          "contentHash": "e39b975a03949b1c",
-          "fingerprints": [
-            "TS18004#1",
-            "TS18004#2",
-            "TS2304#1",
-            "TS2304#2",
-            "TS2304#3",
-            "TS2322#1"
-          ]
-        },
-        {
-          "contentHash": "b09378c647f34342",
-          "ordinal": 2,
-          "fingerprints": [
-            "TS18004#1",
-            "TS18004#2",
-            "TS2304#1",
-            "TS2304#2",
-            "TS2322#1"
-          ]
-        },
-        {
-          "contentHash": "497db7c06f2b14fd",
-          "fingerprints": [
-            "TS18004#1",
-            "TS18004#2",
-            "TS2304#1",
-            "TS2322#1",
-            "TS2339#1",
-            "TS2339#2"
-          ]
-        },
-        {
-          "contentHash": "746c96f8a3fdba24",
-          "fingerprints": [
-            "TS18004#1",
-            "TS18004#2",
-            "TS2304#1"
-          ]
-        },
-        {
-          "contentHash": "62e34bdf30d48090",
-          "fingerprints": [
-            "TS18004#1",
-            "TS18004#2",
-            "TS2304#1",
-            "TS2345#1"
-          ]
-        },
-        {
-          "contentHash": "fc2d9a7b6289eabe",
-          "fingerprints": [
-            "TS18004#1",
-            "TS18004#2",
-            "TS2304#1",
-            "TS2345#1",
-            "TS2345#2"
-          ]
-        },
-        {
-          "contentHash": "d3bb62593104bbed",
-          "fingerprints": [
-            "TS18004#1",
-            "TS18004#2",
-            "TS2304#1",
-            "TS2304#2",
-            "TS2304#3",
-            "TS2304#4",
-            "TS2345#1",
-            "TS2345#2",
-            "TS2362#1",
-            "TS2365#1"
-          ]
-        },
-        {
-          "contentHash": "1684dfb78949ae15",
-          "fingerprints": [
-            "TS18004#1",
-            "TS18004#2",
-            "TS2304#1",
-            "TS2304#2",
-            "TS2304#3",
-            "TS2345#1",
-            "TS2345#2"
-          ]
-        }
+    "v2": {
+      "include": [
+        "docs/_data/**"
       ],
-      "reason": "These partial examples omit clients and use stale TripleCreated tripleId, vault identifiers, WriteConfig, ABI tuple, and preview/share return shapes."
-    },
-    {
-      "file": "docs/_data/quick-start/using-the-sdk.md",
-      "fences": [
-        {
-          "contentHash": "09e07972b7b57288",
-          "fingerprints": [
-            "TS2322#1",
-            "TS2719#1"
-          ]
-        },
-        {
-          "contentHash": "56699f6fab1a6941",
-          "fingerprints": [
-            "TS18004#1",
-            "TS18004#2",
-            "TS18004#3"
-          ]
-        },
-        {
-          "contentHash": "40b7f915ecb66ee3",
-          "fingerprints": [
-            "TS18004#1",
-            "TS18004#2",
-            "TS18004#3",
-            "TS2345#1"
-          ]
-        },
-        {
-          "contentHash": "f9594a45554e2f38",
-          "fingerprints": [
-            "TS18004#1",
-            "TS18004#2",
-            "TS2304#1",
-            "TS2305#1"
-          ]
-        },
-        {
-          "contentHash": "c73a9d0b58811e44",
-          "fingerprints": [
-            "TS18004#1",
-            "TS18004#10",
-            "TS18004#11",
-            "TS18004#12",
-            "TS18004#2",
-            "TS18004#3",
-            "TS18004#4",
-            "TS18004#5",
-            "TS18004#6",
-            "TS18004#7",
-            "TS18004#8",
-            "TS18004#9",
-            "TS2322#1",
-            "TS2322#2",
-            "TS2322#3"
-          ]
-        },
-        {
-          "contentHash": "6b7be7eb48141d7b",
-          "fingerprints": [
-            "TS18004#1",
-            "TS18004#2",
-            "TS18004#3",
-            "TS2304#1",
-            "TS2304#2",
-            "TS2304#3",
-            "TS2304#4",
-            "TS2305#1"
-          ]
-        },
-        {
-          "contentHash": "731a755f43e5a087",
-          "fingerprints": [
-            "TS18004#1",
-            "TS18004#2",
-            "TS18004#3",
-            "TS2304#1",
-            "TS2304#2",
-            "TS2304#3",
-            "TS2304#4",
-            "TS2305#1"
-          ]
-        },
-        {
-          "contentHash": "a9439be8f00a11cc",
-          "fingerprints": [
-            "TS18004#1",
-            "TS18004#2",
-            "TS18004#3",
-            "TS2304#1",
-            "TS2304#2",
-            "TS2305#1"
-          ]
-        },
-        {
-          "contentHash": "0d173fd46b676a9c",
-          "fingerprints": [
-            "TS18048#1",
-            "TS2305#1",
-            "TS2322#1",
-            "TS2719#1"
-          ]
-        },
-        {
-          "contentHash": "0c99344998cd8982",
-          "fingerprints": [
-            "TS18004#1",
-            "TS18004#2",
-            "TS18004#3"
-          ]
-        },
-        {
-          "contentHash": "e7cd37ec2563f9cf",
-          "fingerprints": [
-            "TS18004#1",
-            "TS18004#2",
-            "TS18004#3",
-            "TS2304#1",
-            "TS2304#2",
-            "TS2304#3",
-            "TS2304#4",
-            "TS2304#5",
-            "TS2304#6",
-            "TS2304#7",
-            "TS2304#8",
-            "TS2304#9",
-            "TS2345#1"
-          ]
-        },
-        {
-          "contentHash": "b6d29de1501eec70",
-          "fingerprints": [
-            "TS18004#1",
-            "TS18004#2",
-            "TS18004#3",
-            "TS2304#1",
-            "TS2304#2",
-            "TS2304#3",
-            "TS2304#4",
-            "TS2304#5",
-            "TS2304#6",
-            "TS2304#7",
-            "TS2304#8",
-            "TS2304#9",
-            "TS2305#1"
-          ]
-        }
-      ],
-      "reason": "These snippets omit browser/client context and reference stale protocol exports, SDK batch exports, input tuples, and pre-v3 result shapes."
+      "dependencyRoot": "examples/v2",
+      "knownFailing": []
     }
-  ]
+  }
 }

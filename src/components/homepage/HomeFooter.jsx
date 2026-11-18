@@ -3,6 +3,8 @@ import Link from '@docusaurus/Link';
 import clsx from 'clsx';
 import BrowserOnly from '@docusaurus/BrowserOnly';
 import ThemedImage from '@theme/ThemedImage';
+import { useVersions } from '@docusaurus/plugin-content-docs/client';
+import { getDeveloperLinks } from './developerLinks.mjs';
 import {
   XIcon,
   DiscordIcon,
@@ -48,33 +50,6 @@ const tools = [
   },
 ];
 
-const developers = [
-  {
-    name: 'Architecture',
-    href: '/docs/intuition-concepts/architecture',
-  },
-  {
-    name: 'Primitives',
-    href: '/docs/intuition-concepts/primitives',
-  },
-  {
-    name: 'Smart Contracts',
-    href: '/docs/intuition-smart-contracts',
-  },
-  {
-    name: 'GraphQL',
-    href: '/docs/graphql-api/overview',
-  },
-  {
-    name: 'SDK',
-    href: '/docs/intuition-sdk/installation-and-setup'
-  },
-  {
-    name: 'AI Integration',
-    href: '/docs/experimental-applications/mcp-server'
-  },
-];
-
 function Safety({ className }) {
   return (
     <div
@@ -112,15 +87,16 @@ function Links({ name, links, isAccordion }) {
   };
 
   return (
-    <div>
+    <div className="min-w-0">
       <h3 className="font-jakarta text-base font-semibold uppercase text-gray-400 dark:text-[#999]">
         {name}
       </h3>
       <div className="flex flex-col gap-3">
         {links.map(({ name, href, isAccordion, content }) => (
           <Link
+            key={href}
             href={href}
-            className="text-base text-gray-700 hover:text-primary hover:no-underline dark:text-[#f9f9f9]"
+            className="min-w-0 text-base text-gray-700 hover:text-primary hover:no-underline dark:text-[#f9f9f9]"
             onClick={() => (isAccordion ? toggleAccordion(href) : null)}
           >
             {name}
@@ -146,6 +122,12 @@ function Links({ name, links, isAccordion }) {
 }
 
 export default function Footer() {
+  const currentVersion = useVersions('_data').find(
+    ({ name }) => name === 'current',
+  );
+  const developers = getDeveloperLinks(
+    currentVersion?.docs.map(({ path }) => path) ?? [],
+  );
   return (
     <footer className="bg-[#F4F7FF] dark:bg-[#191919]">
       <div className="mx-auto flex w-full max-w-[1080px] flex-col px-6 py-12">

@@ -1121,7 +1121,7 @@ console.log('Created post triple:', postTriple.state.vaultId);`
         </div>
         
         <p style={{ marginBottom: 0, fontSize: '0.85rem', color: 'var(--ifm-color-emphasis-600)' }}>
-          📖 For complete setup instructions and examples, check out the <a href="/docs/intuition-sdk/installation-and-setup" style={{ color: 'var(--ifm-color-primary)' }}>SDK Documentation</a>.
+          📖 For complete setup instructions and examples, check out the <a href="/docs/v1/intuition-sdk/installation-and-setup" style={{ color: 'var(--ifm-color-primary)' }}>SDK Documentation</a>.
         </p>
       </div>
     </div>

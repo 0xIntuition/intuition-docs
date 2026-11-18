@@ -1,0 +1,10 @@
+.theme-doc-version-banner {
+  min-width: 0;
+  overflow-wrap: break-word;
+  text-wrap: pretty;
+}
+
+.theme-doc-version-banner a:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}

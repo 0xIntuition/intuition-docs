@@ -23,7 +23,8 @@ const path = require('path');
 const https = require('https');
 
 const ROOT = path.resolve(__dirname, '..');
-const DOCS_DIR = path.join(ROOT, 'docs', '_data');
+const { versions } = require('../docs-versions.config');
+const DOCS_DIR = path.join(ROOT, versions.v1.docsDir);
 const SCRIPTS_DIR = __dirname;
 
 // Directories to scan for GraphQL queries

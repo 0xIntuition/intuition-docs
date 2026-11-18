@@ -1,0 +1,708 @@
+{
+  "schemaVersion": 3,
+  "generation": "V2",
+  "status": "published",
+  "registryPublicationVerified": true,
+  "registryVerifiedAt": "2026-11-17T15:10:00.710416+00:00",
+  "source": {
+    "repository": "https://github.com/0xIntuition/packages",
+    "commit": "4e9af1373b81a453d16bc650983138e35afb97d1"
+  },
+  "core": {
+    "repository": "https://github.com/0xIntuition/intuition-core",
+    "distribution": "source",
+    "commit": "a402f880600f92969dc8fb013ca0f69fc9a02420"
+  },
+  "specs": [
+    {
+      "name": "intuition-identifier",
+      "repository": "https://github.com/0xIntuition/intuition-identifier",
+      "version": "0.1.0",
+      "commit": "3e593247c0e7cb168b37368937167ed146d3868a"
+    }
+  ],
+  "contracts": {
+    "@0xintuition/contracts-v2": "1.1.0-alpha.1",
+    "@0xintuition/contracts-v2-periphery": "1.1.0-alpha.0"
+  },
+  "packages": [
+    {
+      "name": "@0xintuition/atom-classification",
+      "version": "0.1.0",
+      "entrypoints": [
+        ".",
+        "./ai",
+        "./ssrf",
+        "./cache",
+        "./types",
+        "./client",
+        "./engine",
+        "./server",
+        "./outcome",
+        "./plugins",
+        "./presets",
+        "./testing",
+        "./plugins/x",
+        "./plugin-api",
+        "./ssrf-guard",
+        "./plugins/int",
+        "./url-hygiene",
+        "./package.json",
+        "./plugins/etsy",
+        "./plugins/imdb",
+        "./plugins/isbn",
+        "./plugins/tmdb",
+        "./plugins/steam",
+        "./type-registry",
+        "./artifact-types",
+        "./plugins/amazon",
+        "./plugins/github",
+        "./plugins/places",
+        "./plugins/tiktok",
+        "./plugins/lexical",
+        "./plugins/shopify",
+        "./plugins/spotify",
+        "./plugins/youtube",
+        "./adapters/upstash",
+        "./plugin-factories",
+        "./plugins/ethereum",
+        "./plugins/wikidata",
+        "./plugins/coingecko",
+        "./plugins/etherscan",
+        "./plugins/goodreads",
+        "./plugins/instagram",
+        "./plugins/wikipedia",
+        "./plugins/letterboxd",
+        "./plugins/plain-text",
+        "./plugins/default-url",
+        "./plugins/openlibrary",
+        "./plugins/coinmarketcap",
+        "./plugins/type-profiles",
+        "./provider-metrics-contract",
+        "./identifier-rung-projection"
+      ],
+      "peers": {},
+      "engines": {
+        "node": ">=20"
+      },
+      "source": "https://github.com/0xIntuition/packages/tree/4e9af1373b81a453d16bc650983138e35afb97d1/packages/atom-classification",
+      "registry": {
+        "url": "https://registry.npmjs.org/@0xintuition%2fatom-classification/0.1.0",
+        "npm": "https://www.npmjs.com/package/@0xintuition/atom-classification/v/0.1.0",
+        "publishedAt": "2026-11-12T16:56:08.328Z",
+        "distTags": {
+          "latest": "0.1.0",
+          "alpha": "0.1.0-alpha.0"
+        },
+        "gitHead": "4e9af1373b81a453d16bc650983138e35afb97d1",
+        "integrity": "sha512-7WCDQDkqF1slCeEczDXpbnf4xXFFjfjAvo2abPe9sro16ZVdQ0hCYWwu2qkOoIhvCPCeA9JE9JmI6kxqMhGkyg==",
+        "tarball": "https://registry.npmjs.org/@0xintuition/atom-classification/-/atom-classification-0.1.0.tgz"
+      }
+    },
+    {
+      "name": "@0xintuition/atom-enrichment",
+      "version": "0.1.0",
+      "entrypoints": [
+        ".",
+        "./ssrf",
+        "./cache",
+        "./types",
+        "./engine",
+        "./handoff",
+        "./outcome",
+        "./plugins",
+        "./presets",
+        "./testing",
+        "./providers",
+        "./extraction",
+        "./plugin-api",
+        "./url-hygiene",
+        "./package.json",
+        "./slug-aliases",
+        "./provider-data",
+        "./provider-plan",
+        "./provider-fetch",
+        "./spotify-client",
+        "./classifications",
+        "./plugin-registry",
+        "./adapters/upstash",
+        "./data-resolved-schema",
+        "./tmdb-request-observer",
+        "./provider-external-data",
+        "./classifications/schemas",
+        "./classifications/defaults",
+        "./classifications/registry",
+        "./identifier-rung-projection"
+      ],
+      "peers": {},
+      "engines": {
+        "node": ">=20"
+      },
+      "source": "https://github.com/0xIntuition/packages/tree/4e9af1373b81a453d16bc650983138e35afb97d1/packages/atom-enrichment",
+      "registry": {
+        "url": "https://registry.npmjs.org/@0xintuition%2fatom-enrichment/0.1.0",
+        "npm": "https://www.npmjs.com/package/@0xintuition/atom-enrichment/v/0.1.0",
+        "publishedAt": "2026-11-12T16:56:02.864Z",
+        "distTags": {
+          "latest": "0.1.0",
+          "alpha": "0.1.0-alpha.0"
+        },
+        "gitHead": "4e9af1373b81a453d16bc650983138e35afb97d1",
+        "integrity": "sha512-12KC4UKw9E2ScV74eyi5rNISFKweoZBFUWjWklkKf+HmmHoZqnt4S469vGvHVAX2Fb36s3NuML71eIi7tv4uMg==",
+        "tarball": "https://registry.npmjs.org/@0xintuition/atom-enrichment/-/atom-enrichment-0.1.0.tgz"
+      }
+    },
+    {
+      "name": "@0xintuition/atom-parser",
+      "version": "0.1.0",
+      "entrypoints": [
+        ".",
+        "./iid",
+        "./ssrf",
+        "./parse",
+        "./types",
+        "./detect",
+        "./remote",
+        "./testing/dns",
+        "./package.json"
+      ],
+      "peers": {},
+      "engines": {},
+      "source": "https://github.com/0xIntuition/packages/tree/4e9af1373b81a453d16bc650983138e35afb97d1/packages/atom-parser",
+      "registry": {
+        "url": "https://registry.npmjs.org/@0xintuition%2fatom-parser/0.1.0",
+        "npm": "https://www.npmjs.com/package/@0xintuition/atom-parser/v/0.1.0",
+        "publishedAt": "2026-11-12T16:54:38.032Z",
+        "distTags": {
+          "alpha": "0.1.0-alpha.0",
+          "latest": "0.1.0"
+        },
+        "gitHead": "4e9af1373b81a453d16bc650983138e35afb97d1",
+        "integrity": "sha512-1eyJFReKbhs9hT5tSZv+By/EBw7JwUeDmX5XB38GQUjd5UJy5MYDt9NLI9H1Up6JA97Y2PD3ZcSTMIVhy8dPnQ==",
+        "tarball": "https://registry.npmjs.org/@0xintuition/atom-parser/-/atom-parser-0.1.0.tgz"
+      }
+    },
+    {
+      "name": "@0xintuition/atom-runtime",
+      "version": "0.1.0",
+      "entrypoints": [
+        ".",
+        "./config",
+        "./presets",
+        "./consumers",
+        "./fingerprint",
+        "./package.json",
+        "./adapters/upstash"
+      ],
+      "peers": {},
+      "engines": {
+        "node": ">=20"
+      },
+      "source": "https://github.com/0xIntuition/packages/tree/4e9af1373b81a453d16bc650983138e35afb97d1/packages/atom-runtime",
+      "registry": {
+        "url": "https://registry.npmjs.org/@0xintuition%2fatom-runtime/0.1.0",
+        "npm": "https://www.npmjs.com/package/@0xintuition/atom-runtime/v/0.1.0",
+        "publishedAt": "2026-11-12T16:55:41.242Z",
+        "distTags": {
+          "alpha": "0.1.0-alpha.0",
+          "latest": "0.1.0"
+        },
+        "gitHead": "4e9af1373b81a453d16bc650983138e35afb97d1",
+        "integrity": "sha512-WV7/hQ2sBLdVi/IKSRHRkj7dnvig+JJ6kPUO0uRY2eKgY7yMIjZoBlud01cpdkTZuz5+oMieu36s5g6PSLD74w==",
+        "tarball": "https://registry.npmjs.org/@0xintuition/atom-runtime/-/atom-runtime-0.1.0.tgz"
+      }
+    },
+    {
+      "name": "@0xintuition/classifications",
+      "version": "0.1.0",
+      "entrypoints": [
+        ".",
+        "./*",
+        "./creation",
+        "./creation/*",
+        "./package.json"
+      ],
+      "peers": {
+        "viem": "^2.0.0"
+      },
+      "engines": {
+        "node": ">=20"
+      },
+      "source": "https://github.com/0xIntuition/packages/tree/4e9af1373b81a453d16bc650983138e35afb97d1/packages/classifications",
+      "registry": {
+        "url": "https://registry.npmjs.org/@0xintuition%2fclassifications/0.1.0",
+        "npm": "https://www.npmjs.com/package/@0xintuition/classifications/v/0.1.0",
+        "publishedAt": "2026-11-12T16:54:49.065Z",
+        "distTags": {
+          "latest": "0.1.0",
+          "alpha": "0.1.0-alpha.1"
+        },
+        "gitHead": "4e9af1373b81a453d16bc650983138e35afb97d1",
+        "integrity": "sha512-fMlDkJpcIikWSQJDnyKBqm2kEOaXIGPBJDbElQAtjdTa3UtoLCp9Vh/9/OndB3uu2c9OcFMPjrub6g5DrlNUqw==",
+        "tarball": "https://registry.npmjs.org/@0xintuition/classifications/-/classifications-0.1.0.tgz"
+      }
+    },
+    {
+      "name": "@0xintuition/cli",
+      "version": "0.1.0",
+      "entrypoints": [
+        ".",
+        "./package.json"
+      ],
+      "peers": {},
+      "engines": {
+        "node": ">=20"
+      },
+      "source": "https://github.com/0xIntuition/packages/tree/4e9af1373b81a453d16bc650983138e35afb97d1/packages/cli",
+      "registry": {
+        "url": "https://registry.npmjs.org/@0xintuition%2fcli/0.1.0",
+        "npm": "https://www.npmjs.com/package/@0xintuition/cli/v/0.1.0",
+        "publishedAt": "2026-11-12T16:56:33.174Z",
+        "distTags": {
+          "latest": "0.1.0",
+          "alpha": "0.1.0-alpha.0"
+        },
+        "gitHead": "4e9af1373b81a453d16bc650983138e35afb97d1",
+        "integrity": "sha512-q/YGC+BfINTDsi+IIaw3E0p6egV6mKW9w+S4UimIMnhFU6VYRn9xHQg/TEi21/UcKekwc6aSlM0QLBMOdYVMLw==",
+        "tarball": "https://registry.npmjs.org/@0xintuition/cli/-/cli-0.1.0.tgz"
+      }
+    },
+    {
+      "name": "@0xintuition/curves",
+      "version": "0.1.0",
+      "entrypoints": [
+        ".",
+        "./package.json"
+      ],
+      "peers": {},
+      "engines": {
+        "node": ">=20"
+      },
+      "source": "https://github.com/0xIntuition/packages/tree/4e9af1373b81a453d16bc650983138e35afb97d1/packages/curves",
+      "registry": {
+        "url": "https://registry.npmjs.org/@0xintuition%2fcurves/0.1.0",
+        "npm": "https://www.npmjs.com/package/@0xintuition/curves/v/0.1.0",
+        "publishedAt": "2026-11-12T16:54:31.497Z",
+        "distTags": {
+          "latest": "0.1.0",
+          "alpha": "0.1.0-alpha.1"
+        },
+        "gitHead": "4e9af1373b81a453d16bc650983138e35afb97d1",
+        "integrity": "sha512-xfpPBtLgXs+iKkTUPQn6sG6xfqNGLiz5ljWAv6pBizQ+AtlDVF0VIPmzudPPgtKyjCnjrTDryEdX5CmxbXxA9g==",
+        "tarball": "https://registry.npmjs.org/@0xintuition/curves/-/curves-0.1.0.tgz"
+      }
+    },
+    {
+      "name": "@0xintuition/deployments",
+      "version": "0.1.0",
+      "entrypoints": [
+        ".",
+        "./bytecode",
+        "./package.json"
+      ],
+      "peers": {
+        "viem": "^2.0.0"
+      },
+      "engines": {
+        "node": ">=20"
+      },
+      "source": "https://github.com/0xIntuition/packages/tree/4e9af1373b81a453d16bc650983138e35afb97d1/packages/deployments",
+      "registry": {
+        "url": "https://registry.npmjs.org/@0xintuition%2fdeployments/0.1.0",
+        "npm": "https://www.npmjs.com/package/@0xintuition/deployments/v/0.1.0",
+        "publishedAt": "2026-11-12T16:56:00.532Z",
+        "distTags": {
+          "latest": "0.1.0",
+          "alpha": "0.1.0-alpha.1"
+        },
+        "gitHead": "4e9af1373b81a453d16bc650983138e35afb97d1",
+        "integrity": "sha512-NC8Ch/JxmloqEQkFURo157/1+5w8q8IyWos7ckonUin3Hug48oqDKIFGiK75Mh4V5+O5oi6lD/F263Mpn/heKQ==",
+        "tarball": "https://registry.npmjs.org/@0xintuition/deployments/-/deployments-0.1.0.tgz"
+      }
+    },
+    {
+      "name": "@0xintuition/ids",
+      "version": "0.1.0",
+      "entrypoints": [
+        ".",
+        "./package.json"
+      ],
+      "peers": {
+        "viem": "^2.0.0"
+      },
+      "engines": {
+        "node": ">=20"
+      },
+      "source": "https://github.com/0xIntuition/packages/tree/4e9af1373b81a453d16bc650983138e35afb97d1/packages/ids",
+      "registry": {
+        "url": "https://registry.npmjs.org/@0xintuition%2fids/0.1.0",
+        "npm": "https://www.npmjs.com/package/@0xintuition/ids/v/0.1.0",
+        "publishedAt": "2026-11-12T16:54:15.548Z",
+        "distTags": {
+          "latest": "0.1.0",
+          "alpha": "0.1.0-alpha.1"
+        },
+        "gitHead": "4e9af1373b81a453d16bc650983138e35afb97d1",
+        "integrity": "sha512-e9cercwZcy5U+7g2/62NuEu6aowDjBVNrljvntDtNA0sygpcKwtvtFt6rhWGvIdJKxQLuKHCjCQmXAMOCAjo9g==",
+        "tarball": "https://registry.npmjs.org/@0xintuition/ids/-/ids-0.1.0.tgz"
+      }
+    },
+    {
+      "name": "@0xintuition/iid",
+      "version": "0.1.0",
+      "entrypoints": [
+        ".",
+        "./package.json"
+      ],
+      "peers": {
+        "viem": "^2.0.0"
+      },
+      "engines": {
+        "node": ">=20"
+      },
+      "source": "https://github.com/0xIntuition/packages/tree/4e9af1373b81a453d16bc650983138e35afb97d1/packages/iid",
+      "registry": {
+        "url": "https://registry.npmjs.org/@0xintuition%2fiid/0.1.0",
+        "npm": "https://www.npmjs.com/package/@0xintuition/iid/v/0.1.0",
+        "publishedAt": "2026-11-12T16:58:56.632Z",
+        "distTags": {
+          "latest": "0.1.0",
+          "alpha": "0.1.0-alpha.0"
+        },
+        "gitHead": "4e9af1373b81a453d16bc650983138e35afb97d1",
+        "integrity": "sha512-bQ+uiKtdXyTS8wzcYz9ltTiZG9FIHb3iHO26eXWekuzoKhMNNSp+LOVCABAebfFX0XsDdxOUCk15j4OtCdmkqQ==",
+        "tarball": "https://registry.npmjs.org/@0xintuition/iid/-/iid-0.1.0.tgz"
+      }
+    },
+    {
+      "name": "@0xintuition/iid-ladder",
+      "version": "0.1.0",
+      "entrypoints": [
+        ".",
+        "./package.json"
+      ],
+      "peers": {},
+      "engines": {
+        "node": ">=20"
+      },
+      "source": "https://github.com/0xIntuition/packages/tree/4e9af1373b81a453d16bc650983138e35afb97d1/packages/iid-ladder",
+      "registry": {
+        "url": "https://registry.npmjs.org/@0xintuition%2fiid-ladder/0.1.0",
+        "npm": "https://www.npmjs.com/package/@0xintuition/iid-ladder/v/0.1.0",
+        "publishedAt": "2026-11-12T16:54:47.103Z",
+        "distTags": {
+          "alpha": "0.1.0-alpha.0",
+          "latest": "0.1.0"
+        },
+        "gitHead": "4e9af1373b81a453d16bc650983138e35afb97d1",
+        "integrity": "sha512-mPyKLTaqP5Q94Gvkqh4NNticIV/oT1/wAiloGhKEjAxYMafyW0cRGmd7czHeaU6j/fLiz65fS/IFHAeazhiIYg==",
+        "tarball": "https://registry.npmjs.org/@0xintuition/iid-ladder/-/iid-ladder-0.1.0.tgz"
+      }
+    },
+    {
+      "name": "@0xintuition/iid-registry",
+      "version": "0.1.0",
+      "entrypoints": [
+        ".",
+        "./package.json"
+      ],
+      "peers": {
+        "viem": "^2.0.0"
+      },
+      "engines": {
+        "node": ">=20"
+      },
+      "source": "https://github.com/0xIntuition/packages/tree/4e9af1373b81a453d16bc650983138e35afb97d1/packages/iid-registry",
+      "registry": {
+        "url": "https://registry.npmjs.org/@0xintuition%2fiid-registry/0.1.0",
+        "npm": "https://www.npmjs.com/package/@0xintuition/iid-registry/v/0.1.0",
+        "publishedAt": "2026-11-12T16:55:34.607Z",
+        "distTags": {
+          "alpha": "0.1.0-alpha.0",
+          "latest": "0.1.0"
+        },
+        "gitHead": "4e9af1373b81a453d16bc650983138e35afb97d1",
+        "integrity": "sha512-1P+m12pm304UssXYJWW+pb68EbkgcB8hmInFTRVp7KO7ArW2bS4hG7itPMUYU6MdKi1dbqpwhSwsrrajQHhtng==",
+        "tarball": "https://registry.npmjs.org/@0xintuition/iid-registry/-/iid-registry-0.1.0.tgz"
+      }
+    },
+    {
+      "name": "@0xintuition/iid-spec",
+      "version": "0.1.0",
+      "entrypoints": [
+        "./package.json",
+        "./conformance/*.json"
+      ],
+      "peers": {},
+      "engines": {
+        "node": ">=20"
+      },
+      "source": "https://github.com/0xIntuition/packages/tree/4e9af1373b81a453d16bc650983138e35afb97d1/packages/iid-spec",
+      "registry": {
+        "url": "https://registry.npmjs.org/@0xintuition%2fiid-spec/0.1.0",
+        "npm": "https://www.npmjs.com/package/@0xintuition/iid-spec/v/0.1.0",
+        "publishedAt": "2026-11-12T16:53:57.797Z",
+        "distTags": {
+          "alpha": "0.1.0",
+          "latest": "0.1.0"
+        },
+        "gitHead": "4e9af1373b81a453d16bc650983138e35afb97d1",
+        "integrity": "sha512-alNFBdjDA9muG6heXkqCaXSy7LSofPruyZPzauShncW8HXasfaymzzVJ6lxRtIUjau0i8QKZ93mJXLnywy6t6A==",
+        "tarball": "https://registry.npmjs.org/@0xintuition/iid-spec/-/iid-spec-0.1.0.tgz"
+      }
+    },
+    {
+      "name": "@0xintuition/periphery",
+      "version": "0.1.0",
+      "entrypoints": [
+        ".",
+        "./package.json"
+      ],
+      "peers": {
+        "viem": "^2.0.0"
+      },
+      "engines": {
+        "node": ">=20"
+      },
+      "source": "https://github.com/0xIntuition/packages/tree/4e9af1373b81a453d16bc650983138e35afb97d1/packages/periphery",
+      "registry": {
+        "url": "https://registry.npmjs.org/@0xintuition%2fperiphery/0.1.0",
+        "npm": "https://www.npmjs.com/package/@0xintuition/periphery/v/0.1.0",
+        "publishedAt": "2026-11-12T16:59:20.637Z",
+        "distTags": {
+          "latest": "0.1.0",
+          "alpha": "0.1.0-alpha.1"
+        },
+        "gitHead": "4e9af1373b81a453d16bc650983138e35afb97d1",
+        "integrity": "sha512-hrjEvg2T+gzHqeGogmx9wnD7sR7bJ9DsD6anl45gknse3H7DA0SdU+mbIzoTE/dZ5MKLcOYQRHqDyDq6OUVurw==",
+        "tarball": "https://registry.npmjs.org/@0xintuition/periphery/-/periphery-0.1.0.tgz"
+      }
+    },
+    {
+      "name": "@0xintuition/pipeline-runtime",
+      "version": "0.1.0",
+      "entrypoints": [
+        ".",
+        "./tmdb",
+        "./cache",
+        "./errors",
+        "./outcome",
+        "./letterboxd",
+        "./concurrency",
+        "./retry-after",
+        "./bounded-text",
+        "./package.json",
+        "./request-slot",
+        "./circuit-breaker",
+        "./letterboxd-page",
+        "./provider-metrics",
+        "./provider-observer",
+        "./provider-registry",
+        "./testing/virtual-clock",
+        "./testing/provider-golden",
+        "./provider-metrics-contract",
+        "./testing/held-request-slot",
+        "./provider-request-observation",
+        "./testing/prometheus-exposition",
+        "./provider-metrics-contract.expected"
+      ],
+      "peers": {},
+      "engines": {
+        "node": ">=20"
+      },
+      "source": "https://github.com/0xIntuition/packages/tree/4e9af1373b81a453d16bc650983138e35afb97d1/packages/pipeline-runtime",
+      "registry": {
+        "url": "https://registry.npmjs.org/@0xintuition%2fpipeline-runtime/0.1.0",
+        "npm": "https://www.npmjs.com/package/@0xintuition/pipeline-runtime/v/0.1.0",
+        "publishedAt": "2026-11-12T16:55:55.319Z",
+        "distTags": {
+          "alpha": "0.1.0-alpha.0",
+          "latest": "0.1.0"
+        },
+        "gitHead": "4e9af1373b81a453d16bc650983138e35afb97d1",
+        "integrity": "sha512-3Kwwc1sL/XbQV0NdjT7CoCwFZWEChI8vz7d293pxqXTTFEcEah4dfdH/t8zbHAujOD0+69PXUGuilkpNg3kmLg==",
+        "tarball": "https://registry.npmjs.org/@0xintuition/pipeline-runtime/-/pipeline-runtime-0.1.0.tgz"
+      }
+    },
+    {
+      "name": "@0xintuition/predicates",
+      "version": "0.1.0",
+      "entrypoints": [
+        ".",
+        "./*",
+        "./package.json"
+      ],
+      "peers": {
+        "viem": "^2.0.0"
+      },
+      "engines": {
+        "node": ">=20"
+      },
+      "source": "https://github.com/0xIntuition/packages/tree/4e9af1373b81a453d16bc650983138e35afb97d1/packages/predicates",
+      "registry": {
+        "url": "https://registry.npmjs.org/@0xintuition%2fpredicates/0.1.0",
+        "npm": "https://www.npmjs.com/package/@0xintuition/predicates/v/0.1.0",
+        "publishedAt": "2026-11-12T16:55:42.857Z",
+        "distTags": {
+          "latest": "0.1.0",
+          "alpha": "0.1.0-alpha.1"
+        },
+        "gitHead": "4e9af1373b81a453d16bc650983138e35afb97d1",
+        "integrity": "sha512-MwL5qaHc5T0APiSJ4mp+gnvHEtG5wtiT2dW6XkPZ15zziRFH6otxotAHGeyHM57wMsCVLm0+V6PisS4Ifz8JBg==",
+        "tarball": "https://registry.npmjs.org/@0xintuition/predicates/-/predicates-0.1.0.tgz"
+      }
+    },
+    {
+      "name": "@0xintuition/primitives",
+      "version": "0.1.0",
+      "entrypoints": [
+        ".",
+        "./atom",
+        "./types",
+        "./anchor",
+        "./triple",
+        "./discover",
+        "./validate",
+        "./predicate",
+        "./package.json"
+      ],
+      "peers": {
+        "viem": "^2.0.0"
+      },
+      "engines": {
+        "node": ">=20"
+      },
+      "source": "https://github.com/0xIntuition/packages/tree/4e9af1373b81a453d16bc650983138e35afb97d1/packages/primitives",
+      "registry": {
+        "url": "https://registry.npmjs.org/@0xintuition%2fprimitives/0.1.0",
+        "npm": "https://www.npmjs.com/package/@0xintuition/primitives/v/0.1.0",
+        "publishedAt": "2026-11-12T16:55:16.179Z",
+        "distTags": {
+          "latest": "0.1.0",
+          "alpha": "0.1.0-alpha.1"
+        },
+        "gitHead": "4e9af1373b81a453d16bc650983138e35afb97d1",
+        "integrity": "sha512-nBOoT2v/uLO+p7aKgExgr6i/MUZy9TV14iVsE0YbhP3hvez/gChwD36mgowtY2ya9Q6UmlzAYKXKfUHlkoThow==",
+        "tarball": "https://registry.npmjs.org/@0xintuition/primitives/-/primitives-0.1.0.tgz"
+      }
+    },
+    {
+      "name": "@0xintuition/protocol",
+      "version": "4.0.0",
+      "entrypoints": [
+        ".",
+        "./contracts",
+        "./package.json"
+      ],
+      "peers": {
+        "viem": "^2.0.0"
+      },
+      "engines": {
+        "node": ">=20"
+      },
+      "source": "https://github.com/0xIntuition/packages/tree/4e9af1373b81a453d16bc650983138e35afb97d1/packages/protocol",
+      "registry": {
+        "url": "https://registry.npmjs.org/@0xintuition%2fprotocol/4.0.0",
+        "npm": "https://www.npmjs.com/package/@0xintuition/protocol/v/4.0.0",
+        "publishedAt": "2026-11-12T16:56:27.395Z",
+        "distTags": {
+          "alpha": "3.0.0-alpha.0",
+          "latest": "4.0.0"
+        },
+        "gitHead": "4e9af1373b81a453d16bc650983138e35afb97d1",
+        "integrity": "sha512-GW+Kb4W5ECDvve4EXl2C/ZzRwIBJZqS2Df+bCtomGWn7BJFdC6WagJQhdo6HIP+ZV/vDflkPhsjx+oBEHfsPSw==",
+        "tarball": "https://registry.npmjs.org/@0xintuition/protocol/-/protocol-4.0.0.tgz"
+      }
+    },
+    {
+      "name": "@0xintuition/react",
+      "version": "0.1.0",
+      "entrypoints": [
+        ".",
+        "./package.json"
+      ],
+      "peers": {
+        "viem": "^2.0.0",
+        "react": ">=18",
+        "wagmi": ">=2",
+        "@0xintuition/protocol": "^4.0.0",
+        "@tanstack/react-query": ">=5",
+        "@0xintuition/deployments": "^0.1.0"
+      },
+      "engines": {
+        "node": ">=20"
+      },
+      "source": "https://github.com/0xIntuition/packages/tree/4e9af1373b81a453d16bc650983138e35afb97d1/packages/react",
+      "registry": {
+        "url": "https://registry.npmjs.org/@0xintuition%2freact/0.1.0",
+        "npm": "https://www.npmjs.com/package/@0xintuition/react/v/0.1.0",
+        "publishedAt": "2026-11-12T16:57:42.820Z",
+        "distTags": {
+          "latest": "0.1.0",
+          "alpha": "0.1.0-alpha.1"
+        },
+        "gitHead": "4e9af1373b81a453d16bc650983138e35afb97d1",
+        "integrity": "sha512-RDp0mrUAMU2l4G6IsRWGOZgj3g5ri3UQ/QmQOWQ61g/nHsILKyaNfCTMi4r3q5WOODuGsSQi34/c4umUCxtV2Q==",
+        "tarball": "https://registry.npmjs.org/@0xintuition/react/-/react-0.1.0.tgz"
+      }
+    },
+    {
+      "name": "@0xintuition/schema-org",
+      "version": "0.1.0",
+      "entrypoints": [
+        ".",
+        "./*",
+        "./package.json"
+      ],
+      "peers": {},
+      "engines": {
+        "node": ">=20"
+      },
+      "source": "https://github.com/0xIntuition/packages/tree/4e9af1373b81a453d16bc650983138e35afb97d1/packages/schema-org",
+      "registry": {
+        "url": "https://registry.npmjs.org/@0xintuition%2fschema-org/0.1.0",
+        "npm": "https://www.npmjs.com/package/@0xintuition/schema-org/v/0.1.0",
+        "publishedAt": "2026-11-12T16:57:15.874Z",
+        "distTags": {
+          "latest": "0.1.0",
+          "alpha": "0.1.0-alpha.1"
+        },
+        "gitHead": "4e9af1373b81a453d16bc650983138e35afb97d1",
+        "integrity": "sha512-Z5tr18lDM31WUPvKMHAOsLRmNDLZTAwqx0EZYLhl9sLnOaIstKz5Mxce5310vRNfiJBsOmkM5kqE1F7kVsgfzQ==",
+        "tarball": "https://registry.npmjs.org/@0xintuition/schema-org/-/schema-org-0.1.0.tgz"
+      }
+    },
+    {
+      "name": "@0xintuition/sdk",
+      "version": "4.0.0",
+      "entrypoints": [
+        ".",
+        "./api",
+        "./utils",
+        "./actions",
+        "./protocol",
+        "./package.json",
+        "./trust-swap-and-bridge-router"
+      ],
+      "peers": {
+        "viem": "^2.0.0"
+      },
+      "engines": {
+        "node": ">=20"
+      },
+      "source": "https://github.com/0xIntuition/packages/tree/4e9af1373b81a453d16bc650983138e35afb97d1/packages/sdk",
+      "registry": {
+        "url": "https://registry.npmjs.org/@0xintuition%2fsdk/4.0.0",
+        "npm": "https://www.npmjs.com/package/@0xintuition/sdk/v/4.0.0",
+        "publishedAt": "2026-11-12T16:55:33.317Z",
+        "distTags": {
+          "latest": "4.0.0",
+          "alpha": "4.0.0-alpha.0"
+        },
+        "gitHead": "4e9af1373b81a453d16bc650983138e35afb97d1",
+        "integrity": "sha512-ASnTWh838aDZDp5msDzPq/L3Pk3ohaDrjOzBkVBihAedK8oyho464H7P08p21AEZbM6CIhIPUXZ304XCVRWEQQ==",
+        "tarball": "https://registry.npmjs.org/@0xintuition/sdk/-/sdk-4.0.0.tgz"
+      }
+    }
+  ]
+}

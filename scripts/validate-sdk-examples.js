@@ -21,7 +21,20 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const { spawnSync } = require('child_process');
+const { versions } = require('../docs-versions.config');
+const {
+  parseMarkdownCode,
+  INTUITION_IMPORT_PATTERN,
+} = require('./lib/markdown-fences');
 
+const {
+  EXECUTABLE,
+  walk,
+  inside,
+  syncSource,
+  validateAnnotations,
+  isGeneratedDeclaration,
+} = require('./sync-example-snippets');
 const ROOT = path.resolve(__dirname, '..');
 const CONFIG_PATH = path.join(__dirname, 'sdk-examples.config.json');
 const FIXTURES_DIR = path.join(__dirname, '__fixtures__', 'sdk-examples');
@@ -47,7 +60,13 @@ function displayFence(example) {
 }
 
 function parseArgs(argv) {
-  const flags = new Set(argv.slice(2));
+  const values = argv.slice(2);
+  const versionIndex = values.indexOf('--version');
+  const version = versionIndex === -1 ? 'all' : values[versionIndex + 1];
+  if (!['all', 'v1', 'v2'].includes(version))
+    throw new Error('--version must be v1, v2 or all');
+  if (versionIndex !== -1) values.splice(versionIndex, 2);
+  const flags = new Set(values);
   const knownFlags = new Set([
     '--self-test',
     '--real-only',
@@ -81,7 +100,12 @@ function parseArgs(argv) {
     );
   }
 
+  if (flags.has('--update-ratchet') && version === 'v2') {
+    throw new Error('V2 has no ratchet to update');
+  }
+
   return {
+    version,
     runSelfTest:
       !flags.has('--real-only') && !flags.has('--demo-ratchet-regression'),
     runRealDocs:
@@ -91,8 +115,27 @@ function parseArgs(argv) {
   };
 }
 
-function readConfig({ allowMissingFingerprints = false } = {}) {
-  const sourceConfig = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8'));
+function readConfig({
+  allowMissingFingerprints = false,
+  version = 'v1',
+  configPath = CONFIG_PATH,
+} = {}) {
+  const allConfig = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+  const selected = allConfig.versions?.[version];
+  if (!selected) throw new Error(`Missing SDK version config: ${version}`);
+  if (
+    version === 'v2' &&
+    (!Array.isArray(selected.knownFailing) || selected.knownFailing.length)
+  )
+    throw new Error('V2 knownFailing must be empty');
+  if (typeof selected.dependencyRoot !== 'string' || !selected.dependencyRoot)
+    throw new Error('Missing dependencyRoot');
+  if (version === 'v2' && selected.dependencyRoot !== 'examples/v2')
+    throw new Error('V2 dependencyRoot must be examples/v2');
+  const dependencyRoot = path.resolve(ROOT, selected.dependencyRoot);
+  assertInsideRoot(dependencyRoot);
+  const sourceConfig = { ...allConfig, ...selected, version, dependencyRoot };
+  delete sourceConfig.versions;
 
   if (
     !Array.isArray(sourceConfig.include) ||
@@ -198,7 +241,7 @@ function readConfig({ allowMissingFingerprints = false } = {}) {
     ...sourceConfig,
     knownFailing: normalizedKnownFailing,
     knownFailingGroups,
-    sourceConfig,
+    sourceConfig: allConfig,
   };
 }
 
@@ -288,54 +331,100 @@ function splitSourceLines(source) {
   return lines;
 }
 
-function extractExamplesFromSource(relativeFile, source, skipComment) {
+function extractExamplesFromSource(
+  relativeFile,
+  source,
+  skipComment,
+  { version } = {},
+) {
   const examples = [];
   const coverage = emptyCoverage();
   const candidates = [];
   const lines = splitSourceLines(source);
+  const currentSource = relativeFile.startsWith(`${versions.current.docsDir}/`);
+  const useCurrentFences = version === 'v2' || currentSource;
 
-  for (let index = 0; index < lines.length; index++) {
-    const opening = lines[index].text.match(
-      /^\s*(`{3,})(?:typescript|tsx|ts)\b.*$/i,
-    );
-    if (!opening) continue;
-    coverage.found++;
-
-    const fenceLine = index + 1;
-    const content = [];
-    const closingPattern = closingFencePattern(opening[1]);
-    let closingIndex = index + 1;
-    while (
-      closingIndex < lines.length &&
-      !closingPattern.test(lines[closingIndex].text)
-    ) {
-      content.push(lines[closingIndex].text);
-      closingIndex++;
+  if (useCurrentFences) {
+    const parsed = parseMarkdownCode(source, { filePath: relativeFile });
+    validateAnnotations(relativeFile, parsed);
+    for (const fence of parsed.fences) {
+      if (!EXECUTABLE.test(fence.info)) continue;
+      coverage.found++;
+      if (!fence.closed)
+        throw new Error(
+          `Unclosed TypeScript fence at ${relativeFile}:${fence.fenceLine}`,
+        );
+      candidates.push({
+        sourceFile: relativeFile,
+        fenceLine: fence.fenceLine,
+        code: fence.code,
+        contentHash: hashFenceContent(fence.rawCode),
+        skipped: fence.annotation === skipComment,
+        markedV1: fence.annotation === '<!-- docs-typecheck: v1 -->',
+        sourceLines: fence.sourceLines,
+        generated: isGeneratedDeclaration(relativeFile, source, fence),
+      });
     }
-
-    if (closingIndex === lines.length) {
-      throw new Error(
-        `Unclosed TypeScript fence at ${relativeFile}:${fenceLine}`,
+  } else
+    for (let index = 0; index < lines.length; index++) {
+      const opening = lines[index].text.match(
+        /^\s*(`{3,})(?:typescript|tsx|ts)\b.*$/i,
       );
-    }
+      if (!opening) continue;
+      coverage.found++;
 
-    const code = content.join('\n');
-    const rawCode = source.slice(lines[index].end, lines[closingIndex].start);
-    candidates.push({
-      sourceFile: relativeFile,
-      fenceLine,
-      code,
-      contentHash: hashFenceContent(rawCode),
-      skipped: index > 0 && lines[index - 1].text.trim() === skipComment,
-    });
-    index = closingIndex;
-  }
+      const fenceLine = index + 1;
+      const content = [];
+      const closingPattern = closingFencePattern(opening[1]);
+      let closingIndex = index + 1;
+      while (
+        closingIndex < lines.length &&
+        !closingPattern.test(lines[closingIndex].text)
+      ) {
+        content.push(lines[closingIndex].text);
+        closingIndex++;
+      }
+
+      if (closingIndex === lines.length) {
+        throw new Error(
+          `Unclosed TypeScript fence at ${relativeFile}:${fenceLine}`,
+        );
+      }
+
+      const code = content.join('\n');
+      const rawCode = source.slice(lines[index].end, lines[closingIndex].start);
+      candidates.push({
+        sourceFile: relativeFile,
+        fenceLine,
+        code,
+        contentHash: hashFenceContent(rawCode),
+        skipped: index > 0 && lines[index - 1].text.trim() === skipComment,
+        markedV1:
+          index > 0 &&
+          lines[index - 1].text.trim() === '<!-- docs-typecheck: v1 -->',
+      });
+      index = closingIndex;
+    }
 
   const extractedCandidates = [];
   for (const candidate of candidates) {
-    if (candidate.skipped) {
+    const hasImport = (
+      useCurrentFences ? INTUITION_IMPORT_PATTERN : IMPORT_PATTERN
+    ).test(candidate.code);
+    if (useCurrentFences && candidate.skipped && hasImport)
+      throw new Error(
+        `An Intuition import fence may not skip typechecking at ${relativeFile}:${candidate.fenceLine}`,
+      );
+    if (
+      (version === 'v2' && candidate.markedV1) ||
+      (version === 'v1' && currentSource && !candidate.markedV1)
+    ) {
+      coverage.excludedByCriterion++;
+    } else if (candidate.skipped && !useCurrentFences) {
       coverage.skippedByAnnotation++;
-    } else if (IMPORT_PATTERN.test(candidate.code)) {
+    } else if (candidate.generated) {
+      coverage.excludedByCriterion++;
+    } else if (hasImport || useCurrentFences) {
       extractedCandidates.push(candidate);
     } else {
       coverage.excludedByCriterion++;
@@ -364,6 +453,7 @@ function extractExamplesFromSource(relativeFile, source, skipComment) {
       contentHash: candidate.contentHash,
       contentOrdinal: ordinal,
       duplicateCount: contentCounts.get(candidate.contentHash),
+      ...(candidate.sourceLines ? { sourceLines: candidate.sourceLines } : {}),
     });
     coverage.extracted++;
   }
@@ -371,7 +461,7 @@ function extractExamplesFromSource(relativeFile, source, skipComment) {
   return { examples, coverage };
 }
 
-function extractExamples(files, skipComment) {
+function extractExamples(files, skipComment, options = {}) {
   const examples = [];
   const coverage = emptyCoverage();
 
@@ -381,6 +471,7 @@ function extractExamples(files, skipComment) {
       relativeFile,
       fs.readFileSync(file, 'utf8'),
       skipComment,
+      options,
     );
     examples.push(...extracted.examples);
     addCoverage(coverage, extracted.coverage);
@@ -417,7 +508,9 @@ function parseDiagnostics(output, virtualFiles) {
     const virtualLine = Number(match[2]);
     diagnostics.push({
       example,
-      sourceLine: example.fenceLine + virtualLine,
+      sourceLine:
+        example.sourceLines?.[virtualLine - 1] ??
+        example.fenceLine + virtualLine,
       column: Number(match[3]),
       code: match[4],
       message: match[5],
@@ -427,15 +520,17 @@ function parseDiagnostics(output, virtualFiles) {
   return { diagnostics, unparsed };
 }
 
-function typecheckExamples(examples) {
+function typecheckExamples(examples, dependencyRoot = ROOT) {
+  if (!examples.length)
+    return { status: 0, output: '', diagnostics: [], unparsed: [] };
   const typescriptPath = path.join(
-    ROOT,
+    dependencyRoot,
     'node_modules',
     'typescript',
     'bin',
     'tsc',
   );
-  const nodeModulesPath = path.join(ROOT, 'node_modules');
+  const nodeModulesPath = path.join(dependencyRoot, 'node_modules');
 
   if (!fs.existsSync(typescriptPath)) {
     throw new Error(
@@ -474,6 +569,7 @@ function typecheckExamples(examples) {
         moduleResolution: 'Bundler',
         lib: ['ES2022', 'DOM', 'DOM.Iterable'],
         types: ['node'],
+        typeRoots: [path.join(nodeModulesPath, '@types')],
         jsx: 'react-jsx',
         strict: true,
         noEmit: true,
@@ -677,7 +773,7 @@ function runSelfTest(config) {
     fixtureFiles,
     config.skipComment,
   );
-  const result = typecheckExamples(examples);
+  const result = typecheckExamples(examples, config.dependencyRoot);
   const good = examples.find((example) =>
     example.sourceFile.endsWith('/good.md'),
   );
@@ -1000,11 +1096,287 @@ function runRatchetedRegressionDemo(config) {
   );
 }
 
+function moduleSpecifiers(code, filename = 'example.ts') {
+  const ts = require('typescript');
+  const source = ts.createSourceFile(
+    filename,
+    code,
+    ts.ScriptTarget.Latest,
+    true,
+    /x$/.test(filename) ? ts.ScriptKind.TSX : ts.ScriptKind.TS,
+  );
+  const imports = [];
+  function visit(node) {
+    let specifier;
+    if (ts.isImportDeclaration(node) || ts.isExportDeclaration(node))
+      specifier = node.moduleSpecifier;
+    else if (
+      ts.isImportEqualsDeclaration(node) &&
+      ts.isExternalModuleReference(node.moduleReference)
+    )
+      specifier = node.moduleReference.expression;
+    else if (ts.isImportTypeNode(node) && ts.isLiteralTypeNode(node.argument))
+      specifier = node.argument.literal;
+    else if (
+      ts.isCallExpression(node) &&
+      (node.expression.kind === ts.SyntaxKind.ImportKeyword ||
+        (ts.isIdentifier(node.expression) &&
+          node.expression.text === 'require'))
+    )
+      specifier = node.arguments[0];
+    if (specifier && ts.isStringLiteralLike(specifier))
+      imports.push(specifier.text);
+    ts.forEachChild(node, visit);
+  }
+  visit(source);
+  return [...new Set(imports)];
+}
+
+function intuitionImports(code, filename) {
+  return moduleSpecifiers(code, filename).filter((specifier) =>
+    specifier.startsWith('@0xintuition/'),
+  );
+}
+
+function validateImports(code, filename, manifest) {
+  for (const specifier of intuitionImports(code, filename)) {
+    const match = specifier.match(/^(@0xintuition\/[^/]+)(?:\/(.*))?$/);
+    const pkg = manifest.packages.find((entry) => entry.name === match?.[1]);
+    const subpath = match?.[2] === undefined ? '.' : `./${match[2]}`;
+    // Node export patterns perform string replacement, including '/' in '*'.
+    // Dot/parent/node_modules segments are never valid export targets.
+    const validSegments =
+      !/(?:^|\/)(?:\.{1,2}|node_modules)(?:\/|$)/i.test(match?.[2] || '') &&
+      !/%(?:2e|2f|5c)/i.test(specifier) &&
+      !specifier.includes('\\');
+    const allowed = pkg?.entrypoints.some((entry) => {
+      if (!entry.includes('*')) return entry === subpath;
+      const star = entry.indexOf('*');
+      return (
+        subpath.startsWith(entry.slice(0, star)) &&
+        subpath.endsWith(entry.slice(star + 1)) &&
+        subpath.length >= entry.length - 1
+      );
+    });
+    if (!validSegments || !allowed)
+      throw new Error(
+        `Unsupported Intuition import ${specifier} in ${filename}; not a manifest export`,
+      );
+  }
+}
+
+function discoverProjects(dependencyRoot) {
+  const ts = require('typescript');
+  const sourceFiles = walk(dependencyRoot, (file) =>
+    /\.(?:[cm]?ts|tsx|[cm]?js|jsx)$/.test(file),
+  );
+  const projects = new Map();
+  for (const file of sourceFiles) {
+    const relative = path.relative(dependencyRoot, file);
+    const directory = relative.split(path.sep)[0];
+    if (directory === relative)
+      throw new Error(`Example source needs a project tsconfig: ${relative}`);
+    const project = path.join(dependencyRoot, directory);
+    if (!projects.has(project)) projects.set(project, []);
+    projects.get(project).push(file);
+  }
+  const base = path.join(dependencyRoot, 'tsconfig.base.json');
+  const baseConfig = ts.readConfigFile(base, ts.sys.readFile);
+  if (baseConfig.error)
+    throw new Error(`Cannot read isolated examples configuration: ${base}`);
+  if (
+    JSON.stringify(baseConfig.config.compilerOptions?.types) !== '["node"]' ||
+    JSON.stringify(baseConfig.config.compilerOptions?.typeRoots) !==
+      '["./node_modules/@types"]'
+  )
+    throw new Error(
+      'V2 tsconfig.base.json must isolate types and typeRoots to examples/v2',
+    );
+  if (baseConfig.config.extends)
+    throw new Error('V2 base configuration must not extend an external config');
+  for (const [project, files] of projects) {
+    const configFile = path.join(project, 'tsconfig.json');
+    const input = ts.readConfigFile(configFile, ts.sys.readFile);
+    if (input.error)
+      throw new Error(`Missing or invalid project tsconfig: ${configFile}`);
+    if (
+      typeof input.config.extends !== 'string' ||
+      path.resolve(project, input.config.extends) !== base
+    )
+      throw new Error(
+        `Project tsconfig must extend examples/v2/tsconfig.base.json: ${configFile}`,
+      );
+    if (
+      input.config.compilerOptions?.types ||
+      input.config.compilerOptions?.typeRoots ||
+      input.config.references
+    )
+      throw new Error(
+        `Project may not override isolated types or add external references: ${configFile}`,
+      );
+    const parsed = ts.parseJsonConfigFileContent(input.config, ts.sys, project);
+    if (parsed.errors.length)
+      throw new Error(
+        `Invalid project configuration ${configFile}: ${ts.flattenDiagnosticMessageText(parsed.errors[0].messageText, '\n')}`,
+      );
+    if (parsed.options.noCheck)
+      throw new Error(
+        `Project may not disable TypeScript checking: ${configFile}`,
+      );
+    const included = new Set(
+      parsed.fileNames.map((file) => path.resolve(file)),
+    );
+    for (const file of files)
+      if (!included.has(file))
+        throw new Error(`Project tsconfig silently excludes source: ${file}`);
+    for (const file of included)
+      if (
+        !inside(dependencyRoot, file) ||
+        file.includes(`${path.sep}node_modules${path.sep}`)
+      )
+        throw new Error(`Project includes source outside examples/v2: ${file}`);
+    if (
+      parsed.options.paths ||
+      parsed.options.baseUrl ||
+      parsed.options.rootDirs
+    )
+      throw new Error(
+        `Project may not override isolated package resolution: ${configFile}`,
+      );
+  }
+  return { projects, sourceFiles };
+}
+
+function typecheckProjects(dependencyRoot, manifest) {
+  const { projects, sourceFiles } = discoverProjects(dependencyRoot);
+  const ts = require('typescript');
+  for (const file of sourceFiles) {
+    const source = fs.readFileSync(file, 'utf8');
+    validateImports(source, file, manifest);
+    const scanner = ts.createScanner(
+      ts.ScriptTarget.Latest,
+      false,
+      ts.LanguageVariant.Standard,
+      source,
+    );
+    for (
+      let kind = scanner.scan();
+      kind !== ts.SyntaxKind.EndOfFileToken;
+      kind = scanner.scan()
+    ) {
+      if (
+        [
+          ts.SyntaxKind.SingleLineCommentTrivia,
+          ts.SyntaxKind.MultiLineCommentTrivia,
+        ].includes(kind) &&
+        /@ts-(?:nocheck|ignore|expect-error)\b/.test(scanner.getTokenText())
+      )
+        throw new Error(
+          `V2 source must not suppress TypeScript checking: ${file}`,
+        );
+    }
+    const references = ts.preProcessFile(source);
+    for (const specifier of [
+      ...moduleSpecifiers(source, file),
+      ...references.referencedFiles.map((entry) => entry.fileName),
+      ...references.typeReferenceDirectives.map((entry) => entry.fileName),
+    ]) {
+      if (
+        path.isAbsolute(specifier) ||
+        /^[A-Za-z]:[\\/]/.test(specifier) ||
+        (specifier.startsWith('.') &&
+          !inside(dependencyRoot, path.resolve(path.dirname(file), specifier)))
+      )
+        throw new Error(
+          `V2 source references an external file ${specifier} in ${file}`,
+        );
+    }
+  }
+  const compiler = path.join(dependencyRoot, 'node_modules/typescript/bin/tsc');
+  if (!fs.existsSync(compiler))
+    throw new Error(
+      'V2 TypeScript is not installed; run npm ci --ignore-scripts --prefix examples/v2',
+    );
+  const temp = fs.mkdtempSync(path.join(os.tmpdir(), 'intuition-v2-projects-'));
+  try {
+    // The temp consumer has no repository ancestor: missing V2 packages/types
+    // cannot silently resolve from the site's V1 node_modules.
+    for (const file of walk(dependencyRoot, () => true)) {
+      const target = path.join(temp, path.relative(dependencyRoot, file));
+      fs.mkdirSync(path.dirname(target), { recursive: true });
+      fs.copyFileSync(file, target);
+    }
+    fs.symlinkSync(
+      path.join(dependencyRoot, 'node_modules'),
+      path.join(temp, 'node_modules'),
+      process.platform === 'win32' ? 'junction' : 'dir',
+    );
+    for (const project of projects.keys()) {
+      const relative = path.relative(dependencyRoot, project);
+      const result = spawnSync(
+        process.execPath,
+        [
+          compiler,
+          '--project',
+          path.join(temp, relative, 'tsconfig.json'),
+          '--noEmit',
+          '--pretty',
+          'false',
+        ],
+        { cwd: temp, encoding: 'utf8', maxBuffer: 50 * 1024 * 1024 },
+      );
+      if (result.error) throw result.error;
+      const output = [result.stdout, result.stderr]
+        .filter(Boolean)
+        .join('\n')
+        .split(temp)
+        .join(dependencyRoot);
+      if (result.status !== 0)
+        throw new Error(`V2 project ${relative} failed TypeScript:\n${output}`);
+      console.log(`  PASS isolated project: ${relative}`);
+    }
+  } finally {
+    fs.rmSync(temp, { recursive: true, force: true });
+  }
+  return { projects: projects.size, sources: sourceFiles.length };
+}
+
+function runV2Docs(config, files) {
+  const manifest = JSON.parse(
+    fs.readFileSync(path.join(ROOT, 'static/intuition-release.json'), 'utf8'),
+  );
+  let synced = 0;
+  let generated = 0;
+  let migrated = 0;
+  for (const file of files) {
+    const relative = path.relative(ROOT, file).split(path.sep).join('/');
+    const source = fs.readFileSync(file, 'utf8');
+    const result = syncSource(relative, source);
+    synced += result.count;
+    for (const fence of result.parsed.fences) {
+      if (!EXECUTABLE.test(fence.info)) continue;
+      if (fence.annotation === '<!-- docs-typecheck: v1 -->') {
+        migrated++;
+        continue;
+      }
+      validateImports(fence.code, `${relative}:${fence.fenceLine}`, manifest);
+      if (isGeneratedDeclaration(relative, source, fence)) generated++;
+    }
+  }
+  const result = typecheckProjects(config.dependencyRoot, manifest);
+  console.log(
+    `Validation PASS: ${synced} synced V2 fences; ${result.projects} isolated projects / ${result.sources} source files; ${generated} generated API declarations; ${migrated} migration fences delegated to V1; no ratchet or skipped V2 code.\n`,
+  );
+}
+
 function runRealDocs(config) {
-  console.log('SDK documentation examples');
+  console.log(`SDK documentation examples (${config.version})`);
   const files = expandIncludes(config.include);
-  const { examples, coverage } = extractExamples(files, config.skipComment);
-  const result = typecheckExamples(examples);
+  if (config.version === 'v2') return runV2Docs(config, files);
+  const { examples, coverage } = extractExamples(files, config.skipComment, {
+    version: config.version,
+  });
+  const result = typecheckExamples(examples, config.dependencyRoot);
   const resolved = resolveKnownFailing(config, examples);
   const ratchet = new Map(
     resolved.knownFailing.map((entry) => [entry.id, entry]),
@@ -1072,10 +1444,13 @@ function runRealDocs(config) {
 }
 
 function updateRatchet(config) {
+  if (config.version !== 'v1') throw new Error('V2 has no ratchet to update');
   console.log('SDK documentation examples — update ratchet');
   const files = expandIncludes(config.include);
-  const { examples, coverage } = extractExamples(files, config.skipComment);
-  const result = typecheckExamples(examples);
+  const { examples, coverage } = extractExamples(files, config.skipComment, {
+    version: config.version,
+  });
+  const result = typecheckExamples(examples, config.dependencyRoot);
   const resolved = resolveKnownFailing(config, examples);
   const ratchetIds = new Set(resolved.knownFailing.map((entry) => entry.id));
   const diagnosticsByFence = groupDiagnosticsByFence(result.diagnostics);
@@ -1144,7 +1519,13 @@ function updateRatchet(config) {
     ...config.sourceConfig,
     ratchetPolicy:
       'knownFailing groups exact source fence content by file and records the expected diagnostic fingerprint set for each fence. Fence identity uses a truncated SHA-256 content hash plus a document-order ordinal only for identical-content fences in the same file; source line numbers are display-only. Every listed fence is still typechecked. Any added or missing fingerprint fails CI; use --update-ratchet locally for a deliberate baseline refresh, and shrink the fence list when documentation fixes or docs-typecheck skip annotations merge.',
-    knownFailing: updatedKnownFailing,
+    versions: {
+      ...config.sourceConfig.versions,
+      v1: {
+        ...config.sourceConfig.versions.v1,
+        knownFailing: updatedKnownFailing,
+      },
+    },
   };
 
   fs.writeFileSync(CONFIG_PATH, `${JSON.stringify(updatedConfig, null, 2)}\n`);
@@ -1155,21 +1536,41 @@ function updateRatchet(config) {
 
 function main() {
   const args = parseArgs(process.argv);
-  const config = readConfig({
+  const v1 = readConfig({
     allowMissingFingerprints: args.updateRatchet,
+    version: 'v1',
   });
-
-  if (args.demoRatchetRegression) runRatchetedRegressionDemo(config);
-  if (args.runSelfTest) runSelfTest(config);
+  if (args.demoRatchetRegression) runRatchetedRegressionDemo(v1);
+  if (args.runSelfTest) runSelfTest(v1);
   if (args.runRealDocs) {
-    if (args.updateRatchet) updateRatchet(config);
-    else runRealDocs(config);
+    for (const version of args.updateRatchet
+      ? ['v1']
+      : args.version === 'all'
+        ? ['v1', 'v2']
+        : [args.version]) {
+      const config = version === 'v1' ? v1 : readConfig({ version });
+      if (args.updateRatchet) updateRatchet(config);
+      else runRealDocs(config);
+    }
   }
 }
 
-try {
-  main();
-} catch (error) {
-  console.error(`\nERROR: ${error.message}`);
-  process.exitCode = 1;
+if (require.main === module) {
+  try {
+    main();
+  } catch (error) {
+    console.error(`\nERROR: ${error.message}`);
+    process.exitCode = 1;
+  }
 }
+module.exports = {
+  parseArgs,
+  readConfig,
+  extractExamplesFromSource,
+  typecheckExamples,
+  runRealDocs,
+  intuitionImports,
+  validateImports,
+  discoverProjects,
+  typecheckProjects,
+};

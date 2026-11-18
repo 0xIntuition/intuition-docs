@@ -1,4 +1,6 @@
 const { themes } = require('prism-react-renderer');
+const { versions, lastVersion, includeCurrentVersion } = require('./docs-versions.config');
+const { redirects, createRedirects } = require('./redirects.config');
 
 const code_themes = {
   light: themes.github,
@@ -17,13 +19,15 @@ const meta = {
     defaultLocale: 'en',
     locales: ['en'],
   },
-  onBrokenLinks: 'warn',
+  onBrokenLinks: 'throw',
 };
 
 /** @type {import('@docusaurus/plugin-content-docs').Options} */
 const defaultSettings = {
   breadcrumbs: true,
-  editUrl: 'https://github.com/0xIntuition/intuition-docs/tree/main/',
+  editUrl: ({ version, versionDocsDirPath, docPath }) => version === versions.v1.name
+    ? undefined
+    : `https://github.com/0xIntuition/intuition-docs/tree/main/${versionDocsDirPath}/${docPath}`,
   showLastUpdateTime: false,
   sidebarCollapsible: true,
   remarkPlugins: [
@@ -59,208 +63,15 @@ const tailwindPlugin = require('./plugins/tailwind-plugin.cjs');
 const docs_plugins = docs.map((doc) => create_doc_plugin(doc));
 
 const plugins = [
+  require.resolve('./plugins/markdown-export-plugin.cjs'),
   tailwindPlugin,
   ...docs_plugins,
   webpackPlugin,
   [
     '@docusaurus/plugin-client-redirects',
     {
-      redirects: [
-        // ===== GETTING STARTED REDIRECTS =====
-        // Only include redirects for pages that exist
-        {
-          from: '/docs/introduction/overview',
-          to: '/docs',
-        },
-        {
-          from: '/docs/introduction/why-intuition',
-          to: '/docs/getting-started/why-intuition',
-        },
-        // Quickstart page doesn't exist yet
-        /*
-        {
-          from: '/docs/quickstart/getting-started',
-          to: '/docs/getting-started/quickstart',
-        },
-        */
-        {
-          from: '/docs/quickstart/intuition-kits',
-          to: '/docs/getting-started/developer-resources',
-        },
-        {
-          from: '/docs/getting-started/intuition-kits',
-          to: '/docs/getting-started/developer-resources',
-        },
-
-        // Commented out redirects to pages that don't exist yet (will be added in future weeks)
-        /*
-        // ===== ECONOMICS REDIRECTS =====
-        {
-          from: '/docs/introduction/the-economics',
-          to: '/docs/concepts/economics/overview',
-        },
-        {
-          from: '/docs/introduction/the-economics/the-economics',
-          to: '/docs/concepts/economics/overview',
-        },
-        {
-          from: '/docs/economics/overview',
-          to: '/docs/concepts/economics/tokenomics',
-        },
-        {
-          from: '/docs/core-concepts/economics/bonding-curves',
-          to: '/docs/concepts/economics/bonding-curves',
-        },
-        {
-          from: '/docs/core-concepts/economics/fees-rewards',
-          to: '/docs/concepts/economics/fees-and-rewards',
-        },
-        {
-          from: '/docs/developer-tools/protocol/core-concepts/bonding-curves',
-          to: '/docs/concepts/economics/bonding-curves',
-        },
-
-        // ===== PRIMITIVES REDIRECTS =====
-        {
-          from: '/docs/core-concepts/primitives/:path*',
-          to: '/docs/concepts/primitives/:path*',
-        },
-        {
-          from: '/docs/developer-tools/protocol/core-concepts/atoms',
-          to: '/docs/developer-tools/protocol/working-with-primitives',
-        },
-        {
-          from: '/docs/developer-tools/protocol/core-concepts/triples',
-          to: '/docs/developer-tools/protocol/working-with-primitives',
-        },
-
-        // ===== TUTORIALS REDIRECTS =====
-        {
-          from: '/docs/use-cases',
-          to: '/docs/tutorials/overview',
-        },
-        {
-          from: '/docs/use-cases/use-cases',
-          to: '/docs/tutorials/overview',
-        },
-        {
-          from: '/docs/developer-tools/graphql-api/use-cases/overview',
-          to: '/docs/tutorials/queries/overview',
-        },
-        {
-          from: '/docs/developer-tools/graphql-api/use-cases/finding-top-dapps-on-coinbase',
-          to: '/docs/tutorials/queries/top-dapps',
-        },
-        {
-          from: '/docs/developer-tools/graphql-api/use-cases/discovering-most-trusted-accounts',
-          to: '/docs/tutorials/queries/trusted-accounts',
-        },
-        {
-          from: '/docs/developer-tools/graphql-api/use-cases/building-user-activity-feeds',
-          to: '/docs/tutorials/queries/activity-feeds',
-        },
-        {
-          from: '/docs/developer-tools/graphql-api/use-cases/finding-related-claims',
-          to: '/docs/tutorials/queries/related-claims',
-        },
-
-        // ===== SDK REDIRECTS =====
-        {
-          from: '/docs/developer-tools/sdk/atoms/create-from-string',
-          to: '/docs/developer-tools/sdk/atoms-guide',
-        },
-        {
-          from: '/docs/developer-tools/sdk/atoms/create-from-thing',
-          to: '/docs/developer-tools/sdk/atoms-guide',
-        },
-        {
-          from: '/docs/developer-tools/sdk/atoms/create-from-ethereum-account',
-          to: '/docs/developer-tools/sdk/atoms-guide',
-        },
-        {
-          from: '/docs/developer-tools/sdk/atoms/create-from-smart-contract',
-          to: '/docs/developer-tools/sdk/atoms-guide',
-        },
-        {
-          from: '/docs/developer-tools/sdk/atoms/create-from-ipfs',
-          to: '/docs/developer-tools/sdk/atoms-guide',
-        },
-        {
-          from: '/docs/developer-tools/sdk/atoms/batch-creation',
-          to: '/docs/developer-tools/sdk/atoms-guide',
-        },
-        {
-          from: '/docs/developer-tools/sdk/atoms/querying',
-          to: '/docs/developer-tools/sdk/atoms-guide',
-        },
-        {
-          from: '/docs/developer-tools/sdk/triples/:path',
-          to: '/docs/developer-tools/sdk/triples-guide',
-        },
-        {
-          from: '/docs/developer-tools/sdk/vaults/:path',
-          to: '/docs/developer-tools/sdk/vaults-guide',
-        },
-        {
-          from: '/docs/developer-tools/sdk/search/:path',
-          to: '/docs/developer-tools/sdk/search-guide',
-        },
-
-        // ===== RESOURCES REDIRECTS =====
-        {
-          from: '/docs/resources/key-terms',
-          to: '/docs/resources/glossary',
-        },
-        */
-
-        // ===== NETWORK REDIRECTS =====
-        // Redirect from old /docs/network/node/* paths to new /docs/intuition-node/* paths
-        {
-          from: '/docs/network/node/overview',
-          to: '/docs/intuition-node/overview',
-        },
-        {
-          from: '/docs/network/node/rust-backend',
-          to: '/docs/intuition-node/rust-backend',
-        },
-        {
-          from: '/docs/network/node/local-setup',
-          to: '/docs/intuition-node/local-setup',
-        },
-        {
-          from: '/docs/network/node/kubernetes',
-          to: '/docs/intuition-node/kubernetes',
-        },
-
-        // ===== INTEGRATIONS REDIRECTS =====
-        // Redirect old paths to experimental-applications/mcp-server which exists
-        {
-          from: '/docs/intuition-ai/index',
-          to: '/docs/experimental-applications/mcp-server',
-        },
-        {
-          from: '/docs/intuition-ai/mcp-server',
-          to: '/docs/experimental-applications/mcp-server',
-        },
-        {
-          from: '/docs/integrations/ai/overview',
-          to: '/docs/experimental-applications/mcp-server',
-        },
-        {
-          from: '/docs/integrations/ai/mcp-server',
-          to: '/docs/experimental-applications/mcp-server',
-        },
-      ],
-      createRedirects: (path) => {
-        if (path.startsWith('/docs/capabilities/chat/export-chat-dump')) {
-          return ['/capabilities/export-chat-dump'];
-        }
-
-        if (path.startsWith('/docs/capabilities/misc/embed')) {
-          return ['/docs/capabilities/embed'];
-        }
-        return undefined; // Return a falsy value: no redirect created
-      },
+      redirects,
+      createRedirects,
     },
   ],
 ];
@@ -286,6 +97,7 @@ const config = {
   scripts: [{ src: 'https://cdn.statuspage.io/se-v2.js', async: true }],
   markdown: {
     mermaid: true,
+    hooks: { onBrokenMarkdownLinks: 'throw' },
   },
   presets: [
     [
@@ -293,10 +105,19 @@ const config = {
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
-          path: 'docs/_data',
+          path: versions.current.docsDir,
           id: '_data',
-          routeBasePath: '/docs',
+          routeBasePath: versions.current.routeBase,
           ...defaultSettings,
+          lastVersion,
+          includeCurrentVersion,
+          versions: Object.fromEntries(Object.values(versions).map(
+            ({ name, label, path, banner, badge, noIndex }) =>
+              [name, { label, path, banner, badge, noIndex }],
+          )),
+          ...(process.env.NODE_ENV === 'development' && process.env.DOCS_VERSIONS
+            ? { onlyIncludeVersions: process.env.DOCS_VERSIONS.split(',').map((name) => name.trim()).filter(Boolean) }
+            : {}),
         },
         blog: false,
         theme: {
@@ -306,7 +127,7 @@ const config = {
           ],
         },
         sitemap: {
-          ignorePatterns: ['**/tags/**', '/api/*'],
+          ignorePatterns: ['**/tags/**', '/api/*', `${versions.v1.routeBase}/**`],
         },
         googleTagManager: {
           containerId: 'GTM-5FDFFSS',
@@ -344,6 +165,10 @@ const config = {
             label: 'Documentation',
             to: 'docs',
             className: 'guides-top-header',
+            position: 'left',
+          },
+          {
+            type: 'custom-versionSwitcher',
             position: 'left',
           },
           {

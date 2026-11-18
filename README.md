@@ -2,7 +2,7 @@
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Documentation](https://img.shields.io/badge/docs-docs.intuition.systems-brightgreen)](https://docs.intuition.systems)
-[![Node Version](https://img.shields.io/badge/node-%3E%3D18.0-brightgreen)](https://nodejs.org)
+[![Node Version](https://img.shields.io/badge/node-%3E%3D22.18.0-brightgreen)](https://nodejs.org)
 
 Welcome to the official documentation repository for **Intuition** — the world's first open, semantic, and decentralized knowledge graph. This repository contains comprehensive guides, API references, and developer resources for building with the trust protocol that's revolutionizing how we create, verify, and share knowledge online.
 
@@ -50,7 +50,7 @@ These primitives work together to create a structured, queryable, and economical
 
 ### Prerequisites
 
-- **Node.js** >= 18.0 (< 25.0.0)
+- **Node.js** >= 22.18.0 (< 25.0.0)
 - **npm** or **yarn** package manager
 - **Git** for version control
 
@@ -99,41 +99,46 @@ The built site will be in the `build/` directory.
 
 ## Documentation Structure
 
-This repository uses [Docusaurus](https://docusaurus.io/) to generate a static documentation site. The documentation content is organized as follows:
+This repository uses [Docusaurus](https://docusaurus.io/) with native docs versioning. V2 is the default at `/docs` and covers the new generation of Intuition packages and Intuition Core. V1 at `/docs/v1` preserves the documentation for the `intuition-ts` packages and `intuition-rs` services.
 
 ```
 intuition-docs/
 ├── docs/
-│   └── _data/                      # Main documentation content (routes to /docs/*)
-│       ├── getting-started/        # Introduction and onboarding
-│       ├── quick-start/            # Quick start guides
-│       ├── intuition-sdk/          # SDK documentation and guides
-│       ├── intuition-smart-contracts/  # Smart contracts documentation
-│       ├── intuition-network/      # Network information and setup
-│       ├── intuition-node/         # Node operation guides
-│       ├── graphql-api/            # GraphQL API reference
-│       ├── protocol/               # Protocol primitives and concepts
-│       ├── intuition-concepts/     # Core concepts and architecture
-│       ├── interaction-guide/      # How-to guides for common tasks
-│       ├── tutorials/              # Step-by-step tutorials and use cases
-│       ├── experimental-applications/  # Experimental integrations
-│       └── resources/              # Glossary, FAQ, and community resources
+│   └── _data/                      # Current V2 content
+│       ├── index.md                # /docs
+│       ├── get-started/            # Orientation, quickstart and migration
+│       ├── agents/                 # Agent guidance and CLI
+│       ├── concepts/               # Protocol, identity and processing
+│       ├── build/                  # Integration guides
+│       ├── examples/               # Six worked examples
+│       ├── reference/              # Packages, SDK, APIs, contracts and catalogs
+│       ├── core/                   # Operate and extend a Core node
+│       └── community/              # Support, releases and contributions
+├── _data_versioned_docs/
+│   └── version-v1/                 # Preserved V1 content at /docs/v1
+├── _data_versioned_sidebars/
+│   └── version-v1-sidebars.json     # Frozen V1 sidebar
+├── _data_versions.json             # Native Docusaurus version inventory
 ├── src/                            # Custom React components and styling
 │   ├── components/                 # Reusable UI components
 │   ├── css/                        # Custom CSS and Tailwind styles
 │   └── pages/                      # Custom pages
 ├── static/                         # Static assets (images, files, etc.)
 │   ├── img/                        # Images and icons
-│   └── llms-full.txt               # LLM-optimized documentation
+│   ├── llms{,-medium,-full}.txt     # V2 agent documentation bundles
+│   └── docs/v1/                    # V1 agent documentation bundles
+├── docs-versions.config.js         # Shared version paths, labels, and metadata
 ├── docusaurus.config.js            # Docusaurus configuration
-├── sidebars.js                     # Sidebar navigation configuration
+├── sidebars.js                     # Authored V2 sidebar
 └── package.json                    # Dependencies and scripts
 ```
 
 **How it works**:
-- Files in `docs/_data/` are served at `/docs/*` routes
-- Example: `docs/_data/getting-started/overview.md` → `/docs/getting-started/overview`
-- The sidebar navigation is auto-generated based on folder structure and frontmatter
+
+- `docs/_data/` contains only V2 pages. File paths determine routes, with `index.md` serving as a section landing page.
+- `_data_versioned_docs/version-v1/` contains the preserved V1 snapshot, served under `/docs/v1` with its frozen sidebar.
+- `docs-versions.config.js` is the shared source for version names, labels, content directories, route bases, agent-bundle locations, search tags, and the V1 snapshot commit. The site configuration and scripts read it.
+- `sidebars.js` lists the 134 V2 pages in the order recorded in `scripts/v2-launch-routes.txt`. Check the complete inventory and page templates with `node scripts/validate-v2-structure.js --launch --templates`.
 
 ## Available Scripts
 
@@ -170,63 +175,29 @@ npm run write-heading-ids
 
 ## What's in This Documentation
 
-### For Newcomers
-
-- **[Introduction](/docs)** — Learn about Intuition's vision and the problems it solves
-- **[Getting Started](/docs/getting-started)** — Choose your path and get onboarded
-- **[Why Intuition?](/docs/getting-started/why-intuition)** — Understand the challenges we're addressing
-- **[Glossary](/docs/resources/glossary)** — Master essential terminology and concepts
-
-### For Developers
-
-- **[Quick Start](/docs/quick-start)** — Get up and running quickly
-- **[Intuition SDK](/docs/intuition-sdk)** — TypeScript SDK documentation and guides
-  - [Installation & Setup](/docs/intuition-sdk/installation-and-setup)
-  - [Quick Start Guide](/docs/intuition-sdk/quick-start)
-  - [Working with Atoms](/docs/intuition-sdk/atoms-guide)
-  - [Working with Triples](/docs/intuition-sdk/triples-guide)
-  - [Working with Vaults](/docs/intuition-sdk/vaults-guide)
-  - [Search Guide](/docs/intuition-sdk/search-guide)
-- **[Smart Contracts](/docs/intuition-smart-contracts)** — Contract architecture and deployment information
-- **[GraphQL API](/docs/graphql-api)** — Query the knowledge graph with powerful APIs
-- **[Protocol Documentation](/docs/protocol)** — Working with primitives and core concepts
-- **[Tutorials](/docs/tutorials)** — Step-by-step guides and real-world examples
-
-### For Node Operators
-
-- **[Node Overview](/docs/intuition-node/overview)** — Introduction to running an Intuition node
-- **[Local Setup](/docs/intuition-node/local-setup)** — Set up a node locally
-- **[Kubernetes Deployment](/docs/intuition-node/kubernetes)** — Deploy nodes with Kubernetes
-- **[Rust Backend](/docs/intuition-node/rust-backend)** — Understanding the Rust implementation
-
-### Network Information
-
-- **[Intuition Network](/docs/intuition-network)** — Network architecture and information
-- **[Mainnet](/docs/intuition-network/mainnet)** — Mainnet details
-- **[Testnet](/docs/intuition-network/testnet)** — Testnet information
-- **[RPC Endpoints](/docs/intuition-network/rpc)** — Network RPC endpoints
-- **[Network Details](/docs/quick-start/network-details)** — Chain IDs, contracts, and more
-- **[Testnet Faucet](/docs/quick-start/testnet-faucet)** — Get testnet tokens
-
-### Additional Resources
-
-- **[Interaction Guide](/docs/interaction-guide)** — How-to guides for common operations
-- **[Experimental Applications](/docs/experimental-applications)** — Explore experimental integrations
-  - [MCP Server](/docs/experimental-applications/mcp-server) — Model Context Protocol integration
-  - [Farcaster Frames](/docs/experimental-applications/farcaster-frames)
-  - [MetaMask Snap](/docs/experimental-applications/metamask-snap)
-  - [Data Populator](/docs/experimental-applications/data-populator)
-- **[FAQ](/docs/resources/faq)** — Frequently asked questions
-- **[Community & Support](/docs/resources/community-and-support)** — Get help and connect
+| If you want to… | Start here |
+| --- | --- |
+| Understand Intuition | [How the pieces fit](/docs/get-started/how-it-fits), [concept map](/docs/concepts) and [glossary](/docs/reference/glossary) |
+| Build an integration | [Offline quickstart](/docs/get-started/quickstart), [task guides](/docs/build) and [worked examples](/docs/examples) |
+| Work with an agent | [AI agents](/docs/agents) |
+| Check a signature, deployment or network | [Reference](/docs/reference), [SDK functions](/docs/reference/sdk), [contracts](/docs/reference/contracts) and [networks](/docs/reference/networks) |
+| Run your own indexed read service | [Intuition Core](/docs/core), [local devnet](/docs/core/local-devnet) and [Core Query API](/docs/reference/core-query-api) |
+| Maintain a V1 integration | [V1 documentation](/docs/v1), [V1 GraphQL API](/docs/v1/graphql-api/overview) and [migration guide](/docs/get-started/migrate-from-v1) |
+| Get help or propose a change | [Community](/docs/community) and [contributor guide](/docs/community/contributing) |
 
 ## For AI Agents
 
-This documentation is optimized for AI agent access with specialized formats:
+Each version has an index, a condensed bundle, and a full-text bundle. The root URLs contain V2. Use the `/docs/v1` URLs for V1.
 
-- **[llms.txt](https://docs.intuition.systems/llms.txt)** — Concise documentation index for LLM consumption
-- **[llms-full.txt](https://docs.intuition.systems/llms-full.txt)** — Complete documentation in LLM-friendly format
+| Format | V2 | V1 |
+| --- | --- | --- |
+| Index | [/llms.txt](https://docs.intuition.systems/llms.txt) | [/docs/v1/llms.txt](https://docs.intuition.systems/docs/v1/llms.txt) |
+| Condensed | [/llms-medium.txt](https://docs.intuition.systems/llms-medium.txt) | [/docs/v1/llms-medium.txt](https://docs.intuition.systems/docs/v1/llms-medium.txt) |
+| Full text | [/llms-full.txt](https://docs.intuition.systems/llms-full.txt) | [/docs/v1/llms-full.txt](https://docs.intuition.systems/docs/v1/llms-full.txt) |
 
-These files follow the [llms.txt standard](https://llmstxt.org/) for AI-readable documentation.
+Each index links directly to Markdown for individual pages. Append `.md` to the canonical HTML route after removing any trailing slash. The home pages export to `/docs.md` and `/docs/v1.md`. On older URLs, follow the client redirect or its canonical link before appending the extension. Each content page also advertises the absolute export URL in its HTML head with `rel="alternate"` and `type="text/markdown"`. The two generated V1 category indexes provide HTML only.
+
+The export starts with YAML front matter containing `title`, `description`, `url`, `markdown_url`, `version`, and `llms_index`. V2 pages also identify their `kind`, intended `reader`, and `packages` with exact versions. A V2 concept links its prerequisites through the `depends_on` list of Markdown URLs.
 
 ## Technology Stack
 
@@ -266,7 +237,7 @@ We welcome contributions to improve our documentation! Whether you're fixing typ
 - 🌍 Help with translations
 - 💡 Suggest new content
 
-Please see our [Contributing Guidelines](/docs/contribution-guidelines) for:
+Please see our [Contributing Guidelines](/docs/community/contributing) for:
 - How to submit pull requests
 - Documentation style guide and standards
 - Content review process
@@ -289,7 +260,7 @@ Copyright © Intuition Systems Inc. since 2023. All rights reserved.
 ---
 
 **Ready to start building?** 
-- 🚀 [Quick Start Guide](/docs/quick-start) 
-- 📚 [SDK Documentation](/docs/intuition-sdk)
-- 🔧 [Developer Tools](/docs/protocol)
-- 💬 [Join our Community](/docs/resources/community-and-support)
+- 🚀 [Quick Start Guide](/docs/get-started/quickstart)
+- 📚 [SDK Documentation](/docs/reference/sdk)
+- 🔧 [Developer Tools](/docs/build)
+- 💬 [Join our Community](/docs/community)

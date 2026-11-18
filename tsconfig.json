@@ -1,6 +1,6 @@
 {
-
   "extends": "@docusaurus/tsconfig",
+  "exclude": ["node_modules", "examples"],
   "compilerOptions": {
     "strict": true,
     "baseUrl": "."

@@ -10,6 +10,7 @@ import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
 import Head from '@docusaurus/Head';
 import Link from '@docusaurus/Link';
 import { useHistory } from '@docusaurus/router';
+import { useActiveDocContext } from '@docusaurus/plugin-content-docs/client';
 import {
   isRegexpStringMatch,
   useSearchLinkCreator,
@@ -23,6 +24,7 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import { createPortal } from 'react-dom';
 import translations from '@theme/SearchTranslations';
 import { ChefAI } from '../../components/ChefAI';
+import { versionFacetFilters } from './versionFacets.mjs';
 
 let DocSearchModal = null;
 function Hit({ hit, children }) {
@@ -47,14 +49,17 @@ function mergeFacetFilters(f1, f2) {
 }
 function DocSearch({ contextualSearch, externalUrlRegex, ...props }) {
   const { siteMetadata } = useDocusaurusContext();
+  const { activeVersion } = useActiveDocContext('_data');
   const processSearchResultUrl = useSearchResultUrlProcessor();
   const contextualSearchFacetFilters = useAlgoliaContextualFacetFilters();
   const configFacetFilters = props.searchParameters?.facetFilters ?? [];
-  const facetFilters = contextualSearch
-    ? // Merge contextual search filters with config filters
-      mergeFacetFilters(contextualSearchFacetFilters, configFacetFilters)
-    : // ... or use config facetFilters
-      configFacetFilters;
+  const facetFilters = versionFacetFilters(
+    contextualSearch
+      ? // Merge contextual search filters with config filters
+        mergeFacetFilters(contextualSearchFacetFilters, configFacetFilters)
+      : // ... or use config facetFilters
+        configFacetFilters,
+  );
   // We let user override default searchParameters if she wants to
   const searchParameters = {
     ...props.searchParameters,
@@ -182,7 +187,15 @@ function DocSearch({ contextualSearch, externalUrlRegex, ...props }) {
         onMouseOver={importDocSearchModalIfNeeded}
         onClick={onOpen}
         ref={searchButtonRef}
-        translations={translations.button}
+        translations={
+          activeVersion?.name === 'v1'
+            ? {
+                ...translations.button,
+                buttonText: 'Search V2 docs',
+                buttonAriaLabel: 'Search V2 docs',
+              }
+            : translations.button
+        }
         id="search-bar"
       />
 

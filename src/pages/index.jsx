@@ -9,38 +9,40 @@ export default function Home() {
           <h1>Intuition Documentation</h1>
           <p>
             Learn how to build with Intuition&apos;s decentralized knowledge
-            graph, protocol, APIs, and developer tools.
+            graph and developer tools.
           </p>
 
           <nav aria-label="Documentation areas">
             <h2>Explore the documentation</h2>
             <ul>
               <li>
-                <a href="/docs/getting-started/overview">Getting Started</a>
+                <a href="/docs/get-started/how-it-fits">
+                  See how Intuition fits together
+                </a>
               </li>
               <li>
-                <a href="/docs/quick-start/using-the-sdk">Quick Start</a>
+                <a href="/docs/agents">Build with AI agents</a>
               </li>
               <li>
-                <a href="/docs/intuition-concepts/primitives">Concepts</a>
+                <a href="/docs/concepts">Explore the concepts</a>
               </li>
               <li>
-                <a href="/docs/intuition-sdk/installation-and-setup">SDK</a>
+                <a href="/docs/build">Browse build guides</a>
               </li>
               <li>
-                <a href="/docs/graphql-api/overview">GraphQL API</a>
+                <a href="/docs/examples">Browse worked examples</a>
               </li>
               <li>
-                <a href="/docs/protocol/getting-started/overview">Protocol</a>
+                <a href="/docs/reference">Look up a reference</a>
               </li>
               <li>
-                <a href="/docs/intuition-smart-contracts">Contracts</a>
+                <a href="/docs/core">Run Intuition Core</a>
               </li>
               <li>
-                <a href="/docs/intuition-network">Network</a>
+                <a href="/docs/community">Community and support</a>
               </li>
               <li>
-                <a href="/docs/tutorials/overview">Tutorials</a>
+                <a href="/docs/v1">V1 documentation</a>
               </li>
             </ul>
           </nav>
@@ -49,17 +51,16 @@ export default function Home() {
             <h2 id="llm-documentation">Documentation for language models</h2>
             <ul>
               <li>
-                <a href="/llms.txt">llms.txt</a> — a concise index of the
+                <a href="/llms.txt">llms.txt</a> — a concise index of the V2
                 documentation.
               </li>
               <li>
-                <a href="/llms-medium.txt">llms-medium.txt</a> — condensed
-                summaries of every page, a fraction of the size of the full
-                corpus.
+                <a href="/llms-full.txt">llms-full.txt</a> — the complete V2
+                documentation in an LLM-friendly format.
               </li>
               <li>
-                <a href="/llms-full.txt">llms-full.txt</a> — the complete
-                documentation corpus in an LLM-friendly format.
+                <a href="/docs/v1/llms.txt">V1 llms.txt</a> — an index of the V1
+                documentation.
               </li>
             </ul>
           </section>

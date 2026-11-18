@@ -1,90 +1,43 @@
 ---
-title: Introduction
-sidebar_label: Introduction
-sidebar_position: 0
-description: Introduction to Intuition - the decentralized protocol for building the world's first open, semantic, and token-curated knowledge graph
-keywords: [intuition, introduction, knowledge graph, attestations, decentralized, semantic web, trust protocol, atoms, triples, signals]
+title: "Intuition developer docs"
+sidebar_label: "Intuition developer docs"
+description: "Build shared identities and relationships, prepare protocol actions, and query a Core node with the V2 packages."
+kind: concept
+reader: ["app", "agent", "operator", "plugin"]
+packages: []
 ---
 
+Intuition is an identity and knowledge graph protocol. Its packages help applications identify entities consistently, connect them with explicit relationships, and prepare actions through which people signal what they trust.
 
-**Intuition is a decentralized protocol for building the world's first open, semantic, and token-curated knowledge graph.** It provides the infrastructure for verifiable attestations, portable identity, and trustful interactions at scale—creating a universal data layer that enables information to flow freely across applications, blockchains, and AI agents.
+An **atom** stores a chosen representation as bytes. Its **atom ID** identifies those exact bytes. An **Intuition Identifier (IID)** names the represented entity; the same IID can appear in different representations. A **triple** connects a subject, predicate, and object in that order.
 
-## What is Intuition?
-While blockchains have historically decentralized money, **Intuition decentralizes information**—specifically its trust, ownership, discoverability, and monetization. By transforming unstructured, siloed data into structured, verifiable, and economically-backed attestations, Intuition creates a Semantic Web of Trust that makes knowledge programmable and interoperable.
+## Choose your path
 
+| I want to… | Start here | Then build |
+| --- | --- | --- |
+| Build an application | [Derive an atom ID offline](/docs/get-started/quickstart) | [A music catalog](/docs/examples/music-catalog) with explicit recording, artist, and album relationships |
+| Build with agents | [Read the agent contract](/docs/agents) | [Review action plans](/docs/build/action-plans) before a human authorizes execution |
+| Run Core | [Set up Intuition Core](/docs/core) | [Query your node](/docs/build/query-core) to read the graph your indexer maintains |
+| Extend processing | [Classify and enrich inputs](/docs/build/classify-enrich) | [Write a classification plugin](/docs/core/classification-plugin) for your domain |
 
-### Core Capabilities
+You can build identities and triples offline before choosing a wallet or backend. Processing, persistence, protocol submission, and indexing each have their own lifecycle; [How the pieces fit](/docs/get-started/how-it-fits) explains the boundaries.
 
-- **Universal Identity**: Decentralized identifiers (DIDs) for people, concepts, organizations, and AI agents with portable, self-sovereign identity management
-- **Verifiable Attestations**: Structured claims (subject-predicate-object triples) that are signed, attributable, and economically staked
-- **Knowledge Graph**: A semantic layer where facts and opinions coexist with verifiable provenance and economic signals
-- **Economic Incentives**: Bonding curves and cryptoeconomic mechanisms that align participants toward canonical standards and high-quality data
-## The Architecture
-Intuition consists of four foundational layers:
+## Explore the documentation
 
-### 1. Intuition Network
+- [Concepts](/docs/concepts) introduces representations, directed relationships, and protocol writes.
+- [Build guides](/docs/build) cover tasks from modeling an identity to verifying a write.
+- [Worked examples](/docs/examples) walk through creation forms, identity links, React integration, and graph queries.
+- [Reference](/docs/reference) lists package entry points, SDK signatures, service APIs, deployments and identifier catalogs.
+- [Install agent skills](/docs/agents/skills) for contract-level guidance, or [get help](/docs/community).
 
-A custom Layer 3 blockchain settling to Base, built on Arbitrum Orbit with AnyTrust DA for scalability and cost-efficiency—approximately 10,000x cheaper and 100x faster than traditional alternatives.
+## Versions and source
 
-### 2. Intuition Protocol
+**V2 names a generation**, covering the packages in the [release manifest](/intuition-release.json) and Intuition Core. The packages are published as stable npm releases; each example uses exact pins. See [versions and release status](/docs/get-started/versions).
 
-The rules and primitives for representing, incentivizing, and monetizing knowledge through:
-- **Atoms**: Unique identifiers for any entity or concept
-- **Triples**: Structured attestations linking atoms in subject-predicate-object relationships
-- **Signals**: Economic stakes that weight attestations with conviction and accountability
+Core is a source application you fork, build, and run. These docs describe [Core source at the pinned revision](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/README.md). The source pin identifies code, rather than an npm distribution or a released container image. The default source stack requires its indexing profile and chain configuration to start chain ingestion.
 
-### 3. Rust Subnet
+:::note Looking for V1?
+The [V1 documentation](/docs/v1) covers the `intuition-ts` packages and `intuition-rs` services. For agents, use the [V1 documentation index](/docs/v1/llms.txt). Start with [Migrate from V1](/docs/get-started/migrate-from-v1) when moving an integration.
+:::
 
-A high-performance indexing and query layer providing real-time APIs and GraphQL endpoints for querying the knowledge graph at scale.
-
-### 4. SDK
-
-The developer interface providing TypeScript SDKs, client libraries, and comprehensive developer tools that enable seamless integration with the Intuition stack. The SDK abstracts the complexity of working with the underlying layers, offering type-safe methods for creating atoms, triples, and signals, as well as querying the knowledge graph.
-
-## Why Intuition Matters
-
-Current information systems suffer from fragmentation, lack of provenance, misaligned incentives, and centralized control. Intuition addresses these challenges by:
-- **Making attestations portable**: Your data, identity, and reputation travel with you across platforms
-- **Establishing provenance**: Every claim is signed, timestamped, and attributable to its source
-- **Aligning incentives**: Economic mechanisms reward accuracy and discourage misinformation
-- **Enabling interoperability**: Shared identifiers and standards create a composable knowledge ecosystem
-- **Empowering creators**: Data contributors own and monetize their attestations rather than enriching platforms
-
-## Use Cases
-
-Intuition enables a wide range of applications:
-- **Decentralized identity and reputation systems**
-- **Verifiable credentials and attestations**
-- **AI agents with trusted context and memory**
-- **Collaborative knowledge curation and fact-checking**
-- **Information markets and data monetization**
-- **Cross-platform social graphs and preferences**
-
-## Getting Started
-
-Whether you're building applications, contributing data, or exploring the knowledge graph, Intuition provides the tools and infrastructure you need:
-- **Developers**: Use our SDKs, APIs, and smart contracts to integrate attestations into your applications
-- **Contributors**: Create and stake attestations to build reputation and earn rewards
-- **Applications**: Leverage the knowledge graph for trusted context, identity, and data
-- **AI Systems**: Access verifiable, semantically-structured training data with provenance
-
-## Learn More
-
-- [Introduction](/docs/getting-started/overview) — Understand Intuition's vision and the problems it solves
-- [Quickstart](/docs/quick-start/using-the-sdk) — Get started building with Intuition
-- [Primitives](/docs/intuition-concepts/primitives) — Deep dive into Atoms, Triples, and Signals
-- [Developer Tools](/docs/getting-started/developer-stack) — Explore SDKs, APIs, and integration guides
-- [Developer Resources](/docs/getting-started/developer-resources) — Find Learn Intuition, AI skills, templates, and MCP resources
-- [Network](/docs/intuition-network) — Learn about the Intuition Network architecture
-- [Economics](/docs/intuition-concepts/economics) — Understand the cryptoeconomic incentive model
-
-## For AI Agents
-
-Intuition documentation is optimized for AI agent access:
-- [llms.txt](/llms.txt) — Concise documentation index for LLM consumption
-- [llms-full.txt](/llms-full.txt) — Complete documentation in LLM-friendly format
-- [AI Skills](/docs/getting-started/ai-skills) — Canonical protocol context for AI coding agents
-- [MCP Server](/docs/experimental-applications/mcp-server) — Runtime tools for AI applications querying Intuition data
-
----
-**Intuition transforms information from passive data into programmable, verifiable, and valuable attestations—building the trust layer for the decentralized web.**
+Source: [Package concepts and application patterns](https://github.com/0xIntuition/packages/blob/4e9af1373b81a453d16bc650983138e35afb97d1/README.md#core-concepts).

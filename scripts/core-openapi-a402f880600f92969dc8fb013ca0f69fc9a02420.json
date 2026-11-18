@@ -1,0 +1,1940 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Intuition Core Query API",
+    "version": "0.1.0",
+    "description": "REST API for reading and writing the local Intuition knowledge graph.\n\nAuthentication is controlled by `API_AUTH`:\n- `public-read` (default): read endpoints are open; write endpoints require a writable bearer API key.\n- `gated`: all endpoints require a valid bearer API key except `/health` and `/api/schema`.\n- `open`: no endpoint requires a key; writes are unattributed.\n"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Local Docker Compose stack"
+    }
+  ],
+  "security": [],
+  "tags": [
+    {
+      "name": "Health"
+    },
+    {
+      "name": "Schema"
+    },
+    {
+      "name": "Atoms"
+    },
+    {
+      "name": "Triples"
+    },
+    {
+      "name": "Predicates"
+    },
+    {
+      "name": "Stats"
+    }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "tags": [
+          "Health"
+        ],
+        "summary": "Check API and database health",
+        "responses": {
+          "200": {
+            "description": "API and database are healthy.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthOk"
+                },
+                "examples": {
+                  "ok": {
+                    "value": {
+                      "status": "ok"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "API is running but the database is unreachable.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthDegraded"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/schema": {
+      "get": {
+        "tags": [
+          "Schema"
+        ],
+        "summary": "Get machine-readable KG table metadata",
+        "description": "Returns cached metadata for base tables in the `kg` schema only.",
+        "responses": {
+          "200": {
+            "description": "KG schema metadata.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/KgSchemaMetadata"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/api/atoms": {
+      "get": {
+        "tags": [
+          "Atoms"
+        ],
+        "summary": "List public atoms",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {}
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Limit"
+          },
+          {
+            "$ref": "#/components/parameters/Offset"
+          },
+          {
+            "name": "classification_type",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filter by atom classification type."
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Substring search over atom search text."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Public atoms ordered newest first.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "pagination"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/AtomListItem"
+                      }
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/ApiKeyRequired"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Atoms"
+        ],
+        "summary": "Create an atom",
+        "description": "Creates or finds the deterministic atom for a string, URL, or JSON input.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "input"
+                ],
+                "properties": {
+                  "input": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 64000
+                  }
+                }
+              },
+              "examples": {
+                "githubRepo": {
+                  "value": {
+                    "input": "https://github.com/oven-sh/bun"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Atom already existed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateAtomResponse"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Atom created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateAtomResponse"
+                },
+                "examples": {
+                  "created": {
+                    "value": {
+                      "data": {
+                        "id": "0x951d18ba45fdf5ef5c3304ea3ae46a45e00b68464e2b1561cce4b48ffa1c09d3",
+                        "created": true,
+                        "createdBy": "0x1111111111111111111111111111111111111111"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid JSON or invalid input.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/ApiKeyRequired"
+          },
+          "403": {
+            "$ref": "#/components/responses/ApiKeyNotWritable"
+          },
+          "413": {
+            "description": "Input is too large.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/api/atoms/{id}": {
+      "get": {
+        "tags": [
+          "Atoms"
+        ],
+        "summary": "Get one public atom",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {}
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/TermId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Atom row.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Atom"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/ApiKeyRequired"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/api/atoms/{id}/triples": {
+      "get": {
+        "tags": [
+          "Atoms",
+          "Triples"
+        ],
+        "summary": "List public triples touching an atom",
+        "description": "Matches the atom id in subject, predicate, or object position.",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {}
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/TermId"
+          },
+          {
+            "$ref": "#/components/parameters/Limit"
+          },
+          {
+            "$ref": "#/components/parameters/Offset"
+          },
+          {
+            "$ref": "#/components/parameters/ExpandTerms"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Triples touching the atom.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "pagination"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Triple"
+                      }
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/ApiKeyRequired"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/api/atoms/{id}/artifacts": {
+      "get": {
+        "tags": [
+          "Atoms"
+        ],
+        "summary": "List enrichment artifacts attached to an atom",
+        "description": "One row per provider output (opengraph, github-repo, ...). Newest first. 404 when the atom is absent or not public.",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {}
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/TermId"
+          },
+          {
+            "$ref": "#/components/parameters/Limit"
+          },
+          {
+            "$ref": "#/components/parameters/Offset"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Artifacts for the atom.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "pagination"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Artifact"
+                      }
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/ApiKeyRequired"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/api/triples": {
+      "get": {
+        "tags": [
+          "Triples"
+        ],
+        "summary": "List public triples",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {}
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Limit"
+          },
+          {
+            "$ref": "#/components/parameters/Offset"
+          },
+          {
+            "$ref": "#/components/parameters/ExpandTerms"
+          },
+          {
+            "name": "subject_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filter by subject term id."
+          },
+          {
+            "name": "predicate_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filter by predicate term id."
+          },
+          {
+            "name": "object_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filter by object term id."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Public triples ordered newest first.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "pagination"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Triple"
+                      }
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/ApiKeyRequired"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Triples"
+        ],
+        "summary": "Create a triple",
+        "description": "Creates or finds the deterministic triple for subject, predicate, and object ids.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "subject_id",
+                  "predicate_id",
+                  "object_id"
+                ],
+                "properties": {
+                  "subject_id": {
+                    "type": "string"
+                  },
+                  "predicate_id": {
+                    "type": "string"
+                  },
+                  "object_id": {
+                    "type": "string"
+                  }
+                }
+              },
+              "examples": {
+                "claim": {
+                  "value": {
+                    "subject_id": "0x951d18ba45fdf5ef5c3304ea3ae46a45e00b68464e2b1561cce4b48ffa1c09d3",
+                    "predicate_id": "0x0840db4575bf6bdb49b66c21dc40cb4cbb5e1b26bd239d7f56b126c14e452c07",
+                    "object_id": "0x49ed8bdcd1954e1de3af8bb5fca0f0377ebe598de5dd82ab5b4a45a82d53a53f"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Triple already existed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateTripleResponse"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Triple created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateTripleResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid JSON, invalid input, or invalid term id.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/ApiKeyRequired"
+          },
+          "403": {
+            "$ref": "#/components/responses/ApiKeyNotWritable"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/api/triples/{id}": {
+      "get": {
+        "tags": [
+          "Triples"
+        ],
+        "summary": "Get one public triple",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {}
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/TermId"
+          },
+          {
+            "$ref": "#/components/parameters/ExpandTerms"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Triple row.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Triple"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/ApiKeyRequired"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/api/events": {
+      "get": {
+        "tags": [
+          "Events"
+        ],
+        "summary": "List graph activity events",
+        "description": "Append-only activity feed (kg.events) — node/triple/predicate/artifact creations, onchain and off.",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {}
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Limit"
+          },
+          {
+            "$ref": "#/components/parameters/Offset"
+          },
+          {
+            "name": "entity_kind",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "node",
+                "triple",
+                "predicate",
+                "artifact"
+              ]
+            },
+            "description": "Filter by entity kind."
+          },
+          {
+            "name": "event_type",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filter by event type."
+          },
+          {
+            "name": "entity_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filter by entity id."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Events, newest first.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "pagination"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Event"
+                      }
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/ApiKeyRequired"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/api/predicates": {
+      "get": {
+        "tags": [
+          "Predicates"
+        ],
+        "summary": "List predicate registry",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {}
+        ],
+        "responses": {
+          "200": {
+            "description": "Seeded predicate registry ordered by slug.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Predicate"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/ApiKeyRequired"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/api/stats/pipeline": {
+      "get": {
+        "tags": [
+          "Stats"
+        ],
+        "summary": "Worker-pipeline status counts",
+        "description": "Per-stage (parse, classification, enrichment) status counts over public atoms.",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {}
+        ],
+        "responses": {
+          "200": {
+            "description": "Pipeline stats.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/PipelineStats"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/ApiKeyRequired"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/api/stats": {
+      "get": {
+        "tags": [
+          "Stats"
+        ],
+        "summary": "Get public graph counts",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {}
+        ],
+        "responses": {
+          "200": {
+            "description": "Counts for active public atoms/triples and all accounts/predicates.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Stats"
+                    }
+                  }
+                },
+                "examples": {
+                  "empty": {
+                    "value": {
+                      "data": {
+                        "atoms": 0,
+                        "triples": 0,
+                        "accounts": 0,
+                        "predicates": 14
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/ApiKeyRequired"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "API key",
+        "description": "Operator-minted `ik_...` API key."
+      }
+    },
+    "parameters": {
+      "Limit": {
+        "name": "limit",
+        "in": "query",
+        "schema": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100,
+          "default": 25
+        },
+        "description": "Page size. Values above 100 are clamped to 100."
+      },
+      "Offset": {
+        "name": "offset",
+        "in": "query",
+        "schema": {
+          "type": "integer",
+          "minimum": 0,
+          "default": 0
+        },
+        "description": "Row offset. Negative or invalid values become 0."
+      },
+      "TermId": {
+        "name": "id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        },
+        "description": "Protocol atom or triple id."
+      },
+      "ExpandTerms": {
+        "name": "expand",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "enum": [
+            "terms"
+          ]
+        },
+        "description": "`expand=terms` embeds a `{id, data, classificationType, rawType}` summary for each subject/predicate/object term (null when the term's atom is not public)."
+      }
+    },
+    "responses": {
+      "ApiKeyRequired": {
+        "description": "The endpoint requires an API key in the current auth mode, or the presented key is invalid/revoked.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "examples": {
+              "required": {
+                "value": {
+                  "error": "api_key_required"
+                }
+              },
+              "invalid": {
+                "value": {
+                  "error": "invalid_api_key"
+                }
+              }
+            }
+          }
+        }
+      },
+      "ApiKeyNotWritable": {
+        "description": "The presented API key is read-only.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "examples": {
+              "notWritable": {
+                "value": {
+                  "error": "api_key_not_writable"
+                }
+              }
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "The resource was not found or is not public.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "examples": {
+              "notFound": {
+                "value": {
+                  "error": "not_found"
+                }
+              }
+            }
+          }
+        }
+      },
+      "RateLimited": {
+        "description": "Request rate limit exceeded.",
+        "headers": {
+          "retry-after": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Seconds until the bucket resets."
+          }
+        },
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "examples": {
+              "rateLimited": {
+                "value": {
+                  "error": "rate_limited"
+                }
+              }
+            }
+          }
+        }
+      },
+      "InternalError": {
+        "description": "Unhandled server error.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "examples": {
+              "internal": {
+                "value": {
+                  "error": "internal_error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "AnyJson": {
+        "description": "Arbitrary JSON value."
+      },
+      "Error": {
+        "type": "object",
+        "required": [
+          "error"
+        ],
+        "properties": {
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      },
+      "HealthOk": {
+        "type": "object",
+        "required": [
+          "status"
+        ],
+        "properties": {
+          "status": {
+            "type": "string",
+            "const": "ok"
+          }
+        }
+      },
+      "HealthDegraded": {
+        "type": "object",
+        "required": [
+          "status",
+          "database"
+        ],
+        "properties": {
+          "status": {
+            "type": "string",
+            "const": "degraded"
+          },
+          "database": {
+            "type": "string",
+            "const": "unreachable"
+          }
+        }
+      },
+      "Pagination": {
+        "type": "object",
+        "required": [
+          "limit",
+          "offset",
+          "count"
+        ],
+        "properties": {
+          "limit": {
+            "type": "integer"
+          },
+          "offset": {
+            "type": "integer"
+          },
+          "count": {
+            "type": "integer",
+            "description": "Number of rows returned in this response, not total available rows."
+          }
+        }
+      },
+      "AtomListItem": {
+        "type": "object",
+        "required": [
+          "id",
+          "createdAt",
+          "isOnchain",
+          "rawType",
+          "dataResolved",
+          "classificationType",
+          "parseStatus",
+          "classificationStatus",
+          "enrichmentStatus"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "isOnchain": {
+            "type": "boolean"
+          },
+          "rawType": {
+            "type": "string",
+            "enum": [
+              "string",
+              "json",
+              "http_uri",
+              "ipfs_uri"
+            ]
+          },
+          "data": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "dataResolved": {
+            "$ref": "#/components/schemas/AnyJson"
+          },
+          "classificationType": {
+            "type": "string"
+          },
+          "parseStatus": {
+            "type": "string"
+          },
+          "classificationStatus": {
+            "type": "string"
+          },
+          "enrichmentStatus": {
+            "type": "string"
+          }
+        }
+      },
+      "Atom": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AtomListItem"
+          },
+          {
+            "type": "object",
+            "additionalProperties": true,
+            "properties": {
+              "updatedAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "status": {
+                "type": "string"
+              },
+              "visibility": {
+                "type": "string"
+              },
+              "createdBy": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "dataHex": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "parseError": {
+                "$ref": "#/components/schemas/AnyJson"
+              },
+              "parseResult": {
+                "$ref": "#/components/schemas/AnyJson"
+              },
+              "classificationError": {
+                "$ref": "#/components/schemas/AnyJson"
+              },
+              "classificationResult": {
+                "$ref": "#/components/schemas/AnyJson"
+              },
+              "enrichmentError": {
+                "$ref": "#/components/schemas/AnyJson"
+              },
+              "processingMeta": {
+                "$ref": "#/components/schemas/AnyJson"
+              },
+              "searchText": {
+                "type": "string"
+              },
+              "stats": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/NodeStats"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Graph-degree stats; null until the atom participates in a triple."
+              }
+            }
+          }
+        ]
+      },
+      "Triple": {
+        "type": "object",
+        "required": [
+          "id",
+          "createdAt",
+          "updatedAt",
+          "isOnchain",
+          "status",
+          "visibility",
+          "subjectId",
+          "subjectType",
+          "predicateId",
+          "predicateType",
+          "objectId",
+          "objectType",
+          "isCounterTriple",
+          "edgeKind",
+          "inferred",
+          "provenance",
+          "metadata"
+        ],
+        "additionalProperties": true,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "isOnchain": {
+            "type": "boolean"
+          },
+          "status": {
+            "type": "string"
+          },
+          "visibility": {
+            "type": "string"
+          },
+          "createdBy": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "subjectId": {
+            "type": "string"
+          },
+          "subjectType": {
+            "type": "string",
+            "enum": [
+              "node",
+              "triple"
+            ]
+          },
+          "predicateId": {
+            "type": "string"
+          },
+          "predicateType": {
+            "type": "string",
+            "enum": [
+              "node",
+              "triple"
+            ]
+          },
+          "objectId": {
+            "type": "string"
+          },
+          "objectType": {
+            "type": "string",
+            "enum": [
+              "node",
+              "triple"
+            ]
+          },
+          "isCounterTriple": {
+            "type": "boolean"
+          },
+          "siblingTripleId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "edgeKind": {
+            "type": "string"
+          },
+          "source": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "sourceUri": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "confidence": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "inferred": {
+            "type": "boolean"
+          },
+          "provenance": {
+            "$ref": "#/components/schemas/AnyJson"
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/AnyJson"
+          }
+        }
+      },
+      "TermSummary": {
+        "type": [
+          "object",
+          "null"
+        ],
+        "description": "Joined atom summary for a triple term (null when not public).",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "data": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "classificationType": {
+            "type": "string"
+          },
+          "rawType": {
+            "type": "string"
+          }
+        }
+      },
+      "ExpandedTriple": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Triple"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "subject": {
+                "$ref": "#/components/schemas/TermSummary"
+              },
+              "predicate": {
+                "$ref": "#/components/schemas/TermSummary"
+              },
+              "object": {
+                "$ref": "#/components/schemas/TermSummary"
+              }
+            }
+          }
+        ]
+      },
+      "NodeStats": {
+        "type": "object",
+        "required": [
+          "inDegree",
+          "outDegree",
+          "neighborKindCounts",
+          "predicateCounts"
+        ],
+        "properties": {
+          "inDegree": {
+            "type": "integer"
+          },
+          "outDegree": {
+            "type": "integer"
+          },
+          "neighborKindCounts": {
+            "$ref": "#/components/schemas/AnyJson"
+          },
+          "predicateCounts": {
+            "$ref": "#/components/schemas/AnyJson"
+          },
+          "updatedAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          }
+        }
+      },
+      "Artifact": {
+        "type": "object",
+        "required": [
+          "id",
+          "createdAt",
+          "updatedAt",
+          "artifactKind",
+          "artifactVersion",
+          "status",
+          "data",
+          "extracted"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "artifactKind": {
+            "type": "string",
+            "description": "Provider slug, e.g. `opengraph`, `github-repo`."
+          },
+          "artifactVersion": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "sourceUri": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "data": {
+            "$ref": "#/components/schemas/AnyJson"
+          },
+          "extracted": {
+            "$ref": "#/components/schemas/AnyJson"
+          },
+          "error": {
+            "$ref": "#/components/schemas/AnyJson"
+          }
+        }
+      },
+      "Event": {
+        "type": "object",
+        "required": [
+          "id",
+          "eventTime",
+          "eventType",
+          "entityKind",
+          "entityId",
+          "isOnchain",
+          "payload"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "eventTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "eventType": {
+            "type": "string"
+          },
+          "entityKind": {
+            "type": "string",
+            "enum": [
+              "node",
+              "triple",
+              "predicate",
+              "artifact"
+            ]
+          },
+          "entityId": {
+            "type": "string"
+          },
+          "actorId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "classificationType": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "isOnchain": {
+            "type": "boolean"
+          },
+          "blockNumber": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "txHash": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "payload": {
+            "$ref": "#/components/schemas/AnyJson"
+          }
+        }
+      },
+      "PipelineStats": {
+        "type": "object",
+        "required": [
+          "parse",
+          "classification",
+          "enrichment"
+        ],
+        "description": "Per-stage status counts over public atoms.",
+        "properties": {
+          "parse": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer"
+            }
+          },
+          "classification": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer"
+            }
+          },
+          "enrichment": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer"
+            }
+          }
+        }
+      },
+      "Predicate": {
+        "type": "object",
+        "required": [
+          "id",
+          "slug",
+          "label",
+          "description",
+          "isTransitive",
+          "isSymmetric",
+          "isHierarchical",
+          "isSocial",
+          "isMarket",
+          "metadata",
+          "createdAt",
+          "updatedAt"
+        ],
+        "additionalProperties": true,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "description": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "inversePredicateId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "isTransitive": {
+            "type": "boolean"
+          },
+          "isSymmetric": {
+            "type": "boolean"
+          },
+          "isHierarchical": {
+            "type": "boolean"
+          },
+          "isSocial": {
+            "type": "boolean"
+          },
+          "isMarket": {
+            "type": "boolean"
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/AnyJson"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Stats": {
+        "type": "object",
+        "required": [
+          "atoms",
+          "triples",
+          "accounts",
+          "predicates"
+        ],
+        "properties": {
+          "atoms": {
+            "type": "integer"
+          },
+          "triples": {
+            "type": "integer"
+          },
+          "accounts": {
+            "type": "integer"
+          },
+          "predicates": {
+            "type": "integer"
+          }
+        }
+      },
+      "CreateAtomResponse": {
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "properties": {
+          "data": {
+            "type": "object",
+            "required": [
+              "id",
+              "created"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "created": {
+                "type": "boolean"
+              },
+              "createdBy": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "CreateTripleResponse": {
+        "$ref": "#/components/schemas/CreateAtomResponse"
+      },
+      "KgSchemaMetadata": {
+        "type": "object",
+        "required": [
+          "schema",
+          "generatedAt",
+          "tables"
+        ],
+        "properties": {
+          "schema": {
+            "type": "string",
+            "const": "kg"
+          },
+          "generatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "tables": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SchemaTable"
+            }
+          }
+        }
+      },
+      "SchemaTable": {
+        "type": "object",
+        "required": [
+          "name",
+          "schema",
+          "columns",
+          "primaryKey",
+          "foreignKeys",
+          "constraints",
+          "indexes"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "kg.nodes"
+          },
+          "schema": {
+            "type": "string",
+            "example": "kg"
+          },
+          "columns": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SchemaColumn"
+            }
+          },
+          "primaryKey": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "foreignKeys": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SchemaForeignKey"
+            }
+          },
+          "constraints": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SchemaConstraint"
+            }
+          },
+          "indexes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SchemaIndex"
+            }
+          }
+        }
+      },
+      "SchemaColumn": {
+        "type": "object",
+        "required": [
+          "name",
+          "type",
+          "nullable",
+          "default",
+          "position"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "nullable": {
+            "type": "boolean"
+          },
+          "default": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "position": {
+            "type": "integer"
+          }
+        }
+      },
+      "SchemaForeignKey": {
+        "type": "object",
+        "required": [
+          "name",
+          "columns",
+          "references",
+          "definition"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "columns": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "references": {
+            "type": "object",
+            "required": [
+              "schema",
+              "table",
+              "columns"
+            ],
+            "properties": {
+              "schema": {
+                "type": "string"
+              },
+              "table": {
+                "type": "string"
+              },
+              "columns": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "definition": {
+            "type": "string"
+          }
+        }
+      },
+      "SchemaConstraint": {
+        "type": "object",
+        "required": [
+          "name",
+          "type",
+          "columns",
+          "definition"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "primary_key",
+              "foreign_key",
+              "unique",
+              "check"
+            ]
+          },
+          "columns": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "definition": {
+            "type": "string"
+          }
+        }
+      },
+      "SchemaIndex": {
+        "type": "object",
+        "required": [
+          "name",
+          "definition"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "definition": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

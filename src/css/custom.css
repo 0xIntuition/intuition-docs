@@ -1473,7 +1473,7 @@ div[style*="backgroundColor: var(--ifm-color-emphasis-50)"]:hover {
 }
 
 
-a[href*="/docs/quickstart/"]:hover > div[style*="border: 2px solid"] {
+a[href*="/docs/v1/quickstart/"]:hover > div[style*="border: 2px solid"] {
   transform: translateY(-8px) !important;
   box-shadow: 
     0 25px 70px rgba(16, 185, 129, 0.3) !important, 
@@ -1482,7 +1482,7 @@ a[href*="/docs/quickstart/"]:hover > div[style*="border: 2px solid"] {
   border-color: rgba(16, 185, 129, 0.8) !important;
 }
 
-a[href*="/docs/quickstart/"]:hover > div[style*="border: 2px solid"] div[style*="background: linear-gradient"] {
+a[href*="/docs/v1/quickstart/"]:hover > div[style*="border: 2px solid"] div[style*="background: linear-gradient"] {
   transform: scale(1.1) !important;
   box-shadow: 0 8px 30px rgba(16, 185, 129, 0.5) !important;
 }
@@ -2393,5 +2393,72 @@ table td, table th {
     min-width: 0 !important;
     width: auto !important;
     overflow-wrap: anywhere;
+  }
+}
+
+/* The worked examples landing uses the shared Card with six fixed destinations. */
+.examples-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--ifm-spacing-vertical);
+  margin-block: var(--ifm-leading);
+}
+
+@media (min-width: 600px) {
+  .examples-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 997px) {
+  .examples-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.examples-grid > .homepage-card {
+  min-width: 0;
+  height: auto;
+  border-color: rgb(var(--docs-color-secondary-700));
+  background-color: rgb(var(--docs-color-secondary-900));
+  box-shadow: none;
+  transition: none;
+}
+
+.examples-grid > .homepage-card .card-content {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.examples-grid > .homepage-card .title {
+  color: var(--ifm-heading-color);
+  text-wrap: balance;
+  transition: none;
+}
+
+.examples-grid > .homepage-card .description {
+  color: rgb(var(--docs-color-text-400));
+  text-wrap: pretty;
+}
+
+.examples-grid > .homepage-card:focus-visible {
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: 3px;
+}
+
+@media (hover: hover) {
+  .examples-grid > .homepage-card:hover {
+    border-color: rgb(var(--docs-color-text-400));
+    background-color: rgb(var(--docs-color-secondary-800));
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .examples-grid > .homepage-card {
+    transition: transform 150ms ease-out;
+  }
+
+  .examples-grid > .homepage-card:active {
+    transform: scale(0.97);
   }
 }

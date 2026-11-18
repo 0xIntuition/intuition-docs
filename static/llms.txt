@@ -1,302 +1,211 @@
-# Intuition
+# Intuition Docs (V2)
 
-> Intuition is a permissionless protocol for creating verifiable, tokenized attestations on a Layer 3 blockchain. Developers build context-aware applications using semantic triples (subject-predicate-object relationships) backed by economic incentives through bonding curves. The three core primitives are Atoms (universal identifiers), Triples (structured claims), and Signals (staked conviction).
+Version: V2
+Scope: V2 covers the packages in the release manifest and Intuition Core.
+Package source: https://github.com/0xIntuition/packages/tree/4e9af1373b81a453d16bc650983138e35afb97d1
+Core source revision: https://github.com/0xIntuition/intuition-core/tree/a402f880600f92969dc8fb013ca0f69fc9a02420
+Other versions: V1 — https://docs.intuition.systems/docs/v1/llms.txt
 
-- [llms-full.txt](https://docs.intuition.systems/llms-full.txt): Complete documentation with full page content for deep reference
-- [llms-medium.txt](https://docs.intuition.systems/llms-medium.txt): Condensed summaries with metadata — fits in a single context window
+Start with the system overview and offline quickstart, then follow the guides for your integration. V2 packages and Intuition Core have distinct read, processing, and transaction boundaries. The complete V1 documentation remains available through the other-version index above.
 
-## Quick Start
+- [llms-full.txt](https://docs.intuition.systems/llms-full.txt): Complete text of the shipped V2 pages
+- [llms-medium.txt](https://docs.intuition.systems/llms-medium.txt): Condensed V2 page summaries with metadata
 
-- [Choose Your Path](https://docs.intuition.systems/docs/getting-started/choose-your-path): Decision tree — routes to SDK, GraphQL, Protocol, or concepts based on your goal
-- [SDK Quick Start](https://docs.intuition.systems/docs/quick-start/using-the-sdk): Install the SDK, create atoms and triples, run your first example
-- [Network Details](https://docs.intuition.systems/docs/quick-start/network-details): Chain IDs, RPC endpoints, and block explorers for mainnet and testnet
-- [Contract Deployments](https://docs.intuition.systems/docs/quick-start/deployments): All contract addresses for mainnet and testnet
-- [Testnet Faucet](https://docs.intuition.systems/docs/quick-start/testnet-faucet): Get test tokens for development
+## Start here
 
-## Core Concepts
+- [Intuition V2](https://docs.intuition.systems/docs.md): Choose an application, agent, Core, or plugin development path
+- [How the pieces fit](https://docs.intuition.systems/docs/get-started/how-it-fits.md): Understand the concept ladder, package layers, and Core services
+- [Offline quickstart](https://docs.intuition.systems/docs/get-started/quickstart.md): Derive an IID, representation profile, and atom ID without a network connection
+- [First on-chain write](https://docs.intuition.systems/docs/get-started/first-write.md): Create a testnet atom, deposit, and read the resulting position
+- [Choose your packages](https://docs.intuition.systems/docs/get-started/choose-packages.md): Map your task to published packages and their references
+- [Versions and release status](https://docs.intuition.systems/docs/get-started/versions.md): Check exact package pins, source revisions, and installation hazards
+- [Migrate from V1](https://docs.intuition.systems/docs/get-started/migrate-from-v1.md): Compare APIs and locate replacement pages
 
-- [Overview](https://docs.intuition.systems/docs/getting-started/overview): What Intuition is — Network, Protocol, and Subnet layers explained
-- [Architecture](https://docs.intuition.systems/docs/getting-started/architecture): Full system architecture — L3 chain, EthMultiVault, event pipeline, indexing, and caching
-- [Primitives Overview](https://docs.intuition.systems/docs/intuition-concepts/primitives): How Atoms, Triples, and Signals work together as a data model
-- [Atoms](https://docs.intuition.systems/docs/intuition-concepts/primitives/Atoms/fundamentals): Universal identifiers for entities, concepts, and data — the nodes in the knowledge graph
-- [Triples](https://docs.intuition.systems/docs/intuition-concepts/primitives/Triples/fundamentals): Subject-predicate-object claims — the edges in the knowledge graph
-- [Signals](https://docs.intuition.systems/docs/intuition-concepts/primitives/Signals/fundamentals): Staked conviction on atoms and triples — the weights in the knowledge graph
+## Learn the model
 
-## Economics
+- [Concept map](https://docs.intuition.systems/docs/concepts.md): Follow the reading order and distinguish identity, meaning, processing, and writes
+- [Representation profiles](https://docs.intuition.systems/docs/concepts/representation-profiles.md): Separate canonical profile rules, current builder behavior, and companion metadata
+- [Protocol writes](https://docs.intuition.systems/docs/concepts/protocol-writes.md): Understand plans, signing, submission, receipts, and indexing
 
-- [Bonding Curves](https://docs.intuition.systems/docs/intuition-concepts/economics/bonding-curves): How dynamic pricing works for atom and triple vaults
-- [Fees & Rewards](https://docs.intuition.systems/docs/intuition-concepts/economics/fees-and-rewards): Protocol fee structure, reward distribution, and staking incentives
+## Build an integration
 
-## Developer Tools
+- [Build guides](https://docs.intuition.systems/docs/build.md): Choose a task from setting up a network to querying your Core node
+- [Install packages](https://docs.intuition.systems/docs/build/install.md): Select exact package versions and their required peers
+- [Creation Profiles](https://docs.intuition.systems/docs/build/creation-profiles.md): Inspect classification fields and build typed atom payloads
+- [Classify and enrich](https://docs.intuition.systems/docs/build/classify-enrich.md): Compose bounded processing and handle partial results
+- [Action plans](https://docs.intuition.systems/docs/build/action-plans.md): Prepare transaction envelopes before execution
+- [Query Core](https://docs.intuition.systems/docs/build/query-core.md): Read indexed data through the source-built Core Query API
+- [The SDK read client](https://docs.intuition.systems/docs/build/read-with-sdk.md): Understand why the hosted V1 client is not a V2 read path
+- [Worked examples](https://docs.intuition.systems/docs/examples.md): Follow complete projects for creation forms, predicate selection, identity linking, React applications, Core queries, and a music catalog
+- [Music catalog](https://docs.intuition.systems/docs/examples/music-catalog.md): Build synthetic identities, predicates, triples, and processing results offline
 
-Use the SDK for frontend/full-stack apps, GraphQL for read-heavy queries, Protocol package for direct contract interaction, and the Interaction Guide for low-level call patterns.
+## Build with agents or extend processing
 
-- [SDK Overview](https://docs.intuition.systems/docs/intuition-sdk/quick-start): TypeScript/JavaScript SDK — atoms, triples, signals, vaults, search, and batch operations
-- [GraphQL API](https://docs.intuition.systems/docs/graphql-api/overview): Query the knowledge graph — atoms, triples, vaults, positions, activity, and subscriptions
-- [Smart Contracts](https://docs.intuition.systems/docs/intuition-smart-contracts): Contract architecture — MultiVault, Trust Token, Trust Bonding, and bonding curves
-- [Contract Interactions](https://docs.intuition.systems/docs/interaction-guide/overview): Low-level patterns for creating atoms/triples, depositing, and reading vault state
-- [Protocol Package](https://docs.intuition.systems/docs/protocol/getting-started/overview): Direct protocol interaction via TypeScript — configuration, vaults, epochs, and events
+- [Build with AI agents](https://docs.intuition.systems/docs/agents.md): Follow the reading and verification contract before preparing actions
+- [Docs for agents](https://docs.intuition.systems/docs/agents/docs-for-agents.md): Fetch individual Markdown pages or a version-specific bundle
+- [Prepare transactions with the CLI](https://docs.intuition.systems/docs/agents/cli.md): Encode calldata for a human to review
+- [Agent skills](https://docs.intuition.systems/docs/agents/skills.md): Install the intuition and erc8004-agent-layer contract-level skills for V1 and V2
+- [Write a classification plugin](https://docs.intuition.systems/docs/core/classification-plugin.md): Implement and test a classifier and wire it into a Core source fork
 
-## Tutorials
+## Operate Intuition Core
 
-- [Tutorials Overview](https://docs.intuition.systems/docs/tutorials/overview): Index of all step-by-step building guides
-- [Reputation System](https://docs.intuition.systems/docs/tutorials/reputation-system): Build skill attestations, endorsements, and reputation scoring
-- [Curated Lists](https://docs.intuition.systems/docs/tutorials/curated-lists): Token-curated registries with stake-based community ranking
-- [Social Attestations](https://docs.intuition.systems/docs/tutorials/social-attestations): Decentralized identity with portable connections and recommendations
-- [Fraud Detection](https://docs.intuition.systems/docs/tutorials/fraud-detection): Community-driven scam flagging with expert-weighted voting
-- [Prediction Market](https://docs.intuition.systems/docs/tutorials/prediction-market): Non-resolving forecasting with track records and confidence signals
-- [Activity Feeds](https://docs.intuition.systems/docs/tutorials/queries/building-user-activity-feeds): Build personalized activity streams with GraphQL
-- [Related Claims](https://docs.intuition.systems/docs/tutorials/queries/finding-related-claims): Discover relationship patterns in the knowledge graph
-- [Top dApps Query](https://docs.intuition.systems/docs/tutorials/queries/finding-top-dapps-on-coinbase): Rank decentralized applications by market cap
-- [Trusted Accounts](https://docs.intuition.systems/docs/tutorials/queries/discovering-most-trusted-accounts): Find and rank ecosystem participants by stake
+- [Intuition Core](https://docs.intuition.systems/docs/core.md): Trace chain events into the node’s graph and Query API
+- [Run a node](https://docs.intuition.systems/docs/core/run-a-node.md): Build the pinned source and verify its indexing scope
+- [Enrichment providers](https://docs.intuition.systems/docs/core/enrichment-providers.md): Choose a provider and interpret partial results
+- [Write an enrichment plugin](https://docs.intuition.systems/docs/core/enrichment-plugin.md): Attach artifacts with an injected transport and test failure paths
 
-## Network & Infrastructure
+## Look up an API or get help
 
-- [Intuition Network](https://docs.intuition.systems/docs/intuition-network): Layer 3 blockchain built on Base — architecture and capabilities
-- [Intuition Node](https://docs.intuition.systems/docs/intuition-node/overview): Run your own node for direct chain access
+- [Reference](https://docs.intuition.systems/docs/reference.md): Find packages, contracts, networks and definitions
+- [Core Query API](https://docs.intuition.systems/docs/reference/core-query-api.md): Look up graph operations, access requirements and responses
+- [Atom services API](https://docs.intuition.systems/docs/reference/atom-services-api.md): Process an input without persisting its output
+- [IID schemes](https://docs.intuition.systems/docs/reference/iid-schemes.md): Look up identifier namespaces and normalization examples
+- [Predicates](https://docs.intuition.systems/docs/reference/predicates.md): Find a relationship by name and atom ID
 
-## Resources
-
-- [FAQ](https://docs.intuition.systems/docs/resources/faq): Frequently asked questions about the protocol and ecosystem
-- [Glossary](https://docs.intuition.systems/docs/resources/glossary): Complete terminology reference for all Intuition concepts
-- [Community & Support](https://docs.intuition.systems/docs/resources/community-and-support): Discord, GitHub, and support channels
+- [Packages by layer](https://docs.intuition.systems/docs/reference/packages.md): Inspect all 21 packages, their runtime graph, and public entry points
+- [SDK API reference](https://docs.intuition.systems/docs/reference/sdk.md): Read declarations generated from the pinned package source
+- [Contracts](https://docs.intuition.systems/docs/reference/contracts.md): Find contract responsibilities, deployment addresses, events, errors and audits
+- [Networks](https://docs.intuition.systems/docs/reference/networks.md): Look up chain IDs, RPC endpoints, explorers and the testnet faucet
+- [Compatibility](https://docs.intuition.systems/docs/reference/compatibility.md): Check the package, peer, contract, and Core compatibility boundaries
+- [Community](https://docs.intuition.systems/docs/community.md): Get help and connect with the Intuition community
+- [Release notes](https://docs.intuition.systems/docs/community/release-notes.md): Trace a change to its package release or Core revision
+- [Contribute to the docs](https://docs.intuition.systems/docs/community/contributing.md): Update a source region, sync the example and verify the page
 
 ## Optional
 
-- [Contribution Guidelines](https://docs.intuition.systems/docs/contribution-guidelines): How to contribute to Intuition documentation and code
-- [Portal Guide](https://docs.intuition.systems/docs/portal): Using The Portal web application
-- [Farcaster Frames](https://docs.intuition.systems/docs/experimental-applications/farcaster-frames): Build Intuition-powered Farcaster frames
-- [MetaMask Snap](https://docs.intuition.systems/docs/experimental-applications/metamask-snap): Intuition integration for MetaMask
-
 Complete directory: every authored documentation page, one line each.
 
-- [Introduction](https://docs.intuition.systems/docs)
-- [Contribution Guidelines](https://docs.intuition.systems/docs/contribution-guidelines)
-- [ERC-8004 Agent Layer Partner Guide](https://docs.intuition.systems/docs/erc-8004-agent-layer)
-- [Data Populator (Deprecated)](https://docs.intuition.systems/docs/experimental-applications/data-populator)
-- [Farcaster Frames](https://docs.intuition.systems/docs/experimental-applications/farcaster-frames)
-- [Intuition MCP Server](https://docs.intuition.systems/docs/experimental-applications/mcp-server)
-- [MetaMask Snap](https://docs.intuition.systems/docs/experimental-applications/metamask-snap)
-- [AI Skills](https://docs.intuition.systems/docs/getting-started/ai-skills)
-- [Technical Architecture](https://docs.intuition.systems/docs/getting-started/architecture)
-- [Choose Your Path](https://docs.intuition.systems/docs/getting-started/choose-your-path)
-- [Developer Resources](https://docs.intuition.systems/docs/getting-started/developer-resources)
-- [Developer Stack](https://docs.intuition.systems/docs/getting-started/developer-stack)
-- [Integrations](https://docs.intuition.systems/docs/getting-started/integrations)
-- [Learn Intuition](https://docs.intuition.systems/docs/getting-started/learn-intuition)
-- [Overview](https://docs.intuition.systems/docs/getting-started/overview)
-- [Templates](https://docs.intuition.systems/docs/getting-started/templates)
-- [Use Cases](https://docs.intuition.systems/docs/getting-started/use-cases)
-- [Why Intuition?](https://docs.intuition.systems/docs/getting-started/why-intuition)
-- [Choose Appropriate Operators](https://docs.intuition.systems/docs/graphql-api/best-practices/comparison-operators)
-- [Use Database Functions](https://docs.intuition.systems/docs/graphql-api/best-practices/database-functions)
-- [Error Handling](https://docs.intuition.systems/docs/graphql-api/best-practices/error-handling)
-- [Efficient Filtering](https://docs.intuition.systems/docs/graphql-api/best-practices/filtering)
-- [Use Fragments](https://docs.intuition.systems/docs/graphql-api/best-practices/fragments)
-- [Pagination Best Practices](https://docs.intuition.systems/docs/graphql-api/best-practices/pagination)
-- [Query Performance](https://docs.intuition.systems/docs/graphql-api/best-practices/performance)
-- [Use Pre-Computed Statistics](https://docs.intuition.systems/docs/graphql-api/best-practices/pre-computed-stats)
-- [Request Only Needed Fields](https://docs.intuition.systems/docs/graphql-api/best-practices/request-only-needed)
-- [Subscriptions vs Polling](https://docs.intuition.systems/docs/graphql-api/best-practices/subscriptions-vs-polling)
-- [Use Variables](https://docs.intuition.systems/docs/graphql-api/best-practices/variables)
-- [Custom Queries](https://docs.intuition.systems/docs/graphql-api/custom-queries)
-- [Example: Activity Feed](https://docs.intuition.systems/docs/graphql-api/examples/activity-feed)
-- [Example: Atom with Vault](https://docs.intuition.systems/docs/graphql-api/examples/atom-with-vault)
-- [Example: Complex Filtering](https://docs.intuition.systems/docs/graphql-api/examples/complex-filtering)
-- [Multi-Language Examples](https://docs.intuition.systems/docs/graphql-api/examples/multi-language)
-- [Example: Price History](https://docs.intuition.systems/docs/graphql-api/examples/price-history)
-- [Example: Social Graph](https://docs.intuition.systems/docs/graphql-api/examples/social-graph)
-- [Example: Real-Time Subscriptions](https://docs.intuition.systems/docs/graphql-api/examples/subscriptions)
-- [Example: Trending Atoms](https://docs.intuition.systems/docs/graphql-api/examples/trending-atoms)
-- [Example: Triples Pagination](https://docs.intuition.systems/docs/graphql-api/examples/triples-pagination)
-- [Example: User Positions](https://docs.intuition.systems/docs/graphql-api/examples/user-positions)
-- [Client Setup](https://docs.intuition.systems/docs/graphql-api/getting-started/client-setup)
-- [GraphQL API Introduction](https://docs.intuition.systems/docs/graphql-api/getting-started/introduction)
-- [Schema Reference](https://docs.intuition.systems/docs/graphql-api/getting-started/schema-reference)
-- [GraphQL Generator](https://docs.intuition.systems/docs/graphql-api/graphql-generator)
-- [Migration Guide](https://docs.intuition.systems/docs/graphql-api/migration-guide)
-- [Image & IPFS Operations](https://docs.intuition.systems/docs/graphql-api/mutations/images/overview)
-- [Upload Image](https://docs.intuition.systems/docs/graphql-api/mutations/images/upload-image)
-- [Upload Image from URL](https://docs.intuition.systems/docs/graphql-api/mutations/images/upload-image-from-url)
-- [Upload JSON to IPFS](https://docs.intuition.systems/docs/graphql-api/mutations/images/upload-json-to-ipfs)
-- [Pin Organization Mutation](https://docs.intuition.systems/docs/graphql-api/mutations/pin-organization)
-- [Pin Person Mutation](https://docs.intuition.systems/docs/graphql-api/mutations/pin-person)
-- [Pin Thing Mutation](https://docs.intuition.systems/docs/graphql-api/mutations/pin-thing)
-- [GraphQL NPM Package](https://docs.intuition.systems/docs/graphql-api/npm-package)
-- [GraphQL API Overview](https://docs.intuition.systems/docs/graphql-api/overview)
-- [Following Query](https://docs.intuition.systems/docs/graphql-api/queries/accounts/following)
-- [List Accounts](https://docs.intuition.systems/docs/graphql-api/queries/accounts/list-accounts)
-- [Account Queries](https://docs.intuition.systems/docs/graphql-api/queries/accounts/overview)
-- [Positions from Following](https://docs.intuition.systems/docs/graphql-api/queries/accounts/positions-from-following)
-- [Single Account Query](https://docs.intuition.systems/docs/graphql-api/queries/accounts/single-account)
-- [Aggregations](https://docs.intuition.systems/docs/graphql-api/queries/advanced/aggregations)
-- [Database Functions](https://docs.intuition.systems/docs/graphql-api/queries/advanced/database-functions)
-- [Pagination](https://docs.intuition.systems/docs/graphql-api/queries/advanced/pagination)
-- [Predicate-Object Aggregations](https://docs.intuition.systems/docs/graphql-api/queries/advanced/predicate-objects)
-- [Time-Series Analysis](https://docs.intuition.systems/docs/graphql-api/queries/advanced/time-series)
-- [List and Filter Atoms](https://docs.intuition.systems/docs/graphql-api/queries/atoms/list-filter)
-- [Atom Search](https://docs.intuition.systems/docs/graphql-api/queries/atoms/search)
-- [Single Atom Query](https://docs.intuition.systems/docs/graphql-api/queries/atoms/single-atom)
-- [Atom with Related Triples](https://docs.intuition.systems/docs/graphql-api/queries/atoms/with-triples)
-- [Atom with Vault Details](https://docs.intuition.systems/docs/graphql-api/queries/atoms/with-vault)
-- [Get Chart JSON](https://docs.intuition.systems/docs/graphql-api/queries/charts/chart-json)
-- [Get Chart Raw JSON](https://docs.intuition.systems/docs/graphql-api/queries/charts/chart-raw-json)
-- [Get Chart Raw SVG](https://docs.intuition.systems/docs/graphql-api/queries/charts/chart-raw-svg)
-- [Get Chart SVG](https://docs.intuition.systems/docs/graphql-api/queries/charts/chart-svg)
-- [Chart Operations](https://docs.intuition.systems/docs/graphql-api/queries/charts/overview)
-- [Aggregate Events](https://docs.intuition.systems/docs/graphql-api/queries/events/aggregate-events)
-- [List Events](https://docs.intuition.systems/docs/graphql-api/queries/events/list-events)
-- [Events Queries](https://docs.intuition.systems/docs/graphql-api/queries/events/overview)
-- [Account PnL Rank](https://docs.intuition.systems/docs/graphql-api/queries/leaderboard/account-rank)
-- [Leaderboard Stats](https://docs.intuition.systems/docs/graphql-api/queries/leaderboard/leaderboard-stats)
-- [Leaderboard Queries Overview](https://docs.intuition.systems/docs/graphql-api/queries/leaderboard/overview)
-- [PnL Leaderboard](https://docs.intuition.systems/docs/graphql-api/queries/leaderboard/pnl-leaderboard)
-- [Vault Leaderboard](https://docs.intuition.systems/docs/graphql-api/queries/leaderboard/vault-leaderboard)
-- [Account PnL Chart](https://docs.intuition.systems/docs/graphql-api/queries/pnl/account-pnl-chart)
-- [Account PnL Current](https://docs.intuition.systems/docs/graphql-api/queries/pnl/account-pnl-current)
-- [Account PnL Realized](https://docs.intuition.systems/docs/graphql-api/queries/pnl/account-pnl-realized)
-- [PnL Queries Overview](https://docs.intuition.systems/docs/graphql-api/queries/pnl/overview)
-- [Position PnL Chart](https://docs.intuition.systems/docs/graphql-api/queries/pnl/position-pnl-chart)
-- [Search Queries](https://docs.intuition.systems/docs/graphql-api/queries/search/overview)
-- [Search from Following](https://docs.intuition.systems/docs/graphql-api/queries/search/search-from-following)
-- [Search Positions on Subject](https://docs.intuition.systems/docs/graphql-api/queries/search/search-positions)
-- [Search Term](https://docs.intuition.systems/docs/graphql-api/queries/search/search-term)
-- [Aggregate Signals](https://docs.intuition.systems/docs/graphql-api/queries/signals/aggregate-signals)
-- [List Signals](https://docs.intuition.systems/docs/graphql-api/queries/signals/list-signals)
-- [Signals Queries](https://docs.intuition.systems/docs/graphql-api/queries/signals/overview)
-- [Signals from Following](https://docs.intuition.systems/docs/graphql-api/queries/signals/signals-from-following)
-- [Fee Accruals](https://docs.intuition.systems/docs/graphql-api/queries/stats/fee-accruals)
-- [Fee Transfers](https://docs.intuition.systems/docs/graphql-api/queries/stats/fee-transfers)
-- [Protocol Stats Queries](https://docs.intuition.systems/docs/graphql-api/queries/stats/overview)
-- [Protocol Statistics](https://docs.intuition.systems/docs/graphql-api/queries/stats/protocol-stats)
-- [Counter Triples](https://docs.intuition.systems/docs/graphql-api/queries/triples/counter-triples)
-- [Filter by Predicate-Object](https://docs.intuition.systems/docs/graphql-api/queries/triples/filter-by-predicate-object)
-- [Filter Triples by Subject](https://docs.intuition.systems/docs/graphql-api/queries/triples/filter-by-subject)
-- [Nested Triple Queries](https://docs.intuition.systems/docs/graphql-api/queries/triples/nested-queries)
-- [Single Triple Query](https://docs.intuition.systems/docs/graphql-api/queries/triples/single-triple)
-- [Subject Predicates](https://docs.intuition.systems/docs/graphql-api/queries/triples/subject-predicates)
-- [Triple Terms](https://docs.intuition.systems/docs/graphql-api/queries/triples/triple-terms)
-- [Triple Vaults](https://docs.intuition.systems/docs/graphql-api/queries/triples/triple-vaults)
-- [Deposits & Redemptions](https://docs.intuition.systems/docs/graphql-api/queries/vaults/deposits-redemptions)
-- [Position Changes](https://docs.intuition.systems/docs/graphql-api/queries/vaults/position-changes)
-- [Positions with Value](https://docs.intuition.systems/docs/graphql-api/queries/vaults/positions-with-value)
-- [Share Price Changes](https://docs.intuition.systems/docs/graphql-api/queries/vaults/share-price-changes)
-- [Top Vaults](https://docs.intuition.systems/docs/graphql-api/queries/vaults/top-vaults)
-- [User Positions](https://docs.intuition.systems/docs/graphql-api/queries/vaults/user-positions)
-- [Vault Details](https://docs.intuition.systems/docs/graphql-api/queries/vaults/vault-details)
-- [Reads](https://docs.intuition.systems/docs/graphql-api/reads)
-- [Subscriptions Overview](https://docs.intuition.systems/docs/graphql-api/subscriptions/overview)
-- [Price Updates](https://docs.intuition.systems/docs/graphql-api/subscriptions/price-updates)
-- [Real-Time Positions](https://docs.intuition.systems/docs/graphql-api/subscriptions/real-time-positions)
-- [GraphQL API Use Cases](https://docs.intuition.systems/docs/graphql-api/use-cases/overview)
-- [Writes](https://docs.intuition.systems/docs/graphql-api/writes)
-- [Create Atom](https://docs.intuition.systems/docs/interaction-guide/create-atom)
-- [Create Triple](https://docs.intuition.systems/docs/interaction-guide/create-triple)
-- [Deposit & Return](https://docs.intuition.systems/docs/interaction-guide/deposit-return)
-- [Integrate FeeProxy](https://docs.intuition.systems/docs/interaction-guide/fee-proxy-integration)
-- [Contract Interactions Overview](https://docs.intuition.systems/docs/interaction-guide/overview)
-- [Retrieve Vault Details](https://docs.intuition.systems/docs/interaction-guide/retrieve-vault-details)
-- [System Architecture](https://docs.intuition.systems/docs/intuition-concepts/architecture)
-- [Economics Overview](https://docs.intuition.systems/docs/intuition-concepts/economics)
-- [Bonding Curves](https://docs.intuition.systems/docs/intuition-concepts/economics/bonding-curves)
-- [Fees and Rewards](https://docs.intuition.systems/docs/intuition-concepts/economics/fees-and-rewards)
-- [Incentive Design](https://docs.intuition.systems/docs/intuition-concepts/economics/incentive-design)
-- [$TRUST Tokenomics](https://docs.intuition.systems/docs/intuition-concepts/economics/tokenomics)
-- [Primitives Overview](https://docs.intuition.systems/docs/intuition-concepts/primitives)
-- [Atom Best Practices](https://docs.intuition.systems/docs/intuition-concepts/primitives/Atoms/best-practices)
-- [Atom Fundamentals](https://docs.intuition.systems/docs/intuition-concepts/primitives/Atoms/fundamentals)
-- [Atom Structuring](https://docs.intuition.systems/docs/intuition-concepts/primitives/Atoms/structuring)
-- [Capturing Signal](https://docs.intuition.systems/docs/intuition-concepts/primitives/Signals/capturing)
-- [Signal Fundamentals](https://docs.intuition.systems/docs/intuition-concepts/primitives/Signals/fundamentals)
-- [Signal Rewards](https://docs.intuition.systems/docs/intuition-concepts/primitives/Signals/rewards)
-- [Triple Fundamentals](https://docs.intuition.systems/docs/intuition-concepts/primitives/Triples/fundamentals)
-- [Nested Triples: Meta-Claims & Context](https://docs.intuition.systems/docs/intuition-concepts/primitives/Triples/nested-triples)
-- [Triple Structuring](https://docs.intuition.systems/docs/intuition-concepts/primitives/Triples/structuring)
-- [Trust Mechanisms Overview](https://docs.intuition.systems/docs/intuition-concepts/trust-mechanisms)
-- [Intuition Network](https://docs.intuition.systems/docs/intuition-network)
-- [Intuition Mainnet](https://docs.intuition.systems/docs/intuition-network/mainnet)
-- [Powered By Caldera](https://docs.intuition.systems/docs/intuition-network/powered-by-caldera)
-- [Remote Procedure Call (RPC)](https://docs.intuition.systems/docs/intuition-network/rpc)
-- [Intuition Testnet](https://docs.intuition.systems/docs/intuition-network/testnet)
-- [Run on Kubernetes Cluster](https://docs.intuition.systems/docs/intuition-node/kubernetes)
-- [Local Development Setup](https://docs.intuition.systems/docs/intuition-node/local-setup)
-- [Overview](https://docs.intuition.systems/docs/intuition-node/overview)
-- [Run an Intuition Node](https://docs.intuition.systems/docs/intuition-node/run-an-intuition-node)
-- [Rust Backend](https://docs.intuition.systems/docs/intuition-node/rust-backend)
-- [Working with Atoms](https://docs.intuition.systems/docs/intuition-sdk/atoms-guide)
-- [Example: Batch Create Ethereum Accounts](https://docs.intuition.systems/docs/intuition-sdk/examples/batch-ethereum-accounts)
-- [Example: Bulk Sync with Cost Estimation](https://docs.intuition.systems/docs/intuition-sdk/examples/bulk-sync-cost-estimation)
-- [Example: Create Atom from String](https://docs.intuition.systems/docs/intuition-sdk/examples/create-atom-from-string)
-- [Example: Create Triple Statement](https://docs.intuition.systems/docs/intuition-sdk/examples/create-triple-statement)
-- [Example: Deposit into Vault](https://docs.intuition.systems/docs/intuition-sdk/examples/deposit-into-vault)
-- [Example: Find Existing Entities](https://docs.intuition.systems/docs/intuition-sdk/examples/find-existing-entities)
-- [Example: Global Search](https://docs.intuition.systems/docs/intuition-sdk/examples/global-search)
-- [Example: Thing IPFS Pinning](https://docs.intuition.systems/docs/intuition-sdk/examples/thing-ipfs-pinning)
-- [Installation & Setup](https://docs.intuition.systems/docs/intuition-sdk/installation-and-setup)
-- [IPFS Pinning](https://docs.intuition.systems/docs/intuition-sdk/integrations/pinata-ipfs)
-- [React Integration](https://docs.intuition.systems/docs/intuition-sdk/integrations/react)
-- [TanStack Query Integration](https://docs.intuition.systems/docs/intuition-sdk/integrations/tanstack-query)
-- [SDK Migration V1 to V2](https://docs.intuition.systems/docs/intuition-sdk/migration-guide)
-- [Quick Start](https://docs.intuition.systems/docs/intuition-sdk/quick-start)
-- [Search and Discovery](https://docs.intuition.systems/docs/intuition-sdk/search-guide)
-- [Working with Triples](https://docs.intuition.systems/docs/intuition-sdk/triples-guide)
-- [Working with Vaults](https://docs.intuition.systems/docs/intuition-sdk/vaults-guide)
-- [Contract Architecture Overview](https://docs.intuition.systems/docs/intuition-smart-contracts)
-- [Audit Reports](https://docs.intuition.systems/docs/intuition-smart-contracts/audit-reports)
-- [Configurations & Fees](https://docs.intuition.systems/docs/intuition-smart-contracts/configuration)
-- [Contract Deployments](https://docs.intuition.systems/docs/intuition-smart-contracts/deployments)
-- [FeeProxy.sol](https://docs.intuition.systems/docs/intuition-smart-contracts/fee-proxy)
-- [MultiVault.sol](https://docs.intuition.systems/docs/intuition-smart-contracts/multivault)
-- [TrustBonding.sol](https://docs.intuition.systems/docs/intuition-smart-contracts/trust-bonding)
-- [Portal (Explorer) Guide](https://docs.intuition.systems/docs/portal)
-- [Atom Functions](https://docs.intuition.systems/docs/protocol/api-reference/multivault/atoms)
-- [Configuration Queries](https://docs.intuition.systems/docs/protocol/api-reference/multivault/configuration)
-- [Share & Asset Conversions](https://docs.intuition.systems/docs/protocol/api-reference/multivault/conversions)
-- [Epochs & Utilization](https://docs.intuition.systems/docs/protocol/api-reference/multivault/epochs-utilization)
-- [Fee Calculations](https://docs.intuition.systems/docs/protocol/api-reference/multivault/fees)
-- [Triple Functions](https://docs.intuition.systems/docs/protocol/api-reference/multivault/triples)
-- [Vault Queries](https://docs.intuition.systems/docs/protocol/api-reference/multivault/vault-queries)
-- [Vault Operations](https://docs.intuition.systems/docs/protocol/api-reference/multivault/vaults)
-- [Balance Queries](https://docs.intuition.systems/docs/protocol/api-reference/trust-bonding/balances)
-- [Epoch Management](https://docs.intuition.systems/docs/protocol/api-reference/trust-bonding/epochs)
-- [Lock Queries](https://docs.intuition.systems/docs/protocol/api-reference/trust-bonding/lock-queries)
-- [Reward Calculations](https://docs.intuition.systems/docs/protocol/api-reference/trust-bonding/rewards)
-- [Staking Operations](https://docs.intuition.systems/docs/protocol/api-reference/trust-bonding/staking-operations)
-- [Wrapped Trust](https://docs.intuition.systems/docs/protocol/api-reference/wrapped-trust/overview)
-- [Epochs & Utilization](https://docs.intuition.systems/docs/protocol/core-concepts/epochs)
-- [Vaults & Shares](https://docs.intuition.systems/docs/protocol/core-concepts/vaults)
-- [Atom Events](https://docs.intuition.systems/docs/protocol/events/atom-events)
-- [Triple Events](https://docs.intuition.systems/docs/protocol/events/triple-events)
-- [Trust Bonding Events](https://docs.intuition.systems/docs/protocol/events/trust-bonding-events)
-- [Vault Events](https://docs.intuition.systems/docs/protocol/events/vault-events)
-- [Batch Operations Examples](https://docs.intuition.systems/docs/protocol/examples/batch-operations)
-- [Creating Atoms & Triples](https://docs.intuition.systems/docs/protocol/examples/creating-atoms-triples)
-- [Deposit & Redeem Examples](https://docs.intuition.systems/docs/protocol/examples/deposit-redeem)
-- [Event Parsing Examples](https://docs.intuition.systems/docs/protocol/examples/event-parsing)
-- [Fee Calculations Examples](https://docs.intuition.systems/docs/protocol/examples/fee-calculations)
-- [Trust Bonding Examples](https://docs.intuition.systems/docs/protocol/examples/trust-bonding)
-- [Configuration](https://docs.intuition.systems/docs/protocol/getting-started/configuration)
-- [Protocol Package Overview](https://docs.intuition.systems/docs/protocol/getting-started/overview)
-- [Working with Primitives](https://docs.intuition.systems/docs/protocol/working-with-primitives)
-- [Contract Deployments](https://docs.intuition.systems/docs/quick-start/deployments)
-- [Intuition Network & Explorers](https://docs.intuition.systems/docs/quick-start/network-details)
-- [Intuition Testnet Faucet](https://docs.intuition.systems/docs/quick-start/testnet-faucet)
-- [Using the SDK](https://docs.intuition.systems/docs/quick-start/using-the-sdk)
-- [Resources](https://docs.intuition.systems/docs/resources)
-- [Community & Support](https://docs.intuition.systems/docs/resources/community-and-support)
-- [FAQ](https://docs.intuition.systems/docs/resources/faq)
-- [Glossary](https://docs.intuition.systems/docs/resources/glossary)
-- [Key Terms](https://docs.intuition.systems/docs/resources/key-terms)
-- [Optimizing Batch Operations](https://docs.intuition.systems/docs/tutorials/advanced/batch-operations)
-- [Working with Nested Triples](https://docs.intuition.systems/docs/tutorials/advanced/nested-triples)
-- [Oracle Integration](https://docs.intuition.systems/docs/tutorials/advanced/oracle-integration)
-- [Building Curated Lists with Community Ranking](https://docs.intuition.systems/docs/tutorials/curated-lists)
-- [Building a Fraud Detection System](https://docs.intuition.systems/docs/tutorials/fraud-detection)
-- [Tutorials](https://docs.intuition.systems/docs/tutorials/overview)
-- [Building a Non-Resolving Prediction Market](https://docs.intuition.systems/docs/tutorials/prediction-market)
-- [Building User Activity Feeds](https://docs.intuition.systems/docs/tutorials/queries/building-user-activity-feeds)
-- [Discovering Most Trusted Accounts](https://docs.intuition.systems/docs/tutorials/queries/discovering-most-trusted-accounts)
-- [Finding Related Claims](https://docs.intuition.systems/docs/tutorials/queries/finding-related-claims)
-- [Finding Top Dapps on Coinbase](https://docs.intuition.systems/docs/tutorials/queries/finding-top-dapps-on-coinbase)
-- [Building a Reputation System](https://docs.intuition.systems/docs/tutorials/reputation-system)
-- [Building a Social Attestation Platform](https://docs.intuition.systems/docs/tutorials/social-attestations)
+- [Intuition developer docs](https://docs.intuition.systems/docs.md)
+- [Build with AI agents](https://docs.intuition.systems/docs/agents.md)
+- [Prepare transactions with the CLI](https://docs.intuition.systems/docs/agents/cli.md)
+- [Docs for agents](https://docs.intuition.systems/docs/agents/docs-for-agents.md)
+- [Install the agent skills](https://docs.intuition.systems/docs/agents/skills.md)
+- [Build guides](https://docs.intuition.systems/docs/build.md)
+- [Build action plans and envelopes](https://docs.intuition.systems/docs/build/action-plans.md)
+- [Compose an atom runtime](https://docs.intuition.systems/docs/build/atom-runtime.md)
+- [Batch writes](https://docs.intuition.systems/docs/build/batch-writes.md)
+- [Classify and enrich atoms](https://docs.intuition.systems/docs/build/classify-enrich.md)
+- [Connect to a network](https://docs.intuition.systems/docs/build/connect.md)
+- [Create atoms](https://docs.intuition.systems/docs/build/create-atoms.md)
+- [Create triples](https://docs.intuition.systems/docs/build/create-triples.md)
+- [Build creation forms](https://docs.intuition.systems/docs/build/creation-profiles.md)
+- [Deposit and redeem](https://docs.intuition.systems/docs/build/deposit-redeem.md)
+- [Derive IDs and IIDs](https://docs.intuition.systems/docs/build/derive-ids.md)
+- [Route writes through the FeeProxy](https://docs.intuition.systems/docs/build/fee-proxy.md)
+- [Install and pin the packages](https://docs.intuition.systems/docs/build/install.md)
+- [Link identities with sameAs](https://docs.intuition.systems/docs/build/link-identities.md)
+- [Parse user input](https://docs.intuition.systems/docs/build/parse-input.md)
+- [Query a Core node](https://docs.intuition.systems/docs/build/query-core.md)
+- [Use React hooks](https://docs.intuition.systems/docs/build/react.md)
+- [The SDK read client](https://docs.intuition.systems/docs/build/read-with-sdk.md)
+- [Suggest relationships and pick predicates](https://docs.intuition.systems/docs/build/suggest-relationships.md)
+- [Test locally](https://docs.intuition.systems/docs/build/test-locally.md)
+- [Get help](https://docs.intuition.systems/docs/community.md)
+- [Contribute to the docs](https://docs.intuition.systems/docs/community/contributing.md)
+- [Ecosystem](https://docs.intuition.systems/docs/community/ecosystem.md)
+- [Release notes](https://docs.intuition.systems/docs/community/release-notes.md)
+- [Concept map](https://docs.intuition.systems/docs/concepts.md)
+- [Atom classification](https://docs.intuition.systems/docs/concepts/atom-classification.md)
+- [Atom parsing](https://docs.intuition.systems/docs/concepts/atom-parsing.md)
+- [Atom runtime and pipelines](https://docs.intuition.systems/docs/concepts/atom-runtime.md)
+- [Atoms](https://docs.intuition.systems/docs/concepts/atoms.md)
+- [Bonding curves](https://docs.intuition.systems/docs/concepts/bonding-curves.md)
+- [Classifications and Creation Profiles](https://docs.intuition.systems/docs/concepts/classifications.md)
+- [Deterministic IDs](https://docs.intuition.systems/docs/concepts/deterministic-ids.md)
+- [Enrichment](https://docs.intuition.systems/docs/concepts/enrichment.md)
+- [Fees, epochs and rewards](https://docs.intuition.systems/docs/concepts/fees-and-rewards.md)
+- [The identity ladder](https://docs.intuition.systems/docs/concepts/identity-ladder.md)
+- [The Intuition Identifier (IID)](https://docs.intuition.systems/docs/concepts/iid.md)
+- [The IID registry](https://docs.intuition.systems/docs/concepts/iid-registry.md)
+- [Schemes and canonical form](https://docs.intuition.systems/docs/concepts/iid-schemes.md)
+- [Indexing and querying](https://docs.intuition.systems/docs/concepts/indexing-and-querying.md)
+- [Predicates](https://docs.intuition.systems/docs/concepts/predicates.md)
+- [Protocol writes](https://docs.intuition.systems/docs/concepts/protocol-writes.md)
+- [Representation profiles](https://docs.intuition.systems/docs/concepts/representation-profiles.md)
+- [sameAs and identity linking](https://docs.intuition.systems/docs/concepts/same-as.md)
+- [schema.org vocabulary](https://docs.intuition.systems/docs/concepts/schema-org.md)
+- [Signals](https://docs.intuition.systems/docs/concepts/signals.md)
+- [Triples, counter-triples and nested triples](https://docs.intuition.systems/docs/concepts/triples.md)
+- [Vaults, shares and positions](https://docs.intuition.systems/docs/concepts/vaults.md)
+- [Intuition Core](https://docs.intuition.systems/docs/core.md)
+- [Architecture](https://docs.intuition.systems/docs/core/architecture.md)
+- [Write a classification plugin](https://docs.intuition.systems/docs/core/classification-plugin.md)
+- [Configuration](https://docs.intuition.systems/docs/core/configuration.md)
+- [Write an enrichment plugin](https://docs.intuition.systems/docs/core/enrichment-plugin.md)
+- [Enrichment providers](https://docs.intuition.systems/docs/core/enrichment-providers.md)
+- [Scope what you index](https://docs.intuition.systems/docs/core/indexing-scope.md)
+- [Run a local devnet](https://docs.intuition.systems/docs/core/local-devnet.md)
+- [How Core uses the packages](https://docs.intuition.systems/docs/core/packages.md)
+- [Releases](https://docs.intuition.systems/docs/core/releases.md)
+- [Run your own node](https://docs.intuition.systems/docs/core/run-a-node.md)
+- [Troubleshooting](https://docs.intuition.systems/docs/core/troubleshooting.md)
+- [What you can build](https://docs.intuition.systems/docs/examples.md)
+- [Schema-backed atom creation form](https://docs.intuition.systems/docs/examples/atom-creation-form.md)
+- [Read the graph from Core's Query API](https://docs.intuition.systems/docs/examples/core-query-api.md)
+- [sameAs identity linking](https://docs.intuition.systems/docs/examples/identity-linking.md)
+- [Build a music catalog](https://docs.intuition.systems/docs/examples/music-catalog.md)
+- [Predicate picker with relationship suggestions](https://docs.intuition.systems/docs/examples/predicate-picker.md)
+- [React app with @0xintuition/react](https://docs.intuition.systems/docs/examples/react-app.md)
+- [Choose your packages](https://docs.intuition.systems/docs/get-started/choose-packages.md)
+- [Quickstart: your first on-chain write](https://docs.intuition.systems/docs/get-started/first-write.md)
+- [How the pieces fit](https://docs.intuition.systems/docs/get-started/how-it-fits.md)
+- [Migrate from V1](https://docs.intuition.systems/docs/get-started/migrate-from-v1.md)
+- [Quickstart: an atom ID and IID offline](https://docs.intuition.systems/docs/get-started/quickstart.md)
+- [Versions and release status](https://docs.intuition.systems/docs/get-started/versions.md)
+- [Reference](https://docs.intuition.systems/docs/reference.md)
+- [Atom services API](https://docs.intuition.systems/docs/reference/atom-services-api.md)
+- [Compatibility](https://docs.intuition.systems/docs/reference/compatibility.md)
+- [Contracts](https://docs.intuition.systems/docs/reference/contracts.md)
+- [Audits](https://docs.intuition.systems/docs/reference/contracts/audits.md)
+- [Configuration and URI limits](https://docs.intuition.systems/docs/reference/contracts/configuration.md)
+- [Deployments](https://docs.intuition.systems/docs/reference/contracts/deployments.md)
+- [Events and errors](https://docs.intuition.systems/docs/reference/contracts/events-and-errors.md)
+- [FeeProxy](https://docs.intuition.systems/docs/reference/contracts/fee-proxy.md)
+- [MultiVault](https://docs.intuition.systems/docs/reference/contracts/multivault.md)
+- [TrustBonding](https://docs.intuition.systems/docs/reference/contracts/trust-bonding.md)
+- [Core Query API](https://docs.intuition.systems/docs/reference/core-query-api.md)
+- [Glossary](https://docs.intuition.systems/docs/reference/glossary.md)
+- [IID scheme catalog](https://docs.intuition.systems/docs/reference/iid-schemes.md)
+- [Networks](https://docs.intuition.systems/docs/reference/networks.md)
+- [Testnet faucet](https://docs.intuition.systems/docs/reference/networks/faucet.md)
+- [Packages](https://docs.intuition.systems/docs/reference/packages.md)
+- [@0xintuition/atom-classification](https://docs.intuition.systems/docs/reference/packages/atom-classification.md)
+- [@0xintuition/atom-enrichment](https://docs.intuition.systems/docs/reference/packages/atom-enrichment.md)
+- [@0xintuition/atom-parser](https://docs.intuition.systems/docs/reference/packages/atom-parser.md)
+- [@0xintuition/atom-runtime](https://docs.intuition.systems/docs/reference/packages/atom-runtime.md)
+- [@0xintuition/classifications](https://docs.intuition.systems/docs/reference/packages/classifications.md)
+- [@0xintuition/cli](https://docs.intuition.systems/docs/reference/packages/cli.md)
+- [@0xintuition/curves](https://docs.intuition.systems/docs/reference/packages/curves.md)
+- [@0xintuition/deployments](https://docs.intuition.systems/docs/reference/packages/deployments.md)
+- [@0xintuition/ids](https://docs.intuition.systems/docs/reference/packages/ids.md)
+- [@0xintuition/iid](https://docs.intuition.systems/docs/reference/packages/iid.md)
+- [@0xintuition/iid-ladder](https://docs.intuition.systems/docs/reference/packages/iid-ladder.md)
+- [@0xintuition/iid-registry](https://docs.intuition.systems/docs/reference/packages/iid-registry.md)
+- [@0xintuition/iid-spec](https://docs.intuition.systems/docs/reference/packages/iid-spec.md)
+- [@0xintuition/periphery](https://docs.intuition.systems/docs/reference/packages/periphery.md)
+- [@0xintuition/pipeline-runtime](https://docs.intuition.systems/docs/reference/packages/pipeline-runtime.md)
+- [@0xintuition/predicates](https://docs.intuition.systems/docs/reference/packages/predicates.md)
+- [@0xintuition/primitives](https://docs.intuition.systems/docs/reference/packages/primitives.md)
+- [@0xintuition/protocol](https://docs.intuition.systems/docs/reference/packages/protocol.md)
+- [@0xintuition/react](https://docs.intuition.systems/docs/reference/packages/react.md)
+- [@0xintuition/schema-org](https://docs.intuition.systems/docs/reference/packages/schema-org.md)
+- [@0xintuition/sdk](https://docs.intuition.systems/docs/reference/packages/sdk.md)
+- [Predicate catalog](https://docs.intuition.systems/docs/reference/predicates.md)
+- [SDK function reference](https://docs.intuition.systems/docs/reference/sdk.md)
+- [API client](https://docs.intuition.systems/docs/reference/sdk/api.md)
+- [Dynamic-fee curve actions](https://docs.intuition.systems/docs/reference/sdk/dynamic-fee-curve.md)
+- [FeeProxy URI creation](https://docs.intuition.systems/docs/reference/sdk/fee-proxy.md)
+- [FeeProxy affiliate profile](https://docs.intuition.systems/docs/reference/sdk/fee-proxy-affiliate-profile.md)
+- [FeeProxy plans and execution](https://docs.intuition.systems/docs/reference/sdk/fee-proxy-builders.md)
+- [FeeProxy refund preparation](https://docs.intuition.systems/docs/reference/sdk/fee-proxy-claim-refund-if-any.md)
+- [MultiVault actions](https://docs.intuition.systems/docs/reference/sdk/multivault.md)
+- [Bridge action envelopes](https://docs.intuition.systems/docs/reference/sdk/plans-base.md)
+- [Dynamic-fee action envelopes](https://docs.intuition.systems/docs/reference/sdk/plans-dynamic-fee-curve.md)
+- [FeeProxy action envelopes](https://docs.intuition.systems/docs/reference/sdk/plans-fee-proxy.md)
+- [MultiVault action envelopes](https://docs.intuition.systems/docs/reference/sdk/plans-multivault.md)
+- [TrustBonding action envelopes](https://docs.intuition.systems/docs/reference/sdk/plans-trust-bonding.md)
+- [Portfolio reads](https://docs.intuition.systems/docs/reference/sdk/portfolio.md)
+- [Create and validate action envelopes](https://docs.intuition.systems/docs/reference/sdk/schema-create-agent-action-envelope.md)
+- [Resolve action targets](https://docs.intuition.systems/docs/reference/sdk/schema-resolve-agent-action-target.md)
+- [Action envelope types](https://docs.intuition.systems/docs/reference/sdk/schema-types.md)
+- [TrustBonding actions](https://docs.intuition.systems/docs/reference/sdk/trust-bonding.md)

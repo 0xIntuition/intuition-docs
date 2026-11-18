@@ -1,0 +1,6 @@
+const PRIVATE_QUERY = `query NeverPublish { atoms { id } }`;
+export const TESTNET_API_URL = 'https://testnet.intuition.sh/v1/graphql';
+type LocalOptions = { retries: number };
+export interface PublicResult { value: number }
+/** Read a fixture value with an optional default. */
+export function readValue(value: number = 1) { return value; }

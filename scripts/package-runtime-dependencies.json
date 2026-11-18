@@ -1,0 +1,176 @@
+{
+  "schemaVersion": 1,
+  "source": {
+    "repository": "https://github.com/0xIntuition/packages",
+    "commit": "4e9af1373b81a453d16bc650983138e35afb97d1",
+    "path": "docs/architecture/dependency-graph.md",
+    "sha256": "ff01d205c89b87312bd8c43d70558cc447827359c4ac8060e5e638b0920e5189"
+  },
+  "packages": [
+    {
+      "name": "@0xintuition/atom-classification",
+      "version": "0.1.0",
+      "dependencies": {
+        "@0xintuition/atom-enrichment": "0.1.0",
+        "@0xintuition/atom-parser": "0.1.0",
+        "@0xintuition/classifications": "0.1.0",
+        "@0xintuition/iid": "0.1.0",
+        "@0xintuition/iid-ladder": "0.1.0",
+        "@0xintuition/iid-registry": "0.1.0",
+        "@0xintuition/pipeline-runtime": "0.1.0",
+        "@0xintuition/predicates": "0.1.0",
+        "@0xintuition/primitives": "0.1.0",
+        "@0xintuition/schema-org": "0.1.0"
+      }
+    },
+    {
+      "name": "@0xintuition/atom-enrichment",
+      "version": "0.1.0",
+      "dependencies": {
+        "@0xintuition/classifications": "0.1.0",
+        "@0xintuition/iid": "0.1.0",
+        "@0xintuition/iid-ladder": "0.1.0",
+        "@0xintuition/iid-registry": "0.1.0",
+        "@0xintuition/pipeline-runtime": "0.1.0",
+        "@0xintuition/protocol": "4.0.0",
+        "@0xintuition/schema-org": "0.1.0"
+      }
+    },
+    {
+      "name": "@0xintuition/atom-parser",
+      "version": "0.1.0",
+      "dependencies": {
+        "@0xintuition/iid": "0.1.0"
+      }
+    },
+    {
+      "name": "@0xintuition/atom-runtime",
+      "version": "0.1.0",
+      "dependencies": {
+        "@0xintuition/atom-classification": "0.1.0",
+        "@0xintuition/atom-enrichment": "0.1.0",
+        "@0xintuition/atom-parser": "0.1.0",
+        "@0xintuition/iid-registry": "0.1.0",
+        "@0xintuition/pipeline-runtime": "0.1.0"
+      }
+    },
+    {
+      "name": "@0xintuition/classifications",
+      "version": "0.1.0",
+      "dependencies": {
+        "@0xintuition/iid": "0.1.0"
+      }
+    },
+    {
+      "name": "@0xintuition/cli",
+      "version": "0.1.0",
+      "dependencies": {
+        "@0xintuition/periphery": "0.1.0",
+        "@0xintuition/protocol": "4.0.0",
+        "@0xintuition/sdk": "4.0.0"
+      }
+    },
+    {
+      "name": "@0xintuition/curves",
+      "version": "0.1.0",
+      "dependencies": {}
+    },
+    {
+      "name": "@0xintuition/deployments",
+      "version": "0.1.0",
+      "dependencies": {}
+    },
+    {
+      "name": "@0xintuition/ids",
+      "version": "0.1.0",
+      "dependencies": {}
+    },
+    {
+      "name": "@0xintuition/iid",
+      "version": "0.1.0",
+      "dependencies": {}
+    },
+    {
+      "name": "@0xintuition/iid-ladder",
+      "version": "0.1.0",
+      "dependencies": {
+        "@0xintuition/iid": "0.1.0"
+      }
+    },
+    {
+      "name": "@0xintuition/iid-registry",
+      "version": "0.1.0",
+      "dependencies": {
+        "@0xintuition/classifications": "0.1.0",
+        "@0xintuition/iid": "0.1.0"
+      }
+    },
+    {
+      "name": "@0xintuition/iid-spec",
+      "version": "0.1.0",
+      "dependencies": {}
+    },
+    {
+      "name": "@0xintuition/periphery",
+      "version": "0.1.0",
+      "dependencies": {
+        "@0xintuition/deployments": "0.1.0"
+      }
+    },
+    {
+      "name": "@0xintuition/pipeline-runtime",
+      "version": "0.1.0",
+      "dependencies": {}
+    },
+    {
+      "name": "@0xintuition/predicates",
+      "version": "0.1.0",
+      "dependencies": {
+        "@0xintuition/ids": "0.1.0"
+      }
+    },
+    {
+      "name": "@0xintuition/primitives",
+      "version": "0.1.0",
+      "dependencies": {
+        "@0xintuition/classifications": "0.1.0",
+        "@0xintuition/ids": "0.1.0",
+        "@0xintuition/iid": "0.1.0",
+        "@0xintuition/iid-registry": "0.1.0",
+        "@0xintuition/predicates": "0.1.0"
+      }
+    },
+    {
+      "name": "@0xintuition/protocol",
+      "version": "4.0.0",
+      "dependencies": {
+        "@0xintuition/deployments": "0.1.0"
+      }
+    },
+    {
+      "name": "@0xintuition/react",
+      "version": "0.1.0",
+      "dependencies": {
+        "@0xintuition/deployments": "0.1.0",
+        "@0xintuition/ids": "0.1.0",
+        "@0xintuition/protocol": "4.0.0"
+      }
+    },
+    {
+      "name": "@0xintuition/schema-org",
+      "version": "0.1.0",
+      "dependencies": {}
+    },
+    {
+      "name": "@0xintuition/sdk",
+      "version": "4.0.0",
+      "dependencies": {
+        "@0xintuition/curves": "0.1.0",
+        "@0xintuition/deployments": "0.1.0",
+        "@0xintuition/ids": "0.1.0",
+        "@0xintuition/periphery": "0.1.0",
+        "@0xintuition/protocol": "4.0.0"
+      }
+    }
+  ]
+}

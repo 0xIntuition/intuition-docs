@@ -1,0 +1,18 @@
+[
+  {"name":"floating install","source":"npm install @0xintuition/sdk@latest","error":"exact"},
+  {"name":"bare install","source":"pnpm add @0xintuition/primitives","error":"unpinned"},
+  {"name":"multiline install","source":"npm install \\\n  @0xintuition/sdk","error":"unpinned"},
+  {"name":"npx range","source":"npx @0xintuition/cli@^0.1.0 --help","error":"exact"},
+  {"name":"unknown package","source":"@0xintuition/nope@1.0.0","error":"Unknown"},
+  {"name":"naked version","source":"`@0xintuition/sdk` 4.0.0","error":"version"},
+  {"name":"unported alpha line","source":"Version **0.1.0-alpha.0** · [npm](https://www.npmjs.com/package/@0xintuition/cli/v/0.1.0-alpha.0)","error":"alpha"},
+  {"name":"alpha wording","source":"These alpha packages are ready.","error":"alpha wording"},
+  {"name":"old core path","source":"https://github.com/0xIntuition/intuition-core/blob/old/docs/setup.md","error":"source ref"},
+  {"name":"old core root","source":"https://github.com/0xIntuition/intuition-core/tree/old","error":"source ref"},
+  {"name":"old package root","source":"https://github.com/0xIntuition/packages/tree/old","error":"source ref"},
+  {"name":"published tag","source":"make up-published IMAGE_TAG=v0.1.0-rc.2","error":"source"},
+  {"name":"published image","source":"ghcr.io/0xintuition/intuition-core-api:v1","error":"source"},
+  {"name":"digest image","source":"ghcr.io/0xintuition/intuition-core-api@sha256:abcd","error":"source"},
+  {"name":"forbidden hazard","source":"<!-- release-pins: hazard -->\n@0xintuition/sdk@alpha\n<!-- /release-pins -->","error":"Hazard"},
+  {"name":"forbidden legacy fence","source":"<!-- docs-typecheck: v1 -->\n```ts\n// @0xintuition/sdk@3.0.1\n```","error":"V1 fences"}
+]

@@ -1,0 +1,173 @@
+{
+  "schemaVersion": 1,
+  "pairs": [
+    {
+      "v1": "index",
+      "v2": "index"
+    },
+    {
+      "v1": "getting-started/ai-skills",
+      "v2": "agents/skills"
+    },
+    {
+      "v1": "resources/community-and-support",
+      "v2": "community/index"
+    },
+    {
+      "v1": "getting-started/architecture",
+      "v2": "get-started/how-it-fits"
+    },
+    {
+      "v1": "quick-start/using-the-sdk",
+      "v2": "get-started/quickstart"
+    },
+    {
+      "v1": "experimental-applications/mcp-server",
+      "v2": "agents/index"
+    },
+    {
+      "v1": "intuition-concepts/primitives/index",
+      "v2": "concepts/index"
+    },
+    {
+      "v1": "intuition-sdk/installation-and-setup",
+      "v2": "build/install"
+    },
+    {
+      "v1": "intuition-sdk/search-guide",
+      "v2": "build/read-with-sdk"
+    },
+    {
+      "v1": "tutorials/overview",
+      "v2": "examples/index"
+    },
+    {
+      "v1": "intuition-sdk/quick-start",
+      "v2": "reference/packages/sdk"
+    },
+    {
+      "v1": "protocol/getting-started/overview",
+      "v2": "reference/packages/protocol"
+    },
+    {
+      "v1": "getting-started/choose-your-path",
+      "v2": "get-started/choose-packages"
+    },
+    {
+      "v1": "intuition-concepts/primitives/Atoms/fundamentals",
+      "v2": "concepts/atoms"
+    },
+    {
+      "v1": "intuition-concepts/primitives/Triples/fundamentals",
+      "v2": "concepts/triples"
+    },
+    {
+      "v1": "protocol/core-concepts/vaults",
+      "v2": "concepts/vaults"
+    },
+    {
+      "v1": "intuition-concepts/economics/bonding-curves",
+      "v2": "concepts/bonding-curves"
+    },
+    {
+      "v1": "intuition-concepts/primitives/Signals/fundamentals",
+      "v2": "concepts/signals"
+    },
+    {
+      "v1": "intuition-concepts/economics/fees-and-rewards",
+      "v2": "concepts/fees-and-rewards"
+    },
+    {
+      "v1": "intuition-smart-contracts/overview",
+      "v2": "reference/contracts/index"
+    },
+    {
+      "v1": "intuition-smart-contracts/multivault",
+      "v2": "reference/contracts/multivault"
+    },
+    {
+      "v1": "intuition-smart-contracts/fee-proxy",
+      "v2": "reference/contracts/fee-proxy"
+    },
+    {
+      "v1": "intuition-smart-contracts/trust-bonding",
+      "v2": "reference/contracts/trust-bonding"
+    },
+    {
+      "v1": "intuition-smart-contracts/configuration",
+      "v2": "reference/contracts/configuration"
+    },
+    {
+      "v1": "intuition-smart-contracts/deployments",
+      "v2": "reference/contracts/deployments"
+    },
+    {
+      "v1": "protocol/events/atom-events",
+      "v2": "reference/contracts/events-and-errors"
+    },
+    {
+      "v1": "intuition-smart-contracts/audit-reports",
+      "v2": "reference/contracts/audits"
+    },
+    {
+      "v1": "intuition-network/network",
+      "v2": "reference/networks/index"
+    },
+    {
+      "v1": "quick-start/testnet-faucet",
+      "v2": "reference/networks/faucet"
+    },
+    {
+      "v1": "intuition-network/rpc",
+      "v2": "build/connect"
+    },
+    {
+      "v1": "interaction-guide/create-atom",
+      "v2": "build/create-atoms"
+    },
+    {
+      "v1": "interaction-guide/create-triple",
+      "v2": "build/create-triples"
+    },
+    {
+      "v1": "interaction-guide/deposit-return",
+      "v2": "build/deposit-redeem"
+    },
+    {
+      "v1": "protocol/examples/batch-operations",
+      "v2": "build/batch-writes"
+    },
+    {
+      "v1": "interaction-guide/fee-proxy-integration",
+      "v2": "build/fee-proxy"
+    },
+    {
+      "v1": "intuition-sdk/integrations/react",
+      "v2": "build/react"
+    },
+    {
+      "v1": "resources/glossary",
+      "v2": "reference/glossary"
+    },
+    {
+      "v1": "intuition-node/overview",
+      "v2": "core/index"
+    },
+    {
+      "v1": "intuition-node/run-an-intuition-node",
+      "v2": "core/run-a-node"
+    },
+    {
+      "v1": "intuition-node/local-setup",
+      "v2": "core/local-devnet"
+    },
+    {
+      "v1": "portal",
+      "v2": "community/ecosystem"
+    },
+    {
+      "v1": "contribution-guidelines",
+      "v2": "community/contributing"
+    }
+  ]
+}

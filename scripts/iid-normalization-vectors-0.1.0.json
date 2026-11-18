@@ -1,0 +1,927 @@
+{
+  "description": "Machine-readable export of the normative test vectors in schemes/*.md. The markdown documents are normative; regenerate with scripts/extract-vectors.mjs, never hand-edit. canonical: null means the input MUST be rejected.",
+  "specVersion": "0.1.0",
+  "count": 170,
+  "vectors": [
+    {
+      "scheme": "acct",
+      "input": "x:295218901",
+      "canonical": "x:295218901"
+    },
+    {
+      "scheme": "acct",
+      "input": "X:295218901",
+      "canonical": "x:295218901"
+    },
+    {
+      "scheme": "acct",
+      "input": "farcaster:3",
+      "canonical": "farcaster:3"
+    },
+    {
+      "scheme": "acct",
+      "input": "github:@Torvalds",
+      "canonical": "github:@torvalds"
+    },
+    {
+      "scheme": "acct",
+      "input": "GitHub:@Torvalds",
+      "canonical": "github:@torvalds"
+    },
+    {
+      "scheme": "acct",
+      "input": "x:has space",
+      "canonical": null,
+      "reason": "whitespace in identifier"
+    },
+    {
+      "scheme": "acct",
+      "input": "torvalds",
+      "canonical": null,
+      "reason": "no platform prefix"
+    },
+    {
+      "scheme": "acct",
+      "input": "x:",
+      "canonical": null,
+      "reason": "empty identifier"
+    },
+    {
+      "scheme": "appid",
+      "input": "android:com.spotify.music",
+      "canonical": "android:com.spotify.music"
+    },
+    {
+      "scheme": "appid",
+      "input": "IOS:com.Apple.Music",
+      "canonical": "ios:com.apple.music"
+    },
+    {
+      "scheme": "appid",
+      "input": "ios:com.burbn.instagram",
+      "canonical": "ios:com.burbn.instagram"
+    },
+    {
+      "scheme": "appid",
+      "input": "windows:com.foo",
+      "canonical": null,
+      "reason": "store not in the frozen set"
+    },
+    {
+      "scheme": "appid",
+      "input": "android:com spotify",
+      "canonical": null,
+      "reason": "space in the native ID"
+    },
+    {
+      "scheme": "appid",
+      "input": "com.spotify.music",
+      "canonical": null,
+      "reason": "no store prefix"
+    },
+    {
+      "scheme": "caip10",
+      "input": "eip155:1:0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
+      "canonical": "eip155:1:0xd8da6bf26964af9d7eed9e03e53415d37aa96045"
+    },
+    {
+      "scheme": "caip10",
+      "input": "eip155:1:0xd8da6bf26964af9d7eed9e03e53415d37aa96045",
+      "canonical": "eip155:1:0xd8da6bf26964af9d7eed9e03e53415d37aa96045"
+    },
+    {
+      "scheme": "caip10",
+      "input": "eip155:8453:0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+      "canonical": "eip155:8453:0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+    },
+    {
+      "scheme": "caip10",
+      "input": "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp:7v91N7iZ9mNicL8WfG6cgSCKyRXydQjLh6UYBWwm6y1Q",
+      "canonical": "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp:7v91N7iZ9mNicL8WfG6cgSCKyRXydQjLh6UYBWwm6y1Q"
+    },
+    {
+      "scheme": "caip10",
+      "input": "eip155:1:0xd8da6bf2",
+      "canonical": null,
+      "reason": "EVM address is not 40 hex digits"
+    },
+    {
+      "scheme": "caip10",
+      "input": "0xd8da6bf26964af9d7eed9e03e53415d37aa96045",
+      "canonical": null,
+      "reason": "bare address, no chain scoping"
+    },
+    {
+      "scheme": "caip10",
+      "input": "EIP155:1:0xd8da6bf26964af9d7eed9e03e53415d37aa96045",
+      "canonical": null,
+      "reason": "namespace must be lowercase"
+    },
+    {
+      "scheme": "caip19",
+      "input": "eip155:1/erc20:0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+      "canonical": "eip155:1/erc20:0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+    },
+    {
+      "scheme": "caip19",
+      "input": "eip155:1/erc20:0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+      "canonical": "eip155:1/erc20:0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+    },
+    {
+      "scheme": "caip19",
+      "input": "eip155:1/erc721:0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D",
+      "canonical": "eip155:1/erc721:0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d"
+    },
+    {
+      "scheme": "caip19",
+      "input": "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/token:EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      "canonical": "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp/token:EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+    },
+    {
+      "scheme": "caip19",
+      "input": "eip155:1:erc20:0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+      "canonical": null,
+      "reason": "colon where the chain/asset `/` separator belongs"
+    },
+    {
+      "scheme": "caip19",
+      "input": "erc20:0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+      "canonical": null,
+      "reason": "no chain part"
+    },
+    {
+      "scheme": "doi",
+      "input": "https://doi.org/10.48550/ARXIV.1706.03762",
+      "canonical": "10.48550/arxiv.1706.03762"
+    },
+    {
+      "scheme": "doi",
+      "input": "doi:10.1000/182",
+      "canonical": "10.1000/182"
+    },
+    {
+      "scheme": "doi",
+      "input": "10.1103/PhysRev.47.777",
+      "canonical": "10.1103/physrev.47.777"
+    },
+    {
+      "scheme": "doi",
+      "input": "http://dx.doi.org/10.1000/182",
+      "canonical": "10.1000/182"
+    },
+    {
+      "scheme": "doi",
+      "input": "10.48550",
+      "canonical": null,
+      "reason": "no suffix"
+    },
+    {
+      "scheme": "doi",
+      "input": "10.123/abc",
+      "canonical": null,
+      "reason": "registrant prefix must be 4–9 digits"
+    },
+    {
+      "scheme": "doi",
+      "input": "https://doi.org/",
+      "canonical": null,
+      "reason": "empty after prefix stripping"
+    },
+    {
+      "scheme": "eidr",
+      "input": "10.5240/1F2A-E1C5-680A-14C6-E76B-I",
+      "canonical": "10.5240/1F2A-E1C5-680A-14C6-E76B-I"
+    },
+    {
+      "scheme": "eidr",
+      "input": "https://doi.org/10.5240/1F2A-E1C5-680A-14C6-E76B-I",
+      "canonical": "10.5240/1F2A-E1C5-680A-14C6-E76B-I"
+    },
+    {
+      "scheme": "eidr",
+      "input": "10.5240/1f2a-e1c5-680a-14c6-e76b-i",
+      "canonical": "10.5240/1F2A-E1C5-680A-14C6-E76B-I"
+    },
+    {
+      "scheme": "eidr",
+      "input": "10.5240/1F2A-E1C5-680A-14C6-E76B",
+      "canonical": null,
+      "reason": "missing check character"
+    },
+    {
+      "scheme": "eidr",
+      "input": "10.5240/1F2A-E1C5-680A-14C6-E76G-I",
+      "canonical": null,
+      "reason": "`G` is not a hex digit"
+    },
+    {
+      "scheme": "eidr",
+      "input": "10.1000/182",
+      "canonical": null,
+      "reason": "not the EIDR DOI prefix"
+    },
+    {
+      "scheme": "gen1",
+      "input": "movie:r4:fb681afe7d438cad73ae90a70f1cc55a",
+      "canonical": "movie:r4:fb681afe7d438cad73ae90a70f1cc55a"
+    },
+    {
+      "scheme": "gen1",
+      "input": "  movie:r4:fb681afe7d438cad73ae90a70f1cc55a  ",
+      "canonical": "movie:r4:fb681afe7d438cad73ae90a70f1cc55a"
+    },
+    {
+      "scheme": "gen1",
+      "input": "movie:r0:fb681afe7d438cad73ae90a70f1cc55a",
+      "canonical": null,
+      "reason": "rung tags start at 1"
+    },
+    {
+      "scheme": "gen1",
+      "input": "movie:r4:FB681AFE7D438CAD73AE90A70F1CC55A",
+      "canonical": null,
+      "reason": "hash must be lowercase; no folding is applied"
+    },
+    {
+      "scheme": "gen1",
+      "input": "movie:r4:fb681afe",
+      "canonical": null,
+      "reason": "hash is not 32 hex chars"
+    },
+    {
+      "scheme": "gen1",
+      "input": "Movie:r4:fb681afe7d438cad73ae90a70f1cc55a",
+      "canonical": null,
+      "reason": "slug must be lowercase"
+    },
+    {
+      "scheme": "geo",
+      "input": "9q8yyk8y",
+      "canonical": "9q8yyk8y"
+    },
+    {
+      "scheme": "geo",
+      "input": "9Q8YYK8Y",
+      "canonical": "9q8yyk8y"
+    },
+    {
+      "scheme": "geo",
+      "input": "u4pruydqqvj",
+      "canonical": "u4pruydqqvj"
+    },
+    {
+      "scheme": "geo",
+      "input": "gbsuv",
+      "canonical": "gbsuv"
+    },
+    {
+      "scheme": "geo",
+      "input": "9q8yyk8a",
+      "canonical": null,
+      "reason": "`a` is not in the geohash alphabet"
+    },
+    {
+      "scheme": "geo",
+      "input": "9q8yyk8y9q8yyk8y",
+      "canonical": null,
+      "reason": "longer than 12 characters"
+    },
+    {
+      "scheme": "gtin",
+      "input": "036000291452",
+      "canonical": "00036000291452"
+    },
+    {
+      "scheme": "gtin",
+      "input": "0 36000 29145 2",
+      "canonical": "00036000291452"
+    },
+    {
+      "scheme": "gtin",
+      "input": "96385074",
+      "canonical": "00000096385074"
+    },
+    {
+      "scheme": "gtin",
+      "input": "4006381333931",
+      "canonical": "04006381333931"
+    },
+    {
+      "scheme": "gtin",
+      "input": "9780684832722",
+      "canonical": "09780684832722"
+    },
+    {
+      "scheme": "gtin",
+      "input": "036000291453",
+      "canonical": null,
+      "reason": "check digit fails"
+    },
+    {
+      "scheme": "gtin",
+      "input": "123456789",
+      "canonical": null,
+      "reason": "9 digits is not a GTIN length"
+    },
+    {
+      "scheme": "hash",
+      "input": "sha256:9F86D081884C7D659A2FEAA0C55AD015A3BF4F1B2B0B822CD15D6C15B0F00A08",
+      "canonical": "sha256:9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"
+    },
+    {
+      "scheme": "hash",
+      "input": "sha256:0x9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
+      "canonical": "sha256:9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"
+    },
+    {
+      "scheme": "hash",
+      "input": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "canonical": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "scheme": "hash",
+      "input": "keccak256:c5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470",
+      "canonical": "keccak256:c5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470"
+    },
+    {
+      "scheme": "hash",
+      "input": "md5:d41d8cd98f00b204e9800998ecf8427e",
+      "canonical": null,
+      "reason": "algorithm not in the frozen set"
+    },
+    {
+      "scheme": "hash",
+      "input": "sha256:9f86d081",
+      "canonical": null,
+      "reason": "digest is not 64 hex digits"
+    },
+    {
+      "scheme": "imdb",
+      "input": "https://www.imdb.com/title/tt1375666/",
+      "canonical": "tt1375666"
+    },
+    {
+      "scheme": "imdb",
+      "input": "TT1375666",
+      "canonical": "tt1375666"
+    },
+    {
+      "scheme": "imdb",
+      "input": "https://www.imdb.com/name/nm0000138/",
+      "canonical": "nm0000138"
+    },
+    {
+      "scheme": "imdb",
+      "input": "tt1375666",
+      "canonical": "tt1375666"
+    },
+    {
+      "scheme": "imdb",
+      "input": "tt123",
+      "canonical": null,
+      "reason": "fewer than six digits"
+    },
+    {
+      "scheme": "imdb",
+      "input": "xx1375666",
+      "canonical": null,
+      "reason": "unrecognized prefix"
+    },
+    {
+      "scheme": "isbn",
+      "input": "0-684-83272-0",
+      "canonical": "9780684832722"
+    },
+    {
+      "scheme": "isbn",
+      "input": "978-0-684-83272-2",
+      "canonical": "9780684832722"
+    },
+    {
+      "scheme": "isbn",
+      "input": "097522980X",
+      "canonical": "9780975229804"
+    },
+    {
+      "scheme": "isbn",
+      "input": "9780684832722",
+      "canonical": "9780684832722"
+    },
+    {
+      "scheme": "isbn",
+      "input": "9780684832720",
+      "canonical": null,
+      "reason": "ISBN-13 check digit fails"
+    },
+    {
+      "scheme": "isbn",
+      "input": "0684832721",
+      "canonical": null,
+      "reason": "ISBN-10 check digit fails"
+    },
+    {
+      "scheme": "isbn",
+      "input": "12345",
+      "canonical": null,
+      "reason": "not 10 or 13 digits"
+    },
+    {
+      "scheme": "isni",
+      "input": "0000000121032683",
+      "canonical": "0000000121032683"
+    },
+    {
+      "scheme": "isni",
+      "input": "0000 0001 2103 2683",
+      "canonical": "0000000121032683"
+    },
+    {
+      "scheme": "isni",
+      "input": "0000-0001-2103-2683",
+      "canonical": "0000000121032683"
+    },
+    {
+      "scheme": "isni",
+      "input": "000000012146438X",
+      "canonical": "000000012146438X"
+    },
+    {
+      "scheme": "isni",
+      "input": "0000000121032684",
+      "canonical": null,
+      "reason": "check character fails"
+    },
+    {
+      "scheme": "isni",
+      "input": "000000012103268",
+      "canonical": null,
+      "reason": "15 characters, not 16"
+    },
+    {
+      "scheme": "isni",
+      "input": "https://isni.org/isni/0000000121032683",
+      "canonical": null,
+      "reason": "URLs are not canonicalized"
+    },
+    {
+      "scheme": "isrc",
+      "input": "us-sm1-00-07459",
+      "canonical": "USSM10007459"
+    },
+    {
+      "scheme": "isrc",
+      "input": "US-SM1-00-07459",
+      "canonical": "USSM10007459"
+    },
+    {
+      "scheme": "isrc",
+      "input": "US SM1 00 07459",
+      "canonical": "USSM10007459"
+    },
+    {
+      "scheme": "isrc",
+      "input": "USRC17607839",
+      "canonical": "USRC17607839"
+    },
+    {
+      "scheme": "isrc",
+      "input": "USSM1000745",
+      "canonical": null,
+      "reason": "11 characters, not 12"
+    },
+    {
+      "scheme": "isrc",
+      "input": "1SSM10007459",
+      "canonical": null,
+      "reason": "first two characters must be letters"
+    },
+    {
+      "scheme": "isrc",
+      "input": "USSM1000745X",
+      "canonical": null,
+      "reason": "designation block must be seven digits"
+    },
+    {
+      "scheme": "iswc",
+      "input": "T-034.524.680-1",
+      "canonical": "T0345246801"
+    },
+    {
+      "scheme": "iswc",
+      "input": "T0345246801",
+      "canonical": "T0345246801"
+    },
+    {
+      "scheme": "iswc",
+      "input": "t-034.524.680-1",
+      "canonical": "T0345246801"
+    },
+    {
+      "scheme": "iswc",
+      "input": "T0345246800",
+      "canonical": null,
+      "reason": "check digit fails"
+    },
+    {
+      "scheme": "iswc",
+      "input": "T034524680",
+      "canonical": null,
+      "reason": "nine digits after `T`, not ten"
+    },
+    {
+      "scheme": "iswc",
+      "input": "0345246801",
+      "canonical": null,
+      "reason": "missing the `T` prefix"
+    },
+    {
+      "scheme": "lei",
+      "input": "5493001KJTIIGC8Y1R12",
+      "canonical": "5493001KJTIIGC8Y1R12"
+    },
+    {
+      "scheme": "lei",
+      "input": "5493001kjtiigc8y1r12",
+      "canonical": "5493001KJTIIGC8Y1R12"
+    },
+    {
+      "scheme": "lei",
+      "input": "HWUPKR0MPOU8FGXBT394",
+      "canonical": "HWUPKR0MPOU8FGXBT394"
+    },
+    {
+      "scheme": "lei",
+      "input": "5493001KJTIIGC8Y1R13",
+      "canonical": null,
+      "reason": "mod 97-10 checksum fails"
+    },
+    {
+      "scheme": "lei",
+      "input": "5493001KJTIIGC8Y1R1",
+      "canonical": null,
+      "reason": "19 characters, not 20"
+    },
+    {
+      "scheme": "lei",
+      "input": "5493001KJTIIGC8Y1RAB",
+      "canonical": null,
+      "reason": "check positions must be digits"
+    },
+    {
+      "scheme": "mbid",
+      "input": "https://musicbrainz.org/artist/056e4f3e-d505-4dad-8ec1-d04f521cbb56",
+      "canonical": "artist:056e4f3e-d505-4dad-8ec1-d04f521cbb56"
+    },
+    {
+      "scheme": "mbid",
+      "input": "artist:056e4f3e-d505-4dad-8ec1-d04f521cbb56",
+      "canonical": "artist:056e4f3e-d505-4dad-8ec1-d04f521cbb56"
+    },
+    {
+      "scheme": "mbid",
+      "input": "ARTIST:056E4F3E-D505-4DAD-8EC1-D04F521CBB56",
+      "canonical": "artist:056e4f3e-d505-4dad-8ec1-d04f521cbb56"
+    },
+    {
+      "scheme": "mbid",
+      "input": "artist/056e4f3e-d505-4dad-8ec1-d04f521cbb56",
+      "canonical": "artist:056e4f3e-d505-4dad-8ec1-d04f521cbb56"
+    },
+    {
+      "scheme": "mbid",
+      "input": "056e4f3e-d505-4dad-8ec1-d04f521cbb56",
+      "canonical": null,
+      "reason": "bare UUID, no entity-type segment"
+    },
+    {
+      "scheme": "mbid",
+      "input": "song:056e4f3e-d505-4dad-8ec1-d04f521cbb56",
+      "canonical": null,
+      "reason": "not a recognized entity type"
+    },
+    {
+      "scheme": "mbid",
+      "input": "artist:056e4f3e-d505-4dad-8ec1",
+      "canonical": null,
+      "reason": "not a full UUID"
+    },
+    {
+      "scheme": "olid",
+      "input": "https://openlibrary.org/works/OL45804W",
+      "canonical": "OL45804W"
+    },
+    {
+      "scheme": "olid",
+      "input": "https://openlibrary.org/works/OL45804W/Fantastic_Mr_Fox",
+      "canonical": "OL45804W"
+    },
+    {
+      "scheme": "olid",
+      "input": "https://openlibrary.org/books/OL7353617M",
+      "canonical": "OL7353617M"
+    },
+    {
+      "scheme": "olid",
+      "input": "https://openlibrary.org/authors/OL23919A",
+      "canonical": "OL23919A"
+    },
+    {
+      "scheme": "olid",
+      "input": "ol45804w",
+      "canonical": "OL45804W"
+    },
+    {
+      "scheme": "olid",
+      "input": "OL45804X",
+      "canonical": null,
+      "reason": "suffix must be `W`, `M`, or `A`"
+    },
+    {
+      "scheme": "olid",
+      "input": "OL45804",
+      "canonical": null,
+      "reason": "missing the type suffix"
+    },
+    {
+      "scheme": "orcid",
+      "input": "0000-0002-1825-0097",
+      "canonical": "0000000218250097"
+    },
+    {
+      "scheme": "orcid",
+      "input": "0000000218250097",
+      "canonical": "0000000218250097"
+    },
+    {
+      "scheme": "orcid",
+      "input": "0000-0002-9079-593X",
+      "canonical": "000000029079593X"
+    },
+    {
+      "scheme": "orcid",
+      "input": "0000-0002-1825-0098",
+      "canonical": null,
+      "reason": "check character fails"
+    },
+    {
+      "scheme": "orcid",
+      "input": "https://orcid.org/0000-0002-1825-0097",
+      "canonical": null,
+      "reason": "URLs are not canonicalized"
+    },
+    {
+      "scheme": "orcid",
+      "input": "0000-0002-1825-009",
+      "canonical": null,
+      "reason": "15 characters, not 16"
+    },
+    {
+      "scheme": "podcastguid",
+      "input": "917393e3-1b1e-5cef-ace4-edaa54e1f810",
+      "canonical": "917393e3-1b1e-5cef-ace4-edaa54e1f810"
+    },
+    {
+      "scheme": "podcastguid",
+      "input": "917393E3-1B1E-5CEF-ACE4-EDAA54E1F810",
+      "canonical": "917393e3-1b1e-5cef-ace4-edaa54e1f810"
+    },
+    {
+      "scheme": "podcastguid",
+      "input": "f77016bc-fd74-5c94-893f-864deb06fc30",
+      "canonical": "f77016bc-fd74-5c94-893f-864deb06fc30"
+    },
+    {
+      "scheme": "podcastguid",
+      "input": "917393e31b1e5ceface4edaa54e1f810",
+      "canonical": null,
+      "reason": "hyphens are required"
+    },
+    {
+      "scheme": "podcastguid",
+      "input": "not-a-uuid",
+      "canonical": null,
+      "reason": "not a UUID"
+    },
+    {
+      "scheme": "purl",
+      "input": "pkg:npm/react@18.2.0",
+      "canonical": "npm/react"
+    },
+    {
+      "scheme": "purl",
+      "input": "npm/react",
+      "canonical": "npm/react"
+    },
+    {
+      "scheme": "purl",
+      "input": "pkg:pypi/Django@4.2.1",
+      "canonical": "pypi/django"
+    },
+    {
+      "scheme": "purl",
+      "input": "pkg:github/anthropics/anthropic-sdk-typescript@v1?checksum=abc",
+      "canonical": "github/anthropics/anthropic-sdk-typescript"
+    },
+    {
+      "scheme": "purl",
+      "input": "react",
+      "canonical": null,
+      "reason": "no ecosystem type"
+    },
+    {
+      "scheme": "purl",
+      "input": "pkg:npm/",
+      "canonical": null,
+      "reason": "empty name"
+    },
+    {
+      "scheme": "rssitem",
+      "input": "917393e3-1b1e-5cef-ace4-edaa54e1f810:5cc51299e189a14f9c1aeb9029ee9a4b",
+      "canonical": "917393e3-1b1e-5cef-ace4-edaa54e1f810:5cc51299e189a14f9c1aeb9029ee9a4b"
+    },
+    {
+      "scheme": "rssitem",
+      "input": "917393E3-1B1E-5CEF-ACE4-EDAA54E1F810:5CC51299E189A14F9C1AEB9029EE9A4B",
+      "canonical": "917393e3-1b1e-5cef-ace4-edaa54e1f810:5cc51299e189a14f9c1aeb9029ee9a4b"
+    },
+    {
+      "scheme": "rssitem",
+      "input": "917393e3-1b1e-5cef-ace4-edaa54e1f810",
+      "canonical": null,
+      "reason": "no item-hash segment"
+    },
+    {
+      "scheme": "rssitem",
+      "input": "917393e3-1b1e-5cef-ace4-edaa54e1f810:abcd1234",
+      "canonical": null,
+      "reason": "hash is not 32 hex chars"
+    },
+    {
+      "scheme": "rssitem",
+      "input": "917393e31b1e5ceface4edaa54e1f810aaaa:5cc51299e189a14f9c1aeb9029ee9a4b",
+      "canonical": null,
+      "reason": "first segment is not a UUID"
+    },
+    {
+      "scheme": "termset",
+      "input": "f3f11679d904850c042fafedbee6d3ec:merkle-tree",
+      "canonical": "f3f11679d904850c042fafedbee6d3ec:merkle-tree"
+    },
+    {
+      "scheme": "termset",
+      "input": "F3F11679D904850C042FAFEDBEE6D3EC:Merkle-Tree",
+      "canonical": "f3f11679d904850c042fafedbee6d3ec:merkle-tree"
+    },
+    {
+      "scheme": "termset",
+      "input": "f3f11679d904850c042fafedbee6d3ec:-merkle",
+      "canonical": null,
+      "reason": "slug starts with a hyphen"
+    },
+    {
+      "scheme": "termset",
+      "input": "merkle-tree",
+      "canonical": null,
+      "reason": "no set-hash segment"
+    },
+    {
+      "scheme": "termset",
+      "input": "f3f11679d904850c042fafedbee6d3ec:merkle tree",
+      "canonical": null,
+      "reason": "space in slug"
+    },
+    {
+      "scheme": "termset",
+      "input": "abcd:merkle-tree",
+      "canonical": null,
+      "reason": "set hash is not 32 hex chars"
+    },
+    {
+      "scheme": "tmdb",
+      "input": "https://www.themoviedb.org/movie/27205-inception",
+      "canonical": "movie:27205"
+    },
+    {
+      "scheme": "tmdb",
+      "input": "movie/27205",
+      "canonical": "movie:27205"
+    },
+    {
+      "scheme": "tmdb",
+      "input": "movie:27205",
+      "canonical": "movie:27205"
+    },
+    {
+      "scheme": "tmdb",
+      "input": "https://www.themoviedb.org/tv/1396",
+      "canonical": "tv:1396"
+    },
+    {
+      "scheme": "tmdb",
+      "input": "person:6193",
+      "canonical": "person:6193"
+    },
+    {
+      "scheme": "tmdb",
+      "input": "season:1",
+      "canonical": null,
+      "reason": "not a recognized segment"
+    },
+    {
+      "scheme": "tmdb",
+      "input": "27205",
+      "canonical": null,
+      "reason": "missing the type segment"
+    },
+    {
+      "scheme": "url",
+      "input": "http://www.Example.com/Articles/?b=2&a=1&utm_source=news#top",
+      "canonical": "https://example.com/Articles?a=1&b=2"
+    },
+    {
+      "scheme": "url",
+      "input": "https://example.com/Articles?a=1&b=2",
+      "canonical": "https://example.com/Articles?a=1&b=2"
+    },
+    {
+      "scheme": "url",
+      "input": "https://example.com:443/",
+      "canonical": "https://example.com"
+    },
+    {
+      "scheme": "url",
+      "input": "http://example.com:80/a",
+      "canonical": "https://example.com/a"
+    },
+    {
+      "scheme": "url",
+      "input": "https://example.com:8080/api",
+      "canonical": "https://example.com:8080/api"
+    },
+    {
+      "scheme": "url",
+      "input": "https://open.spotify.com/episode/3dVYvWrhLdKg5Znpn1YG9o?si=ca38623922614db1",
+      "canonical": "https://open.spotify.com/episode/3dVYvWrhLdKg5Znpn1YG9o"
+    },
+    {
+      "scheme": "url",
+      "input": "https://www.instagram.com/p/xyz/?igshid=MzRlODBiNWFlZA",
+      "canonical": "https://instagram.com/p/xyz"
+    },
+    {
+      "scheme": "url",
+      "input": "https://example.com/product?msclkid=abc&wbraid=def&spm=a2g0o.detail&color=red",
+      "canonical": "https://example.com/product?color=red"
+    },
+    {
+      "scheme": "url",
+      "input": "ftp://example.com/file",
+      "canonical": null,
+      "reason": "scheme is not http/https"
+    },
+    {
+      "scheme": "url",
+      "input": "not a url",
+      "canonical": null,
+      "reason": "does not parse as a URL"
+    },
+    {
+      "scheme": "wd",
+      "input": "https://www.wikidata.org/wiki/Q42",
+      "canonical": "Q42"
+    },
+    {
+      "scheme": "wd",
+      "input": "q42",
+      "canonical": "Q42"
+    },
+    {
+      "scheme": "wd",
+      "input": "https://wikidata.org/entity/Q25188",
+      "canonical": "Q25188"
+    },
+    {
+      "scheme": "wd",
+      "input": "Q25188",
+      "canonical": "Q25188"
+    },
+    {
+      "scheme": "wd",
+      "input": "Q042",
+      "canonical": null,
+      "reason": "leading zero"
+    },
+    {
+      "scheme": "wd",
+      "input": "P31",
+      "canonical": null,
+      "reason": "properties are not items"
+    },
+    {
+      "scheme": "wd",
+      "input": "42",
+      "canonical": null,
+      "reason": "missing the `Q` prefix"
+    }
+  ]
+}

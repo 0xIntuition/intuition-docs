@@ -4,11 +4,12 @@ on:
   pull_request:
     branches: [main]
     paths:
-      - 'docs/_data/intuition-sdk/**'
-      - 'docs/_data/quick-start/using-the-sdk.md'
-      - 'scripts/validate-sdk-examples.js'
-      - 'scripts/sdk-examples.config.json'
-      - 'scripts/__fixtures__/sdk-examples/**'
+      - 'docs/_data/**'
+      - '_data_versioned_docs/**'
+      - 'examples/v2/**'
+      - 'static/intuition-release.json'
+      - 'scripts/**'
+      - 'docs-versions.config.js'
       - 'package.json'
       - 'package-lock.json'
       - '.github/workflows/validate-sdk-examples.yml'
@@ -25,11 +26,37 @@ jobs:
 
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: 22
+          node-version: '22.21.0'
           cache: npm
 
       - name: Install dependencies
         run: npm ci
 
+      - name: Install isolated V2 dependencies without lifecycle scripts
+        run: npm ci --ignore-scripts --prefix examples/v2
+
       - name: Typecheck SDK documentation examples
         run: npm run validate-sdk-examples
+
+      - name: Verify historical atom identity preservation offline
+        run: node --test examples/v2/first-write/migration.test.ts
+
+      - name: Verify first-write transaction preparation offline
+        run: node --test examples/v2/first-write/first-write.test.ts
+
+      - name: Verify Core query responses with offline HTTP fixtures
+        run: node --test examples/v2/core-query-api/src/query-client.test.ts
+
+      - name: Verify wallet submission and transaction receipts offline
+        run: node --test examples/v2/react-app/src/receipt.test.ts examples/v2/react-app/src/wallet-write.test.ts
+
+      - name: Verify enrichment outcomes with an injected offline transport
+        run: node examples/v2/music-catalog/src/enrichment-plugin.ts
+
+      - name: Check synchronized V2 source regions
+        run: node scripts/sync-example-snippets.js --check
+
+      - name: Verify the offline quickstart output
+        run: |
+          node --experimental-strip-types examples/v2/quickstart/quickstart.ts > "$RUNNER_TEMP/quickstart-output.txt"
+          diff -u examples/v2/quickstart/expected-output.txt "$RUNNER_TEMP/quickstart-output.txt"
