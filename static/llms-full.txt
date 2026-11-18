@@ -1688,6 +1688,8 @@ Verify that the final command prints the selected commit. A fork lets you mainta
 
 ### 2. Build locally and wait for health
 
+Run the stock stack on an isolated development machine. On a shared or network-reachable host, bind the published ports to `127.0.0.1` and replace the development database credentials before startup. The health request below connects to localhost regardless of which interfaces Compose publishes. [Run a Core node](https://docs.intuition.systems/docs/core/run-a-node) · [Datastore ports and credentials](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/docker-compose.datastores.yml)
+
 ```sh
 scripts/bootstrap.sh --no-start
 docker compose -f docker-compose.yml up -d --build
@@ -1858,7 +1860,7 @@ function Providers({
       transports: { [intuitionTestnet.id]: http(endpoint) },
     }),
   );
-  const [client] = useState(() => new QueryClient());
+  const [client] = useState(createWalletQueryClient);
   return (
     <WagmiProvider config={config} reconnectOnMount={false}>
       <QueryClientProvider client={client}>
@@ -1868,6 +1870,8 @@ function Providers({
   );
 }
 ```
+
+The example’s `createWalletQueryClient` configures wagmi’s `writeContract` mutation to start immediately and never retry. Submission checks connectivity first. If the app is offline, reconnect and review the creation again. [Wallet write configuration](https://github.com/0xIntuition/intuition-docs/blob/a509db2ff386a3a232ca5e6529163def7a6fc40c/examples/v2/react-app/src/wallet-write.ts)
 
 ### 2. Read the atom by term ID
 
@@ -2050,7 +2054,7 @@ Choose testnet to exercise a shared deployment or Anvil to control the chain, de
 
 **Testnet.** Check that your client reports chain 13579 and resolves the published testnet MultiVault using [Connect to a network](https://docs.intuition.systems/docs/build/connect). For a write, request tTRUST for your test account's public address, then follow the first-write walkthrough to review the atom, payment and gas before confirming. Check for a successful receipt and record its term ID. If you also index testnet, use a start block verified for that exact contract. Core's upstream smoke-test window uses a historical deployment. [Testnet faucet](https://testnet.hub.intuition.systems/) · [First testnet write](https://docs.intuition.systems/docs/get-started/first-write) · [Deployment definitions](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/packages/contracts/src/addresses.ts).
 
-**Local Anvil.** Continue below for chain 31337. The deployer sends transactions only on your local chain when run with these Compose services. Keep this development chain accessible only to trusted callers.
+**Local Anvil.** Continue below for chain 31337. The deployer sends transactions only on your local chain when run with these Compose services. Use an isolated development machine for the stock configuration. On a shared or reachable host, bind published ports to loopback, including Anvil (`127.0.0.1:8545:8545`), Postgres, TimescaleDB and Redis. Replace the development database credentials before startup. Keep Anvil’s listener inside its container reachable by the deployer and indexer. [Run a local devnet](https://docs.intuition.systems/docs/core/local-devnet) · [Anvil port mapping](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/docker-compose.yml#L187-L192)
 
 ### 2. Fork Core and prepare the pinned source
 
@@ -2160,7 +2164,7 @@ Choose a kind that fits the reader’s task. For a how-to, state the goal in one
 
 For a tutorial, show the estimated time and step count, then explain what the reader will build and how to run it. For a concept, follow a neighboring concept page’s structure and link its prerequisites. For a reference, organize the facts around what a reader needs to look up. Use a page of the same kind and section as your starting point.
 
-Set `title`, `sidebar_label`, a description of up to 160 characters, `kind`, `reader` and `packages` in front matter. Write lists as single-line JSON arrays. For example, `reader: ["app"]` addresses application developers. Use `packages: []` when no specific package applies. Otherwise list the relevant manifest package names and place `` immediately after the front matter. Pages under `concepts/` also declare `depends_on`. The file path determines the route, and the title supplies the page heading.
+Set `title`, `sidebar_label`, a description of up to 160 characters, `kind`, `reader` and `packages` in front matter. Write lists as single-line JSON arrays. For example, `reader: ["app"]` addresses application developers. Use `packages: []` when no specific package applies. Otherwise list the relevant manifest package names and place `<AppliesTo />` immediately after the front matter. Pages under `concepts/` also declare `depends_on`. The file path determines the route, and the title supplies the page heading.
 
 ### 3. Update the source and its navigation
 
@@ -3805,6 +3809,8 @@ Start from the pinned source checkout described in [Query a Core node](https://d
 
 In `createCoreProcessingRuntime`, replace the call to `createAtomServicesProcessingRuntime(options)` with `createCatalogRuntime(options, createCatalogPlugin(readPage))`, using your reader. Preserve the wrapper's existing warning handling. Core's `ProcessingRuntimeOptions` exposes cache, preset and environment settings. The fork supplies the plugin by changing this constructor call. Adding a file or passing a plugin ID in an HTTP request alone cannot install a provider. The HTTP service and enrichment worker both reach this shared wrapper. [Core runtime wrapper](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/services/atom-services/src/service/runtime.ts) · [HTTP service construction](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/services/atom-services/src/service/dependencies.ts) · [Enrichment worker construction](https://github.com/0xIntuition/intuition-core/blob/a402f880600f92969dc8fb013ca0f69fc9a02420/services/workers/src/kg/atom-enrichment/index.ts)
 
+Use the stock port mappings and database credentials only on an isolated development machine. Before starting services on a shared or reachable host, bind published ports to loopback and replace the development database credentials as described in [Run a Core node](https://docs.intuition.systems/docs/core/run-a-node).
+
 Rebuild the consuming services from your fork. From the Core repository root, run:
 
 ```sh
@@ -3919,7 +3925,9 @@ SPOTIFY_CLIENT_SECRET=YOUR_SPOTIFY_CLIENT_SECRET
 SPOTIFY_MARKET=US
 ```
 
-Stock Compose forwards the listed provider variables into `atom-services` and the worker containers. Recreate the consumers that should use the changed values from your Core repository root:
+Stock Compose forwards the listed provider variables into `atom-services` and the worker containers. Use the stock port mappings and database credentials only on an isolated development machine. Before starting services on a shared or reachable host, bind published ports to loopback and replace the development database credentials as described in [Run a Core node](https://docs.intuition.systems/docs/core/run-a-node).
+
+Recreate the consumers that should use the changed values from your Core repository root:
 
 ```sh
 docker compose -f docker-compose.yml up -d --force-recreate atom-services workers-classification workers-enrichment
@@ -5210,7 +5218,7 @@ Compare the sender, chain ID, MultiVault address, data, assets, total value and 
 
 ### 4. Submit and read the receipt
 
-Select **Submit to wallet** only if the review matches your intent. In the wallet, verify the account, network, target, payment and gas before approving. The application passes the reviewed arrays to `createAtom` and displays the hash while waiting for the receipt. Stay on Intuition testnet during this wait because the receipt hook follows wagmi’s current chain. A rejected request or reverted transaction surfaces an error. If you received a hash, inspect it before making another attempt.
+Select **Submit to wallet** only if the review matches your intent. If the app reports that you are offline, reconnect and review the creation again. In the wallet, verify the account, network, target, payment and gas before approving. The application passes the reviewed arrays to `createAtom` and displays the hash while waiting for the receipt. Stay on Intuition testnet during this wait because the receipt hook follows wagmi’s current chain. A rejected request or reverted transaction surfaces an error. If you received a hash, inspect it before making another attempt.
 
 ```tsx
   async function submit(review: Review) {
@@ -5232,10 +5240,15 @@ Select **Submit to wallet** only if the review matches your intent. In the walle
     }
     setMessage('');
     try {
-      const { receipt } = await flow.createAtom({
-        data: review.data,
-        assets: review.assets,
-      });
+      const pending = submitWalletWrite(() =>
+        flow.createAtom({ data: review.data, assets: review.assets }),
+      );
+      if (!pending) {
+        setAttempt((value) => value + 1);
+        setMessage('Reconnect to the network, then review the creation again.');
+        return;
+      }
+      const { receipt } = await pending;
       setCompleted({ review, receipt });
     } catch (error) {
       setMessage(
@@ -5279,7 +5292,7 @@ Open `http://127.0.0.1:4173`. You should see **Read and create an atom** and a f
 
 ## Full source
 
-[React app, HTML host and strict TypeScript project](https://github.com/0xIntuition/intuition-docs/tree/84242e8f4399ac758c942e85b343e0512245a6cf/examples/v2/react-app)
+[React app, HTML host and strict TypeScript project](https://github.com/0xIntuition/intuition-docs/tree/a509db2ff386a3a232ca5e6529163def7a6fc40c/examples/v2/react-app)
 
 ## Next steps
 
