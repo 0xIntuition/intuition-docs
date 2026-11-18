@@ -440,7 +440,7 @@ For your own project, follow [Install the packages](https://docs.intuition.syste
 ---
 title: "Query a Core node"
 description: "Build the pinned Core source and read its graph through contract-backed HTTP operations."
-last_updated: "2026-11-17T11:59:06-08:00"
+last_updated: "2026-11-17T16:04:43-08:00"
 source: "https://docs.intuition.systems/docs/build/query-core"
 ---
 
@@ -457,7 +457,7 @@ Read [indexing and querying](https://docs.intuition.systems/docs/concepts/indexi
 ---
 title: "Use React hooks"
 description: "Connect a React application to Intuition testnet, read an atom by term ID, and submit a reviewed creation through the connected wallet."
-last_updated: "2026-11-17T13:58:10-08:00"
+last_updated: "2026-11-17T16:04:43-08:00"
 source: "https://docs.intuition.systems/docs/build/react"
 ---
 
@@ -529,7 +529,7 @@ For your own project, follow [Install the packages](https://docs.intuition.syste
 ---
 title: "Test locally"
 description: "Choose a funded testnet account or build a local Anvil deployment and follow its indexed atoms through your own Core node."
-last_updated: "2026-11-17T13:38:09-08:00"
+last_updated: "2026-11-17T16:04:43-08:00"
 source: "https://docs.intuition.systems/docs/build/test-locally"
 ---
 
@@ -1173,7 +1173,7 @@ This reference covers the settings listed in the [configuration reference for th
 ---
 title: "Write an enrichment plugin"
 description: "Implement and test a provider with a fixture, then connect it to the enrichment preset in a Core fork."
-last_updated: "2026-11-17T15:04:41-08:00"
+last_updated: "2026-11-17T16:04:43-08:00"
 source: "https://docs.intuition.systems/docs/core/enrichment-plugin"
 ---
 
@@ -1192,7 +1192,7 @@ Use Node.js 22.21.0 and a checkout of the documentation repository containing th
 ---
 title: "Enrichment providers"
 description: "Find keyless enrichment sources and the optional credentials that enable additional provider coverage."
-last_updated: "2026-11-17T15:04:41-08:00"
+last_updated: "2026-11-17T16:04:43-08:00"
 source: "https://docs.intuition.systems/docs/core/enrichment-providers"
 ---
 
@@ -1472,7 +1472,7 @@ Use Node.js 22.21.0. From the documentation repository root at the revision in *
 ---
 title: "React app with @0xintuition/react"
 description: "Mount a React 19 application, read atom bytes on Intuition testnet, and verify a reviewed wallet transaction against its receipt and the resulting atom."
-last_updated: "2026-11-17T13:58:10-08:00"
+last_updated: "2026-11-17T16:04:43-08:00"
 source: "https://docs.intuition.systems/docs/examples/react-app"
 ---
 

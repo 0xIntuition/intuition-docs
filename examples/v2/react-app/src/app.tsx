@@ -6,11 +6,7 @@ import {
   useCreateAtomFlow,
   useIntuitionConfig,
 } from '@0xintuition/react';
-import {
-  QueryClient,
-  QueryClientProvider,
-  useQueryClient,
-} from '@tanstack/react-query';
+import { QueryClientProvider, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState, type FormEvent, type ReactNode } from 'react';
 import {
   createPublicClient,
@@ -29,6 +25,7 @@ import {
   WagmiProvider,
 } from 'wagmi';
 import { getAccount } from 'wagmi/actions';
+import { createWalletQueryClient, submitWalletWrite } from './wallet-write.ts';
 import { verifyCreationReceipt } from './receipt.ts';
 import { prepareReview, type Review } from './review.ts';
 
@@ -106,7 +103,7 @@ function Providers({
       transports: { [intuitionTestnet.id]: http(endpoint) },
     }),
   );
-  const [client] = useState(() => new QueryClient());
+  const [client] = useState(createWalletQueryClient);
   return (
     <WagmiProvider config={config} reconnectOnMount={false}>
       <QueryClientProvider client={client}>
@@ -316,10 +313,15 @@ function Workspace() {
     }
     setMessage('');
     try {
-      const { receipt } = await flow.createAtom({
-        data: review.data,
-        assets: review.assets,
-      });
+      const pending = submitWalletWrite(() =>
+        flow.createAtom({ data: review.data, assets: review.assets }),
+      );
+      if (!pending) {
+        setAttempt((value) => value + 1);
+        setMessage('Reconnect to the network, then review the creation again.');
+        return;
+      }
+      const { receipt } = await pending;
       setCompleted({ review, receipt });
     } catch (error) {
       setMessage(

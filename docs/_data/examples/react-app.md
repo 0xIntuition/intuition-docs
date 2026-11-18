@@ -78,7 +78,7 @@ Compare the sender, chain ID, MultiVault address, data, assets, total value and 
 
 ### 4. Submit and read the receipt
 
-Select **Submit to wallet** only if the review matches your intent. In the wallet, verify the account, network, target, payment and gas before approving. The application passes the reviewed arrays to `createAtom` and displays the hash while waiting for the receipt. Stay on Intuition testnet during this wait because the receipt hook follows wagmi’s current chain. A rejected request or reverted transaction surfaces an error. If you received a hash, inspect it before making another attempt.
+Select **Submit to wallet** only if the review matches your intent. If the app reports that you are offline, reconnect and review the creation again. In the wallet, verify the account, network, target, payment and gas before approving. The application passes the reviewed arrays to `createAtom` and displays the hash while waiting for the receipt. Stay on Intuition testnet during this wait because the receipt hook follows wagmi’s current chain. A rejected request or reverted transaction surfaces an error. If you received a hash, inspect it before making another attempt.
 
 {/* example:start examples/v2/react-app/src/app.tsx#submit */}
 ```tsx
@@ -101,10 +101,15 @@ Select **Submit to wallet** only if the review matches your intent. In the walle
     }
     setMessage('');
     try {
-      const { receipt } = await flow.createAtom({
-        data: review.data,
-        assets: review.assets,
-      });
+      const pending = submitWalletWrite(() =>
+        flow.createAtom({ data: review.data, assets: review.assets }),
+      );
+      if (!pending) {
+        setAttempt((value) => value + 1);
+        setMessage('Reconnect to the network, then review the creation again.');
+        return;
+      }
+      const { receipt } = await pending;
       setCompleted({ review, receipt });
     } catch (error) {
       setMessage(
@@ -149,7 +154,7 @@ Open `http://127.0.0.1:4173`. You should see **Read and create an atom** and a f
 
 ## Full source
 
-[React app, HTML host and strict TypeScript project](https://github.com/0xIntuition/intuition-docs/tree/84242e8f4399ac758c942e85b343e0512245a6cf/examples/v2/react-app)
+[React app, HTML host and strict TypeScript project](https://github.com/0xIntuition/intuition-docs/tree/a509db2ff386a3a232ca5e6529163def7a6fc40c/examples/v2/react-app)
 
 ## Next steps
 

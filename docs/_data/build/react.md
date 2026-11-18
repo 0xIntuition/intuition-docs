@@ -37,7 +37,7 @@ function Providers({
       transports: { [intuitionTestnet.id]: http(endpoint) },
     }),
   );
-  const [client] = useState(() => new QueryClient());
+  const [client] = useState(createWalletQueryClient);
   return (
     <WagmiProvider config={config} reconnectOnMount={false}>
       <QueryClientProvider client={client}>
@@ -48,6 +48,8 @@ function Providers({
 }
 ```
 {/* example:end */}
+
+The example’s `createWalletQueryClient` configures wagmi’s `writeContract` mutation to start immediately and never retry. Submission checks connectivity first. If the app is offline, reconnect and review the creation again. [Wallet write configuration](https://github.com/0xIntuition/intuition-docs/blob/a509db2ff386a3a232ca5e6529163def7a6fc40c/examples/v2/react-app/src/wallet-write.ts)
 
 ### 2. Read the atom by term ID
 

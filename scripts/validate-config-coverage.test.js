@@ -5,8 +5,11 @@ const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
 const crypto = require('node:crypto');
+const { execFileSync } = require('node:child_process');
+const yaml = require('js-yaml');
 const { versions } = require('../docs-versions.config');
 const {
+  runFreeze,
   validateFreeze,
   validateCoverage,
 } = require('./validate-config-coverage');
@@ -322,7 +325,7 @@ test('Launch workflow coverage requires isolated installs and all source synchro
     ],
     [
       'validate-sdk-examples.yml',
-      'node --test examples/v2/react-app/src/receipt.test.ts',
+      'node --test examples/v2/react-app/src/receipt.test.ts examples/v2/react-app/src/wallet-write.test.ts',
     ],
     [
       'validate-sdk-examples.yml',
@@ -347,5 +350,180 @@ test('Launch workflow coverage requires isolated installs and all source synchro
         : `echo skipped # ${command}`,
     );
     assert.ok(validateCoverage(copy).length, `${name}: ${command}`);
+  }
+});
+
+test('the real freeze command admits a verified correction and freezes its merged bytes', (t) => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'v1-freeze-'));
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+  const repo = path.join(dir, 'repo');
+  fs.mkdirSync(repo);
+  const git = (...args) =>
+    execFileSync('git', args, { cwd: repo, encoding: 'utf8' });
+  git('init', '--quiet');
+  git('config', 'user.name', 'Freeze fixture');
+  git('config', 'user.email', 'fixture@example.invalid');
+  git('config', 'commit.gpgsign', 'false');
+  git('config', 'core.hooksPath', '/dev/null');
+  const commit = () => {
+    git('add', '-A');
+    git('commit', '-qm', 'fixture');
+  };
+  const write = (file, body) => {
+    fs.mkdirSync(path.dirname(path.join(repo, file)), { recursive: true });
+    fs.writeFileSync(path.join(repo, file), body);
+  };
+  const query = `${v1}/graphql-api/query.md`;
+  const unusual = `${v1}/tutorials/odd\nname.md`;
+  write('_data_versions.json', '["v1"]');
+  write(query, 'query { oldField }');
+  write(unusual, 'frozen');
+  write('outside.md', 'outside');
+  commit();
+  const main = 'refs/remotes/origin/main';
+  git('update-ref', main, 'HEAD');
+  const repository = 'example/docs';
+  const eventPath = path.join(dir, 'event.json');
+  const env = {
+    ...process.env,
+    PATH: `${dir}${path.delimiter}${process.env.PATH}`,
+    GITHUB_REPOSITORY: repository,
+    GITHUB_EVENT_PATH: eventPath,
+    RUN_EVENT: 'schedule',
+  };
+  // This offline stand-in accepts only the URL linked in the fixture PR.
+  fs.writeFileSync(
+    path.join(dir, 'gh'),
+    [
+      '#!/bin/sh',
+      '[ "$1" = api ] && [ "$2" = repos/example/docs/actions/runs/42 ] || exit 1',
+      'printf \'{"event":"%s","conclusion":"failure","path":".github/workflows/validate-graphql.yml","repository":{"full_name":"example/docs"}}\\n\' "$RUN_EVENT"',
+    ].join('\n'),
+    { mode: 0o755 },
+  );
+  const event = (
+    labelled,
+    body = 'https://github.com/example/docs/actions/runs/42',
+  ) =>
+    fs.writeFileSync(
+      eventPath,
+      JSON.stringify({
+        pull_request: {
+          labels: labelled ? [{ name: 'v1-exception' }] : [],
+          body,
+        },
+      }),
+    );
+  const errors = () => runFreeze(repo, env).errors;
+  write(query, 'query { newField }');
+  commit();
+  event(false);
+  assert.match(errors().join('\n'), /unlabelled/);
+  event(true, 'https://github.com/elsewhere/docs/actions/runs/42');
+  assert.match(errors().join('\n'), /verified failed nightly/);
+  event(true);
+  env.RUN_EVENT = 'workflow_dispatch';
+  assert.match(errors().join('\n'), /verified failed nightly/);
+  env.RUN_EVENT = 'schedule';
+  assert.deepEqual(errors(), []);
+  git('update-ref', main, 'HEAD');
+  event(false);
+  write('other.md', 'unrelated follow-up');
+  commit();
+  assert.deepEqual(errors(), []);
+
+  for (const [from, to] of [
+    [unusual, 'moved.md'],
+    ['outside.md', `${v1}/tutorials/moved in.md`],
+    [query, `${v1}/graphql-api/renamed.md`],
+    [query, null],
+  ]) {
+    git('reset', '--hard', main);
+    if (to) fs.renameSync(path.join(repo, from), path.join(repo, to));
+    else fs.unlinkSync(path.join(repo, from));
+    commit();
+    event(false);
+    assert.match(errors().join('\n'), /unlabelled/);
+    event(true);
+    assert.ok(errors().length);
+  }
+
+  git('reset', '--hard', main);
+  fs.unlinkSync(path.join(repo, query));
+  fs.symlinkSync('renamed.md', path.join(repo, query));
+  commit();
+  assert.match(errors().join('\n'), /must modify an existing query/);
+});
+
+test('schema refresh retains nightly evidence on an existing exception PR', (t) => {
+  const workflow = yaml.load(
+    fs.readFileSync(
+      path.join(__dirname, '../.github/workflows/validate-graphql.yml'),
+      'utf8',
+    ),
+  );
+  const job = workflow.jobs['schema-drift'];
+  const step = job.steps.find((item) => item.name === 'Create or update PR');
+  const label = job.steps.find(
+    (item) => item.name === 'Label the narrow GraphQL exception',
+  );
+  const predicate =
+    "github.event_name == 'schedule' && steps.validate.outcome == 'failure'";
+  assert.ok(Object.hasOwn(workflow.on, 'schedule'));
+  assert.ok(Object.hasOwn(workflow.on, 'workflow_dispatch'));
+  assert.deepEqual(workflow.on.repository_dispatch.types, ['schema-changed']);
+  assert.equal(job.if, "github.event_name != 'pull_request'");
+  assert.deepEqual(job.concurrency, {
+    group: 'graphql-schema-refresh',
+    'cancel-in-progress': false,
+  });
+  assert.equal(step.env.NIGHTLY_EXCEPTION, '${{ ' + predicate + ' }}');
+  assert.equal(label.if, predicate);
+
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'schema-refresh-'));
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+  fs.writeFileSync(path.join(dir, 'git'), '#!/bin/sh\nexit 0\n', {
+    mode: 0o755,
+  });
+  fs.writeFileSync(
+    path.join(dir, 'gh'),
+    [
+      '#!/bin/sh',
+      'case "$2" in',
+      'list) echo "$EXISTING_PR" ;;',
+      'view) echo "$LABELLED" ;;',
+      'edit|create) echo "$2" >> calls ;;',
+      '*) exit 1 ;;',
+      'esac',
+    ].join('\n'),
+    { mode: 0o755 },
+  );
+  const calls = path.join(dir, 'calls');
+  for (const [trigger, outcome, existing, labelled, action] of [
+    ['schedule', 'failure', '42', true, 'edit'],
+    ['schedule', 'success', '42', true, ''],
+    ['workflow_dispatch', 'failure', '42', true, ''],
+    ['repository_dispatch', 'failure', '42', true, ''],
+    ['workflow_dispatch', 'failure', '', false, 'create'],
+    ['repository_dispatch', 'success', '42', false, 'edit'],
+  ]) {
+    fs.writeFileSync(calls, '');
+    execFileSync(
+      'bash',
+      ['-e', '-c', step.run.replaceAll('${{ github.event_name }}', trigger)],
+      {
+        cwd: dir,
+        env: {
+          ...process.env,
+          PATH: `${dir}${path.delimiter}${process.env.PATH}`,
+          NIGHTLY_EXCEPTION: String(
+            trigger === 'schedule' && outcome === 'failure',
+          ),
+          EXISTING_PR: existing,
+          LABELLED: String(labelled),
+        },
+      },
+    );
+    assert.equal(fs.readFileSync(calls, 'utf8').trim(), action);
   }
 });

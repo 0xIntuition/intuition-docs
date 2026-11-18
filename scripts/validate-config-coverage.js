@@ -25,6 +25,7 @@ function validateFreeze({
   baseHasSnapshot,
   currentHasSnapshot,
   changedFiles,
+  nonModifications = [],
   labels = [],
   nightlyRun,
   repository,
@@ -56,6 +57,10 @@ function validateFreeze({
       errors.push(
         `V1 exception may change only GraphQL query docs and pinned schemas: ${file}`,
       );
+  for (const file of nonModifications)
+    errors.push(
+      `V1 exception must modify an existing query or schema: ${file}`,
+    );
   if (!changedFiles.length) errors.push('V1 exception has no changes');
   if (
     !nightlyRun ||
@@ -84,14 +89,18 @@ function runFreeze(root = ROOT, env = process.env) {
       ['cat-file', '-e', 'origin/main:_data_versions.json'],
       opts,
     ).status === 0;
-  const changedFiles = execFileSync(
+  const diff = execFileSync(
     'git',
-    ['diff', '--name-only', 'origin/main...HEAD'],
+    ['diff', '--no-renames', '--name-status', '-z', 'origin/main...HEAD'],
     opts,
-  )
-    .trim()
-    .split('\n')
-    .filter(Boolean);
+  ).split('\0');
+  // Without rename detection each record is a status and one unquoted pathname.
+  const changedFiles = [];
+  const nonModifications = [];
+  for (let i = 0; i + 1 < diff.length; i += 2) {
+    changedFiles.push(diff[i + 1]);
+    if (diff[i] !== 'M') nonModifications.push(diff[i + 1]);
+  }
   const event = env.GITHUB_EVENT_PATH
     ? JSON.parse(fs.readFileSync(env.GITHUB_EVENT_PATH, 'utf8'))
     : {};
@@ -121,6 +130,7 @@ function runFreeze(root = ROOT, env = process.env) {
     baseHasSnapshot,
     currentHasSnapshot: fs.existsSync(path.join(root, '_data_versions.json')),
     changedFiles,
+    nonModifications,
     labels,
     nightlyRun,
     repository,
@@ -271,7 +281,7 @@ function validateCoverage({
       ],
       [
         'validate-sdk-examples.yml',
-        'node --test examples/v2/react-app/src/receipt.test.ts',
+        'node --test examples/v2/react-app/src/receipt.test.ts examples/v2/react-app/src/wallet-write.test.ts',
       ],
       [
         'validate-sdk-examples.yml',
