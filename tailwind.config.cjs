@@ -7,8 +7,9 @@ module.exports = {
     container: false,
   },
   darkMode: ['class', '[data-theme="dark"]'],
+  // Not `src/learn`: the onboarding film, styled with Tailwind 4.
   content: [
-    './src/**/*.{jsx,tsx,html}',
+    './src/!(learn)/**/*.{jsx,tsx,html}',
     './docs/**/*.{md,mdx}', 
   ],
   theme: {
