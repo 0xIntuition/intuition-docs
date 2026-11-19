@@ -22,8 +22,8 @@ export const ROLES = [
   'bridge',
 ] as const satisfies readonly Role[];
 
-/** One colour per role, as sRGB channels from 0 to 255. */
-export const ROLE_COLOURS = {
+/** One color per role, as sRGB channels from 0 to 255. */
+export const ROLE_COLORS = {
   identity: [122, 134, 255],
   predicate: [47, 224, 139],
   object: [255, 79, 94],
@@ -35,7 +35,7 @@ export const ROLE_COLOURS = {
  * How far a shape's rounding reaches out from its outline, as a share of
  * its size: it rounds the corners.
  */
-const ROUNDING = 0.05;
+export const ROUNDING = 0.05;
 
 /** Points round each outline. A multiple of 4, so the square's corners are sampled. */
 const SAMPLES = 120;

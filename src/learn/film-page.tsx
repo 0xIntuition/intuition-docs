@@ -13,7 +13,7 @@ import './learn.css';
  */
 export function FilmPage(): ReactNode {
   return (
-    <div className="learn-film isolate min-h-dvh bg-bg font-sans text-fg antialiased">
+    <div className="learn-film isolate min-h-dvh bg-graphite-0 font-sans text-graphite-900 antialiased">
       <div className="flex min-h-dvh flex-col">
         <TopBar />
         <main className="flex flex-1 items-center justify-center px-6 pb-16">

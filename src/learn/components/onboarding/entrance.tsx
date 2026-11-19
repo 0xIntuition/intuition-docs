@@ -132,7 +132,7 @@ export function Entrance({
           className="pointer-events-auto flex size-[min(80vmin,38rem)] cursor-grab touch-pan-y items-center justify-center select-none data-[dragging=true]:cursor-grabbing"
         >
           {/*
-           * Inside the logo's ring, in a box of their own that does not grow
+           * Inside the Intuition logo's ring, in a box of their own that does not grow
            * with it, so the words keep their size: the line on every screen,
            * the sentence under it only where there is room for it. The box
            * lets a drag through to the ring's; only "Play" takes the pointer.
@@ -140,10 +140,10 @@ export function Entrance({
           <div className="@container pointer-events-none flex size-[min(72vmin,34rem)] items-center justify-center">
             <div className="invisible flex max-w-[62%] flex-col items-center gap-6 text-center opacity-0 transition-[opacity,visibility] duration-700 in-data-[entrance=formed]:visible in-data-[entrance=formed]:opacity-100">
               <div className="flex flex-col gap-3">
-                <p className="text-lg font-medium tracking-tight text-balance text-fg @sm:text-2xl @lg:text-3xl">
+                <p className="text-lg font-medium tracking-tight text-balance text-graphite-900 @sm:text-2xl @lg:text-3xl">
                   Your data, made multiplayer.
                 </p>
-                <p className="hidden text-sm/relaxed text-pretty text-fg-muted @lg:block">
+                <p className="hidden text-sm/relaxed text-pretty text-graphite-500 @lg:block">
                   Build a knowledge graph and others build on it with you. As
                   they do, your share of it gains value.
                 </p>

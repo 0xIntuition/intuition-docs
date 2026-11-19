@@ -11,7 +11,7 @@
  * and the picture cannot drift away from the caption.
  */
 
-import type { ROLE_COLOURS } from './story-shapes';
+import type { ROLE_COLORS } from './story-shapes';
 import {
   arcPoint,
   axisAngle,
@@ -35,14 +35,14 @@ import {
 } from './story-plane';
 
 /**
- * The shape an atom is drawn as, and its colour: the role it plays in its
+ * The shape an atom is drawn as, and its color: the role it plays in its
  * triples. Circle, triangle, square, as in the field behind the page: the
  * subject, the predicate, the object. An atom on its own is drawn as a
  * circle. One that is the object of a triple and the subject of another is
  * drawn as both at once: a hexagon, between the circle and the square, in a
- * colour between theirs. The same four as the field behind the page.
+ * color between theirs. The same four as the field behind the page.
  */
-export type Role = keyof typeof ROLE_COLOURS;
+export type Role = keyof typeof ROLE_COLORS;
 
 /**
  * The camera: the direction of the cloud that faces the viewer, and how

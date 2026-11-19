@@ -13,7 +13,7 @@ import { rememberLanding } from './landing';
  * margin keeps the words on the bar's edge, where they were before the patch.
  */
 const LINK_CLASS =
-  '-mx-2 rounded-md bg-bg/80 px-2 py-1 outline-accent backdrop-blur-sm focus-visible:outline-2';
+  '-mx-2 rounded-md bg-graphite-0/80 px-2 py-1 outline-graphite-900 backdrop-blur-sm focus-visible:outline-2';
 
 /**
  * The bar at the top of the film's page. While the entrance's stars come
@@ -39,7 +39,7 @@ export function TopBar(): ReactNode {
       <nav aria-label="Main">
         <Link
           href={ROUTES.docs}
-          className={`text-sm text-fg-muted hover:text-fg ${LINK_CLASS}`}
+          className={`text-sm text-graphite-500 hover:text-graphite-900 ${LINK_CLASS}`}
           onClick={() => {
             rememberLanding('docs');
           }}

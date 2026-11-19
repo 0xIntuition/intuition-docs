@@ -40,7 +40,7 @@ const seconds = (ms: number): number => Math.round(ms / 1000);
  * where the film is, with a handle on it, a dot where each beat starts, and
  * each chapter's name under its
  * segment, grey until the chapter has played through, then the track's
- * colour. Drag or click to move through the film. The arrow keys step from
+ * color. Drag or click to move through the film. The arrow keys step from
  * beat to beat, Page Up and Page Down from chapter to chapter, and Home and
  * End go to either end.
  */
@@ -157,11 +157,11 @@ export function StoryTimeline({
                   segments.current.set(chapter.id, node);
                 }
               }}
-              className="relative h-1.5 rounded-full bg-border"
+              className="relative h-1.5 rounded-full bg-graphite-100"
             >
               <div
                 style={{ width: `${fill * 100}%` }}
-                className="absolute inset-y-0 left-0 rounded-full bg-accent"
+                className="absolute inset-y-0 left-0 rounded-full bg-graphite-900"
               />
               {/* A dot where each beat inside the chapter starts: light once
                   passed, darker ahead. */}
@@ -173,18 +173,18 @@ export function StoryTimeline({
                     style={{
                       left: `${((mark - chapter.start) / (chapter.end - chapter.start)) * 100}%`,
                     }}
-                    className={`absolute top-1/2 size-[3px] -translate-x-1/2 -translate-y-1/2 rounded-full ${time >= mark ? 'bg-bg/95' : 'bg-border-strong'}`}
+                    className={`absolute top-1/2 size-[3px] -translate-x-1/2 -translate-y-1/2 rounded-full ${time >= mark ? 'bg-graphite-0/95' : 'bg-graphite-200'}`}
                   />
                 ))}
               {chapter === current && (
                 <div
                   style={{ left: `${fill * 100}%` }}
-                  className="absolute top-1/2 size-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent shadow-sm"
+                  className="absolute top-1/2 size-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-graphite-900 shadow-sm"
                 />
               )}
             </div>
             <span
-              className={`truncate text-xs transition-colors ${time >= chapter.end ? 'text-accent' : 'text-fg-muted'}`}
+              className={`truncate text-xs transition-colors ${time >= chapter.end ? 'text-graphite-900' : 'text-graphite-500'}`}
             >
               {chapter.title}
             </span>

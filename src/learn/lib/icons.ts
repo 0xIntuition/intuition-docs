@@ -4,11 +4,11 @@
  * them: replace one here and every place that draws it follows.
  */
 
-/** One shape of an icon: its path, filled in the icon's colour at this opacity. */
+/** One shape of an icon: its path, filled in the icon's color at this opacity. */
 export interface IconPath {
   d: string;
   opacity: number;
-  /** What the shape stands for, for a drawer that colours it by that. */
+  /** What the shape stands for, for a drawer that colors it by that. */
   part?: 'subject' | 'predicate' | 'object';
 }
 
@@ -39,7 +39,7 @@ export const USER_ICON_FOOT = 22;
 
 /**
  * A triple: its subject, a circle; its object, a square; its predicate, a
- * triangle over them. In one colour, the subject lightest.
+ * triangle over them. In one color, the subject lightest.
  */
 export const TRIPLE_ICON: Icon = {
   size: 24,
@@ -107,52 +107,52 @@ export const VAULT_FACES = {
 /** What a vault holds deposits in: an atom, or a whole triple. */
 export type VaultOf = keyof typeof VAULT_FACES;
 
-/** A colour in 0 to 255 channels. */
+/** A color in 0 to 255 channels. */
 type Rgb = readonly [number, number, number];
 
 /**
- * Each face's colour where it is used: the lid pure black; the stake
+ * Each face's color where it is used: the lid pure black; the stake
  * against orange and the stake for blue, as Intuition draws positions, for
  * neither side is right or wrong. The lines to a triple's vault take its
- * sides' colours too. The orange and the blue are each as light and as
- * strong as the film's role colours (about 0.7 to 0.76 lightness and 0.15
+ * sides' colors too. The orange and the blue are each as light and as
+ * strong as the film's role colors (about 0.7 to 0.76 lightness and 0.15
  * to 0.17 chroma in OKLCH), at hues none of them takes: the orange 37
  * degrees from the object's red, the blue 35 from the subject's.
  */
-export const VAULT_COLOURS = {
+export const VAULT_COLORS = {
   subject: [0, 0, 0],
   against: [255, 145, 46],
   for: [40, 170, 245],
 } as const satisfies Record<VaultFace, Rgb>;
 
 /** A face a vault does not use: as if disabled, pure black at 40%. */
-const VAULT_UNUSED = { colour: [0, 0, 0], opacity: 0.4 } as const;
+const VAULT_UNUSED = { color: [0, 0, 0], opacity: 0.4 } as const;
 
 /**
  * The rule every vault is drawn by, always: a face it uses in its own
- * colour, solid (`VAULT_COLOURS`); a face it does not, pure black at 40%.
+ * color, solid (`VAULT_COLORS`); a face it does not, pure black at 40%.
  * So an atom's vault is a black lid over grey sides, and a triple's a
  * grey lid over an orange side against and a blue side for.
  */
 export function vaultFace(
   of: VaultOf,
   face: VaultFace,
-): { colour: Rgb; opacity: number } {
+): { color: Rgb; opacity: number } {
   const uses: readonly VaultFace[] = VAULT_FACES[of];
 
   return uses.includes(face)
-    ? { colour: VAULT_COLOURS[face], opacity: 1 }
+    ? { color: VAULT_COLORS[face], opacity: 1 }
     : VAULT_UNUSED;
 }
 
 /**
- * A person who deposits, always in the colour of the face of the vault
+ * A person who deposits, always in the color of the face of the vault
  * they stake on: on an atom, its lid's pure black; against a triple,
  * orange; for it, blue. Their head stays lighter, at the icon's own 30%
  * (`USER_ICON`).
  */
-export function depositorColour(face: VaultFace): Rgb {
-  return VAULT_COLOURS[face];
+export function depositorColor(face: VaultFace): Rgb {
+  return VAULT_COLORS[face];
 }
 
 /**
@@ -216,7 +216,7 @@ export interface FeeIcon extends Icon {
 /**
  * A fee: a pie with a slice taken out of it, the slice pulled away from the
  * rest, a gap between them. The pie is light, at 30%, and the slice solid,
- * both in `FEE_COLOUR`. A sixth of the pie, from straight up to 30 degrees
+ * both in `FEE_COLOR`. A sixth of the pie, from straight up to 30 degrees
  * past it, moved out along its middle.
  */
 export const FEE_ICON: FeeIcon = {
@@ -240,8 +240,8 @@ export const FEE_ICON: FeeIcon = {
   ],
 };
 
-/** A fee's colour: pure black, as a vault's lid. */
-export const FEE_COLOUR: Rgb = [0, 0, 0];
+/** A fee's color: pure black, as a vault's lid. */
+export const FEE_COLOR: Rgb = [0, 0, 0];
 
 /** An app's icon: a line meets it from above, at the top of its bar. */
 export interface AppIcon extends Icon {
@@ -251,7 +251,7 @@ export interface AppIcon extends Icon {
 
 /**
  * A builder's app, where a builder's fee goes, whoever built it: a window,
- * its body light, at 30%, under its bar, solid, both in `APP_COLOUR`.
+ * its body light, at 30%, under its bar, solid, both in `APP_COLOR`.
  */
 export const APP_ICON: AppIcon = {
   size: 24,
@@ -268,13 +268,13 @@ export const APP_ICON: AppIcon = {
   ],
 };
 
-/** An app's colour: pure black, as a fee. */
-export const APP_COLOUR: Rgb = [0, 0, 0];
+/** An app's color: pure black, as a fee. */
+export const APP_COLOR: Rgb = [0, 0, 0];
 
 /**
  * A swipe: a hand, pointing up and to the left, and an arrow over its
  * closed fingers, pointing right, the gesture of a drag across, as a hint
- * shows it. The hand light, at 30%, the arrow solid, both in `SWIPE_COLOUR`. The
+ * shows it. The hand light, at 30%, the arrow solid, both in `SWIPE_COLOR`. The
  * hand and the arrow are Saulo's, the hand traced and tilted 20 degrees.
  */
 export const SWIPE_ICON: Icon = {
@@ -291,8 +291,8 @@ export const SWIPE_ICON: Icon = {
   ],
 };
 
-/** A swipe's colour: pure black, as a fee. */
-export const SWIPE_COLOUR: Rgb = [0, 0, 0];
+/** A swipe's color: pure black, as a fee. */
+export const SWIPE_COLOR: Rgb = [0, 0, 0];
 
 /** An icon with an open ring in it, where whoever draws it sets something. */
 export interface RingedIcon extends Icon {
