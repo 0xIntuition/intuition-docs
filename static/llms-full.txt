@@ -178,6 +178,44 @@ As an integration partner, you can now stand up **your own trust-provider identi
 
 This guide walks you through the canonical write pattern, gives you a worked end-to-end example, shows how consumer queries light up once your data lands, and lists the five things you need to ship a working integration.
 
+## Choose your integration path
+
+This page is the canonical human-readable guide for the ERC-8004 partner pattern. It supports two paths into the same graph model and registry; they are not separate specifications.
+
+| Path                                    | Best for                                                              | What it gives you                                                                                                                                              |
+| --------------------------------------- | --------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Skill-guided planning (recommended)** | Partners using Claude Code, Codex, or another compatible coding agent | A deterministic, no-write semantic plan built from the canonical ERC-8004 registry. The skill stops before pinning, wallet preparation, or protocol execution. |
+| **Manual SDK implementation**           | Engineers who want to inspect and implement every SDK call themselves | The complete pinning, SDK, query, and verification reference in this page.                                                                                     |
+
+### Skill-guided planning
+
+Install the released ERC-8004 skill by its version tag:
+
+```bash
+npx skills add 0xIntuition/agent-skills#erc8004-agent-layer-v0.1.0 \
+  --skill erc8004-agent-layer
+```
+
+Then ask your agent to prepare the integration plan:
+
+```text
+Use the erc8004-agent-layer skill. Prepare the canonical testnet semantic plan
+that connects ERC-8004 agent 8453:1380 to my provider and assessment resolver.
+Return the plan and stop before protocol preparation.
+```
+
+Provide the target network, ERC-8004 chain and token ID, exact provider metadata, exact assessment-source metadata and resolver URL, and any optional enrichment facts. The result is a `semantic_plan_ready` artifact: exact registry term IDs, Atom payloads, Triples, deduplication checks, and unresolved items — with no API key, wallet, pin, or chain write required.
+
+The skill is available on [skills.sh](https://skills.sh/0xintuition/agent-skills/erc8004-agent-layer), and its source is in the [Intuition Agent Skills repository](https://github.com/0xIntuition/agent-skills/tree/main/skills/erc8004-agent-layer). Pin production workflows to the versioned tag above rather than the moving `main` branch.
+
+Planning does not authorize later operations. Move through the phases explicitly: semantic planning → protocol preview → metadata pinning → testnet execution → mainnet preview → mainnet execution. Each transition requires a new user instruction naming the approved phase. Mainnet execution always requires explicit mainnet approval.
+
+After accepting the semantic plan, start a new request and use the core [`intuition` skill](https://docs.intuition.systems/docs/getting-started/ai-skills) for protocol preview or execution mechanics. Do not ask the ERC-8004 planning skill to continue into writes.
+
+### Manual SDK implementation
+
+Use the rest of this guide when you want to implement the flow directly. The manual path uses the same registry IDs, graph shape, deduplication rules, and approval boundaries as the skill-guided path. Code examples are implementation references, not authorization for an agent to pin metadata or submit transactions.
+
 ## Why Intuition for ERC-8004 reputation
 
 [ERC-8004](https://eips.ethereum.org/EIPS/eip-8004) gives agents three registries: an Identity Registry that mints a portable, ERC-721 identity for each agent, a Validation Registry for independent checks, and a Reputation Registry, the on-chain place where anyone who has worked with an agent can post feedback about it. The Reputation Registry is live on mainnet and already in heavy use: 267,785 registered agents, 410,907 feedback submissions, and 261,436 active participants reported by [https://8004scan.io/](https://8004scan.io/) as of June 2026.
@@ -293,9 +331,9 @@ Visualized:
 
 ### The Partner Pinning API
 
-The `pinThing` calls in the worked example reach Intuition's gated pinning service. Partner integrations authenticate with an API key Intuition issues you.
+The `pinThing` calls in the worked example reach Intuition's gated pinning service. Partner integrations authenticate with an API key Intuition issues you. You do not need a key for semantic planning or GraphQL reads; you need one only when you approve metadata pinning.
 
-**Getting your key.** Request one from the Intuition Business Development team (contact at the end of this guide), or apply for a key using [our official form](https://forms.gle/7mhm55dFQzvyBLyG9). We issue a personal key and share it securely. Treat it like a password — store it in a secrets manager; don't commit it to git or paste it into chat or tickets. If a key is ever exposed, we can rotate or revoke it instantly, and revoking your key never affects any other partner.
+**Getting and storing your key.** Request one from the Intuition Business Development team, or apply using [our official form](https://forms.gle/7mhm55dFQzvyBLyG9). We issue a personal key and share it securely. Treat it like a password. For local development, put `INTUITION_PIN_API_KEY=...` in the consuming application's gitignored `.env.local` or `.env` file; for CI or production, use the platform's secret store. Never put the key in a skill, prompt, semantic plan, committed manifest, browser bundle, chat, ticket, or command-line argument. If a key is exposed, rotate or revoke it; doing so does not affect another partner.
 
 **Endpoint and auth.**
 
@@ -492,7 +530,7 @@ A returned Triple's `subject.term_id` is the canonical agent Atom (for Captain D
 
 ### Step A — Mint the identity Atom
 
-**Before you write:** you need a partner pinning [API key](https://forms.gle/7mhm55dFQzvyBLyG9), a funded wallet on the target network, and exact `term_id` values for every Triple subject, predicate, and object. `createTripleStatement` does not resolve labels. Use returned Atom IDs for newly created Atoms, use the published canonical predicate constants (identical on both networks, except `has tag`, which is per-network), and resolve any label-based IDs through GraphQL with an explicit zero/multiple-match check.
+**Before you write:** you need a partner pinning [API key](https://forms.gle/7mhm55dFQzvyBLyG9), a funded wallet on the target network, and exact `term_id` values for every Triple subject, predicate, and object. `createTripleStatement` does not resolve labels. Use returned Atom IDs for partner-owned Atoms and the published registry constants for every shared predicate, chain, standard, trust model, and taxonomy object. If a shared term is missing, stop and request a registry extension; never choose or create shared vocabulary by label.
 
 The agent identity Atom is a `pinThing` containing four fields derived from the agent's ERC-8004 `registrationFile` (queryable from the ERC-8004 subgraph, or supplied by you for your own agent).
 
@@ -638,7 +676,7 @@ A net-new agent is "valid" with the identity Atom plus the three **required** Tr
 | `(agent, has category, {oasf domain})`                      | `oasfDomains`            |
 | `(agent, has tag, {trust model})`                           | `supportedTrusts`        |
 
-**OASF skills and domains — use the canonical atoms.** OASF is the [Open Agentic Schema Framework](https://github.com/agntcy/oasf) — the taxonomy ERC-8004 registration files draw their skill and domain slugs from (137 skill slugs, 205 domain slugs; browsable at [schema.oasf.outshift.com](http://schema.oasf.outshift.com)). On Intuition, canonical skill/domain atoms are identified by their term IDs in **Appendix B**, not by name. Naming varies for historical reasons: newer taxonomy atoms are named by their full slug path (e.g. `analytical_skills/data_analysis`), while some older ingestion atoms are named by the bare leaf — and leaf names collide across branches (two different `search` skills exist). Never resolve taxonomy atoms by label; resolve them from the Appendix B tables. Canonical atom IDs for the in-use vocabulary, plus their `has category` hierarchy, are published in **Appendix B — Canonical object atoms**. Resolve there before minting; only mint a new skill/domain atom if its slug is not listed, and name it with the full slug path.
+**OASF skills and domains — use the canonical atoms.** OASF is the [Open Agentic Schema Framework](https://github.com/agntcy/oasf) — the taxonomy ERC-8004 registration files draw their skill and domain slugs from (137 skill slugs, 205 domain slugs; browsable at [schema.oasf.outshift.com](http://schema.oasf.outshift.com)). On Intuition, canonical skill/domain atoms are identified by their term IDs in **Appendix B**, not by name. Naming varies for historical reasons: newer taxonomy atoms are named by their full slug path (e.g. `analytical_skills/data_analysis`), while some older ingestion atoms are named by the bare leaf — and leaf names collide across branches (two different `search` skills exist). Never resolve taxonomy atoms by label or mint a missing taxonomy entry yourself. If a required slug is absent from Appendix B, stop with `registry_extension_required` and ask the Intuition team to extend the canonical registry.
 
 **Owner atoms — exact recipe.** The object of `(agent, created by, {owner})` is a pinned **Thing**, not an account atom — all 98 indexed mainnet agents use this construction, and it is fully reproducible. The same recipe-derived owner atoms also exist on testnet as of 2026-07-08 (mirrored with identical IDs), so pin-convergence holds on both networks; testnet's original ingestion additionally left older, differently-constructed owner atoms alongside — those are superseded. Pin a Thing with exactly these four fields (address lowercased), then mint via `createAtomFromIpfsUri`:
 
@@ -672,9 +710,10 @@ Note `image` and `url` are empty strings here — this differs from the OASF tax
 **Attaching them in code.** Each enrichment Triple is one `createTripleStatement` call. The object Atom is created like any other — pin its metadata, mint from the URI:
 
 ```typescript
-// Reuse canonical object + predicate term IDs from Appendix B. Do NOT mint your own
-// 'Base'/'AIAgent'/etc. Atoms - a differently-pinned object is a different node and
-// fragments the graph. Only mint new Atoms for genuinely novel objects (e.g. custom tags).
+// Reuse canonical object + predicate term IDs from Appendix B. Do NOT mint shared
+// vocabulary such as predicates, chains, standards, tags, or taxonomy entries.
+// Partners create only their provider, assessment-source, agent identity, CAIP,
+// and recipe-defined owner Atoms. Missing shared terms require a registry extension.
 const config = { walletClient, publicClient, address };
 const tripleDeposit = parseEther('0.001');
 const tripleCost = await multiVaultGetTripleCost({ publicClient, address });
@@ -704,33 +743,18 @@ for (const [subjectId, predicateId, objectId] of classification) {
 
 Resolve predicate IDs (`available on`, `has tag`, `has category`, …) once from the canonical term IDs in Appendix B, then reuse them across agents.
 
+On testnet, the canonical `A2A Agent` Atom can currently render with the indexer label `Unknown`. Its term ID is still correct. Verify classification by the Appendix B `term_id`, not by the displayed label.
+
 **Read the classification edges back.** Confirm everything attached to the agent:
 
 ```graphql
-query AgentClassification($agentId: String!) {
+query AgentClassification($agentId: String!, $predicateIds: [String!]) {
   atom(term_id: $agentId) {
     term_id
     label
-    as_subject_triples(
-      where: {
-        predicate: {
-          label: {
-            _in: [
-              "same as"
-              "has type"
-              "implement"
-              "available on"
-              "created by"
-              "use"
-              "has tag"
-              "has category"
-              "compatible with"
-            ]
-          }
-        }
-      }
-    ) {
+    as_subject_triples(where: { predicate_id: { _in: $predicateIds } }) {
       predicate {
+        term_id
         label
       }
       object {
@@ -749,11 +773,22 @@ query AgentClassification($agentId: String!) {
 
 ```json
 {
-  "agentId": "0x45078ae569def2264355f77e592028dd6f1f5d6373c204fe82bf3141ab1861fb"
+  "agentId": "0x45078ae569def2264355f77e592028dd6f1f5d6373c204fe82bf3141ab1861fb",
+  "predicateIds": [
+    "0xbeebfb7d177cbd96ffc239d2196c72ec346efe81f39dc595773f13d83506f5f0",
+    "0xa632a94306ab1d56911cff8c06473659a7caa2dfec6de3921bc23ec8ebf96ced",
+    "0xfa02609bfde5a9a7ba18fa8afc1c42bc643edfaf7d44e3ce9e50835290d03324",
+    "0xa974ce85010776bb6eb81e4492bdb8712f127aa75ae737f02cbe80e72409f7d3",
+    "0x5a959cdd3493fb6335c315df14eb35edb7f2cc578ccae899a89c0f7f330239eb",
+    "0x9ddda4ac2477ec6908e9561ab31ccd767bf3642e0ed0531fd61d447badd896ab",
+    "0x7ec36d201c842dc787b45cb5bb753bea4cf849be3908fb1b0a7d067c3c3cc1f5",
+    "0x96c20ddd7f83034666e200aa976cbe2249946bf76a7c66333212be82f284ad4b",
+    "0xaf3ca6cd6db1cc57c5ae68b1177ba1fd426488bd781494166ab8cb0ed28a6ea3"
+  ]
 }
 ```
 
-Each row in `as_subject_triples` is one classification edge; together they are the agent's full profile in the graph.
+Each row in `as_subject_triples` is one classification edge; together they are the agent's full profile in the graph. The variables above use the mainnet `has tag` ID. Substitute the testnet `has tag` constant from Appendix B when verifying testnet.
 
 ### Verify you matched our process
 
@@ -941,48 +976,44 @@ Update this JSON whenever your score changes. The graph stays exactly as it is. 
 ### Step 5 — Verify
 
 ```graphql
-# query example for Captain Dackie
-# won't return results since no matches are found (no trust providers added yet)
-
-query AgentTrustSurface($agentId: String!) {
-  atom(term_id: $agentId) {
+query AgentTrustSurface($agentId: String!, $predicateIds: [String!]) {
+  triples(
+    where: {
+      subject_id: { _eq: $agentId }
+      predicate_id: { _in: $predicateIds }
+    }
+  ) {
     term_id
-    label
-    as_subject_triples(
-      where: {
-        predicate: {
-          label: { _in: ["has trust provider", "has trust assessment"] }
-        }
-      }
-    ) {
+    predicate {
       term_id
-      predicate {
-        label
-      }
-      object {
-        term_id
-        label
-        data
-        value {
-          thing {
-            name
-            description
-            url
-          }
+      label
+    }
+    object {
+      term_id
+      label
+      data
+      value {
+        thing {
+          name
+          description
+          url
         }
       }
     }
   }
 }
 
-# variables (Captain Dackie's term_id)
-
+# variables
 {
-  "agentId": "0x45078ae569def2264355f77e592028dd6f1f5d6373c204fe82bf3141ab1861fb"
+  "agentId": "0x45078ae569def2264355f77e592028dd6f1f5d6373c204fe82bf3141ab1861fb",
+  "predicateIds": [
+    "0xdc3c5639b39f9b6553b75b37c47fa4810961392b28956234ba9f401a98f43888",
+    "0x7f455fb041f766c3f24552db4c943888c6778c2475d4f2d434b84ad03298457c"
+  ]
 }
 ```
 
-Run against the mainnet GraphQL endpoint — the variables block above already points at Captain Dackie. Once your Triples land, you should see your provider on `has trust provider` and your assessment-source Atom on `has trust assessment`. Read each resolver URL from `object.value.thing.url` (the parsed Thing metadata) — not from `object.data`, which holds the pinned `ipfs://…` URI for the Atom, not the resolver URL.
+Run against the GraphQL endpoint for your target network. The variables use Captain Dackie's canonical Atom plus the canonical `has trust provider` and `has trust assessment` IDs, which work on both networks. Replace only `agentId` for your agent. Once your Triples land, the result should contain your provider and assessment-source Atom. Read each resolver URL from `object.value.thing.url` (the parsed Thing metadata), not `object.data`, which contains the Atom's pinned `ipfs://…` URI.
 
 **Future enhancement — provider authenticity.** Today, anyone can publish an assessment under any provider name; the practical gate is the resolver URL you control. A natural next step is for each provider to publicly prove that the attestor address writing its Triples is one it controls (for example, a signed statement linking provider identity to signer address). Not required for V1, but on the roadmap for hardening provider trust.
 
@@ -990,26 +1021,23 @@ Run against the mainnet GraphQL endpoint — the variables block above already p
 
 The write pattern earns its keep on the read side. Every provider publishes the same four-Triple shell, so one set of queries covers the entire trust layer — a consumer integrates the pattern once and reads every provider through it. The four reads below map to the four questions in the opening section, each with the response shape it returns.
 
-Query shapes follow the same conventions as the Step 5 verification query. These reads use predicate **labels** for readability and select only the structural fields. **\$TRUST stake / market data comes back only when you explicitly select it** — see the production variant under Read 1 (and Read 4) for the market-bearing fields. For a production consumer, filter root `triples` by `subject_id` + `predicate_id` and switch label matching to the predicate `term_id`s published in Appendix B (label matching is ambiguous for some predicates on mainnet). Confirm exact field names against the current mainnet GraphQL schema before shipping.
+Query by `subject_id`, `predicate_id`, and `object_id`; use labels only in returned display fields. Label filters can silently under-report because duplicate and missing labels exist. **\$TRUST stake / market data comes back only when you explicitly select it** — see the market-bearing variant under Read 1 and Read 4. Confirm exact field names against the current GraphQL schema before shipping.
 
 ### Read 1 — One agent's full trust surface
 
 _Who is scoring this agent, and where do their live assessments resolve?_
 
 ```graphql
-query AgentTrustSurface($agentId: String!) {
+query AgentTrustSurface($agentId: String!, $predicateIds: [String!]) {
   atom(term_id: $agentId) {
     term_id
     label
     as_subject_triples(
-      where: {
-        predicate: {
-          label: { _in: ["has trust provider", "has trust assessment"] }
-        }
-      }
+      where: { predicate_id: { _in: $predicateIds } }
     ) {
       term_id
       predicate {
+        term_id
         label
       }
       object {
@@ -1026,6 +1054,15 @@ query AgentTrustSurface($agentId: String!) {
       }
     }
   }
+}
+
+# variables
+{
+  "agentId": "0x45078ae569def2264355f77e592028dd6f1f5d6373c204fe82bf3141ab1861fb",
+  "predicateIds": [
+    "0xdc3c5639b39f9b6553b75b37c47fa4810961392b28956234ba9f401a98f43888",
+    "0x7f455fb041f766c3f24552db4c943888c6778c2475d4f2d434b84ad03298457c"
+  ]
 }
 ```
 
@@ -1100,9 +1137,9 @@ query AgentTrustSurface($agentId: String!) {
 }
 ```
 
-This is the same query you run to verify your own write in Step 5. Every provider that has published on this agent lands in the one response, in the same shape regardless of who they are — a wallet or marketplace can render a full trust panel from this single query. On each `object`, `data` is the pinned `ipfs://…` URI, while the human-readable `name` and the live resolver `url` come from `value.thing`. Follow `value.thing.url` to fetch the assessment document — not `data`.
+This is the same term-ID-filtered read you use to verify your own write in Step 5, expressed through the Atom relationship. Every provider that has published on this agent lands in one response, in the same shape regardless of who they are — a wallet or marketplace can render a full trust panel from this single query. On each `object`, `data` is the pinned `ipfs://…` URI, while the human-readable `name` and the live resolver `url` come from `value.thing`. Follow `value.thing.url` to fetch the assessment document — not `data`.
 
-**Production variant — Read 1 with \$TRUST market data.** The labeled query above is fine while the trust predicate IDs are unpublished. For a production consumer, filter root `triples` by `subject_id` + `predicate_id` and select the market fields you need. This shape was verified on mainnet against the `same as` + `has tag` predicate IDs — swap in the `has trust provider` / `has trust assessment` `term_id`s from Appendix B:
+**Read 1 with \$TRUST market data.** Filter root `triples` by `subject_id` + `predicate_id` and select the market fields you need. Pass the canonical `has trust provider` and `has trust assessment` IDs from the first query:
 
 ```graphql
 query AgentTrustSurface($agentId: String!, $predicateIds: [String!]) {
@@ -1164,8 +1201,8 @@ query AgentTrustSurface($agentId: String!, $predicateIds: [String!]) {
 _Query a single predicate and get back the full assessment surface across all agents and providers._
 
 ```graphql
-query AllTrustAssessments {
-  triples(where: { predicate: { label: { _eq: "has trust assessment" } } }) {
+query AllTrustAssessments($assessmentPredicateId: String!) {
+  triples(where: { predicate_id: { _eq: $assessmentPredicateId } }) {
     subject {
       term_id
       label
@@ -1180,6 +1217,11 @@ query AllTrustAssessments {
       }
     }
   }
+}
+
+# variables
+{
+  "assessmentPredicateId": "0x7f455fb041f766c3f24552db4c943888c6778c2475d4f2d434b84ad03298457c"
 }
 ```
 
@@ -1223,10 +1265,10 @@ Resolving each object's `value.thing.url` returns the provider's live document �
 _Which agents has this provider assessed?_
 
 ```graphql
-query ProviderCoverage($providerId: String!) {
+query ProviderCoverage($providerId: String!, $providerPredicateId: String!) {
   triples(
     where: {
-      predicate: { label: { _eq: "has trust provider" } }
+      predicate_id: { _eq: $providerPredicateId }
       object_id: { _eq: $providerId }
     }
   ) {
@@ -1235,6 +1277,12 @@ query ProviderCoverage($providerId: String!) {
       label
     }
   }
+}
+
+# variables
+{
+  "providerId": "0x…your-provider-term-id…",
+  "providerPredicateId": "0xdc3c5639b39f9b6553b75b37c47fa4810961392b28956234ba9f401a98f43888"
 }
 ```
 
@@ -1297,6 +1345,8 @@ Sorted by market cap, this is a market-weighted ranking of the providers on this
 
 Use `createTripleStatement`, not `createTriple`. Triple writes take arrays of term IDs plus an `assets[]` array. The `assets` value must include the current triple cost plus the deposit you want to stake.
 
+Never hardcode the apparent `0.001 TRUST` total. The examples use `parseEther('0.001')` as an **additional deposit**, then add the live protocol cost returned by `multiVaultGetTripleCost`. Passing only `parseEther('0.001')` as the full `assets` value can underpay by a small amount and revert with `MultiVault_InsufficientAssets`. Query atom and Triple costs immediately before preparing each write.
+
 ```typescript
 import {
   configureSdk,
@@ -1331,52 +1381,19 @@ for (const [subjectId, predicateId, objectId] of triples) {
 
 ## Resolving term IDs
 
-Triple writes require existing term IDs. Use term IDs returned by Atom creation for provider/source Atoms, the published canonical predicate constants (identical on both networks, except `has tag`, which is per-network) for predicates such as `same as`, and GraphQL lookups for any labels you have not pinned in config.
+Triple writes require existing term IDs. Use IDs returned by creation for partner-owned provider and assessment-source Atoms. Use the exact Appendix B or ERC-8004 skill registry constants for shared predicates, chains, standards, trust models, and taxonomy objects. The constants are identical on both networks except for the network-specific in-use `has tag` predicate.
 
-Do not silently choose the first label match. Labels can be duplicated, so a resolver should reject zero or multiple matches:
-
-```typescript
-async function resolveUniqueAtomTermId(label: string, endpoint: string) {
-  const response = await fetch(endpoint, {
-    method: 'POST',
-    headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({
-      query: `
-        query ResolveAtom($label: String!) {
-          atoms(where: { label: { _eq: $label } }, limit: 2) {
-            term_id
-            label
-          }
-        }
-      `,
-      variables: { label },
-    }),
-  });
-
-  const json = await response.json();
-  const atoms = json.data?.atoms ?? [];
-
-  if (atoms.length !== 1) {
-    throw new Error(
-      `Expected one atom labeled "${label}", found ${atoms.length}`,
-    );
-  }
-
-  return atoms[0].term_id;
-}
-```
-
-For canonical predicates and objects, prefer the documented Appendix B network constants instead of label lookup: many labels resolve to multiple atoms and will make this resolver throw. On mainnet that includes `Base`, `has tag`, `use`, and `implement`; on testnet it now includes every classification predicate and object (`same as`, `has type`, `implement`, `available on`, `created by`, `use`, `has category`, `compatible with`, `AIAgent`, `ERC-8004`, `Base`, `has tag`) plus all four trust-pattern terms (`has trust provider`, `has trust assessment`, `provided by`, `Trust Assessment Source`), because the canonical atoms were replicated onto testnet alongside pre-existing duplicate-label atoms.
+Labels are presentation metadata, not identifiers. Duplicate and missing labels exist on both networks, so do not select a shared write target by label even when a lookup returns exactly one result. If a shared term is absent from the registry, stop with `registry_extension_required` and ask the Intuition team to add it. Partners must not create predicates, chains, standards, trust models, or OASF taxonomy entries through this integration path.
 
 ## Partner Requirements Checklist
 
 What you need to ship a working integration.
 
 - [ ] **Runnable package versions** — use `@0xintuition/sdk@^3.0.1`, `@0xintuition/graphql@^3.0.1` if importing GraphQL constants directly, and `viem`.
-- [ ] **Intuition pinning API key** for the gated pinning service, requested from the Business Development team and supplied as the `apikey` header. With the SDK, call `configureSdk({ pinApiKey })` once before `pinThing` / `createAtomFromThing`.
+- [ ] **Intuition pinning API key** for the gated pinning service, requested from the Business Development team and supplied as the `apikey` header. Store it in the consuming application's gitignored environment file or deployment secret store. With the SDK, call `configureSdk({ pinApiKey })` once before `pinThing` / `createAtomFromThing`.
 - [ ] **Funded wallet on the target network** — writes require gas and TRUST/tTRUST. Use a funded testnet wallet for dry-runs before mainnet.
 - [ ] **Agent Atom resolved** — run Preflight to reuse the canonical agent Atom. If Preflight returns a hit, skip Steps A-C and go straight to the trust-pattern write. If the agent isn't in the indexed cohort, mint it and link it to its ERC-8004 identity with the canonical `same as` predicate (`0xbeebfb7d177cbd96ffc239d2196c72ec346efe81f39dc595773f13d83506f5f0`, identical on both networks).
-- [ ] **Term IDs resolved before triple writes** — `createTripleStatement` requires subject, predicate, and object `term_id` values. It does not accept labels or names.
+- [ ] **Term IDs fixed before Triple writes** — `createTripleStatement` requires subject, predicate, and object `term_id` values. Use the canonical registry for shared terms; do not resolve or create shared vocabulary by label. Stop with `registry_extension_required` if a required term is missing.
 - [ ] **Provider identity Atom** created via `pinThing` / `createAtomFromThing`, with stable name, description, URL, and logo.
 - [ ] **Assessment-source Atom** created per assessed agent (or per assessment class), with the stable resolver URL in metadata.
 - [ ] **Triple cost/value math included** — fetch `multiVaultGetTripleCost`, set each `assets[]` entry to `tripleCost + deposit`, and pass the same amount as `value` for a single triple write.
@@ -1384,6 +1401,7 @@ What you need to ship a working integration.
 - [ ] **Stable resolver URL** following the `/.well-known/intuition/erc8004/agents/{chainId}/{tokenId}/trust-assessment.json` convention.
 - [ ] **JSON document** at that URL with required fields populated and a refresh process behind it.
 - [ ] **Signature / attestation strategy** if your assessments are compliance-sensitive or need cryptographic verification (EIP-712 recommended).
+- [ ] **Execution phase explicitly approved** — planning, protocol preview, pinning, testnet execution, mainnet preview, and mainnet execution are separate approvals. Never infer mainnet approval from an earlier phase.
 
 ## What you get back
 
@@ -1431,14 +1449,14 @@ const deposit = parseEther('0.001');
 const tripleCost = await multiVaultGetTripleCost({ publicClient, address });
 const assets = tripleCost + deposit;
 
-// Triple writes use term IDs, not labels. Resolve and pin canonical IDs first.
+// Triple writes use term IDs, not labels. Load canonical IDs from Appendix B.
 await createTripleStatement(config, {
   args: [[captainDackieAtomId], [usePredicateId], [a2aAtomId], [assets]],
   value: assets,
 });
 ```
 
-`createTripleStatement` is the SDK write helper. It takes the raw MultiVault tuple arrays: `subjectIds[]`, `predicateIds[]`, `objectIds[]`, and `assets[]`. The `assets` value for each triple must include the current triple cost plus the deposit you want to stake. Resolve labels to term IDs before writing, and reject ambiguous label matches rather than silently choosing one.
+`createTripleStatement` is the SDK write helper. It takes the raw MultiVault tuple arrays: `subjectIds[]`, `predicateIds[]`, `objectIds[]`, and `assets[]`. The `assets` value for each Triple must include the current Triple cost plus the deposit you want to stake. Use returned IDs for partner-owned Atoms and exact Appendix B constants for shared vocabulary; never derive a shared write target from a label.
 
 ### Predicate reference for stable 8004 facts
 
@@ -1456,7 +1474,7 @@ await createTripleStatement(config, {
 
 Full predicate catalog and entity-type guidance can be found in the [predicate-usage-by-entity-type](https://github.com/0xIntuition/intuition-data-structures/blob/main/predicates/2-predicate-usage-by-entity-type.md) doc.
 
-Label matching is ambiguous on mainnet for some of these predicates (`has tag`, `use`, and `implement` all have duplicate label matches), so production writes and reads should resolve and pin the predicate `term_id` rather than matching by label.
+Label matching is ambiguous on mainnet for some of these predicates (`has tag`, `use`, and `implement` all have duplicate label matches), so writes and reads must use the published predicate `term_id` rather than matching by label.
 
 **Reminder:** If the fact you're writing could ever change, use the pinThing + JSON pattern from the main guide, not direct Triples. Immutable-write is for structural facts only.
 
@@ -1502,37 +1520,11 @@ The trust-pattern term IDs (`has trust provider`, `has trust assessment`, `provi
 
 **Canonical object atoms — chains, standards, trust models, OASF skills & domains (mainnet)**
 
-These are the canonical object atoms for the classification and enrichment Triples in this guide — the vocabulary in live use across ERC-8004 agents, published on mainnet 2026-07-08. Resolve object `term_id`s from these tables; do **not** mint your own copies — a differently-pinned duplicate is a different node and fragments the staking surface. If a value you need is missing from the tables, mint it with the exact construction recipe below (or ask the Business Development team to extend the canon). The recipe applies only to slugs not listed above — it cannot be used to re-derive rows marked **legacy**, and re-deriving a **full-slug** row is unnecessary (the ID is already published). For every listed slug, use the table's `term_id` verbatim.
+These are the canonical object atoms for the classification and enrichment Triples in this guide — the vocabulary in live use across ERC-8004 agents, published on mainnet 2026-07-08. Use every listed `term_id` verbatim. A differently pinned duplicate is a different node and fragments the graph and its staking surface.
 
-_Minting a missing OASF skill/domain atom — exact recipe._ Atom IDs are content-deterministic, so this recipe must be reproduced **byte-for-byte** — the same discipline as the agent-identity recipe in Step A. Any variation in any field mints a different atom ID and splits the vocabulary. This recipe is how new (post-2026-07-08) taxonomy atoms are constructed; the rows marked **legacy** in the tables above predate it and follow a different historical construction — never attempt to reproduce those, just use their listed IDs. Pin a Thing with exactly these four fields, then mint via `createAtomFromThing` / `createAtomFromIpfsUri`:
+**Shared-vocabulary creation is not part of the partner path.** Partners may create their provider and assessment-source Atoms, plus the recipe-defined agent identity, CAIP identity, and owner Atoms needed for their integration. Partners must not create predicates, chains, standards, trust models, OASF skills, OASF domains, parent taxonomy nodes, or other shared registry entries. If a required term is absent, stop with `registry_extension_required` and ask the Intuition team to extend the registry. Continue only after an updated canonical term ID is published.
 
-```json
-{
-  "name": "{full slug path, e.g. audio/speech/speech_to_text}",
-  "description": "OASF skill category: {full slug path}",
-  "image": "null",
-  "url": "https://github.com/agntcy/oasf"
-}
-```
-
-`"image": "null"` is intentional — the literal four-character string `null`, not an empty string and not JSON `null`. The live canonical taxonomy atoms were pinned with exactly this payload, and atom IDs are content-derived, so reproducing a canonical ID requires reproducing the payload byte-for-byte. Do not normalize `"null"` to `""` when reproducing these IDs — that mints a different atom ID and splits the vocabulary. This is a historical artifact of the ingestion pipeline; reproduce it verbatim.
-
-For a domain, the description prefix is `OASF domain category: {full slug path}` — everything else is identical. Use the slug exactly as it appears in the [OASF schema explorer](https://schema.oasf.outshift.com/) (lowercase, underscores, `/`-separated path). After minting, write the hierarchy edge `(new atom, has category, parent atom)` using the `has category` predicate and the parent's ID from the tables below (mint missing intermediate parents with the same recipe), then link your agent to it (`has tag` for a skill, `has category` for a domain).
-
-**Verify convergence before minting.** Pinning is free and deterministic, so always pin first and check the result before sending a transaction. Call `pinThing` with your four fields, then resolve the returned URI against mainnet:
-
-```graphql
-query {
-  atoms(where: { data: { _eq: "ipfs://…your-pinned-uri…" } }) {
-    term_id
-    label
-  }
-}
-```
-
-If the slug appears in the tables above, this must return exactly the listed `term_id` — if it returns nothing or a different ID, stop: your payload has drifted from the canonical bytes. Only mint when the slug is genuinely absent from the tables **and** the URI resolves to no existing atom.
-
-Chains do not follow this recipe: the canonical chain atoms are Things named with their human-readable names (`Base`, `Ethereum`, …), with human-written descriptions and homepage URLs — not CAIP-2 identifiers. Every registry-deployment chain already exists in the table below, so never mint a chain atom yourself — ask the Business Development team if a chain you need is missing. (Write manifest: `data/runs/canonical-object-atoms-written-mainnet.json`, 8004 data-scraper repo.)
+Canonical chain atoms are Things named with their human-readable names (`Base`, `Ethereum`, …), with human-written descriptions and homepage URLs — not CAIP-2 identifiers. Every registry-deployment chain already exists in the table below, so never mint a chain atom yourself; request a registry extension if a chain is missing. (Write manifest: `data/runs/canonical-object-atoms-written-mainnet.json`, 8004 data-scraper repo.)
 
 _Chains — object of **`available on`** (canonical by adoption):_
 
@@ -1697,7 +1689,7 @@ The trust-pattern term IDs (`has trust provider`, `has trust assessment`, `provi
 
 **How do I get write access / an API key?**
 
-Programmatic pinning is gated behind a personal API key that Intuition issues. Request one from the Business Development team (contact above). You send it as an `apikey` request header on calls to the pinning endpoint, `https://pin.intuition.systems/v1/graphql` — see **The Partner Pinning API** in the main guide for the operations, an example, and common errors. Keys can be rotated or revoked instantly if one is ever exposed.
+Programmatic pinning is gated behind a personal API key that Intuition issues. Request one from the Business Development team. Store it in the consuming application's gitignored `.env.local` or `.env` file for local development, or in your platform's secret store for CI and production. Send it as an `apikey` request header on calls to `https://pin.intuition.systems/v1/graphql`; the SDK handles that header after `configureSdk({ pinApiKey })`. Never place it in a skill, prompt, plan, committed file, browser bundle, or URL. Keys can be rotated or revoked if exposed.
 
 **Is the pinning endpoint the same as the GraphQL endpoint I query?**
 
@@ -1741,7 +1733,8 @@ Complementary, not competing. ERC-8004's Reputation Registry collects structured
 
 ## Next steps
 
-- **Implementing:** request your API key from the Business Development team, then start with Steps 1–4 against a single test agent (Captain Dackie is the reference). Verify via Step 5's GraphQL query. Then scale to your full assessment set.
+- **Planning with an agent:** install `erc8004-agent-layer` at `erc8004-agent-layer-v0.1.0`, prepare the terminal semantic plan, and review every exact term ID and unresolved item before authorizing any later phase.
+- **Implementing manually:** request your API key from the Business Development team, then start with Steps 1–4 against a single test agent (Captain Dackie is the reference). Verify via Step 5's term-ID GraphQL query. Then scale to your full assessment set.
 - **Questions on predicate choice:** reference [predicate-usage-by-entity-type](https://github.com/0xIntuition/intuition-data-structures/blob/main/predicates/2-predicate-usage-by-entity-type.md) and the Intuition data-structures repo.
 - **Questions on protocol mechanics, gas, or cohort inclusion:** reach out to the Intuition Business Development team. We coordinate partner integrations end-to-end and can pair you with engineering where needed.
 - **What we'd like back:** a heads-up when you ship, a resolver URL we can reference in ecosystem maps, and any rough edges you hit so we can sharpen this guide.
@@ -2843,19 +2836,29 @@ Once installed, call the skill from within your agent session:
 /intuition
 ```
 
+Install the ERC-8004 partner-planning skill at its released version:
+
+```bash
+npx skills add 0xIntuition/agent-skills#erc8004-agent-layer-v0.1.0 \
+  --skill erc8004-agent-layer
+```
+
+Then invoke it with `/erc8004-agent-layer` or name it in your request. It returns a canonical no-write semantic plan and stops before protocol preparation.
+
 Agents can also invoke the skill autonomously when their runtime supports skills, allowing Hermes-style agents and other AI features to use Intuition context without a manual slash command.
 
-## Current Skill
+## Current Skills
 
-| Skill | Purpose | Repository |
-| --- | --- | --- |
-| `intuition` | Canonical reference for Intuition Protocol transactions, ABIs, encoding, addresses, and value calculations. | [agent-skills](https://github.com/0xIntuition/agent-skills/tree/main/skills/intuition) |
+| Skill                 | Purpose                                                                                                                      | Repository                                                                                       |
+| --------------------- | ---------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| `intuition`           | Canonical reference for Intuition Protocol transactions, ABIs, encoding, addresses, and value calculations.                  | [agent-skills](https://github.com/0xIntuition/agent-skills/tree/main/skills/intuition)           |
+| `erc8004-agent-layer` | Plans ERC-8004 partner integrations with canonical registry IDs, trust-pattern Triples, deduplication checks, and no writes. | [agent-skills](https://github.com/0xIntuition/agent-skills/tree/main/skills/erc8004-agent-layer) |
 
-The repository is structured to support more skills over time, but `intuition` is the current public protocol skill.
+Use `erc8004-agent-layer` first to decide what the integration means. After you accept its terminal semantic plan, start a new request with `intuition` for protocol preview or execution mechanics. See the [ERC-8004 Agent Layer Partner Guide](https://docs.intuition.systems/docs/erc-8004-agent-layer) for the complete guided and manual workflows.
 
 ## Important Boundary
 
-The skills produce unsigned transaction parameters. Your application, wallet, or backend signing flow remains responsible for:
+The core `intuition` skill can produce unsigned transaction parameters. Your application, wallet, or backend signing flow remains responsible for:
 
 - Choosing the signer.
 - Presenting the transaction to the user or signing infrastructure.
@@ -2863,6 +2866,8 @@ The skills produce unsigned transaction parameters. Your application, wallet, or
 - Confirming and handling receipt data.
 
 Treat `main` as a moving branch. For production agent workflows, pin installs to a Git tag or commit SHA once a release is selected. You can find the latest version and release information in the [GitHub releases page](https://github.com/0xintuition/agent-skills/releases).
+
+The ERC-8004 skill has a stricter boundary: its first turn ends at a no-write semantic plan. Approval does not carry across phases. Metadata pinning, testnet execution, mainnet preview, and mainnet execution each require a later, explicit instruction; mainnet execution always requires explicit mainnet approval.
 
 ## When to Use AI Skills vs MCP
 
